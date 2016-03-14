@@ -1,0 +1,11 @@
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\AshesToAshes.exe.config
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\AshesToAshes.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\AshesToAshes.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\EloBuddy.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\EloBuddy.SDK.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\SharpDX.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\SharpDX.Direct3D9.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\bin\Release\Newtonsoft.Json.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\obj\Release\AshesToAshes.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\obj\Release\AshesToAshes.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\AshesToAshes\obj\Release\AshesToAshes.csprojResolveAssemblyReference.cache

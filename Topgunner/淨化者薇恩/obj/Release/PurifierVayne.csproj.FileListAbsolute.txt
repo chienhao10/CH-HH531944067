@@ -1,0 +1,11 @@
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\PurifierVayne.exe.config
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\PurifierVayne.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\PurifierVayne.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\EloBuddy.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\EloBuddy.SDK.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\SharpDX.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\SharpDX.Direct3D9.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\bin\Release\Newtonsoft.Json.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\obj\Release\PurifierVayne.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\obj\Release\PurifierVayne.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\PurifierVayne\obj\Release\PurifierVayne.csprojResolveAssemblyReference.cache

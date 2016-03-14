@@ -1,0 +1,11 @@
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\MissFortune.exe.config
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\obj\Debug\MissFortune.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\obj\Debug\MissFortune.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\obj\Debug\Ashes to Ashes.csprojResolveAssemblyReference.cache
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\MissFortune.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\MissFortune.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\EloBuddy.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\EloBuddy.SDK.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\SharpDX.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\SharpDX.Direct3D9.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\Ashes to Ashes\bin\Debug\Newtonsoft.Json.dll

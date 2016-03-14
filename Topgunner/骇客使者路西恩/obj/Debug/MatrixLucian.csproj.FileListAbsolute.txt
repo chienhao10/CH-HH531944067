@@ -1,0 +1,13 @@
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\Corki.exe.config
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\obj\Debug\Corki.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\obj\Debug\Corki.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\Corki.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\Corki.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\EloBuddy.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\EloBuddy.SDK.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\SharpDX.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\SharpDX.Direct3D9.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\Newtonsoft.Json.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\obj\Debug\MatrixLucian.csprojResolveAssemblyReference.cache
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Debug\MatrixLucian.exe.config
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\MatrixLucian\bin\Release\MatrixLucian.exe.config

@@ -1,0 +1,11 @@
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\CarryAIO.exe.config
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\CarryAIO.exe
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\CarryAIO.pdb
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\EloBuddy.dll
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\EloBuddy.SDK.dll
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\SharpDX.dll
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\bin\Release\Newtonsoft.Json.dll
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\obj\Release\CH汉化-Carry合集.csprojResolveAssemblyReference.cache
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\obj\Release\CarryAIO.exe
+C:\Users\huang_000\Documents\GitHub\Translate-Project\Topgunner\Carry 合集 （ADC）\obj\Release\CarryAIO.pdb

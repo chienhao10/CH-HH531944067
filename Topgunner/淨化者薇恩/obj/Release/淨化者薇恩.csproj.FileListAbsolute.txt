@@ -1,0 +1,11 @@
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\PurifierVayne.exe.config
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\PurifierVayne.exe
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\PurifierVayne.pdb
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\EloBuddy.dll
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\EloBuddy.SDK.dll
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\SharpDX.dll
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\huang_000\Desktop\script\PurifierVayne\bin\Release\Newtonsoft.Json.dll
+C:\Users\huang_000\Desktop\script\PurifierVayne\obj\Release\淨化者薇恩.csprojResolveAssemblyReference.cache
+C:\Users\huang_000\Desktop\script\PurifierVayne\obj\Release\PurifierVayne.exe
+C:\Users\huang_000\Desktop\script\PurifierVayne\obj\Release\PurifierVayne.pdb

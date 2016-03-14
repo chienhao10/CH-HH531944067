@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6CE561E6-368D-4E58-BFBB-77F4E96EF5C5}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CarryAIO</RootNamespace>
+    <AssemblyName>CarryAIO</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EloBuddy">
+      <HintPath>C:\Users\Morpheus\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
+    </Reference>
+    <Reference Include="EloBuddy.SDK">
+      <HintPath>C:\Users\Morpheus\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>C:\Users\Morpheus\AppData\Roaming\EloBuddy\Addons\Libraries\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AshesToAshes\Ashe.cs" />
+    <Compile Include="AshesToAshes\Config.cs" />
+    <Compile Include="AshesToAshes\ModeManager.cs" />
+    <Compile Include="AshesToAshes\Modes\Combo.cs" />
+    <Compile Include="AshesToAshes\Modes\Flee.cs" />
+    <Compile Include="AshesToAshes\Modes\Harass.cs" />
+    <Compile Include="AshesToAshes\Modes\JungleClear.cs" />
+    <Compile Include="AshesToAshes\Modes\LaneClear.cs" />
+    <Compile Include="AshesToAshes\Modes\LastHit.cs" />
+    <Compile Include="AshesToAshes\Modes\ModeBase.cs" />
+    <Compile Include="AshesToAshes\Modes\PermaActive.cs" />
+    <Compile Include="AshesToAshes\SaveMePls.cs" />
+    <Compile Include="AshesToAshes\SpellManager.cs" />
+    <Compile Include="Corki\Config.cs" />
+    <Compile Include="Corki\ModeManager.cs" />
+    <Compile Include="Corki\Modes\Combo.cs" />
+    <Compile Include="Corki\Modes\Flee.cs" />
+    <Compile Include="Corki\Modes\Harass.cs" />
+    <Compile Include="Corki\Modes\JungleClear.cs" />
+    <Compile Include="Corki\Modes\LaneClear.cs" />
+    <Compile Include="Corki\Modes\LastHit.cs" />
+    <Compile Include="Corki\Modes\ModeBase.cs" />
+    <Compile Include="Corki\Modes\PermaActive.cs" />
+    <Compile Include="Corki\Program.cs" />
+    <Compile Include="Corki\SaveMePls.cs" />
+    <Compile Include="Corki\SpellManager.cs" />
+    <Compile Include="CorruptedVarus\Config.cs" />
+    <Compile Include="CorruptedVarus\ModeManager.cs" />
+    <Compile Include="CorruptedVarus\Modes\Combo.cs" />
+    <Compile Include="CorruptedVarus\Modes\Flee.cs" />
+    <Compile Include="CorruptedVarus\Modes\Harass.cs" />
+    <Compile Include="CorruptedVarus\Modes\JungleClear.cs" />
+    <Compile Include="CorruptedVarus\Modes\LaneClear.cs" />
+    <Compile Include="CorruptedVarus\Modes\LastHit.cs" />
+    <Compile Include="CorruptedVarus\Modes\ModeBase.cs" />
+    <Compile Include="CorruptedVarus\Modes\PermaActive.cs" />
+    <Compile Include="CorruptedVarus\Program.cs" />
+    <Compile Include="CorruptedVarus\SaveMePls.cs" />
+    <Compile Include="CorruptedVarus\SpellManager.cs" />
+    <Compile Include="Kitelyn\Config.cs" />
+    <Compile Include="Kitelyn\ModeManager.cs" />
+    <Compile Include="Kitelyn\Modes\Combo.cs" />
+    <Compile Include="Kitelyn\Modes\Flee.cs" />
+    <Compile Include="Kitelyn\Modes\Harass.cs" />
+    <Compile Include="Kitelyn\Modes\JungleClear.cs" />
+    <Compile Include="Kitelyn\Modes\LaneClear.cs" />
+    <Compile Include="Kitelyn\Modes\LastHit.cs" />
+    <Compile Include="Kitelyn\Modes\ModeBase.cs" />
+    <Compile Include="Kitelyn\Modes\PermaActive.cs" />
+    <Compile Include="Kitelyn\Program.cs" />
+    <Compile Include="Kitelyn\SaveMePls.cs" />
+    <Compile Include="Kitelyn\SpellManager.cs" />
+    <Compile Include="MatrixLucian\Config.cs" />
+    <Compile Include="MatrixLucian\ModeManager.cs" />
+    <Compile Include="MatrixLucian\Modes\Combo.cs" />
+    <Compile Include="MatrixLucian\Modes\Flee.cs" />
+    <Compile Include="MatrixLucian\Modes\Harass.cs" />
+    <Compile Include="MatrixLucian\Modes\JungleClear.cs" />
+    <Compile Include="MatrixLucian\Modes\LaneClear.cs" />
+    <Compile Include="MatrixLucian\Modes\LastHit.cs" />
+    <Compile Include="MatrixLucian\Modes\ModeBase.cs" />
+    <Compile Include="MatrixLucian\Modes\PermaActive.cs" />
+    <Compile Include="MatrixLucian\Program.cs" />
+    <Compile Include="MatrixLucian\SaveMePls.cs" />
+    <Compile Include="MatrixLucian\SpellManager.cs" />
+    <Compile Include="MissFortune\Config.cs" />
+    <Compile Include="MissFortune\ModeManager.cs" />
+    <Compile Include="MissFortune\Modes\Combo.cs" />
+    <Compile Include="MissFortune\Modes\Flee.cs" />
+    <Compile Include="MissFortune\Modes\Harass.cs" />
+    <Compile Include="MissFortune\Modes\JungleClear.cs" />
+    <Compile Include="MissFortune\Modes\LaneClear.cs" />
+    <Compile Include="MissFortune\Modes\LastHit.cs" />
+    <Compile Include="MissFortune\Modes\ModeBase.cs" />
+    <Compile Include="MissFortune\Modes\PermaActive.cs" />
+    <Compile Include="MissFortune\Program.cs" />
+    <Compile Include="MissFortune\SaveMePls.cs" />
+    <Compile Include="MissFortune\SpellManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PurifierVayne\Config.cs" />
+    <Compile Include="PurifierVayne\ModeManager.cs" />
+    <Compile Include="PurifierVayne\Modes\Combo.cs" />
+    <Compile Include="PurifierVayne\Modes\Flee.cs" />
+    <Compile Include="PurifierVayne\Modes\Harass.cs" />
+    <Compile Include="PurifierVayne\Modes\JungleClear.cs" />
+    <Compile Include="PurifierVayne\Modes\LaneClear.cs" />
+    <Compile Include="PurifierVayne\Modes\LastHit.cs" />
+    <Compile Include="PurifierVayne\Modes\ModeBase.cs" />
+    <Compile Include="PurifierVayne\Modes\PermaActive.cs" />
+    <Compile Include="PurifierVayne\Program.cs" />
+    <Compile Include="PurifierVayne\SaveMePls.cs" />
+    <Compile Include="PurifierVayne\SpellManager.cs" />
+    <Compile Include="RoamQueenQuinn\Config.cs" />
+    <Compile Include="RoamQueenQuinn\ModeManager.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\Combo.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\Flee.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\Harass.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\JungleClear.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\LaneClear.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\LastHit.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\ModeBase.cs" />
+    <Compile Include="RoamQueenQuinn\Modes\PermaActive.cs" />
+    <Compile Include="RoamQueenQuinn\Program.cs" />
+    <Compile Include="RoamQueenQuinn\SaveMePls.cs" />
+    <Compile Include="RoamQueenQuinn\SpellManager.cs" />
+    <Compile Include="SivirDamage\Config.cs" />
+    <Compile Include="SivirDamage\Evade\Collision.cs" />
+    <Compile Include="SivirDamage\Evade\Config.cs" />
+    <Compile Include="SivirDamage\Evade\Evade.cs" />
+    <Compile Include="SivirDamage\Evade\EvadeSpellData.cs" />
+    <Compile Include="SivirDamage\Evade\EvadeSpellDatabase.cs" />
+    <Compile Include="SivirDamage\Evade\Geometry.cs" />
+    <Compile Include="SivirDamage\Evade\Skillshot.cs" />
+    <Compile Include="SivirDamage\Evade\SkillshotDetector.cs" />
+    <Compile Include="SivirDamage\Evade\SpellData.cs" />
+    <Compile Include="SivirDamage\Evade\SpellDatabase.cs" />
+    <Compile Include="SivirDamage\Evade\Utils.cs" />
+    <Compile Include="SivirDamage\ModeManager.cs" />
+    <Compile Include="SivirDamage\Modes\Combo.cs" />
+    <Compile Include="SivirDamage\Modes\Flee.cs" />
+    <Compile Include="SivirDamage\Modes\Harass.cs" />
+    <Compile Include="SivirDamage\Modes\JungleClear.cs" />
+    <Compile Include="SivirDamage\Modes\LaneClear.cs" />
+    <Compile Include="SivirDamage\Modes\LastHit.cs" />
+    <Compile Include="SivirDamage\Modes\ModeBase.cs" />
+    <Compile Include="SivirDamage\Modes\PermaActive.cs" />
+    <Compile Include="SivirDamage\Program.cs" />
+    <Compile Include="SivirDamage\SaveMePls.cs" />
+    <Compile Include="SivirDamage\SpellManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

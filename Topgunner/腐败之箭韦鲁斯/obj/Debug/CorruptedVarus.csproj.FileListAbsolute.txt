@@ -1,0 +1,12 @@
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\CorruptedVarus.exe.config
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\obj\Debug\CorruptedVarus.csprojResolveAssemblyReference.cache
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\CorruptedVarus.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\CorruptedVarus.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\EloBuddy.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\EloBuddy.SDK.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\SharpDX.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\SharpDX.Direct3D9.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Debug\Newtonsoft.Json.dll
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\obj\Debug\CorruptedVarus.exe
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\obj\Debug\CorruptedVarus.pdb
+F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\CorruptedVarus\bin\Release\CorruptedVarus.exe.config
