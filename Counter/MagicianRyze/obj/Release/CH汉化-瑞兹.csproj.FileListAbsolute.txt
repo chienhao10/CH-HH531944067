@@ -1,0 +1,10 @@
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\MagicianRyze.exe.config
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\MagicianRyze.exe
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\MagicianRyze.pdb
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\EloBuddy.dll
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\EloBuddy.SDK.dll
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\SharpDX.dll
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\bin\Release\Newtonsoft.Json.dll
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\obj\Release\MagicianRyze.exe
+C:\Users\huang_000\Desktop\script\Counter\MagicianRyze\obj\Release\MagicianRyze.pdb
