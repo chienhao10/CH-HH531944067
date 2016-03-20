@@ -15,33 +15,50 @@ namespace KA_Ezreal.Modes
         public override void Execute()
         {
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (target == null || target.IsZombie || target.HasUndyingBuff()) return;
-
-            //Q To AA Cancel
-            if (Settings.UseQ && Q.IsReady() && target.IsValidTarget(Q.Range) &&
-                !target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
+            if (target != null && !target.IsZombie && !target.HasUndyingBuff())
             {
-                Q.Cast(Q.GetPrediction(target).CastPosition);
-            }
+                //Q To AA Cancel
+                if (Settings.UseQ && Q.IsReady() && target.IsValidTarget(Q.Range) &&
+                    !target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
+                {
+                    var pred = Q.GetPrediction(target);
+                    if (pred.HitChancePercent >= 75)
+                    {
+                        Q.Cast(pred.CastPosition);
+                    }
+                }
 
-            //W To AA Cancel
-            if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range) &&
-                !target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
-            {
-                W.Cast(W.GetPrediction(target).CastPosition);
-            }
+                //W To AA Cancel
+                if (Settings.UseW && W.IsReady() && target.IsValidTarget(W.Range) &&
+                    !target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
+                {
+                    var pred = W.GetPrediction(target);
+                    if (pred.HitChancePercent >= 90)
+                    {
+                        W.Cast(pred.CastPosition);
+                    }
+                }
 
-            //Normal Q and W
-            if (Settings.UseQ && EventsManager.CanQCancel && target.IsValidTarget(Q.Range) &&
-                target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
-            {
-                Q.Cast(Q.GetPrediction(target).CastPosition);
-            }
+                //Normal Q and W
+                if (Settings.UseQ && EventsManager.CanQCancel && target.IsValidTarget(Q.Range) &&
+                    target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
+                {
+                    var pred = Q.GetPrediction(target);
+                    if (pred.HitChancePercent >= 75)
+                    {
+                        Q.Cast(pred.CastPosition);
+                    }
+                }
 
-            if (Settings.UseW && EventsManager.CanWCancel && target.IsValidTarget(W.Range) &&
-                target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
-            {
-                W.Cast(W.GetPrediction(target).CastPosition);
+                if (Settings.UseW && EventsManager.CanWCancel && target.IsValidTarget(W.Range) &&
+                    target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
+                {
+                    var pred = W.GetPrediction(target);
+                    if (pred.HitChancePercent >= 90)
+                    {
+                        W.Cast(pred.CastPosition);
+                    }
+                }
             }
         }
     }

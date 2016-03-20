@@ -34,6 +34,7 @@ namespace KKayle
             return (PlayerInstance.Health / PlayerInstance.MaxHealth) * 100;
         }
 
+
         public static AIHeroClient _Player
         {
             get { return ObjectManager.Player; }
@@ -76,8 +77,8 @@ namespace KKayle
                 Q = new Spell.Targeted(SpellSlot.Q, 650);
                     Q.CastDelay = 5;
                 W = new Spell.Targeted(SpellSlot.W, 900);
-                E = new Spell.Skillshot(SpellSlot.E, 650, SkillShotType.Circular, 1, 50, 400);
-                E = new Spell.Active(SpellSlot.E, 600);
+                E = new Spell.Active(SpellSlot.E, 650);
+                R = new Spell.Targeted(SpellSlot.R, 900);
                 if (Spell1("ignite"))   
                 {
                     Ignite = new Spell.Targeted(ObjectManager.Player.GetSpellSlotFromName("summonerdot"), 600);
@@ -103,7 +104,7 @@ namespace KKayle
                 FarmMenu.Add("ManaF", new Slider("不使用技能当蓝低于", 40));
                 FarmMenu.Add("FarmQ", new CheckBox("使用Q尾兵", true));
                 FarmMenu.Add("FarmE", new CheckBox("使用Q尾兵", true));
-                FarmMenu.Add("MinionE", new Slider("小兵数量多于时使用E技能清线", 3, 1, 5));
+                FarmMenu.Add("MinionE", new Slider("小白数量多于时使用E技能清线", 3, 1, 5));
                 FarmMenu.AddSeparator();
                 FarmMenu.AddLabel("尾兵");
                 FarmMenu.Add("LastQ", new CheckBox("使用Q尾兵", true));
@@ -253,7 +254,7 @@ namespace KKayle
         public static void DamageC(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         
         {
-            /*if (_Player.IsRecalling()) return;
+           /* if (_Player.IsRecalling()) return;
             var target = args.Target as Obj_AI_Base;
             if (!target.IsAlly || sender.IsAlly || target == null)
             {
@@ -272,7 +273,16 @@ namespace KKayle
             }*/
 
         }
+        static void KInterrupter(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs args)
+        {
+            if (args.DangerLevel == DangerLevel.High && sender.IsEnemy && sender is AIHeroClient && sender.Distance(_Player) < R.Range && R.IsReady())
+            {
+                R.Cast(Player.Instance);
+            }
+
+        }
 
         }
 
     }
+

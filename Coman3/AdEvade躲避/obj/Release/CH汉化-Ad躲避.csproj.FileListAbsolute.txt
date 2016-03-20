@@ -1,0 +1,14 @@
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\obj\Release\CH汉化-Ad躲避.csprojResolveAssemblyReference.cache
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\obj\Release\AdEvade.Properties.Resources.resources
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\obj\Release\CH汉化-Ad躲避.csproj.GenerateResource.Cache
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\AdEvade.exe.config
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\AdEvade.exe
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\AdEvade.pdb
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\EloBuddy.dll
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\EloBuddy.SDK.dll
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\SharpDX.dll
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\bin\Release\Newtonsoft.Json.dll
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\obj\Release\AdEvade.exe
+C:\Users\huang_000\Desktop\script\AdEvade\AdEvade\obj\Release\AdEvade.pdb

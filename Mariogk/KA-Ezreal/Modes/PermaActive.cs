@@ -21,6 +21,17 @@ namespace KA_Ezreal.Modes
 
         public override void Execute()
         {
+            var targetManamune = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+            if (targetManamune == null || targetManamune.IsZombie) return;
+            if (Manamune.IsReady() && Manamune.IsOwned() && Player.Instance.ManaPercent >= 55)
+            {
+                Manamune.Cast();
+            }
+            else
+            {
+                Manamune.Cast();
+            }
+
             if (Settings.CCedR && R.IsReady())
             {
                 var target = TargetSelector.GetTarget(R.Range, DamageType.Physical);
@@ -48,7 +59,7 @@ namespace KA_Ezreal.Modes
                         !targetR.IsInRange(Player.Instance, Settings.minR))
                     {
                         var pred = R.GetPrediction(targetR);
-                        if (pred.HitChance >= HitChance.High)
+                        if (pred.HitChancePercent >= 90)
                         {
                             R.Cast(pred.CastPosition);
                         }
@@ -64,7 +75,7 @@ namespace KA_Ezreal.Modes
                 if (target.IsValidTarget(Q.Range))
                 {
                     var pred = Q.GetPrediction(target);
-                    if (pred.HitChance >= HitChance.Medium)
+                    if (pred.HitChancePercent >= 75)
                     {
                         Q.Cast(pred.CastPosition);
                     }
@@ -79,7 +90,7 @@ namespace KA_Ezreal.Modes
                 if (target.IsValidTarget(W.Range))
                 {
                     var pred = W.GetPrediction(target);
-                    if (pred.HitChance >= HitChance.High)
+                    if (pred.HitChancePercent >= 90)
                     {
                         W.Cast(pred.CastPosition);
                     }

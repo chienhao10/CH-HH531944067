@@ -23,7 +23,7 @@ namespace KA_Ezreal.Modes
                     !target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
                 {
                     var pred = Q.GetPrediction(target);
-                    if (pred.HitChance >= HitChance.Medium)
+                    if (pred.HitChancePercent >= 75)
                     {
                         Q.Cast(pred.CastPosition);
                     }
@@ -34,7 +34,7 @@ namespace KA_Ezreal.Modes
                     !target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
                 {
                     var pred = W.GetPrediction(target);
-                    if (pred.HitChance >= HitChance.High)
+                    if (pred.HitChancePercent >= 90)
                     {
                         W.Cast(pred.CastPosition);
                     }
@@ -45,7 +45,7 @@ namespace KA_Ezreal.Modes
                     target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
                 {
                     var pred = Q.GetPrediction(target);
-                    if (pred.HitChance >= HitChance.Medium)
+                    if (pred.HitChancePercent >= 75)
                     {
                         Q.Cast(pred.CastPosition);
                     }
@@ -55,7 +55,7 @@ namespace KA_Ezreal.Modes
                     target.IsInRange(Player.Instance, Player.Instance.GetAutoAttackRange()))
                 {
                     var pred = W.GetPrediction(target);
-                    if (pred.HitChance >= HitChance.High)
+                    if (pred.HitChancePercent >= 90)
                     {
                         W.Cast(pred.CastPosition);
                     }
@@ -68,10 +68,10 @@ namespace KA_Ezreal.Modes
             //Test R
             if (Settings.UseR && R.IsReady() && target.IsValidTarget(R.Range))
             {
-                var predpos = R.GetPrediction(target).CastPosition;
-                if (predpos.CountEnemiesInRange(R.Width) > Settings.MinR)
+                var pred = R.GetPrediction(target);
+                if (pred.CastPosition.CountEnemiesInRange(R.Width) > Settings.MinR && pred.HitChancePercent >= 90)
                 {
-                    R.Cast(predpos);
+                    R.Cast(pred.CastPosition);
                 }
             }
         }

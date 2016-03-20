@@ -110,7 +110,7 @@ namespace Karthus
             UltMenu = menuIni.AddSubMenu("大招");
             UltMenu.AddGroupLabel("大招设置");
             UltMenu.Add("UltKS", new CheckBox("R抢人头", false));
-            UltMenu.Add("UltMode", new ComboBox("大招逻辑", 1, "Kappa逻辑", "Beaving逻辑"));
+            UltMenu.Add("UltMode", new ComboBox("大招逻辑", 0, "Kappa逻辑", "Beaving逻辑"));
             UltMenu.AddGroupLabel("Kappa逻辑设置");
             UltMenu.Add("RnearE", new CheckBox("禁用R当敌人在我身边时?"));
             UltMenu.Add("RnearEn", new Slider("附近敌人数量禁用R", 1, 1, 5));
@@ -233,7 +233,7 @@ namespace Karthus
 
         private static void SimplePing()
         {
-            TacticalMap.ShowPing(PingCategory.Danger, PingLocation);
+            TacticalMap.SendPing(PingCategory.Fallback, PingLocation);
         }
 
         private static void Zigzag(EventArgs args)

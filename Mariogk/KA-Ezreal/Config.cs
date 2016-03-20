@@ -12,7 +12,7 @@ namespace KA_Ezreal
 {
     public static class Config
     {
-        private static readonly string MenuName = "KA " + Player.Instance.ChampionName + "CH汉化";
+        private static readonly string MenuName = "KA " + Player.Instance.ChampionName;
 
         private static readonly Menu Menu;
 
@@ -33,18 +33,18 @@ namespace KA_Ezreal
 
             static Modes()
             {
-                SpellsMenu = Menu.AddSubMenu("::技能菜单::");
+                SpellsMenu = Menu.AddSubMenu("::SpellsMenu::");
                 Combo.Initialize();
                 Harass.Initialize();
 
-                FarmMenu = Menu.AddSubMenu("::尾兵菜单::");
+                FarmMenu = Menu.AddSubMenu("::FarmMenu::");
                 LaneClear.Initialize();
                 LastHit.Initialize();
 
-                MiscMenu = Menu.AddSubMenu("::杂项::");
+                MiscMenu = Menu.AddSubMenu("::Misc::");
                 Misc.Initialize();
 
-                DrawMenu = Menu.AddSubMenu("::线圈::");
+                DrawMenu = Menu.AddSubMenu("::Drawings::");
                 Draw.Initialize();
             }
 
@@ -88,12 +88,12 @@ namespace KA_Ezreal
                 static Combo()
                 {
                     // Initialize the menu values
-                    SpellsMenu.AddGroupLabel("连招技能:");
-                    _useQ = SpellsMenu.Add("comboQ", new CheckBox("使用Q连招 ?"));
-                    _useW = SpellsMenu.Add("comboW", new CheckBox("使用W连招 ?"));
-                    _useE = SpellsMenu.Add("comboE", new CheckBox("使用E连招 ?"));
-                    _useR = SpellsMenu.Add("comboR", new CheckBox("使用R连招 ?"));
-                    _minR = SpellsMenu.Add("minR", new Slider("最低敌人数量使用R", 2, 0, 5));
+                    SpellsMenu.AddGroupLabel("Combo Spells:");
+                    _useQ = SpellsMenu.Add("comboQ", new CheckBox("Use Q on Combo ?"));
+                    _useW = SpellsMenu.Add("comboW", new CheckBox("Use W on Combo ?"));
+                    _useE = SpellsMenu.Add("comboE", new CheckBox("Use E on Combo ?"));
+                    _useR = SpellsMenu.Add("comboR", new CheckBox("Use R on Combo ?"));
+                    _minR = SpellsMenu.Add("minR", new Slider("Min Enemies to use R", 2, 0, 5));
                 }
 
                 public static void Initialize()
@@ -144,17 +144,17 @@ namespace KA_Ezreal
 
                 static Harass()
                 {
-                    SpellsMenu.AddGroupLabel("骚扰技能:");
-                    _useQ = SpellsMenu.Add("harassQ", new CheckBox("使用Q骚扰 ?"));
-                    _useW = SpellsMenu.Add("harassW", new CheckBox("使用W骚扰 ?"));
-                    SpellsMenu.AddGroupLabel("骚扰设置:");
-                    _manaHarass = SpellsMenu.Add("harassMana", new Slider("蓝量高于({0})时才使用骚扰技能.", 30));
-                    SpellsMenu.AddGroupLabel("自动骚扰技能:");
+                    SpellsMenu.AddGroupLabel("Harass Spells:");
+                    _useQ = SpellsMenu.Add("harassQ", new CheckBox("Use Q on Harass ?"));
+                    _useW = SpellsMenu.Add("harassW", new CheckBox("Use W on Harass ?"));
+                    SpellsMenu.AddGroupLabel("Harass Settings:");
+                    _manaHarass = SpellsMenu.Add("harassMana", new Slider("It will only cast any harass spell if the mana is greater than ({0}).", 30));
+                    SpellsMenu.AddGroupLabel("AutoHarass Spells:");
                     //Add Key bind
-                    _autouseQ = SpellsMenu.Add("autoHarassQ", new CheckBox("Q自动骚扰 ?"));
-                    _autouseW = SpellsMenu.Add("autoHarassW", new CheckBox("W自动骚扰 ?"));
-                    SpellsMenu.AddGroupLabel("自动骚扰设置:");
-                    _automanaQ = SpellsMenu.Add("autoHarassMana", new Slider("蓝量高于({0})时才使用自动骚扰.", 50));
+                    _autouseQ = SpellsMenu.Add("autoHarassQ", new CheckBox("Use Q on AutoHarass ?"));
+                    _autouseW = SpellsMenu.Add("autoHarassW", new CheckBox("Use W on AutoHarass ?"));
+                    SpellsMenu.AddGroupLabel("AutoHarass Settings:");
+                    _automanaQ = SpellsMenu.Add("autoHarassMana", new Slider("It will only cast any harass spell if the mana is greater than ({0}).", 50));
                 }
 
                 public static void Initialize()
@@ -191,14 +191,14 @@ namespace KA_Ezreal
 
                 static LaneClear()
                 {
-                    FarmMenu.AddGroupLabel("清线技能:");
-                    _useQ = FarmMenu.Add("laneclearQ", new CheckBox("使用Q清线 ?"));
-                    FarmMenu.AddGroupLabel("清线设置:");
-                    _laneMana = FarmMenu.Add("laneMana", new Slider("蓝量高于({0})时才使用清线技能.", 30));
-                    FarmMenu.AddGroupLabel("清野技能:");
-                    _useQJungle = FarmMenu.Add("jungleclearQ", new CheckBox("清野使用Q ?"));
-                    FarmMenu.AddGroupLabel("清野设置:");
-                    _jungleMana = FarmMenu.Add("jungleMana", new Slider("蓝量高于({0})时才使用清野技能.", 30));
+                    FarmMenu.AddGroupLabel("LaneClear Spells:");
+                    _useQ = FarmMenu.Add("laneclearQ", new CheckBox("Use Q on Laneclear ?"));
+                    FarmMenu.AddGroupLabel("LaneClear Settings:");
+                    _laneMana = FarmMenu.Add("laneMana", new Slider("It will only cast any laneclear spell if the mana is greater than ({0}).", 30));
+                    FarmMenu.AddGroupLabel("JungleClear Spells:");
+                    _useQJungle = FarmMenu.Add("jungleclearQ", new CheckBox("Use Q on JungleClear ?"));
+                    FarmMenu.AddGroupLabel("JungleClear Settings:");
+                    _jungleMana = FarmMenu.Add("jungleMana", new Slider("It will only cast any jungleclear spell if the mana is greater than ({0}).", 30));
                 }
 
                 public static void Initialize()
@@ -224,10 +224,10 @@ namespace KA_Ezreal
 
                 static LastHit()
                 {
-                    FarmMenu.AddGroupLabel("尾兵技能:");
-                    _useQ = FarmMenu.Add("lasthitQ", new CheckBox("使用Q尾兵 ?"));
-                    FarmMenu.AddGroupLabel("尾兵设置:");
-                    _lastMana = FarmMenu.Add("lastMana", new Slider("蓝量高于({0})时才使用尾兵技能.", 30));
+                    FarmMenu.AddGroupLabel("LastHit Spells:");
+                    _useQ = FarmMenu.Add("lasthitQ", new CheckBox("Use Q on LastHit ?"));
+                    FarmMenu.AddGroupLabel("LastHit Settings:");
+                    _lastMana = FarmMenu.Add("lastMana", new Slider("It will only cast any lasthit spell if the mana is greater than ({0}).", 30));
                 }
 
                 public static void Initialize()
@@ -328,32 +328,32 @@ namespace KA_Ezreal
                 static Misc()
                 {
                     // Initialize the menu values
-                    MiscMenu.AddGroupLabel("杂项");
-                    _fleeE = MiscMenu.Add("fleeE", new CheckBox("按逃跑按键时使用E逃跑 ?"));
-                    _stunR = MiscMenu.Add("stunUlt", new CheckBox("对无法移动敌方单位使用R (比如: 晕眩)?"));
-                    _gapE = MiscMenu.Add("gapE", new CheckBox("敌方英雄突击时智能E至安全地点 ?"));
-                    MiscMenu.AddLabel("女神之泪叠加设置");
-                    _tearAutoStack = MiscMenu.Add("tearstackbox", new CheckBox("使用技能叠加女神 ?"));
+                    MiscMenu.AddGroupLabel("Miscellenous");
+                    _fleeE = MiscMenu.Add("fleeE", new CheckBox("Use E when you press the orbwalker key to flee ?"));
+                    _stunR = MiscMenu.Add("stunUlt", new CheckBox("Use R when target has some kind of CC (Ex: Stun)?"));
+                    _gapE = MiscMenu.Add("gapE", new CheckBox("Use E to safety when an enemy use a gapcloser spell on you ?"));
+                    MiscMenu.AddLabel("Auto Tear Stack Settings");
+                    _tearAutoStack = MiscMenu.Add("tearstackbox", new CheckBox("Use spells to auto stack tear ?"));
                     _minManaToAutoStack = MiscMenu.Add("manaAutoStack",
-                        new Slider("蓝量高于({0})时才使用自动叠加女神.", 90, 1));
+                        new Slider("It will only autostack if mana is greater than ({0}).", 90, 1));
 
-                    MiscMenu.AddGroupLabel("R 设置");
-                    _minKsR = MiscMenu.Add("ksminR", new Slider("当敌人在({0})最小范围内才使用R.", 600, 300, 2000));
-                    _maxKsR = MiscMenu.Add("ksmaxR", new Slider("当敌人在({0})最大范围内才使用R.", 1500, 300, 30000));
-                    MiscMenu.AddLabel("抢头设置");
-                    _ksR = MiscMenu.Add("ksR", new CheckBox("使用R抢头 ?"));
+                    MiscMenu.AddGroupLabel("R Settings");
+                    _minKsR = MiscMenu.Add("ksminR", new Slider("It will only cast R if the enemie is not in ({0}).", 600, 300, 2000));
+                    _maxKsR = MiscMenu.Add("ksmaxR", new Slider("It will only cast R if the enemie is in ({0}).", 1500, 300, 30000));
+                    MiscMenu.AddLabel("KS Settings");
+                    _ksR = MiscMenu.Add("ksR", new CheckBox("Use R to KillSteal ?"));
                     _minHealthKsR = MiscMenu.Add("kshealthR",
                         new Slider(
-                            "只有在目标血量高于({0})才使用R.",
+                            "Overkill R, it will cast the ultimate only if the target`s health is greater than ({0}).",
                             150, 0, 650));
 
-                    MiscMenu.AddGroupLabel("偷野设置");
-                    _jugSteal = MiscMenu.Add("jungleSteal", new CheckBox("使用R偷野 ?"));
+                    MiscMenu.AddGroupLabel("Jungle Steal");
+                    _jugSteal = MiscMenu.Add("jungleSteal", new CheckBox("JungleSteal using R ?"));
                     MiscMenu.AddSeparator(1);
-                    _jugStealBlue = MiscMenu.Add("junglestealBlue", new CheckBox("使用R偷蓝 ?"));
-                    _jugStealRed = MiscMenu.Add("junglestealRed", new CheckBox("使用R偷红 ?"));
-                    _jugStealDragon = MiscMenu.Add("junglestealDrag", new CheckBox("使用R偷龙 ?"));
-                    _jugStealBaron = MiscMenu.Add("junglestealBaron", new CheckBox("使用R偷男爵 ?"));
+                    _jugStealBlue = MiscMenu.Add("junglestealBlue", new CheckBox("JungleSteal Blue ?"));
+                    _jugStealRed = MiscMenu.Add("junglestealRed", new CheckBox("JungleSteal Red ?"));
+                    _jugStealDragon = MiscMenu.Add("junglestealDrag", new CheckBox("JungleSteal Dragon ?"));
+                    _jugStealBaron = MiscMenu.Add("junglestealBaron", new CheckBox("JungleSteal Baron ?"));
                 }
 
                 public static void Initialize()
@@ -450,16 +450,16 @@ namespace KA_Ezreal
 
                 static Draw()
                 {
-                    DrawMenu.AddGroupLabel("技能线圈设置 :");
-                    _drawReady = DrawMenu.Add("drawOnlyWhenReady", new CheckBox("显示无冷却技能线圈 ?"));
-                    _drawHealth = DrawMenu.Add("damageIndicatorDraw", new CheckBox("伤害显示 ?"));
-                    _drawPercent = DrawMenu.Add("percentageIndicatorDraw", new CheckBox("伤害百分比显示 ?"));
-                    _drawStatiscs = DrawMenu.Add("statiscsIndicatorDraw", new CheckBox("显示伤害数据 ?"));
+                    DrawMenu.AddGroupLabel("Spell drawings Settings :");
+                    _drawReady = DrawMenu.Add("drawOnlyWhenReady", new CheckBox("Draw the spells only if they are ready ?"));
+                    _drawHealth = DrawMenu.Add("damageIndicatorDraw", new CheckBox("Draw damage indicator ?"));
+                    _drawPercent = DrawMenu.Add("percentageIndicatorDraw", new CheckBox("Draw damage percentage ?"));
+                    _drawStatiscs = DrawMenu.Add("statiscsIndicatorDraw", new CheckBox("Draw damage statistics ?"));
                     DrawMenu.AddSeparator(1);
-                    _drawQ = DrawMenu.Add("qDraw", new CheckBox("显示Q距离 ?"));
-                    _drawW = DrawMenu.Add("wDraw", new CheckBox("显示W距离 ?"));
-                    _drawE = DrawMenu.Add("eDraw", new CheckBox("显示E距离 ?"));
-                    _drawR = DrawMenu.Add("rDraw", new CheckBox("显示R距离 ?"));
+                    _drawQ = DrawMenu.Add("qDraw", new CheckBox("Draw Q spell range ?"));
+                    _drawW = DrawMenu.Add("wDraw", new CheckBox("Draw W spell range ?"));
+                    _drawE = DrawMenu.Add("eDraw", new CheckBox("Draw E spell range ?"));
+                    _drawR = DrawMenu.Add("rDraw", new CheckBox("Draw R spell range ?"));
 
                     _healthColor = new ColorConfig(DrawMenu, "healthColorConfig", Color.Orange, "Color Damage Indicator:");
                     _qColor = new ColorConfig(DrawMenu, "qColorConfig", Color.Blue, "Color Q:");

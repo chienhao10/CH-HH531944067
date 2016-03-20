@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace KKayle
 {
-    public class ModeManager
+   internal class ModeManager : Program
     {
 
 
@@ -190,12 +190,16 @@ namespace KKayle
                  var W = Program.W;
                  var E = Program.E;
                  var R = Program.R;
+                 var alvo = TargetSelector.GetTarget(3000, DamageType.Magical);
+                 if(alvo == null) return;
+                 if (!alvo.IsValid()) return;
                  if (!R.IsReady() || Player.Instance.IsRecalling())
                  {
                      return;
                  }
                 
                //  if (Program.OnDamage == false) return;
+                 if(_Player.Distance(alvo) >= 3000) return;
                  var lowestHealthAllies = EntityManager.Heroes.Allies.Where(a => R.IsInRange(a) && !a.IsMe).OrderBy(a => a.Health).FirstOrDefault();
 
                  if (Player.Instance.HealthPercent <= Program.UltMenu["UltSelf"].Cast<Slider>().CurrentValue)
