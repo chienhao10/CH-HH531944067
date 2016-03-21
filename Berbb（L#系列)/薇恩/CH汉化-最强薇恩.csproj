@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{003B2DE1-8B9F-4A84-B192-D9C4769D418E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>asd</RootNamespace>
+    <AssemblyName>asd</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EloBuddy">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.dll</HintPath>
+    </Reference>
+    <Reference Include="EloBuddy.Sandbox">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.Sandbox.dll</HintPath>
+    </Reference>
+    <Reference Include="EloBuddy.SDK">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SAC\Geometry.cs" />
+    <Compile Include="SAC\Tumble.cs" />
+    <Compile Include="SOLOVayne\Condemn\CondemnLogicProvider.cs" />
+    <Compile Include="SOLOVayne\CustomAntigapcloser.cs" />
+    <Compile Include="SOLOVayne\Jungle.cs" />
+    <Compile Include="SOLOVayne\Tumble\TumbleExtensions.cs" />
+    <Compile Include="SOLOVayne\Tumble\TumbleHelper.cs" />
+    <Compile Include="SOLOVayne\Tumble\TumbleLogicProvider.cs" />
+    <Compile Include="SOLOVayne\Tumble\TumbleVariables.cs" />
+    <Compile Include="Utility\AutoLevel.cs" />
+    <Compile Include="Utility\Evadespells\EvadeSpellData.cs" />
+    <Compile Include="Utility\Evadespells\EvadeSpellDatabase.cs" />
+    <Compile Include="Utility\Geometry.cs" />
+    <Compile Include="Utility\Orbwalker\Config.cs" />
+    <Compile Include="Utility\Orbwalker\Cursor.cs" />
+    <Compile Include="Utility\Orbwalker\CustomEvents.cs" />
+    <Compile Include="Utility\Orbwalker\Damage.cs" />
+    <Compile Include="Utility\Orbwalker\Dash.cs" />
+    <Compile Include="Utility\Orbwalker\EnumerableExtensions.cs" />
+    <Compile Include="SOLOVayne\GaneObjects.cs" />
+    <Compile Include="Utility\Orbwalker\Geometry.cs" />
+    <Compile Include="Utility\Orbwalker\HealthPrediction.cs" />
+    <Compile Include="Utility\Orbwalker\HeroManager.cs" />
+    <Compile Include="Utility\Orbwalker\Interrupter2.cs" />
+    <Compile Include="Utility\Orbwalker\ItemData.cs" />
+    <Compile Include="Utility\Orbwalker\Items.cs" />
+    <Compile Include="Utility\Orbwalker\Keys.cs" />
+    <Compile Include="Utility\Orbwalker\LastCastedSpell.cs" />
+    <Compile Include="Utility\Orbwalker\MasteryData.cs" />
+    <Compile Include="Utility\Orbwalker\MEC.cs" />
+    <Compile Include="Utility\Orbwalker\MinionManager.cs" />
+    <Compile Include="Utility\Orbwalker\NativeMethods.cs" />
+    <Compile Include="Utility\Orbwalker\OnValueChangeEventArgs.cs" />
+    <Compile Include="Utility\Orbwalker\Orbwalking.cs" />
+    <Compile Include="Utility\Orbwalker\Prediction.cs" />
+    <Compile Include="Utility\Orbwalker\Render.cs" />
+    <Compile Include="Utility\Orbwalker\Spell.cs" />
+    <Compile Include="Utility\Orbwalker\StringList.cs" />
+    <Compile Include="Utility\Orbwalker\TargetSelector.cs" />
+    <Compile Include="Utility\Orbwalker\Utility.cs" />
+    <Compile Include="Utility\Orbwalker\Utils.cs" />
+    <Compile Include="Utility\Orbwalker\WindowsMessages.cs" />
+    <Compile Include="Utility\Orbwalker\WndEventComposition.cs" />
+    <Compile Include="SOLOVayne\SOLOVayne.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\WardTracker\WardDetector.cs" />
+    <Compile Include="Utility\WardTracker\WardTrackerVariables.cs" />
+    <Compile Include="SOLOVayne\YasuoWall.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\CPForm.png" />
+    <Content Include="Resources\SliderActive.png" />
+    <Content Include="Resources\SliderDisabled.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

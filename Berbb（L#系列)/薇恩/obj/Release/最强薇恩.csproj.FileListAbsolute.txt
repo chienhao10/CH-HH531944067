@@ -1,0 +1,12 @@
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\asd.exe.config
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\asd.exe
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\asd.pdb
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\EloBuddy.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\EloBuddy.SDK.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\Newtonsoft.Json.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\bin\Release\SharpDX.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\obj\Release\最强薇恩.csprojResolveAssemblyReference.cache
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\obj\Release\asd.exe
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Berbb（L#系列)\薇恩\obj\Release\asd.pdb
