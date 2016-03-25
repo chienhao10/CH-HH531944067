@@ -22,7 +22,7 @@ namespace AkaYasuo
 
             public static void Init()
             {
-                evadeMenu = MainMenu.AddMenu("Evade Skillshot", "EvadeSkillshot");
+                evadeMenu = MainMenu.AddMenu("躲避 指向技能", "EvadeSkillshot");
                 {
                         foreach (var spell in EvadeSpellDatabase.Spells)
                         {
@@ -30,14 +30,14 @@ namespace AkaYasuo
                             {
                                 if (spell.Name == "YasuoDashWrapper")
                                 {
-                                    evadeSpells.Add("ETower", new CheckBox("Under Tower", false));
+                                    evadeSpells.Add("ETower", new CheckBox("塔下", false));
                                 }
                                 else if (spell.Name == "YasuoWMovingWall")
                                 {
-                                    evadeSpells.Add("WDelay", new Slider("Extra Delay", 100, 0, 150));
+                                    evadeSpells.Add("WDelay", new Slider("额外延迟", 100, 0, 150));
                                 }
-                                evadeSpells.Add("DangerLevel", new Slider("If Danger Level >=", spell.DangerLevel, 1, 5));
-                                evadeSpells.Add("Enabled", new CheckBox("Enabled", false));
+                                evadeSpells.Add("DangerLevel", new Slider("如果危险等级 >=", spell.DangerLevel, 1, 5));
+                                evadeSpells.Add("Enabled", new CheckBox("开启", false));
                             }
                         }
                     foreach (var spell in
@@ -45,8 +45,8 @@ namespace AkaYasuo
                     {
                         championmenu = evadeMenu.AddSubMenu(spell.SpellName + " (" + spell.Slot + ")", "ESS_" + spell.MenuItemName);
                         {
-                            championmenu.Add("DangerLevel", new Slider("Danger Level", spell.DangerValue, 1, 5));
-                            championmenu.Add("Enabled", new CheckBox("Enabled", !spell.DisabledByDefault));
+                            championmenu.Add("DangerLevel", new Slider("危险等级", spell.DangerValue, 1, 5));
+                            championmenu.Add("Enabled", new CheckBox("开启", !spell.DisabledByDefault));
                             //evadeMenu.SubMenu("EvadeSS_" + spell.ChampionName).AddSubMenu(sub);                           
                         }
                     }
@@ -530,16 +530,16 @@ namespace AkaYasuo
             public static void Init()
             {
                 LoadSpellData();
-                evadeMenu2 = MainMenu.AddMenu("Evade Target", "EvadeTarget");
+                evadeMenu2 = MainMenu.AddMenu("躲避 目标", "EvadeTarget");
                 {
-                    evadeMenu2.Add("W", new CheckBox("Use W")); //                                    evadeSpells.Add("ETower", new CheckBox("Under Tower", false));
-                    evadeMenu2.Add("E", new CheckBox("Use E (To Dash Behind WindWall)"));
-                    evadeMenu2.Add("ETower", new CheckBox("-> Under Tower", false));
-                    evadeMenu2.Add("BAttack", new CheckBox("Basic Attack"));
-                    evadeMenu2.Add("BAttackHpU", new Slider("-> If Hp <", 35));
-                    evadeMenu2.Add("CAttack", new CheckBox("Crit Attack"));
-                    evadeMenu2.Add("CAttackHpU", new Slider("-> If Hp <", 40));
-                        championmenu2 = evadeMenu2.AddSubMenu("Evade Point to Click");                   
+                    evadeMenu2.Add("W", new CheckBox("使用 W")); //                                    evadeSpells.Add("ETower", new CheckBox("Under Tower", false));
+                    evadeMenu2.Add("E", new CheckBox("使用E (躲在风墙(W)后)"));
+                    evadeMenu2.Add("ETower", new CheckBox("-> 塔下", false));
+                    evadeMenu2.Add("BAttack", new CheckBox("平A"));
+                    evadeMenu2.Add("BAttackHpU", new Slider("-> 如果血量 <", 35));
+                    evadeMenu2.Add("CAttack", new CheckBox("暴击"));
+                    evadeMenu2.Add("CAttackHpU", new Slider("-> 如果血量 <", 40));
+                        championmenu2 = evadeMenu2.AddSubMenu("躲避目标");                   
                     foreach (
                         var spell in Spells.Where(i => EntityManager.Heroes.Enemies.Any(a => a.ChampionName == i.ChampionName)))
                     {

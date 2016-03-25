@@ -1,0 +1,10 @@
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\GosuMechanics_Yasuo.exe.config
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\GosuMechanics_Yasuo.exe
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\GosuMechanics_Yasuo.pdb
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\EloBuddy.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\EloBuddy.SDK.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\SharpDX.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\bin\Release\Newtonsoft.Json.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\obj\Release\GosuMechanics_Yasuo.exe
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\AKA\Aka´s Yasuo\obj\Release\GosuMechanics_Yasuo.pdb
