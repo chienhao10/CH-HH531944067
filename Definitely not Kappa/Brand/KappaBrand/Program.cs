@@ -3,38 +3,61 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using EloBuddy;
     using EloBuddy.SDK;
     using EloBuddy.SDK.Enumerations;
     using EloBuddy.SDK.Events;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
+
     using SharpDX;
+
     using Color = System.Drawing.Color;
 
     internal class Program
     {
         public static Vector2[] GMinMaxCorners;
+
         public static RectangleF GMinMaxBox;
+
         public static Vector2[] GNonCulledPoints;
-        private static AIHeroClient Player { get { return ObjectManager.Player; } }
+
+        private static AIHeroClient Player
+        {
+            get
+            {
+                return ObjectManager.Player;
+            }
+        }
+
         public static Spell.Skillshot _Q { get; private set; }
+
         public static Spell.Skillshot _W { get; private set; }
+
         public static Spell.Skillshot _W2 { get; private set; }
+
         public static Spell.Targeted _E { get; private set; }
+
         public static Spell.Targeted _R { get; private set; }
-        
+
         public static Menu ComboMenu { get; private set; }
+
         public static Menu HarassMenu { get; private set; }
+
         public static Menu LaneMenu { get; private set; }
+
         public static Menu KillStealMenu { get; private set; }
+
         public static Menu MiscMenu { get; private set; }
+
         public static Menu DrawMenu { get; private set; }
+
         private static Menu menuIni;
 
         private static AIHeroClient comboTarget;
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Loading.OnLoadingComplete += Game_OnGameLoad;
         }
@@ -102,12 +125,11 @@
             DrawMenu.Add("drawDamage", new CheckBox("显示血量伤害"));
             DrawMenu.Add("drawKill", new CheckBox("显示可击杀目标"));
 
-                _Q = new Spell.Skillshot(SpellSlot.Q, 1100, SkillShotType.Linear, 250, 1600, 120);
-                _W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 850, -1, 250);
+            _Q = new Spell.Skillshot(SpellSlot.Q, 1100, SkillShotType.Linear, 250, 1600, 120);
+            _W = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 850, -1, 250);
             _W2 = new Spell.Skillshot(SpellSlot.W, 900, SkillShotType.Circular, 850, -1, 125);
             _E = new Spell.Targeted(SpellSlot.E, 640);
-                _R = new Spell.Targeted(SpellSlot.R, 750);
-            
+            _R = new Spell.Targeted(SpellSlot.R, 750);
 
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
@@ -117,7 +139,8 @@
 
         private static void OnEnemyGapcloser(AIHeroClient Sender, Gapcloser.GapcloserEventArgs args)
         {
-            if (!menuIni.Get<CheckBox>("Misc").CurrentValue || !MiscMenu.Get<CheckBox>("gapcloser").CurrentValue || Sender == null)
+            if (!menuIni.Get<CheckBox>("Misc").CurrentValue || !MiscMenu.Get<CheckBox>("gapcloser").CurrentValue
+                || Sender == null)
             {
                 return;
             }
@@ -137,10 +160,14 @@
 
         private static void OnInterruptableTarget(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs arg)
         {
-            if (!menuIni.Get<CheckBox>("Misc").CurrentValue || !MiscMenu.Get<CheckBox>("interrupt").CurrentValue || sender == null)
+            if (!menuIni.Get<CheckBox>("Misc").CurrentValue || !MiscMenu.Get<CheckBox>("interrupt").CurrentValue
+                || sender == null)
+            {
                 return;
+            }
             var pred = _Q.GetPrediction(sender);
-            if (sender.HasBuff("brandablaze") && _Q.IsReady() && pred.HitChance >= HitChance.High && !sender.IsAlly && !sender.IsMe)
+            if (sender.HasBuff("brandablaze") && _Q.IsReady() && pred.HitChance >= HitChance.High && !sender.IsAlly
+                && !sender.IsMe)
             {
                 _Q.Cast(pred.CastPosition);
             }
@@ -155,19 +182,23 @@
 
         private static void OnDraw(EventArgs args)
         {
-            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawQ").CurrentValue && _Q.IsReady())
+            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawQ").CurrentValue
+                && _Q.IsReady())
             {
                 Drawing.DrawCircle(Player.Position, _Q.Range, Color.OrangeRed);
             }
-            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawW").CurrentValue && _W.IsReady())
+            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawW").CurrentValue
+                && _W.IsReady())
             {
                 Drawing.DrawCircle(Player.Position, _W.Range, Color.OrangeRed);
             }
-            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawE").CurrentValue && _E.IsReady())
+            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawE").CurrentValue
+                && _E.IsReady())
             {
                 Drawing.DrawCircle(Player.Position, _E.Range, Color.OrangeRed);
             }
-            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawR").CurrentValue && _R.IsReady())
+            if (menuIni.Get<CheckBox>("Drawings").CurrentValue && DrawMenu.Get<CheckBox>("drawR").CurrentValue
+                && _R.IsReady())
             {
                 Drawing.DrawCircle(Player.Position, _R.Range, Color.OrangeRed);
             }
@@ -175,13 +206,16 @@
 
         private static void OnUpdate(EventArgs args)
         {
-            if (Player.IsDead) return;
+            if (Player.IsDead)
+            {
+                return;
+            }
             comboTarget = TargetSelector.GetTarget(_Q.Range, DamageType.Magical);
 
             var flags = Orbwalker.ActiveModesFlags;
             if (flags.HasFlag(Orbwalker.ActiveModes.Combo) && menuIni.Get<CheckBox>("Combo").CurrentValue)
             {
-                    Combo(comboTarget);
+                Combo(comboTarget);
             }
 
             if (flags.HasFlag(Orbwalker.ActiveModes.LaneClear) && menuIni.Get<CheckBox>("Farm").CurrentValue)
@@ -208,14 +242,12 @@
             }
         }
 
-
         private static void LaneClear()
         {
-            if (menuIni.Get<CheckBox>("Farm").CurrentValue && Player.ManaPercent >= LaneMenu.Get<Slider>("mana").CurrentValue)
+            if (menuIni.Get<CheckBox>("Farm").CurrentValue
+                && Player.ManaPercent >= LaneMenu.Get<Slider>("mana").CurrentValue)
             {
-
-                if (LaneMenu.Get<CheckBox>("useW").CurrentValue
-                    && _W.IsReady())
+                if (LaneMenu.Get<CheckBox>("useW").CurrentValue && _W.IsReady())
                 {
                     var minions1 = EntityManager.MinionsAndMonsters.EnemyMinions;
                     if (minions1 == null || !minions1.Any())
@@ -236,10 +268,8 @@
                         _W.Cast(location.Position.To3D());
                     }
                 }
-                if (LaneMenu.Get<CheckBox>("useE").CurrentValue
-                    && _E.IsReady())
+                if (LaneMenu.Get<CheckBox>("useE").CurrentValue && _E.IsReady())
                 {
-
                     var minions =
                         EntityManager.MinionsAndMonsters.GetLaneMinions(
                             EntityManager.UnitTeam.Enemy,
@@ -250,18 +280,14 @@
                     {
                         _E.Cast(minion);
                     }
-
                 }
-                if (LaneMenu.Get<CheckBox>("useQ").CurrentValue
-                    && _Q.IsReady())
+                if (LaneMenu.Get<CheckBox>("useQ").CurrentValue && _Q.IsReady())
                 {
-
-                    var minions =
-                        EntityManager.MinionsAndMonsters.GetLaneMinions(
-                            EntityManager.UnitTeam.Enemy,
-                            Player.Position,
-                            _Q.Range + 20,
-                            false);
+                    var minions = EntityManager.MinionsAndMonsters.GetLaneMinions(
+                        EntityManager.UnitTeam.Enemy,
+                        Player.Position,
+                        _Q.Range + 20,
+                        false);
                     foreach (var minion in minions)
                     {
                         _Q.Cast(minion.ServerPosition);
@@ -335,19 +361,26 @@
                     return;
                 }
                 if (KillStealMenu.Get<CheckBox>("ksQ").CurrentValue
-                 && Player.GetSpellDamage(enemy, SpellSlot.Q) > enemy.Health && _Q.IsReady() && enemy.IsValidTarget(_Q.Range))
+                    && Player.GetSpellDamage(enemy, SpellSlot.Q) > enemy.Health && _Q.IsReady()
+                    && enemy.IsValidTarget(_Q.Range))
                 {
                     _Q.Cast(enemy);
                 }
-                else if (KillStealMenu.Get<CheckBox>("ksW").CurrentValue && Player.GetSpellDamage(enemy, SpellSlot.W) > enemy.Health && _W.IsReady() && enemy.IsValidTarget(_W.Range))
+                else if (KillStealMenu.Get<CheckBox>("ksW").CurrentValue
+                         && Player.GetSpellDamage(enemy, SpellSlot.W) > enemy.Health && _W.IsReady()
+                         && enemy.IsValidTarget(_W.Range))
                 {
                     _W.Cast(enemy);
                 }
-                else if (KillStealMenu.Get<CheckBox>("ksE").CurrentValue && Player.GetSpellDamage(enemy, SpellSlot.E) > enemy.Health && _E.IsReady() && enemy.IsValidTarget(_E.Range))
+                else if (KillStealMenu.Get<CheckBox>("ksE").CurrentValue
+                         && Player.GetSpellDamage(enemy, SpellSlot.E) > enemy.Health && _E.IsReady()
+                         && enemy.IsValidTarget(_E.Range))
                 {
                     _E.Cast(enemy);
                 }
-                else if (KillStealMenu.Get<CheckBox>("ksR").CurrentValue && Player.GetSpellDamage(enemy, SpellSlot.R) > enemy.Health && _R.IsReady() && enemy.IsValidTarget(_R.Range))
+                else if (KillStealMenu.Get<CheckBox>("ksR").CurrentValue
+                         && Player.GetSpellDamage(enemy, SpellSlot.R) > enemy.Health && _R.IsReady()
+                         && enemy.IsValidTarget(_R.Range))
                 {
                     _R.Cast(enemy);
                 }
@@ -361,7 +394,8 @@
                 return;
             }
             var predq = _Q.GetPrediction(target);
-            if (target.HasBuff("brandablaze") && menuIni.Get<CheckBox>("Combo").CurrentValue && ComboMenu.Get<CheckBox>("blaze").CurrentValue && predq.HitChance >= HitChance.High)
+            if (target.HasBuff("brandablaze") && menuIni.Get<CheckBox>("Combo").CurrentValue
+                && ComboMenu.Get<CheckBox>("blaze").CurrentValue && predq.HitChance >= HitChance.High)
             {
                 if (_Q.IsReady() && target.IsValidTarget(_Q.Range))
                 {
@@ -370,7 +404,8 @@
             }
             else
             {
-                if (!ComboMenu.Get<CheckBox>("blaze").CurrentValue && _Q.IsReady() && target.IsValidTarget(_Q.Range) && predq.HitChance >= HitChance.High)
+                if (!ComboMenu.Get<CheckBox>("blaze").CurrentValue && _Q.IsReady() && target.IsValidTarget(_Q.Range)
+                    && predq.HitChance >= HitChance.High)
                 {
                     _Q.Cast(predq.CastPosition);
                 }
@@ -393,7 +428,7 @@
             {
                 return;
             }
-            
+
             if (enemies.Count() > 1)
             {
                 var aoePrediction =
@@ -402,8 +437,7 @@
                         _W.Range,
                         _W.Radius,
                         _W.CastDelay,
-                        _W.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length)
-                        .FirstOrDefault();
+                        _W.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length).FirstOrDefault();
 
                 if (aoePrediction != null)
                 {
@@ -417,19 +451,18 @@
                 }
             }
             var predw = _W2.GetPrediction(target);
-                if (_W2.IsReady() && target.IsValidTarget(_W2.Range) && predw.HitChance >= HitChance.High)
+            if (_W2.IsReady() && target.IsValidTarget(_W2.Range) && predw.HitChance >= HitChance.High)
             {
                 _W2.Cast(predw.CastPosition);
             }
-                else
-                {
+            else
+            {
                 _W.Cast(target.Position);
             }
         }
 
         private static void CastE(AIHeroClient target)
         {
-
             if (target == null)
             {
                 return;
@@ -443,7 +476,6 @@
 
         private static void CastR(AIHeroClient target)
         {
-
             if (target == null)
             {
                 return;
@@ -463,13 +495,15 @@
                             >= target.Health))
                     || (_E.IsReady()
                         && (Player.GetSpellDamage(target, SpellSlot.E) + Player.GetSpellDamage(target, SpellSlot.R)
-                            >= target.Health)) || (_Q.IsReady() && (Player.GetSpellDamage(target, SpellSlot.Q) + Player.GetSpellDamage(target, SpellSlot.R) >= target.Health)))
+                            >= target.Health))
+                    || (_Q.IsReady()
+                        && (Player.GetSpellDamage(target, SpellSlot.Q) + Player.GetSpellDamage(target, SpellSlot.R)
+                            >= target.Health)))
                 {
                     _R.Cast(target);
                 }
             }
         }
-        
 
         private static double GetDamage(AIHeroClient target)
         {
@@ -623,8 +657,8 @@
             var results =
                 points.Where(
                     pt =>
-                        pt.X <= cullingBox.Left || pt.X >= cullingBox.Right || pt.Y <= cullingBox.Top ||
-                        pt.Y >= cullingBox.Bottom).ToList();
+                    pt.X <= cullingBox.Left || pt.X >= cullingBox.Right || pt.Y <= cullingBox.Top
+                    || pt.Y >= cullingBox.Bottom).ToList();
 
             GNonCulledPoints = new Vector2[results.Count]; // For debugging.
             results.CopyTo(GNonCulledPoints); // For debugging.
@@ -811,7 +845,8 @@
         }
 
         // Return true if the indicated circle encloses all of the points.
-        private static bool CircleEnclosesPoints(Vector2 center,
+        private static bool CircleEnclosesPoints(
+            Vector2 center,
             float radius2,
             List<Vector2> points,
             int skip1,
@@ -852,12 +887,13 @@
         public struct MecCircle
         {
             public Vector2 Center;
+
             public float Radius;
 
             public MecCircle(Vector2 center, float radius)
             {
-                Center = center;
-                Radius = radius;
+                this.Center = center;
+                this.Radius = radius;
             }
         }
 
@@ -870,7 +906,9 @@
             FindMinimalBoundingCircle(convexHull, out center, out radius);
             return new MecCircle(center, radius);
         }
-        public static FarmLocation GetBestCircularFarmLocation(List<Vector2> minionPositions,
+
+        public static FarmLocation GetBestCircularFarmLocation(
+            List<Vector2> minionPositions,
             float width,
             float range,
             int useMecMax = 9)
@@ -939,12 +977,13 @@
         public struct FarmLocation
         {
             public int MinionsHit;
+
             public Vector2 Position;
 
             public FarmLocation(Vector2 position, int minionsHit)
             {
-                Position = position;
-                MinionsHit = minionsHit;
+                this.Position = position;
+                this.MinionsHit = minionsHit;
             }
         }
     }

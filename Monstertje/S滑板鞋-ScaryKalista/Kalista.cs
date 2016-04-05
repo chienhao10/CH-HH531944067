@@ -44,7 +44,7 @@ namespace ScaryKalista
 
         private static void Obj_AI_Base_OnBuffGain(Obj_AI_Base target, Obj_AI_BaseBuffGainEventArgs args)
         {
-            if (!BalistaPossible) return;
+            if (!BalistaPossible || !Config.BalistaMenu.IsChecked("balista.use")) return;
 
             if (args.Buff.DisplayName == "RocketGrab" && target.IsEnemy && Spells.R.IsReady())
             {
@@ -183,7 +183,7 @@ namespace ScaryKalista
                 }
             }
 
-            if (BalistaPossible && Config.DrawMenu.IsChecked("draw.balista"))
+            if (BalistaPossible && Config.DrawMenu.IsChecked("draw.balista") && Config.BalistaMenu.IsChecked("balista.use"))
             {
                 Circle.Draw(Color.Aqua, Config.BalistaMenu.GetValue("balista.distance"), Player.Instance.Position);
             }

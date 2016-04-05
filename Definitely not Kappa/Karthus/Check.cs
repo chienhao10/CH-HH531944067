@@ -3,18 +3,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
     using EloBuddy;
     using EloBuddy.SDK;
-
-    internal class Ti
-    {
-        public int timeCheck;
-        public Ti(AIHeroClient player)
-        {
-            this.Player = player;
-        }
-        public AIHeroClient Player { get; set; }
-    }
 
     internal class Check
     {
@@ -48,7 +39,7 @@
 
         public Ti GetEI(AIHeroClient E)
         {
-                return Program.Check.TI.Find(x => x.Player != null && x.Player.NetworkId == E.NetworkId);
+            return Program.Check.TI.Find(x => x.Player != null && x.Player.NetworkId == E.NetworkId);
         }
 
         public float GetTargetHealth(Ti ti, int addTime)
@@ -62,7 +53,6 @@
 
             return predhealth > ti.Player.MaxHealth ? ti.Player.MaxHealth : predhealth;
         }
-        
 
         public class HealthPrediction
         {
@@ -80,7 +70,7 @@
                 Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnOnProcessSpellCast;
                 Game.OnUpdate += Game_OnGameUpdate;
                 Spellbook.OnStopCast += SpellbookOnStopCast;
-                MissileClient.OnDelete += MissileClient_OnDelete;
+                GameObject.OnDelete += MissileClient_OnDelete;
                 Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnDoCast;
             }
 
@@ -156,8 +146,7 @@
                 GameObjectProcessSpellCastEventArgs args)
             {
                 if (!sender.IsValidTarget(3000, false) || sender.Team != ObjectManager.Player.Team
-                    || sender is AIHeroClient
-                    || !(args.Target is Obj_AI_Base))
+                    || sender is AIHeroClient || !(args.Target is Obj_AI_Base))
                 {
                     return;
                 }
@@ -198,7 +187,8 @@
                                        + 1000 * Math.Max(0, unit.Distance(attack.Source) - attack.Source.BoundingRadius)
                                        / attack.ProjectileSpeed + delay;
 
-                        if ( /*Utils.GameTimeTickCount < landTime - delay &&*/ landTime < Helper.GameTimeTickCount + time)
+                        if ( /*Utils.GameTimeTickCount < landTime - delay &&*/ landTime
+                                                                               < Helper.GameTimeTickCount + time)
                         {
                             attackDamage = attack.Damage;
                         }
@@ -314,7 +304,7 @@
                 /// <value>
                 /// The damage.
                 /// </value>
-                public float Damage { get; private set; }
+                public float Damage { get; }
 
                 /// <summary>
                 /// Gets or sets the delay.
@@ -322,7 +312,7 @@
                 /// <value>
                 /// The delay.
                 /// </value>
-                public float Delay { get; private set; }
+                public float Delay { get; }
 
                 /// <summary>
                 /// Gets or sets the projectile speed.
@@ -330,7 +320,7 @@
                 /// <value>
                 /// The projectile speed.
                 /// </value>
-                public int ProjectileSpeed { get; private set; }
+                public int ProjectileSpeed { get; }
 
                 /// <summary>
                 /// Gets or sets the source.
@@ -338,7 +328,7 @@
                 /// <value>
                 /// The source.
                 /// </value>
-                public Obj_AI_Base Source { get; private set; }
+                public Obj_AI_Base Source { get; }
 
                 /// <summary>
                 /// Gets or sets the start tick.
@@ -346,7 +336,7 @@
                 /// <value>
                 /// The start tick.
                 /// </value>
-                public int StartTick { get; internal set; }
+                public int StartTick { get; }
 
                 /// <summary>
                 /// Gets or sets the target.
@@ -354,7 +344,7 @@
                 /// <value>
                 /// The target.
                 /// </value>
-                public Obj_AI_Base Target { get; private set; }
+                public Obj_AI_Base Target { get; }
 
                 /// <summary>
                 /// Gets or sets a value indicating whether this <see cref="PredictedDamage"/> is processed.
@@ -383,13 +373,13 @@
                     int projectileSpeed,
                     float damage)
                 {
-                    Source = source;
-                    Target = target;
-                    StartTick = startTick;
-                    Delay = delay;
-                    ProjectileSpeed = projectileSpeed;
-                    Damage = damage;
-                    AnimationTime = animationTime;
+                    this.Source = source;
+                    this.Target = target;
+                    this.StartTick = startTick;
+                    this.Delay = delay;
+                    this.ProjectileSpeed = projectileSpeed;
+                    this.Damage = damage;
+                    this.AnimationTime = animationTime;
                 }
             }
         }

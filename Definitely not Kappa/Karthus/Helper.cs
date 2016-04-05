@@ -1,42 +1,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using EloBuddy;
 
 namespace Karthus
 {
-
-    internal class EnemyInfo
-    {
-        public AIHeroClient Player;
-        public int LastSeen;
-        //public int LastPinged;
-
-        public EnemyInfo(AIHeroClient player)
-        {
-            Player = player;
-        }
-    }
-
     internal class Helper
     {
+        public static int GameTimeTickCount => (int)(Game.Time * 1000);
 
-        public static int GameTimeTickCount
-        {
-            get
-            {
-                return (int)(Game.Time * 1000);
-            }
-        }
-        public static int TickCount
-        {
-            get
-            {
-                return Environment.TickCount & int.MaxValue;
-            }
-        }
+        public static int TickCount => Environment.TickCount & int.MaxValue;
+
         public static IEnumerable<AIHeroClient> EnemyTeam;
+
         public static IEnumerable<AIHeroClient> OwnTeam;
+
         public static List<EnemyInfo> EnemyInfo = new List<EnemyInfo>();
 
         public Helper()
@@ -48,10 +27,10 @@ namespace Karthus
 
             EnemyInfo = EnemyTeam.Select(x => new EnemyInfo(x)).ToList();
 
-            Game.OnUpdate += Game_OnUpdate;
+            Game.OnUpdate += this.Game_OnUpdate;
         }
 
-        void Game_OnUpdate(EventArgs args)
+        private void Game_OnUpdate(EventArgs args)
         {
             var time = TickCount;
 
@@ -73,7 +52,9 @@ namespace Karthus
                 return playerInfo.Player.Health;
             }
 
-            var predictedhealth = playerInfo.Player.Health + playerInfo.Player.HPRegenRate * ((TickCount - playerInfo.LastSeen + additionalTime) / 1000f);
+            var predictedhealth = playerInfo.Player.Health
+                                  + playerInfo.Player.HPRegenRate
+                                  * ((TickCount - playerInfo.LastSeen + additionalTime) / 1000f);
 
             return predictedhealth > playerInfo.Player.MaxHealth ? playerInfo.Player.MaxHealth : predictedhealth;
         }

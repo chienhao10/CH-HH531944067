@@ -1,0 +1,10 @@
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\Ex1L Riven.exe.config
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\Ex1L Riven.exe
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\Ex1L Riven.pdb
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\EloBuddy.dll
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\EloBuddy.SDK.dll
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\SharpDX.dll
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\SharpDX.Direct3D9.dll
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\obj\Debug\Ex1L Riven.exe
+C:\Users\Leander\Documents\Visual Studio 2012\Projects\EloBuddy\Ex1L Riven\Ex1L Riven\obj\Debug\Ex1L Riven.pdb

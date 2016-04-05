@@ -142,9 +142,13 @@ namespace ScaryKalista
             {
                 BalistaMenu = Menu.AddSubMenu("机器人与滑板鞋的合体");
                 {
+                    BalistaMenu.Add("balista.use", new CheckBox("使用合体"));
+
+                    BalistaMenu.Add("balista.sep1", new Separator());
                     BalistaMenu.Add("balista.comboOnly", new CheckBox("只在连招时使用合体技"));
                     BalistaMenu.Add("balista.distance", new Slider("我与机器人间最短距离使用合体: {0}", 400, 0, 1200));
-                    BalistaMenu.Add("balista.sep", new Separator());
+
+                    BalistaMenu.Add("balista.sep2", new Separator());
                     BalistaMenu.Add("balista.label", new Label("给以下敌人秀合体:"));
                     foreach (var enemy in EntityManager.Heroes.Enemies)
                     {
