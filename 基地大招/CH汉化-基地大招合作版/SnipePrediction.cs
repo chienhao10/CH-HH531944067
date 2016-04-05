@@ -6,6 +6,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu.Values;
+using EloBuddy.SDK.Rendering;
 using SharpDX;
 
 namespace HumanziedBaseUlt
@@ -21,20 +22,6 @@ namespace HumanziedBaseUlt
         private Vector3 CastPosition;
         private HitChance SnipeChance;
 
-        private int lastAbortTick;
-
-        private static float PathLengthTo(Vector3[] path, Vector3 to)
-        {
-            var distance = 0f;
-            for (var i = 0; i < path.Length - 1; i++)
-            {
-                distance += path[i].Distance(path[i + 1]);
-
-                if (path[i + 1] == to)
-                    break;
-            }
-            return distance;
-        }
         private IEnumerable<Obj_AI_Base> DoesCollide()
         {
             if (ObjectManager.Player.ChampionName == "Ezreal")
@@ -57,8 +44,11 @@ namespace HumanziedBaseUlt
         {
             try
             {
+                lastEstimatedPosition = Vector3.Zero;
                 SnipeChance = HitChance.Impossible;
                 Teleport.OnTeleport -= SnipePredictionOnTeleport;
+                Drawing.OnDraw -= OnDraw;
+                Game.OnUpdate -= MoveCamera;
             }
             catch
             {
@@ -79,11 +69,27 @@ namespace HumanziedBaseUlt
             Teleport.OnTeleport += SnipePredictionOnTeleport;
         }
 
+        private Vector3 lastEstimatedPosition;
+        private void OnDraw(EventArgs args)
+        {
+            Vector3 lastPositionOnPath = target.Position;
+
+            new Circle(new ColorBGRA(new Vector4(1,0,0,1)), 50, filled:true).Draw(lastPositionOnPath);
+            new Circle(new ColorBGRA(new Vector4(0, 1, 0, 1)), 50, filled: true).Draw(lastEstimatedPosition);
+
+            var lastPositionOnPathWTC = Drawing.WorldToScreen(lastPositionOnPath);
+            var lastEstimatedPositionWTC = Drawing.WorldToScreen(lastEstimatedPosition);
+            var myPosWTC = Drawing.WorldToScreen(ObjectManager.Player.Position);
+
+            Drawing.DrawLine(lastPositionOnPathWTC, lastEstimatedPositionWTC, 1, System.Drawing.Color.Green);
+            Drawing.DrawLine(myPosWTC, lastPositionOnPathWTC, 1, System.Drawing.Color.Red);
+        }
+
         private void SnipePredictionOnTeleport(Obj_AI_Base sender, Teleport.TeleportEventArgs args)
         {
             if (sender != target) return;
 
-            float timeElapsed = Core.GameTickCount - invisibleStartTime;
+            float timeElapsed_ms = Core.GameTickCount - invisibleStartTime;
 
             /*new try of target to recall*/
             //if (Core.GameTickCount - lastAbortTick <= 1000)
@@ -93,21 +99,21 @@ namespace HumanziedBaseUlt
                 SnipeChance = HitChance.Collision;
 
             if (args.Status == TeleportStatus.Start)
-            { 
-                float walkDist = target.Distance(lastRealPath.Last());
+            {
+                float maxWalkDist = target.Position.Distance(lastRealPath.Last());
                 float moveSpeed = target.MoveSpeed;
 
-                float normalTime = walkDist/moveSpeed;
+                float normalTime_ms = maxWalkDist/moveSpeed*1000;
 
                 /*target hasn't reached end point*/
-                if (timeElapsed/1000 <= normalTime)
+                if (timeElapsed_ms <= normalTime_ms)
                 {
                     SnipeChance = HitChance.High;
                 }
-                else if (timeElapsed/1000 > normalTime) /*target reached endPoint and is nearby*/
+                else if (timeElapsed_ms > normalTime_ms) /*target reached endPoint and is nearby*/
                 {
-                    float extraTimeElapsed = timeElapsed / 1000 - normalTime;
-                    float targetSafeZoneTime = ultBoundingRadius/moveSpeed;
+                    float extraTimeElapsed = timeElapsed_ms - normalTime_ms;
+                    float targetSafeZoneTime = ultBoundingRadius/moveSpeed*1000;
 
                     if (extraTimeElapsed < targetSafeZoneTime)
                     {
@@ -121,14 +127,15 @@ namespace HumanziedBaseUlt
                     }
                 }
 
-                float realDist = moveSpeed * timeElapsed / 1000;
-                CastPosition = lastRealPath.OrderBy(x => Math.Abs(PathLengthTo(lastRealPath, x) - realDist)).First();
+                float realDist = moveSpeed * (timeElapsed_ms/1000) /*offset*/;
+                CastPosition = GetCastPosition(realDist);
+                lastEstimatedPosition = CastPosition;
             }
 
             if (args.Status == TeleportStatus.Abort)
             {
                 SnipeChance = HitChance.Impossible;
-                lastAbortTick = Core.GameTickCount;
+                CancelProcess();
             }
 
             int minHitChance = Listing.snipeMenu["minSnipeHitChance"].Cast<Slider>().CurrentValue;
@@ -143,9 +150,42 @@ namespace HumanziedBaseUlt
             else if (SnipeChance == HitChance.High)
                 currentHitChanceInt = 3;
 
-            if (CastPosition != null && currentHitChanceInt >= minHitChance)
+            if (currentHitChanceInt >= minHitChance)
+            {
+                if (Listing.snipeMenu.Get<CheckBox>("snipeDraw").CurrentValue)
+                    Drawing.OnDraw += OnDraw;
                 CheckUltCast(args.Start + args.Duration);
+            }
+            else
+                CancelProcess();
+                
         }
+
+        /// <summary>
+        /// Searches for the best path point having a dist which is euqal to the walked dist
+        /// </summary>
+        /// <param name="walkedDist"></param>
+        /// <returns></returns>
+        private Vector3 GetCastPosition(float walkedDist)
+        {
+            var pathDirVec = lastRealPath.Last() - lastRealPath.First();
+
+            Vector3 bestPathDirVec = Vector3.Zero;
+            float smallestDeltaDistToWalkDist = float.MaxValue;
+
+            for (float i = 0.9f; i >= 0.1f; i -= 0.1f)
+            {
+                var shortPathDirVec = pathDirVec*i;
+                if (Math.Abs(shortPathDirVec.Length() - walkedDist) < smallestDeltaDistToWalkDist)
+                {
+                    smallestDeltaDistToWalkDist = Math.Abs(shortPathDirVec.Length() - walkedDist);
+                    bestPathDirVec = shortPathDirVec;
+                }
+            }
+
+            return lastRealPath.First() + bestPathDirVec;
+        }
+
         /// <summary>
         /// HitChance (collision etc..) OK
         /// </summary>
@@ -164,8 +204,28 @@ namespace HumanziedBaseUlt
             if (intime && enoughDmg)
             {
                 Player.CastSpell(SpellSlot.R, CastPosition);
-                Teleport.OnTeleport -= SnipePredictionOnTeleport;
+                var castDelay =
+                    Listing.spellDataList.First(x => x.championName == ObjectManager.Player.ChampionName).Delay;
+
+                if (Listing.snipeMenu.Get<CheckBox>("snipeCinemaMode").CurrentValue)
+                    Core.DelayAction(()=> Game.OnUpdate += MoveCamera, (int)castDelay);
+                Core.DelayAction(CancelProcess, (int)(castDelay + travelTime) + 2000);
             }
+            else
+                CancelProcess();
+        }
+
+        private void MoveCamera(EventArgs args)
+        {
+            if (EntityManager.Heroes.Enemies.Any(x => x.Distance(ObjectManager.Player) <= 1000 && x.IsValid))
+                return;
+
+            var ultMissile = ObjectManager.Get<MissileClient>()
+                .First(x => x.IsAlly && x.IsValidMissile() && x.SpellCaster is AIHeroClient &&
+                            ((AIHeroClient) x.SpellCaster).IsMe);
+
+            Camera.CameraX = ultMissile.Position.X;
+            Camera.CameraY = ultMissile.Position.Y;
         }
     }
 }

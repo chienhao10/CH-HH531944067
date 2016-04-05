@@ -61,7 +61,7 @@ namespace Ex1L_Riven.Base
 
         public static void CastR(AIHeroClient target)
         {
-            if (Spells.R1.IsReady() && Riven.R1Activated == false && target.IsValidTarget(500))
+            if (Spells.R1.IsReady() && Variables.UseRCombo && Riven.R1Activated == false && target.IsValidTarget(500))
             {
                 Spells.R1.Cast();
             }
@@ -78,6 +78,21 @@ namespace Ex1L_Riven.Base
                 if (Items.Hydra.IsReady())
                 {
                     Items.Hydra.Cast();
+                }
+            }
+        }
+
+        public static void CastQss()
+        {
+            if (Player.Instance.CountEnemiesInRange(1000) > 0)
+            {
+                if (Items.Qss.IsReady())
+                {
+                    Items.Qss.Cast();
+                }
+                if (Items.Mercurial.IsReady())
+                {
+                    Items.Mercurial.Cast();
                 }
             }
         }

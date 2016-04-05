@@ -1,2 +1,0 @@
-F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\UntouchableDonger\Donger\bin\Debug\AddonTemplate.exe.config
-F:\Downloads\EloBuddy-Addons-master\EloBuddy-Addons-master\AddonTemplate\UntouchableDonger\Donger\bin\Debug\Donger.exe.config

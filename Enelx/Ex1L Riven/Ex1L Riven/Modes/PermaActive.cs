@@ -29,7 +29,7 @@ namespace Ex1L_Riven.Modes
 
             if (rtarget != null && !rtarget.IsZombie && !rtarget.IsInvulnerable)
             {
-                if (Riven.R1Activated && rtarget.Health <= Spells.R2Damage(rtarget))
+                if (Riven.R1Activated && rtarget.Health <= Spells.R2Damage(rtarget, rtarget.Health))
                 {
                     if (Spells.R2.IsReady())
                     {

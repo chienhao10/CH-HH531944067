@@ -12,6 +12,8 @@ namespace Ex1L_Riven.Base
         public static Item Hextech = new Item(ItemId.Hextech_Gunblade, 700);
         public static Item Tiamat = new Item(ItemId.Tiamat_Melee_Only, 400);
         public static Item Hydra = new Item(ItemId.Ravenous_Hydra_Melee_Only, 400);
+        public static Item Qss = new Item(ItemId.Quicksilver_Sash);
+        public static Item Mercurial = new Item(ItemId.Mercurial_Scimitar);
         public static Item Titanic = new Item(ItemId.Titanic_Hydra, Player.Instance.AttackRange);
 
         public static Item Youmuus = new Item(ItemId.Youmuus_Ghostblade,

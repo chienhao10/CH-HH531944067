@@ -9,28 +9,30 @@ namespace Ex1L_Riven.Base
         public static Spell.Active W, R1;
         public static Spell.Skillshot Q, E, R2, Flash;
 
-        public static float R2Damage(AIHeroClient target, float dmg = 0)
+        public static float R2Damage(AIHeroClient target, float health)
         {
-            if (Riven.R1Activated == false || target == null || !target.IsValidTarget(R2.Range))
+            if (Riven.R1Activated && target != null && target.IsValidTarget(R2.Range))
             {
-                dmg = 0;
+                var healthMis = target.MaxHealth - health/target.MaxHealth > 0.75
+                    ? 0.75
+                    : (target.MaxHealth - health)/target.MaxHealth;
+                var percent = healthMis*2.67;
+                var dmg = new double[] {80, 120, 160}[R1.Level - 1] + 0.6*Player.Instance.FlatPhysicalDamageMod;
+                return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, (float) (dmg*(1 + percent)));
             }
 
-            if (target.HealthPercent > 25)
-            {
-                dmg = (float) new double[] {80, 120, 160}[R1.Level - 1] + 0.6f*Player.Instance.FlatPhysicalDamageMod;
-            }
-            else if (target.HealthPercent <= 25)
-            {
-                dmg = (float) new double[] {240, 360, 480}[R1.Level - 1] + 1.80f*Player.Instance.FlatPhysicalDamageMod;
-            }
-
-            return dmg;
+            return 0;
         }
 
         public static float WDamage(Obj_AI_Base target)
         {
-            return (float) new double[] {50, 80, 110, 140, 170}[W.Level - 1] + 1f*Player.Instance.FlatPhysicalDamageMod;
+            if (target != null)
+            {
+                var dmg = new double[] {50, 80, 110, 140, 170}[W.Level - 1] + 1*Player.Instance.FlatPhysicalDamageMod;
+                return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, (float) dmg);
+            }
+
+            return 0;
         }
 
         public static float QDamage(AIHeroClient target, float dmg = 0)
@@ -61,7 +63,9 @@ namespace Ex1L_Riven.Base
                 AllowedCollisionCount = int.MaxValue
             };
 
-            W = new Spell.Active(SpellSlot.W, 135);
+            W = new Spell.Active(SpellSlot.W,
+                70 + (uint) Player.Instance.BoundingRadius +
+                (uint) (Player.Instance.HasBuff("RivenFengShuiEngine") ? 195 : 120));
 
             E = new Spell.Skillshot(SpellSlot.E, 325 + (uint) Player.Instance.AttackRange,
                 SkillShotType.Linear)
@@ -71,7 +75,7 @@ namespace Ex1L_Riven.Base
 
             R1 = new Spell.Active(SpellSlot.R);
 
-            R2 = new Spell.Skillshot(SpellSlot.R, 900, SkillShotType.Cone, 250, 1600, 20)
+            R2 = new Spell.Skillshot(SpellSlot.R, 900, SkillShotType.Cone, 250, 1600, 125)
             {
                 AllowedCollisionCount = int.MaxValue
             };

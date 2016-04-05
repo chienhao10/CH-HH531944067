@@ -116,7 +116,7 @@ namespace LelBlanc
 
             // Constructors
             Picker = new ColorPicker(Config.DrawingMenu, "draw_", System.Drawing.Color.FromArgb(255, 255, 0, 0),
-                "Color Settings for Damage Indicator");
+                "伤害指示器颜色");
             Indicator = new DamageIndicator();
 
             // Events

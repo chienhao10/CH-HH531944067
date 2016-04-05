@@ -9,6 +9,20 @@ namespace Ex1L_Riven.Base
         {
         }
 
+        #region Combo Menu
+
+        public static bool UseRCombo
+        {
+            get { return GetKeybind(MenuDesigner.ComboUi, "UseR"); }
+        }
+
+        public static bool UseFlashBurst
+        {
+            get { return GetCheckbox(MenuDesigner.ComboUi, "UseFlash"); }
+        }
+
+        #endregion
+
         #region Emote Menu
 
         public static bool UseEmoteCancel
@@ -19,6 +33,16 @@ namespace Ex1L_Riven.Base
         public static string SelectedEmote
         {
             get { return MenuDesigner.EmoteUi["EmoteSelect"].Cast<ComboBox>().SelectedText; }
+        }
+
+        public static int Q1Q2Delay
+        {
+            get { return GetSlider(MenuDesigner.EmoteUi, "Q1Q2delay"); }
+        }
+
+        public static int Q3Delay
+        {
+            get { return GetSlider(MenuDesigner.EmoteUi, "Q3delay"); }
         }
 
         #endregion
@@ -96,6 +120,20 @@ namespace Ex1L_Riven.Base
         public static int LevelDelay
         {
             get { return GetSlider(MenuDesigner.LevelUi, "LevelHumanizer"); }
+        }
+
+        #endregion
+
+        #region Draw Menu
+
+        public static bool DrawR1Status
+        {
+            get { return GetCheckbox(MenuDesigner.DrawUi, "Rstatus"); }
+        }
+
+        public static bool DrawR2Range
+        {
+            get { return GetCheckbox(MenuDesigner.DrawUi, "Rrange"); }
         }
 
         #endregion

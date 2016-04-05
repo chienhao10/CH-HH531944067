@@ -39,17 +39,21 @@ namespace HumanziedBaseUlt
             Listing.potionMenu.Add("crystalFlaskJungleRegVal", new Slider("猎人药水", 9, 5, 20));
             Listing.potionMenu.Add("darkCrystalFlaskVal", new Slider("腐蚀药水", 16, 5, 20));
 
-            Listing.snipeMenu = Listing.config.AddSubMenu("狙击敌人回城");
-            Listing.snipeMenu.AddLabel("[目前无联合技能]");
+
+            Listing.snipeMenu = Listing.config.AddSubMenu("敌人回城时狙击");
+            Listing.snipeMenu.AddLabel("[联合技能已添加]");
+
             Listing.snipeMenu.Add("snipeEnabled", new CheckBox("开启"));
             AddStringList(Listing.snipeMenu, "minSnipeHitChance", "最低狙击命中率", 
-                new []{ "不可能", "低", "中高", "非常高"}, 2);
+                new []{ "非常低", "低", "中高", "非常高"}, 2);
+            Listing.snipeMenu.Add("snipeDraw", new CheckBox("显示狙击路线"));
+            Listing.snipeMenu.Add("snipeCinemaMode", new CheckBox("影院观看模式 ™"));
 
             Listing.allyconfig = Listing.config.AddSubMenu("队友");
             foreach (var ally in EntityManager.Heroes.Allies)
             {
                 if (Listing.spellDataList.Any(x => x.championName == ally.ChampionName))
-                    Listing.allyconfig.Add(ally.ChampionName + "/Premade", new CheckBox(ally.ChampionName, ally.IsMe));
+                    Listing.allyconfig.Add(ally.ChampionName + "/联合", new CheckBox(ally.ChampionName, ally.IsMe));
             }
 
             Game.OnUpdate += GameOnOnUpdate;
@@ -117,7 +121,8 @@ namespace HumanziedBaseUlt
             Listing.visibleEnemies.Remove(args.sender);
             Listing.invisEnemiesList.Add(args);
 
-            if (Listing.snipeMenu["snipeEnabled"].Cast<CheckBox>().CurrentValue)
+            if (Listing.snipeMenu["snipeEnabled"].Cast<CheckBox>().CurrentValue && 
+                me.Spellbook.GetSpell(SpellSlot.R).IsReady && me.Mana >= 100)
                 Listing.Pathing.enemySnipeProcs.Add(new SnipePrediction(args));
         }
 
@@ -192,7 +197,7 @@ namespace HumanziedBaseUlt
                                 /*Draven*/
                             }, 
                             (int)delay);
-                            //Debug.Init(enemy, Algorithm.GetLastEstimatedEnemyReg(), aioDmg);
+                            Debug.Init(enemy, Algorithm.GetLastEstimatedEnemyReg(), aioDmg);
                         }
                     }
                 }

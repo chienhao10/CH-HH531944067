@@ -20,100 +20,100 @@ namespace LelBlanc
         /// <summary>
         /// Contains Different Modes
         /// </summary>
-        private static readonly string[] LogicModes = {"Burst Logic", "Two Chain(TM) Logic"};
+        private static readonly string[] LogicModes = {"爆发模式", "双链条(TM) 模式"};
 
         /// <summary>
         /// Creates the Menu
         /// </summary>
         public static void Initialize()
         {
-            ConfigMenu = MainMenu.AddMenu("LelBlanc", "LelBlanc");
-            ConfigMenu.AddGroupLabel("This addon is made by KarmaPanda and should not be redistributed in any way.");
+            ConfigMenu = MainMenu.AddMenu("CH汉化-妖姬", "LelBlanc");
+            ConfigMenu.AddGroupLabel("作者：Karma Panda");
             ConfigMenu.AddGroupLabel(
-                "Any unauthorized redistribution without credits will result in severe consequences.");
-            ConfigMenu.AddGroupLabel("Thank you for using this addon and have a fun time!");
+                "任何盗用或者修改将会由严重的后果");
+            ConfigMenu.AddGroupLabel("感谢选择使用本脚本，祝你玩的开心!");
 
-            ComboMenu = ConfigMenu.AddSubMenu("Combo Menu", "cMenu");
-            ComboMenu.AddLabel("Spell Settings");
-            ComboMenu.Add("useQ", new CheckBox("Use Q"));
-            ComboMenu.Add("useW", new CheckBox("Use W"));
-            ComboMenu.Add("useReturn", new CheckBox("Use W Return"));
-            ComboMenu.Add("useE", new CheckBox("Use E"));
-            ComboMenu.AddLabel("R Settings");
-            ComboMenu.Add("useQR", new CheckBox("Use QR"));
-            ComboMenu.Add("useWR", new CheckBox("Use WR", false));
-            ComboMenu.Add("useReturn2", new CheckBox("Use WR Return", false));
-            ComboMenu.Add("useER", new CheckBox("Use ER", false));
-            ComboMenu.AddLabel("Extra Settings");
-            ComboMenu.Add("mode", new ComboBox("Combo Mode", 0, LogicModes));
+            ComboMenu = ConfigMenu.AddSubMenu("连招", "cMenu");
+            ComboMenu.AddLabel("技能设置");
+            ComboMenu.Add("useQ", new CheckBox("使用Q"));
+            ComboMenu.Add("useW", new CheckBox("使用W"));
+            ComboMenu.Add("useReturn", new CheckBox("使用W 退回"));
+            ComboMenu.Add("useE", new CheckBox("使用E"));
+            ComboMenu.AddLabel("R 设置");
+            ComboMenu.Add("useQR", new CheckBox("使用QR"));
+            ComboMenu.Add("useWR", new CheckBox("使用WR", false));
+            ComboMenu.Add("useReturn2", new CheckBox("使用WR 退回", false));
+            ComboMenu.Add("useER", new CheckBox("使用ER", false));
+            ComboMenu.AddLabel("额外设置");
+            ComboMenu.Add("mode", new ComboBox("连招模式", 0, LogicModes));
 
-            HarassMenu = ConfigMenu.AddSubMenu("Harass Menu", "hMenu");
-            HarassMenu.AddLabel("Spell Settings");
-            HarassMenu.Add("useQ", new CheckBox("Use Q"));
-            HarassMenu.Add("useW", new CheckBox("Use W"));
-            HarassMenu.Add("useReturn", new CheckBox("Use W Return"));
-            HarassMenu.Add("useE", new CheckBox("Use E"));
-            HarassMenu.AddLabel("R Settings");
-            HarassMenu.Add("useQR", new CheckBox("Use QR"));
-            HarassMenu.Add("useWR", new CheckBox("Use WR", false));
-            HarassMenu.Add("useReturn2", new CheckBox("Use WR Return"));
-            HarassMenu.Add("useER", new CheckBox("Use ER", false));
-            HarassMenu.AddLabel("Extra Settings");
-            HarassMenu.Add("mode", new ComboBox("Harass Modes", 1, LogicModes));
+            HarassMenu = ConfigMenu.AddSubMenu("骚扰", "hMenu");
+            HarassMenu.AddLabel("技能设置");
+            HarassMenu.Add("useQ", new CheckBox("使用Q"));
+            HarassMenu.Add("useW", new CheckBox("使用W"));
+            HarassMenu.Add("useReturn", new CheckBox("使用W 退回"));
+            HarassMenu.Add("useE", new CheckBox("使用E"));
+            HarassMenu.AddLabel("R 设置");
+            HarassMenu.Add("useQR", new CheckBox("使用QR"));
+            HarassMenu.Add("useWR", new CheckBox("使用WR", false));
+            HarassMenu.Add("useReturn2", new CheckBox("使用WR 退回"));
+            HarassMenu.Add("useER", new CheckBox("使用ER", false));
+            HarassMenu.AddLabel("额外设置");
+            HarassMenu.Add("mode", new ComboBox("骚扰模式", 1, LogicModes));
 
-            LaneClearMenu = ConfigMenu.AddSubMenu("Laneclear Menu", "lcMenu");
-            LaneClearMenu.AddLabel("Spell Settings");
-            LaneClearMenu.Add("useQ", new CheckBox("Use Q", false));
-            LaneClearMenu.Add("useW", new CheckBox("Use W"));
-            LaneClearMenu.Add("sliderW", new Slider("Use W if Kill {0} Minions", 3, 1, 5));
-            LaneClearMenu.AddLabel("R Settings");
-            LaneClearMenu.Add("useQR", new CheckBox("Use QR", false));
-            LaneClearMenu.Add("useWR", new CheckBox("Use WR"));
-            LaneClearMenu.Add("sliderWR", new Slider("Use WR if Kill {0} Minions", 5, 1, 5));
+            LaneClearMenu = ConfigMenu.AddSubMenu("清线", "lcMenu");
+            LaneClearMenu.AddLabel("技能设置");
+            LaneClearMenu.Add("useQ", new CheckBox("使用Q", false));
+            LaneClearMenu.Add("useW", new CheckBox("使用W"));
+            LaneClearMenu.Add("sliderW", new Slider("使用W 如果可杀 {0} 个小兵", 3, 1, 5));
+            LaneClearMenu.AddLabel("R 设置");
+            LaneClearMenu.Add("useQR", new CheckBox("使用QR", false));
+            LaneClearMenu.Add("useWR", new CheckBox("使用WR"));
+            LaneClearMenu.Add("sliderWR", new Slider("使用WR 如果可杀 {0} 个小兵", 5, 1, 5));
 
-            JungleClearMenu = ConfigMenu.AddSubMenu("Jungleclear Menu", "jcMenu");
-            JungleClearMenu.AddLabel("Spell Settings");
-            JungleClearMenu.Add("useQ", new CheckBox("Use Q"));
-            JungleClearMenu.Add("useW", new CheckBox("Use W"));
-            JungleClearMenu.Add("useE", new CheckBox("Use E"));
-            JungleClearMenu.Add("sliderW", new Slider("Use W if Hit {0} Minions", 3, 1, 5));
-            JungleClearMenu.AddLabel("R Settings");
-            JungleClearMenu.Add("useQR", new CheckBox("Use QR"));
-            JungleClearMenu.Add("useWR", new CheckBox("Use WR"));
-            JungleClearMenu.Add("useER", new CheckBox("Use ER"));
-            JungleClearMenu.Add("sliderWR", new Slider("Use WR if Hit {0} Minions", 5, 1, 5));
+            JungleClearMenu = ConfigMenu.AddSubMenu("清野", "jcMenu");
+            JungleClearMenu.AddLabel("技能设置");
+            JungleClearMenu.Add("useQ", new CheckBox("使用Q"));
+            JungleClearMenu.Add("useW", new CheckBox("使用W"));
+            JungleClearMenu.Add("useE", new CheckBox("使用E"));
+            JungleClearMenu.Add("sliderW", new Slider("使用W 如果可击中 {0} 个小兵", 3, 1, 5));
+            JungleClearMenu.AddLabel("R 设置");
+            JungleClearMenu.Add("useQR", new CheckBox("使用QR"));
+            JungleClearMenu.Add("useWR", new CheckBox("使用WR"));
+            JungleClearMenu.Add("useER", new CheckBox("使用ER"));
+            JungleClearMenu.Add("sliderWR", new Slider("使用WR 如果可击中 {0} 个小兵", 5, 1, 5));
 
-            KillStealMenu = ConfigMenu.AddSubMenu("Killsteal Menu", "ksMenu");
-            KillStealMenu.AddLabel("Spell Settings");
-            KillStealMenu.Add("useQ", new CheckBox("Use Q"));
-            KillStealMenu.Add("useW", new CheckBox("Use W"));
-            KillStealMenu.Add("useReturn", new CheckBox("Use W Return"));
-            KillStealMenu.Add("useE", new CheckBox("Use E"));
-            KillStealMenu.AddLabel("R Settings");
-            KillStealMenu.Add("useQR", new CheckBox("Use QR"));
-            KillStealMenu.Add("useWR", new CheckBox("Use WR"));
-            KillStealMenu.Add("useReturn2", new CheckBox("Use WR Return"));
-            KillStealMenu.Add("useER", new CheckBox("Use ER"));
-            KillStealMenu.AddLabel("Misc Settings");
-            KillStealMenu.Add("useIgnite", new CheckBox("Use Ignite"));
-            KillStealMenu.Add("toggle", new CheckBox("Enable Kill Steal"));
+            KillStealMenu = ConfigMenu.AddSubMenu("抢头", "ksMenu");
+            KillStealMenu.AddLabel("技能设置");
+            KillStealMenu.Add("useQ", new CheckBox("使用Q"));
+            KillStealMenu.Add("useW", new CheckBox("使用W"));
+            KillStealMenu.Add("useReturn", new CheckBox("使用W 退回"));
+            KillStealMenu.Add("useE", new CheckBox("使用E"));
+            KillStealMenu.AddLabel("R 设置");
+            KillStealMenu.Add("useQR", new CheckBox("使用QR"));
+            KillStealMenu.Add("useWR", new CheckBox("使用WR"));
+            KillStealMenu.Add("useReturn2", new CheckBox("使用WR 退回"));
+            KillStealMenu.Add("useER", new CheckBox("使用ER"));
+            KillStealMenu.AddLabel("杂项设置");
+            KillStealMenu.Add("useIgnite", new CheckBox("使用点燃"));
+            KillStealMenu.Add("toggle", new CheckBox("开启抢头"));
 
-            DrawingMenu = ConfigMenu.AddSubMenu("Drawing Menu", "dMenu");
-            DrawingMenu.AddLabel("Range Drawings");
-            DrawingMenu.Add("drawQ", new CheckBox("Draw Q Range", false));
-            DrawingMenu.Add("drawW", new CheckBox("Draw W Range", false));
-            DrawingMenu.Add("drawE", new CheckBox("Draw E Range", false));
-            DrawingMenu.AddLabel("DamageIndicator");
-            DrawingMenu.Add("draw.Damage", new CheckBox("Draw Damage"));
-            DrawingMenu.Add("draw.Q", new CheckBox("Calculate Q Damage"));
-            DrawingMenu.Add("draw.W", new CheckBox("Calculate W Damage"));
-            DrawingMenu.Add("draw.E", new CheckBox("Calculate E Damage"));
-            DrawingMenu.Add("draw.R", new CheckBox("Calculate R Damage"));
-            DrawingMenu.Add("draw.Ignite", new CheckBox("Calculate Ignite Damage"));
+            DrawingMenu = ConfigMenu.AddSubMenu("线圈", "dMenu");
+            DrawingMenu.AddLabel("线圈设置");
+            DrawingMenu.Add("drawQ", new CheckBox("显示 Q 范围", false));
+            DrawingMenu.Add("drawW", new CheckBox("显示 W 范围", false));
+            DrawingMenu.Add("drawE", new CheckBox("显示 E 范围", false));
+            DrawingMenu.AddLabel("伤害指示器");
+            DrawingMenu.Add("draw.Damage", new CheckBox("显示伤害"));
+            DrawingMenu.Add("draw.Q", new CheckBox("计算 Q 伤害"));
+            DrawingMenu.Add("draw.W", new CheckBox("计算 W 伤害"));
+            DrawingMenu.Add("draw.E", new CheckBox("计算 E 伤害"));
+            DrawingMenu.Add("draw.R", new CheckBox("计算 R 伤害"));
+            DrawingMenu.Add("draw.Ignite", new CheckBox("计算点燃伤害"));
 
-            MiscMenu = ConfigMenu.AddSubMenu("Misc Menu", "mMenu");
-            MiscMenu.AddLabel("Miscellaneous");
-            MiscMenu.Add("pet", new CheckBox("Automatic Clone Movement"));
+            MiscMenu = ConfigMenu.AddSubMenu("杂项菜单", "mMenu");
+            MiscMenu.AddLabel("杂项");
+            MiscMenu.Add("pet", new CheckBox("自动移动克隆"));
         }
     }
 }
