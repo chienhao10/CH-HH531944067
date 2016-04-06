@@ -156,7 +156,7 @@
                             Drawing.DrawText(
                                 Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30),
                                 Color.White,
-                                "女警W",
+                                "陷阱",
                                 2);
                             Circle.Draw(SharpDX.Color.Purple, trap.BoundingRadius + 10, trap.Position);
                             break;
