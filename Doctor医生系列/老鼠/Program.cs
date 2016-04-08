@@ -4,11 +4,11 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 
-namespace Tristana
+namespace Twitch
 {
     public static class Program
     {
-        public const string ChampName = "Tristana";
+        public const string ChampName = "Twitch";
 
         public static void Main(string[] args)
         {
@@ -25,13 +25,14 @@ namespace Tristana
             SpellManager.Initialize();
             ModeManager.Initialize();
             Events.Initialize();
+            Damages.InitDamageIndicator();
             WelcomeMsg();
         }
 
         private static void WelcomeMsg()
         {
-            Chat.Print("Doctor{0} Loaded. Good Luck!", Color.LightGoldenrodYellow, ChampName);
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
+            Chat.Print("Doctor{0} Loaded. Good Luck!", Color.GreenYellow, ChampName);
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Doctor{0} Loaded. Good Luck!", ChampName);
             Console.ResetColor();
         }
