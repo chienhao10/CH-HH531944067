@@ -152,19 +152,19 @@ namespace AdEvade
                    };
 
                 Menu.AddLabel("CH汉化地址");
-                Menu.AddLabel("     Github: http://github.com/chienhao10/Translate-Project");
+                Menu.AddLabel("     Github: https://github.com/chienhao10/CH-HH531944067");
                 Menu.Add("打开地址", new CheckBox("在浏览器进入汉化地址", false)).OnValueChange +=
                    delegate (ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs changeArgs)
                    {
                        if (changeArgs.OldValue == false && changeArgs.NewValue)
                        {
                            sender.CurrentValue = false;
-                           Process.Start(@"http://github.com/chienhao10/Translate-Project");
+                           Process.Start(@"https://github.com/chienhao10/CH-HH531944067");
                        }
                    };
 
 
-                Menu mainMenu = Menu.AddSubMenu("核心", "核心");
+                Menu mainMenu = Menu.AddSubMenu("核心", "Main");
                 mainMenu.Add(new DynamicKeyBind(ConfigValue.DodgeSkillShots, "躲避指向性技能", true, KeyBind.BindTypes.PressToggle, 'K'));
                 mainMenu.Add(new DynamicKeyBind(ConfigValue.ActivateEvadeSpells, "使用技能躲避", true, KeyBind.BindTypes.PressToggle, 'K'));
                 mainMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.OnlyDodgeDangerous, "只躲避危险的", false));
@@ -182,7 +182,7 @@ namespace AdEvade
                 _evadeSpell = new EvadeSpell(Menu);
 
                 ConsoleDebug.WriteLineColor("       Adding Humanizer and Miscellaneous Menus...", ConsoleColor.Yellow, true);
-                Menu miscMenu = Menu.AddSubMenu("杂项设置", "杂项设置");
+                Menu miscMenu = Menu.AddSubMenu("杂项设置", "MiscSettings");
                 miscMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.HighPrecision, "增强躲避精密度", false));
                 miscMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.RecalculatePath, "重新计算路径", true));
                 miscMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.ContinueMovement, "继续最后一次的移动", true));
@@ -197,13 +197,13 @@ namespace AdEvade
                 //miscMenu.AddGroupLabel("Reset");
                 //miscMenu.Add("ResetConfig", new DynamicCheckBox(ConfigDataType.Data, "ResetConfig", "Reset Properties", false).CheckBox);
 
-                Menu fastEvadeMenu = Menu.AddSubMenu("快速躲避", "快速躲避");
+                Menu fastEvadeMenu = Menu.AddSubMenu("快速躲避", "FastEvade");
                 fastEvadeMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.FastMovementBlock, "阻挡快速移动", false));
                 fastEvadeMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.FastEvadeActivationTime, "快速移动激活时间", 65, 0, 500));
                 fastEvadeMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.SpellActivationTime, "技能激活时间", 200, 0, 1000));
                 fastEvadeMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.RejectMinDistance, "体积碰撞距离缓冲", 10, 0, 100));
 
-                Menu limiterMenu = Menu.AddSubMenu("人性化", "限制器");
+                Menu limiterMenu = Menu.AddSubMenu("人性化", "Limiter");
                 limiterMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.ClickOnlyOnce, "只点击一次", true));
                 limiterMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.EnableEvadeDistance, "延长躲避", false));
                 limiterMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.TickLimiter, "点击限制", 100, 0, 500));
@@ -211,21 +211,21 @@ namespace AdEvade
                 limiterMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.ReactionTime, "反应时间", 0, 0, 500));
                 limiterMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.DodgeInterval, "躲避曲线", 0, 0, 2000));
 
-                Menu randomizerMenu = Menu.AddSubMenu("随机器", "随机器");
+                Menu randomizerMenu = Menu.AddSubMenu("随机器", "Randomizer");
                 randomizerMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.EnableRandomizer, "开启", false));
                 randomizerMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.DrawBlockedRandomizerSpells, "显示阻挡的技能", true));
                 randomizerMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.RandomizerPercentage, "精确度", 80, 0, 100));
                 randomizerMenu.Add(new DynamicComboBox(ConfigDataType.Data, ConfigValue.RandomizerMaxDangerLevel, "最大危险等级（低/正常/高（默认）/极端）", (int)SpellDangerLevel.High, Enum.GetNames(typeof(SpellDangerLevel))));
 
-                Menu bufferMenu = Menu.AddSubMenu("高级人性化", "额外加成");
-                bufferMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.ExtraPingBuffer, "额外警告", 65, 0, 200));
+                Menu bufferMenu = Menu.AddSubMenu("高级人性化", "ExtraBuffers");
+                bufferMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.ExtraPingBuffer, "额外网络延迟缓冲", 65, 0, 200));
                 bufferMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.ExtraCpaDistance, "额外体积碰撞距离", 10, 0, 150));
                 bufferMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.ExtraSpellRadius, "额外技能半径", 0, 0, 100));
                 bufferMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.ExtraEvadeDistance, "额外躲避距离", 100, 0, 300));
                 //bufferMenu.Add(ConfigValue.ExtraSpellRadius.Name(), new DynamicSlider(ConfigDataType.Data, ConfigValue.ExtraSpellRadius, "Extra Avoid Distance", 50, 0, 300).Slider);
                 bufferMenu.Add(new DynamicSlider(ConfigDataType.Data, ConfigValue.MinimumComfortZone, "英雄最短路程", 550, 0, 1000));
 
-                Menu debugMenu = Menu.AddSubMenu("调试", "调试菜单");
+                Menu debugMenu = Menu.AddSubMenu("调试", "DebugMenu");
 
                 debugMenu.AddGroupLabel("调试");
                 debugMenu.Add(new DynamicCheckBox(ConfigDataType.Data, ConfigValue.ShowDebugInfo, "显示调试资讯 (Console)", false)).OnValueChange +=

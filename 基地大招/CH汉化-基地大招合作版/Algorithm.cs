@@ -10,7 +10,6 @@ namespace HumanziedBaseUlt
 {
     static class Algorithm
     {
-        static float recusrviveDelayDeviation = 50;
         private static float lastEnemyReg = 0;
 
         public static float SimulateHealthRegen(AIHeroClient enemy, int StartTime, int EndTime)
@@ -50,7 +49,7 @@ namespace HumanziedBaseUlt
             float regSpeedDefault = Listing.config.Get<Slider>("fountainReg").CurrentValue / 10;
             float regSpeedMin20 = Listing.config.Get<Slider>("fountainRegMin20").CurrentValue / 10;
 
-            float normalHpReged = enemy.MaxHealth/100*regSpeedDefault + enemy.MaxHealth / 100*2.8f;
+            float normalHpReged = enemy.MaxHealth/100*regSpeedDefault;
             float min20HpReged = enemy.MaxHealth/100* regSpeedMin20;
 
             float fountainReg = Listing.config.Get<CheckBox>("min20").CurrentValue ? min20HpReged :
@@ -111,11 +110,11 @@ namespace HumanziedBaseUlt
                     select unit).Cast<Obj_AI_Base>().ToList();
         }
 
-        public static float GetUltTravelTime(AIHeroClient source, Vector3? dest = null)
+        public static float GetUltTravelTime(AIHeroClient source, Vector3 dest)
         {
             try
             {
-                var targetpos = dest.HasValue ? dest.Value : ObjectManager.Get<Obj_SpawnPoint>().First(x => x.IsEnemy).Position;
+                var targetpos = dest;
                 float speed = Listing.spellDataList.First(x => x.championName == source.ChampionName).Speed;
                 float delay = Listing.spellDataList.First(x => x.championName == source.ChampionName).Delay;
 
@@ -126,7 +125,7 @@ namespace HumanziedBaseUlt
 
                 if (source.ChampionName.ToLower().Contains("jinx") && distance > 1350)
                 {
-                    const float accelerationrate = 0.3f; //= (1500f - 1350f) / (2200 - speed), 1 unit = 0.3units/second
+                    const float accelerationrate = 0.3f;
 
                     var acceldifference = distance - 1350f;
 

@@ -44,12 +44,6 @@ namespace HumanziedBaseUlt
             if (finished)
                 return;
 
-            if (Listing.config.Get<CheckBox>("min20").CurrentValue)
-            {
-                Chat.Print("[Debug] Min 20 reached");
-                return;
-            }
-
             finished = true;
             Chat.Print("[Debug] Target found as " + _target.ChampionName);
 

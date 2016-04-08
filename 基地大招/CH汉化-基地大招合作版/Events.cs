@@ -32,24 +32,5 @@ namespace HumanziedBaseUlt
         {
             if (OnEnemyVisible != null) OnEnemyVisible(sender);
         }
-
-        public class Messaging
-        {
-            private static int lastMsg;
-            /// <summary>
-            /// Prints ult delay in chat
-            /// </summary>
-            /// <param name="delay"></param>
-            /// <param name="args">Champion name</param>
-            public static void ProcessInfo(float delay, string args)
-            {
-                if (Core.GameTickCount - lastMsg <= 2000)
-                    return;
-               
-
-                Chat.Print("<font color=\"#0cf006\">" + args + " ult delay: " + delay + " ms</font>");
-                lastMsg = Core.GameTickCount;
-            } 
-        }
     }
 }
