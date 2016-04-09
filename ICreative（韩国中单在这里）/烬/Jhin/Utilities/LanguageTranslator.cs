@@ -607,7 +607,7 @@ namespace Jhin.Utilities
             Translations[Language.ChineseTraditional] = new Dictionary<string, string>
             {
                 {"Language", "語言"},
-                {"ChineseTraditional", "中文"},
+                {"ChineseTraditional", "繁体"},
                 {"Enabled", "開啟"},
                 {"Disabled", "關閉"},
                 {"Available", "可用的"},
