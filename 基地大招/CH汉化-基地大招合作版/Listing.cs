@@ -15,6 +15,7 @@ namespace HumanziedBaseUlt
         public static Menu potionMenu;
         public static Menu snipeMenu;
         public static Menu config;
+        public static Menu MiscMenu;
 
         public class UltSpellDataS
         {
@@ -26,20 +27,27 @@ namespace HumanziedBaseUlt
             public float Speed;
             public bool Collision;
         }
-        public static readonly List<UltSpellDataS> spellDataList = new List<UltSpellDataS>
+
+        public static readonly Dictionary<string, UltSpellDataS> UltSpellDataList = new Dictionary<string, UltSpellDataS>
         {
-            new UltSpellDataS { championName = "Jinx", SpellStage = 1, DamageMultiplicator = 0.9f, Width = 140f, Delay = 0600f/1000f, Speed = 1700f, Collision = true},
-            new UltSpellDataS { championName = "Ashe", SpellStage = 0, DamageMultiplicator = 1.0f, Width = 130f, Delay = 0250f/1000f, Speed = 1600f, Collision = true},
-            new UltSpellDataS { championName = "Draven", SpellStage = 0, DamageMultiplicator = 0.7f, Width = 160f, Delay = 0400f/1000f, Speed = 2000f, Collision = true},
-            new UltSpellDataS { championName = "Ezreal", SpellStage = 0, DamageMultiplicator = 0.7f, Width = 160f, Delay = 1000f/1000f, Speed = 2000f, Collision = false},
-            //new UltSpellDataS { championName = "Karthus", SpellStage = 0, DamageMultiplicator = 1.0f, Width = 000f, Delay = 3125f/1000f, Speed = 0000f, Collision = false}
+            {"Jinx",    new UltSpellDataS { SpellStage = 1, DamageMultiplicator = 1.0f, Width = 140f, Delay = 0600f/1000f, Speed = 1700f, Collision = true}},
+            {"Ashe",    new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 1.0f, Width = 130f, Delay = 0250f/1000f, Speed = 1600f, Collision = true}},
+            {"Draven",  new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 0.7f, Width = 160f, Delay = 0400f/1000f, Speed = 2000f, Collision = true}},
+            {"Ezreal",  new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 0.8f, Width = 160f, Delay = 1000f/1000f, Speed = 2000f, Collision = false}},
+            {"Karthus", new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 1.0f, Width = 000f, Delay = 3125f/1000f, Speed = 0000f, Collision = false}}
         };
 
         public class PortingEnemy
         {
             public AIHeroClient Sender { get; set; }
+            /// <summary>
+            /// in ms
+            /// </summary>
             public int StartTick { get; set; }
 
+            /// <summary>
+            /// in ms
+            /// </summary>
             public int Duration { get; set; }
         }
         public static readonly List<PortingEnemy> teleportingEnemies = new List<PortingEnemy>(5);

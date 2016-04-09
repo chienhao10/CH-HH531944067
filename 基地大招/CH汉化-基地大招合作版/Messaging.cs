@@ -26,39 +26,38 @@ namespace HumanziedBaseUlt
         /// <summary>
         /// Prints ult castDelay in chat
         /// </summary>
-        /// <param name="args">Champion name</param>
-        /// <param name="type"></param>
-        /// <param name="param">time parameter</param>
-        public static void ProcessInfo(string args, MessagingType type, float param)
+        /// <value name="taretName">Champion name</value>
+        /// <value name="type"></value>
+        /// <value name="param">time parameter</value>
+        public static void ProcessInfo(string targetName, MessagingType type, float param)
         {
             bool spam = CheckSpam(type);
             if (spam)
                 return;
-
-            SendMessage(param, args, type);
-
             SetLastSendTime(type);
+
+            SendMessage(param, targetName, type);
         }
 
-        private static void SendMessage(float param, string args, MessagingType type)
+        private static void SendMessage(float value, string targetName, MessagingType type)
         {
             switch (type)
             {
                 case MessagingType.DelayInfo:
-                    Chat.Print("<font color=\"#0cf006\">" + args + "My ult cast delay: " + param + " ms</font>");
+                    Chat.Print("<font color=\"#0cf006\">" + targetName + "=> My ult cast delay: " + value + " ms</font>");
                 break;
                 case MessagingType.DelayTooSmall:
-                    string msg2 = "<font color=\"#D01616\">" + "Regeneration delay too small: " + param + "</font>";
+                    string msg2 = "<font color=\"#D01616\">" + "Regeneration delay too small: " + value + "</font>";
                     Chat.Print(msg2);
-                    AllyMessaging.SendMessageToAllies("Regeneration delay too small: " + param);
+                    AllyMessaging.SendMessageToAllies("Regeneration delay too small: " + value);
                 break;
                 case MessagingType.NotEnoughTime:
-                    Chat.Print("<font color=\"#D01616\">" + "Not enough time for me: " + param + "</font>");
+                    Chat.Print("<font color=\"#D01616\">" + "Not enough time for me. Target: " + targetName + "</font>");
                 break;
                 case MessagingType.NotEnougDamage:
-                    string msg4 = "<font color=\"#D01616\">" + "Not enough damage at all: " + param + "</font>";
+                    string msg4 = "<font color=\"#D01616\">" + "Not enough damage at all: " + value + "</font>";
                     Chat.Print(msg4);
-                    AllyMessaging.SendMessageToAllies("Not enough damage at all: " + param);
+                    AllyMessaging.SendMessageToAllies("Not enough damage at all: " + value);
                 break;
             }
         }
@@ -121,8 +120,8 @@ namespace HumanziedBaseUlt
             foreach (var ally in EntityManager.Heroes.Allies.Where(x => x.IsValid))
             {
                 bool isGlobalUltChamp =
-                    Listing.spellDataList.Any(
-                        x => x.championName == ally.ChampionName && x.championName != ObjectManager.Player.ChampionName);
+                    Listing.UltSpellDataList.Any(
+                        x => x.Key == ally.ChampionName && x.Key != ObjectManager.Player.ChampionName);
                 if (isGlobalUltChamp)
                 {
                     string menuid = ally.ChampionName + "/Premade";
@@ -171,8 +170,8 @@ namespace HumanziedBaseUlt
             foreach (var ally in EntityManager.Heroes.Allies)
             {
                 bool isGlobalUltChamp =
-                    Listing.spellDataList.Any(
-                        x => x.championName == ally.ChampionName && x.championName != ObjectManager.Player.ChampionName);
+                    Listing.UltSpellDataList.Any(
+                        x => x.Key == ally.ChampionName && x.Key != ObjectManager.Player.ChampionName);
                 if (isGlobalUltChamp)
                 {
                     string menuid = ally.ChampionName + "/Premade";

@@ -7,50 +7,23 @@ namespace LelBlanc.Modes
 {
     internal class KillSteal
     {
-        public static bool UseQ
-        {
-            get { return Config.KillStealMenu["useQ"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseQ => Config.KillStealMenu["useQ"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseW
-        {
-            get { return Config.KillStealMenu["useW"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseW => Config.KillStealMenu["useW"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseReturn
-        {
-            get { return Config.KillStealMenu["useReturn"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseReturn => Config.KillStealMenu["useReturn"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseE
-        {
-            get { return Config.KillStealMenu["useE"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseE => Config.KillStealMenu["useE"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseQr
-        {
-            get { return Config.KillStealMenu["useQR"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseQr => Config.KillStealMenu["useQR"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseWr
-        {
-            get { return Config.KillStealMenu["useWR"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseWr => Config.KillStealMenu["useWR"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseReturn2
-        {
-            get { return Config.KillStealMenu["useReturn2"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseReturn2 => Config.KillStealMenu["useReturn2"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseEr
-        {
-            get { return Config.KillStealMenu["useER"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseEr => Config.KillStealMenu["useER"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseIgnite
-        {
-            get { return Config.KillStealMenu["useIgnite"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseIgnite => Config.KillStealMenu["useIgnite"].Cast<CheckBox>().CurrentValue;
 
         public static bool ResetW { get; set; }
 

@@ -9,6 +9,9 @@ namespace HumanziedBaseUlt
     {
         public class InvisibleEventArgs : EventArgs
         {
+            /// <summary>
+            /// in ms
+            /// </summary>
             public int StartTime { get; set; }
             public AIHeroClient sender { get; set; }
             /// <summary>

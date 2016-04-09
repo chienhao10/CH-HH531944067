@@ -9,45 +9,21 @@ namespace LelBlanc.Modes
     {
         #region Properties
 
-        private static bool UseQ
-        {
-            get { return Config.ComboMenu["useQ"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseQ => Config.ComboMenu["useQ"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseW
-        {
-            get { return Config.ComboMenu["useW"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseW => Config.ComboMenu["useW"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseReturn
-        {
-            get { return Config.ComboMenu["useReturn"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseReturn => Config.ComboMenu["useReturn"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseE
-        {
-            get { return Config.ComboMenu["useE"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseE => Config.ComboMenu["useE"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseQr
-        {
-            get { return Config.ComboMenu["useQR"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseQr => Config.ComboMenu["useQR"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseWr
-        {
-            get { return Config.ComboMenu["useWR"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseWr => Config.ComboMenu["useWR"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseReturn2
-        {
-            get { return Config.ComboMenu["useReturn2"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseReturn2 => Config.ComboMenu["useReturn2"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseEr
-        {
-            get { return Config.ComboMenu["useER"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseEr => Config.ComboMenu["useER"].Cast<CheckBox>().CurrentValue;
 
         #endregion
 

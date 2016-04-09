@@ -56,7 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Algorithm.cs" />
+    <Compile Include="DamageCalculation\MasteryData.cs" />
     <Compile Include="Damage.cs" />
+    <Compile Include="DamageCalculation\DamageEx.cs" />
     <Compile Include="Debug.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Listing.cs" />

@@ -78,24 +78,20 @@ namespace LelBlanc
                 CastDelay = 500
             };
 
-            W = new Spell.Skillshot(SpellSlot.W, 600, SkillShotType.Circular, 500, 1450, 220);
+            W = new Spell.Skillshot(SpellSlot.W, 600, SkillShotType.Circular, 600, 1450, 220);
 
             WReturn = new Spell.Active(SpellSlot.W);
 
             RReturn = new Spell.Active(SpellSlot.R);
 
-            E = new Spell.Skillshot(SpellSlot.E, 900, SkillShotType.Linear, 300, 1650, 55)
-            {
-                AllowedCollisionCount = 0,
-                MinimumHitChance = HitChance.High
-            };
+            E = new Spell.Skillshot(SpellSlot.E, 900, SkillShotType.Linear, 300, 1650, 55);
 
             QUltimate = new Spell.Targeted(SpellSlot.R, 720)
             {
                 CastDelay = 500
             };
 
-            WUltimate = new Spell.Skillshot(SpellSlot.R, 600, SkillShotType.Circular, 500, 1450, 220);
+            WUltimate = new Spell.Skillshot(SpellSlot.R, 600, SkillShotType.Circular, 600, 1450, 220);
 
             EUltimate = new Spell.Skillshot(SpellSlot.R, 900, SkillShotType.Linear, 300, 1650, 55)
             {
@@ -203,7 +199,7 @@ namespace LelBlanc
 
             if (args.SData.Name.ToLower() == "leblancslide")
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && Config.ComboMenu["useE"].Cast<CheckBox>().CurrentValue)
                 {
                     var target = TargetSelector.GetTarget(E.Range, DamageType.Magical);
 
@@ -216,7 +212,7 @@ namespace LelBlanc
 
             if (args.SData.Name.ToLower() == "leblancslidem")
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && Config.ComboMenu["useE"].Cast<CheckBox>().CurrentValue)
                 {
                     var target = TargetSelector.GetTarget(E.Range, DamageType.Magical);
 

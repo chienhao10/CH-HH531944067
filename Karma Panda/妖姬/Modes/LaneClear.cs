@@ -7,35 +7,17 @@ namespace LelBlanc.Modes
 {
     internal class LaneClear
     {
-        public static bool UseQ
-        {
-            get { return Config.LaneClearMenu["useQ"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseQ => Config.LaneClearMenu["useQ"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseW
-        {
-            get { return Config.LaneClearMenu["useW"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseW => Config.LaneClearMenu["useW"].Cast<CheckBox>().CurrentValue;
 
-        public static int SliderW
-        {
-            get { return Config.LaneClearMenu["sliderW"].Cast<Slider>().CurrentValue; }
-        }
+        public static int SliderW => Config.LaneClearMenu["sliderW"].Cast<Slider>().CurrentValue;
 
-        public static bool UseQr
-        {
-            get { return Config.LaneClearMenu["useQR"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseQr => Config.LaneClearMenu["useQR"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseWr
-        {
-            get { return Config.LaneClearMenu["useWR"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseWr => Config.LaneClearMenu["useWR"].Cast<CheckBox>().CurrentValue;
 
-        public static int SliderWr
-        {
-            get { return Config.LaneClearMenu["sliderWR"].Cast<Slider>().CurrentValue; }
-        }
+        public static int SliderWr => Config.LaneClearMenu["sliderWR"].Cast<Slider>().CurrentValue;
 
         public static void Execute()
         {

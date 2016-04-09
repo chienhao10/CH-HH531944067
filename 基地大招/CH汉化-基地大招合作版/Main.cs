@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -28,14 +27,6 @@ namespace HumanziedBaseUlt
             Listing.config.Add("fountainReg", new Slider("泉水回血速度", 89, 85, 92));
             Listing.config.Add("fountainRegMin20", new Slider("20分钟后泉水回血速度", 364, 350, 370));
 
-            Listing.config.AddSeparator();
-            Listing.config.AddLabel("[德莱文]");
-            Listing.config.Add("dravenCastBackBool", new CheckBox("开启 '德莱文R2'"));
-            Listing.config.Add("dravenCastBackDelay", new Slider("提早开启R2 X 毫秒", 400, 0, 500));
-
-            Listing.config.AddSeparator();
-            Listing.config.Add("allyMessaging", new CheckBox("给队友发消息"));
-            Listing.config.AddLabel("如果只有1名玩家使用这个脚本，其他玩家会通过游戏私聊收到消息");
 
             Listing.potionMenu = Listing.config.AddSubMenu("药水");
             Listing.potionMenu.AddLabel("[回血速度 HP/秒.]");
@@ -59,9 +50,23 @@ namespace HumanziedBaseUlt
             Listing.allyconfig = Listing.config.AddSubMenu("队友");
             foreach (var ally in EntityManager.Heroes.Allies)
             {
-                if (Listing.spellDataList.Any(x => x.championName == ally.ChampionName))
+                if (Listing.UltSpellDataList.Any(x => x.Key == ally.ChampionName))
                     Listing.allyconfig.Add(ally.ChampionName + "/联合", new CheckBox(ally.ChampionName, ally.IsMe));
             }
+
+
+            Listing.MiscMenu = Listing.config.AddSubMenu("杂项");
+            Listing.MiscMenu.AddLabel("[德莱文]");
+            Listing.MiscMenu.Add("dravenCastBackBool", new CheckBox("开启 '德莱文R2'"));
+            Listing.MiscMenu.Add("dravenCastBackDelay", new Slider("提早开启R2 X 毫秒", 400, 0, 500));
+
+            Listing.MiscMenu.AddSeparator();
+            Listing.MiscMenu.Add("allyMessaging", new CheckBox("给队友发消息"));
+            Listing.MiscMenu.AddLabel("如果只有1名玩家使用这个脚本，其他玩家会通过游戏私聊收到消息");
+
+            AddStringList(Listing.MiscMenu, "damageCalcMethod", "伤害计算逻辑", 
+                new [] {"Elobudddy", "Leaguesharp"}, 1);
+            Listing.MiscMenu.AddLabel("EB暂时不支持计算天赋");
 
             Game.OnUpdate += GameOnOnUpdate;
             Teleport.OnTeleport += TeleportOnOnTeleport;
@@ -151,12 +156,12 @@ namespace HumanziedBaseUlt
             if (!Listing.config.Get<CheckBox>("on").CurrentValue)
                 return;
 
-            foreach (Listing.PortingEnemy enemyInst in Listing.teleportingEnemies.OrderBy(x => x.Sender.Health))
+            foreach (Listing.PortingEnemy portingEnemy in Listing.teleportingEnemies.OrderBy(x => x.Sender.Health))
             {
-                var enemy = enemyInst.Sender;
+                var enemy = portingEnemy.Sender;
                 InvisibleEventArgs invisEntry = Listing.invisEnemiesList.First(x => x.sender.Equals(enemy));
 
-                int recallEndTime = enemyInst.StartTick + enemyInst.Duration;
+                int recallEndTime = portingEnemy.StartTick + portingEnemy.Duration;
                 float timeLeft = recallEndTime - Core.GameTickCount;
                 float travelTime = Algorithm.GetUltTravelTime(me, enemySpawn);
 
@@ -165,21 +170,21 @@ namespace HumanziedBaseUlt
 
                 float aioDmg = Damage.GetAioDmg(enemy, timeLeft, enemySpawn);
 
-                /*contains own enemy hp reg during fly delay*/
-                float realDelayTime = Algorithm.SimulateRealDelayTime(enemy, recallEndTime, aioDmg);
+                float regenerationDelayTime = Algorithm.SimulateRealDelayTime(enemy, recallEndTime, aioDmg);
 
                 if (aioDmg > totalEnemyHOnRecallEnd)
                 {
-                    if (realDelayTime < Listing.config.Get<Slider>("minDelay").CurrentValue)
+                    if (regenerationDelayTime < Listing.config.Get<Slider>("minDelay").CurrentValue)
                     {
-                        Messaging.ProcessInfo(enemy.ChampionName, Messaging.MessagingType.DelayTooSmall, realDelayTime);
+                        Messaging.ProcessInfo(enemy.ChampionName, Messaging.MessagingType.DelayTooSmall, regenerationDelayTime);
                         continue;
                     }
 
-                    CheckUltCast(enemy, timeLeft, travelTime, aioDmg, realDelayTime);
+                    CheckUltCast(enemy, timeLeft, travelTime, aioDmg, regenerationDelayTime);
                 }
-                else /*not enough damage at all*/if (aioDmg > 0)
+                else if (aioDmg > 0) /*not enough damage at all (maybe not enough time?)*/
                 {
+                    //dmg there but not enough
                     Messaging.ProcessInfo(enemy.ChampionName, Messaging.MessagingType.NotEnougDamage, aioDmg);
                 }
             }
@@ -216,11 +221,6 @@ namespace HumanziedBaseUlt
                 },
                 (int)delay);
                 Debug.Init(enemy, Algorithm.GetLastEstimatedEnemyReg(), aioDmg);
-            }
-            else /*not enough time for me*/
-            {
-                float param = travelTime - (timeLeft + regenerationDelayTime);
-                Messaging.ProcessInfo(enemy.ChampionName, Messaging.MessagingType.NotEnoughTime, param);
             }
 
 

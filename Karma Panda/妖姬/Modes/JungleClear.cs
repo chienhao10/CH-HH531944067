@@ -7,45 +7,21 @@ namespace LelBlanc.Modes
 {
     internal class JungleClear
     {
-        public static bool UseQ
-        {
-            get { return Config.JungleClearMenu["useQ"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseQ => Config.JungleClearMenu["useQ"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseW
-        {
-            get { return Config.JungleClearMenu["useW"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseW => Config.JungleClearMenu["useW"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseE
-        {
-            get { return Config.JungleClearMenu["useE"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseE => Config.JungleClearMenu["useE"].Cast<CheckBox>().CurrentValue;
 
-        public static int SliderW
-        {
-            get { return Config.JungleClearMenu["sliderW"].Cast<Slider>().CurrentValue; }
-        }
+        public static int SliderW => Config.JungleClearMenu["sliderW"].Cast<Slider>().CurrentValue;
 
-        public static bool UseQr
-        {
-            get { return Config.JungleClearMenu["useQR"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseQr => Config.JungleClearMenu["useQR"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseWr
-        {
-            get { return Config.JungleClearMenu["useWR"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseWr => Config.JungleClearMenu["useWR"].Cast<CheckBox>().CurrentValue;
 
-        public static bool UseEr
-        {
-            get { return Config.JungleClearMenu["useER"].Cast<CheckBox>().CurrentValue; }
-        }
+        public static bool UseEr => Config.JungleClearMenu["useER"].Cast<CheckBox>().CurrentValue;
 
-        public static int SliderWr
-        {
-            get { return Config.JungleClearMenu["sliderWR"].Cast<Slider>().CurrentValue; }
-        }
+        public static int SliderWr => Config.JungleClearMenu["sliderWR"].Cast<Slider>().CurrentValue;
 
         public static void Execute()
         {

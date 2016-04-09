@@ -118,15 +118,9 @@ namespace LelBlanc
             private Sprite _colorOverlaySprite;
             private TextureLoader _textureLoader;
 
-            public override string VisibleName
-            {
-                get { return _name; }
-            }
+            public override string VisibleName => _name;
 
-            public override Vector2 Offset
-            {
-                get { return _offset; }
-            }
+            public override Vector2 Offset => _offset;
 
             public ColorPickerControl(string uId, Color defaultValue) : base(uId, "", 52)
             {
@@ -167,10 +161,7 @@ namespace LelBlanc
                 SelectedColor = color;
             }
 
-            public override Color CurrentValue
-            {
-                get { return SelectedColor; }
-            }
+            public override Color CurrentValue => SelectedColor;
 
             public override bool Draw()
             {

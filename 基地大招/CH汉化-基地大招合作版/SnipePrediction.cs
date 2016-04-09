@@ -27,7 +27,7 @@ namespace HumanziedBaseUlt
             if (ObjectManager.Player.ChampionName == "Ezreal")
                 return new List<Obj_AI_Base>();
 
-            var heroEntry = Listing.spellDataList.First(x => x.championName == ObjectManager.Player.ChampionName);
+            var heroEntry = Listing.UltSpellDataList[ObjectManager.Player.ChampionName];
             Vector3 destPos = lastRealPath.LastOrDefault();
 
             return (from unit in EntityManager.Heroes.Enemies.Where(h => ObjectManager.Player.Distance(h) < 2000)
@@ -64,7 +64,7 @@ namespace HumanziedBaseUlt
             lastRealPath = targetArgs.LastRealPath;
 
             // ReSharper disable once PossibleNullReferenceException
-            ultBoundingRadius = Listing.spellDataList.FirstOrDefault(x => x.championName == ObjectManager.Player.ChampionName).Width;
+            ultBoundingRadius = Listing.UltSpellDataList[ObjectManager.Player.ChampionName].Width;
 
             Teleport.OnTeleport += SnipePredictionOnTeleport;
         }
@@ -207,7 +207,7 @@ namespace HumanziedBaseUlt
             {
                 Player.CastSpell(SpellSlot.R, CastPosition);
                 var castDelay =
-                    Listing.spellDataList.First(x => x.championName == ObjectManager.Player.ChampionName).Delay;
+                    Listing.UltSpellDataList[ObjectManager.Player.ChampionName].Delay;
 
                 if (Listing.snipeMenu.Get<CheckBox>("snipeCinemaMode").CurrentValue)
                     Core.DelayAction(() =>

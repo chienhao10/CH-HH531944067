@@ -12,19 +12,23 @@ namespace HumanziedBaseUlt
     {
         private static float lastEnemyReg = 0;
 
-        public static float SimulateHealthRegen(AIHeroClient enemy, int StartTime, int EndTime)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enemy"></param>
+        /// <param name="InvisStartTime">In ms</param>
+        /// <param name="RecallEndTime">In ms</param>
+        /// <returns></returns>
+        public static float SimulateHealthRegen(AIHeroClient enemy, int InvisStartTime, int RecallEndTime)
         {    
             float regen = 0;
 
-            int start = (int)Math.Round((double)(StartTime / 1000));
-            int end = (int)Math.Round((double)(EndTime / 1000));
+            int start = (int)Math.Round((double)(InvisStartTime / 1000));
+            int end = (int)Math.Round((double)(RecallEndTime / 1000));
 
             bool hasbuff = Listing.Regeneration.HasPotionActive(enemy);
             BuffInstance regenBuff = hasbuff ? Listing.Regeneration.GetPotionBuff(enemy) : null;
             float buffEndTime = hasbuff ? regenBuff.EndTime : 0;
-
-            //if (hasbuff)
-                //Chat.Print("startTime " + start + "//buffendTime: " + buffEndTime + "//GeneralEndTime: " + end);
 
             for (int i = start; i <= end; ++i)
             {
@@ -97,7 +101,7 @@ namespace HumanziedBaseUlt
             if (sourceName == "Ezreal")
                 return new List<Obj_AI_Base>();
 
-            var heroEntry = Listing.spellDataList.First(x => x.championName == sourceName);
+            var heroEntry = Listing.UltSpellDataList[sourceName];
             Vector3 enemyBaseVec = dest ?? ObjectManager.Get<Obj_SpawnPoint>().First(x => x.IsEnemy).Position;
 
             return (from unit in EntityManager.Heroes.Enemies.Where(h => ObjectManager.Player.Distance(h) < 2000)
@@ -115,8 +119,8 @@ namespace HumanziedBaseUlt
             try
             {
                 var targetpos = dest;
-                float speed = Listing.spellDataList.First(x => x.championName == source.ChampionName).Speed;
-                float delay = Listing.spellDataList.First(x => x.championName == source.ChampionName).Delay;
+                float speed = Listing.UltSpellDataList[source.ChampionName].Speed;
+                float delay = Listing.UltSpellDataList[source.ChampionName].Delay;
 
 
                 float distance = source.ServerPosition.Distance(targetpos);

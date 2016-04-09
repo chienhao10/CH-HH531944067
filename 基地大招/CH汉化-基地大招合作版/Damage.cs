@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
+using HumanziedBaseUlt.DamageCalculation;
 using SharpDX;
 
 namespace HumanziedBaseUlt
@@ -19,10 +20,11 @@ namespace HumanziedBaseUlt
         public static float GetAioDmg(AIHeroClient target, float timeLeft, Vector3 dest)
         {
             float dmg = 0;
+            bool elobuddyDamageMethod = Listing.MiscMenu.Get<Slider>("damageCalcMethod").CurrentValue == 0;
 
             foreach (var ally in EntityManager.Heroes.Allies.Where(x => x.IsValid))
             {
-                if (Listing.spellDataList.Any(x => x.championName == ally.ChampionName))
+                if (Listing.UltSpellDataList.Any(x => x.Key == ally.ChampionName))
                 {
                     string menuid = ally.ChampionName + "/Premade";
                     if (Listing.allyconfig.Get<CheckBox>(menuid).CurrentValue)
@@ -33,7 +35,8 @@ namespace HumanziedBaseUlt
 
                         if (canr && intime && !Algorithm.GetCollision(ally.ChampionName, dest).Any())
                         {
-                            dmg += GetBaseUltSpellDamage(target, ally);
+                            dmg += elobuddyDamageMethod ? GetBaseUltSpellDamage(target, ally) : 
+                                (float)GetBaseUltSpellDamageAdvanced(target, ally);
                         }
                     }
                 }
@@ -85,6 +88,14 @@ namespace HumanziedBaseUlt
             }
 
             return dmg*0.7f;
+        }
+
+        public static double GetBaseUltSpellDamageAdvanced(AIHeroClient target, AIHeroClient source)
+        {
+            float damageMultiplicator = Listing.UltSpellDataList[source.ChampionName].DamageMultiplicator;
+            int spellStage = Listing.UltSpellDataList[source.ChampionName].SpellStage;
+
+            return source.GetSpellDamage(target, SpellSlot.R, spellStage)*damageMultiplicator;
         }
     }
 }

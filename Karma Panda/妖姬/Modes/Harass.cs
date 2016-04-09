@@ -9,46 +9,22 @@ namespace LelBlanc.Modes
     {
         #region Properties
 
-        private static bool UseQ
-        {
-            get { return Config.HarassMenu["useQ"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseQ => Config.HarassMenu["useQ"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseW
-        {
-            get { return Config.HarassMenu["useW"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseW => Config.HarassMenu["useW"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseReturn
-        {
-            get { return Config.HarassMenu["useReturn"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseReturn => Config.HarassMenu["useReturn"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseE
-        {
-            get { return Config.HarassMenu["useE"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseE => Config.HarassMenu["useE"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseQr
-        {
-            get { return Config.HarassMenu["useQR"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseQr => Config.HarassMenu["useQR"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseWr
-        {
-            get { return Config.HarassMenu["useWR"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseWr => Config.HarassMenu["useWR"].Cast<CheckBox>().CurrentValue;
 
-        private static bool UseReturn2
-        {
-            get { return Config.HarassMenu["useReturn2"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseReturn2 => Config.HarassMenu["useReturn2"].Cast<CheckBox>().CurrentValue;
 
 
-        private static bool UseEr
-        {
-            get { return Config.HarassMenu["useER"].Cast<CheckBox>().CurrentValue; }
-        }
+        private static bool UseEr => Config.HarassMenu["useER"].Cast<CheckBox>().CurrentValue;
 
         #endregion
 
