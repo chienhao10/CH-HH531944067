@@ -39,9 +39,9 @@ namespace Jhin.Champions
         {
             foreach (var enemy in EntityManager.Heroes.Enemies)
             {
-                TextsInScreen.Add(enemy.NetworkId, new Text(enemy.ChampionName + " is R killable", new Font("Arial", 30F, FontStyle.Bold)) { Color = Color.Red });
-                TextsInHeroPosition.Add(enemy.NetworkId, new Text("R killable", new Font("Arial", 23F, FontStyle.Bold)) { Color = Color.Red });
-                LastPredictedPositionText.Add(enemy.NetworkId, new Text(enemy.ChampionName + " last predicted position", new Font("Arial", 23F, FontStyle.Bold)) { Color = Color.Red });
+                TextsInScreen.Add(enemy.NetworkId, new Text(enemy.ChampionName + " 可击杀", new Font("Arial", 30F, FontStyle.Bold)) { Color = Color.Red });
+                TextsInHeroPosition.Add(enemy.NetworkId, new Text("R 可击杀", new Font("Arial", 23F, FontStyle.Bold)) { Color = Color.Red });
+                LastPredictedPositionText.Add(enemy.NetworkId, new Text(enemy.ChampionName + " 最后预知位置", new Font("Arial", 23F, FontStyle.Bold)) { Color = Color.Red });
             }
             Q = new SpellBase(SpellSlot.Q, SpellType.Targeted, 600)
             {
@@ -133,7 +133,7 @@ namespace Jhin.Champions
 
             MenuManager.AddSubMenu("Keys");
             {
-                KeysMenu.AddValue("TapKey", new KeyBind("R Tap Key", false, KeyBind.BindTypes.HoldActive, 32)).OnValueChange +=
+                KeysMenu.AddValue("TapKey", new KeyBind("R 半自动发射", false, KeyBind.BindTypes.HoldActive, 32)).OnValueChange +=
                     delegate (ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
                     {
                         if (args.NewValue && R.IsLearned && IsCastingR)
@@ -143,14 +143,14 @@ namespace Jhin.Champions
                     };
                 ToggleManager.RegisterToggle(
                     KeysMenu.AddValue("AutoW",
-                        new KeyBind("Auto W Toggle", true, KeyBind.BindTypes.PressToggle, 'K')),
+                        new KeyBind("自动W开关", true, KeyBind.BindTypes.PressToggle, 'K')),
                     delegate
                     {
                         foreach (var enemy in UnitManager.ValidEnemyHeroes.Where(TargetHaveEBuff))
                         {
                             if (MyHero.ManaPercent >= MiscMenu.Slider("W.ManaPercent"))
                             {
-                                if (MiscMenu.CheckBox("AutoW." + enemy.ChampionName))
+                                if (MiscMenu.CheckBox("自动W." + enemy.ChampionName))
                                 {
                                     CastW(enemy);
                                 }
@@ -171,13 +171,13 @@ namespace Jhin.Champions
             }
             MenuManager.AddSubMenu("Ultimate");
             {
-                UltimateMenu.AddStringList("Mode", "R AIM Mode", new[] { "Disabled", "Using TapKey", "Automatic" }, 2);
-                UltimateMenu.AddValue("OnlyKillable", new CheckBox("Only attack if it's killable"));
-                UltimateMenu.AddValue("Delay", new Slider("Delay between R's (in ms)", 0, 0, 1500));
-                UltimateMenu.AddValue("NearMouse", new GroupLabel("Near Mouse Settings"));
-                UltimateMenu.AddValue("NearMouse.Enabled", new CheckBox("Only select target near mouse", false));
-                UltimateMenu.AddValue("NearMouse.Radius", new Slider("Near mouse radius", 500, 100, 1500));
-                UltimateMenu.AddValue("NearMouse.Draw", new CheckBox("Draw near mouse radius"));
+                UltimateMenu.AddStringList("Mode", "R 瞄准模式", new[] { "不使用", "使用扳机键", "自动" }, 2);
+                UltimateMenu.AddValue("OnlyKillable", new CheckBox("只攻击可击杀目标"));
+                UltimateMenu.AddValue("Delay", new Slider("R之间的延迟(毫秒)", 0, 0, 1500));
+                UltimateMenu.AddValue("NearMouse", new GroupLabel("鼠标附近设置"));
+                UltimateMenu.AddValue("NearMouse.Enabled", new CheckBox("只选择鼠标附近目标", false));
+                UltimateMenu.AddValue("NearMouse.Radius", new Slider("靠近鼠标半径", 500, 100, 1500));
+                UltimateMenu.AddValue("NearMouse.Draw", new CheckBox("显示鼠标半径"));
             }
             MenuManager.AddSubMenu("Harass");
             {
@@ -221,22 +221,22 @@ namespace Jhin.Champions
             MenuManager.AddSubMenu("Automatic");
             {
                 AutomaticMenu.AddValue("E.Gapcloser", new CheckBox("Use E on hero gapclosing / dashing"));
-                AutomaticMenu.AddValue("Immobile", new CheckBox("Use E on hero immobile"));
+                AutomaticMenu.AddValue("Immobile", new CheckBox("对无法移动目标使用E"));
             }
             MenuManager.AddSubMenu("Evader");
             {
-                EvaderMenu.AddValue("BlockW", new CheckBox("Block W to Evade"));
+                EvaderMenu.AddValue("BlockW", new CheckBox("保留W进行躲避"));
             }
             Evader.Initialize();
             Evader.AddCrowdControlSpells();
             Evader.AddDangerousSpells();
             MenuManager.AddSubMenu("Misc");
             {
-                MiscMenu.AddValue("W.ManaPercent", new Slider("Auto W Minimum Mana Percent", 10));
-                MiscMenu.AddValue("Champions", new GroupLabel("Allowed champions to use Auto W"));
+                MiscMenu.AddValue("W.ManaPercent", new Slider("最低蓝量百分比使用自动W", 10));
+                MiscMenu.AddValue("Champions", new GroupLabel("自动使用W英雄"));
                 foreach (var enemy in EntityManager.Heroes.Enemies)
                 {
-                    MiscMenu.AddValue("AutoW." + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                    MiscMenu.AddValue("自动W." + enemy.ChampionName, new CheckBox(enemy.ChampionName));
                 }
             }
             MenuManager.AddDrawingsMenu();
@@ -246,8 +246,8 @@ namespace Jhin.Champions
                 E.AddDrawings(false);
                 R.AddDrawings();
                 DrawingsMenu.AddValue("Toggles", new CheckBox("Draw toggles status"));
-                DrawingsMenu.AddValue("R.Killable", new CheckBox("Draw text if target is r killable"));
-                DrawingsMenu.AddValue("R.LastPredictedPosition", new CheckBox("Draw last predicted position"));
+                DrawingsMenu.AddValue("R.Killable", new CheckBox("显示可被R击杀的目标"));
+                DrawingsMenu.AddValue("R.LastPredictedPosition", new CheckBox("显示预判敌人最后出现位置"));
             }
         }
 

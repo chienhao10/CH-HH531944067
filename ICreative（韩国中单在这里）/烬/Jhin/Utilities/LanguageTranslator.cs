@@ -54,6 +54,8 @@ namespace Jhin.Utilities
                 {"Enabled", "Enabled"},
                 {"Disabled", "Disabled"},
                 {"Available", "Available"},
+                {"Ultimate", "大招"},
+                
                 /* Keys */
                 {"Combo.WithoutR", "Combo without R"},
                 {"Harass.WEQ", "Harass WEQ"},
@@ -499,6 +501,7 @@ namespace Jhin.Utilities
                 {"Enabled", "开启"},
                 {"Disabled", "关闭"},
                 {"Available", "可用的"},
+                {"Ultimate", "大招"},
                 /* Keys */
                 {"Combo.WithoutR", "不用R连招"},
                 {"Harass.WEQ", "骚扰 2"},
@@ -611,6 +614,7 @@ namespace Jhin.Utilities
                 {"Enabled", "開啟"},
                 {"Disabled", "關閉"},
                 {"Available", "可用的"},
+                {"Ultimate", "大招"},
                 /* Keys */
                 {"Combo.WithoutR", "不用R連招"},
                 {"Harass.WEQ", "騷擾 2"},
