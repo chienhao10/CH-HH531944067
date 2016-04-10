@@ -59,23 +59,23 @@ namespace Ryze
             menu.AddLabel("谢谢使用!");
 
             SubMenu["Combo"] = menu.AddSubMenu("连招", "Combo");
-            SubMenu["Combo"].AddLabel("WQER 1层被动连招使用R，2层被动连招使用R，3层被动连招使用R，或者3层被动不R");
+            SubMenu["Combo"].AddLabel("1：WQER 1层被动连招使用R，2层被动连招使用R，3层被动连招使用R，或者3层被动不R");
             SubMenu["Combo"].AddSeparator();
-            SubMenu["Combo"].AddLabel("QEWR 2层被动使用连招（R无冷却）");
+            SubMenu["Combo"].AddLabel("2：QEWR 2层被动使用连招（R无冷却）");
             SubMenu["Combo"].AddSeparator();
-            SubMenu["Combo"].AddLabel("QEW 2层被动连招不使用R");
+            SubMenu["Combo"].AddLabel("3：QEW 2层被动连招不使用R");
             SubMenu["Combo"].AddSeparator();
-            SubMenu["Combo"].AddLabel("QEQ 3层被动配合R（R无冷却）(等级6 防守型逻辑) ");
+            SubMenu["Combo"].AddLabel("4：QEQ 3层被动配合R（R无冷却）(等级6 防守型逻辑) ");
             SubMenu["Combo"].AddSeparator();
-            SubMenu["Combo"].AddLabel("WQRE 3层被动配合R (双W逻辑)");
+            SubMenu["Combo"].AddLabel("5：WQRE 3层被动配合R (双W逻辑)");
             SubMenu["Combo"].AddSeparator();
 
             SubMenu["Combo"].Add("Q", new CheckBox("使用 Q", true));
             SubMenu["Combo"].Add("W", new CheckBox("使用 W", true));
             SubMenu["Combo"].Add("E", new CheckBox("使用 E", true));
             SubMenu["Combo"].Add("R", new CheckBox("使用 R", true));
-            var mode = SubMenu["Combo"].Add("Mode", new Slider("连招模式", 0, 0, 4));
-            var modeDisplay = new[] { "WQER 1-2-3 层数", "QEWR 2 层数", "QEW 2 层数(无R)", "QEQ 3 层数", "WQRE 3 层数" };
+            var mode = SubMenu["Combo"].Add("Mode", new Slider("Combo Type", 0, 0, 4));
+            var modeDisplay = new[] { "WQER 1-2-3 Stacks", "QEWR 2 Stacks", "QEW 2 Stacks(no ULT)", "QEQ 3 Stacks", "WQRE 3 Stacks" };
             mode.DisplayName = modeDisplay[mode.CurrentValue];
 
             mode.OnValueChange +=
@@ -179,13 +179,13 @@ namespace Ryze
             {
                 "阿卡丽R", "牛头W", "皎月R", "刀妹Q", "贾科斯Q", "杰斯突击",
                 "茂凯W", "猴子E", "潘森W", "波比E", "奎恩E",
-                "赵信E", "blindmonkqtwo", "小鱼人Q", "狮子狗跳"
+                "赵信E", "瞎子Q", "小鱼人Q", "狮子狗跳"
             };
             notarget = new[]
             {
                 "剑魔Q", "男抢E", "男抢2", "人马R", "皇子Q", "皇子R", "螳螂E",
                 "螳螂2", "妖姬W", "妖姬W2", "日女E", "石头人R", "鳄鱼E",
-                "猪女Q", "慎E", "小炮W", "slashCast"
+                "猪女Q", "慎E", "小炮W", "蛮王E"
             };
             interrupt = new[]
             {
@@ -746,19 +746,19 @@ namespace Ryze
 
             switch (Mode)
             {
-                case "WQER 1-2-3层逻辑":
+                case "WQER 1-2-3 Stacks":
                     ComboWQER();
                     break;
-                case "QEWR 2层逻辑":
+                case "QEWR 2 Stacks":
                     ComboQEWR();
                     break;
-                case "QEW 2层(无R)":
+                case "QEW 2 Stacks(no ULT)":
                     ComboQEW();
                     break;
-                case "QEQ 3层逻辑":
+                case "QEQ 3 Stacks":
                     ComboQEQ();
                     break;
-                case "WQRE 3层逻辑":
+                case "WQRE 3 Stacks":
                     ComboWQRE();
                     break;
             }
