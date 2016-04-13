@@ -17,6 +17,8 @@ namespace HumanziedBaseUlt
         public static Menu config;
         public static Menu MiscMenu;
 
+        public static Menu recallTrackerMenu;
+
         public class UltSpellDataS
         {
             public string championName;
@@ -30,10 +32,10 @@ namespace HumanziedBaseUlt
 
         public static readonly Dictionary<string, UltSpellDataS> UltSpellDataList = new Dictionary<string, UltSpellDataS>
         {
-            {"Jinx",    new UltSpellDataS { SpellStage = 1, DamageMultiplicator = 1.0f, Width = 140f, Delay = 0600f/1000f, Speed = 1700f, Collision = true}},
+            {"Jinx",    new UltSpellDataS { SpellStage = 1, DamageMultiplicator = 1f, Width = 140f, Delay = 700f/1000f, Speed = 1700f, Collision = true}},
             {"Ashe",    new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 1.0f, Width = 130f, Delay = 0250f/1000f, Speed = 1600f, Collision = true}},
             {"Draven",  new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 0.7f, Width = 160f, Delay = 0400f/1000f, Speed = 2000f, Collision = true}},
-            {"Ezreal",  new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 0.8f, Width = 160f, Delay = 1000f/1000f, Speed = 2000f, Collision = false}},
+            {"Ezreal",  new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 0.7f, Width = 160f, Delay = 1000f/1000f, Speed = 2000f, Collision = false}},
             {"Karthus", new UltSpellDataS { SpellStage = 0, DamageMultiplicator = 1.0f, Width = 000f, Delay = 3125f/1000f, Speed = 0000f, Collision = false}}
         };
 
@@ -55,7 +57,7 @@ namespace HumanziedBaseUlt
         public static readonly List<AIHeroClient> visibleEnemies = new List<AIHeroClient>(5);
         public static readonly List<Events.InvisibleEventArgs> invisEnemiesList = new List<Events.InvisibleEventArgs>(5);
 
-        public class Regeneration
+        public static class Regeneration
         {
             public static float GetNormalRegenRate(AIHeroClient enemy)
             {
@@ -171,10 +173,10 @@ namespace HumanziedBaseUlt
             }
         }
 
-        public class Pathing
+        public static class Pathing
         {
             public static readonly Dictionary<AIHeroClient, Vector3[]> enemiesPaths = new Dictionary<AIHeroClient, Vector3[]>(5);
-            public static List<SnipePrediction> enemySnipeProcs = new List<SnipePrediction>(5);
+            public static readonly List<SnipePrediction> enemySnipeProcs = new List<SnipePrediction>(5);
 
             public static void UpdateEnemyPaths()
             {

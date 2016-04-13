@@ -20,13 +20,14 @@ namespace Auto_Carry_Vayne.Features.Modes
             UseE();
             UseR();
             UseTrinket(target);
+            Botrk(target);
         }
 
         public static void UseQ()
         {
             var target = TargetSelector.GetTarget((int)Variables._Player.GetAutoAttackRange(), DamageType.Physical);
             if (target == null) return;
-            if (EventManager.Afterattack && Manager.MenuManager.UseQ && Manager.SpellManager.Q.IsReady())
+            if (Variables.AfterAttack && Manager.MenuManager.UseQ && Manager.SpellManager.Q.IsReady())
             {
                 #region check for 2 w stacks
                 if (Manager.MenuManager.UseQStacks && target.GetBuffCount("vaynesilvereddebuff") != 2)
@@ -35,7 +36,6 @@ namespace Auto_Carry_Vayne.Features.Modes
                 }
                 #endregion
                 Logic.Tumble.CastDash();
-                //Botrk(target);
             }
         }
 
@@ -43,7 +43,7 @@ namespace Auto_Carry_Vayne.Features.Modes
         {
             var ctarget = Logic.Condemn.GetTarget(ObjectManager.Player.Position);
             if (ctarget == null) return;
-            if (EventManager.Afterattack && Manager.MenuManager.UseE && Manager.SpellManager.E.IsReady())
+            if (Variables.AfterAttack && Manager.MenuManager.UseE && Manager.SpellManager.E.IsReady())
             {
                 Manager.SpellManager.E.Cast(ctarget);
             }
@@ -62,9 +62,7 @@ namespace Auto_Carry_Vayne.Features.Modes
 
         public static void Botrk(Obj_AI_Base unit)
         {
-            if (unit == null) return;
-
-            if (EventManager.Afterattack && (unit.Distance(ObjectManager.Player) > 500f || (ObjectManager.Player.Health / ObjectManager.Player.MaxHealth) * 100 <= 95))
+            if (Variables.AfterAttack && (unit.Distance(ObjectManager.Player) > 500f || (ObjectManager.Player.Health / ObjectManager.Player.MaxHealth) * 100 <= 95))
             {
                 if (Item.HasItem(3144) && Item.CanUseItem(3144))
                 {

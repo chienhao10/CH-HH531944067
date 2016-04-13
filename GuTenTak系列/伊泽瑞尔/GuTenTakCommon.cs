@@ -78,7 +78,7 @@ namespace GuTenTak.Ezreal
 
             if (Q.IsInRange(Target) && Q.IsReady() && useQ && Qp.HitChance >= HitChance.High)
             {
-                if (ModesMenu1["ComboA"].Cast<CheckBox>().CurrentValue && !ObjectManager.Player.IsInAutoAttackRange(Target) && !Target.IsInvulnerable)
+                if (ModesMenu1["ComboA"].Cast<CheckBox>().CurrentValue && !Player.Instance.IsInAutoAttackRange(Target) && !Target.IsInvulnerable)
                 {
                     Q.Cast(Qp.CastPosition);
                 }
@@ -97,7 +97,7 @@ namespace GuTenTak.Ezreal
             }
             if (R.IsInRange(Target) && R.IsReady() && useR && !Target.IsInvulnerable)
             {
-                if (ObjectManager.Player.CountEnemiesInRange(700) == 0)
+                if (Player.Instance.CountEnemiesInRange(700) == 0)
                 {//Thanks to Hi I'm Ezreal
                     foreach (var hero in EntityManager.Heroes.Enemies.Where(hero => hero.IsValidTarget(3000)))
                     {
@@ -135,13 +135,13 @@ namespace GuTenTak.Ezreal
 
         internal static void OnBuffGain(Obj_AI_Base sender, Obj_AI_BaseBuffGainEventArgs args)
         {
-            if (!sender.IsMe) return;
+            if (!sender.IsMe || ModesMenu3["Qssmode"].Cast<ComboBox>().CurrentValue == 1 && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ) return;
             var type = args.Buff.Type;
-            var duration = args.Buff.EndTime - Game.Time;
+            //var duration = args.Buff.EndTime - Game.Time;
             var Name = args.Buff.Name.ToLower();
 
-            if (ModesMenu3["Qssmode"].Cast<ComboBox>().CurrentValue == 0)
-            {
+            /*if (ModesMenu3["Qssmode"].Cast<ComboBox>().CurrentValue == 0)
+            {*/
                 if (type == BuffType.Taunt && ModesMenu3["Taunt"].Cast<CheckBox>().CurrentValue)
                 {
                     DoQSS();
@@ -197,7 +197,7 @@ namespace GuTenTak.Ezreal
                 if (Name == "poppydiplomaticimmunity" && ModesMenu3["PoppyUlt"].Cast<CheckBox>().CurrentValue)
                 {
                     UltQSS();
-                }
+                }/*
             }
             if (ModesMenu3["Qssmode"].Cast<ComboBox>().CurrentValue == 1 && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
@@ -257,7 +257,7 @@ namespace GuTenTak.Ezreal
                 {
                     UltQSS();
                 }
-            }
+            }*/
         }
 
         public static void Harass()
@@ -265,13 +265,13 @@ namespace GuTenTak.Ezreal
             //Harass
 
             var Target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-            if (Target == null) return;
-            var TargetR = TargetSelector.GetTarget(R.Range, DamageType.Physical);
+            if (Target == null && !Target.IsValid()) return;
+            //var TargetR = TargetSelector.GetTarget(R.Range, DamageType.Physical);
             var useQ = ModesMenu1["HarassQ"].Cast<CheckBox>().CurrentValue;
             var useW = ModesMenu1["HarassW"].Cast<CheckBox>().CurrentValue;
             var Qp = Q.GetPrediction(Target);
             var Wp = W.GetPrediction(Target);
-            if (!Target.IsValid() && Target == null) return;
+            //if (!Target.IsValid() && Target == null) return;
 
 
             if (Q.IsInRange(Target) && Q.IsReady() && useQ && Qp.HitChance >= HitChance.High && Program._Player.ManaPercent >= Program.ModesMenu1["ManaHQ"].Cast<Slider>().CurrentValue)
@@ -371,28 +371,34 @@ if (Q.IsReady() && ModesMenu2["FarmQ"].Cast<CheckBox>().CurrentValue && Program.
 
         public static void Flee()
         {
+            if (ModesMenu3["FleeQ"].Cast<CheckBox>().CurrentValue && Program._Player.ManaPercent <= Program.ModesMenu3["ManaFlQ"].Cast<Slider>().CurrentValue)
+            {
+                if ( Player.Instance.CountEnemiesInRange(400) == 0 /*|| E.IsReady(1500) && !E.IsReady()*/ )
+                {
+                    var Target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
+                    if (Target != null && Target.IsValid)
+                    {
+                        var Qp = Q.GetPrediction(Target);
+                        Q.Cast(Qp.CastPosition);
+                    }
+                }
+
+            }
             if (ModesMenu3["FleeE"].Cast<CheckBox>().CurrentValue)
             {
                 var tempPos = Game.CursorPos;
-                if (tempPos.IsInRange(Player.Instance.Position, E.Range))
+                if ( tempPos.IsInRange(Player.Instance.Position, E.Range))
                 {
+                    //if (ModesMenu3["BlockE"].Cast<CheckBox>().CurrentValue && !enemyTurret.FirstOrDefault(tur => tur.Distance(tempPos) < 850).IsValid) return;
                     E.Cast(tempPos);
                 }
                 else
                 {
-                    E.Cast(Player.Instance.Position.Extend(tempPos, 450).To3DWorld());
+                    tempPos = Player.Instance.Position.Extend(tempPos, 450).To3DWorld();
+                    //if (ModesMenu3["BlockE"].Cast<CheckBox>().CurrentValue && enemyTurret.FirstOrDefault(tur => tur.Distance(tempPos) < 850).IsValid) return;
+                    E.Cast(tempPos);
+                    //Drawing.OnDraw+=(args)=>Drawing.DrawCircle(Player.Instance.Position.Extend(tempPos, 450).To3DWorld(),30, System.Drawing.Color.Red);
                 }
-            }
-            if (ModesMenu3["FleeQ"].Cast<CheckBox>().CurrentValue && Program._Player.ManaPercent <= Program.ModesMenu3["ManaFlQ"].Cast<Slider>().CurrentValue)
-            {
-                if (ObjectManager.Player.CountEnemiesInRange(400) == 0)
-                {
-                    var Target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
-                    if (Target == null) return;
-                    var Qp = Q.GetPrediction(Target);
-                    Q.Cast(Qp.CastPosition);
-                }
-
             }
         }
 
@@ -471,8 +477,10 @@ if (Q.IsReady() && ModesMenu2["FarmQ"].Cast<CheckBox>().CurrentValue && Program.
             };
                 if (sender.IsEnemy && sender.GetAutoAttackRange() >= ObjectManager.Player.Distance(gapcloser.End) && !herogapcloser.Any(sender.ChampionName.Contains))
                 {
-                    var diffGapCloser = gapcloser.End - gapcloser.Start;
-                    E.Cast(ObjectManager.Player.ServerPosition + diffGapCloser);
+                    var diffGapCloser = gapcloser.End - gapcloser.Start + Player.Instance.ServerPosition;
+                    //if (ModesMenu3["BlockE"].Cast<CheckBox>().CurrentValue && !enemyTurret.FirstOrDefault(tur => tur.Distance(diffGapCloser) < 850).IsValid)
+                    //    return;
+                    E.Cast(diffGapCloser);
                 }
             }
         }
@@ -502,7 +510,7 @@ if (Q.IsReady() && ModesMenu2["FarmQ"].Cast<CheckBox>().CurrentValue && Program.
                             if (DamageLib.RCalc(enemy) * 0.7f >= enemy.Health && R.IsReady() && R.IsInRange(enemy) && Program.ModesMenu1["KR"].Cast<CheckBox>().CurrentValue && Rp.HitChance >= HitChance.High && !enemy.IsInvulnerable)
                             {
                            
-                            if (ObjectManager.Player.CountEnemiesInRange(700) == 0)
+                            if (Player.Instance.CountEnemiesInRange(700) == 0)
                                 {
                                     R.Cast(Rp.CastPosition);
                                 }
@@ -530,7 +538,7 @@ if (Q.IsReady() && ModesMenu2["FarmQ"].Cast<CheckBox>().CurrentValue && Program.
                 {
                 if (Player.Instance.IsInShopRange())
                 {
-                    if (Program.Tear.IsOwned())
+                    if (Tear.IsOwned() || Manamune.IsOwned())
                     {
                         Q.Cast(Game.CursorPos);
                         W.Cast(Game.CursorPos);

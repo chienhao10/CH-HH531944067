@@ -48,7 +48,7 @@ namespace HumanziedBaseUlt
         /// </summary>
         /// <param name="enemy"></param>
         /// <returns></returns>
-        private static float GetFountainReg(AIHeroClient enemy)
+        public static float GetFountainReg(AIHeroClient enemy)
         {
             float regSpeedDefault = Listing.config.Get<Slider>("fountainReg").CurrentValue / 10;
             float regSpeedMin20 = Listing.config.Get<Slider>("fountainRegMin20").CurrentValue / 10;

@@ -18,8 +18,8 @@ namespace Twitch
             }
             return
                 (int)
-                    (new int[] { 25, 40, 55, 70, 85 }[SpellManager.E.Level - 1]) +
-                     stacks * (new int[] { 20, 25, 30, 35, 40 }[SpellManager.E.Level - 1] + 0.2f * Player.Instance.TotalMagicalDamage + 0.25f * (Player.Instance.TotalAttackDamage - Player.Instance.BaseAttackDamage));
+                    (new int[] { 20, 35, 50, 65, 80 }[SpellManager.E.Level - 1]) +
+                     stacks * (new int[] { 15, 20, 25, 30, 35 }[SpellManager.E.Level - 1] + 0.2f * Player.Instance.TotalMagicalDamage + 0.25f * (Player.Instance.TotalAttackDamage - Player.Instance.BaseAttackDamage));
         }
 
         public static float EDamage(Obj_AI_Base target)
@@ -36,10 +36,10 @@ namespace Twitch
         #region DamageIndicator
 
         //Offsets
-        private const float YOff = 9.8f;
-        private const float XOff = 0;
+        private const float YOff = 2;
+        private const float XOff = 1;
         private const float Width = 107;
-        private const float Thick = 9.82f;
+        private const float Thick = 6;
         //Offsets
         private static Font _Font, _Font2;
         private static Color color = Color.Yellow;
@@ -53,10 +53,6 @@ namespace Twitch
                 new FontDescription
                 {
                     FaceName = "Segoi UI",
-                    Height = 16,
-                    Weight = FontWeight.Bold,
-                    OutputPrecision = FontPrecision.Default,
-                    Quality = FontQuality.ClearType,
                 });
 
             _Font2 = new Font(
@@ -64,10 +60,6 @@ namespace Twitch
                 new FontDescription
                 {
                     FaceName = "Segoi UI",
-                    Height = 11,
-                    Weight = FontWeight.Bold,
-                    OutputPrecision = FontPrecision.Default,
-                    Quality = FontQuality.ClearType,
                 });
         }
 

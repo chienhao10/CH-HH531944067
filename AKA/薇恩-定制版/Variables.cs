@@ -20,6 +20,8 @@ namespace Auto_Carry_Vayne
 
         public static int ticks = 0;
 
+        public static float lastaa = 1f;
+
         public static bool VayneUltiIsActive { get; set; }
 
         public static SpellSlot FlashSlot;
@@ -65,6 +67,18 @@ namespace Auto_Carry_Vayne
         {
             return Manager.MenuManager.J4Flag
                 && ObjectManager.Get<Obj_AI_Base>().Any(m => m.Distance(endPosition) <= target.BoundingRadius && m.Name == "Beacon");
+        }
+
+        public static bool AfterAttack
+        {
+            get
+            {
+                if (Game.Time * 1000 < lastaa + ObjectManager.Player.AttackDelay * 1000 - ObjectManager.Player.AttackDelay * 1000 / 2.35 && Game.Time * 1000 > lastaa + ObjectManager.Player.AttackCastDelay * 1000)
+                {
+                    return true;
+                }
+                return false;
+            }
         }
         #region MenuOptions
 

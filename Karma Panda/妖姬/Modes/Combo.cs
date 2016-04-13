@@ -69,7 +69,7 @@ namespace LelBlanc.Modes
                     Program.WReturn.Cast();
                 }
 
-                var wTarget = TargetSelector.GetTarget(Program.W.Range, DamageType.Magical);
+                var wTarget = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(Program.W.Range, DamageType.Magical);
 
                 if (wTarget != null && UseW && !Program.Q.IsLearned && Program.W.IsReady() &&
                     Player.Instance.Spellbook.GetSpell(SpellSlot.W).Name.ToLower() == "leblancslide")
@@ -77,7 +77,7 @@ namespace LelBlanc.Modes
                     Program.W.Cast(wTarget);
                 }
 
-                var eTarget = TargetSelector.GetTarget(Program.E.Range, DamageType.Magical);
+                var eTarget = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(Program.E.Range, DamageType.Magical);
 
                 if (eTarget != null && UseE && !Program.Q.IsLearned && Program.E.IsReady())
                 {
@@ -85,7 +85,7 @@ namespace LelBlanc.Modes
                 }
             }
 
-            var target = TargetSelector.GetTarget(Program.Q.Range, DamageType.Magical);
+            var target = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(Program.Q.Range, DamageType.Magical);
 
             if (target == null)
             {
@@ -127,7 +127,7 @@ namespace LelBlanc.Modes
 
         private static void DoubleQLogic()
         {
-            var target = TargetSelector.GetTarget(Program.Q.Range, DamageType.Magical);
+            var target = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(Program.Q.Range, DamageType.Magical);
 
             if (target == null)
             {
@@ -165,7 +165,7 @@ namespace LelBlanc.Modes
 
         private static void DoubleELogic()
         {
-            var target = TargetSelector.GetTarget(Program.E.Range, DamageType.Magical);
+            var target = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(Program.E.Range, DamageType.Magical);
 
             if (target == null)
             {

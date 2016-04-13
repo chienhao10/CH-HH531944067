@@ -15,7 +15,7 @@ namespace Auto_Carry_Vayne.Features.Modes
 
         public static void UseQ()
         {
-            if (Manager.MenuManager.UseQJC && Manager.SpellManager.Q.IsReady() && EventManager.Afterattack)
+            if (Manager.MenuManager.UseQJC && Manager.SpellManager.Q.IsReady() && Variables.AfterAttack)
             {
                 foreach (var Mob in EntityManager.MinionsAndMonsters.Monsters.Where(x => x.IsValid && !x.IsDead && x.Position.Distance(Variables._Player) < Variables._Player.GetAutoAttackRange(x)))
                 {

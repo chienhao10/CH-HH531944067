@@ -12,7 +12,7 @@ namespace HumanziedBaseUlt
     {
         public enum MessagingType
         {
-            DelayInfo,
+            OwnDelayInfo,
             DelayTooSmall,
             NotEnoughTime,
             NotEnougDamage,
@@ -43,13 +43,13 @@ namespace HumanziedBaseUlt
         {
             switch (type)
             {
-                case MessagingType.DelayInfo:
+                case MessagingType.OwnDelayInfo:
                     Chat.Print("<font color=\"#0cf006\">" + targetName + "=> My ult cast delay: " + value + " ms</font>");
                 break;
                 case MessagingType.DelayTooSmall:
                     string msg2 = "<font color=\"#D01616\">" + "Regeneration delay too small: " + value + "</font>";
                     Chat.Print(msg2);
-                    AllyMessaging.SendMessageToAllies("Regeneration delay too small: " + value);
+                    //AllyMessaging.SendMessageToAllies("Regeneration delay too small: " + value);
                 break;
                 case MessagingType.NotEnoughTime:
                     Chat.Print("<font color=\"#D01616\">" + "Not enough time for me. Target: " + targetName + "</font>");
@@ -57,7 +57,7 @@ namespace HumanziedBaseUlt
                 case MessagingType.NotEnougDamage:
                     string msg4 = "<font color=\"#D01616\">" + "Not enough damage at all: " + value + "</font>";
                     Chat.Print(msg4);
-                    AllyMessaging.SendMessageToAllies("Not enough damage at all: " + value);
+                    //AllyMessaging.SendMessageToAllies("Not enough damage at all: " + value);
                 break;
             }
         }
@@ -66,7 +66,7 @@ namespace HumanziedBaseUlt
         {
             switch (type)
             {
-                case MessagingType.DelayInfo:
+                case MessagingType.OwnDelayInfo:
                     return Environment.TickCount - last_DelayInfo < 15000;
                 case MessagingType.DelayTooSmall:
                     return Environment.TickCount - last_DelayTooSmall < 15000;
@@ -83,7 +83,7 @@ namespace HumanziedBaseUlt
         {
             switch (type)
             {
-                case MessagingType.DelayInfo:
+                case MessagingType.OwnDelayInfo:
                     last_DelayInfo = Environment.TickCount;
                     break;
                 case MessagingType.DelayTooSmall:
@@ -102,7 +102,7 @@ namespace HumanziedBaseUlt
     public static class AllyMessaging
     {
         private static bool Enabled {
-            get { return Listing.config.Get<CheckBox>("allyMessaging").CurrentValue; }
+            get { return Listing.MiscMenu.Get<CheckBox>("allyMessaging").CurrentValue; }
         }
 
         static Vector3 enemySpawn
@@ -115,33 +115,81 @@ namespace HumanziedBaseUlt
             if (!Enabled)
                 return;
 
-            timeLeft = timeLeft + regInBaseDelay;
+            int premadesInvolvedCount = 0;
 
-            foreach (var ally in EntityManager.Heroes.Allies.Where(x => x.IsValid))
+            foreach (var ally in EntityManager.Heroes.Allies.Where(
+                x => x.IsValid && x.Health > 0 && !x.ChampionName.ToLower().Contains("karthus") && !x.IsMe))
             {
-                bool isGlobalUltChamp =
-                    Listing.UltSpellDataList.Any(
-                        x => x.Key == ally.ChampionName && x.Key != ObjectManager.Player.ChampionName);
-                if (isGlobalUltChamp)
-                {
-                    string menuid = ally.ChampionName + "/Premade";
-                    if (Listing.allyconfig.Get<CheckBox>(menuid).CurrentValue)
-                    {
-                        float travelTime = Algorithm.GetUltTravelTime(ally, enemySpawn);
-                        bool canr = ally.Spellbook.GetSpell(SpellSlot.R).IsReady && ally.Mana >= 100;
-                        bool intime = travelTime <= timeLeft;
-                        float delay = timeLeft - travelTime;
-                        bool collision = Algorithm.GetCollision(ally.ChampionName, enemySpawn).Any();
-                        bool messageSpam = CheckMessageSpam(ally);
+                bool isGlobalChamp = Listing.UltSpellDataList.Any(x => x.Key == ally.ChampionName);
+                if (!isGlobalChamp)
+                    continue;
 
-                        if (canr && intime && !collision && !messageSpam)
-                        {
-                            OnMessageSent(ally);
-                            Chat.Say("/w " + ally.Name + "BaseUlt CountDown:" + delay);
-                        }
+                string menuid = ally.ChampionName + "/Premade";
+                bool isPremade = Listing.allyconfig.Get<CheckBox>(menuid).CurrentValue;
+                if (!isPremade)
+                    continue;
+
+                var spell = ally.Spellbook.GetSpell(SpellSlot.R);
+                var cooldown = spell.CooldownExpires - Game.Time;
+
+                float travelTime = Algorithm.GetUltTravelTime(ally, enemySpawn);
+                bool intime = travelTime <= timeLeft + regInBaseDelay;
+                //bool collision = Algorithm.GetCollision(ally.ChampionName, enemySpawn).Any();
+
+                float delay = timeLeft + regInBaseDelay - travelTime;
+                bool canr = cooldown <= delay/1000 && ally.Mana >= 100 && ally.Level >= 6;
+
+                bool messageSpam = CheckMessageSpam(ally);
+                bool lastMoment = timeLeft + regInBaseDelay - travelTime <= 300;
+
+                if (canr && intime && (!messageSpam || lastMoment))
+                {
+                    OnMessageSent(ally);
+                    string roundedDelay = (delay / 1000).ToString("0.0");
+
+                    string msg = !lastMoment
+                        ? ally.Name + " CountDownnnnnnnnnnnnnnnnnnn: " + roundedDelay
+                        : ally.Name + " GOOO!";
+                    Chat.Say("/w " + msg);
+                    premadesInvolvedCount++;
+                }
+            }
+
+            #region karthus with premades
+            var karthusAlly =
+                EntityManager.Heroes.Allies.FirstOrDefault(x => x.IsValid && x.ChampionName.ToLower().Contains("karthus"));
+
+            if (karthusAlly != null && premadesInvolvedCount > 0)
+            {
+                string karthusMenuid = karthusAlly.ChampionName + "/Premade";
+                bool isKarthusPremade = Listing.allyconfig.Get<CheckBox>(karthusMenuid).CurrentValue;
+
+                if (isKarthusPremade && premadesInvolvedCount > 0)
+                {
+                    var spell = karthusAlly.Spellbook.GetSpell(SpellSlot.R);
+                    var cooldown = spell.CooldownExpires - Game.Time;
+
+                    bool intimeKarthus = timeLeft + regInBaseDelay >= 4000;
+                    float delay = timeLeft + regInBaseDelay - 4000;
+
+                    bool canr = cooldown <= delay/1000 && karthusAlly.Mana >= 100 && karthusAlly.Level >= 6;
+
+                    bool messageSpam = CheckMessageSpam(karthusAlly);
+                    bool lastMoment = timeLeft + regInBaseDelay - 4000 <= 300;
+
+                    if (canr && intimeKarthus && (!messageSpam || lastMoment))
+                    {
+                        OnMessageSent(karthusAlly);
+                        string roundedDelay = (delay / 1000).ToString("0.0");
+
+                        string msg = !lastMoment
+                        ? karthusAlly.Name + " CountDownnnnnnnnnnnnnnnnnnn: " + roundedDelay
+                        : karthusAlly.Name + " GOOO!";
+                        Chat.Say("/w " + msg);
                     }
                 }
             }
+            #endregion  karthus with premades
         }
 
         static readonly Dictionary<string, int> lastMessageSendTicksToAllies = new Dictionary<string, int>(4);
@@ -157,7 +205,7 @@ namespace HumanziedBaseUlt
         {
             bool infoExists = lastMessageSendTicksToAllies.ContainsKey(ally.ChampionName);
             if (infoExists)
-                return Environment.TickCount - lastMessageSendTicksToAllies[ally.ChampionName] < 1000;
+                return Environment.TickCount - lastMessageSendTicksToAllies[ally.ChampionName] < 500;
 
             return false;
         }

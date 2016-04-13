@@ -13,8 +13,8 @@ namespace Auto_Carry_Vayne.Manager
             Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
             Obj_AI_Base.OnBuffGain += Obj_AI_Base_OnBuffGain;
             Obj_AI_Base.OnSpellCast += Obj_AI_Base_OnSpellCast;
-            Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
-            Game.OnPostTick += delegate { Afterattack = false; };
+            Obj_AI_Base.OnBasicAttack += Obj_AI_Base_OnBasicAttack;
+            Spellbook.OnStopCast += Spellbook_OnStopCast;
             Game.OnUpdate += Game_OnTick;
             Drawing.OnDraw += OnDraw;
             Logic.Mechanics.LoadFlash();
@@ -48,11 +48,6 @@ namespace Auto_Carry_Vayne.Manager
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)) Features.Modes.Combo.Load();
         }
 
-        private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
-        {
-            Afterattack = true;
-        }
-
         private static void Gapcloser_OnGapCloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
         {
             Features.Utility.Misc.Gapclose(sender, e);
@@ -79,6 +74,20 @@ namespace Auto_Carry_Vayne.Manager
             Features.Utility.drawing.OnDraw();
         }
 
-        public static bool Afterattack { get; private set; }
+        private static void Obj_AI_Base_OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        {
+            if (sender.IsMe)
+            {
+                Variables.lastaa = Game.Time * 1000;
+            }
+        }
+
+        private static void Spellbook_OnStopCast(Obj_AI_Base sender, SpellbookStopCastEventArgs args)
+        {
+            if (sender.IsMe && (Game.Time * 1000) - Variables.lastaa < ObjectManager.Player.AttackCastDelay * 1000 + 50f && !args.ForceStop)
+            {
+                Variables.lastaa = 0f;
+            }
+        }
     }
 }

@@ -44,7 +44,7 @@ namespace HumanziedBaseUlt
         {
             try
             {
-                lastEstimatedPosition = Vector3.Zero;
+                lastEstimatedPosition = new Vector3(0,0,0);
                 SnipeChance = HitChance.Impossible;
                 Teleport.OnTeleport -= SnipePredictionOnTeleport;
                 Drawing.OnDraw -= OnDraw;
@@ -63,7 +63,6 @@ namespace HumanziedBaseUlt
             invisibleStartTime = targetArgs.StartTime;
             lastRealPath = targetArgs.LastRealPath;
 
-            // ReSharper disable once PossibleNullReferenceException
             ultBoundingRadius = Listing.UltSpellDataList[ObjectManager.Player.ChampionName].Width;
 
             Teleport.OnTeleport += SnipePredictionOnTeleport;
@@ -90,10 +89,6 @@ namespace HumanziedBaseUlt
             if (sender != target) return;
 
             float timeElapsed_ms = Core.GameTickCount - invisibleStartTime;
-
-            /*new try of target to recall*/
-            //if (Core.GameTickCount - lastAbortTick <= 1000)
-                //timeElapsed = lastAbortTick - invisibleStartTime;
 
             if (DoesCollide().Any())
                 SnipeChance = HitChance.Collision;
@@ -127,8 +122,10 @@ namespace HumanziedBaseUlt
                     }
                 }
 
-                float realDist = moveSpeed * (timeElapsed_ms/1000);
+                    
+                float realDist = moveSpeed*(timeElapsed_ms/1000);
                 CastPosition = GetCastPosition(realDist);
+                
                 lastEstimatedPosition = CastPosition;
             }
 
@@ -138,7 +135,7 @@ namespace HumanziedBaseUlt
                 CancelProcess();
             }
 
-            int minHitChance = Listing.snipeMenu["minSnipeHitChance"].Cast<Slider>().CurrentValue;
+            int minHitChance = Listing.snipeMenu.Get<Slider>("minSnipeHitChance").CurrentValue;
             int currentHitChanceInt = 0;
 
             if ((int) SnipeChance <= 2)
@@ -158,7 +155,6 @@ namespace HumanziedBaseUlt
             }
             else
                 CancelProcess();
-                
         }
 
         /// <summary>
@@ -168,14 +164,12 @@ namespace HumanziedBaseUlt
         /// <returns></returns>
         private Vector3 GetCastPosition(float walkedDist)
         {
-            float accuracy = Listing.snipeMenu.Get<Slider>("snipeAccuracy").CurrentValue / 100;
-
             var pathDirVec = lastRealPath.Last() - lastRealPath.First();
 
-            Vector3 bestPathDirVec = Vector3.Zero;
-            float smallestDeltaDistToWalkDist = float.MaxValue;
-
-            for (float i = 1 - accuracy; i > 0; i -= accuracy)
+            Vector3 bestPathDirVec = new Vector3(0, 0, 0);
+            float smallestDeltaDistToWalkDist = 25000f;
+            
+            for (float i = 1 - 0.01f; i > 0; i -= 0.01f)
             {
                 var shortPathDirVec = pathDirVec*i;
                 if (Math.Abs(shortPathDirVec.Length() - walkedDist) < smallestDeltaDistToWalkDist)
@@ -194,14 +188,17 @@ namespace HumanziedBaseUlt
         /// <param name="recallEnd"></param>
         private void CheckUltCast(int recallEnd)
         {
-            float regedHealthRecallFinished = Algorithm.SimulateHealthRegen(target, invisibleStartTime, recallEnd);
-            float totalEnemyHp = target.Health + regedHealthRecallFinished;
-
-            float timeLeft = recallEnd - Core.GameTickCount;
             float travelTime = Algorithm.GetUltTravelTime(ObjectManager.Player, CastPosition);
 
-            bool enoughDmg = Damage.GetAioDmg(target, timeLeft, CastPosition) > totalEnemyHp;
-            bool intime = travelTime <= timeLeft;
+            float regedHealthTillArrival = Algorithm.SimulateHealthRegen(target, invisibleStartTime, 
+                (int)Math.Floor(Core.GameTickCount + travelTime));
+
+            float totalEnemyHp = target.Health + regedHealthTillArrival;
+
+            float timeLeft = recallEnd - Core.GameTickCount;
+
+            bool enoughDmg = Damage.GetAioDmg(target, timeLeft, CastPosition, totalEnemyHp) > totalEnemyHp;
+            bool intime = travelTime < timeLeft;
 
             if (intime && enoughDmg)
             {
@@ -226,23 +223,20 @@ namespace HumanziedBaseUlt
                 CancelProcess();
         }
 
-        string LastUltMissileName { get; set; }
-
         private void MoveCamera(EventArgs args)
         {
             var ultMissile = ObjectManager.Get<MissileClient>()
-                .First(x => x.IsAlly && x.IsValidMissile() && x.SpellCaster is AIHeroClient &&
+                .FirstOrDefault(x => x.IsAlly && x.IsValidMissile() && x.SpellCaster is AIHeroClient &&
                             ((AIHeroClient)x.SpellCaster).IsMe);
-            Vector2 camPos = new Vector2(Camera.CameraX, Camera.CameraY);
 
-            LastUltMissileName = ultMissile.Name;
+            if (ultMissile == null)
+                return;
 
-            bool camAtProjectile = camPos.Distance(ultMissile.Position) <= 150;
-            if (EntityManager.Heroes.Enemies.Any(x => x.Distance(ObjectManager.Player) <= 1000 && x.IsValid) && 
-                camAtProjectile)
+            if (EntityManager.Heroes.Enemies.Any(x => x.Distance(ObjectManager.Player) <= 1000 && x.IsValid))
             {
                 Camera.CameraX = ObjectManager.Player.Position.X;
                 Camera.CameraY = ObjectManager.Player.Position.Y;
+                CancelProcess();
                 return;
             }
 

@@ -13,7 +13,7 @@ namespace Tristana
         {
             var slider = menu.Add(identifier, new Slider(displayName, (int) defaultValue, 0, 8));
             var hcNames = new[]
-            {"未知", "不可能", "体积碰撞", "低", "平均值", "中等", "高", "冲刺", "定身"};
+            {"Unknown", "Impossible", "Collision", "Low", "AveragePoint", "Medium", "High", "Dashing", "Immobile"};
             slider.DisplayName = hcNames[slider.CurrentValue];
             slider.OnValueChange +=
                 delegate (ValueBase<int> sender, ValueBase<int>.ValueChangeArgs changeArgs)
