@@ -1,6 +1,4 @@
-﻿//#define DEBUG
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -31,9 +29,7 @@ namespace BaseUltPlusPlus
         
         
         private static Font Text;
-#if DEBUG
-        private static Font DebugText;
-#endif
+
         private static float BarX = Drawing.Width * 0.415f;
         private static float BarY = Drawing.Height * 0.80f;
         private static int BarW = (int)(Drawing.Width - 2 * BarX);
@@ -43,9 +39,7 @@ namespace BaseUltPlusPlus
         public static void Initialize()
         {
             Text = new Font(Drawing.Direct3DDevice, new FontDescription { FaceName = "Calibri", Height = 13, Width = 6, OutputPrecision = FontPrecision.Default, Quality = FontQuality.Default });
-#if DEBUG
-            DebugText = new Font(Drawing.Direct3DDevice, new FontDescription { FaceName = "Calibri", Height = 26, Width = 12, OutputPrecision = FontPrecision.Default, Quality = FontQuality.Default });
-#endif
+
             #region Spells
 
             BaseUltSpells.Add(new BaseUltSpell("Ezreal", SpellSlot.R, 1000 / 1000f, 2000, 160, false));
@@ -148,19 +142,6 @@ namespace BaseUltPlusPlus
                 }
 
                 Text.DrawText(null, recall.Unit.BaseSkinName, (int)BarX + (int)(Scale * RecallProgress - (float)(recall.Unit.BaseSkinName.Length * Text.Description.Width) / 2), (int)BarY - 5 - Text.Description.Height - 1, new ColorBGRA(255, 255, 255, 255));
-            
-#if DEBUG
-            float recallEndTime = recall.Started + recall.Duration;
-            float timeNeeded = GetBaseUltTravelTime(Player);
-            float recallCountDown = recallEndTime - Core.GameTickCount;
-            float delay = recallEndTime - timeNeeded;
-
-            DebugText.DrawText(null, String.Format("回城结束 {0}", recallEndTime / 1000), 100, 300, new ColorBGRA(255, 255, 255, 255));
-            DebugText.DrawText(null, String.Format("回城倒数 {0}", recallCountDown / 1000), 100, 330, new ColorBGRA(255, 255, 255, 255));
-            DebugText.DrawText(null, String.Format("途径时间 {0}", timeNeeded / 1000), 100, 360, new ColorBGRA(255, 255, 255, 255));
-            DebugText.DrawText(null, String.Format("发射 CD {0}", (delay - Core.GameTickCount) / 1000), 100, 390, new ColorBGRA(255, 255, 255, 255));
-            DebugText.DrawText(null, String.Format("发射 CD2 {0}", (delay - 65 - Core.GameTickCount) / 1000), 100, 420, new ColorBGRA(255, 255, 255, 255));
-#endif
             }
 
             if (Recalls.Any())
@@ -267,12 +248,9 @@ namespace BaseUltPlusPlus
             if (target.Player.IsHPBarRendered)
                 return target.Player.Health;
 
-            float regen = /*HasPotionActive(target.Player) ? */target.Player.HPRegenRate /*: (target.Player.HPRegenRate + GetPotionRegenRate(GetPotionBuff(target.Player)))*/;
+            float regen = (HasPotionActive(target.Player) && Program.BaseUltMenu["trackPotion"].Cast<CheckBox>().CurrentValue) ? target.Player.HPRegenRate + GetPotionRegenRate(GetPotionBuff(target.Player)) : target.Player.HPRegenRate;
 
             float predictedHealth = target.Player.Health + (regen * ((Core.GameTickCount - target.LastSeen + additionalTime) / 1000f));
-
-            //Chat.Print(String.Format("pred {0}      regen {1}", predictedHealth, regen));
-
 
             return predictedHealth > target.Player.MaxHealth ? target.Player.MaxHealth : predictedHealth;
         }

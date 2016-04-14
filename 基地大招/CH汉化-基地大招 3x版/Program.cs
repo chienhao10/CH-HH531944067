@@ -32,7 +32,7 @@ namespace BaseUltPlusPlus
             BaseUltMenu.AddGroupLabel("基地大招目标");
             foreach (var unit in EntityManager.Heroes.Enemies)
             {
-                BaseUltMenu.Add("目标" + unit.ChampionName,
+                BaseUltMenu.Add("target" + unit.ChampionName,
                     new CheckBox(string.Format("{0} ({1})", unit.ChampionName, unit.Name)));
             }
 
