@@ -156,6 +156,114 @@ namespace GuTenTak.TwistedFate
             }
         }
 
+
+        public static void LaneClear()
+        {
+
+          // Use Q LaneClear
+          if (ModesMenu2["FarmQ"].Cast<CheckBox>().CurrentValue)
+          {
+          var qMinion = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy,PlayerInstance.ServerPosition,Q.Range).OrderBy(t => t.Health);
+                 var MinionNum = ModesMenu2["MinionLC"].Cast<Slider>().CurrentValue;
+                var manaManagerQ = ModesMenu2["ManaLQ"].Cast<Slider>().CurrentValue;
+
+
+                 if (Q.IsReady() && _Player.ManaPercent >= manaManagerQ)
+                 {
+                     var minionPrediction = EntityManager.MinionsAndMonsters.GetLineFarmLocation(
+                         qMinion,
+                        Q.Width,
+                         (int)Q.Range);
+
+
+                     if (minionPrediction.HitNumber >= MinionNum)
+                     {
+                         Q.Cast(minionPrediction.CastPosition);
+                   }
+                 }
+        }
+
+        // Use Pick A Card on LaneClear
+        if (ModesMenu2["FarmW"].Cast<CheckBox>().CurrentValue)
+        {
+                 var minion =
+                     EntityManager.MinionsAndMonsters.GetLaneMinions(
+                         EntityManager.UnitTeam.Enemy,
+                         PlayerInstance.ServerPosition,
+                         PlayerInstance.AttackRange + 100).ToArray();
+
+
+                 if (!minion.Any()) return;
+                 var manaManagerW = ModesMenu2["ManaLW"].Cast<Slider>().CurrentValue;
+
+
+                  if (W.IsReady() && _Player.ManaPercent >= manaManagerW)
+                  {
+                if (ModesMenu2["ClearPick"].Cast<ComboBox>().CurrentValue == 0)
+                {
+                  Common.CardSelector.StartSelecting(Common.Cards.Red);
+                }
+                if (ModesMenu2["ClearPick"].Cast<ComboBox>().CurrentValue == 1)
+                {
+                  Common.CardSelector.StartSelecting(Common.Cards.Blue);
+                }
+        }
+      }
+      }
+
+      public static void JungleClear()
+      {
+        if (ModesMenu2["JungleQ"].Cast<CheckBox>().CurrentValue)
+        {
+              var qMinion =
+                  EntityManager.MinionsAndMonsters.GetJungleMonsters(
+                      PlayerInstance.ServerPosition,
+                      Q.Range).OrderBy(t => t.Health).FirstOrDefault();
+              if (qMinion == null) return;
+
+              var manaManagerQ = ModesMenu2["ManaJQ"].Cast<Slider>().CurrentValue;
+
+              if (Q.IsReady() && _Player.ManaPercent >= manaManagerQ)
+              {
+                  var minionPrediction = Q.GetPrediction(qMinion);
+
+                  if (minionPrediction.HitChance >= HitChance.High)
+                  {
+                      Q.Cast(minionPrediction.CastPosition);
+                  }
+              }
+          }
+
+          if (ModesMenu2["JungleW"].Cast<CheckBox>().CurrentValue)
+          {
+              var minion = EntityManager.MinionsAndMonsters.GetJungleMonsters(Player.Instance.ServerPosition,
+                  Player.Instance.AttackRange + 100).ToArray();
+
+              if (!minion.Any()) return;
+              var manaManagerW = ModesMenu2["ManaJW"].Cast<Slider>().CurrentValue;
+
+
+               if (W.IsReady() && _Player.ManaPercent >= manaManagerW)
+               {
+             if (ModesMenu2["JungleClearPick"].Cast<ComboBox>().CurrentValue == 0)
+             {
+               Common.CardSelector.StartSelecting(Common.Cards.Red);
+             }
+             if (ModesMenu2["JungleClearPick"].Cast<ComboBox>().CurrentValue == 1)
+             {
+               Common.CardSelector.StartSelecting(Common.Cards.Blue);
+             }
+             if (ModesMenu2["JungleClearPick"].Cast<ComboBox>().CurrentValue == 2)
+             {
+               Common.CardSelector.StartSelecting(Common.Cards.Yellow);
+             }
+
+          }
+      }
+    }
+
+
+
         public static void LastHit()
         {
             var source =
@@ -206,7 +314,7 @@ namespace GuTenTak.TwistedFate
             var Target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             if (Target == null) return;
             var useQ = ModesMenu1["ComboQ"].Cast<CheckBox>().CurrentValue;
-        var Qp = Q.GetPrediction(Target);
+            var Qp = Q.GetPrediction(Target);
             if (!Target.IsValid()) return;
             if (_Player.HasBuff("Pick A Card Gold") && Q.IsReady() && useQ && Qp.HitChance >= HitChance.High)
             {

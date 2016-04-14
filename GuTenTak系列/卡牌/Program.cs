@@ -126,22 +126,24 @@ namespace GuTenTak.TwistedFate
                 ModesMenu2.AddSeparator();
                 ModesMenu2.Add("LastBlue", new CheckBox("选择蓝牌", true));
                 ModesMenu2.Add("ManaLast", new Slider("蓝量低于百分比时", 40));
-                ModesMenu2.AddSeparator();/*
-                ModesMenu2.AddLabel("Lane Clear Config");
                 ModesMenu2.AddSeparator();
-                ModesMenu2.Add("FarmQ", new CheckBox("Use Q on LaneClear", true));
-                ModesMenu2.Add("ManaLQ", new Slider("Mana %", 40));
-                ModesMenu2.Add("MinionLC", new Slider("Use Q Min Minions on LaneClear", 3, 1, 5));
-                ModesMenu2.Add("FarmW", new CheckBox("Use W on LaneClear", true));
-                ModesMenu2.Add("ManaLW", new Slider("Mana %", 40));
+                ModesMenu2.AddLabel("清线设置");
                 ModesMenu2.AddSeparator();
-                ModesMenu2.AddLabel("Jungle Clear Config");
+                ModesMenu2.Add("FarmQ", new CheckBox("使用Q", true));
+                ModesMenu2.Add("ManaLQ", new Slider("Q 清线蓝量百分比", 40));
+                ModesMenu2.Add("MinionLC", new Slider("Q最低小兵命中数", 3, 1, 5));
+                ModesMenu2.Add("FarmW", new CheckBox("清线使用W", true));
+                ModesMenu2.Add("ClearPick", new ComboBox("清线选牌", 1, "红", "蓝"));
+                ModesMenu2.Add("ManaLW", new Slider("W 清线蓝量百分比", 40));
                 ModesMenu2.AddSeparator();
-                ModesMenu2.Add("JungleQ", new CheckBox("Use Q on JungleClear", true));
-                ModesMenu2.Add("ManaJQ", new Slider("Mana %", 40));
-                ModesMenu2.Add("JungleW", new CheckBox("Use W on JungleClear", true));
-                ModesMenu2.Add("ManaJW", new Slider("Mana %", 40));
-                */
+                ModesMenu2.AddLabel("清野设置");
+                ModesMenu2.AddSeparator();
+                ModesMenu2.Add("JungleQ", new CheckBox("使用Q", true));
+                ModesMenu2.Add("ManaJQ", new Slider("Q 清野蓝量百分比", 40));
+                ModesMenu2.Add("JungleW", new CheckBox("使用W", true));
+                ModesMenu2.Add("JungleClearPick", new ComboBox("清野选牌", 1, "红", "蓝", "黄"));
+                ModesMenu2.Add("ManaJW", new Slider("W 清野蓝量百分比", 40));
+
                 ModesMenu3 = Menu.AddSubMenu("杂项", "Modes3TwistedFate");
                 //ModesMenu3.Add("AntiGap", new CheckBox("AntiGap - Pick Golden Card", true));
 
@@ -198,8 +200,15 @@ namespace GuTenTak.TwistedFate
                 if (DrawMenu["drawQ"].Cast<CheckBox>().CurrentValue)
                 {
                     if (Q.IsReady() && Q.IsLearned)
-                    {   
+                    {
                         Circle.Draw(Color.White, Q.Range, Player.Instance.Position);
+                    }
+                }
+                if (DrawMenu["drawR"].Cast<CheckBox>().CurrentValue)
+                {
+                    if (R.IsReady() && R.IsLearned)
+                    {
+                        Circle.Draw(Color.White, R.Range, Player.Instance.Position);
                     }
                 }
                 if (DrawMenu["drawA"].Cast<CheckBox>().CurrentValue)
@@ -253,14 +262,14 @@ namespace GuTenTak.TwistedFate
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
                 {
 
-                    //Common.LaneClear();
+                    Common.LaneClear();
 
                 }
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
                 {
 
-                    //Common.JungleClear();
+                    Common.JungleClear();
                 }
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
@@ -283,8 +292,8 @@ namespace GuTenTak.TwistedFate
         public static void OnTick(EventArgs args)
         {
             Common.KillSteal();
-            Common.Skinhack();
             Common.AutoQ();
+            Common.Skinhack();
         }
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
