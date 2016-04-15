@@ -29,6 +29,8 @@ K天使                    （K Kayle)
 作者：Definitely not Kappa
 火人                     （Brand）
 死哥                     （Karthus）
+龙王                     （AurelionSol）
+螳螂                     （Khappa'Zix）
 滑板鞋漏洞               （Kappa Fly Hack）
 薇恩门                   （Vayne Rot Ins)
 Kappa活化剂              （Kappa Utiltity）
@@ -100,3 +102,8 @@ Evade#                    （Evade plus)
 基地大招 3X
 基地大招 合作版
 自动挂机                  （Auto Buddy）
+
+私人转换脚本预计发布：
+Seph螳螂 （获得权限）
+易大师   （完成）
+狮子狗   （90%完成）
