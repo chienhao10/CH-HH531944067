@@ -78,7 +78,7 @@ namespace AdEvade
             Game.OnUpdate += Game_OnGameUpdate;
             Loading.OnLoadingComplete += Loading_OnLoadingComplete;
 
-            SpellMenu = mainMenu.AddSubMenu("技能", "技能");
+            SpellMenu = mainMenu.AddSubMenu("技能", "Spells");
         }
 
         private void Loading_OnLoadingComplete(EventArgs args)

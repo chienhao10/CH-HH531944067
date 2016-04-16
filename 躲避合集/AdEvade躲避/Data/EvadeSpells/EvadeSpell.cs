@@ -33,7 +33,7 @@ namespace AdEvade.Data.EvadeSpells
 
             Game.OnUpdate += Game_OnGameUpdate;
 
-            EvadeSpellMenu = Menu.AddSubMenu("Evade Spells", "EvadeSpells");
+            EvadeSpellMenu = Menu.AddSubMenu("躲避技能", "EvadeSpells");
 
             LoadEvadeSpellList();
             Shop.OnBuyItem += delegate { CheckForItems(); };
@@ -71,11 +71,11 @@ namespace AdEvade.Data.EvadeSpells
         private static Menu CreateEvadeSpellMenu(EvadeSpellData spell)
         {
 
-            string menuName = spell.Name + " (" + spell.SpellKey + ") Settings";
+            string menuName = spell.Name + " (" + spell.SpellKey + ") 设置";
 
             if (spell.IsItem)
             {
-                menuName = spell.Name + " Settings";
+                menuName = spell.Name + " 设置";
             }
             var evadeSpellConfig = new EvadeSpellConfigControl(EvadeSpellMenu, menuName, spell);
 

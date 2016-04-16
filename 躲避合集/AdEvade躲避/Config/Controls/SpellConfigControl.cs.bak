@@ -29,10 +29,10 @@ namespace AdEvade.Config.Controls
 
         public void AddToMenu()
         {
-            _menu.Add(_spell.SpellName + "_Dodge", DodgeCheckBox.CheckBox);
-            _menu.Add(_spell.SpellName + "_Draw", DrawCheckBox.CheckBox);
-            _menu.Add(_spell.SpellName + "_Raduis", SpellRadiusSlider.Slider);
-            _menu.Add(_spell.SpellName + "_DangerLevel", DangerLevelSlider.Slider.Slider);
+            _menu.Add(_spell.SpellName + "_躲避", DodgeCheckBox.CheckBox);
+            _menu.Add(_spell.SpellName + "_显示", DrawCheckBox.CheckBox);
+            _menu.Add(_spell.SpellName + "_半径", SpellRadiusSlider.Slider);
+            _menu.Add(_spell.SpellName + "_危险等级", DangerLevelSlider.Slider.Slider);
         }
     }
 }

@@ -37,29 +37,29 @@ namespace AdEvade.Draw
             //ConsoleDebug.WriteLine("SpellDrawer loaded");
             
 
-            Menu drawMenu = Menu.IsSubMenu ? Menu.Parent.AddSubMenu("线圈", "线圈") : Menu.AddSubMenu("线圈显示", "线圈显示");
+            Menu drawMenu = Menu.IsSubMenu ? Menu.Parent.AddSubMenu("线圈", "Draw") : Menu.AddSubMenu("线圈显示", "Draw");
             drawMenu.Add(ConfigValue.DrawSkillShots.Name(), new DynamicCheckBox(ConfigDataType.Data, ConfigValue.DrawSkillShots, "显示指向性技能", true).CheckBox);
             drawMenu.Add(ConfigValue.DrawEvadeStatus.Name(), new DynamicCheckBox(ConfigDataType.Data, ConfigValue.DrawEvadeStatus, "显示躲避状态", true).CheckBox);
             drawMenu.Add(ConfigValue.DrawSpellPosition.Name(), new DynamicCheckBox(ConfigDataType.Data, ConfigValue.DrawSpellPosition, "显示技能位置", false).CheckBox);
             drawMenu.Add(ConfigValue.DrawEvadePosition.Name(), new DynamicCheckBox(ConfigDataType.Data, ConfigValue.DrawEvadePosition, "显示躲避位置", false).CheckBox);
 
-            Menu dangerMenu = drawMenu.Parent.AddSubMenu("危险技能显示", "危险等级显示");
+            Menu dangerMenu = drawMenu.Parent.AddSubMenu("危险技能显示", "DangerLevelDrawings");
 
-            Menu lowDangerMenu = dangerMenu.Parent.AddSubMenu(" 低", "低级显示设置");
+            Menu lowDangerMenu = dangerMenu.Parent.AddSubMenu(" 低", "LowDrawing");
             lowDangerMenu.Add(ConfigValue.LowDangerDrawWidth.Name(), new DynamicSlider(ConfigDataType.Data, ConfigValue.LowDangerDrawWidth, "线宽", 3, 1, 15).Slider);
             lowDangerMenu.AddGroupLabel("Color");
             DangerColorPickers[(int)SpellDangerLevel.Low] = lowDangerMenu.Add("LowDangerColorConfig", new ColorPicker("低级危险线条颜色", Color.LightGray));
-            Menu normalDangerMenu = dangerMenu.Parent.AddSubMenu(" 正常", "正常级显示设置");
+            Menu normalDangerMenu = dangerMenu.Parent.AddSubMenu(" 正常", "NormalDrawing");
             normalDangerMenu.Add(ConfigValue.NormalDangerDrawWidth.Name(), new DynamicSlider(ConfigDataType.Data, ConfigValue.NormalDangerDrawWidth, "线宽", 3, 1, 15).Slider);
             normalDangerMenu.AddGroupLabel("Color");
             DangerColorPickers[(int)SpellDangerLevel.Normal] = normalDangerMenu.Add("NormalDangerColorConfig", new ColorPicker("正常危险线条颜色", Color.White));
             
-            Menu highDangerMenu = dangerMenu.Parent.AddSubMenu(" 高", "高级显示设置");
+            Menu highDangerMenu = dangerMenu.Parent.AddSubMenu(" 高", "HighDrawing");
             highDangerMenu.Add(ConfigValue.HighDangerDrawWidth.Name(), new DynamicSlider(ConfigDataType.Data, ConfigValue.HighDangerDrawWidth, "线宽", 4, 1, 15).Slider);
             highDangerMenu.AddGroupLabel("Color");
             DangerColorPickers[(int) SpellDangerLevel.High] = highDangerMenu.Add("HighDangerColorConfig", new ColorPicker("高危险线条颜色", Color.DarkOrange));
 
-            Menu extremeDangerMenu = dangerMenu.Parent.AddSubMenu(" 极端", "极端级显示设置");
+            Menu extremeDangerMenu = dangerMenu.Parent.AddSubMenu(" 极端", "ExtremeDrawing");
             extremeDangerMenu.Add(ConfigValue.ExtremeDangerDrawWidth.Name(), new DynamicSlider(ConfigDataType.Data, ConfigValue.ExtremeDangerDrawWidth, "线宽", 4, 1, 15).Slider);
             extremeDangerMenu.AddGroupLabel("Color");
             DangerColorPickers[(int) SpellDangerLevel.Extreme] = extremeDangerMenu.Add("ExtremeDangerColorConfig", new ColorPicker("极端危险线条颜色", Color.OrangeRed));
