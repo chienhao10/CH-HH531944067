@@ -48,6 +48,8 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\DamageHandler.cs" />
+    <Compile Include="Common\Helpers.cs" />
     <Compile Include="Items\Defensive.cs" />
     <Compile Include="Items\Offensive.cs" />
     <Compile Include="Items\Potions.cs" />
@@ -58,12 +60,14 @@
     <Compile Include="Misc\AutoReveal.cs" />
     <Compile Include="Items\AutoTear.cs" />
     <Compile Include="Misc\SkinHax.cs" />
-    <Compile Include="Misc\Surrender.cs" />
+    <Compile Include="Summoners\Flash.cs" />
+    <Compile Include="Trackers\Surrender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Summoners\Smite.cs" />
     <Compile Include="Summoners\Spells.cs" />
     <Compile Include="Trackers\GanksDetector.cs" />
     <Compile Include="Trackers\Tracker.cs" />
+    <Compile Include="Trackers\Traps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

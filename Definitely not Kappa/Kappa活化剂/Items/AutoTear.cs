@@ -7,10 +7,10 @@
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
 
-    using KappaUtility.Summoners;
-
     internal class AutoTear
     {
+        protected static bool loaded = false;
+
         public static readonly Item Tear = new Item(ItemId.Tear_of_the_Goddess);
 
         public static readonly Item Tearcs = new Item(ItemId.Tear_of_the_Goddess_Crystal_Scar);
@@ -33,9 +33,7 @@
         {
             TearMenu = Load.UtliMenu.AddSubMenu("自动叠加女神");
             TearMenu.AddGroupLabel("叠加设置");
-            TearMenu.Add(
-                Player.Instance.ChampionName + "enable",
-                new KeyBind("开关按键", false, KeyBind.BindTypes.PressToggle, 'M'));
+            TearMenu.Add(Player.Instance.ChampionName + "enable", new KeyBind("开关按键", false, KeyBind.BindTypes.PressToggle, 'M'));
             TearMenu.Add(Player.Instance.ChampionName + "shop", new CheckBox("商店范围内叠加", false));
             TearMenu.Add(Player.Instance.ChampionName + "enemy", new CheckBox("附近有敌人停止叠加"));
             TearMenu.AddSeparator();
@@ -52,18 +50,21 @@
             TearMenu.Add(Player.Instance.ChampionName + "W", new CheckBox("使用 W", false));
             TearMenu.Add(Player.Instance.ChampionName + "E", new CheckBox("使用 E", false));
             TearMenu.Add(Player.Instance.ChampionName + "R", new CheckBox("使用 R", false));
+            loaded = true;
         }
 
         internal static void OnUpdate()
         {
+            if (!loaded)
+            {
+                return;
+            }
+
             if (TearMenu[Player.Instance.ChampionName + "enable"].Cast<KeyBind>().CurrentValue)
             {
-                var items = ((Tearcs.IsOwned() || Tear.IsOwned())
-                             && TearMenu[Player.Instance.ChampionName + "tear"].Cast<CheckBox>().CurrentValue)
-                            || ((Arch.IsOwned() || Archcs.IsOwned())
-                                && TearMenu[Player.Instance.ChampionName + "arch"].Cast<CheckBox>().CurrentValue)
-                            || ((Manacs.IsOwned() || Mana.IsOwned())
-                                && TearMenu[Player.Instance.ChampionName + "mana"].Cast<CheckBox>().CurrentValue);
+                var items = ((Tearcs.IsOwned() || Tear.IsOwned()) && TearMenu[Player.Instance.ChampionName + "tear"].Cast<CheckBox>().CurrentValue)
+                            || ((Arch.IsOwned() || Archcs.IsOwned()) && TearMenu[Player.Instance.ChampionName + "arch"].Cast<CheckBox>().CurrentValue)
+                            || ((Manacs.IsOwned() || Mana.IsOwned()) && TearMenu[Player.Instance.ChampionName + "mana"].Cast<CheckBox>().CurrentValue);
                 var items2 = Sera.IsOwned() || Mura.IsOwned();
                 var minions = EntityManager.MinionsAndMonsters.EnemyMinions;
 
@@ -71,8 +72,7 @@
                     minions.Where(
                         minion =>
                         items && !items2
-                        && Player.Instance.ManaPercent
-                        > TearMenu[Player.Instance.ChampionName + "manasave"].Cast<Slider>().CurrentValue))
+                        && Player.Instance.ManaPercent > TearMenu[Player.Instance.ChampionName + "manasave"].Cast<Slider>().CurrentValue))
                 {
                     if (TearMenu[Player.Instance.ChampionName + "enemy"].Cast<CheckBox>().CurrentValue
                         && Player.Instance.CountEnemiesInRange(1250) >= 1)
@@ -80,14 +80,12 @@
                         return;
                     }
 
-                    if (TearMenu[Player.Instance.ChampionName + "shop"].Cast<CheckBox>().CurrentValue
-                        && !Player.Instance.IsInShopRange())
+                    if (TearMenu[Player.Instance.ChampionName + "shop"].Cast<CheckBox>().CurrentValue && !Player.Instance.IsInShopRange())
                     {
                         return;
                     }
 
-                    if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None)
-                        || Player.Instance.Spellbook.IsChanneling)
+                    if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None) || Player.Instance.Spellbook.IsChanneling)
                     {
                         return;
                     }
@@ -99,17 +97,13 @@
 
         internal static void Cast(Obj_AI_Base target)
         {
-            var useQ = Player.GetSpell(SpellSlot.Q).IsReady
-                       && TearMenu[Player.Instance.ChampionName + "Q"].Cast<CheckBox>().CurrentValue;
+            var useQ = Player.GetSpell(SpellSlot.Q).IsReady && TearMenu[Player.Instance.ChampionName + "Q"].Cast<CheckBox>().CurrentValue;
 
-            var useW = Player.GetSpell(SpellSlot.W).IsReady
-                       && TearMenu[Player.Instance.ChampionName + "W"].Cast<CheckBox>().CurrentValue;
+            var useW = Player.GetSpell(SpellSlot.W).IsReady && TearMenu[Player.Instance.ChampionName + "W"].Cast<CheckBox>().CurrentValue;
 
-            var useE = Player.GetSpell(SpellSlot.E).IsReady
-                       && TearMenu[Player.Instance.ChampionName + "E"].Cast<CheckBox>().CurrentValue;
+            var useE = Player.GetSpell(SpellSlot.E).IsReady && TearMenu[Player.Instance.ChampionName + "E"].Cast<CheckBox>().CurrentValue;
 
-            var useR = Player.GetSpell(SpellSlot.R).IsReady
-                       && TearMenu[Player.Instance.ChampionName + "R"].Cast<CheckBox>().CurrentValue;
+            var useR = Player.GetSpell(SpellSlot.R).IsReady && TearMenu[Player.Instance.ChampionName + "R"].Cast<CheckBox>().CurrentValue;
             if (useQ)
             {
                 Player.CastSpell(SpellSlot.Q, Game.CursorPos);

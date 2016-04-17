@@ -22,8 +22,7 @@
         public static void Hax()
         {
             if (SkinMenu[Player.Instance.ChampionName + "skin"].Cast<CheckBox>().CurrentValue
-                && Player.Instance.SkinId
-                != SkinMenu[Player.Instance.ChampionName + "skins"].Cast<Slider>().CurrentValue)
+                && Player.Instance.SkinId != SkinMenu[Player.Instance.ChampionName + "skins"].Cast<Slider>().CurrentValue)
             {
                 Player.Instance.SetSkinId(SkinMenu[Player.Instance.ChampionName + "skins"].Cast<Slider>().CurrentValue);
             }

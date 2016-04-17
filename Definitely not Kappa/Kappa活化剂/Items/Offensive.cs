@@ -25,6 +25,8 @@
 
         public static Menu OffMenu { get; private set; }
 
+        protected static bool loaded = false;
+
         internal static void OnLoad()
         {
             OffMenu = Load.UtliMenu.AddSubMenu("进攻物品");
@@ -39,16 +41,19 @@
             OffMenu.Add("oL", new Slider("自身血量 X 时使用", 65, 0, 100));
 
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
+            loaded = true;
         }
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
         {
-            if (!target.IsEnemy)
+            if (!target.IsEnemy || !(target is AIHeroClient))
             {
                 return;
             }
 
-            var useHydra = OffMenu["Hydra"].Cast<CheckBox>().CurrentValue;
+            var useHydra = OffMenu["Hydra"].Cast<CheckBox>().CurrentValue
+                           && ((Hydra.IsOwned() && Hydra.IsReady()) || (Timat.IsOwned() && Timat.IsReady())
+                               || (Titanic.IsOwned() && Titanic.IsReady()));
             var flags = Orbwalker.ActiveModesFlags;
             if (flags.HasFlag(Orbwalker.ActiveModes.Combo) && useHydra)
             {
@@ -71,6 +76,10 @@
 
         internal static void Items()
         {
+            if (!loaded)
+            {
+                return;
+            }
             var target = TargetSelector.GetTarget(500, DamageType.Physical);
             if (target == null || !target.IsValidTarget())
             {
@@ -78,42 +87,24 @@
             }
 
             if (Gunblade.IsReady() && Gunblade.IsOwned(Player.Instance) && target.IsValidTarget(Gunblade.Range)
-                && target.HealthPercent <= OffMenu["eL"].Cast<Slider>().CurrentValue
-                && OffMenu["UseGunblade"].Cast<CheckBox>().CurrentValue)
-            {
-                Gunblade.Cast(target);
-            }
-
-            if (Gunblade.IsReady() && Gunblade.IsOwned(Player.Instance) && target.IsValidTarget(Gunblade.Range)
-                && Player.Instance.HealthPercent <= OffMenu["oL"].Cast<Slider>().CurrentValue
+                && (target.HealthPercent <= OffMenu["eL"].Cast<Slider>().CurrentValue
+                    || Player.Instance.HealthPercent <= OffMenu["oL"].Cast<Slider>().CurrentValue)
                 && OffMenu["UseGunblade"].Cast<CheckBox>().CurrentValue)
             {
                 Gunblade.Cast(target);
             }
 
             if (Botrk.IsReady() && Botrk.IsOwned(Player.Instance) && target.IsValidTarget(Botrk.Range)
-                && target.HealthPercent <= OffMenu["eL"].Cast<Slider>().CurrentValue
-                && OffMenu["UseBOTRK"].Cast<CheckBox>().CurrentValue)
-            {
-                Botrk.Cast(target);
-            }
-
-            if (Botrk.IsReady() && Botrk.IsOwned(Player.Instance) && target.IsValidTarget(Botrk.Range)
-                && Player.Instance.HealthPercent <= OffMenu["oL"].Cast<Slider>().CurrentValue
+                && (target.HealthPercent <= OffMenu["eL"].Cast<Slider>().CurrentValue
+                    || Player.Instance.HealthPercent <= OffMenu["oL"].Cast<Slider>().CurrentValue)
                 && OffMenu["UseBOTRK"].Cast<CheckBox>().CurrentValue)
             {
                 Botrk.Cast(target);
             }
 
             if (Cutlass.IsReady() && Cutlass.IsOwned(Player.Instance) && target.IsValidTarget(Cutlass.Range)
-                && target.HealthPercent <= OffMenu["eL"].Cast<Slider>().CurrentValue
-                && OffMenu["UseBilge"].Cast<CheckBox>().CurrentValue)
-            {
-                Cutlass.Cast(target);
-            }
-
-            if (Cutlass.IsReady() && Cutlass.IsOwned(Player.Instance) && target.IsValidTarget(Cutlass.Range)
-                && Player.Instance.HealthPercent <= OffMenu["oL"].Cast<Slider>().CurrentValue
+                && (target.HealthPercent <= OffMenu["eL"].Cast<Slider>().CurrentValue
+                    || Player.Instance.HealthPercent <= OffMenu["oL"].Cast<Slider>().CurrentValue)
                 && OffMenu["UseBilge"].Cast<CheckBox>().CurrentValue)
             {
                 Cutlass.Cast(target);

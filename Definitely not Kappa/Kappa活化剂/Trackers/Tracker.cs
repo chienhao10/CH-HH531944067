@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
 
     using EloBuddy;
@@ -32,16 +31,21 @@
         internal static void OnLoad()
         {
             TrackMenu = Load.UtliMenu.AddSubMenu("记录器");
-            TrackMenu.AddGroupLabel("投降记录");
-            TrackMenu.Add("Trackally", new CheckBox("记录友军头投降", false));
-            TrackMenu.Add("Trackenemy", new CheckBox("记录敌军头投降", false));
-            TrackMenu.AddSeparator();
             TrackMenu.AddGroupLabel("记录器设置");
             TrackMenu.Add("Track", new CheckBox("记录敌方状态", false));
             TrackMenu.Add("trackrecalls", new CheckBox("计时敌方回城", false));
             TrackMenu.Add("Tracktraps", new CheckBox("计时敌方陷阱 [测试]", false));
             TrackMenu.Add("Trackping", new CheckBox("对可击杀敌人点出信号 (本地)", false));
             TrackMenu.Add("Trackway", new CheckBox("显示敌人行走路径", false));
+            TrackMenu.AddSeparator();
+            TrackMenu.AddGroupLabel("投降记录");
+            TrackMenu.Add("Trackally", new CheckBox("记录友军头投降", false));
+            TrackMenu.Add("Trackenemy", new CheckBox("记录敌军头投降", false));
+            TrackMenu.Add("Distance", new Slider("行走路径探测范围", 1000, 0, 5000));
+            TrackMenu.AddSeparator();
+            TrackMenu.AddGroupLabel("记录器位置设置");
+            TrackMenu.Add("trackx", new Slider("记录器位置 X", 0, 0, 100));
+            TrackMenu.Add("tracky", new Slider("记录器位置 Y", 0, 0, 100));
             TrackMenu.AddSeparator();
             TrackMenu.AddGroupLabel("不记录:");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>())
@@ -53,21 +57,12 @@
                 }
             }
 
-            TrackMenu.Add("Distance", new Slider("行走路径探测范围", 1000, 0, 5000));
-            TrackMenu.AddGroupLabel("显示" + "设置");
-            TrackMenu.Add("trackx", new Slider("记录器位置 X", 0, 0, 100));
-            TrackMenu.Add("tracky", new Slider("记录器位置 Y", 0, 0, 100));
-
             foreach (var hero in ObjectManager.Get<AIHeroClient>())
             {
                 Recalls.Add(new Recall(hero, RecallStatus.Inactive));
             }
 
             Teleport.OnTeleport += OnTeleport;
-        }
-
-        internal static void OnUpdate()
-        {
         }
 
         public static void track()
@@ -137,75 +132,6 @@
             }
 
             return (int)damage;
-        }
-
-        internal static void Traps()
-        {
-            if (!TrackMenu["Tracktraps"].Cast<CheckBox>().CurrentValue)
-            {
-                return;
-            }
-
-            var traps = ObjectManager.Get<Obj_AI_Minion>();
-            {
-                foreach (var trap in traps.Where(trap => trap != null))
-                {
-                    switch (trap.Name)
-                    {
-                        case "Cupcake Trap":
-                            Drawing.DrawText(
-                                Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30),
-                                Color.White,
-                                "陷阱",
-                                2);
-                            Circle.Draw(SharpDX.Color.Purple, trap.BoundingRadius + 10, trap.Position);
-                            break;
-
-                        case "Noxious Trap":
-                            if (trap.BaseSkinName == "NidaleeSpear")
-                            {
-                                var endTime = Math.Max(0, -Game.Time + 120);
-                                Drawing.DrawText(
-                                    Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30),
-                                    Color.White,
-                                    "奶大力W",
-                                    2);
-                                Circle.Draw(SharpDX.Color.Green, trap.BoundingRadius + 25, trap.Position);
-                            }
-
-                            if (trap.BaseSkinName == "TeemoMushroom")
-                            {
-                                if (trap.GetBuff("BantamTrap") != null)
-                                {
-                                    var endTime = Math.Max(0, trap.GetBuff("BantamTrap").EndTime - Game.Time);
-                                    Drawing.DrawText(
-                                        Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30),
-                                        Color.White,
-                                        "提莫R剩余时间: "
-                                        + Convert.ToString(endTime, CultureInfo.InstalledUICulture),
-                                        2);
-                                }
-
-                                Circle.Draw(SharpDX.Color.Green, trap.BoundingRadius * 3, trap.Position);
-                            }
-                            break;
-
-                        case "Jack In The Box":
-                            if (trap.GetBuff("JackInTheBox") != null)
-                            {
-                                var endTime = Math.Max(0, trap.GetBuff("JackInTheBox").EndTime - Game.Time);
-                                Drawing.DrawText(
-                                    Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30),
-                                    Color.White,
-                                    "小丑W剩余时间: " + Convert.ToString(endTime, CultureInfo.InvariantCulture),
-                                    2);
-                            }
-
-                            Circle.Draw(SharpDX.Color.Green, trap.BoundingRadius * 15, trap.Position);
-                            break;
-                    }
-                }
-            }
         }
 
         private static void OnTeleport(Obj_AI_Base sender, Teleport.TeleportEventArgs args)
@@ -369,7 +295,7 @@
                                     (Drawing.Width * 0.22f) + (trackx * 20),
                                     (Drawing.Height * 0.1f) + (tracky * 10) + i,
                                     color,
-                                    "回城 " + (int)(recallpercent * 100) + "%");
+                                    "回城中 " + (int)(recallpercent * 100) + "%");
                             }
 
                             if (champ.Status == RecallStatus.Finished)
@@ -387,7 +313,7 @@
                                     (Drawing.Width * 0.22f) + (trackx * 20),
                                     (Drawing.Height * 0.1f) + (tracky * 10) + i,
                                     color,
-                                    "停止回城 ");
+                                    "回城终止 ");
                             }
                         }
                     }
