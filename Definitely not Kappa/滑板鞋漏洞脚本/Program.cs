@@ -30,9 +30,7 @@
             flymenu.AddLabel("CH汉化卡莉斯塔漏洞脚本.");
             flymenu.AddLabel("只会在连招模式使用，详细设置请看汉化贴，否则无效.");
             flymenu.Add("Fly", new CheckBox("使用漏洞", false));
-            flymenu.Add("Flyspeed", new Slider("飞行速度 (每个攻击直接间隔的毫秒)", 250, 0, 500));
-            flymenu.AddLabel("之前上面打错字，让你们误解了。上面详细就是说每一次普攻后经过多少毫秒后进行飞行");
-            flymenu.AddLabel("并没有越低越好这一说法。是看个人需要还有ping的延迟，滑动数值可以更好的触发而已");
+            flymenu.Add("Flyspeed", new Slider("飞行速度 (修改测试至有效)", 250, 0, 500));
             flymenu.AddSeparator();
             flymenu.AddGroupLabel("必读!");
             flymenu.AddLabel("使用这个可能会造成封号.");
