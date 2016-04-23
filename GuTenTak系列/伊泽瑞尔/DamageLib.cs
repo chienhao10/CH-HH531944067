@@ -8,7 +8,7 @@ namespace GuTenTak.Ezreal
     //Thanks KEz
     internal class DamageLib
     {
-        private static readonly AIHeroClient _Player = ObjectManager.Player;
+        private static readonly AIHeroClient _Player = Player.Instance;
         public static float QCalc(Obj_AI_Base target)
         {
             return _Player.CalculateDamageOnUnit(target, DamageType.Physical,
