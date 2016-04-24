@@ -391,7 +391,7 @@ namespace Twitch
                 _autoQ = MenuMisc.Add("autoQ", new CheckBox("当 X 名敌人在附近使用Q", false));
                 _autoQMinEnemies = MenuMisc.Add("autoQMinEnemiesAround", new Slider("最低附近敌人数量使用", 3, 1, 5));
                 MenuMisc.AddGroupLabel("自动喝药");
-                _potion = MenuMisc.Add("potion", new CheckBox("是用药水"));
+                _potion = MenuMisc.Add("potion", new CheckBox("使用药水"));
                 _potionMinHP = MenuMisc.Add("potionminHP", new Slider("最低血量 % 使用药水", 70));
                 _potionMinMP = MenuMisc.Add("potionMinMP", new Slider("最低蓝量 % 使用药水", 20));
                 MenuMisc.AddGroupLabel("其他");
