@@ -1,0 +1,36 @@
+﻿Done : 
+- Fix Pantheon Orbwalker
+
+------------------------------------------------------------------------
+
+To-Do :
+- Add FlashQ for Blitz
+- Tahm Kench Bug - After Spit, Q in wrong direction
+- Check out Gragas' Q
+- Check out Sion Combo @ https://i.gyazo.com/9b667f2e3f653c653c1f1b2ae83641ce.png
+- Fix Zyra Menu @ https://i.gyazo.com/d8fbdffbac0ae147841362854744de3a.png
+- Check Cho'Gath Ult
+- Kennen Q Pred - Q Lane Clear
+- Orianna Ult Check
+- Lulu - Laneclear & Harass [can put off later] - Might just port another Lulu assembly
+- Check out 2Chainz LeBlanc & check out menu error @ https://i.gyazo.com/126be96565af37526f1b7b752a8e839a.png
+- Check Anivia
+- Fix Singed Menu @ https://i.gyazo.com/90f25e38ccda196e207c6960c8cafc8e.png
+- Check Rek'Sai Farm
+
+------------------------------------------------------------------------
+
+To-Check :
+- Maybe sure to port in Exory's AIO when fully ported to L# SDK.
+
+------------------------------------------------------------------------
+
+Port [MAYBE] :
+- Dual Port FreshBooster Veigar [#1 Priority]
+- Port in a script with Taric Re-work Update [#2 Priority]
+- Dual Port Nechrito Diana
+- Dual Port Challenger Series Kalista
+- Dual Port Challenger Series Lucian
+- Dual Port Hoola Riven
+- Dual Port iLucian
+- Dual Port Vayne Hunter Reborn

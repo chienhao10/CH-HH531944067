@@ -1,0 +1,942 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_BLIND" xml:space="preserve">
+    <value>Blind</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_CHARM" xml:space="preserve">
+    <value>Charm</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_COMBAT_DEHANCER" xml:space="preserve">
+    <value>Combat Dehancer</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_DISARM" xml:space="preserve">
+    <value>Disarm</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_FEAR" xml:space="preserve">
+    <value>Fear</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_POISON" xml:space="preserve">
+    <value>Poison</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SILENCE" xml:space="preserve">
+    <value>Silence</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SLOW" xml:space="preserve">
+    <value>Slow</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SNARE" xml:space="preserve">
+    <value>Snare</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_STUN" xml:space="preserve">
+    <value>Stun</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_SUPPRESS" xml:space="preserve">
+    <value>Suppress</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_CONFIG_TAUNT" xml:space="preserve">
+    <value>Taunt</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_MAIN" xml:space="preserve">
+    <value>Activators</value>
+  </data>
+  <data name="ACTIVATORS_ACTIVATOR_MIN_SPELLS" xml:space="preserve">
+    <value>Min Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOANTISLOW_MAIN" xml:space="preserve">
+    <value>Auto AntiSlow</value>
+  </data>
+  <data name="ACTIVATORS_AUTOHEAL_MAIN" xml:space="preserve">
+    <value>Auto Heal</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_HEALTHPOT_MAIN" xml:space="preserve">
+    <value>Health Pot</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_HEALTHPOT_PERCENT" xml:space="preserve">
+    <value>Health Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_MAIN" xml:space="preserve">
+    <value>Auto Pot</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_MANAPOT_MAIN" xml:space="preserve">
+    <value>Mana Pot</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_MANAPOT_PERCENT" xml:space="preserve">
+    <value>Mana Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOPOT_PREVENTOVERUSAGE" xml:space="preserve">
+    <value>Prevent Overusage</value>
+  </data>
+  <data name="ACTIVATORS_AUTOQSS_CONFIG_MAIN" xml:space="preserve">
+    <value>QSS Config</value>
+  </data>
+  <data name="ACTIVATORS_AUTOQSS_MAIN" xml:space="preserve">
+    <value>Auto Qss</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_ALLY" xml:space="preserve">
+    <value>Shield Ally</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_AA" xml:space="preserve">
+    <value>Block AutoAttack</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_BLOCKABLE_SPELL" xml:space="preserve">
+    <value>Blockable Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_CC" xml:space="preserve">
+    <value>Block CC</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_DMG" xml:space="preserve">
+    <value>Block Damage</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_DMG_MIN" xml:space="preserve">
+    <value>Block min Damage</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_BLOCK_SPECIFIC_SPELL" xml:space="preserve">
+    <value>Block specified Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSHIELD_MAIN" xml:space="preserve">
+    <value>Auto Shield</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSMITE_AUTO_SPELL" xml:space="preserve">
+    <value>Use Auto Spell</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSMITE_MAIN" xml:space="preserve">
+    <value>Auto Smite</value>
+  </data>
+  <data name="ACTIVATORS_AUTOSMITE_SMALL_CAMPS" xml:space="preserve">
+    <value>Smite Small Camps</value>
+  </data>
+  <data name="ACTIVATORS_AUTOULT_ALLY" xml:space="preserve">
+    <value>Ally</value>
+  </data>
+  <data name="ACTIVATORS_AUTOULT_MAIN" xml:space="preserve">
+    <value>Auto Ult</value>
+  </data>
+  <data name="DETECTORS_DETECTOR_MAIN" xml:space="preserve">
+    <value>Detectors</value>
+  </data>
+  <data name="DETECTORS_DISRECONNECT_MAIN" xml:space="preserve">
+    <value>Dis/Reconnect</value>
+  </data>
+  <data name="DETECTORS_FOWSPELLENEMY_MAIN" xml:space="preserve">
+    <value>Fow Spell Enemy</value>
+  </data>
+  <data name="DETECTORS_GANK_DISABLETIME" xml:space="preserve">
+    <value>Disable Time</value>
+  </data>
+  <data name="DETECTORS_GANK_MAIN" xml:space="preserve">
+    <value>Gank</value>
+  </data>
+  <data name="DETECTORS_GANK_RANGE_MAX" xml:space="preserve">
+    <value>Track Range Max</value>
+  </data>
+  <data name="DETECTORS_GANK_RANGE_MIN" xml:space="preserve">
+    <value>Track Range Min</value>
+  </data>
+  <data name="DETECTORS_GANK_SHOWJUNGLER" xml:space="preserve">
+    <value>Show Jungler</value>
+  </data>
+  <data name="DETECTORS_GANK_TEXT" xml:space="preserve">
+    <value>Gank</value>
+  </data>
+  <data name="DETECTORS_GANK_TEXT_JUNGLER_ENEMY" xml:space="preserve">
+    <value>Enemy jungler approaching</value>
+  </data>
+  <data name="DETECTORS_RECALL_MAIN" xml:space="preserve">
+    <value>Recall</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_CANCELED" xml:space="preserve">
+    <value>canceled</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_HP" xml:space="preserve">
+    <value>hp</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_PORTED" xml:space="preserve">
+    <value>ported</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_PORTING" xml:space="preserve">
+    <value>porting</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_RECALLED" xml:space="preserve">
+    <value>recalled</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_RECALLING" xml:space="preserve">
+    <value>recalling</value>
+  </data>
+  <data name="DETECTORS_RECALL_TEXT_WITH" xml:space="preserve">
+    <value>with</value>
+  </data>
+  <data name="DETECTORS_VISION_MAIN" xml:space="preserve">
+    <value>Vision</value>
+  </data>
+  <data name="DETECTORS_VISION_RANGE" xml:space="preserve">
+    <value>Draw Range</value>
+  </data>
+  <data name="DETECTORS_VISION_REALRANGE" xml:space="preserve">
+    <value>Draw Real Range</value>
+  </data>
+  <data name="DETECTORS_VISION_VISIONRANGE" xml:space="preserve">
+    <value>Draw Vision Range</value>
+  </data>
+  <data name="GLOBAL_ACTIVE" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="GLOBAL_CHAT_CHOICE" xml:space="preserve">
+    <value>Chat Choice</value>
+  </data>
+  <data name="GLOBAL_CHAT_CHOICE_LOCAL" xml:space="preserve">
+    <value>Local</value>
+  </data>
+  <data name="GLOBAL_CHAT_CHOICE_NONE" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="GLOBAL_CHAT_CHOICE_SERVER" xml:space="preserve">
+    <value>Server</value>
+  </data>
+  <data name="GLOBAL_KEY" xml:space="preserve">
+    <value>Key</value>
+  </data>
+  <data name="GLOBAL_MODE" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="GLOBAL_MODE_AUTOMATIC" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="GLOBAL_MODE_MANUAL" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="GLOBAL_MODE_PERCENT" xml:space="preserve">
+    <value>Percent</value>
+  </data>
+  <data name="GLOBAL_MODE_VALUE" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="GLOBAL_PING_ASSISTME" xml:space="preserve">
+    <value>Assist me</value>
+  </data>
+  <data name="GLOBAL_PING_LOCAL" xml:space="preserve">
+    <value>Local Ping</value>
+  </data>
+  <data name="GLOBAL_PING_TIMES" xml:space="preserve">
+    <value>Ping Times</value>
+  </data>
+  <data name="GLOBAL_PING_TYPE" xml:space="preserve">
+    <value>Ping Type</value>
+  </data>
+  <data name="GLOBAL_PING_TYPE_DANGER" xml:space="preserve">
+    <value>Danger</value>
+  </data>
+  <data name="GLOBAL_PING_TYPE_ENEMYMISSING" xml:space="preserve">
+    <value>Enemy Missing</value>
+  </data>
+  <data name="GLOBAL_PING_TYPE_FALLBACK" xml:space="preserve">
+    <value>Fallback</value>
+  </data>
+  <data name="GLOBAL_PING_TYPE_NORMAL" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="GLOBAL_PING_TYPE_ONMYWAY" xml:space="preserve">
+    <value>On My Way</value>
+  </data>
+  <data name="GLOBAL_VOICE" xml:space="preserve">
+    <value>Voice</value>
+  </data>
+  <data name="HEALTHS_HEALTH_MAIN" xml:space="preserve">
+    <value>Healths</value>
+  </data>
+  <data name="HEALTHS_INHIBITOR_MAIN" xml:space="preserve">
+    <value>Inhibitor</value>
+  </data>
+  <data name="HEALTHS_TURRET_MAIN" xml:space="preserve">
+    <value>Turret</value>
+  </data>
+  <data name="MISCS_ANTILATERN_MAIN" xml:space="preserve">
+    <value>Anti Latern</value>
+  </data>
+  <data name="MISCS_ANTINEXUSTURRET_MAIN" xml:space="preserve">
+    <value>Anti Nexus Turret</value>
+  </data>
+  <data name="MISCS_ANTIVISUALSCREENSTEALTH_MAIN" xml:space="preserve">
+    <value>Anti Visual Screen Stealth</value>
+  </data>
+  <data name="MISCS_AUTOJUMP_MAIN" xml:space="preserve">
+    <value>Auto Jump</value>
+  </data>
+  <data name="MISCS_AUTOLATERN_MAIN" xml:space="preserve">
+    <value>Auto Latern</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_MAIN" xml:space="preserve">
+    <value>Auto Leveler</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_MODE_PRIORITY" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_MODE_R" xml:space="preserve">
+    <value>Only R</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_MODE_SEQUENCE" xml:space="preserve">
+    <value>Sequence</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_PRIORITY_MAIN" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_PRIORITY_MODE" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_PRIORITY_MODE_ACTIVE" xml:space="preserve">
+    <value>Mode Active</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_SEQUENCE_BUILD_CHOICE" xml:space="preserve">
+    <value>Build Choice</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_SEQUENCE_BUILD_LOAD" xml:space="preserve">
+    <value>Show Build</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_SEQUENCE_CREATE_CHOICE" xml:space="preserve">
+    <value>New Build</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_SEQUENCE_DELETE_CHOICE" xml:space="preserve">
+    <value>Delete Build</value>
+  </data>
+  <data name="MISCS_AUTOLEVLER_SEQUENCE_MAIN" xml:space="preserve">
+    <value>Sequence</value>
+  </data>
+  <data name="MISCS_EASYBLUEJUNGLE_MAIN" xml:space="preserve">
+    <value>Easy Blue Jungle</value>
+  </data>
+  <data name="MISCS_ELODISPLAYER_MAIN" xml:space="preserve">
+    <value>Elo Displayer</value>
+  </data>
+  <data name="MISCS_FLASHJUKE_MAIN" xml:space="preserve">
+    <value>Flash Juke</value>
+  </data>
+  <data name="MISCS_FLASHJUKE_RECALL" xml:space="preserve">
+    <value>Recall</value>
+  </data>
+  <data name="MISCS_MINIONBARS_GLOW" xml:space="preserve">
+    <value>Glow Killable</value>
+  </data>
+  <data name="MISCS_MINIONBARS_MAIN" xml:space="preserve">
+    <value>Minion Bars</value>
+  </data>
+  <data name="MISCS_MINIONLOCATION_MAIN" xml:space="preserve">
+    <value>Minion Location</value>
+  </data>
+  <data name="MISCS_MISC_MAIN" xml:space="preserve">
+    <value>Miscs</value>
+  </data>
+  <data name="MISCS_MOVETOMOUSE_MAIN" xml:space="preserve">
+    <value>Move To Mouse</value>
+  </data>
+  <data name="MISCS_PINGERNAME_MAIN" xml:space="preserve">
+    <value>Pinger Name</value>
+  </data>
+  <data name="MISCS_REALTIME_MAIN" xml:space="preserve">
+    <value>Real Time</value>
+  </data>
+  <data name="MISCS_SAFEMOVEMENT_BLOCKINTERVAL" xml:space="preserve">
+    <value>Block Interval</value>
+  </data>
+  <data name="MISCS_SAFEMOVEMENT_MAIN" xml:space="preserve">
+    <value>Safe Movement</value>
+  </data>
+  <data name="MISCS_SHOWPING_MAIN" xml:space="preserve">
+    <value>Show Ping</value>
+  </data>
+  <data name="MISCS_SKINCHANGER_MAIN" xml:space="preserve">
+    <value>Skin Changer</value>
+  </data>
+  <data name="MISCS_SKINCHANGER_SKIN" xml:space="preserve">
+    <value>Skin</value>
+  </data>
+  <data name="MISCS_SMARTPINGIMPROVE_MAIN" xml:space="preserve">
+    <value>Smart Ping Improvement</value>
+  </data>
+  <data name="MISCS_SURRENDERVOTE_MAIN" xml:space="preserve">
+    <value>Surrender Vote</value>
+  </data>
+  <data name="MISCS_TURNAROUND_MAIN" xml:space="preserve">
+    <value>Turn Around</value>
+  </data>
+  <data name="MISCS_WALLJUMP_MAIN" xml:space="preserve">
+    <value>Wall Jump</value>
+  </data>
+  <data name="RANGES_ALL_COLORENEMY" xml:space="preserve">
+    <value>Color Enemy</value>
+  </data>
+  <data name="RANGES_ALL_COLORME" xml:space="preserve">
+    <value>Color Me</value>
+  </data>
+  <data name="RANGES_ALL_MODE" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="RANGES_ALL_MODE_BOTH" xml:space="preserve">
+    <value>Both</value>
+  </data>
+  <data name="RANGES_ALL_MODE_ENEMY" xml:space="preserve">
+    <value>Enemy</value>
+  </data>
+  <data name="RANGES_ALL_MODE_ME" xml:space="preserve">
+    <value>Me</value>
+  </data>
+  <data name="RANGES_ATTACK_MAIN" xml:space="preserve">
+    <value>Attack</value>
+  </data>
+  <data name="RANGES_EXPERIENCE_MAIN" xml:space="preserve">
+    <value>Experience</value>
+  </data>
+  <data name="RANGES_RANGE_MAIN" xml:space="preserve">
+    <value>Ranges</value>
+  </data>
+  <data name="RANGES_SHOP_MAIN" xml:space="preserve">
+    <value>Shop</value>
+  </data>
+  <data name="RANGES_SPELLE_MAIN" xml:space="preserve">
+    <value>Spell E</value>
+  </data>
+  <data name="RANGES_SPELLQ_MAIN" xml:space="preserve">
+    <value>Spell Q</value>
+  </data>
+  <data name="RANGES_SPELLR_MAIN" xml:space="preserve">
+    <value>Spell R</value>
+  </data>
+  <data name="RANGES_SPELLW_MAIN" xml:space="preserve">
+    <value>Spell W</value>
+  </data>
+  <data name="RANGES_TURRET_MAIN" xml:space="preserve">
+    <value>Turret</value>
+  </data>
+  <data name="RANGES_TURRET_RANGE" xml:space="preserve">
+    <value>Display Range</value>
+  </data>
+  <data name="RANGES_VISION_CHAMPION" xml:space="preserve">
+    <value>Champion</value>
+  </data>
+  <data name="RANGES_VISION_MAIN" xml:space="preserve">
+    <value>Vision</value>
+  </data>
+  <data name="RANGES_VISION_ME" xml:space="preserve">
+    <value>Me</value>
+  </data>
+  <data name="RANGES_VISION_MINION" xml:space="preserve">
+    <value>Minion</value>
+  </data>
+  <data name="RANGES_VISION_TURRET" xml:space="preserve">
+    <value>Turret</value>
+  </data>
+  <data name="RANGES_VISION_WARD" xml:space="preserve">
+    <value>Ward</value>
+  </data>
+  <data name="TIMERS_ALTAR_MAIN" xml:space="preserve">
+    <value>Altar</value>
+  </data>
+  <data name="TIMERS_HEALTH_MAIN" xml:space="preserve">
+    <value>Health</value>
+  </data>
+  <data name="TIMERS_IMMUNE_MAIN" xml:space="preserve">
+    <value>Immune</value>
+  </data>
+  <data name="TIMERS_INHIBITOR_MAIN" xml:space="preserve">
+    <value>Inhibitor</value>
+  </data>
+  <data name="TIMERS_JUNGLE_MAIN" xml:space="preserve">
+    <value>Jungle</value>
+  </data>
+  <data name="TIMERS_RELIC_MAIN" xml:space="preserve">
+    <value>Relic</value>
+  </data>
+  <data name="TIMERS_REMIND_TIME" xml:space="preserve">
+    <value>Remind Time</value>
+  </data>
+  <data name="TIMERS_SUMMONER_MAIN" xml:space="preserve">
+    <value>Summoner</value>
+  </data>
+  <data name="TIMERS_TIMER_MAIN" xml:space="preserve">
+    <value>Timers</value>
+  </data>
+  <data name="TIMERS_TIMER_SCALE" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="TRACKERS_CLONE_MAIN" xml:space="preserve">
+    <value>Clone</value>
+  </data>
+  <data name="TRACKERS_DESTINATION_MAIN" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="TRACKERS_GANK_KILLABLE" xml:space="preserve">
+    <value>Only Killable</value>
+  </data>
+  <data name="TRACKERS_GANK_LINES" xml:space="preserve">
+    <value>Draw Lines</value>
+  </data>
+  <data name="TRACKERS_GANK_MAIN" xml:space="preserve">
+    <value>Gank</value>
+  </data>
+  <data name="TRACKERS_GANK_PING" xml:space="preserve">
+    <value>Ping LowHP</value>
+  </data>
+  <data name="TRACKERS_GANK_RANGE" xml:space="preserve">
+    <value>Track Range</value>
+  </data>
+  <data name="TRACKERS_JUNGLER_MAIN" xml:space="preserve">
+    <value>Jungler</value>
+  </data>
+  <data name="TRACKERS_KILLABLE_MAIN" xml:space="preserve">
+    <value>Killable</value>
+  </data>
+  <data name="TRACKERS_SSCALLER_CIRCLE_ACTIVE" xml:space="preserve">
+    <value>Circle Active</value>
+  </data>
+  <data name="TRACKERS_SSCALLER_CIRCLE_RANGE" xml:space="preserve">
+    <value>Circle Range</value>
+  </data>
+  <data name="TRACKERS_SSCALLER_DISABLETIME" xml:space="preserve">
+    <value>Disable Time</value>
+  </data>
+  <data name="TRACKERS_SSCALLER_MAIN" xml:space="preserve">
+    <value>SS Caller</value>
+  </data>
+  <data name="TRACKERS_TRACKER_MAIN" xml:space="preserve">
+    <value>Trackers</value>
+  </data>
+  <data name="TRACKERS_UIM_MAIN" xml:space="preserve">
+    <value>Uim</value>
+  </data>
+  <data name="TRACKERS_UIM_SCALE" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="TRACKERS_UIM_TIME" xml:space="preserve">
+    <value>Ss Time</value>
+  </data>
+  <data name="TRACKERS_UI_ALLY" xml:space="preserve">
+    <value>Ally</value>
+  </data>
+  <data name="TRACKERS_UI_ENEMY" xml:space="preserve">
+    <value>Enemy</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_BOTH" xml:space="preserve">
+    <value>Both</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_HEAD_BIG" xml:space="preserve">
+    <value>Big</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_HEAD_SMALL" xml:space="preserve">
+    <value>Small</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_SIDE" xml:space="preserve">
+    <value>Side</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_DEFAULT" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_LEAGUE" xml:space="preserve">
+    <value>League</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_SIDEHEAD_SIMPLE" xml:space="preserve">
+    <value>Simple</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_SIDE_DISPLAY" xml:space="preserve">
+    <value>Side Display</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_UNIT" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_UNIT_DISPLAY" xml:space="preserve">
+    <value>Over Head Display</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_MODE_UNIT_MODE" xml:space="preserve">
+    <value>Over Head Mode</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_POSITION_X" xml:space="preserve">
+    <value>X Position</value>
+  </data>
+  <data name="TRACKERS_UI_GLOBAL_POSITION_Y" xml:space="preserve">
+    <value>Y Position</value>
+  </data>
+  <data name="TRACKERS_UI_ITEMPANEL" xml:space="preserve">
+    <value>Item Panel</value>
+  </data>
+  <data name="TRACKERS_UI_MAIN" xml:space="preserve">
+    <value>Ui</value>
+  </data>
+  <data name="TRACKERS_UI_PING" xml:space="preserve">
+    <value>Ping active</value>
+  </data>
+  <data name="TRACKERS_UI_SCALE" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="TRACKERS_WAYPOINT_MAIN" xml:space="preserve">
+    <value>Waypoint</value>
+  </data>
+  <data name="WARDS_BUSHREVEALER_MAIN" xml:space="preserve">
+    <value>Bush Revealer</value>
+  </data>
+  <data name="WARDS_FOWWARDPLACEMENT_MAIN" xml:space="preserve">
+    <value>Fow Ward Placement</value>
+  </data>
+  <data name="WARDS_INVISIBLEREVEALER_MAIN" xml:space="preserve">
+    <value>Invisible Revealer</value>
+  </data>
+  <data name="WARDS_WARDCORRECTOR_MAIN" xml:space="preserve">
+    <value>Ward Corrector</value>
+  </data>
+  <data name="WARDS_WARDCORRECTOR_TRINKET" xml:space="preserve">
+    <value>Trinket</value>
+  </data>
+  <data name="WARDS_WARD_MAIN" xml:space="preserve">
+    <value>Wards</value>
+  </data>
+  <data name="ACTIVATORS_AUTOCLEANSE_CONFIG_MAIN" xml:space="preserve">
+    <value>Cleanse Config</value>
+  </data>
+  <data name="ACTIVATORS_AUTOCLEANSE_MAIN" xml:space="preserve">
+    <value>Auto Cleanse</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_ALLY_PERCENT" xml:space="preserve">
+    <value>Ally Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_AUTOCAST" xml:space="preserve">
+    <value>AutoCast On Key</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_MAIN" xml:space="preserve">
+    <value>Auto Exhaust</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_MIN_ENEMIES" xml:space="preserve">
+    <value>MinEnemies</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_SELF_PERCENT" xml:space="preserve">
+    <value>Self Percent</value>
+  </data>
+  <data name="ACTIVATORS_AUTOEXHAUST_ULTSPELLS" xml:space="preserve">
+    <value>Ult Spells</value>
+  </data>
+  <data name="ACTIVATORS_AUTOHEALSUMMONER_ALLY" xml:space="preserve">
+    <value>Ally Active</value>
+  </data>
+  <data name="ACTIVATORS_AUTOIGNITE_MAIN" xml:space="preserve">
+    <value>Auto Ignite</value>
+  </data>
+  <data name="MISCS_SKINCHANGER_SKIN_LOADING" xml:space="preserve">
+    <value>Small Pic</value>
+  </data>
+  <data name="MISCS_SKINCHANGER_SKIN_SPLASH" xml:space="preserve">
+    <value>Big Pic</value>
+  </data>
+  <data name="GLOBAL_NOTIFICATION" xml:space="preserve">
+    <value>Notification</value>
+  </data>
+  <data name="TIMERS_SPELL_MAIN" xml:space="preserve">
+    <value>Spell</value>
+  </data>
+  <data name="GLOBAL_CHAT" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="DETECTORS_GANK_TEXT_JUNGLER_ALLY" xml:space="preserve">
+    <value>Ally jungler approaching</value>
+  </data>
+  <data name="MISCS_AUTOBUY_BUILD_CHOICE" xml:space="preserve">
+    <value>Build Choice</value>
+  </data>
+  <data name="MISCS_AUTOBUY_BUILD_LOAD" xml:space="preserve">
+    <value>Show Build</value>
+  </data>
+  <data name="MISCS_AUTOBUY_CREATE_BUILD" xml:space="preserve">
+    <value>New Build</value>
+  </data>
+  <data name="MISCS_AUTOBUY_DELETE_BUILD" xml:space="preserve">
+    <value>Delete Build</value>
+  </data>
+  <data name="MISCS_AUTOBUY_MAIN" xml:space="preserve">
+    <value>Auto Buyer</value>
+  </data>
+  <data name="MISCS_SAFEFLASH_MAIN" xml:space="preserve">
+    <value>Safe Flash</value>
+  </data>
+  <data name="MISCS_PINGERNAME_IGNORE" xml:space="preserve">
+    <value>Ignore </value>
+  </data>
+  <data name="TRACKERS_SSCALLER_IGNORE" xml:space="preserve">
+    <value>Ignore </value>
+  </data>
+  <data name="TRACKERS_SSCALLER_MINTIME" xml:space="preserve">
+    <value>Miss Seconds</value>
+  </data>
+  <data name="MISCS_ANTILATERN_MOVE" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="MISCS_ANTILATERN_SPELLS" xml:space="preserve">
+    <value>Use Spells</value>
+  </data>
+  <data name="MISCS_ANTILATERN_WARDS" xml:space="preserve">
+    <value>Use Wards</value>
+  </data>
+  <data name="GLOBAL_COOLDOWN" xml:space="preserve">
+    <value>Cooldown</value>
+  </data>
+  <data name="GLOBAL_CIRCLE_THICKNESS" xml:space="preserve">
+    <value>Thickness</value>
+  </data>
+  <data name="GLOBAL_CIRCLE_WIDTH" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="GLOBAL_COLOR" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="GLOBAL_SCALE" xml:space="preserve">
+    <value>Scale</value>
+  </data>
+  <data name="TRACKERS_CLONE_DOUBLE" xml:space="preserve">
+    <value>Double Circles</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_COMBO" xml:space="preserve">
+    <value>Combo</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_DRAW" xml:space="preserve">
+    <value>Draw Spell</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_E" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_FARM" xml:space="preserve">
+    <value>Farm</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_FARM_JUNGLE" xml:space="preserve">
+    <value>Jungle</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_FARM_LANE" xml:space="preserve">
+    <value>Lane</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_FARM_LASTHIT" xml:space="preserve">
+    <value>Lasthit</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_FLEE" xml:space="preserve">
+    <value>Flee</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_HARASS" xml:space="preserve">
+    <value>Harass</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_INTERRUPT" xml:space="preserve">
+    <value>Interrupt</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_ITEMS" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_KILLSTEAL" xml:space="preserve">
+    <value>Killsteal</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_MAIN" xml:space="preserve">
+    <value>Champions</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_ORBWALKER" xml:space="preserve">
+    <value>Orbwalker</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_Q" xml:space="preserve">
+    <value>Q</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_R" xml:space="preserve">
+    <value>R</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_TROLL" xml:space="preserve">
+    <value>Troll</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_W" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_E_SHIELD" xml:space="preserve">
+    <value>Use Shield</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_E_SHIELD_PERCENT" xml:space="preserve">
+    <value>At % HP</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_FLEE_ALLY" xml:space="preserve">
+    <value>Flee with ally</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_FLEE_ALLY_RANGE" xml:space="preserve">
+    <value>Ally Range</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_MAIN" xml:space="preserve">
+    <value>Tahm Kench</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_W_MAXMOVE" xml:space="preserve">
+    <value>Draw max Movement Range</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_MANAPERCENT" xml:space="preserve">
+    <value>Min Mana percent</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_TROLL_ENEMY_HERO" xml:space="preserve">
+    <value>Move to enemy Hero</value>
+  </data>
+  <data name="CHAMPIONS_CHAMPION_TROLL_ENEMY_TURRET" xml:space="preserve">
+    <value>Move to enemy Turret</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_COMBO_WMAX" xml:space="preserve">
+    <value>Max stacks until w disabled</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_W_AUTOMOVE" xml:space="preserve">
+    <value>Auto move to ally turret / hero</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_W_AUTOSHIELD" xml:space="preserve">
+    <value>Auto shield ally</value>
+  </data>
+  <data name="CHAMPIONS_TAHMKENCH_W_SHIELD_PERCENT" xml:space="preserve">
+    <value>Auto shield ally hp percent</value>
+  </data>
+  <data name="MISCS_ANTIJUMP_MAIN" xml:space="preserve">
+    <value>Anti Jump</value>
+  </data>
+  <data name="GLOBAL_DELAY" xml:space="preserve">
+    <value>Delay</value>
+  </data>
+  <data name="DETECTORS_SHAREDEXPERIENCE_MAIN" xml:space="preserve">
+    <value>Shared Experience</value>
+  </data>
+  <data name="DETECTORS_SHAREDEXPERIENCE_RESETTIME" xml:space="preserve">
+    <value>Reset Time</value>
+  </data>
+  <data name="DETECTORS_SHAREDEXPERIENCE_TEXT" xml:space="preserve">
+    <value>Enemies missing for </value>
+  </data>
+  <data name="DETECTORS_SHAREDEXPERIENCE_TRACKRANGE" xml:space="preserve">
+    <value>Track Range</value>
+  </data>
+  <data name="GLOBAL_FLASH" xml:space="preserve">
+    <value>Flash</value>
+  </data>
+  <data name="MISCS_ANTINEXUSTURRET_ABILITIES" xml:space="preserve">
+    <value>Abilities</value>
+  </data>
+  <data name="DETECTORS_SHAREDEXPERIENCE_ONLYINVISIBLE" xml:space="preserve">
+    <value>Only when hiding</value>
+  </data>
+  <data name="GLOBAL_DRAWING" xml:space="preserve">
+    <value>Drawing</value>
+  </data>
+  <data name="TRACKERS_UIM_CIRCLE" xml:space="preserve">
+    <value>Circle</value>
+  </data>
+  <data name="TRACKERS_UIM_CIRCLE_RANGE" xml:space="preserve">
+    <value>Max Circle Range</value>
+  </data>
+  <data name="TIMERS_EXECUTE_MAIN" xml:space="preserve">
+    <value>Execute</value>
+  </data>
+  <data name="TIMERS_ASCENSION_MAIN" xml:space="preserve">
+    <value>Ascension</value>
+  </data>
+</root>

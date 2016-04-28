@@ -1,0 +1,41 @@
+using System;
+using EloBuddy;
+using EloBuddy.SDK;
+using ExorAIO.Utilities;
+using LeagueSharp.Common;
+
+namespace ExorAIO.Champions.Ryze
+{
+    /// <summary>
+    ///     The logics class.
+    /// </summary>
+    internal partial class Logics
+    {
+        /// <summary>
+        ///     Called when the game updates itself.
+        /// </summary>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
+        public static void Harass(EventArgs args)
+        {
+            if (!Targets.Target.IsValidTarget() ||
+                Bools.IsSpellShielded(Targets.Target))
+            {
+                return;
+            }
+
+            /// <summary>
+            ///     The Q Harass Logic.
+            /// </summary>
+            if (Variables.Q.IsReady() &&
+                Targets.Target.IsValidTarget(Variables.Q.Range) &&
+                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana &&
+                Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
+            {
+                if (Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Count < 0)
+                {
+                    Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).CastPosition);
+                }
+            }
+        }
+    }
+}
