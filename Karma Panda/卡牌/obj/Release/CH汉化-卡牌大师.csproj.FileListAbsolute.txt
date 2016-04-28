@@ -1,0 +1,11 @@
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\TwistedBuddy.exe.config
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\TwistedBuddy.exe
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\TwistedBuddy.pdb
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\EloBuddy.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\EloBuddy.SDK.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\SharpDX.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\SharpDX.Direct3D9.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\Newtonsoft.Json.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\bin\Release\EloBuddy.Sandbox.dll
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\obj\Release\TwistedBuddy.exe
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\Karma Panda\卡牌\obj\Release\TwistedBuddy.pdb

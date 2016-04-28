@@ -1,0 +1,619 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{621BDC7A-FBCE-42C1-9BFE-F17648D7173E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Berb.Common</RootNamespace>
+    <AssemblyName>Berb.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EloBuddy">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.dll</HintPath>
+    </Reference>
+    <Reference Include="EloBuddy.Sandbox">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.Sandbox.dll</HintPath>
+    </Reference>
+    <Reference Include="EloBuddy.SDK">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Web.RegularExpressions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LeagueSharp-Common\AntiGapcloser.cs" />
+    <Compile Include="LeagueSharp-Common\Circle.cs" />
+    <Compile Include="LeagueSharp-Common\Config.cs" />
+    <Compile Include="LeagueSharp-Common\Cursor.cs" />
+    <Compile Include="LeagueSharp-Common\CustomEvents.cs" />
+    <Compile Include="LeagueSharp-Common\Damage.cs" />
+    <Compile Include="LeagueSharp-Common\Dash.cs" />
+    <Compile Include="LeagueSharp-Common\EnumerableExtensions.cs" />
+    <Compile Include="LeagueSharp-Common\GamePacket.cs" />
+    <Compile Include="LeagueSharp-Common\Geometry.cs" />
+    <Compile Include="LeagueSharp-Common\HealthPrediction.cs" />
+    <Compile Include="LeagueSharp-Common\HeroManager.cs" />
+    <Compile Include="LeagueSharp-Common\Interrupter.cs" />
+    <Compile Include="LeagueSharp-Common\Interrupter2.cs" />
+    <Compile Include="LeagueSharp-Common\ItemData.cs" />
+    <Compile Include="LeagueSharp-Common\Items.cs" />
+    <Compile Include="LeagueSharp-Common\Keys.cs" />
+    <Compile Include="LeagueSharp-Common\LastCastedSpell.cs" />
+    <Compile Include="LeagueSharp-Common\MasteryData.cs" />
+    <Compile Include="LeagueSharp-Common\MEC.cs" />
+    <Compile Include="LeagueSharp-Common\MinionManager.cs" />
+    <Compile Include="LeagueSharp-Common\NativeMethods.cs" />
+    <Compile Include="LeagueSharp-Common\OnValueChangeEventArgs.cs" />
+    <Compile Include="LeagueSharp-Common\Orbwalking.cs" />
+    <Compile Include="LeagueSharp-Common\Packet.cs" />
+    <Compile Include="LeagueSharp-Common\Prediction.cs" />
+    <Compile Include="LeagueSharp-Common\Render.cs" />
+    <Compile Include="LeagueSharp-Common\Spell.cs" />
+    <Compile Include="LeagueSharp-Common\StringList.cs" />
+    <Compile Include="LeagueSharp-Common\Utility.cs" />
+    <Compile Include="LeagueSharp-Common\Utils.cs" />
+    <Compile Include="LeagueSharp-Common\WeightedRandom.cs" />
+    <Compile Include="LeagueSharp-Common\WindowsMessages.cs" />
+    <Compile Include="LeagueSharp-Common\WndEventComposition.cs" />
+    <Compile Include="LeagueSharp-Data\Data.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\ChampionDatabase.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\ChampionPriorityData.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\DamageDatabase.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\FlashJukeData.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\GapcloserData.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\InterruptableSpellData.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\ItemDatabase.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\MapData.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\SpellDatabase.cs" />
+    <Compile Include="LeagueSharp-Data\DataTypes\TrapLocationData.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\CastType.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\CollisionableObjects.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\DamageScalingTarget.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\DamageScalingType.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\DamageStage.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\DangerLevel.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\GapcloserType.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\SpellEffectType.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\SpellTags.cs" />
+    <Compile Include="LeagueSharp-Data\Enumerations\SpellType.cs" />
+    <Compile Include="LeagueSharp-Data\Utility\IFilter.cs" />
+    <Compile Include="LeagueSharp-Data\Utility\JsonFactory.cs" />
+    <Compile Include="LeagueSharp-Data\Utility\Resources\ResourceFactory.cs" />
+    <Compile Include="LeagueSharp-Data\Utility\Resources\ResourceImportAttribute.cs" />
+    <Compile Include="LeagueSharp-Data\Utility\Resources\ResourceLoader.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Bootstrap.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Constants.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\CastStates.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\CastTypes.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\CenteredFlags.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\CollisionableObjects.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\DangerLevel.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\DrawType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\GapcloserType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\HealthPredictionType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\HitChance.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\JungleType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\KeyBindType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\LogLevel.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\MinionTypes.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\NotificationIconType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\OrbwalkingMode.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\OrbwalkingType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\PerformanceType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\SkillshotDetectionType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\SkillshotType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\SpellTags.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\SpellType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\TeleportStatus.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\TeleportType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\TurretType.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Enumerations\WindowsMessages.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\Dash.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\Events.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\Gapcloser.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\InterruptableSpell.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\Load.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\Stealth.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\Teleport.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\Turret.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Extensions\Enumerable.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Extensions\Extensions.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Extensions\SharpDX\Generic.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Extensions\SharpDX\Vector2Extensions.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Extensions\SharpDX\Vector3Extensions.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Extensions\Unit.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\GameObjects.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Collision.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\ConvexHull.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Geometry.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Polygons\ArcPoly.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Polygons\CirclePoly.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Polygons\LinePoly.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Polygons\Polygon.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Polygons\RectanglePoly.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Polygons\RingPoly.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Polygons\SectorPoly.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Prediction\Cluster.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Prediction\GamePath.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Prediction\Health.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Math\Prediction\Movement.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Signals\Signal.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Signals\SignalManager.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Abstracts\AMenuComponent.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\ColorSpectrum.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Customizer\MenuCustomizer.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Menu.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\MenuItem.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\MenuManager.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\MenuValueChangedEventArgs.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\RadioMenu.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\ADrawable.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\ADrawableAdapter.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueBool2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueButton2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueColorPicker2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueKeyBind2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueList2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueMenu2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueMenuSettings2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueSeparator2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueSlider2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueSliderButton2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueTextures2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueTheme2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueUtilities2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueBool.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueColorPicker.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueKeyBind.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueList.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueMenu.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueMenuSettings.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueSeparator.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueSlider.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueSliderButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueTextures.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueTheme.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueUtilities.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredBool.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredColorPicker.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredKeyBind.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredList.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredMenu.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredMenuSettings.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredSeparator.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredSlider.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredSliderButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredTextures.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredTheme.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredUtilities.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultBool.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultColorPicker.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultKeyBind.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultList.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultMenu.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultSeparator.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultSlider.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultSliderButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultTextures.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultTheme.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultUtilities.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\ITheme.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightBool2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightButton2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightColorPicker2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightKeyBind2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightList2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightMenu2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightMenuSettings2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightSeparator2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightSlider2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightSliderButton2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightTextures2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightTheme2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightUtilities2.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightBool.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightColorPicker.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightKeyBind.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightList.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightMenu.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightMenuSettings.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightSeparator.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightSlider.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightSliderButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightTextures.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightTheme.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightUtilities.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\MenuSettings.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechBool.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechColorPicker.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechKeyBind.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechList.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechMenu.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechMenuSettings.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechSeparator.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechSlider.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechSliderButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechTextures.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechTheme.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechUtilities.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Skins\ThemeManager.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuBool.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuColor.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuKeyBind.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuList.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuSeparator.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuSlider.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\IMenu\Values\MenuSliderButton.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\Notifications\ANotification.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\Notifications\Notification.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\Notifications\NotificationIcons.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\Notifications\Notifications.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\UI\Utils.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\ActionQueue.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\AutoAttack.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\BinarySerializer.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Cache.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\CallbackPerformance.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Cursor.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\DelayAction.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\DynamicInitializer.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\IFilter.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Invulnerable.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\JsonFactory.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Jungle.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Logging.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\MathUtils.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Minion.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Performance.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Render.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\ResourceFactory.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\ResourceImportAttribute.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\ResourceLoader.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\Storage.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\TickOperation.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\WeightedRandom.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Utils\WindowsKeys.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Variables.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Damages\Damage.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Damages\DamageLibrary.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Damages\DamageMastery.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Damages\DamagePassives.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Items.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Map.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Orbwalking\Orbwalker.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Orbwalking\OrbwalkerBase.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Orbwalking\OrbwalkerSelector.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\Database\SpellDatabase.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\Database\SpellDatabaseEntry.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\LastCast.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\LastCastedSpellEntry.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\LastCastPacketSentEntry.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\Spell.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\BaseSpell.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\Skillshot.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotCircle.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotCone.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotLine.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissile.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileArc.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileCircle.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileCone.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileLine.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotRing.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\Targeted.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\TargetedMissile.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\Tracker\Detector.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\Tracker\Skillshots\_ZiggsR.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\Spells\Tracker\Tracker.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\HeroVisibleEntry.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\ITargetSelectorMode.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Closest.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\IWeightItem.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\LeastHealth.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\LessAttacksToKill.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\LessCastsToKill.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\MostAbilityPower.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\MostAttackDamage.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\NearMouse.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Priority.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\PriorityCategory.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weight.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\WeightItemWrapper.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\AbilityPower.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\Aggro.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\AttackDamage.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\CrowdControl.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\FocusMe.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\Gold.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\Killable.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\LowHealth.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\LowResists.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\ShortDistanceCursor.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\ShortDistancePlayer.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\TeamFocus.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelector.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelectorHumanizer.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelectorMode.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelectorSelected.cs" />
+    <Compile Include="LeagueSharp-SDK\GlobalSuppressions.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\clipper\clipper.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Acquire.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\AssertCount.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Batch.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Concat.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Consume.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\DistinctBy.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\EquiZip.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\ExceptBy.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Fold.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\ForEach.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Generate.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\GenerateByIndex.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\GroupAdjacent.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Index.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\MaxBy.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\MinBy.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\MoreEnumerable.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\OrderedMerge.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Pad.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Pairwise.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Pipe.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Prepend.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\PreScan.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Scan.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\SequenceException.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\SingleOrFallback.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\SkipUntil.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Split.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\TakeEvery.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\TakeLast.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\TakeUntil.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\ToDataTable.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\ToDelimitedString.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\ToHashSet.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Trace.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\Zip.cs" />
+    <Compile Include="LeagueSharp-SDK\Third_Party\MoreLinq\ZipLongest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="LeagueSharp-SDK\Third_Party\clipper\License.txt" />
+    <Content Include="LeagueSharp-SDK\Third_Party\MoreLinq\License.txt" />
+    <Content Include="Resources\denymouse.png" />
+    <Content Include="Resources\Images\cursor_drag.png" />
+    <Content Include="Resources\Images\notifications_arrow.png" />
+    <Content Include="Resources\Images\notifications_check.png" />
+    <Content Include="Resources\Images\notifications_error.png" />
+    <Content Include="Resources\Images\notifications_select.png" />
+    <Content Include="Resources\Images\notifications_star.png" />
+    <Content Include="Resources\Images\notifications_warning.png" />
+    <Content Include="Resources\intro.png" />
+    <Content Include="Resources\Minimap_Ward_Green_Enemy.png" />
+    <Content Include="Resources\Minimap_Ward_Pink_Enemy.png" />
+    <Content Include="Resources\mouse1.png" />
+    <Content Include="Resources\mouse2.png" />
+    <Content Include="Resources\RecallBar.png" />
+    <Content Include="Resources\ScopeSprite.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ChampionData.json" />
+    <None Include="Resources\ChampionData\Aatrox.json" />
+    <None Include="Resources\ChampionData\Ahri.json" />
+    <None Include="Resources\ChampionData\Akali.json" />
+    <None Include="Resources\ChampionData\Alistar.json" />
+    <None Include="Resources\ChampionData\Amumu.json" />
+    <None Include="Resources\ChampionData\Anivia.json" />
+    <None Include="Resources\ChampionData\Annie.json" />
+    <None Include="Resources\ChampionData\Ashe.json" />
+    <None Include="Resources\ChampionData\AurelionSol.json" />
+    <None Include="Resources\ChampionData\Azir.json" />
+    <None Include="Resources\ChampionData\Bard.json" />
+    <None Include="Resources\ChampionData\Blitzcrank.json" />
+    <None Include="Resources\ChampionData\Brand.json" />
+    <None Include="Resources\ChampionData\Braum.json" />
+    <None Include="Resources\ChampionData\Caitlyn.json" />
+    <None Include="Resources\ChampionData\Cassiopeia.json" />
+    <None Include="Resources\ChampionData\Chogath.json" />
+    <None Include="Resources\ChampionData\Corki.json" />
+    <None Include="Resources\ChampionData\Darius.json" />
+    <None Include="Resources\ChampionData\Diana.json" />
+    <None Include="Resources\ChampionData\Draven.json" />
+    <None Include="Resources\ChampionData\DrMundo.json" />
+    <None Include="Resources\ChampionData\Ekko.json" />
+    <None Include="Resources\ChampionData\Elise.json" />
+    <None Include="Resources\ChampionData\Evelynn.json" />
+    <None Include="Resources\ChampionData\Ezreal.json" />
+    <None Include="Resources\ChampionData\FiddleSticks.json" />
+    <None Include="Resources\ChampionData\Fiora.json" />
+    <None Include="Resources\ChampionData\Fizz.json" />
+    <None Include="Resources\ChampionData\Galio.json" />
+    <None Include="Resources\ChampionData\Gangplank.json" />
+    <None Include="Resources\ChampionData\Garen.json" />
+    <None Include="Resources\ChampionData\Gnar.json" />
+    <None Include="Resources\ChampionData\Gragas.json" />
+    <None Include="Resources\ChampionData\Graves.json" />
+    <None Include="Resources\ChampionData\Hecarim.json" />
+    <None Include="Resources\ChampionData\Heimerdinger.json" />
+    <None Include="Resources\ChampionData\Illaoi.json" />
+    <None Include="Resources\ChampionData\Irelia.json" />
+    <None Include="Resources\ChampionData\Janna.json" />
+    <None Include="Resources\ChampionData\JarvanIV.json" />
+    <None Include="Resources\ChampionData\Jax.json" />
+    <None Include="Resources\ChampionData\Jayce.json" />
+    <None Include="Resources\ChampionData\Jhin.json" />
+    <None Include="Resources\ChampionData\Jinx.json" />
+    <None Include="Resources\ChampionData\Kalista.json" />
+    <None Include="Resources\ChampionData\Karma.json" />
+    <None Include="Resources\ChampionData\Karthus.json" />
+    <None Include="Resources\ChampionData\Kassadin.json" />
+    <None Include="Resources\ChampionData\Katarina.json" />
+    <None Include="Resources\ChampionData\Kayle.json" />
+    <None Include="Resources\ChampionData\Kennen.json" />
+    <None Include="Resources\ChampionData\Khazix.json" />
+    <None Include="Resources\ChampionData\Kindred.json" />
+    <None Include="Resources\ChampionData\KogMaw.json" />
+    <None Include="Resources\ChampionData\Leblanc.json" />
+    <None Include="Resources\ChampionData\LeeSin.json" />
+    <None Include="Resources\ChampionData\Leona.json" />
+    <None Include="Resources\ChampionData\Lissandra.json" />
+    <None Include="Resources\ChampionData\Lucian.json" />
+    <None Include="Resources\ChampionData\Lulu.json" />
+    <None Include="Resources\ChampionData\Lux.json" />
+    <None Include="Resources\ChampionData\Malphite.json" />
+    <None Include="Resources\ChampionData\Malzahar.json" />
+    <None Include="Resources\ChampionData\Maokai.json" />
+    <None Include="Resources\ChampionData\MasterYi.json" />
+    <None Include="Resources\ChampionData\MissFortune.json" />
+    <None Include="Resources\ChampionData\MonkeyKing.json" />
+    <None Include="Resources\ChampionData\Mordekaiser.json" />
+    <None Include="Resources\ChampionData\Morgana.json" />
+    <None Include="Resources\ChampionData\Nami.json" />
+    <None Include="Resources\ChampionData\Nasus.json" />
+    <None Include="Resources\ChampionData\Nautilus.json" />
+    <None Include="Resources\ChampionData\Nidalee.json" />
+    <None Include="Resources\ChampionData\Nocturne.json" />
+    <None Include="Resources\ChampionData\Nunu.json" />
+    <None Include="Resources\ChampionData\Olaf.json" />
+    <None Include="Resources\ChampionData\Orianna.json" />
+    <None Include="Resources\ChampionData\Pantheon.json" />
+    <None Include="Resources\ChampionData\Poppy.json" />
+    <None Include="Resources\ChampionData\Quinn.json" />
+    <None Include="Resources\ChampionData\Rammus.json" />
+    <None Include="Resources\ChampionData\RekSai.json" />
+    <None Include="Resources\ChampionData\Renekton.json" />
+    <None Include="Resources\ChampionData\Rengar.json" />
+    <None Include="Resources\ChampionData\Riven.json" />
+    <None Include="Resources\ChampionData\Rumble.json" />
+    <None Include="Resources\ChampionData\Ryze.json" />
+    <None Include="Resources\ChampionData\Sejuani.json" />
+    <None Include="Resources\ChampionData\Shaco.json" />
+    <None Include="Resources\ChampionData\Shen.json" />
+    <None Include="Resources\ChampionData\Shyvana.json" />
+    <None Include="Resources\ChampionData\Singed.json" />
+    <None Include="Resources\ChampionData\Sion.json" />
+    <None Include="Resources\ChampionData\Sivir.json" />
+    <None Include="Resources\ChampionData\Skarner.json" />
+    <None Include="Resources\ChampionData\Sona.json" />
+    <None Include="Resources\ChampionData\Soraka.json" />
+    <None Include="Resources\ChampionData\Swain.json" />
+    <None Include="Resources\ChampionData\Syndra.json" />
+    <None Include="Resources\ChampionData\TahmKench.json" />
+    <None Include="Resources\ChampionData\Talon.json" />
+    <None Include="Resources\ChampionData\Taric.json" />
+    <None Include="Resources\ChampionData\Teemo.json" />
+    <None Include="Resources\ChampionData\Thresh.json" />
+    <None Include="Resources\ChampionData\Tristana.json" />
+    <None Include="Resources\ChampionData\Trundle.json" />
+    <None Include="Resources\ChampionData\Tryndamere.json" />
+    <None Include="Resources\ChampionData\TwistedFate.json" />
+    <None Include="Resources\ChampionData\Twitch.json" />
+    <None Include="Resources\ChampionData\Udyr.json" />
+    <None Include="Resources\ChampionData\Urgot.json" />
+    <None Include="Resources\ChampionData\Varus.json" />
+    <None Include="Resources\ChampionData\Vayne.json" />
+    <None Include="Resources\ChampionData\Veigar.json" />
+    <None Include="Resources\ChampionData\Velkoz.json" />
+    <None Include="Resources\ChampionData\Vi.json" />
+    <None Include="Resources\ChampionData\Viktor.json" />
+    <None Include="Resources\ChampionData\Vladimir.json" />
+    <None Include="Resources\ChampionData\Volibear.json" />
+    <None Include="Resources\ChampionData\Warwick.json" />
+    <None Include="Resources\ChampionData\Xerath.json" />
+    <None Include="Resources\ChampionData\XinZhao.json" />
+    <None Include="Resources\ChampionData\Yasuo.json" />
+    <None Include="Resources\ChampionData\Yorick.json" />
+    <None Include="Resources\ChampionData\Zac.json" />
+    <None Include="Resources\ChampionData\Zed.json" />
+    <None Include="Resources\ChampionData\Ziggs.json" />
+    <None Include="Resources\ChampionData\Zilean.json" />
+    <None Include="Resources\ChampionData\Zyra.json" />
+    <None Include="Resources\DamageData\6.8.json" />
+    <None Include="Resources\Data\6.6.json" />
+    <None Include="Resources\Data\6.7.json" />
+    <None Include="Resources\Data\Database.json" />
+    <None Include="Resources\Data\Gapclosers.json" />
+    <None Include="Resources\Data\GlobalInterruptableSpellsList.json" />
+    <None Include="Resources\Data\InterruptableSpells.json" />
+    <None Include="Resources\Data\Map.json" />
+    <None Include="Resources\Data\Priority.json" />
+    <None Include="Resources\FlashJukeData.json" />
+    <None Include="Resources\GapcloserData.json" />
+    <None Include="Resources\GlobalInterruptableSpellData.json" />
+    <None Include="Resources\InterruptableSpellsData.json" />
+    <None Include="Resources\ItemData.json" />
+    <None Include="Resources\MapData.json" />
+    <None Include="Resources\PriorityData.json" />
+    <None Include="Resources\SpellDatabase.json" />
+    <None Include="Resources\TrapLocationsData.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
