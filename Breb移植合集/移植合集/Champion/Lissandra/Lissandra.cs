@@ -72,6 +72,17 @@ namespace SephLissandra
             GameObject.OnCreate += OnCreate;
             GameObject.OnDelete += OnDelete;
             Drawing.OnDraw += OnDraw;
+
+            Config = LissMenu.Config;
+            comboMenu = LissMenu.comboMenu;
+            ksMenu = LissMenu.ksMenu;
+            harassMenu = LissMenu.harassMenu;
+            lastHitMenu = LissMenu.lastHitMenu;
+            clearMenu = LissMenu.clearMenu;
+            interruptMenu = LissMenu.interruptMenu;
+            blackListMenu = LissMenu.blackListMenu;
+            miscMenu = LissMenu.miscMenu;
+            drawMenu = LissMenu.drawMenu;
         }
 
 
@@ -159,7 +170,7 @@ namespace SephLissandra
 
         private static void ComboHandler()
         {
-            var Target = TargetSelector.GetTarget(Spells["E"].Range*0.94f, DamageType.Magical);
+            var Target = TargetSelector.GetTarget(Spells["E"].Range * 0.94f, DamageType.Magical);
 
             if (Target == null || !Target.IsValidTarget())
             {
@@ -167,7 +178,7 @@ namespace SephLissandra
                     HeroManager.Enemies.FirstOrDefault(
                         h =>
                             h.IsValidTarget() &&
-                            (Vector3.Distance(h.ServerPosition, Player.ServerPosition) < Spells["E"].Range*0.94) &&
+                            (Vector3.Distance(h.ServerPosition, Player.ServerPosition) < Spells["E"].Range * 0.94) &&
                             !h.IsZombie);
             }
 
@@ -249,13 +260,13 @@ namespace SephLissandra
                     h =>
                         h.IsValidTarget() && !h.IsInvulnerable &&
                         Vector3.Distance(h.ServerPosition, Player.ServerPosition) < Spells["Q2"].Range)
-                select Spells["Q2"].GetPrediction(hero)
+                          select Spells["Q2"].GetPrediction(hero)
                 into prediction
-                where
-                    prediction.CollisionObjects.Count > 0 &&
-                    prediction.Hitchance >= LissUtils.GetHitChance("Hitchance.Q")
-                let enemieshit = prediction.CollisionObjects.Where(x => x is AIHeroClient)
-                select prediction).ToDictionary(prediction => prediction.CastPosition,
+                          where
+                              prediction.CollisionObjects.Count > 0 &&
+                              prediction.Hitchance >= LissUtils.GetHitChance("Hitchance.Q")
+                          let enemieshit = prediction.CollisionObjects.Where(x => x is AIHeroClient)
+                          select prediction).ToDictionary(prediction => prediction.CastPosition,
                     prediction => prediction.CollisionObjects.Count);
 
             var bestpair = maxhit.MaxOrDefault(x => x.Value);
@@ -460,7 +471,7 @@ namespace SephLissandra
             }
 
             var dmgto = Player.GetSpellDamage(currenttarget, SpellSlot.R);
-            if (dmgto > currenttarget.Health && currenttarget.Health >= 0.40*dmgto)
+            if (dmgto > currenttarget.Health && currenttarget.Health >= 0.40 * dmgto)
             {
                 Spells["R"].Cast(currenttarget);
                 return;

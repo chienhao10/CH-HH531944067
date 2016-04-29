@@ -147,7 +147,7 @@
         {
             try
             {
-                if (!sender.IsEnemy || !this.Menu["AntiStealthActive"].Cast<CheckBox>().CurrentValue)
+                if (!sender.IsEnemy || !this.Menu["AntiStealthActive"].Cast<CheckBox>().CurrentValue || ObjectManager.Player.InFountain(LeagueSharp.Common.Utility.FountainType.OwnFountain))
                 {
                     return;
                 }
@@ -190,13 +190,12 @@
             try
             {
                 var hero = sender as AIHeroClient;
-                if (!sender.IsEnemy || hero == null || !this.Menu["AntiStealthActive"].Cast<CheckBox>().CurrentValue)
+                if (!sender.IsEnemy || hero == null || !this.Menu["AntiStealthActive"].Cast<CheckBox>().CurrentValue || ObjectManager.Player.InFountain(LeagueSharp.Common.Utility.FountainType.OwnFountain))
                 {
                     return;
                 }
 
-                var stealthChampion =
-                    Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
+                var stealthChampion = Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (stealthChampion != null)
                 {

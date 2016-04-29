@@ -151,10 +151,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!E.IsReady() || args.SData.IsAutoAttack() || Player.HealthPercent > getSliderItem(eMenu, "Edmg") ||
-                !getCheckBoxItem(eMenu, "autoE")
-                || !sender.IsEnemy || sender.IsMinion || !sender.IsValid<AIHeroClient>() ||
-                args.SData.Name.ToLower() == "tormentedsoil")
+            if (!E.IsReady() || args.SData.IsAutoAttack() || Player.HealthPercent > getSliderItem(eMenu, "Edmg") || !getCheckBoxItem(eMenu, "autoE") || !sender.IsEnemy || sender.IsMinion || !sender.IsValid<AIHeroClient>() || args.SData.Name.ToLower() == "tormentedsoil")
                 return;
 
             if (eMenu["spell" + args.SData.Name] != null && !getCheckBoxItem(eMenu, "spell" + args.SData.Name))

@@ -2,6 +2,7 @@
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using LeagueSharp.Common;
+using System.Collections.Generic;
 using Spell = LeagueSharp.Common.Spell;
 
 namespace PopBlanc
@@ -11,8 +12,9 @@ namespace PopBlanc
         public static Spell Q;
         public static Spell W;
         public static Spell E;
-        public static Spell R;
+        public static Spell R, ER;
         public static Spell EPrediction;
+        public static List<Spell> SpellList = new List<Spell>();
 
         private static Menu _menu;
 
@@ -27,10 +29,19 @@ namespace PopBlanc
             E = new Spell(SpellSlot.E, 950);
             E.SetSkillshot(.25f, 70, 1750, true, SkillshotType.SkillshotLine);
 
+            ER = new Spell(SpellSlot.R, 950);
+            ER.SetSkillshot(.25f, 70, 1750, true, SkillshotType.SkillshotLine);
+
             EPrediction = new Spell(SpellSlot.E, 950);
             EPrediction.SetSkillshot(.25f, 70, 1750, true, SkillshotType.SkillshotLine);
 
-            R = new Spell(SpellSlot.R);
+            R = new Spell(SpellSlot.R, 720);
+            {
+                SpellList.Add(Q);
+                SpellList.Add(W);
+                SpellList.Add(E);
+                SpellList.Add(R);
+            }
         }
 
         public static void Initialize(Menu menu)
@@ -63,7 +74,7 @@ namespace PopBlanc
                 s = "LastHit";
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 s = "LaneClear";
             }

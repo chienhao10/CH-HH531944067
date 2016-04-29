@@ -20,7 +20,7 @@ namespace PopBlanc
     {
         private const int ERange = 950;
         private static AIHeroClient KSTarget;
-        public static Spell Q, W, E, R;
+        public static Spell Q, W, E, R, ER;
         private static readonly Random Random = new Random(Utils.TickCount);
 
         public static Menu menu, qMenu, wMenu, eMenu, rMenu, comboMenu, ksMenu, fleeMenu, drawMenu;
@@ -70,6 +70,7 @@ namespace PopBlanc
             W = SpellManager.W;
             E = SpellManager.E;
             R = SpellManager.R;
+            ER = SpellManager.ER;
 
             menu = MainMenu.AddMenu("PopBlanc", "PopBlanc");
 
@@ -236,9 +237,9 @@ namespace PopBlanc
                 }
             }
 
-            if (getKeyBindItem(fleeMenu, "Flee") ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee) && Flee())
+            if (getKeyBindItem(fleeMenu, "Flee") || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
             {
+                Flee();
                 return;
             }
 
@@ -271,7 +272,7 @@ namespace PopBlanc
         {
             if (Q.LastCastedDelay(Delay) || R.LastCastedDelay(Delay))
             {
-                return;
+                //return;
             }
 
             if (!force && CastSecondW())
@@ -279,9 +280,7 @@ namespace PopBlanc
                 return;
             }
 
-            var target = targ ??
-                         TargetSelector.GetTarget(
-                             EFirst && E.IsReady() ? E.Range : W.Range + WRadius - 10, DamageType.Magical);
+            var target = targ ?? TargetSelector.GetTarget(EFirst && E.IsReady() ? E.Range : W.Range + WRadius - 10, DamageType.Magical);
 
             if (!target.IsValidTarget())
             {
@@ -415,20 +414,18 @@ namespace PopBlanc
 
         private static bool _2Chainz()
         {
-            var chainable = TargetSelector.SelectedTarget ??
-                            TargetSelector.GetTarget(E.Range, DamageType.Magical);
+            var chainable = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(E.Range, DamageType.Magical);
 
             if (chainable != null)
             {
-                if (E.CanCast(chainable) && E.Cast(chainable).IsCasted())
+                if (E.IsReady() && ObjectManager.Player.Distance(chainable) < E.Range)
                 {
-                    Console.WriteLine("2Chainz: Cast E");
-                    return true;
+                    E.CastIfHitchanceEquals(chainable, HitChance.High);
                 }
 
-                if (R.CanCast(chainable) && R.IsReady() && R.GetSpellSlot() == SpellSlot.E &&
-                    R.Cast(chainable).IsCasted())
+                else if (R.IsReady() && ObjectManager.Player.Distance(chainable) < E.Range && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Name == "LeblancSoulShackleM")
                 {
+                    ER.CastIfHitchanceEquals(chainable, HitChance.High);
                     Console.WriteLine("2Chainz: Cast R(E)");
                     return true;
                 }
@@ -458,12 +455,9 @@ namespace PopBlanc
         {
             if (Q.IsReady() && Q.IsActive() && Player.ManaPercent >= getSliderItem(qMenu, "FarmQMana"))
             {
-                var killable =
-                    MinionManager.GetMinions(Q.Range, MinionTypes.All, MinionTeam.NotAlly)
-                        .FirstOrDefault(m => Q.IsKillable(m));
+                var killable = MinionManager.GetMinions(Q.Range, MinionTypes.All, MinionTeam.NotAlly) .FirstOrDefault(m => Q.IsKillable(m));
 
-                if (killable.IsValidTarget() && killable.Health > Player.GetAutoAttackDamage(killable, true) &&
-                    Q.CastOnUnit(killable))
+                if (killable.IsValidTarget() && killable.Health > Player.GetAutoAttackDamage(killable, true) && Q.CastOnUnit(killable))
                 {
                     return;
                 }
@@ -513,8 +507,6 @@ namespace PopBlanc
             {
                 return true;
             }
-
-            Orbwalker.ActiveModesFlags = Orbwalker.ActiveModes.None;
 
             if (getCheckBoxItem(fleeMenu, "FleeW") && W.IsReady() && W.IsFirstW())
             {

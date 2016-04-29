@@ -174,7 +174,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         E.Cast(Player.Position.Extend(need.PredictedPos, 800));
                     }
 
-                    if (PPDistance < 800 && Player.ChampionName == "Caitlyn" && W.IsReady() && Player.Mana > 200f && PortAIO.Champion.Caitlyn.Program.getBushW() && Utils.TickCount - W.LastCastAttemptT > 2000)
+                    if (!Orbwalker.IsAutoAttacking && PPDistance < 800 && Player.ChampionName == "Caitlyn" && W.IsReady() && Player.Mana > 200f && PortAIO.Champion.Caitlyn.Program.getBushW() && Utils.TickCount - W.LastCastAttemptT > 2000)
                     {
                         W.Cast(need.PredictedPos);
                     }
@@ -276,9 +276,9 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         }
                     }
 
-                    var dupa = (Obj_AI_Minion) sender;
+                    var dupa = (Obj_AI_Minion)sender;
                     if (dupa.Mana == 0)
-                        HiddenObjList.Add(new HiddenObj {type = 2, pos = sender.Position, endTime = float.MaxValue});
+                        HiddenObjList.Add(new HiddenObj { type = 2, pos = sender.Position, endTime = float.MaxValue });
                     else
                         HiddenObjList.Add(new HiddenObj
                         {
@@ -382,46 +382,46 @@ namespace OneKeyToWin_AIO_Sebby.Core
             {
                 //PINKS
                 case "visionward":
-                    HiddenObjList.Add(new HiddenObj {type = 2, pos = posCast, endTime = float.MaxValue});
+                    HiddenObjList.Add(new HiddenObj { type = 2, pos = posCast, endTime = float.MaxValue });
                     break;
                 case "trinkettotemlvl3B":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 180});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 180 });
                     break;
                 //SIGH WARD
                 case "itemghostward":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 180});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 180 });
                     break;
                 case "wrigglelantern":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 180});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 180 });
                     break;
                 case "sightward":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 180});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 180 });
                     break;
                 case "itemferalflare":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 180});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 180 });
                     break;
                 //TRINKET
                 case "trinkettotemlvl1":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 60});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 60 });
                     break;
                 case "trinkettotemlvl2":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 120});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 120 });
                     break;
                 case "trinkettotemlvl3":
-                    HiddenObjList.Add(new HiddenObj {type = 1, pos = posCast, endTime = Game.Time + 180});
+                    HiddenObjList.Add(new HiddenObj { type = 1, pos = posCast, endTime = Game.Time + 180 });
                     break;
                 //others
                 case "teemorcast":
-                    HiddenObjList.Add(new HiddenObj {type = 3, pos = posCast, endTime = Game.Time + 300});
+                    HiddenObjList.Add(new HiddenObj { type = 3, pos = posCast, endTime = Game.Time + 300 });
                     break;
                 case "noxious trap":
-                    HiddenObjList.Add(new HiddenObj {type = 3, pos = posCast, endTime = Game.Time + 300});
+                    HiddenObjList.Add(new HiddenObj { type = 3, pos = posCast, endTime = Game.Time + 300 });
                     break;
                 case "JackInTheBox":
-                    HiddenObjList.Add(new HiddenObj {type = 3, pos = posCast, endTime = Game.Time + 100});
+                    HiddenObjList.Add(new HiddenObj { type = 3, pos = posCast, endTime = Game.Time + 100 });
                     break;
                 case "Jack In The Box":
-                    HiddenObjList.Add(new HiddenObj {type = 3, pos = posCast, endTime = Game.Time + 100});
+                    HiddenObjList.Add(new HiddenObj { type = 3, pos = posCast, endTime = Game.Time + 100 });
                     break;
             }
         }

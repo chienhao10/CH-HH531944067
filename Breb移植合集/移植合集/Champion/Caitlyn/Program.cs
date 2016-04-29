@@ -130,14 +130,12 @@ namespace PortAIO.Champion.Caitlyn
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe &&
-                (args.SData.Name == "CaitlynPiltoverPeacemaker" || args.SData.Name == "CaitlynEntrapment"))
+            if (sender.IsMe && (args.SData.Name == "CaitlynPiltoverPeacemaker" || args.SData.Name == "CaitlynEntrapment"))
             {
                 QCastTime = Game.Time;
             }
 
-            if (!W.IsReady() || sender.IsMinion || !sender.IsEnemy || !getCheckBoxItem(wMenu, "Wspell") ||
-                !sender.IsValid<AIHeroClient>() || !sender.IsValidTarget(W.Range))
+            if (!W.IsReady() || sender.IsMinion || !sender.IsEnemy || !getCheckBoxItem(wMenu, "Wspell") || !sender.IsValid<AIHeroClient>() || !sender.IsValidTarget(W.Range))
                 return;
 
             var foundSpell = Spells.Find(x => args.SData.Name.ToLower() == x);
@@ -152,6 +150,8 @@ namespace PortAIO.Champion.Caitlyn
             if (Player.Mana > RMANA + WMANA)
             {
                 var t = gapcloser.Sender;
+                if (t == null) { return; }
+
                 if (E.IsReady() && t.IsValidTarget(E.Range) && getCheckBoxItem(eMenu, "EGCchampion" + t.ChampionName))
                 {
                     if (getSliderItem(eMenu, "EmodeGC") == 0)
@@ -161,10 +161,12 @@ namespace PortAIO.Champion.Caitlyn
                     else
                         E.Cast(t.ServerPosition);
                 }
-                else if (W.IsReady() && t.IsValidTarget(W.Range) &&
-                         getCheckBoxItem(wMenu, "WGCchampion" + t.ChampionName))
+                else if (W.IsReady() && t.IsValidTarget(W.Range) && getCheckBoxItem(wMenu, "WGCchampion" + t.ChampionName))
                 {
-                    W.Cast(getSliderItem(wMenu, "WmodeGC") == 0 ? gapcloser.End : Player.ServerPosition);
+                    if (getSliderItem(wMenu, "WmodeGC") == 0)
+                        W.Cast(gapcloser.End);
+                    else
+                        W.Cast(Player.ServerPosition);
                 }
             }
         }
@@ -190,8 +192,7 @@ namespace PortAIO.Champion.Caitlyn
                 LogicW();
             if (SebbyLib.Program.LagFree(3) && Q.IsReady() && getCheckBoxItem(qMenu, "autoQ2"))
                 LogicQ();
-            if (SebbyLib.Program.LagFree(4) && R.IsReady() && getCheckBoxItem(rMenu, "autoR") &&
-                !ObjectManager.Player.UnderTurret(true) && Game.Time - QCastTime > 1)
+            if (SebbyLib.Program.LagFree(4) && R.IsReady() && getCheckBoxItem(rMenu, "autoR") && !ObjectManager.Player.UnderTurret(true) && Game.Time - QCastTime > 1)
                 LogicR();
         }
 
@@ -200,23 +201,25 @@ namespace PortAIO.Champion.Caitlyn
             if (Player.UnderTurret(true) && getCheckBoxItem(rMenu, "Rturrent"))
                 return;
 
-
-            foreach (
-                var target in
-                    SebbyLib.Program.Enemies.Where(
-                        target =>
-                            target.IsValidTarget(R.Range) &&
-                            Player.Distance(target.Position) > getSliderItem(rMenu, "Rrange") &&
-                            target.CountEnemiesInRange(getSliderItem(rMenu, "Rcol")) == 1 &&
-                            target.CountAlliesInRange(500) == 0 && OktwCommon.ValidUlt(target)))
+            var targetA = TargetSelector.GetTarget(R.Range, DamageType.Physical);
+            if (targetA == null)
             {
+                return;
+            }
+
+            foreach (var target in EntityManager.Heroes.Enemies.Where(target => target.IsValidTarget(R.Range) && Player.Distance(target.Position) > getSliderItem(rMenu, "Rrange") && target.CountEnemiesInRange(getSliderItem(rMenu, "Rcol")) == 1 && target.CountAlliesInRange(500) == 0 && OktwCommon.ValidUlt(target)))
+            {
+                if (target == null)
+                {
+                    return;
+                }
                 if (OktwCommon.GetKsDamage(target, R) > target.Health)
                 {
                     var cast = true;
                     var output = R.GetPrediction(target);
                     var direction = output.CastPosition.To2D() - Player.Position.To2D();
                     direction.Normalize();
-                    var enemies = SebbyLib.Program.Enemies.Where(x => x.IsValidTarget()).ToList();
+                    var enemies = EntityManager.Heroes.Enemies.Where(x => x.IsValidTarget()).ToList();
                     foreach (var enemy in enemies)
                     {
                         if (enemy.BaseSkinName == target.BaseSkinName || !cast)
@@ -248,12 +251,7 @@ namespace PortAIO.Champion.Caitlyn
                     return;
                 if (getCheckBoxItem(wMenu, "autoW"))
                 {
-                    foreach (
-                        var enemy in
-                            SebbyLib.Program.Enemies.Where(
-                                enemy =>
-                                    enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy) &&
-                                    !enemy.HasBuff("caitlynyordletrapinternal")))
+                    foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy) && !enemy.HasBuff("caitlynyordletrapinternal")))
                     {
                         if (Utils.TickCount - W.LastCastAttemptT > 1000)
                         {
@@ -287,25 +285,17 @@ namespace PortAIO.Champion.Caitlyn
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             if (t.IsValidTarget(Q.Range))
             {
-                if (GetRealDistance(t) > bonusRange() + 250 && !Orbwalking.InAutoAttackRange(t) &&
-                    OktwCommon.GetKsDamage(t, Q) > t.Health && Player.CountEnemiesInRange(400) == 0)
+                if (GetRealDistance(t) > bonusRange() + 250 && !Orbwalking.InAutoAttackRange(t) && OktwCommon.GetKsDamage(t, Q) > t.Health && Player.CountEnemiesInRange(400) == 0)
                 {
                     SebbyLib.Program.CastSpell(Q, t);
                     SebbyLib.Program.debug("Q KS");
                 }
-                else if (SebbyLib.Program.Combo && Player.Mana > RMANA + QMANA + EMANA + 10 &&
-                         Player.CountEnemiesInRange(bonusRange() + 100 + t.BoundingRadius) == 0 &&
-                         !getCheckBoxItem(qMenu, "autoQ"))
+                else if (SebbyLib.Program.Combo && Player.Mana > RMANA + QMANA + EMANA + 10 && Player.CountEnemiesInRange(bonusRange() + 100 + t.BoundingRadius) == 0 && !getCheckBoxItem(qMenu, "autoQ"))
                     SebbyLib.Program.CastSpell(Q, t);
                 if ((SebbyLib.Program.Combo || SebbyLib.Program.Farm) && Player.Mana > RMANA + QMANA &&
                     Player.CountEnemiesInRange(400) == 0)
                 {
-                    foreach (
-                        var enemy in
-                            SebbyLib.Program.Enemies.Where(
-                                enemy =>
-                                    enemy.IsValidTarget(Q.Range) &&
-                                    (!OktwCommon.CanMove(enemy) || enemy.HasBuff("caitlynyordletrapinternal"))))
+                    foreach ( var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && (!OktwCommon.CanMove(enemy) || enemy.HasBuff("caitlynyordletrapinternal"))))
                         Q.Cast(enemy, true);
                     if (Player.CountEnemiesInRange(bonusRange()) == 0 && OktwCommon.CanHarras())
                     {
@@ -316,8 +306,7 @@ namespace PortAIO.Champion.Caitlyn
                     }
                 }
             }
-            else if (SebbyLib.Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") &&
-                     getCheckBoxItem(farmMenu, "farmQ") && Player.Mana > RMANA + QMANA)
+            else if (SebbyLib.Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") && getCheckBoxItem(farmMenu, "farmQ") && Player.Mana > RMANA + QMANA)
             {
                 var minionList = Cache.GetMinions(Player.ServerPosition, Q.Range);
                 var farmPosition = Q.GetLineFarmLocation(minionList, Q.Width);
@@ -463,7 +452,7 @@ namespace PortAIO.Champion.Caitlyn
                     if (rDamage > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
-                            "Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "R 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                 }
@@ -473,7 +462,7 @@ namespace PortAIO.Champion.Caitlyn
                 {
                     if (Q.GetDamage(tw) > tw.Health)
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
-                            "Q can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "Q 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                 }
             }
         }

@@ -265,9 +265,12 @@ namespace Staberina
                 }
             }
 
-            if (Flee())
+            if (getKeyBindItem(fleeMenu, "FleeEnabled") || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
             {
-                return;
+                if (Flee())
+                {
+                    return;
+                }
             }
 
             if (AutoKill())
@@ -508,20 +511,17 @@ namespace Staberina
                 return false;
             }
 
-            Orbwalker.ActiveModesFlags = Orbwalker.ActiveModes.None;
-
             if (getCheckBoxItem(fleeMenu, "FleeE") && E.IsReady())
             {
                 var closestTarget = Utility.GetClosestETarget(Game.CursorPos);
 
-                if (closestTarget != null && closestTarget.Distance(Game.CursorPos) < 200)
+                if (closestTarget != null && closestTarget.Distance(Game.CursorPos) < 400)
                 {
                     return E.CastOnUnit(closestTarget);
                 }
 
                 var ward = Utility.GetReadyWard();
-                if (getCheckBoxItem(fleeMenu, "FleeWard") && ward != SpellSlot.Unknown &&
-                    LastWardPlacement.HasTimePassed(2000))
+                if (getCheckBoxItem(fleeMenu, "FleeWard") && ward != SpellSlot.Unknown && LastWardPlacement.HasTimePassed(2000))
                 {
                     var range = Player.Spellbook.GetSpell(ward).SData.CastRange;
                     if (Player.Spellbook.CastSpell(ward, Player.ServerPosition.LSExtend(Game.CursorPos, range)))

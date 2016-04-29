@@ -91,6 +91,13 @@ namespace Elvarus
             ElVarusMenu.Initialize();
             Game.OnUpdate += OnGameUpdate;
             Drawing.OnDraw += Drawings.Drawing_OnDraw;
+
+            Menu = ElVarusMenu.Menu;
+            cMenu = ElVarusMenu.cMenu;
+            hMenu = ElVarusMenu.hMenu;
+            itemMenu = ElVarusMenu.itemMenu;
+            lMenu = ElVarusMenu.lMenu;
+            miscMenu = ElVarusMenu.miscMenu;
         }
 
         #endregion
