@@ -109,48 +109,48 @@ namespace iKalistaReborn
         /// </summary>
         private void CreateMenu()
         {
-            Menu = MainMenu.AddMenu("iKalista: Reborn", "com.ikalista");
+            Menu = MainMenu.AddMenu("i滑板鞋:重生", "com.ikalista");
 
             comboMenu = Menu.AddSubMenu("iKalista: Reborn - Combo", "com.ikalista.combo");
-            comboMenu.Add("com.ikalista.combo.useQ", new CheckBox("Use Q"));
-            comboMenu.Add("com.ikalista.combo.useE", new CheckBox("Use E"));
-            comboMenu.Add("com.ikalista.combo.stacks", new Slider("Rend at X stacks", 10, 1, 20));
-            comboMenu.Add("com.ikalista.combo.eLeaving", new CheckBox("Use E Leaving", true));
-            comboMenu.Add("com.ikalista.combo.ePercent", new Slider("Min Percent for E Leaving", 50, 10, 100));
-            comboMenu.Add("com.ikalista.combo.saveMana", new CheckBox("Save Mana for E"));
-            comboMenu.Add("com.ikalista.combo.saveAlly", new CheckBox("Save Ally With R"));
-            comboMenu.Add("com.ikalista.combo.balista", new CheckBox("Use Balista", true));
-            comboMenu.Add("com.ikalista.combo.autoE", new CheckBox("Auto E Minion > Champion"));
-            comboMenu.Add("com.ikalista.combo.orbwalkMinions", new CheckBox("Orbwalk Minions in combo"));
-            comboMenu.Add("com.ikalista.combo.allyPercent", new Slider("Min Health % for Ally", 20, 10));
+            comboMenu.Add("com.ikalista.combo.useQ", new CheckBox("使用 Q"));
+            comboMenu.Add("com.ikalista.combo.useE", new CheckBox("使用 E"));
+            comboMenu.Add("com.ikalista.combo.stacks", new Slider("X 层叠加使用 E", 10, 1, 20));
+            comboMenu.Add("com.ikalista.combo.eLeaving", new CheckBox("使用 E 远离", true));
+            comboMenu.Add("com.ikalista.combo.ePercent", new Slider("最低蓝量% 使用E 远离", 50, 10, 100));
+            comboMenu.Add("com.ikalista.combo.saveMana", new CheckBox("为E 保留蓝"));
+            comboMenu.Add("com.ikalista.combo.saveAlly", new CheckBox("为R 保留蓝"));
+            comboMenu.Add("com.ikalista.combo.balista", new CheckBox("使用合体技", true));
+            comboMenu.Add("com.ikalista.combo.autoE", new CheckBox("自动E 小兵 > 英雄"));
+            comboMenu.Add("com.ikalista.combo.orbwalkMinions", new CheckBox("连招走砍时攻击小兵移动"));
+            comboMenu.Add("com.ikalista.combo.allyPercent", new Slider("队友最低血量%", 20, 10));
 
-            mixedMenu = Menu.AddSubMenu("iKalista: Reborn - Mixed", "com.ikalista.mixed");
-            mixedMenu.Add("com.ikalista.mixed.useQ", new CheckBox("Use Q"));
-            mixedMenu.Add("com.ikalista.mixed.useE", new CheckBox("Use E"));
-            mixedMenu.Add("com.ikalista.mixed.stacks", new Slider("Rend at X stacks", 10, 1, 20));
+            mixedMenu = Menu.AddSubMenu("混合", "com.ikalista.mixed");
+            mixedMenu.Add("com.ikalista.mixed.useQ", new CheckBox("使用 Q"));
+            mixedMenu.Add("com.ikalista.mixed.useE", new CheckBox("使用 E"));
+            mixedMenu.Add("com.ikalista.mixed.stacks", new Slider("X 层叠加使用 E", 10, 1, 20));
 
-            laneclearMenu = Menu.AddSubMenu("iKalista: Reborn - Laneclear", "com.ikalista.laneclear");
-            laneclearMenu.Add("com.ikalista.laneclear.useQ", new CheckBox("Use Q"));
-            laneclearMenu.Add("com.ikalista.laneclear.qMinions", new Slider("Min Minions for Q", 3, 1, 10));
-            laneclearMenu.Add("com.ikalista.laneclear.useE", new CheckBox("Use E"));
-            laneclearMenu.Add("com.ikalista.laneclear.eMinions", new Slider("Min Minions for E", 5, 1, 10));
-            laneclearMenu.Add("com.ikalista.laneclear.useEUnkillable", new CheckBox("E Unkillable Minions"));
-            laneclearMenu.Add("com.ikalista.laneclear.eSiege", new CheckBox("Auto E Siege Minions", true));
+            laneclearMenu = Menu.AddSubMenu("清线", "com.ikalista.laneclear");
+            laneclearMenu.Add("com.ikalista.laneclear.useQ", new CheckBox("使用 Q"));
+            laneclearMenu.Add("com.ikalista.laneclear.qMinions", new Slider("最低小兵数量 Q", 3, 1, 10));
+            laneclearMenu.Add("com.ikalista.laneclear.useE", new CheckBox("使用 E"));
+            laneclearMenu.Add("com.ikalista.laneclear.eMinions", new Slider("最低小兵数量 E", 5, 1, 10));
+            laneclearMenu.Add("com.ikalista.laneclear.useEUnkillable", new CheckBox("E 不可击杀小兵"));
+            laneclearMenu.Add("com.ikalista.laneclear.eSiege", new CheckBox("自动E炮车", true));
 
-            jungleStealMenu = Menu.AddSubMenu("iKalista: Reborn - Jungle Steal", "com.ikalista.jungleSteal");
-            jungleStealMenu.Add("com.ikalista.jungleSteal.enabled", new CheckBox("Use Rend To Steal Jungle Minions", true));
+            jungleStealMenu = Menu.AddSubMenu("清野", "com.ikalista.jungleSteal");
+            jungleStealMenu.Add("com.ikalista.jungleSteal.enabled", new CheckBox("使用 E 偷野怪", true));
             foreach (var minion in JungleMinions)
             {
                 jungleStealMenu.Add(minion.Key, new CheckBox(minion.Value, true));
             }
             
-            miscMenu = Menu.AddSubMenu("iKalista: Reborn - Misc", "com.ikalista.Misc");
-            miscMenu.Add("com.ikalista.misc.forceW", new CheckBox("Focus Enemy With W"));
+            miscMenu = Menu.AddSubMenu("杂项", "com.ikalista.Misc");
+            miscMenu.Add("com.ikalista.misc.forceW", new CheckBox("集火被W发现的目标"));
 
-            drawingMenu = Menu.AddSubMenu("iKalista: Reborn - Drawing", "com.ikalista.drawing");
-            drawingMenu.Add("com.ikalista.drawing.spellRanges", new CheckBox("Draw Spell Ranges"));
-            drawingMenu.Add("com.ikalista.drawing.eDamage", new CheckBox("Draw E Damage"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
-            drawingMenu.Add("com.ikalista.drawing.damagePercent", new CheckBox("Draw Percent Damage"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
+            drawingMenu = Menu.AddSubMenu("线圈", "com.ikalista.drawing");
+            drawingMenu.Add("com.ikalista.drawing.spellRanges", new CheckBox("显示技能范围"));
+            drawingMenu.Add("com.ikalista.drawing.eDamage", new CheckBox("显示 E 伤害"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
+            drawingMenu.Add("com.ikalista.drawing.damagePercent", new CheckBox("显示伤害百分比"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
         }
 
         private void LoadModules()
@@ -195,8 +195,8 @@ namespace iKalistaReborn
                             ? Color.DarkOliveGreen
                             : Color.White,
                         currentPercentage >= 100
-                            ? "Killable With E"
-                            : "Current Damage: " + currentPercentage + "%");
+                            ? "E可击杀"
+                            : "当前伤害: " + currentPercentage + "%");
                 }
             }
         }
