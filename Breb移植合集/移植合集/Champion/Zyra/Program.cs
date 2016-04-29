@@ -108,7 +108,7 @@ namespace D_Zyra
             miscMenu.Add("Gap_E", new CheckBox("GapClosers E"));
             miscMenu.Add("usefrostq", new CheckBox("Frost Queen to GapClosers"));
             miscMenu.Add("support", new CheckBox("Support Mode", false));
-            miscMenu.Add("", new CheckBox("E Hit Change"));
+			miscMenu.AddGroupLabel("E Hit Change");
             miscMenu.Add("Echange", new ComboBox("E Hit Change", 3, "Low", "Medium", "High", "Very High"));
 
             //Draw

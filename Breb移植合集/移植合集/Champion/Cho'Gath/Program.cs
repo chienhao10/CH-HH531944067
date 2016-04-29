@@ -61,6 +61,18 @@ namespace UnderratedAIO.Champions
 
         public static void Game_OnGameUpdate(EventArgs args)
         {
+            if (R.IsReady())
+            {
+                var rtarget = HeroManager.Enemies.Where(e => e.IsValidTarget() && R.CanCast(e)).OrderByDescending(TargetSelector.GetPriority).FirstOrDefault();
+                if (rtarget != null)
+                {
+                    if (getCheckBoxItem(comboMenu, "user") && player.GetSpellDamage(rtarget, SpellSlot.R) > rtarget.Health)
+                    {
+                        R.Cast(rtarget, getCheckBoxItem(config, "packets"));
+                    }
+                }
+            }
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
@@ -245,8 +257,7 @@ namespace UnderratedAIO.Champions
             }
 
             var rtarget = HeroManager.Enemies.Where(e => e.IsValidTarget() && R.CanCast(e)).OrderByDescending(TargetSelector.GetPriority).FirstOrDefault();
-            if (getCheckBoxItem(comboMenu, "user") && rtarget != null &&
-                player.GetSpellDamage(target, SpellSlot.R) > rtarget.Health)
+            if (getCheckBoxItem(comboMenu, "user") && rtarget != null && player.GetSpellDamage(target, SpellSlot.R) > rtarget.Health)
             {
                 R.Cast(rtarget, getCheckBoxItem(config, "packets"));
             }
