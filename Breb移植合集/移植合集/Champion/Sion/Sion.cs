@@ -27,6 +27,7 @@ namespace UnderratedAIO.Champions
         public static bool justQ, justE;
         public static float qStart;
         public static IncomingDamage IncDamages;
+        public static Vector2 QCastPos = new Vector2();
 
         public static Menu menuD, menuC, menuH, menuLC, menuM;
         public Vector3 lastQPos;
@@ -119,27 +120,23 @@ namespace UnderratedAIO.Champions
                 Harass();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 Clear();
             }
 
             var data = IncDamages.GetAllyData(player.NetworkId);
-            if (data != null && !activatedW && getCheckBoxItem(menuM, "AshieldB") &&
-                data.DamageCount >= getSliderItem(menuM, "wMinAggro") &&
-                player.ManaPercent > getSliderItem(menuM, "minmanaAgg"))
+            if (data != null && !activatedW && getCheckBoxItem(menuM, "AshieldB") && data.DamageCount >= getSliderItem(menuM, "wMinAggro") && player.ManaPercent > getSliderItem(menuM, "minmanaAgg"))
             {
                 W.Cast(getCheckBoxItem(config, "packets"));
             }
-            if (data != null && !activatedW && getCheckBoxItem(menuM, "AshieldB") && W.IsReady() &&
-                (data.DamageTaken > player.Health ||
-                 data.DamageTaken > getWShield()/100f*getSliderItem(menuM, "AshieldDmg")))
+
+            if (data != null && !activatedW && getCheckBoxItem(menuM, "AshieldB") && W.IsReady() && (data.DamageTaken > player.Health || data.DamageTaken > getWShield()/100f*getSliderItem(menuM, "AshieldDmg")))
             {
                 W.Cast(getCheckBoxItem(config, "packets"));
             }
-            if (data != null && activatedW && data.DamageTaken > player.GetBuff("sionwshieldstacks").Count &&
-                data.DamageTaken < player.Health)
+
+            if (data != null && activatedW && data.DamageTaken > player.GetBuff("sionwshieldstacks").Count && data.DamageTaken < player.Health)
             {
                 W.Cast(getCheckBoxItem(config, "packets"));
             }
@@ -170,17 +167,48 @@ namespace UnderratedAIO.Champions
 
         private void castQ(AIHeroClient target)
         {
+            if (target == null && Q.IsCharging)
+            {
+                ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Q);
+            }
             if (Q.IsCharging)
             {
+                var qTarget = TargetSelector.GetTarget(!Q.IsCharging ? Q.ChargedMaxRange / 2 : Q.ChargedMaxRange, DamageType.Physical);
+                if (qTarget == null) return;
+                if (qTarget == null && Q.IsCharging)
+                {
+                    ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Q);
+                }
+                var start = ObjectManager.Player.ServerPosition.To2D();
+                var end = start.Extend(QCastPos, Q.Range);
+                var direction = (end - start).Normalized();
+                var normal = direction.Perpendicular();
+
+                var points = new List<Vector2>();
+                var hitBox = qTarget.BoundingRadius;
+                points.Add(start + normal * (Q.Width + hitBox));
+                points.Add(start - normal * (Q.Width + hitBox));
+                points.Add(end + Q.ChargedMaxRange * direction - normal * (Q.Width + hitBox));
+                points.Add(end + Q.ChargedMaxRange * direction + normal * (Q.Width + hitBox));
+
+                for (var i = 0; i <= points.Count - 1; i++)
+                {
+                    var A = points[i];
+                    var B = points[i == points.Count - 1 ? 0 : i + 1];
+
+                    if (qTarget.ServerPosition.To2D().Distance(A, B, true, true) < 50 * 50)
+                    {
+                        Q.Cast(qTarget, true);
+                    }
+                }
                 checkCastedQ(target);
             }
-            else if (Q.CanCast(target) && !Orbwalker.IsAutoAttacking)
+            else if (Q.CanCast(target) && !Orbwalker.IsAutoAttacking && target != null)
             {
                 var qPred = Prediction.GetPrediction(target, 0.3f);
                 var qPred2 = Prediction.GetPrediction(target, 0.6f);
                 var poly = GetPoly(qPred.UnitPosition);
-                if (qPred2.Hitchance >= HitChance.High && poly.IsInside(qPred2.UnitPosition.To2D()) &&
-                    poly.IsInside(target.ServerPosition))
+                if (qPred2.Hitchance >= HitChance.High && poly.IsInside(qPred2.UnitPosition.To2D()) && poly.IsInside(target.ServerPosition))
                 {
                     Q.StartCharging(qPred.CastPosition);
                 }
@@ -243,29 +271,23 @@ namespace UnderratedAIO.Champions
 
         private void Combo()
         {
-            var target = TargetSelector.GetTarget(1500, DamageType.Physical);
             if (getCheckBoxItem(menuC, "user") && R.IsReady())
             {
                 var rTarget = TargetSelector.GetTarget(2500, DamageType.Physical);
+                if (rTarget == null) return;
                 if (!activatedR && !Orbwalker.IsAutoAttacking)
                 {
-                    if (rTarget != null && !rTarget.IsInvulnerable && !rTarget.MagicImmune &&
-                        rTarget.Distance(Game.CursorPos) < 300)
+                    if (rTarget != null && !rTarget.IsInvulnerable && !rTarget.MagicImmune &&  rTarget.Distance(Game.CursorPos) < 300)
                     {
-                        if (player.Distance(rTarget) + 100 > Environment.Map.GetPath(player, rTarget.Position) &&
-                            ComboDamage(rTarget) > rTarget.Health && !CombatHelper.IsCollidingWith(
-                                player, rTarget.Position.LSExtend(player.Position, player.BoundingRadius + 15),
-                                player.BoundingRadius,
-                                new[] {CollisionableObjects.Heroes, CollisionableObjects.Walls}) &&
-                            (ComboDamage(rTarget) - R.GetDamage(rTarget) < rTarget.Health ||
-                             rTarget.Distance(player) > 400 || player.HealthPercent < 25) &&
-                            rTarget.CountAlliesInRange(2500) + 1 >= rTarget.CountEnemiesInRange(2500))
+                        if (player.Distance(rTarget) + 100 > Environment.Map.GetPath(player, rTarget.Position) && ComboDamage(rTarget) > rTarget.Health && !CombatHelper.IsCollidingWith( player, rTarget.Position.LSExtend(player.Position, player.BoundingRadius + 15), player.BoundingRadius, new[] {CollisionableObjects.Heroes, CollisionableObjects.Walls}) && (ComboDamage(rTarget) - R.GetDamage(rTarget) < rTarget.Health || rTarget.Distance(player) > 400 || player.HealthPercent < 25) && rTarget.CountAlliesInRange(2500) + 1 >= rTarget.CountEnemiesInRange(2500))
                         {
-                            R.Cast(target.Position);
+                            R.Cast(rTarget.Position);
                         }
                     }
                 }
             }
+
+            var target = TargetSelector.GetTarget(1500, DamageType.Physical);
             if (target == null || target.IsInvulnerable || target.MagicImmune)
             {
                 return;
@@ -304,8 +326,37 @@ namespace UnderratedAIO.Champions
                 }
                 return;
             }
+
+            var qTarget = TargetSelector.GetTarget(!Q.IsCharging ? Q.ChargedMaxRange / 2 : Q.ChargedMaxRange, DamageType.Physical);
+
+            if (qTarget == null && Q.IsCharging)
+            {
+                ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Q);
+            }
             if (Q.IsCharging)
             {
+                var start = ObjectManager.Player.ServerPosition.To2D();
+                var end = start.Extend(QCastPos, Q.Range);
+                var direction = (end - start).Normalized();
+                var normal = direction.Perpendicular();
+
+                var points = new List<Vector2>();
+                var hitBox = qTarget.BoundingRadius;
+                points.Add(start + normal * (Q.Width + hitBox));
+                points.Add(start - normal * (Q.Width + hitBox));
+                points.Add(end + Q.ChargedMaxRange * direction - normal * (Q.Width + hitBox));
+                points.Add(end + Q.ChargedMaxRange * direction + normal * (Q.Width + hitBox));
+
+                for (var i = 0; i <= points.Count - 1; i++)
+                {
+                    var A = points[i];
+                    var B = points[i == points.Count - 1 ? 0 : i + 1];
+
+                    if (qTarget.ServerPosition.To2D().Distance(A, B, true, true) < 50 * 50)
+                    {
+                        Q.Cast(qTarget, true);
+                    }
+                }
                 checkCastedQ(target);
                 return;
             }
@@ -336,25 +387,22 @@ namespace UnderratedAIO.Champions
 
         private void checkCastedQ(Obj_AI_Base target)
         {
-            if ((justQ && target.Distance(player) > Q.Range) || !target.IsValidTarget())
+            if ((justQ && target.Distance(player) > Q.Range) || !target.IsValidTarget() || target == null)
             {
                 return;
             }
             var poly = GetPoly(lastQPos);
             var heroes = HeroManager.Enemies.Where(e => poly.IsInside(e.Position) && e.IsValidTarget());
+            if (heroes == null) return;
             var objAiHeroes = heroes as IList<AIHeroClient> ?? heroes.ToList();
             if (objAiHeroes.Any())
             {
-                var escaping =
-                    objAiHeroes.Count(h => poly.IsOutside(Prediction.GetPrediction(h, 0.2f).UnitPosition.To2D()));
+                var escaping = objAiHeroes.Count(h => poly.IsOutside(Prediction.GetPrediction(h, 0.2f).UnitPosition.To2D()));
                 var data = IncDamages.GetAllyData(player.NetworkId);
-                if ((escaping > 0 &&
-                     (objAiHeroes.Count() == 1 ||
-                      (objAiHeroes.Count() >= 2 && System.Environment.TickCount - qStart > 1000))) ||
-                    data.DamageTaken > player.Health || IncDamages.GetAllyData(player.NetworkId).AnyCC ||
+                if ((escaping > 0 && (objAiHeroes.Count() == 1 || (objAiHeroes.Count() >= 2 && System.Environment.TickCount - qStart > 1000))) || data.DamageTaken > player.Health || IncDamages.GetAllyData(player.NetworkId).AnyCC ||
                     IncDamages.GetEnemyData(target.NetworkId).DamageTaken > target.Health)
                 {
-                    Q.Cast(target.Position, true);
+                    Q.Cast(target, true);
                 }
             }
         }
@@ -461,6 +509,7 @@ namespace UnderratedAIO.Champions
                 {
                     if (!justQ)
                     {
+                        QCastPos = args.End.To2D();
                         justQ = true;
                         qStart = System.Environment.TickCount;
                         lastQPos = player.Position.LSExtend(args.End, Q.Range);
