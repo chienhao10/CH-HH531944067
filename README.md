@@ -1,3 +1,8 @@
+Breb移植脚本地址源：https://github.com/chienhao10/CHportcn
+因为论坛规定不能发布，所以新开Repo
+
+
+
 国内源：http://git.oschina.net/chienhao/CH-HH531944067
 国外源：https://github.com/chienhao10/CH-HH531944067/
 请直接复制到EB，远程安装使用。在国内使用第一个源，国外使用第二个。
