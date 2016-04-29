@@ -391,7 +391,7 @@ namespace GragasTheDrunkCarry
                 Q.Cast(target, true);
             }
 
-            if (Bomb != null && target.Distance(Bomb.Position) <= 250)
+            if (Bomb != null && target.Distance(Bomb.Position) <= 300)
             {
                 Q.Cast();
             }

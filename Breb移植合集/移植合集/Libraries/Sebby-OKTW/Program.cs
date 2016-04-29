@@ -53,7 +53,7 @@ namespace SebbyLib
 
         public static bool LaneClear
         {
-            get { return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear); }
+            get { return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear); }
         }
 
         private static AIHeroClient Player
@@ -258,7 +258,7 @@ namespace SebbyLib
             if (Game.Time - DrawSpellTime < 0.5 && getCheckBoxItem("debugPred") && getSliderItem("PredictionMODE") == 1)
             {
                 if (DrawSpell.Type == SkillshotType.SkillshotLine)
-                    OktwCommon.DrawLineRectangle(DrawSpellPos.CastPosition, Player.Position, (int) DrawSpell.Width, 1,
+                    OktwCommon.DrawLineRectangle(DrawSpellPos.CastPosition, Player.Position, (int)DrawSpell.Width, 1,
                         Color.DimGray);
                 if (DrawSpell.Type == SkillshotType.SkillshotCircle)
                     Render.Circle.DrawCircle(DrawSpellPos.CastPosition, DrawSpell.Width, Color.DimGray, 1);
@@ -275,8 +275,8 @@ namespace SebbyLib
 
             if (Combo && getCheckBoxItem("comboDisableMode"))
             {
-                var t = (AIHeroClient) args.Target;
-                if (6*Player.GetAutoAttackDamage(t) < t.Health - OktwCommon.GetIncomingDamage(t) &&
+                var t = (AIHeroClient)args.Target;
+                if (6 * Player.GetAutoAttackDamage(t) < t.Health - OktwCommon.GetIncomingDamage(t) &&
                     !t.HasBuff("luxilluminatingfraulein") && !Player.HasBuff("sheen"))
                     args.Process = false;
             }
@@ -296,7 +296,7 @@ namespace SebbyLib
         public static void drawText(string msg, Vector3 Hero, Color color, int weight = 0)
         {
             var wts = Drawing.WorldToScreen(Hero);
-            Drawing.DrawText(wts[0] - msg.Length*5, wts[1] + weight, color, msg);
+            Drawing.DrawText(wts[0] - msg.Length * 5, wts[1] + weight, color, msg);
         }
 
         public static void CastSpell(Spell QWER, Obj_AI_Base target)

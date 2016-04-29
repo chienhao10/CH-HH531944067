@@ -50,10 +50,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             get
             {
-                return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                       Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) ||
-                       Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit);
-            }
+		return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit);            }
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -231,8 +228,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Program.LagFree(1))
             {
                 var cc = !Program.None && Player.Mana > RMANA + QMANA + EMANA;
-                var harass = Program.Farm && Player.ManaPercent > getSliderItem(harassMenu, "HarassMana") &&
-                             OktwCommon.CanHarras();
+                var harass = Program.Farm && Player.ManaPercent > getSliderItem(harassMenu, "HarassMana") && OktwCommon.CanHarras();
                 var combo = Program.Combo && Player.Mana > RMANA + QMANA;
                 foreach (var t in Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range)).OrderBy(t => t.Health))
                 {
@@ -261,9 +257,7 @@ namespace OneKeyToWin_AIO_Sebby
                     farmQ();
                     lag = Game.Time;
                 }
-                else if (getCheckBoxItem(miscMenu, "stack") && Utils.TickCount - Q.LastCastAttemptT > 4000 &&
-                         !Player.HasBuff("Recall") && Player.Mana > Player.MaxMana*0.95 && Program.None &&
-                         (Items.HasItem(Tear) || Items.HasItem(Manamune)))
+                else if (getCheckBoxItem(miscMenu, "stack") && Utils.TickCount - Q.LastCastAttemptT > 4000 && !Player.HasBuff("Recall") && Player.Mana > Player.MaxMana*0.95 && Program.None && (Items.HasItem(Tear) || Items.HasItem(Manamune)))
                 {
                     Q.Cast(Player.Position.Extend(Game.CursorPos, 500));
                 }
@@ -277,10 +271,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 if (Program.Combo && Player.Mana > RMANA + WMANA + EMANA)
                     Program.CastSpell(W, t);
-                else if (Program.Farm && getCheckBoxItem(wMenu, "harrasW") &&
-                         getCheckBoxItem(harassMenu, "haras" + t.ChampionName) &&
-                         (Player.Mana > Player.MaxMana*0.8 || getCheckBoxItem(miscMenu, "apEz")) &&
-                         Player.ManaPercent > getSliderItem(harassMenu, "HarassMana") && OktwCommon.CanHarras())
+                else if (Program.Farm && getCheckBoxItem(wMenu, "harrasW") && getCheckBoxItem(harassMenu, "haras" + t.ChampionName) && (Player.Mana > Player.MaxMana*0.8 || getCheckBoxItem(miscMenu, "apEz")) && Player.ManaPercent > getSliderItem(harassMenu, "HarassMana") && OktwCommon.CanHarras())
                     Program.CastSpell(W, t);
                 else
                 {
@@ -428,15 +419,15 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (Program.LaneClear)
             {
-                var mobs = Cache.GetMinions(Player.ServerPosition, 800, MinionTeam.Neutral);
-                if (mobs.Count > 0)
+                var mobs = EntityManager.MinionsAndMonsters.EnemyMinions.Where(x => x.IsInRange(Player, Q.Range));
+                if (mobs.Count() > 0 || mobs != null)
                 {
-                    var mob = mobs[0];
+                    var mob = mobs.FirstOrDefault();
                     Q.Cast(mob.Position);
                 }
             }
 
-            var minions = Cache.GetMinions(Player.ServerPosition, Q.Range);
+            var minions = EntityManager.MinionsAndMonsters.EnemyMinions.Where(x => x.IsInRange(Player, Q.Range));
             var orbTarget = 0;
 
             if (Orbwalker.LastTarget != null)
@@ -446,12 +437,12 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 if (minions.Where(minion => minion.IsValidTarget() && orbTarget != minion.NetworkId && minion.HealthPercent < 70 && !LeagueSharp.Common.Orbwalking.InAutoAttackRange(minion) && minion.Health < Q.GetDamage(minion)).Any(minion => Q.Cast(minion) == Spell.CastStates.SuccessfullyCasted))
                 {
+                    Console.WriteLine("2");
                     return;
                 }
             }
 
-            if (getCheckBoxItem(farmMenu, "farmQ") && Program.LaneClear && !Orbwalking.CanAttack() &&
-                Player.ManaPercent > getSliderItem(farmMenu, "Mana"))
+            if (getCheckBoxItem(farmMenu, "farmQ") && Program.LaneClear && !Orbwalking.CanAttack() && Player.ManaPercent > getSliderItem(farmMenu, "Mana"))
             {
                 var LCP = getCheckBoxItem(farmMenu, "LCP");
                 var PT = Game.Time - GetPassiveTime() > -1.5 || !E.IsReady();
@@ -617,19 +608,19 @@ namespace OneKeyToWin_AIO_Sebby
                     {
                         Render.Circle.DrawCircle(target.ServerPosition, 200, Color.Red);
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
-                            "Q kill: " + target.ChampionName + " have: " + target.Health + "hp");
+                            "Q 击杀: " + target.ChampionName + " have: " + target.Health + "hp");
                     }
                     else if (Q.GetDamage(target) + W.GetDamage(target) > target.Health)
                     {
                         Render.Circle.DrawCircle(target.ServerPosition, 200, Color.Red);
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
-                            "Q + W kill: " + target.ChampionName + " have: " + target.Health + "hp");
+                            "Q + W 击杀: " + target.ChampionName + " have: " + target.Health + "hp");
                     }
                     else if (Q.GetDamage(target) + W.GetDamage(target) + E.GetDamage(target) > target.Health)
                     {
                         Render.Circle.DrawCircle(target.ServerPosition, 200, Color.Red);
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
-                            "Q + W + E kill: " + target.ChampionName + " have: " + target.Health + "hp");
+                            "Q + W + E 击杀: " + target.ChampionName + " have: " + target.Health + "hp");
                     }
                 }
             }
