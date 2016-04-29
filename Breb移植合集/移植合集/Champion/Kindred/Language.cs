@@ -18,56 +18,56 @@ namespace Kindred___YinYang
 
         public static void EnglishMenu()
         {
-            comboMenu = config.AddSubMenu("Combo Settings", "Combo Settings");
-            comboMenu.Add("q.combo.style", new ComboBox("(Q) Combo Style", 1, "Cursor", "100% Hit", "Safe Position"));
-            comboMenu.Add("q.combo", new CheckBox("Use (Q)"));
-            comboMenu.Add("w.combo", new CheckBox("Use (W)"));
-            comboMenu.Add("e.combo", new CheckBox("Use (E)"));
+            comboMenu = config.AddSubMenu("连招", "Combo Settings");
+            comboMenu.Add("q.combo.style", new ComboBox("(Q) 连招模式", 1, "鼠标", "100% 命中", "安全位置"));
+            comboMenu.Add("q.combo", new CheckBox("使用 (Q)"));
+            comboMenu.Add("w.combo", new CheckBox("使用 (W)"));
+            comboMenu.Add("e.combo", new CheckBox("使用 (E)"));
 
-            eMenu = config.AddSubMenu("(E) Settings", "(E) Settings");
-            eMenu.AddGroupLabel("(E) Whitelist");
+            eMenu = config.AddSubMenu("(E) 设置", "(E) Settings");
+            eMenu.AddGroupLabel("(E) 白名单");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
                 eMenu.Add("enemy." + enemy.CharData.BaseSkinName, new CheckBox(string.Format("E: {0}", enemy.CharData.BaseSkinName), Program.HighChamps.Contains(enemy.CharData.BaseSkinName)));
             }
 
-            harassMenu = config.AddSubMenu("Harass Settings", "Harass Settings");
-            harassMenu.Add("q.harass", new CheckBox("Use Q"));
-            harassMenu.Add("w.harass", new CheckBox("Use W"));
-            harassMenu.Add("e.harass", new CheckBox("Use E"));
-            harassMenu.Add("harass.mana", new Slider("Mana Manager", 20, 1, 99));
+            harassMenu = config.AddSubMenu("骚扰", "Harass Settings");
+            harassMenu.Add("q.harass", new CheckBox("使用 Q"));
+            harassMenu.Add("w.harass", new CheckBox("使用 W"));
+            harassMenu.Add("e.harass", new CheckBox("使用 E"));
+            harassMenu.Add("harass.mana", new Slider("蓝量管理", 20, 1, 99));
 
-            laneClearMenu = config.AddSubMenu("Clear Settings", "Clear Settings");
-            laneClearMenu.Add("q.clear", new CheckBox("Use Q"));
-            laneClearMenu.Add("q.minion.count", new Slider("Q Minion Count", 4, 1, 5));
-            laneClearMenu.Add("clear.mana", new Slider("Mana Manager", 20, 1, 99));
+            laneClearMenu = config.AddSubMenu("清线", "Clear Settings");
+            laneClearMenu.Add("q.clear", new CheckBox("使用 Q"));
+            laneClearMenu.Add("q.minion.count", new Slider("Q 最低小兵数", 4, 1, 5));
+            laneClearMenu.Add("clear.mana", new Slider("蓝量管理", 20, 1, 99));
 
-            jungleClearMenu = config.AddSubMenu("Jungle Settings", "Jungle Settings");
-            jungleClearMenu.Add("q.jungle", new CheckBox("Use Q"));
-            jungleClearMenu.Add("w.jungle", new CheckBox("Use W"));
-            jungleClearMenu.Add("e.jungle", new CheckBox("Use E"));
-            jungleClearMenu.Add("jungle.mana", new Slider("Mana Manager", 20, 1, 99));
+            jungleClearMenu = config.AddSubMenu("清野", "Jungle Settings");
+            jungleClearMenu.Add("q.jungle", new CheckBox("使用 Q"));
+            jungleClearMenu.Add("w.jungle", new CheckBox("使用 W"));
+            jungleClearMenu.Add("e.jungle", new CheckBox("使用 E"));
+            jungleClearMenu.Add("jungle.mana", new Slider("蓝量管理", 20, 1, 99));
 
-            ksMenu = config.AddSubMenu("KillSteal Settings", "KillSteal Settings");
-            ksMenu.Add("q.ks", new CheckBox("Use Q"));
-            ksMenu.Add("q.ks.count", new Slider("Basic Attack Count", 2, 1, 5));
+            ksMenu = config.AddSubMenu("抢头", "KillSteal Settings");
+            ksMenu.Add("q.ks", new CheckBox("使用 Q"));
+            ksMenu.Add("q.ks.count", new Slider("普攻次数", 2, 1, 5));
 
-            miscMenu = config.AddSubMenu("Miscellaneous", "Miscellaneous");
-            miscMenu.Add("q.antigapcloser", new CheckBox("Anti-Gapcloser Q!"));
+            miscMenu = config.AddSubMenu("杂项", "Miscellaneous");
+            miscMenu.Add("q.antigapcloser", new CheckBox("防突进 Q!"));
             miscMenu.AddSeparator();
-            miscMenu.AddGroupLabel("Anti Rengar");
-            miscMenu.Add("anti.rengar", new CheckBox("Anti Rengar!"));
-            miscMenu.Add("hp.percent.for.rengar", new Slider("Min. HP Percent", 30, 1, 99));
+            miscMenu.AddGroupLabel("防 狮子狗");
+            miscMenu.Add("anti.rengar", new CheckBox("防 狮子狗!"));
+            miscMenu.Add("hp.percent.for.rengar", new Slider("最低血量%", 30, 1, 99));
             miscMenu.AddSeparator();
-            miscMenu.AddGroupLabel("Spell Breaker");
-            miscMenu.Add("spell.broker", new CheckBox("Spell Breaker!"));
-            miscMenu.Add("katarina.r", new CheckBox("Katarina (R)"));
-            miscMenu.Add("missfortune.r", new CheckBox("Miss Fortune (R)"));
-            miscMenu.Add("lucian.r", new CheckBox("Lucian (R)"));
-            miscMenu.Add("hp.percent.for.broke", new Slider("Min. HP Percent", 20, 1, 99));
+            miscMenu.AddGroupLabel("技能打断");
+            miscMenu.Add("spell.broker", new CheckBox("技能打断!"));
+            miscMenu.Add("katarina.r", new CheckBox("卡特 (R)"));
+            miscMenu.Add("missfortune.r", new CheckBox("赏金 (R)"));
+            miscMenu.Add("lucian.r", new CheckBox("卢锡安 (R)"));
+            miscMenu.Add("hp.percent.for.broke", new Slider("最低血量%", 20, 1, 99));
             miscMenu.AddSeparator();
-            miscMenu.AddGroupLabel("(R) Protector");
-            miscMenu.Add("protector", new CheckBox("Disable Protector?"));
+            miscMenu.AddGroupLabel("(R) 保护");
+            miscMenu.Add("protector", new CheckBox("关闭保护?"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
                 foreach (var skillshot in SpellDatabase.Spells.Where(x => x.charName == enemy.ChampionName))
@@ -76,23 +76,23 @@ namespace Kindred___YinYang
                 }
             }
             miscMenu.AddSeparator();
-            miscMenu.AddGroupLabel("Misc");
-            miscMenu.Add("e.method", new ComboBox("E Method", 0, "Cursor Position"));
-            miscMenu.Add("use.r", new CheckBox("Use R"));
+            miscMenu.AddGroupLabel("杂项");
+            miscMenu.Add("e.method", new ComboBox("E 模式", 0, "当前位置"));
+            miscMenu.Add("use.r", new CheckBox("使用 R"));
             miscMenu.AddSeparator();
-            miscMenu.AddGroupLabel("R Whitelist");
+            miscMenu.AddGroupLabel("R 白名单");
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(o => o.IsAlly))
             {
-                miscMenu.Add("respite." + ally.CharData.BaseSkinName, new CheckBox(string.Format("Ult: {0}", ally.CharData.BaseSkinName), Program.HighChamps.Contains(ally.CharData.BaseSkinName)));
+                miscMenu.Add("respite." + ally.CharData.BaseSkinName, new CheckBox(string.Format("大招: {0}", ally.CharData.BaseSkinName), Program.HighChamps.Contains(ally.CharData.BaseSkinName)));
             }
-            miscMenu.Add("min.hp.for.r", new Slider("Min. HP Percent for R", 20, 1, 99));
+            miscMenu.Add("min.hp.for.r", new Slider("R 最低血量%", 20, 1, 99));
 
-            drawMenu = config.AddSubMenu("Draw Settings", "Draw Settings");
-            drawMenu.Add("aa.indicator", new CheckBox("AA Indicator"));
-            drawMenu.Add("q.drawx", new CheckBox("Q Range"));
-            drawMenu.Add("w.draw", new CheckBox("W Range"));
-            drawMenu.Add("e.draw", new CheckBox("E Range"));
-            drawMenu.Add("r.draw", new CheckBox("R Range"));
+            drawMenu = config.AddSubMenu("线圈", "Draw Settings");
+            drawMenu.Add("aa.indicator", new CheckBox("普攻 指示器"));
+            drawMenu.Add("q.drawx", new CheckBox("Q 范围"));
+            drawMenu.Add("w.draw", new CheckBox("W 范围"));
+            drawMenu.Add("e.draw", new CheckBox("E 范围"));
+            drawMenu.Add("r.draw", new CheckBox("R 范围"));
         }
     }
 }

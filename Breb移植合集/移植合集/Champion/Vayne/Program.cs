@@ -35,7 +35,7 @@ namespace Vayne
         {
             if (myHero.ChampionName != Champion.Vayne.ToString())
             {
-                Chat.Print("[Berb] : You are not playing Vayne, this addon will not load.");
+                Chat.Print("[Berb] : Ni mei shi yong wei en!.");
                 return;
             }
 
@@ -524,110 +524,109 @@ namespace Vayne
 
             if (menuKey)
             {
-                Drawing.DrawText(x, y, UseRBool ? Color.DeepSkyBlue : Color.DarkGray, "Use R Auto? : " + UseRBool);
-                Drawing.DrawText(x, y + 25, dontaa ? Color.DeepSkyBlue : Color.DarkGray, "Don't AA in R? : " + dontaa);
+                Drawing.DrawText(x, y, UseRBool ? Color.DeepSkyBlue : Color.DarkGray, "自动 R? : " + UseRBool);
+                Drawing.DrawText(x, y + 25, dontaa ? Color.DeepSkyBlue : Color.DarkGray, "R时不平A? : " + dontaa);
             }
 
             if (drawCurrentLogic)
             {
                 if (QModeStringList == 1)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : Prada");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : Prada");
                 }
                 else if (QModeStringList == 2)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : Marksman");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : Marksman");
                 }
                 else if (QModeStringList == 3)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : VHR/SOLO");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : VHR/SOLO");
                 }
                 else if (QModeStringList == 4)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : Sharpshooter");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : Sharpshooter");
                 }
                 else if (QModeStringList == 5)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : Synx Auto Carry");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : Synx Auto Carry");
                 }
                 else if (QModeStringList == 6)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : To Cursor");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : 至鼠标");
                 }
                 else if (QModeStringList == 7)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : Kite Melee");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : 风筝");
                 }
                 else if (QModeStringList == 8)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : Kurisu");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : Kurisu");
                 }
                 else if (QModeStringList == 9)
                 {
-                    Drawing.DrawText(x, y + 50, Color.Red, "Current Q Logic : Safe Position");
+                    Drawing.DrawText(x, y + 50, Color.Red, "当前Q逻辑 : 安全距离");
                 }
 
                 if (EModeStringList == 1)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Prada Smart");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Prada 智能");
                 }
                 else if (EModeStringList == 2)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Prada Perfect");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Prada 完美");
                 }
                 else if (EModeStringList == 3)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Marksman");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Marksman");
                 }
                 else if (EModeStringList == 4)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Sharpshooter");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Sharpshooter");
                 }
                 else if (EModeStringList == 5)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Gosu");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Gosu");
                 }
                 else if (EModeStringList == 6)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : VHR");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : VHR");
                 }
                 else if (EModeStringList == 7)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Prada Legacy");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Prada 传说");
                 }
                 else if (EModeStringList == 8)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Fastest");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : 最快");
                 }
                 else if (EModeStringList == 9)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Old Prada");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : 旧Prada");
                 }
                 else if (EModeStringList == 10)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Synx Auto Carry");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Synx Auto Carry");
                 }
                 else if (EModeStringList == 11)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : OKTW");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : OKTW");
                 }
                 else if (EModeStringList == 12)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Shine - Hikicarry");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Shine - Hikicarry");
                 }
                 else if (EModeStringList == 13)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : Asuna - Hikicarry");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : Asuna - Hikicarry");
                 }
                 else if (EModeStringList == 14)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : 360 - Hikicarry");
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : 360 - Hikicarry");
                 }
                 else if (EModeStringList == 15)
                 {
-                    Drawing.DrawText(x, y + 75, Color.Red, "Current E Logic : SergixCondemn");
-                }
-            }
+                    Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : SergixCondemn");
+                }            }
 
             if (DrawWStacksBool)
             {
@@ -1783,7 +1782,7 @@ namespace Vayne
 
         public static void BuildMenu()
         {
-            GPMenu = MainMenu.AddMenu("[VHR] Anti-GP List", "dz191.vhr.agplist");
+            GPMenu = MainMenu.AddMenu("[VHR]防突进列表", "dz191.vhr.agplist");
             {
                 var enemyHeroesNames =
                     ObjectManager.Get<AIHeroClient>().Where(h => h.IsEnemy).Select(hero => hero.ChampionName).ToList();
@@ -1800,162 +1799,162 @@ namespace Vayne
         {
             BuildMenu();
 
-            Menu = MainMenu.AddMenu("Vayne", "Vayne");
-            Menu.AddLabel("Base Ported from Challenger Series & features ported from many other assemblies on L# - Berb");
+            Menu = MainMenu.AddMenu("最强薇恩", "Vayne");
+            Menu.AddLabel("所有L#薇恩脚本集合一起，L作者和脚本名字就不翻译了+EB AKA，仔细设置很强大！");
             Menu.AddSeparator();
 
-            ComboMenu = Menu.AddSubMenu("Combo Settings", "combo");
-            ComboMenu.AddGroupLabel("Combo");
-            ComboMenu.Add("useq", new CheckBox("Use Q")); // UseQBool
+            ComboMenu = Menu.AddSubMenu("连招设置", "combo");
+            ComboMenu.AddGroupLabel("连招");
+            ComboMenu.Add("useq", new CheckBox("使用 Q")); // UseQBool
             ComboMenu.AddSeparator();
-            ComboMenu.Add("focus2w", new CheckBox("Try To Focus 2W", false)); // TryToFocus2WBool
-            ComboMenu.Add("lowlifepeel", new CheckBox("Peel w/ E when Low HP", false)); // lowlifepeel
-            ComboMenu.Add("dontattackwhileinvisible", new CheckBox("Smart Invisible Attacking"));
+            ComboMenu.Add("focus2w", new CheckBox("试着攻击 2W 的目标", false)); // TryToFocus2WBool
+            ComboMenu.Add("lowlifepeel", new CheckBox("低血量时使用E消耗", false)); // lowlifepeel
+            ComboMenu.Add("dontattackwhileinvisible", new CheckBox("智能隐身平A")); // DontAttackWhileInvisibleAndMeelesNearBool
                 // DontAttackWhileInvisibleAndMeelesNearBool
             ComboMenu.AddSeparator();
-            ComboMenu.Add("user", new KeyBind("Use R In Combo", false, KeyBind.BindTypes.PressToggle, 'A')); // UseRBool
-            ComboMenu.Add("GetAutoR", new Slider("R if >= X enemies : ", 2, 1, 5)); // GetAutoR
+            ComboMenu.Add("user", new KeyBind("连招使用R", false, KeyBind.BindTypes.PressToggle, 'A')); // UseRBool
+            ComboMenu.Add("GetAutoR", new Slider("使用R 如果敌人 >= X : ", 2, 1, 5)); // GetAutoR
             ComboMenu.AddSeparator();
-            ComboMenu.AddLabel("1 : Never | 2 : E-Not-Ready | 3 : Always");
-            ComboMenu.Add("qantigc", new Slider("Use Q Antigapcloser:", 3, 1, 3)); // UseQAntiGapcloserStringList
+            ComboMenu.AddLabel("1 : 从不 | 2 : E为冷却时 | 3 : 一直");
+            ComboMenu.Add("qantigc", new Slider("使用Q防止突击:", 3, 1, 3)); // UseQAntiGapcloserStringList
             ComboMenu.AddSeparator();
-            ComboMenu.Add("dontaa", new KeyBind("Don't Auto Attack in R", false, KeyBind.BindTypes.PressToggle, 'T'));
-            ComboMenu.Add("dontaaslider", new CheckBox("^ Only use if greater than X # of enemies?"));
-            ComboMenu.Add("dontaaenemy", new Slider("^ # of enemies", 3, 1, 5));
+            ComboMenu.Add("dontaa", new KeyBind("R时不自动平A", false, KeyBind.BindTypes.PressToggle, 'T'));
+            ComboMenu.Add("dontaaslider", new CheckBox("^ 只使用上面如果有 X 名敌人时?"));
+            ComboMenu.Add("dontaaenemy", new Slider("^ 敌人数量", 3, 1, 5));
             ComboMenu.AddSeparator();
 
-            QSettings = Menu.AddSubMenu("Q Settings", "qsettings");
-            QSettings.AddGroupLabel("Q Settings");
+            QSettings = Menu.AddSubMenu("Q 设置", "qsettings");
+            QSettings.AddGroupLabel("Q 设置");
             QSettings.AddSeparator();
             QSettings.AddLabel("1 : Prada | 2 : Marksman | 3 : VHR/SOLO | 4 : Sharpshooter | 5 : SAC");
-            QSettings.AddLabel("6 : Cursor | 7 : Kite Melee | 8 : Kurisu | 9 : Safe Position - HikiGaya");
-            QSettings.Add("qmode", new Slider("Q Mode:", 5, 1, 9)); // QModeStringList
+            QSettings.AddLabel("6 : 鼠标 | 7 : 风筝 | 8 : Kurisu | 9 : 安全位置 - HikiGaya");
+            QSettings.Add("qmode", new Slider("Q 模式:", 5, 1, 9)); // QModeStringList
             QSettings.AddSeparator();
-            QSettings.AddGroupLabel("VHR/SOLOVayne Q Settings");
-            QSettings.AddLabel("YOU HAVE TO HAVE OPTION 3 SELECTED TO USE THIS");
-            QSettings.Add("noqenemies", new CheckBox("Don't Q into enemies")); // noqenemies
-            QSettings.Add("smartq", new CheckBox("Try to QE when possible")); // noqenemiesold
-            QSettings.Add("2wstacks", new CheckBox("Only Q if 2W Stacks on Target", false)); // 2wstacks
+            QSettings.AddGroupLabel("VHR/SOLOVayne Q 设置");
+            QSettings.AddLabel("选择模式为3时才使用以下选项");
+            QSettings.Add("noqenemies", new CheckBox("不Q进敌人", true)); // noqenemies
+            QSettings.Add("smartq", new CheckBox("尝试QE", true)); // noqenemiesold
+            QSettings.Add("2wstacks", new CheckBox("当敌人有2W时才使用Q", false)); // 2wstacks
             QSettings.AddSeparator();
-            QSettings.AddGroupLabel("Sharpshooter Q Settings");
-            QSettings.AddLabel("YOU HAVE TO HAVE OPTION 4 SELECTED TO USE THIS");
-            QSettings.Add("antiMelee", new CheckBox("Use Anti-Melee (Q)")); // antiMelee
+            QSettings.AddGroupLabel("Sharpshooter Q 设置");
+            QSettings.AddLabel("选择模式为4时才使用以下选项");
+            QSettings.Add("antiMelee", new CheckBox("使用防止突击 (Q)", true)); // antiMelee
             QSettings.AddSeparator();
-            QSettings.AddGroupLabel("Synx Auto Carry Q Settings");
-            QSettings.AddLabel("YOU HAVE TO HAVE OPTION 5 SELECTED TO USE THIS");
-            QSettings.AddLabel("1 : Auto Position | 2 : Mouse Cursor");
-            QSettings.Add("sacMode", new Slider("Q Mode: ", 1, 1, 2)); // sacMode
-            QSettings.Add("DontSafeCheck", new CheckBox("Dont check tumble position is safe")); // DontSafeCheck
-            QSettings.Add("DontQIntoEnemies", new CheckBox("Dont Q Into Enemies")); // DontQIntoEnemies
-            QSettings.Add("Wall", new CheckBox("Always Tumble to wall if possible")); // Wall
-            QSettings.Add("Only2W", new CheckBox("Tumble only when enemy has 2 w stacks", false)); // Only2W
+            QSettings.AddGroupLabel("Synx Auto Carry Q 设置");
+            QSettings.AddLabel("选择模式为5时才使用以下选项");
+            QSettings.AddLabel("1 : 自动位置 | 2 : 鼠标位置");
+            QSettings.Add("sacMode", new Slider("Q 模式: ", 1, 1, 2)); // sacMode
+            QSettings.Add("DontSafeCheck", new CheckBox("不检查Q位置是否安全", true)); // DontSafeCheck
+            QSettings.Add("DontQIntoEnemies", new CheckBox("不Q进敌人", true)); // DontQIntoEnemies
+            QSettings.Add("Wall", new CheckBox("如果可以总是Q至墙（重置普攻）", true)); // Wall
+            QSettings.Add("Only2W", new CheckBox("当敌人有2W时才使用Q", false)); // Only2W
             QSettings.AddSeparator();
-            QSettings.AddGroupLabel("Cursor/Kite Melee/Kurisu Q Settings");
-            QSettings.AddLabel("YOU HAVE TO HAVE OPTION 6, 7 OR 8 SELECTED TO USE THIS");
-            QSettings.Add("Cdynamicqsafety", new CheckBox("Use Dynamic Q Safety"));
-            QSettings.Add("Csmartq", new CheckBox("Use Smart Q"));
-            QSettings.Add("Cnoqenemies", new CheckBox("Don't Q into enemies"));
-            QSettings.Add("Cnoqenemiesold", new CheckBox("Don't Q into enemies Old"));
-            QSettings.Add("Cqspam", new CheckBox("Ignore Checks AKA Spam Q"));
+            QSettings.AddGroupLabel("鼠标/风筝/Kurisu Q 设置");
+            QSettings.AddLabel("选择Q模式为6，7，8时才使用以下选项");
+            QSettings.Add("Cdynamicqsafety", new CheckBox("使用安全动态Q", true));
+            QSettings.Add("Csmartq", new CheckBox("使用智能 Q", true));
+            QSettings.Add("Cnoqenemies", new CheckBox("不Q进敌人", true));
+            QSettings.Add("Cnoqenemiesold", new CheckBox("不Q进敌人 （旧版）", true));
+            QSettings.Add("Cqspam", new CheckBox("无视检查 AKA 滚键盘 Q", true));
             QSettings.AddSeparator();
 
-            CondemnSettings = Menu.AddSubMenu("Condemn Settings", "condemnsettings");
-            CondemnSettings.AddGroupLabel("Condemn Menu");
+            CondemnSettings = Menu.AddSubMenu("恶魔审判 设置", "condemnsettings");
+            CondemnSettings.AddGroupLabel("E 设置");
             CondemnSettings.AddSeparator();
-            CondemnSettings.AddLabel("1 : Always/Auto | 2 : In Combo | 3 : Never");
-            CondemnSettings.Add("usee", new Slider("Use E", 1, 1, 3)); // UseEBool
+            CondemnSettings.AddLabel("1 : 一直/自动 | 2 : 连招中 | 3 : 从不");
+            CondemnSettings.Add("usee", new Slider("使用 E", 1, 1, 3)); // UseEBool
             CondemnSettings.AddSeparator();
-            CondemnSettings.AddLabel("1 : Prada Smart | 2 : Prada Perfect | 3 : Marksman");
+            CondemnSettings.AddLabel("1 : Prada 智能 | 2 : Prada 完美 | 3 : Marksman");
             CondemnSettings.AddLabel("4 : Sharpshooter | 5 : Gosu | 6 : VHR");
-            CondemnSettings.AddLabel("7 : Prada Legacy | 8 : Fastest | 9 : Old Prada");
+            CondemnSettings.AddLabel("7 : Prada 传说 | 8 : 最快 | 9 : Old Prada");
             CondemnSettings.AddLabel("10 : Synx Auto Carry | 11 : OKTW | 12 : Shine - HikiCarry");
             CondemnSettings.AddLabel("13 : Asuna - Hikicarry | 14 : 360 - Hikicarry | 15 : SergixCondemn");
-            CondemnSettings.Add("emode", new Slider("E Mode: ", 2, 1, 15)); // EModeStringList
+            CondemnSettings.Add("emode", new Slider("E 模式: ", 2, 1, 15)); // EModeStringList
             CondemnSettings.AddSeparator();
-            CondemnSettings.Add("onlyCondemnTarget", new CheckBox("Only Condemn Current Target", false));
+            CondemnSettings.Add("onlyCondemnTarget", new CheckBox("只对当前目标使用E", false)); // UseEInterruptBool
                 // UseEInterruptBool
-            CondemnSettings.Add("useeinterrupt", new CheckBox("Use E To Interrupt")); // UseEInterruptBool
-            CondemnSettings.Add("useeantigapcloser", new CheckBox("Use E AntiGapcloser")); // UseEAntiGapcloserBool
+            CondemnSettings.Add("useeinterrupt", new CheckBox("使用E打断技能")); // UseEInterruptBool
+            CondemnSettings.Add("useeantigapcloser", new CheckBox("使用E防止突击")); // UseEAntiGapcloserBool
             CondemnSettings.AddSeparator();
-            CondemnSettings.Add("epushdist", new Slider("E Push Distance: ", 425, 300, 475)); // EPushDistanceSlider
+            CondemnSettings.Add("epushdist", new Slider("E 推行距离: ", 425, 300, 475)); // EPushDistanceSlider
             CondemnSettings.AddSeparator();
-            CondemnSettings.Add("ehitchance", new Slider("Condemn Hitchance", 75)); // EHitchanceSlider
+            CondemnSettings.Add("ehitchance", new Slider("E 命中率", 75, 0, 100)); // EHitchanceSlider
             CondemnSettings.AddSeparator();
 
-            ESettings = Menu.AddSubMenu("E Settings", "esettings");
-            ESettings.AddGroupLabel("SAC Condemn Settings");
-            ESettings.AddLabel("YOU HAVE TO HAVE OPTION 10 SELECTED TO USE THIS");
-            ESettings.Add("Accuracy", new Slider("Accuracy", 12, 2, 12)); // Accuracy
-            ESettings.Add("TumbleCondemnCount", new Slider("Q->E Position Check Count", 12, 2, 12));
+            ESettings = Menu.AddSubMenu("E 设置", "esettings");
+            ESettings.AddGroupLabel("SAC E 设置");
+            ESettings.AddLabel("选择Q模式为10时才使用以下选项");
+            ESettings.Add("Accuracy", new Slider("准确率", 12, 2, 12)); // Accuracy
+            ESettings.Add("TumbleCondemnCount", new Slider("Q->E 位置检查", 12, 2, 12)); // TumbleCondemnCount
                 // TumbleCondemnCount
-            ESettings.Add("TumbleCondemn", new CheckBox("Q->E when possible")); // TumbleCondemn
+            ESettings.Add("TumbleCondemn", new CheckBox("尝试Q->E")); // TumbleCondemn
             ESettings.AddSeparator();
-            ESettings.Add("TumbleCondemnSafe", new CheckBox("Only Q->E when tumble position is safe", false));
+            ESettings.Add("TumbleCondemnSafe", new CheckBox("只当Q位置安全时 Q->E", false)); // TumbleCondemnSafe
                 // TumbleCondemnSafe
-            ESettings.Add("DontCondemnTurret", new CheckBox("Don't Condemn under turret?")); // TumbleCondemnSafe
+            ESettings.Add("DontCondemnTurret", new CheckBox("塔下不E?", true)); // TumbleCondemnSafe
             ESettings.AddSeparator();
-            ESettings.AddGroupLabel("OKTW Condemn Settings");
-            ESettings.AddLabel("YOU HAVE TO HAVE OPTION 11 SELECTED TO USE THIS");
+            ESettings.AddGroupLabel("OKTW E设置");
+            ESettings.AddLabel("选择模式为11时才使用以下选项");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
             {
-                ESettings.Add("stun" + enemy.ChampionName, new CheckBox("Condemn : " + enemy.ChampionName + "?"));
+                ESettings.Add("stun" + enemy.ChampionName, new CheckBox("定墙 : " + enemy.ChampionName + "?"));
             }
             ESettings.AddSeparator();
 
-            FarmSettings = Menu.AddSubMenu("Farm Settings", "farm");
-            FarmSettings.AddGroupLabel("Farm Menu");
+            FarmSettings = Menu.AddSubMenu("农兵设置", "farm");
+            FarmSettings.AddGroupLabel("农兵菜单");
             FarmSettings.AddSeparator();
-            FarmSettings.Add("useQLane", new CheckBox("Use Q Lane Clear"));
-            FarmSettings.Add("useQJG", new CheckBox("Use Q Jungle Clear"));
-            FarmSettings.Add("useejgfarm", new CheckBox("Use E Jungle")); // UseEJungleFarm
+            FarmSettings.Add("useQLane", new CheckBox("使用 Q 清线"));
+            FarmSettings.Add("useQJG", new CheckBox("使用 Q 清野"));
+            FarmSettings.Add("useejgfarm", new CheckBox("在野区使用 E ")); // UseEJungleFarm
             FarmSettings.AddSeparator();
 
-            ExtraMenu = Menu.AddSubMenu("Extra Settings", "extra");
-            ExtraMenu.AddGroupLabel("Extra Settings");
+            ExtraMenu = Menu.AddSubMenu("额外设置", "extra");
+            ExtraMenu.AddGroupLabel("额外设置");
             ExtraMenu.AddSeparator();
-            ExtraMenu.Add("autoLevel", new CheckBox("Auto Level", false));
-            ExtraMenu.Add("usee3rdwproc", new CheckBox("Use E as 3rd W Proc", false)); // UseEAs3rdWProcBool
-            ExtraMenu.Add("useqonenemiesnotcs", new CheckBox("Use Q Bonus On ENEMY not CS", false));
+            ExtraMenu.Add("autoLevel", new CheckBox("自动加点", false));
+            ExtraMenu.Add("usee3rdwproc", new CheckBox("对2W使用 E 触发3W", false)); // UseEAs3rdWProcBool
+            ExtraMenu.Add("useqonenemiesnotcs", new CheckBox("对敌方使用Q而非小兵", false)); // UseQBonusOnEnemiesNotCS
                 // UseQBonusOnEnemiesNotCS
-            ExtraMenu.Add("useqonlyon2stackedenemies", new CheckBox("Use Q If Enemy Have 2W Stacks", false));
+            ExtraMenu.Add("useqonlyon2stackedenemies", new CheckBox("对敌人使用Q如果敌人有2W", false)); // UseQOnlyAt2WStacksBool
                 // UseQOnlyAt2WStacksBool
             ExtraMenu.AddSeparator();
 
-            ItemMenu = Menu.AddSubMenu("Activator", "item");
-            ItemMenu.Add("useHeal", new CheckBox("Use Heal?"));
-            ItemMenu.Add("lowerHeal", new Slider("Lower than X HP to heal :", 15));
+            ItemMenu = Menu.AddSubMenu("激活器", "item");
+            ItemMenu.Add("useHeal", new CheckBox("使用治疗?"));
+            ItemMenu.Add("lowerHeal", new Slider("低于 X 血量使用治疗 :", 15));
             ItemMenu.AddSeparator();
-            ItemMenu.Add("useBotrk", new CheckBox("Use Blade of the Ruined King?"));
-            ItemMenu.Add("useCutlass", new CheckBox("Use Bilgewater Cutlass?"));
-            ItemMenu.Add("useGhostBlade", new CheckBox("Use GhostBlade?"));
+            ItemMenu.Add("useBotrk", new CheckBox("使用破败?"));
+            ItemMenu.Add("useCutlass", new CheckBox("使用弯刀?"));
+            ItemMenu.Add("useGhostBlade", new CheckBox("使用幽梦?"));
             ItemMenu.AddSeparator();
-            ItemMenu.Add("Clean", new CheckBox("Auto QSS/Mercurial/Dervish/Mikaels/Cleanse"));
+            ItemMenu.Add("Clean", new CheckBox("自动 水银腰带/水银弯刀/苦行僧之刃/米凯尔/净化"));
             ItemMenu.AddSeparator();
-            ItemMenu.Add("CSSDelay", new Slider("QSS Delay", 0, 0, 1000)); // CSSDelay
+            ItemMenu.Add("CSSDelay", new Slider("使用水银延迟", 0, 0, 1000)); // CSSDelay
             ItemMenu.AddSeparator();
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(ally => ally.IsAlly && !ally.IsMe))
             {
-                ItemMenu.Add("MikaelsAlly" + ally.ChampionName, new CheckBox("Mikael : " + ally.ChampionName + "?"));
+                ItemMenu.Add("MikaelsAlly" + ally.ChampionName, new CheckBox("米凯尔 : " + ally.ChampionName + "?"));
             }
             ItemMenu.AddSeparator();
-            ItemMenu.Add("cleanHP", new Slider("Use only under % HP (101 : Forever)", 95, 0, 101)); // cleanHP
+            ItemMenu.Add("cleanHP", new Slider("只在血量低于 % 使用 (101 : 一直)", 95, 0, 101));  // cleanHP
             ItemMenu.AddSeparator();
-            ItemMenu.Add("CleanSpells", new CheckBox("Cleanse Dangerous (Zed R etc.)"));
-            ItemMenu.Add("Stun", new CheckBox("Stun"));
-            ItemMenu.Add("Snare", new CheckBox("Snare"));
-            ItemMenu.Add("Charm", new CheckBox("Charm"));
-            ItemMenu.Add("Fear", new CheckBox("Fear"));
-            ItemMenu.Add("Suppression", new CheckBox("Suppression"));
-            ItemMenu.Add("Taunt", new CheckBox("Taunt"));
-            ItemMenu.Add("Blind", new CheckBox("Blind"));
+            ItemMenu.Add("CleanSpells", new CheckBox("净化危险技能 (劫 R 等等.)"));
+            ItemMenu.Add("Stun", new CheckBox("晕眩"));
+            ItemMenu.Add("Snare", new CheckBox("定身"));
+            ItemMenu.Add("Charm", new CheckBox("魅惑"));
+            ItemMenu.Add("Fear", new CheckBox("恐惧"));
+            ItemMenu.Add("Suppression", new CheckBox("压制（蚂蚱R，蝎子R等"));
+            ItemMenu.Add("Taunt", new CheckBox("嘲讽"));
+            ItemMenu.Add("Blind", new CheckBox("致盲"));
             ItemMenu.AddSeparator();
 
-            DrawingMenu = Menu.AddSubMenu("Draw Settings", "draw");
-            DrawingMenu.AddGroupLabel("Drawing Menu");
+            DrawingMenu = Menu.AddSubMenu("线圈设置", "draw");
+            DrawingMenu.AddGroupLabel("线圈");
             DrawingMenu.AddSeparator();
-            DrawingMenu.Add("drawwstacks", new CheckBox("Draw W Stacks")); // DrawWStacksBool
-            DrawingMenu.Add("menukey", new CheckBox("Draw Menu Keybinds")); // DrawWStacksBool
-            DrawingMenu.Add("drawCurrentLogic", new CheckBox("Draw Q/E Current Logic")); // DrawWStacksBool
+            DrawingMenu.Add("drawwstacks", new CheckBox("显示W层数")); // DrawWStacksBool
+            DrawingMenu.Add("menukey", new CheckBox("显示热键菜单")); // DrawWStacksBool
+            DrawingMenu.Add("drawCurrentLogic", new CheckBox("显示 Q/E 当前逻辑")); // DrawWStacksBool
             DrawingMenu.AddSeparator();
         }
 

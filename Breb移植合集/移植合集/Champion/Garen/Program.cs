@@ -321,39 +321,39 @@ namespace UnderratedAIO.Champions
 
         private static void InitMenu()
         {
-            config = MainMenu.AddMenu("Garen", "Garen");
+            config = MainMenu.AddMenu("盖伦", "Garen");
 
             // Draw settings
-            drawMenu = config.AddSubMenu("Drawings ", "dsettings");
-            drawMenu.Add("drawaa", new CheckBox("Draw AA range"));
-            drawMenu.Add("drawee", new CheckBox("Draw E range"));
-            drawMenu.Add("drawrr", new CheckBox("Draw R range"));
-            drawMenu.Add("drawrkillable", new CheckBox("Show if killable with R"));
+            drawMenu = config.AddSubMenu("线圈 ", "dsettings");
+            drawMenu.Add("drawaa", new CheckBox("显示 AA 范围"));
+            drawMenu.Add("drawee", new CheckBox("显示 E 范围"));
+            drawMenu.Add("drawrr", new CheckBox("显示 R 范围"));
+            drawMenu.Add("drawrkillable", new CheckBox("显示可被R击杀目标"));
 
             // Combo Settings
             comboMenu = config.AddSubMenu("Combo ", "csettings");
-            comboMenu.Add("useq", new CheckBox("Use Q"));
-            comboMenu.Add("usew", new CheckBox("Use W"));
-            comboMenu.Add("usee", new CheckBox("Use E"));
-            comboMenu.Add("user", new CheckBox("Use R"));
-            comboMenu.Add("useFlash", new CheckBox("Use Flash"));
-            comboMenu.Add("useIgnite", new CheckBox("Use Ignite"));
+            comboMenu.Add("useq", new CheckBox("使用 Q"));
+            comboMenu.Add("usew", new CheckBox("使用 W"));
+            comboMenu.Add("usee", new CheckBox("使用 E"));
+            comboMenu.Add("user", new CheckBox("使用 R"));
+            comboMenu.Add("useFlash", new CheckBox("使用 闪现"));
+            comboMenu.Add("useIgnite", new CheckBox("使用 点燃"));
 
             // LaneClear Settings
-            laneClearMenu = config.AddSubMenu("LaneClear ", "Lcsettings");
-            laneClearMenu.Add("useeLC", new CheckBox("Use E"));
+            laneClearMenu = config.AddSubMenu("清线 ", "Lcsettings");
+            laneClearMenu.Add("useeLC", new CheckBox("使用 E"));
 
             // Misc Settings
-            miscMenu = config.AddSubMenu("Misc ", "Msettings");
-            miscMenu.Add("useqAAA", new CheckBox("Use Q after AA"));
+            miscMenu = config.AddSubMenu("杂项 ", "Msettings");
+            miscMenu.Add("useqAAA", new CheckBox("AA 后使用 Q"));
             miscMenu.AddSeparator();
-            miscMenu.AddGroupLabel("TeamFight Ult block");
+            miscMenu.AddGroupLabel("团战大招");
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy))
             {
                 miscMenu.Add("ult" + hero.BaseSkinName, new CheckBox(hero.BaseSkinName));
             }
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用封包", false));
         }
     }
 }

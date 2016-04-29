@@ -54,43 +54,43 @@ namespace PortAIO.Champion.Bard
 
         private static void LoadMenu()
         {
-            BardMenu = MainMenu.AddMenu("Bard", "Bard");
+            BardMenu = MainMenu.AddMenu("巴德", "Bard");
 
-            comboMenu = BardMenu.AddSubMenu("Combo", "dz191.bard.combo");
-            comboMenu.Add("dz191.bard.combo.useq", new CheckBox("Use Q"));
-            comboMenu.Add("dz191.bard.combo.usew", new CheckBox("Use W"));
-            comboMenu.Add("dz191.bard.combo.qks", new CheckBox("Use Q KS"));
+            comboMenu = BardMenu.AddSubMenu("连招", "dz191.bard.combo");
+            comboMenu.Add("dz191.bard.combo.useq", new CheckBox("使用 Q"));
+            comboMenu.Add("dz191.bard.combo.usew", new CheckBox("使用 W"));
+            comboMenu.Add("dz191.bard.combo.qks", new CheckBox("使用 Q 抢头"));
 
-            harassMenu = BardMenu.AddSubMenu("Harass", "dz191.bard.mixed");
-            harassMenu.AddGroupLabel("Q Targets (Harass Only)");
+            harassMenu = BardMenu.AddSubMenu("骚扰", "dz191.bard.mixed");
+            harassMenu.AddGroupLabel("Q 目标 (只骚扰)");
             foreach (var hero in HeroManager.Enemies)
             {
                 harassMenu.Add(string.Format("dz191.bard.qtarget.{0}", hero.ChampionName.ToLower()),
-                    new CheckBox("Harass : " + hero.ChampionName));
+                    new CheckBox("骚扰 : " + hero.ChampionName));
             }
             harassMenu.AddSeparator();
-            harassMenu.Add("dz191.bard.mixed.useq", new CheckBox("Use Q"));
+            harassMenu.Add("dz191.bard.mixed.useq", new CheckBox("使用 Q"));
 
-            fleeMenu = BardMenu.AddSubMenu("Flee", "dz191.bard.flee");
-            fleeMenu.Add("dz191.bard.flee.q", new CheckBox("Q Flee"));
-            fleeMenu.Add("dz191.bard.flee.w", new CheckBox("W Flee"));
-            fleeMenu.Add("dz191.bard.flee.e", new CheckBox("E Flee"));
+            fleeMenu = BardMenu.AddSubMenu("逃跑", "dz191.bard.flee");
+            fleeMenu.Add("dz191.bard.flee.q", new CheckBox("Q 逃跑"));
+            fleeMenu.Add("dz191.bard.flee.w", new CheckBox("W 逃跑"));
+            fleeMenu.Add("dz191.bard.flee.e", new CheckBox("E 逃跑"));
 
-            miscMenu = BardMenu.AddSubMenu("Misc", "dz191.bard.misc");
-            miscMenu.AddGroupLabel("W Settings");
+            miscMenu = BardMenu.AddSubMenu("杂项", "dz191.bard.misc");
+            miscMenu.AddGroupLabel("W 设置");
             foreach (var hero in HeroManager.Allies)
             {
                 miscMenu.Add(string.Format("dz191.bard.wtarget.{0}", hero.ChampionName.ToLower()),
-                    new CheckBox("Heal " + hero.ChampionName));
+                    new CheckBox("治疗 " + hero.ChampionName));
             }
-            miscMenu.Add("dz191.bard.wtarget.healthpercent", new Slider("Health % for W", 25, 1));
-            miscMenu.AddGroupLabel("Q - Cosmic Binding");
-            miscMenu.Add("dz191.bard.misc.distance", new Slider("Calculation distance", 250, 100, 450));
-            miscMenu.Add("dz191.bard.misc.accuracy", new Slider("Accuracy", 20, 1, 50));
+            miscMenu.Add("dz191.bard.wtarget.healthpercent", new Slider("使用 W 治疗当生命 %", 25, 1));
+            miscMenu.AddGroupLabel("Q - 捆绑");
+            miscMenu.Add("dz191.bard.misc.distance", new Slider("计算距离", 250, 100, 450));
+            miscMenu.Add("dz191.bard.misc.accuracy", new Slider("准确度", 20, 1, 50));
             miscMenu.AddSeparator();
-            miscMenu.Add("dz191.bard.misc.attackMinions", new CheckBox("Don't attack Minions aka Support Mode"));
+            miscMenu.Add("dz191.bard.misc.attackMinions", new CheckBox("辅助模式"));
             miscMenu.Add("dz191.bard.misc.attackMinionsRange",
-                new Slider("Allies in range to not attack Minions", 1200, 700, 2000));
+                new Slider("友军在 X 范围内不普攻小兵", 1200, 700, 2000));
         }
 
         private static void LoadSpells()

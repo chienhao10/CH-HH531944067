@@ -63,58 +63,58 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             #endregion
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("showcd", new CheckBox("Show cooldown"));
-            drawMenu.Add("noti", new CheckBox("Show notification & line"));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
-            drawMenu.Add("qRange", new CheckBox("Q range", false));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("showcd", new CheckBox("显示冷却"));
+            drawMenu.Add("noti", new CheckBox("显示提示"));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
+            drawMenu.Add("qRange", new CheckBox("Q 范围", false));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q range"));
-            qMenu.Add("autoQm", new CheckBox("Auto Q melee"));
-            qMenu.Add("QEforce", new CheckBox("force E + Q"));
-            qMenu.Add("QEsplash", new CheckBox("Q + E splash minion damage"));
-            qMenu.Add("QEsplashAdjust", new Slider("Q + E splash minion radius", 150, 250, 50));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ", new CheckBox("自动 Q 远程"));
+            qMenu.Add("autoQm", new CheckBox("战斗 Q 近程"));
+            qMenu.Add("QEforce", new CheckBox("强制 E + Q"));
+            qMenu.Add("QEsplash", new CheckBox("Q + E 范围伤害"));
+            qMenu.Add("QEsplashAdjust", new Slider("Q + E 范围半径", 150, 250, 50));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W range"));
-            wMenu.Add("autoWm", new CheckBox("Auto W melee"));
-            wMenu.Add("autoWmove", new CheckBox("Disable move if W range active"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W 远程"));
+            wMenu.Add("autoWm", new CheckBox("战斗 W 近程"));
+            wMenu.Add("autoWmove", new CheckBox("屏蔽移动如果开启远程 W"));
 
-            eMenu = Config.AddSubMenu("E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E range (Q + E)"));
-            eMenu.Add("autoEm", new CheckBox("Auto E melee"));
-            eMenu.Add("autoEks", new CheckBox("E melee ks only"));
-            eMenu.Add("gapE", new CheckBox("Gapcloser R + E"));
-            eMenu.Add("intE", new CheckBox("Interrupt spells R + Q + E"));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("autoE", new CheckBox("自动 E 远程 (Q + E)"));
+            eMenu.Add("autoEm", new CheckBox("自动 E 近程"));
+            eMenu.Add("autoEks", new CheckBox("只用 近程E 抢头"));
+            eMenu.Add("gapE", new CheckBox("防突进 R + E"));
+            eMenu.Add("intE", new CheckBox("技能打断 R + Q + E"));
 
-            rMenu = Config.AddSubMenu("R Config ");
-            rMenu.Add("autoR", new CheckBox("Auto R range"));
-            rMenu.Add("autoRm", new CheckBox("Auto R melee"));
+            rMenu = Config.AddSubMenu("R 设置 ");
+            rMenu.Add("autoR", new CheckBox("自动 R 远程"));
+            rMenu.Add("autoRm", new CheckBox("自动 R 近程"));
 
-            harassMenu = Config.AddSubMenu("Harass");
+            harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
                 harassMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
-            harassMenu.Add("harassMana", new Slider("Harass Mana", 80));
+            harassMenu.Add("harassMana", new Slider("骚扰蓝量", 80));
 
-            miscMenu = Config.AddSubMenu("Misc");
-            miscMenu.Add("flee", new KeyBind("FLEE MODE", false, KeyBind.BindTypes.HoldActive, 'T'));
-            miscMenu.Add("stack", new CheckBox("Stack Tear if full mana"));
+            miscMenu = Config.AddSubMenu("杂项");
+            miscMenu.Add("flee", new KeyBind("逃跑模式", false, KeyBind.BindTypes.HoldActive, 'T'));
+            miscMenu.Add("stack", new CheckBox("满蓝时叠加女神"));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQ", new CheckBox("Lane clear Q + E range"));
-            farmMenu.Add("farmW", new CheckBox("Lane clear W range && mele"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80));
-            farmMenu.Add("LCminions", new Slider("LaneClear minimum minions", 2, 0, 10));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQ", new CheckBox("清线 Q + E 远程"));
+            farmMenu.Add("farmW", new CheckBox("清线 W 远程 && 近程"));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 80));
+            farmMenu.Add("LCminions", new Slider("清线最少命中小兵数", 2, 0, 10));
 
-            farmMenu.Add("jungleQ", new CheckBox("Jungle clear Q"));
-            farmMenu.Add("jungleW", new CheckBox("Jungle clear W"));
-            farmMenu.Add("jungleE", new CheckBox("Jungle clear E"));
-            farmMenu.Add("jungleR", new CheckBox("Jungle clear R"));
+            farmMenu.Add("jungleQ", new CheckBox("清野 Q"));
+            farmMenu.Add("jungleW", new CheckBox("清野 W"));
+            farmMenu.Add("jungleE", new CheckBox("清野 E"));
+            farmMenu.Add("jungleR", new CheckBox("清野 R"));
 
-            farmMenu.Add("jungleQm", new CheckBox("Jungle clear Q melee"));
-            farmMenu.Add("jungleWm", new CheckBox("Jungle clear W melee"));
-            farmMenu.Add("jungleEm", new CheckBox("Jungle clear E melee"));
+            farmMenu.Add("jungleQm", new CheckBox("清野 Q 近程"));
+            farmMenu.Add("jungleWm", new CheckBox("清野 W 近程"));
+            farmMenu.Add("jungleEm", new CheckBox("清野 E 近程"));
 
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += OnUpdate;

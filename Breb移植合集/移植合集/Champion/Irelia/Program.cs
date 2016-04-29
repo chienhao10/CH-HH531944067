@@ -313,16 +313,16 @@ namespace Challenger_Series
 
         private static void InitMenu()
         {
-            config = MainMenu.AddMenu("Irelia", "Irelia");
-            config.Add("useqcombo", new ComboBox("Q Combo MODE : ", 0, "CHALLENGER", "BRONZE", "NEVER"));
-            config.Add("usewcombo", new CheckBox("Use W Combo"));
-            config.Add("useecombo", new ComboBox("Use E Combo", 0, "CHALLENGER", "BRONZE", "NEVER"));
-            config.Add("usercombo", new KeyBind("Use R Combo", false, KeyBind.BindTypes.HoldActive, 'R'));
-            config.Add("useeks", new CheckBox("Use E KS if Q on CD"));
-            config.Add("usercombo", new CheckBox("Use R Combo"));
-            config.Add("qgc", new ComboBox("Q Gapcloser Mode : ", 0, "ONLY-CLOSEST-TO-TARGET", "ALL-KILLABLE-MINIONS"));
-            config.Add("mindistqgapcloser", new Slider("Min Distance for Q Gapclose", 350, 325, 625));
-            config.Add("useqfarm", new ComboBox("Q Farm Mode: ", 0, "ONLY-UNKILLABLE", "ALWAYS", "NEVER"));
+            config = MainMenu.AddMenu("刀妹", "Irelia");
+            config.Add("useqcombo", new ComboBox("Q 连招模式 : ", 0, "挑战者", "铜牌", "从不"));
+            config.Add("usewcombo", new CheckBox("使用 W "));
+            config.Add("useecombo", new ComboBox("使用 E ", 0, "挑战者", "铜牌", "从不"));
+            config.Add("usercombo", new KeyBind("使用 R ", false, KeyBind.BindTypes.HoldActive, 'R'));
+            config.Add("useeks", new CheckBox("使用 E 抢头，如果Q冷却中"));
+            config.Add("usercombo", new CheckBox("使用 R "));
+            config.Add("qgc", new ComboBox("Q 间距模式 : ", 0, "只至最近目标", "所有可击杀的小兵"));
+            config.Add("mindistqgapcloser", new Slider("Q间距最低距离", 350, 325, 625));
+            config.Add("useqfarm", new ComboBox("Q 农兵模式: ", 0, "只可击杀", "一直", "从不"));
         }
     }
 }

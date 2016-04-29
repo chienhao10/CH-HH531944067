@@ -100,7 +100,7 @@ namespace Jhin___The_Virtuoso
                             x => x.IsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
                 {
                     Drawing.DrawText(enemy.HPBarPosition.X, enemy.HPBarPosition.Y, Color.Gold,
-                        string.Format("{0} Basic Attack = Kill", Provider.BasicAttackIndicator(enemy)));
+                        string.Format("{0} 普攻 = 击杀", Provider.BasicAttackIndicator(enemy)));
                 }
             }
             if (Menus.getCheckBoxItem(Menus.drawMenu, "sniper.text") && ObjectManager.Player.IsActive(Spells.R))

@@ -9,7 +9,7 @@ namespace Kassawin
 {
     internal class Helper
     {
-        public const string Menuname = "Slutty Kassadin";
+        public const string Menuname = "卡萨丁";
         public static Menu Config, comboMenu, harassMenu, farmMenu, ksMenu, drawMenu, miscMenu;
         private static readonly DateTime AssemblyLoadTime = DateTime.Now;
 

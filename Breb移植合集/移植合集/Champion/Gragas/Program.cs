@@ -72,41 +72,41 @@ namespace GragasTheDrunkCarry
             E.SetSkillshot(0.3f, 50, 1000, true, SkillshotType.SkillshotLine);
             R.SetSkillshot(0.3f, 700, 1000, false, SkillshotType.SkillshotCircle);
 
-            Config = MainMenu.AddMenu("Gragas", "Gragas");
+            Config = MainMenu.AddMenu("酒桶", "Gragas");
 
-            comboMenu = Config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("UseQ", new CheckBox("Use Q?"));
-            comboMenu.Add("UseW", new CheckBox("Use W?"));
-            comboMenu.Add("UseE", new CheckBox("Use E?"));
-            comboMenu.Add("UseR", new CheckBox("Use R?"));
+            comboMenu = Config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("UseQ", new CheckBox("使用 Q?"));
+            comboMenu.Add("UseW", new CheckBox("使用 W?"));
+            comboMenu.Add("UseE", new CheckBox("使用 E?"));
+            comboMenu.Add("UseR", new CheckBox("使用 R?"));
             comboMenu.Add("AutoB", new CheckBox("Auto Bomb?"));
             comboMenu.Add("Insec", new KeyBind("Insec", false, KeyBind.BindTypes.HoldActive, 'A'));
 
-            ksMenu = Config.AddSubMenu("KillSteal", "KS");
-            ksMenu.Add("QKS", new CheckBox("KS with Q"));
-            ksMenu.Add("EKS", new CheckBox("KS with E"));
-            ksMenu.Add("RKS", new CheckBox("KS with R"));
-            ksMenu.Add("SmartKs", new CheckBox("Auto Ks?"));
+            ksMenu = Config.AddSubMenu("抢头", "KS");
+            ksMenu.Add("QKS", new CheckBox("使用 Q"));
+            ksMenu.Add("EKS", new CheckBox("使用 E"));
+            ksMenu.Add("RKS", new CheckBox("使用 R"));
+            ksMenu.Add("SmartKs", new CheckBox("自动 抢头?"));
 
-            jungleMenu = Config.AddSubMenu("Jungle Farm", "JG");
-            jungleMenu.Add("JQ", new CheckBox("Use Q"));
-            jungleMenu.Add("JW", new CheckBox("Use E"));
-            jungleMenu.Add("JE", new CheckBox("Use R"));
+            jungleMenu = Config.AddSubMenu("清野", "JG");
+            jungleMenu.Add("JQ", new CheckBox("使用 Q"));
+            jungleMenu.Add("JW", new CheckBox("使用 E"));
+            jungleMenu.Add("JE", new CheckBox("使用 R"));
 
-            clearMenu = Config.AddSubMenu("Wave Clear", "LC");
-            clearMenu.Add("WQ", new CheckBox("Use Q"));
-            clearMenu.Add("WW", new CheckBox("Use E"));
-            clearMenu.Add("WE", new CheckBox("Use R"));
+            clearMenu = Config.AddSubMenu("清线", "LC");
+            clearMenu.Add("WQ", new CheckBox("使用 Q"));
+            clearMenu.Add("WW", new CheckBox("使用 E"));
+            clearMenu.Add("WE", new CheckBox("使用 R"));
 
-            harassMenu = Config.AddSubMenu("Harras", "Harras");
-            harassMenu.Add("UseQH", new CheckBox("Use Q?"));
-            harassMenu.Add("UseEH", new CheckBox("Use E?"));
+            harassMenu = Config.AddSubMenu("骚扰", "Harras");
+            harassMenu.Add("UseQH", new CheckBox("使用 Q?"));
+            harassMenu.Add("UseEH", new CheckBox("使用 E?"));
 
-            drawMenu = Config.AddSubMenu("Draw", "Draw");
-            drawMenu.Add("DrawIN", new CheckBox("Draw Insec Pos?"));
-            drawMenu.Add("DrawQ", new CheckBox("Draw Q range"));
-            drawMenu.Add("DrawE", new CheckBox("Draw E Range"));
-            drawMenu.Add("DrawR", new CheckBox("Draw R Range"));
+            drawMenu = Config.AddSubMenu("线圈", "Draw");
+            drawMenu.Add("DrawIN", new CheckBox("显示 神R位置?"));
+            drawMenu.Add("DrawQ", new CheckBox("显示 Q 范围"));
+            drawMenu.Add("DrawE", new CheckBox("显示 E 范围"));
+            drawMenu.Add("DrawR", new CheckBox("显示 R 范围"));
 
             Player = ObjectManager.Player;
             Game.OnUpdate += Game_OnUpdate;

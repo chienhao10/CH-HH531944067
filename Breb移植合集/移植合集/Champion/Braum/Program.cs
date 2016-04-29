@@ -48,20 +48,20 @@ namespace PortAIO.Champion.Braum
             Q.SetSkillshot(0.25f, 60f, 1700f, true, SkillshotType.SkillshotLine);
             R.SetSkillshot(0.5f, 115f, 1400f, false, SkillshotType.SkillshotLine);
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("notif", new CheckBox("Notification (timers)"));
-            drawMenu.Add("noti", new CheckBox("Show KS notification"));
-            drawMenu.Add("qRange", new CheckBox("Q range"));
-            drawMenu.Add("eRange", new CheckBox("E range"));
-            drawMenu.Add("rRange", new CheckBox("R range"));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("notif", new CheckBox("提示 (计时)"));
+            drawMenu.Add("noti", new CheckBox("显示抢头提示"));
+            drawMenu.Add("qRange", new CheckBox("Q 范围"));
+            drawMenu.Add("eRange", new CheckBox("E 范围"));
+            drawMenu.Add("rRange", new CheckBox("R 范围"));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q"));
-            qMenu.Add("AGCq", new CheckBox("Anti Gapcloser Q"));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ", new CheckBox("自动 Q"));
+            qMenu.Add("AGCq", new CheckBox("自动防突进 Q"));
 
-            ewMenu = Config.AddSubMenu("E W Shield Config");
-            ewMenu.AddGroupLabel("Spell Manager");
+            ewMenu = Config.AddSubMenu("E W 盾牌设置");
+            ewMenu.AddGroupLabel("技能设置");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
             {
                 for (var i = 0; i < 4; i++)
@@ -74,34 +74,34 @@ namespace PortAIO.Champion.Braum
                     }
                 }
             }
-            ewMenu.Add("autoE", new CheckBox("Auto E"));
-            ewMenu.Add("Edmg", new Slider("Shield incoming damage %", 20));
-            ewMenu.AddGroupLabel("Use On : ");
+            ewMenu.Add("autoE", new CheckBox("自动 E"));
+            ewMenu.Add("Edmg", new Slider("用盾吸收来自 X %的伤害", 20));
+            ewMenu.AddGroupLabel("使用在 : ");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team == Player.Team))
             {
                 ewMenu.Add("Eon" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
             }
-            ewMenu.AddGroupLabel("GapCloser");
-            ewMenu.Add("AGC", new CheckBox("Anti Gapcloser E + W"));
+            ewMenu.AddGroupLabel("防突进");
+            ewMenu.Add("AGC", new CheckBox("防突进 E + W"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
                 ewMenu.Add("gapcloser" + enemy.ChampionName, new CheckBox("Antigapclose : " + enemy.ChampionName));
             }
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("useR", new KeyBind("Semi-manual cast R", false, KeyBind.BindTypes.HoldActive, 'T'));
-            rMenu.Add("rCombo", new CheckBox("Always in combo"));
-            rMenu.Add("rCount", new Slider("Auto R if hit x enemies", 3, 0, 5));
-            rMenu.Add("rCc", new CheckBox("Auto R immobile enemy korean style"));
-            rMenu.Add("OnInterruptableSpell", new CheckBox("OnInterruptableSpell"));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("自动 R"));
+            rMenu.Add("useR", new KeyBind("半自动 R", false, KeyBind.BindTypes.HoldActive, 'T'));
+            rMenu.Add("rCombo", new CheckBox("连招中使用"));
+            rMenu.Add("rCount", new Slider("自动R如果能命中敌人数 X", 3, 0, 5));
+            rMenu.Add("rCc", new CheckBox("自动R无法移动目标 （韩国模式）"));
+            rMenu.Add("OnInterruptableSpell", new CheckBox("可打断技能"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
             {
                 rMenu.Add("Rmode" + enemy.ChampionName,
-                    new Slider(enemy.ChampionName + " 0 : Normal | 1 : Always | 2 : Never | 3 : Normal + Gapcloser R"));
+                    new Slider(enemy.ChampionName + " 0 : 正常 | 1 : 一直 | 2 : 从不 | 3 : 正常 + 防突进 R"));
             }
 
-            harassMenu = Config.AddSubMenu("Harass");
+            harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
                 harassMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));

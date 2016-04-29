@@ -59,56 +59,56 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             R.DamageType = DamageType.Magical;
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("noti", new CheckBox("Show R notification"));
-            drawMenu.Add("qRange", new CheckBox("Q range", false));
-            drawMenu.Add("wRange", new CheckBox("W range", false));
-            drawMenu.Add("eRange", new CheckBox("E range", false));
-            drawMenu.Add("rRange", new CheckBox("R range", false));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw when skill rdy"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("noti", new CheckBox("显示 R 提示"));
+            drawMenu.Add("qRange", new CheckBox("Q 范围", false));
+            drawMenu.Add("wRange", new CheckBox("W 范围", false));
+            drawMenu.Add("eRange", new CheckBox("E 范围", false));
+            drawMenu.Add("rRange", new CheckBox("R 范围", false));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q"));
-            qMenu.Add("harrasQ", new CheckBox("Harass Q"));
-            qMenu.Add("QHarassMana", new Slider("Harass Mana", 30));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ", new CheckBox("自动 Q"));
+            qMenu.Add("harrasQ", new CheckBox("骚扰 Q"));
+            qMenu.Add("QHarassMana", new Slider("骚扰蓝量", 30));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 qMenu.Add("Qon" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
-            wMenu.Add("harrasW", new CheckBox("Harass W", false));
-            wMenu.Add("WmodeCombo", new ComboBox("W combo mode", 1, "always", "run - cheese"));
-            wMenu.Add("WmodeGC", new ComboBox("Gap Closer position mode", 0, "Dash end position", "My hero position"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
+            wMenu.Add("harrasW", new CheckBox("骚扰 W", false));
+            wMenu.Add("WmodeCombo", new ComboBox("W 连招模式", 1, "一直", "移动 - 追逐"));
+            wMenu.Add("WmodeGC", new ComboBox("防突进/接近位置", 0, "冲刺后结束为止", "我英雄位置"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 wMenu.Add("WGCchampion" + enemy.ChampionName, new CheckBox("W : " + enemy.ChampionName));
 
-            eMenu = Config.AddSubMenu("E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E if enemy in range"));
-            eMenu.Add("Emana", new Slider("E % minimum mana", 20));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("autoE", new CheckBox("E范围内自动开启"));
+            eMenu.Add("Emana", new Slider("E 最低蓝量%", 20));
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("autoRzombie", new CheckBox("Auto R upon dying if can help team"));
-            rMenu.Add("Renemy", new Slider("Don't R if enemy in x range", 1500, 0, 2000));
-            rMenu.Add("RenemyA", new Slider("Don't R if ally in x range near target", 800, 0, 2000));
-            rMenu.Add("Rturrent", new CheckBox("Don't R under turret"));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("自动 R"));
+            rMenu.Add("autoRzombie", new CheckBox("自动R 如果可帮助队友"));
+            rMenu.Add("Renemy", new Slider("X 范围内敌人数量不 R", 1500, 0, 2000));
+            rMenu.Add("RenemyA", new Slider("友军在 X 范围内接近目标则不 R", 800, 0, 2000));
+            rMenu.Add("Rturrent", new CheckBox("塔下不 R"));
 
-            harassMenu = Config.AddSubMenu("Harass Config");
+            harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 harassMenu.Add("harras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQout", new CheckBox("Last hit Q minion out range AA"));
-            farmMenu.Add("farmQ", new CheckBox("Lane clear Q"));
-            farmMenu.Add("farmE", new CheckBox("Lane clear E"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80));
-            farmMenu.Add("QLCminions", new Slider(" QLaneClear minimum minions", 2, 0, 10));
-            farmMenu.Add("ELCminions", new Slider(" ELaneClear minimum minions", 5, 0, 10));
-            farmMenu.Add("jungleQ", new CheckBox("Jungle clear Q"));
-            farmMenu.Add("jungleE", new CheckBox("Jungle clear E"));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQout", new CheckBox("超出普攻距离使用 Q"));
+            farmMenu.Add("farmQ", new CheckBox("清线 Q"));
+            farmMenu.Add("farmE", new CheckBox("清线 E"));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 80));
+            farmMenu.Add("QLCminions", new Slider(" Q清线命中小兵数量", 2, 0, 10));
+            farmMenu.Add("ELCminions", new Slider(" E清线名字小兵数量", 5, 0, 10));
+            farmMenu.Add("jungleQ", new CheckBox("清野 Q"));
+            farmMenu.Add("jungleE", new CheckBox("清野 E"));
 
-            miscMenu = Config.AddSubMenu("Misc");
-            miscMenu.Add("autoZombie", new CheckBox("Auto zombie mode COMBO / LANECLEAR"));
+            miscMenu = Config.AddSubMenu("杂项");
+            miscMenu.Add("autoZombie", new CheckBox("自动僵尸模式连招 / 清线"));
 
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
@@ -487,7 +487,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (t.IsValidTarget() && OktwCommon.GetKsDamage(t, R) > t.Health)
                 {
                     Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
-                        "Ult can kill: " + t.ChampionName + " Heal - damage =  " +
+                        "R可击杀: " + t.ChampionName + " 治疗 - 伤害 =  " +
                         (t.Health - OktwCommon.GetKsDamage(t, R)) + " hp");
                 }
             }

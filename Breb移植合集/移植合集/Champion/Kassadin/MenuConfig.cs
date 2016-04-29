@@ -9,63 +9,63 @@ namespace Kassawin
         {
             Config = MainMenu.AddMenu(Menuname, Menuname);
 
-            comboMenu = Config.AddSubMenu("Combo Settings", "Combo Settings");
-            comboMenu.Add("useq", new CheckBox("Use [Q]"));
-            comboMenu.Add("usew", new CheckBox("Use [W]"));
-            comboMenu.Add("usee", new CheckBox("Use [E]"));
-            comboMenu.Add("user", new CheckBox("Use [R]"));
-            comboMenu.Add("usert", new CheckBox("Don't [R] Under Turret"));
-            comboMenu.Add("useignite", new CheckBox("Use [Ignite]"));
-            comboMenu.Add("rcount", new Slider("Only [R] When Stack Below", 1, 1, 5));
+            comboMenu = Config.AddSubMenu("连招", "Combo Settings");
+            comboMenu.Add("useq", new CheckBox("使用 [Q]"));
+            comboMenu.Add("usew", new CheckBox("使用 [W]"));
+            comboMenu.Add("usee", new CheckBox("使用 [E]"));
+            comboMenu.Add("user", new CheckBox("使用 [R]"));
+            comboMenu.Add("usert", new CheckBox("塔下不 [R]"));
+            comboMenu.Add("useignite", new CheckBox("使用 [点燃]"));
+            comboMenu.Add("rcount", new Slider("只使用 [R] 当有 X 层叠加", 1, 1, 5));
 
-            harassMenu = Config.AddSubMenu("Harass Settings", "Harass Settings");
-            harassMenu.Add("useqharass", new CheckBox("Use [Q]"));
-            harassMenu.Add("useeharass", new CheckBox("Use [E]"));
-            harassMenu.Add("harassmana", new Slider("Minimum Mana", 30));
+            harassMenu = Config.AddSubMenu("骚扰", "Harass Settings");
+            harassMenu.Add("useqharass", new CheckBox("使用 [Q]"));
+            harassMenu.Add("useeharass", new CheckBox("使用 [E]"));
+            harassMenu.Add("harassmana", new Slider("最低蓝量", 30));
 
-            farmMenu = Config.AddSubMenu("Farm Settings", "Farm Settings");
-            farmMenu.AddGroupLabel("Lane Clear");
-            farmMenu.Add("minmanalaneclear", new Slider("Minimum Mana", 30));
-            farmMenu.Add("useql", new CheckBox("Use [Q]"));
-            farmMenu.Add("usewl", new CheckBox("Use [W]"));
-            farmMenu.Add("useel", new CheckBox("Use [E]"));
-            farmMenu.Add("userl", new CheckBox("Use [R]"));
-            farmMenu.Add("useels", new Slider("Minimum Minions For E", 3, 1, 10));
-            farmMenu.Add("userls", new Slider("Minimum Minions For R", 3, 1, 10));
-            farmMenu.Add("rcountl", new Slider("Only [R] When Stack Below", 1, 1, 5));
+            farmMenu = Config.AddSubMenu("农兵", "Farm Settings");
+            farmMenu.AddGroupLabel("清线");
+            farmMenu.Add("minmanalaneclear", new Slider("最低蓝量", 30));
+            farmMenu.Add("useql", new CheckBox("使用 [Q]"));
+            farmMenu.Add("usewl", new CheckBox("使用 [W]"));
+            farmMenu.Add("useel", new CheckBox("使用 [E]"));
+            farmMenu.Add("userl", new CheckBox("使用 [R]"));
+            farmMenu.Add("useels", new Slider("最少小兵 E", 3, 1, 10));
+            farmMenu.Add("userls", new Slider("最少小兵 R", 3, 1, 10));
+            farmMenu.Add("rcountl", new Slider("只使用 [R] 当有 X 层叠加", 1, 1, 5));
             farmMenu.AddSeparator();
-            farmMenu.AddGroupLabel("Jungle Clear");
-            farmMenu.Add("minmanajungleclear", new Slider("Minimum Mana", 30));
-            farmMenu.Add("useqj", new CheckBox("Use [Q]"));
-            farmMenu.Add("usewj", new CheckBox("Use [W]"));
-            farmMenu.Add("useej", new CheckBox("Use [E]"));
-            farmMenu.Add("userj", new CheckBox("Use [R]"));
-            farmMenu.Add("rcountj", new Slider("Only [R] When Stack Below", 1, 1, 5));
+            farmMenu.AddGroupLabel("清野");
+            farmMenu.Add("minmanajungleclear", new Slider("最低蓝量", 30));
+            farmMenu.Add("useqj", new CheckBox("使用 [Q]"));
+            farmMenu.Add("usewj", new CheckBox("使用 [W]"));
+            farmMenu.Add("useej", new CheckBox("使用 [E]"));
+            farmMenu.Add("userj", new CheckBox("使用 [R]"));
+            farmMenu.Add("rcountj", new Slider("只使用 [R] 当有 X 层叠加", 1, 1, 5));
             farmMenu.AddSeparator();
-            farmMenu.AddGroupLabel("Last Hit");
-            farmMenu.Add("minmanalasthit", new Slider("Minimum Mana", 30));
-            farmMenu.Add("useqlh", new CheckBox("Use [Q]"));
+            farmMenu.AddGroupLabel("尾兵");
+            farmMenu.Add("minmanalasthit", new Slider("最低蓝量", 30));
+            farmMenu.Add("useqlh", new CheckBox("使用 [Q]"));
             farmMenu.AddSeparator();
 
-            ksMenu = Config.AddSubMenu("Kill Steal Settings", "Kill Steal Settings");
-            ksMenu.Add("ks", new CheckBox("Activate [KS]"));
-            ksMenu.Add("qks", new CheckBox("Use [Q]"));
-            ksMenu.Add("eks", new CheckBox("Use [E]"));
-            ksMenu.Add("rks", new CheckBox("Use [R]"));
-            ksMenu.Add("rgks", new CheckBox("Use [R] As Gap Close"));
+            ksMenu = Config.AddSubMenu("抢头", "Kill Steal Settings");
+            ksMenu.Add("ks", new CheckBox("开启 [KS]"));
+            ksMenu.Add("qks", new CheckBox("使用 [Q]"));
+            ksMenu.Add("eks", new CheckBox("使用 [E]"));
+            ksMenu.Add("rks", new CheckBox("使用 [R]"));
+            ksMenu.Add("rgks", new CheckBox("使用 [R]进行接近"));
 
-            drawMenu = Config.AddSubMenu("Drawings", "Drawings");
-            drawMenu.Add("enabledraw", new CheckBox("Enable Drawings"));
-            drawMenu.Add("drawq", new CheckBox("Draw [Q] Range"));
-            drawMenu.Add("drawe", new CheckBox("Draw [E] Range"));
-            drawMenu.Add("drawr", new CheckBox("Draw [R] Range"));
-            drawMenu.Add("drawqkill", new CheckBox("Draw Killable Minions with [Q]"));
-            drawMenu.Add("drawcount", new CheckBox("Draw [R] Count"));
-            drawMenu.Add("drawdamage", new CheckBox("Draw Damage"));
+            drawMenu = Config.AddSubMenu("线圈", "Drawings");
+            drawMenu.Add("enabledraw", new CheckBox("开启线圈"));
+            drawMenu.Add("drawq", new CheckBox("显示 [Q] 范围"));
+            drawMenu.Add("drawe", new CheckBox("显示 [E] 范围"));
+            drawMenu.Add("drawr", new CheckBox("显示 [R] 范围"));
+            drawMenu.Add("drawqkill", new CheckBox("显示可用 [Q] 击杀的小兵"));
+            drawMenu.Add("drawcount", new CheckBox("显示 [R] 层数"));
+            drawMenu.Add("drawdamage", new CheckBox("显示 伤害"));
 
-            miscMenu = Config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("fleemode", new KeyBind("Flee Mode", false, KeyBind.BindTypes.HoldActive, 'A'));
-            miscMenu.Add("userflee", new CheckBox("Use [R] Flee Mode"));
+            miscMenu = Config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("fleemode", new KeyBind("逃跑模式", false, KeyBind.BindTypes.HoldActive, 'A'));
+            miscMenu.Add("userflee", new CheckBox("开启 [R] 逃跑模式"));
         }
     }
 }

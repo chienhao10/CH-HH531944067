@@ -55,21 +55,21 @@ namespace LCS_Janna
 
             SpellDatabase.InitalizeSpellDatabase();
 
-            Config = MainMenu.AddMenu("LCS Series: Janna", "LCS Series: Janna");
+            Config = MainMenu.AddMenu("LCS 系列:风女", "LCS Series: Janna");
 
-            comboMenu = Config.AddSubMenu(":: Combo Settings", ":: Combo Settings");
-            comboMenu.Add("q.combo", new CheckBox("Use (Q)"));
-            comboMenu.Add("w.combo", new CheckBox("Use (W)"));
+            comboMenu = Config.AddSubMenu(":: 连招设置", ":: Combo Settings");
+            comboMenu.Add("q.combo", new CheckBox("使用 (Q)"));
+            comboMenu.Add("w.combo", new CheckBox("使用 (W)"));
 
-            qsettings = Config.AddSubMenu(":: Q Settings", ":: Q Settings");
-            qsettings.Add("q.settings", new ComboBox("(Q) Mode :", 0, "Normal", "Q Hit x Target"));
+            qsettings = Config.AddSubMenu(":: Q 设置", ":: Q Settings");
+            qsettings.Add("q.settings", new ComboBox("(Q) 模式 :", 0, "正常", "Q 命中 x 目标"));
             qsettings.Add("q.normal.hit.chance",
-                new ComboBox("(Q) Hit Chance (Normal)", 2, "Low", "Medium", "High", "Very High", "Only Immobile"));
-            qsettings.Add("q.hit.count", new Slider("(Q) Hit Enemy Count", 2, 1, 5));
-            qsettings.Add("q.antigapcloser", new CheckBox("(Q) Anti-Gapcloser"));
+                new ComboBox("(Q) 命中率 (正常)", 2, "低", "中", "高", "非常规", "只不可移动的"));
+            qsettings.Add("q.hit.count", new Slider("(Q) 命中敌人数量", 2, 1, 5));
+            qsettings.Add("q.antigapcloser", new CheckBox("(Q) 防突进"));
 
-            esettings = Config.AddSubMenu(":: E Settings", ":: E Settings");
-            esettings.AddGroupLabel(":: Protectable Skillshots");
+            esettings = Config.AddSubMenu(":: E 设置", ":: E Settings");
+            esettings.AddGroupLabel(":: 可吸收技能");
             foreach (
                 var spell in
                     HeroManager.Enemies.SelectMany(
@@ -81,7 +81,7 @@ namespace LCS_Janna
                     new CheckBox(string.Format("{0} ({1})", spell.ChampionName, spell.Slot)));
             }
             esettings.AddSeparator();
-            esettings.AddGroupLabel(":: Protectable Targetted Spells");
+            esettings.AddGroupLabel(":: 可吸收 指向性技能");
             foreach (
                 var spell in
                     HeroManager.Enemies.SelectMany(
@@ -94,7 +94,7 @@ namespace LCS_Janna
             }
             esettings.AddSeparator();
 
-            esettings.AddGroupLabel(":: Engage Spells");
+            esettings.AddGroupLabel(":: 开团技能");
             foreach (
                 var spell in
                     HeroManager.Allies.SelectMany(
@@ -104,19 +104,19 @@ namespace LCS_Janna
                     new CheckBox(string.Format("{0} ({1})", spell.ChampionName, spell.Slot)));
             }
             esettings.AddSeparator();
-            esettings.AddGroupLabel(":: Whitelist");
+            esettings.AddGroupLabel(":: 白名单");
             foreach (var ally in HeroManager.Allies.Where(x => x.IsValid))
             {
                 esettings.Add("e." + ally.ChampionName,
                     new CheckBox("(E): " + ally.ChampionName, HighChamps.Contains(ally.ChampionName)));
             }
             esettings.AddSeparator();
-            esettings.Add("turret.hp.percent", new Slider("Turret HP Percent", 10, 1, 99));
-            esettings.Add("protect.carry.from.turret", new CheckBox("Protect Carry From Turrets"));
-            esettings.Add("min.mana.for.e", new Slider("Min. Mana", 50, 1, 99));
+            esettings.Add("turret.hp.percent", new Slider("塔血量%", 10, 1, 99));
+            esettings.Add("protect.carry.from.turret", new CheckBox("塔下保护C位"));
+            esettings.Add("min.mana.for.e", new Slider("最低蓝量", 50, 1, 99));
 
-            rsettings = Config.AddSubMenu(":: R Settings", ":: R Settings");
-            rsettings.AddGroupLabel(":: Protectable Skillshots");
+            rsettings = Config.AddSubMenu(":: R 设置", ":: R Settings");
+            rsettings.AddGroupLabel(":: 可阻止的技能");
             foreach (
                 var spell in
                     HeroManager.Enemies.SelectMany(
@@ -127,7 +127,7 @@ namespace LCS_Janna
                 rsettings.Add(string.Format("r.protect.{0}", spell.SpellName),
                     new CheckBox(string.Format("{0} ({1})", spell.ChampionName, spell.Slot)));
             }
-            rsettings.AddGroupLabel(":: Protectable Targetted Spells");
+            rsettings.AddGroupLabel(":: 可阻止的指向性技能");
             foreach (
                 var spell in
                     HeroManager.Enemies.SelectMany(
@@ -138,7 +138,7 @@ namespace LCS_Janna
                 rsettings.Add(string.Format("r.protect.targetted.{0}", spell.SpellName),
                     new CheckBox(string.Format("{0} ({1})", spell.ChampionName, spell.Slot)));
             }
-            rsettings.Add("spell.damage.percent", new Slider("Min. Spell Damage Percentage", 10, 1, 99));
+            rsettings.Add("spell.damage.percent", new Slider("最低技能伤害%", 10, 1, 99));
 
             Obj_AI_Base.OnProcessSpellCast += OnProcess;
             AntiGapcloser.OnEnemyGapcloser += OnGapcloser;

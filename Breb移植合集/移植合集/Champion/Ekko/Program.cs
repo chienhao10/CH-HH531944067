@@ -56,37 +56,37 @@ namespace PortAIO.Champion.Ekko
             W.SetSkillshot(2.5f, 200f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             R.SetSkillshot(0.4f, 280f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
-            missileManager = new MissileReturn("ekkoqmis", "ekkoqreturn", Q);
+            missileManager = new MissileReturn("艾克", "ekkoqreturn", Q);
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("qRange", new CheckBox("Q range"));
-            drawMenu.Add("wRange", new CheckBox("W range"));
-            drawMenu.Add("eRange", new CheckBox("E range"));
-            drawMenu.Add("rRange", new CheckBox("R range"));
-            drawMenu.Add("Qhelp", new CheckBox("Show Q,W helper"));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("qRange", new CheckBox("Q 范围"));
+            drawMenu.Add("wRange", new CheckBox("W 范围"));
+            drawMenu.Add("eRange", new CheckBox("E 范围"));
+            drawMenu.Add("rRange", new CheckBox("R 范围"));
+            drawMenu.Add("Qhelp", new CheckBox("显示 Q,W 助手"));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
 
-            wMenu = Config.AddSubMenu("W Option");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
-            wMenu.Add("Waoe", new CheckBox("Cast if 2 targets"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
+            wMenu.Add("Waoe", new CheckBox("如果多于1个敌人"));
 
-            rMenu = Config.AddSubMenu("R Option");
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("rCount", new Slider("Auto R if enemies in range", 3, 0, 5));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("战斗 R"));
+            rMenu.Add("rCount", new Slider("附近敌人数量为X，自动R", 3, 0, 5));
 
-            harassMenu = Config.AddSubMenu("Harass");
+            harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
                 harassMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
             }
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQ", new CheckBox("Lane clear Q"));
-            farmMenu.Add("farmW", new CheckBox("Farm W"));
-            farmMenu.Add("jungleQ", new CheckBox("Jungle clear Q"));
-            farmMenu.Add("jungleW", new CheckBox("Jungle clear W"));
-            farmMenu.Add("LCminions", new Slider("LaneClear minimum minions", 2, 0, 10));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80, 30));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQ", new CheckBox("清线 Q"));
+            farmMenu.Add("farmW", new CheckBox("农兵 W"));
+            farmMenu.Add("jungleQ", new CheckBox("清野 Q"));
+            farmMenu.Add("jungleW", new CheckBox("清野 W"));
+            farmMenu.Add("LCminions", new Slider("清线最低小兵数量", 2, 0, 10));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 80, 30));
 
             Game.OnUpdate += Game_OnGameUpdate;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;

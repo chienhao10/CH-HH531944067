@@ -81,42 +81,42 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void LoadMenuOKTW()
         {
-            drawMenu = Config.AddSubMenu("Draw", "Draw");
-            drawMenu.Add("qRange", new CheckBox("Q range", false));
-            drawMenu.Add("wRange", new CheckBox("W range", false));
+            drawMenu = Config.AddSubMenu("线圈", "Draw");
+            drawMenu.Add("qRange", new CheckBox("Q 范围", false));
+            drawMenu.Add("wRange", new CheckBox("W 范围", false));
             drawMenu.Add("eRange", new CheckBox("E range", false));
-            drawMenu.Add("rRange", new CheckBox("R range", false));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
+            drawMenu.Add("rRange", new CheckBox("R 范围", false));
+            drawMenu.Add("onlyRdy", new CheckBox("显示无冷却技能"));
 
-            qMenu = Config.AddSubMenu("Q Config", "Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q"));
+            qMenu = Config.AddSubMenu("Q 设置", "Q Config");
+            qMenu.Add("autoQ", new CheckBox("自动 Q"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
                 qMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
 
-            wMenu = Config.AddSubMenu("W Config", "W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
-            wMenu.Add("AGCW", new CheckBox("AntiGapcloser W"));
+            wMenu = Config.AddSubMenu("W 设置", "W Config");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
+            wMenu.Add("AGCW", new CheckBox("防突进 W"));
 
-            eMenu = Config.AddSubMenu("E Config", "E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E"));
+            eMenu = Config.AddSubMenu("E 设置", "E Settings");
+            eMenu.Add("autoE", new CheckBox("自动 E"));
 
             Dash = new OKTWdash(E);
 
-            rMenu = Config.AddSubMenu("R Config", "R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("fastR", new CheckBox("Fast R ks Combo"));
-            rMenu.Add("overkillR", new CheckBox("Overkill protection", false));
-            rMenu.Add("useR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'T'));
+            rMenu = Config.AddSubMenu("R 设置", "R Config");
+            rMenu.Add("autoR", new CheckBox("自动 R"));
+            rMenu.Add("fastR", new CheckBox("快速抢头 R连招"));
+            rMenu.Add("overkillR", new CheckBox("防止浪费技能保护", false));
+            rMenu.Add("useR", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
                 //32 == space
 
-            farmMenu = Config.AddSubMenu("Farm", "farm");
-            farmMenu.Add("farmQ", new CheckBox("Lane clear Q"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80));
-            farmMenu.Add("jungleQ", new CheckBox("Jungle clear Q"));
-            farmMenu.Add("jungleW", new CheckBox("Jungle clear W"));
+            farmMenu = Config.AddSubMenu("农兵", "farm");
+            farmMenu.Add("farmQ", new CheckBox("清线 Q"));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 80));
+            farmMenu.Add("jungleQ", new CheckBox("清野 Q"));
+            farmMenu.Add("jungleW", new CheckBox("清野 W"));
 
-            miscMenu = Config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("QWlogic", new CheckBox("Use Q and W only if don't have ammo"));
+            miscMenu = Config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("QWlogic", new CheckBox("装弹过程中，才，使用Q，W"));
         }
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)

@@ -456,42 +456,42 @@ namespace UnderratedAIO.Champions
 
         private static void InitMenu()
         {
-            config = MainMenu.AddMenu("Fiora", "Fiora");
+            config = MainMenu.AddMenu("剑姬", "Fiora");
 
             // Draw settings
-            drawingsMenu = config.AddSubMenu("Drawings ", "dsettings");
-            drawingsMenu.Add("drawqq", new CheckBox("Draw Q range"));
-            drawingsMenu.Add("drawww", new CheckBox("Draw W range"));
-            drawingsMenu.Add("drawrr", new CheckBox("Draw R range"));
+            drawingsMenu = config.AddSubMenu("线圈 ", "dsettings");
+            drawingsMenu.Add("drawqq", new CheckBox("显示 Q 范围"));
+            drawingsMenu.Add("drawww", new CheckBox("显示 W 范围"));
+            drawingsMenu.Add("drawrr", new CheckBox("显示 R 范围"));
 
             // Combo Settings
-            comboMenu = config.AddSubMenu("Combo ", "csettings");
-            comboMenu.Add("useq", new CheckBox("Use Q"));
-            comboMenu.Add("useqMin", new Slider("Min distance", 250, 0, 400));
-            comboMenu.Add("usew", new CheckBox("Use W AA"));
-            comboMenu.Add("usewDangerous", new CheckBox("Only on low health"));
-            comboMenu.Add("usewCC", new CheckBox("W to CC"));
-            comboMenu.Add("usee", new CheckBox("Use E"));
+            comboMenu = config.AddSubMenu("连招 ", "csettings");
+            comboMenu.Add("useq", new CheckBox("使用 Q"));
+            comboMenu.Add("useqMin", new Slider("最短距离", 250, 0, 400));
+            comboMenu.Add("usew", new CheckBox("使用 W AA"));
+            comboMenu.Add("usewDangerous", new CheckBox("只在低血量使用W"));
+            comboMenu.Add("usewCC", new CheckBox("W 反控"));
+            comboMenu.Add("usee", new CheckBox("使用 E"));
             comboMenu.Add("user", new CheckBox("R 1v1"));
-            comboMenu.Add("usertf", new CheckBox("R teamfight"));
-            comboMenu.Add("userally", new Slider("Min allies", 2, 1, 5));
-            comboMenu.Add("RapidAttack", new KeyBind("Fast AA Combo", false, KeyBind.BindTypes.PressToggle, 'T'));
-            comboMenu.Add("MoveToVitals", new CheckBox("Move to vitals"));
-            comboMenu.Add("useIgnite", new CheckBox("Use Ignite"));
+            comboMenu.Add("usertf", new CheckBox("R 团战"));
+            comboMenu.Add("userally", new Slider("最低友军数量", 2, 1, 5));
+            comboMenu.Add("RapidAttack", new KeyBind("快速 AA 连招", false, KeyBind.BindTypes.PressToggle, 'T'));
+            comboMenu.Add("MoveToVitals", new CheckBox("移动至弱点"));
+            comboMenu.Add("useIgnite", new CheckBox("使用 点燃"));
 
             // LaneClear Settings
-            laneClear = config.AddSubMenu("LaneClear ", "Lcsettings");
-            laneClear.Add("usewLC", new CheckBox("Use W"));
+            laneClear = config.AddSubMenu("清线 ", "Lcsettings");
+            laneClear.Add("usewLC", new CheckBox("使用 W"));
             laneClear.Add("wMinHit", new Slider("Min hit", 3, 1, 6));
-            laneClear.Add("useeLC", new CheckBox("Use E"));
-            laneClear.Add("minmana", new Slider("Keep X% mana", 1, 1));
+            laneClear.Add("useeLC", new CheckBox("使用 E"));
+            laneClear.Add("minmana", new Slider("保留 X% 蓝量", 1, 1));
 
             // Misc Settings
-            miscSettings = config.AddSubMenu("Misc ", "Msettings");
-            miscSettings.Add("autoW", new CheckBox("Auto W AA"));
-            miscSettings.Add("minmanaP", new Slider("Min mana percent", 1, 1));
+            miscSettings = config.AddSubMenu("杂项 ", "Msettings");
+            miscSettings.Add("autoW", new CheckBox("自动 W AA"));
+            miscSettings.Add("minmanaP", new Slider("最低蓝量百分比", 1, 1));
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用 封包", false));
         }
     }
 

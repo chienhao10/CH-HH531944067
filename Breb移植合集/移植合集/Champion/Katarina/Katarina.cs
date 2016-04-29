@@ -34,81 +34,81 @@ namespace Staberina
             E = SpellManager.E;
             R = SpellManager.R;
 
-            menu = MainMenu.AddMenu("Staberina", "Staberina");
+            menu = MainMenu.AddMenu("卡特", "Staberina");
 
             qMenu = menu.AddSubMenu("Q", "Q");
-            qMenu.Add("QCombo", new CheckBox("Use in Combo"));
-            qMenu.Add("QHarass", new CheckBox("Use in Harass"));
+            qMenu.Add("QCombo", new CheckBox("连招 Q"));
+            qMenu.Add("QHarass", new CheckBox("骚扰 Q"));
 
             wMenu = menu.AddSubMenu("W", "W");
-            wMenu.Add("WCombo", new CheckBox("Use in Combo"));
-            wMenu.Add("WHarass", new CheckBox("Use in Harass"));
-            wMenu.Add("WAuto", new CheckBox("Auto W", false));
+            wMenu.Add("WCombo", new CheckBox("连招 W"));
+            wMenu.Add("WHarass", new CheckBox("骚扰 W"));
+            wMenu.Add("WAuto", new CheckBox("自动 W", false));
 
             eMenu = menu.AddSubMenu("E", "E");
-            eMenu.Add("ECombo", new CheckBox("Use in Combo"));
-            eMenu.Add("EHarass", new CheckBox("Use in Harass"));
-            eMenu.Add("ETurret", new CheckBox("Block E Under Turret", false));
-            eMenu.Add("EEnemies", new Slider("Max Enemies to E", 5, 1, 5));
+            eMenu.Add("ECombo", new CheckBox("连招 E"));
+            eMenu.Add("EHarass", new CheckBox("骚扰 E"));
+            eMenu.Add("ETurret", new CheckBox("B塔下屏蔽", false));
+            eMenu.Add("EEnemies", new Slider("附近最大敌人数量 E", 5, 1, 5));
 
             rMenu = menu.AddSubMenu("R", "R");
-            rMenu.Add("RInCombo", new CheckBox("Always R in Combo", false));
-            rMenu.Add("RCombo", new CheckBox("Smart R"));
-            rMenu.Add("RUltTicks", new Slider("Smart R Ticks", 7, 1, 10));
-            rMenu.Add("RRangeDecrease", new Slider("Decrease Spell Range", 30, 0, 30));
+            rMenu.Add("RInCombo", new CheckBox("连招 R", false));
+            rMenu.Add("RCombo", new CheckBox("智能 R"));
+            rMenu.Add("RUltTicks", new Slider("智能 R 数量", 7, 1, 10));
+            rMenu.Add("RRangeDecrease", new Slider("减少技能范围", 30, 0, 30));
             R.Range = RRange - rMenu["RRangeDecrease"].Cast<Slider>().CurrentValue;
-            rMenu.Add("RMovement", new CheckBox("Disable Movement while casting R"));
-            rMenu.Add("RCancelNoEnemies", new CheckBox("Cancel R if no enemies", false));
-            rMenu.Add("RCancelUlt", new KeyBind("Cancel R Key", false, KeyBind.BindTypes.HoldActive, 'J'));
-            rMenu.Add("RStealth", new CheckBox("R Stealthed Units", false));
+            rMenu.Add("RMovement", new CheckBox("R 时屏蔽移动"));
+            rMenu.Add("RCancelNoEnemies", new CheckBox("附近无敌人 停止R", false));
+            rMenu.Add("RCancelUlt", new KeyBind("停止 R 按键", false, KeyBind.BindTypes.HoldActive, 'J'));
+            rMenu.Add("RStealth", new CheckBox("R 隐身物体", false));
 
-            ksMenu = menu.AddSubMenu("Killsteal", "Killsteal");
-            ksMenu.Add("KSEnabled", new CheckBox("Use Smart KS"));
-            ksMenu.Add("KSQ", new CheckBox("Use Q"));
-            ksMenu.Add("KSW", new CheckBox("Use W"));
-            ksMenu.Add("KSE", new CheckBox("Use E"));
-            ksMenu.Add("KSR", new CheckBox("Use Smart R"));
-            ksMenu.Add("KSRCancel", new CheckBox("Cancel R to KS"));
-            ksMenu.Add("KSEnemies", new Slider("Max Enemies", 5, 1, 5));
-            ksMenu.Add("KSHealth", new Slider("Min Health", 10));
-            ksMenu.Add("KSGapclose", new CheckBox("Gapclose with E", false));
-            ksMenu.Add("KSWardJump", new CheckBox("Ward Jump", false));
-            ksMenu.Add("KSTurret", new CheckBox("Block E Under Turret"));
+            ksMenu = menu.AddSubMenu("抢头", "Killsteal");
+            ksMenu.Add("KSEnabled", new CheckBox("智能抢头"));
+            ksMenu.Add("KSQ", new CheckBox("使用 Q"));
+            ksMenu.Add("KSW", new CheckBox("使用 W"));
+            ksMenu.Add("KSE", new CheckBox("使用 E"));
+            ksMenu.Add("KSR", new CheckBox("使用智能 R"));
+            ksMenu.Add("KSRCancel", new CheckBox("停止R进行抢头"));
+            ksMenu.Add("KSEnemies", new Slider("最大敌方数量", 5, 1, 5));
+            ksMenu.Add("KSHealth", new Slider("最低血量", 10));
+            ksMenu.Add("KSGapclose", new CheckBox("防突进/接近 E", false));
+            ksMenu.Add("KSWardJump", new CheckBox("跳眼", false));
+            ksMenu.Add("KSTurret", new CheckBox("塔下屏蔽 E"));
 
-            farmMenu = menu.AddSubMenu("Farm", "Farm");
+            farmMenu = menu.AddSubMenu("农兵", "Farm");
             farmMenu.AddGroupLabel("Q");
-            farmMenu.Add("QFarm", new CheckBox("Use in Farm"));
-            farmMenu.Add("QLastHit", new CheckBox("Only Last Hit (Only Killable)"));
+            farmMenu.Add("QFarm", new CheckBox("使用 Q"));
+            farmMenu.Add("QLastHit", new CheckBox("只用来尾兵 (可击杀的)"));
             farmMenu.AddSeparator();
             farmMenu.AddGroupLabel("W");
-            farmMenu.Add("WFarm", new CheckBox("Use in Farm"));
-            farmMenu.Add("WMinionsHit", new Slider("Min Minions Killed", 2, 1, 4));
+            farmMenu.Add("WFarm", new CheckBox("使用 W"));
+            farmMenu.Add("WMinionsHit", new Slider("最少小兵击杀", 2, 1, 4));
             farmMenu.AddSeparator();
             farmMenu.AddGroupLabel("E");
-            farmMenu.Add("EFarm", new CheckBox("Use E->W in Farm", false));
-            farmMenu.Add("EMinionsHit", new Slider("Min Minions Killed", 3, 1, 4));
+            farmMenu.Add("EFarm", new CheckBox("使用 E->W", false));
+            farmMenu.Add("EMinionsHit", new Slider("最少小兵击杀", 3, 1, 4));
             farmMenu.AddSeparator();
-            farmMenu.Add("FarmEnabled", new KeyBind("Farm Enabled", true, KeyBind.BindTypes.PressToggle, 'J'));
+            farmMenu.Add("FarmEnabled", new KeyBind("开启农兵", true, KeyBind.BindTypes.PressToggle, 'J'));
 
-            fleeMenu = menu.AddSubMenu("Flee", "Flee");
-            fleeMenu.Add("FleeEnabled", new KeyBind("Flee Enabled", false, KeyBind.BindTypes.HoldActive, 'T'));
-            fleeMenu.Add("FleeE", new CheckBox("Use E"));
-            fleeMenu.Add("FleeWard", new CheckBox("Use Wards to Flee"));
+            fleeMenu = menu.AddSubMenu("逃跑", "Flee");
+            fleeMenu.Add("FleeEnabled", new KeyBind("开启逃跑", false, KeyBind.BindTypes.HoldActive, 'T'));
+            fleeMenu.Add("FleeE", new CheckBox("使用 E"));
+            fleeMenu.Add("FleeWard", new CheckBox("逃跑时跳眼"));
 
-            drawMenu = menu.AddSubMenu("Drawing", "Drawing");
-            drawMenu.Add("0Draw", new CheckBox("Draw Q"));
-            drawMenu.Add("1Draw", new CheckBox("Draw W"));
-            drawMenu.Add("2Draw", new CheckBox("Draw E"));
-            drawMenu.Add("3Draw", new CheckBox("Draw R"));
+            drawMenu = menu.AddSubMenu("线圈", "Drawing");
+            drawMenu.Add("0Draw", new CheckBox("显示 Q"));
+            drawMenu.Add("1Draw", new CheckBox("显示 W"));
+            drawMenu.Add("2Draw", new CheckBox("显示 E"));
+            drawMenu.Add("3Draw", new CheckBox("显示 R"));
 
-            drawMenu.Add("DmgEnabled", new CheckBox("Draw Damage Indicator"));
-            drawMenu.Add("HPColor", new CheckBox("Predicted Health Color"));
-            drawMenu.Add("FillColor", new CheckBox("Damage Color"));
-            drawMenu.Add("Killable", new CheckBox("Killable Text"));
+            drawMenu.Add("DmgEnabled", new CheckBox("显示伤害指示器"));
+            drawMenu.Add("HPColor", new CheckBox("预测血量"));
+            drawMenu.Add("FillColor", new CheckBox("显示伤害"));
+            drawMenu.Add("Killable", new CheckBox("可击杀文字"));
 
-            miscMenu = menu.AddSubMenu("Misc");
-            miscMenu.Add("ComboMode", new ComboBox("Combo Mode", 0, "E->Q->W", "Q->E->W"));
-            miscMenu.Add("ComboKillable", new KeyBind("Only Combo Killable", false, KeyBind.BindTypes.PressToggle, 'K'));
+            miscMenu = menu.AddSubMenu("杂项");
+            miscMenu.Add("ComboMode", new ComboBox("连招模式", 0, "E->Q->W", "Q->E->W"));
+            miscMenu.Add("ComboKillable", new KeyBind("只对可击杀的使用连招", false, KeyBind.BindTypes.PressToggle, 'K'));
             SpellManager.Initialize(menu);
 
             EloBuddy.Player.OnIssueOrder += Obj_AI_Base_OnIssueOrder;

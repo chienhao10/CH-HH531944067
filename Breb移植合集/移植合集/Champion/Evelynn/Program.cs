@@ -65,24 +65,24 @@ namespace Evelynn
             //Create the menu
             Config = MainMenu.AddMenu(ChampionName, ChampionName);
 
-            comboMenu = Config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("UseQCombo", new CheckBox("Use Q"));
-            comboMenu.Add("UseWCombo", new CheckBox("Use W"));
-            comboMenu.Add("UseECombo", new CheckBox("Use E"));
-            comboMenu.Add("UseRCombo", new CheckBox("Use R"));
+            comboMenu = Config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("UseQCombo", new CheckBox("使用 Q"));
+            comboMenu.Add("UseWCombo", new CheckBox("使用 W"));
+            comboMenu.Add("UseECombo", new CheckBox("使用 E"));
+            comboMenu.Add("UseRCombo", new CheckBox("使用 R"));
 
-            laneClearMenu = Config.AddSubMenu("LaneClear", "LaneClear");
-            laneClearMenu.Add("UseQLaneClear", new CheckBox("Use Q"));
-            laneClearMenu.Add("UseELaneClear", new CheckBox("Use E"));
+            laneClearMenu = Config.AddSubMenu("清线", "LaneClear");
+            laneClearMenu.Add("UseQLaneClear", new CheckBox("使用 Q"));
+            laneClearMenu.Add("UseELaneClear", new CheckBox("使用 E"));
 
-            jungleClearMenu = Config.AddSubMenu("JungleFarm", "JungleFarm");
-            jungleClearMenu.Add("UseQJFarm", new CheckBox("Use Q"));
-            jungleClearMenu.Add("UseEJFarm", new CheckBox("Use E"));
+            jungleClearMenu = Config.AddSubMenu("清野", "JungleFarm");
+            jungleClearMenu.Add("UseQJFarm", new CheckBox("使用 Q"));
+            jungleClearMenu.Add("UseEJFarm", new CheckBox("使用 E"));
 
-            drawMenu = Config.AddSubMenu("Drawings", "Drawings");
-            drawMenu.Add("QRange", new CheckBox("Use Q"));
-            drawMenu.Add("ERange", new CheckBox("Use E"));
-            drawMenu.Add("RRange", new CheckBox("Use R"));
+            drawMenu = Config.AddSubMenu("线圈", "Drawings");
+            drawMenu.Add("QRange", new CheckBox("显示 Q"));
+            drawMenu.Add("ERange", new CheckBox("显示 E"));
+            drawMenu.Add("RRange", new CheckBox("显示 R"));
 
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnGameUpdate;

@@ -120,61 +120,61 @@ namespace ElDiana
 
         public static void Initialize()
         {
-            _menu = MainMenu.AddMenu("ElDiana", "menu");
+            _menu = MainMenu.AddMenu("El皎月", "menu");
 
-            comboMenu = _menu.AddSubMenu("Combo", "Combo");
-            comboMenu.AddGroupLabel("R Settings");
-            comboMenu.Add("ElDiana.Combo.R.Mode", new Slider("Mode (0 : Normal | 1 : Misaya (R > Q)) : ", 0, 0, 1));
-            comboMenu.Add("ElDiana.Combo.R", new CheckBox("Use R"));
+            comboMenu = _menu.AddSubMenu("连招", "Combo");
+            comboMenu.AddGroupLabel("R 设置");
+            comboMenu.Add("ElDiana.Combo.R.Mode", new Slider("模式 (0 : 正常 | 1 : Misaya (R > Q)) : ", 0, 0, 1));
+            comboMenu.Add("ElDiana.Combo.R", new CheckBox("使用 R"));
             comboMenu.Add("ElDiana.Combo.R.MisayaMinRange",
-                new Slider("R Minimum Range for Misaya ", Convert.ToInt32(spells[Spells.R].Range*0.8), 0,
+                new Slider("Misaya R 最低范围 ", Convert.ToInt32(spells[Spells.R].Range*0.8), 0,
                     Convert.ToInt32(spells[Spells.R].Range)));
-            comboMenu.Add("ElDiana.Combo.R.PreventUnderTower", new Slider("Don't use ult if HP% <  ", 20));
+            comboMenu.Add("ElDiana.Combo.R.PreventUnderTower", new Slider("低于血量% 不使用R", 20));
             comboMenu.AddSeparator();
-            comboMenu.Add("ElDiana.Combo.Q", new CheckBox("Use Q"));
-            comboMenu.Add("ElDiana.Combo.W", new CheckBox("Use W"));
-            comboMenu.Add("ElDiana.Combo.E", new CheckBox("Use E"));
-            comboMenu.Add("ElDiana.Combo.Secure", new CheckBox("Use R to secure kill"));
+            comboMenu.Add("ElDiana.Combo.Q", new CheckBox("使用 Q"));
+            comboMenu.Add("ElDiana.Combo.W", new CheckBox("使用 W"));
+            comboMenu.Add("ElDiana.Combo.E", new CheckBox("使用 E"));
+            comboMenu.Add("ElDiana.Combo.Secure", new CheckBox("使用 R 确保击杀"));
             comboMenu.Add("ElDiana.Combo.UseSecondRLimitation",
-                new Slider("Max close enemies for secure kill with R", 5, 1, 5));
-            comboMenu.Add("ElDiana.Combo.Ignite", new CheckBox("Use Ignite"));
-            comboMenu.Add("ElDiana.hitChance", new Slider("Hitchance Q (Lowest to Highest)", 3, 0, 3));
+                new Slider("附近最大敌人数量进行R确保击杀", 5, 1, 5));
+            comboMenu.Add("ElDiana.Combo.Ignite", new CheckBox("使用点燃"));
+            comboMenu.Add("ElDiana.hitChance", new Slider("Q 命中率 (最高至最高)", 3, 0, 3));
 
-            harassMenu = _menu.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("ElDiana.Harass.Q", new CheckBox("Use Q"));
-            harassMenu.Add("ElDiana.Harass.W", new CheckBox("Use W"));
-            harassMenu.Add("ElDiana.Harass.E", new CheckBox("Use E"));
-            harassMenu.Add("ElDiana.Harass.Mana", new Slider("Minimum mana for harass", 55));
+            harassMenu = _menu.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("ElDiana.Harass.Q", new CheckBox("使用 Q"));
+            harassMenu.Add("ElDiana.Harass.W", new CheckBox("使用 W"));
+            harassMenu.Add("ElDiana.Harass.E", new CheckBox("使用 E"));
+            harassMenu.Add("ElDiana.Harass.Mana", new Slider("最低骚扰蓝量", 55));
 
-            laneclearMenu = _menu.AddSubMenu("Laneclear", "Laneclear");
-            laneclearMenu.Add("ElDiana.LaneClear.Q", new CheckBox("Use Q"));
-            laneclearMenu.Add("ElDiana.LaneClear.W", new CheckBox("Use W"));
-            laneclearMenu.Add("ElDiana.LaneClear.E", new CheckBox("Use E"));
-            laneclearMenu.Add("ElDiana.LaneClear.R", new CheckBox("Use R"));
-            laneclearMenu.Add("ElDiana.LaneClear.Count.Minions.Q", new Slider("Minions in range for Q", 2, 1, 5));
-            laneclearMenu.Add("ElDiana.LaneClear.Count.Minions.W", new Slider("Minions in range for W", 2, 1, 5));
-            laneclearMenu.Add("ElDiana.LaneClear.Count.Minions.E", new Slider("Minions in range for E", 2, 1, 5));
+            laneclearMenu = _menu.AddSubMenu("清线", "Laneclear");
+            laneclearMenu.Add("ElDiana.LaneClear.Q", new CheckBox("使用 Q"));
+            laneclearMenu.Add("ElDiana.LaneClear.W", new CheckBox("使用 W"));
+            laneclearMenu.Add("ElDiana.LaneClear.E", new CheckBox("使用 E"));
+            laneclearMenu.Add("ElDiana.LaneClear.R", new CheckBox("使用 R"));
+            laneclearMenu.Add("ElDiana.LaneClear.Count.Minions.Q", new Slider("使用Q范围内小兵", 2, 1, 5));
+            laneclearMenu.Add("ElDiana.LaneClear.Count.Minions.W", new Slider("使用W范围内小兵", 2, 1, 5));
+            laneclearMenu.Add("ElDiana.LaneClear.Count.Minions.E", new Slider("使用E范围内小兵", 2, 1, 5));
 
 
-            jungleClearMenu = _menu.AddSubMenu("Jungleclear", "Jungleclear");
-            jungleClearMenu.Add("ElDiana.JungleClear.Q", new CheckBox("Use Q"));
-            jungleClearMenu.Add("ElDiana.JungleClear.W", new CheckBox("Use W"));
-            jungleClearMenu.Add("ElDiana.JungleClear.E", new CheckBox("Use E"));
-            jungleClearMenu.Add("ElDiana.JungleClear.R", new CheckBox("Use R"));
+            jungleClearMenu = _menu.AddSubMenu("清野", "Jungleclear");
+            jungleClearMenu.Add("ElDiana.JungleClear.Q", new CheckBox("使用 Q"));
+            jungleClearMenu.Add("ElDiana.JungleClear.W", new CheckBox("使用 W"));
+            jungleClearMenu.Add("ElDiana.JungleClear.E", new CheckBox("使用 E"));
+            jungleClearMenu.Add("ElDiana.JungleClear.R", new CheckBox("使用 R"));
 
-            interruptMenu = _menu.AddSubMenu("Interrupt", "Interrupt");
-            interruptMenu.Add("ElDiana.Interrupt.UseEInterrupt", new CheckBox("Use E to interrupt"));
-            interruptMenu.Add("ElDiana.Interrupt.UseEDashes", new CheckBox("Use E to interrupt dashes"));
+            interruptMenu = _menu.AddSubMenu("技能打断", "Interrupt");
+            interruptMenu.Add("ElDiana.Interrupt.UseEInterrupt", new CheckBox("使用E"));
+            interruptMenu.Add("ElDiana.Interrupt.UseEDashes", new CheckBox("使用E防冲刺"));
 
-            miscomboMenu = _menu.AddSubMenu("Misc", "Misc");
-            miscomboMenu.Add("ElDiana.Draw.off", new CheckBox("Turn drawings off", false));
-            miscomboMenu.Add("ElDiana.Draw.Q", new CheckBox("Draw Q"));
-            miscomboMenu.Add("ElDiana.Draw.W", new CheckBox("Draw W"));
-            miscomboMenu.Add("ElDiana.Draw.E", new CheckBox("Draw E"));
-            miscomboMenu.Add("ElDiana.Draw.R", new CheckBox("Draw R"));
-            miscomboMenu.Add("ElDiana.Draw.RMisaya", new CheckBox("Draw Misaya Combo Range"));
-            miscomboMenu.Add("ElDiana.Draw.Text", new CheckBox("Draw Text"));
-            miscomboMenu.Add("ElDiana.DrawComboDamage", new CheckBox("Draw combo damage"));
+            miscomboMenu = _menu.AddSubMenu("杂项", "Misc");
+            miscomboMenu.Add("ElDiana.Draw.off", new CheckBox("关闭线圈", false));
+            miscomboMenu.Add("ElDiana.Draw.Q", new CheckBox("显示 Q"));
+            miscomboMenu.Add("ElDiana.Draw.W", new CheckBox("显示 W"));
+            miscomboMenu.Add("ElDiana.Draw.E", new CheckBox("显示 E"));
+            miscomboMenu.Add("ElDiana.Draw.R", new CheckBox("显示 R"));
+            miscomboMenu.Add("ElDiana.Draw.RMisaya", new CheckBox("显示 Misaya 连招范围"));
+            miscomboMenu.Add("ElDiana.Draw.Text", new CheckBox("显示文字"));
+            miscomboMenu.Add("ElDiana.DrawComboDamage", new CheckBox("显示连招伤害"));
 
             DrawDamage.DamageToUnit = GetComboDamage;
             DrawDamage.Enabled = getCheckBoxItem(miscomboMenu, "ElDiana.DrawComboDamage");

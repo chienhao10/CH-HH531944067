@@ -175,40 +175,40 @@ namespace Challenger_Series
 
         public override void InitializeMenu()
         {
-            HealBlacklistMenu = MainMenu.AddSubMenu("Do NOT Heal (W): ", "healblacklist");
+            HealBlacklistMenu = MainMenu.AddSubMenu("不治疗 (W): ", "healblacklist");
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(h => h.IsAlly && !h.IsMe))
             {
                 var championName = ally.CharData.BaseSkinName;
                 HealBlacklistMenu.Add("dontheal" + championName, new CheckBox(championName, false));
             }
 
-            UltBlacklistMenu = MainMenu.AddSubMenu("Do NOT Ult (R): ", "ultblacklist");
+            UltBlacklistMenu = MainMenu.AddSubMenu("不大招 (R): ", "ultblacklist");
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(h => h.IsAlly && !h.IsMe))
             {
                 var championName = ally.CharData.BaseSkinName;
                 UltBlacklistMenu.Add("dontult" + championName, new CheckBox(championName, false));
             }
 
-            PriorityMenu = MainMenu.AddSubMenu("Heal Priority", "sttcselector");
+            PriorityMenu = MainMenu.AddSubMenu("优先治疗", "sttcselector");
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(h => h.IsAlly && !h.IsMe))
             {
                 PriorityMenu.Add("STTCSelector" + ally.ChampionName + "Priority", new Slider(ally.ChampionName, GetPriorityFromDb(ally.ChampionName), 1, 5));
             }
 
-            MainMenu.Add("rakaqonlyifmyhp", new Slider("Only Q if my HP < %", 100, 0, 100));
-            MainMenu.Add("noneed4spacebar", new CheckBox("PLAY ONLY WITH MOUSE! NO SPACEBAR", true));
-            MainMenu.Add("wmyhp", new Slider("Don't Heal (W) if Below HP%: ", 20, 1));
-            MainMenu.Add("dontwtanks", new CheckBox("Don't Heal (W) Tanks", true));
-            MainMenu.Add("atanktakesxheals", new Slider("A TANK takes X Heals (W) to  FULLHP", 15, 5, 30));
-            MainMenu.Add("ultmyhp", new Slider("Ult if MY HP% < ", 15, 1, 25));
-            MainMenu.Add("ultallyhp", new Slider("Ult If Ally HP% < ", 15, 5, 35));
-            MainMenu.Add("checkallysurvivability", new CheckBox("Check if ult will save ally", true));
-            MainMenu.Add("ultafterignite", new CheckBox("ULT (R) after IGNITE", false));
-            MainMenu.Add("blockaas", new CheckBox("Block AutoAttacks?", true));
+            MainMenu.Add("rakaqonlyifmyhp", new Slider("只在我的生命低于 X% 使用Q", 100, 0, 100));
+            MainMenu.Add("noneed4spacebar", new CheckBox("手动模式，使用鼠标玩不要按连招模式", true));
+            MainMenu.Add("wmyhp", new Slider("不治疗 (W),如果血量低于 X%: ", 20, 1));
+            MainMenu.Add("dontwtanks", new CheckBox("不治疗(W)坦克", true));
+            MainMenu.Add("atanktakesxheals", new Slider("一名坦克接受 X 治疗（W）至满血", 15, 5, 30));
+            MainMenu.Add("ultmyhp", new Slider("当我生命低于 X%,使用R ", 15, 1, 25));
+            MainMenu.Add("ultallyhp", new Slider("当队友生命低于 X%,使用R ", 15, 5, 35));
+            MainMenu.Add("checkallysurvivability", new CheckBox("检查R是否能救队友", true));
+            MainMenu.Add("ultafterignite", new CheckBox("点燃后使用大招 (R) ", false));
+            MainMenu.Add("blockaas", new CheckBox("屏蔽普攻?", true));
 
-            MainMenu.Add("draww", new CheckBox("Draw W?", true));
-            MainMenu.Add("drawq", new CheckBox("Draw Q?", true));
-            MainMenu.Add("drawdebug", new CheckBox("Draw Heal Info", false));
+            MainMenu.Add("draww", new CheckBox("显示 W?", true));
+            MainMenu.Add("drawq", new CheckBox("显示 Q?", true));
+            MainMenu.Add("drawdebug", new CheckBox("显示治疗信息", false));
         }
 
         #endregion Menu

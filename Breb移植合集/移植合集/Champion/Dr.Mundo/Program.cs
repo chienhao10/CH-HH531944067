@@ -94,74 +94,74 @@ namespace Mundo
             {
                 config = MainMenu.AddMenu(CommonUtilities.Player.ChampionName, CommonUtilities.Player.ChampionName);
 
-                comboMenu = config.AddSubMenu("Combo Settings", "Combo");
-                comboMenu.AddGroupLabel("Q Settings");
-                comboMenu.Add("useQ", new CheckBox("Use Q"));
-                comboMenu.Add("QHealthCombo", new Slider("Minimum HP% to use Q", 20, 1));
+                comboMenu = config.AddSubMenu("连招设置", "Combo");
+                comboMenu.AddGroupLabel("Q 设置");
+                comboMenu.Add("useQ", new CheckBox("使用 Q"));
+                comboMenu.Add("QHealthCombo", new Slider("最低血量% 使用Q", 20, 1));
                 comboMenu.AddSeparator();
-                comboMenu.AddGroupLabel("W Settings");
-                comboMenu.Add("useW", new CheckBox("Use W"));
-                comboMenu.Add("WHealthCombo", new Slider("Minimum HP% to use W", 20, 1));
+                comboMenu.AddGroupLabel("W 设置");
+                comboMenu.Add("useW", new CheckBox("使用 W"));
+                comboMenu.Add("WHealthCombo", new Slider("最低血量% 使用W", 20, 1));
                 comboMenu.AddSeparator();
-                comboMenu.AddGroupLabel("E Settings");
-                comboMenu.Add("useE", new CheckBox("Use E"));
+                comboMenu.AddGroupLabel("E 设置");
+                comboMenu.Add("useE", new CheckBox("声音 E"));
                 comboMenu.AddSeparator();
 
-                harassMenu = config.AddSubMenu("Harass Settings");
-                harassMenu.Add("useQHarass", new CheckBox("Use Q"));
-                harassMenu.Add("useQHarassHP", new Slider("Minimum HP% to use Q", 60, 1));
+                harassMenu = config.AddSubMenu("骚扰设置");
+                harassMenu.Add("useQHarass", new CheckBox("使用 Q"));
+                harassMenu.Add("useQHarassHP", new Slider("最低血量% 使用Q", 60, 1));
 
-                ksMenu = config.AddSubMenu("KillSteal Settings", "KillSteal");
-                ksMenu.Add("killsteal", new CheckBox("Activate KillSteal"));
-                ksMenu.Add("useQks", new CheckBox("Use Q to KillSteal"));
-                ksMenu.Add("useIks", new CheckBox("Use Ignite to KillSteal"));
+                ksMenu = config.AddSubMenu("抢头设置", "KillSteal");
+                ksMenu.Add("killsteal", new CheckBox("开启抢头"));
+                ksMenu.Add("useQks", new CheckBox("使用Q抢头"));
+                ksMenu.Add("useIks", new CheckBox("使用点燃抢头"));
 
-                miscMenu = config.AddSubMenu("Misc Settings", "Misc");
+                miscMenu = config.AddSubMenu("杂项设置", "Misc");
 
                 miscMenu.AddGroupLabel("Q");
-                miscMenu.Add("autoQ", new KeyBind("Auto Q on enemies", false, KeyBind.BindTypes.PressToggle, 'J'));
-                miscMenu.Add("autoQhp", new Slider("Minimum HP% to auto Q", 50, 1));
-                miscMenu.Add("hitchanceQ", new Slider("Global Q Hitchance", 3, 0, 3));
+                miscMenu.Add("autoQ", new KeyBind("自动 Q 敌人", false, KeyBind.BindTypes.PressToggle, 'J'));
+                miscMenu.Add("autoQhp", new Slider("自动Q 最低血量%", 50, 1));
+                miscMenu.Add("hitchanceQ", new Slider("全局 Q 命中率", 3, 0, 3));
 
                 miscMenu.AddGroupLabel("W");
-                miscMenu.Add("handleW", new CheckBox("Automatically handle W"));
+                miscMenu.Add("handleW", new CheckBox("自动开关 W"));
 
                 miscMenu.AddGroupLabel("R");
-                miscMenu.Add("useR", new CheckBox("Use R"));
-                miscMenu.Add("RHealth", new Slider("Minimum HP% to use R", 20, 1));
-                miscMenu.Add("RHealthEnemies", new CheckBox("If enemies nearby"));
+                miscMenu.Add("useR", new CheckBox("使用 R"));
+                miscMenu.Add("RHealth", new Slider("最低血量使用R", 20, 1));
+                miscMenu.Add("RHealthEnemies", new CheckBox("如果敌方在附近"));
 
-                miscMenu.AddGroupLabel("Item");
-                miscMenu.Add("titanicC", new CheckBox("Use titanic Hydra in combo"));
-                miscMenu.Add("tiamatC", new CheckBox("Use Tiamat in combo"));
-                miscMenu.Add("ravenousC", new CheckBox("Use Ravenous Hydra in combo"));
-                miscMenu.Add("titanicF", new CheckBox("Use titanic Hydra in Farm"));
-                miscMenu.Add("tiamatF", new CheckBox("Use Tiamat in Farm"));
-                miscMenu.Add("ravenousF", new CheckBox("Use Ravenous Hydra in Farm"));
+                miscMenu.AddGroupLabel("物品");
+                miscMenu.Add("titanicC", new CheckBox("连招使用九头蛇"));
+                miscMenu.Add("tiamatC", new CheckBox("连招使用提亚马特"));
+                miscMenu.Add("ravenousC", new CheckBox("连招使用泰坦"));
+                miscMenu.Add("titanicF", new CheckBox("农兵使用泰坦"));
+                miscMenu.Add("tiamatF", new CheckBox("农兵使用提亚马特"));
+                miscMenu.Add("ravenousF", new CheckBox("农兵使用提九头蛇"));
 
-                lastHitMenu = config.AddSubMenu("Last Hit Settings", "LastHit");
-                lastHitMenu.Add("useQlh", new CheckBox("Use Q to last hit minions"));
-                lastHitMenu.Add("useQlhHP", new Slider("Minimum HP% to use Q to lasthit", 50, 1));
-                lastHitMenu.Add("qRange", new CheckBox("Only use Q if far from minions"));
+                lastHitMenu = config.AddSubMenu("尾兵设置", "LastHit");
+                lastHitMenu.Add("useQlh", new CheckBox("使用Q"));
+                lastHitMenu.Add("useQlhHP", new Slider("最低血量% 使用Q尾兵", 50, 1));
+                lastHitMenu.Add("qRange", new CheckBox("只对有距离的兵使用"));
 
-                clearMenu = config.AddSubMenu("Clear Settings", "Clear");
-                clearMenu.Add("useQlc", new CheckBox("Use Q to last hit in laneclear"));
-                clearMenu.Add("useQlcHP", new Slider("Minimum HP% to use Q to laneclear", 40, 1));
-                clearMenu.Add("useWlc", new CheckBox("Use W in laneclear"));
-                clearMenu.Add("useWlcHP", new Slider("Minimum HP% to use W to laneclear", 40, 1));
-                clearMenu.Add("useWlcMinions", new Slider("Minimum minions to W in laneclear", 3, 1, 10));
+                clearMenu = config.AddSubMenu("推线设置", "Clear");
+                clearMenu.Add("useQlc", new CheckBox("清线 Q 尾兵"));
+                clearMenu.Add("useQlcHP", new Slider("最低血量% 使用Q", 40, 1));
+                clearMenu.Add("useWlc", new CheckBox("清线 W"));
+                clearMenu.Add("useWlcHP", new Slider("最低血量% 使用W", 40, 1));
+                clearMenu.Add("useWlcMinions", new Slider("最低命中小兵数量", 3, 1, 10));
                 clearMenu.AddSeparator();
-                clearMenu.Add("useQj", new CheckBox("Use Q to jungle"));
-                clearMenu.Add("useQjHP", new Slider("Minimum HP% to use Q in jungle", 20, 1));
-                clearMenu.Add("useWj", new CheckBox("Use W to jungle"));
-                clearMenu.Add("useWjHP", new Slider("Minimum HP% to use W to jungle", 20, 1));
-                clearMenu.Add("useEj", new CheckBox("Use E to jungle"));
+                clearMenu.Add("useQj", new CheckBox("清野 Q"));
+                clearMenu.Add("useQjHP", new Slider("最低血量% 使用Q", 20, 1));
+                clearMenu.Add("useWj", new CheckBox("清野 W"));
+                clearMenu.Add("useWjHP", new Slider("最低血量% 使用W", 20, 1));
+                clearMenu.Add("useEj", new CheckBox("清野 E"));
 
-                drawMenu = config.AddSubMenu("Drawings", "Drawings");
-                drawMenu.Add("disableDraw", new CheckBox("Disable all drawings"));
-                drawMenu.Add("drawQ", new CheckBox("Q range"));
-                drawMenu.Add("drawW", new CheckBox("W range"));
-                drawMenu.Add("width", new Slider("Drawings width", 2, 1, 5));
+                drawMenu = config.AddSubMenu("线圈", "Drawings");
+                drawMenu.Add("disableDraw", new CheckBox("屏蔽线圈"));
+                drawMenu.Add("drawQ", new CheckBox("Q 范围"));
+                drawMenu.Add("drawW", new CheckBox("W 范围"));
+                drawMenu.Add("width", new Slider("线圈宽度", 2, 1, 5));
             }
             catch (Exception exception)
             {

@@ -114,31 +114,31 @@ namespace SAutoCarry.Champions
 
         public static void CreateConfigMenu()
         {
-            rootMenu = MainMenu.AddMenu("SAutoCarry - Cassiopeia", "Cass");
+            rootMenu = MainMenu.AddMenu("SAC-Cassiopeia", "Cass");
 
-            comboMenu = rootMenu.AddSubMenu("Combo", "SAutoCarry.Cassiopeia.Combo");
-            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseQ", new CheckBox("Use Q"));
-            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseW", new CheckBox("Use W"));
-            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseE", new CheckBox("Use E"));
-            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseR", new Slider("Use R Min", 1, 1, 5));
+            comboMenu = rootMenu.AddSubMenu("连招", "SAutoCarry.Cassiopeia.Combo");
+            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseQ", new CheckBox("使用 Q"));
+            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseW", new CheckBox("使用 W"));
+            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseE", new CheckBox("使用 E"));
+            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseR", new Slider("R最少命中 X个", 1, 1, 5));
 
-            harassMenu = rootMenu.AddSubMenu("Harass", "SAutoCarry.Cassiopeia.Harass");
-            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.UseQ", new CheckBox("Use Q"));
-            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.UseW", new CheckBox("Use W"));
-            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.UseE", new CheckBox("Use E"));
-            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.MinMana", new Slider("Min Mana Percent", 30));
+            harassMenu = rootMenu.AddSubMenu("骚扰", "SAutoCarry.Cassiopeia.Harass");
+            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.UseQ", new CheckBox("使用 Q"));
+            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.UseW", new CheckBox("使用 W"));
+            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.UseE", new CheckBox("使用 E"));
+            harassMenu.Add("SAutoCarry.Cassiopeia.Harass.MinMana", new Slider("最低蓝量%", 30));
 
-            laneClearMenu = rootMenu.AddSubMenu("LaneClear/JungleClear", "SAutoCarry.Cassiopeia.LaneClear");
-            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.UseQ", new CheckBox("Use Q"));
-            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.UseW", new CheckBox("Use W"));
-            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.UseE", new CheckBox("Use E"));
+            laneClearMenu = rootMenu.AddSubMenu("清线/清野", "SAutoCarry.Cassiopeia.LaneClear");
+            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.UseQ", new CheckBox("使用 Q"));
+            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.UseW", new CheckBox("使用 W"));
+            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.UseE", new CheckBox("使用 E"));
             laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.Toggle",
-                new KeyBind("Enabled Spell Farm", false, KeyBind.BindTypes.PressToggle, 'T'));
-            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.MinMana", new Slider("Min Mana Percent", 50));
+                new KeyBind("技能农兵开关", false, KeyBind.BindTypes.PressToggle, 'T'));
+            laneClearMenu.Add("SAutoCarry.Cassiopeia.LaneClear.MinMana", new Slider("最低蓝量%", 50));
 
-            miscMenu = rootMenu.AddSubMenu("Misc", "SAutoCarry.Cassiopeia.Misc");
-            miscMenu.Add("SAutoCarry.Cassiopeia.Misc.EKillSteal", new CheckBox("KS With E"));
-            miscMenu.Add("SAutoCarry.Cassiopeia.Misc.KSOnlyPoision", new CheckBox("^ Only KS If Target Has poison"));
+            miscMenu = rootMenu.AddSubMenu("杂项", "SAutoCarry.Cassiopeia.Misc");
+            miscMenu.Add("SAutoCarry.Cassiopeia.Misc.EKillSteal", new CheckBox("E抢头"));
+            miscMenu.Add("SAutoCarry.Cassiopeia.Misc.KSOnlyPoision", new CheckBox("^ 只在目标中毒的情况下"));
         }
 
         public override void SetSpells()

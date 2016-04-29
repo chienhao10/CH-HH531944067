@@ -89,52 +89,52 @@ namespace JaxQx
             SpellList.Add(R);
 
             //Create the menu
-            Config = MainMenu.AddMenu("xQx | Jax", "Jax");
+            Config = MainMenu.AddMenu("xQx|武器大师", "Jax");
 
             // Combo
-            comboMenu = Config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("ComboUseQMinRange", new Slider("Min. Q Range", 250, 250, (int) Q.Range));
-            comboMenu.Add("Combo.CastE", new ComboBox("E Setting:", 1, "Cast E Before Q Jump", "Cast E After Q Jump"));
+            comboMenu = Config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("ComboUseQMinRange", new Slider("最低 Q 范围", 250, 250, (int) Q.Range));
+            comboMenu.Add("Combo.CastE", new ComboBox("E 设置:", 1, "跳跃前使用", "跳跃后使用"));
 
             // Harass
-            harassMenu = Config.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("UseQHarass", new CheckBox("Use Q"));
+            harassMenu = Config.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("UseQHarass", new CheckBox("使用 Q"));
             harassMenu.Add("UseQHarassDontUnderTurret", new CheckBox("Don't Under Turret Q"));
-            harassMenu.Add("UseWHarass", new CheckBox("Use W"));
-            harassMenu.Add("UseEHarass", new CheckBox("Use E"));
-            harassMenu.Add("HarassMode", new ComboBox("Harass Mode: ", 2, "Q+W", "Q+E", "Default"));
-            harassMenu.Add("HarassMana", new Slider("Min. Mana Percent: ", 50));
+            harassMenu.Add("UseWHarass", new CheckBox("使用 W"));
+            harassMenu.Add("UseEHarass", new CheckBox("使用 E"));
+            harassMenu.Add("HarassMode", new ComboBox("骚扰 模式: ", 2, "Q+W", "Q+E", "预设"));
+            harassMenu.Add("HarassMana", new Slider("最低蓝量%: ", 50));
 
             // Lane Clear
-            laneClearMenu = Config.AddSubMenu("LaneClear", "LaneClear");
-            laneClearMenu.Add("UseQLaneClear", new CheckBox("Use Q", false));
-            laneClearMenu.Add("UseQLaneClearDontUnderTurret", new CheckBox("Don't Under Turret Q"));
-            laneClearMenu.Add("UseWLaneClear", new CheckBox("Use W", false));
-            laneClearMenu.Add("UseELaneClear", new CheckBox("Use E", false));
-            laneClearMenu.Add("LaneClearMana", new Slider("Min. Mana Percent: ", 50));
+            laneClearMenu = Config.AddSubMenu("清线", "LaneClear");
+            laneClearMenu.Add("UseQLaneClear", new CheckBox("使用 Q", false));
+            laneClearMenu.Add("UseQLaneClearDontUnderTurret", new CheckBox("塔下不 Q"));
+            laneClearMenu.Add("UseWLaneClear", new CheckBox("使用 W", false));
+            laneClearMenu.Add("UseELaneClear", new CheckBox("使用 E", false));
+            laneClearMenu.Add("LaneClearMana", new Slider("最低蓝量%: ", 50));
 
             // Jungling Farm
-            jungleMenu = Config.AddSubMenu("JungleFarm", "JungleFarm");
-            jungleMenu.Add("UseQJungleFarm", new CheckBox("Use Q"));
-            jungleMenu.Add("UseWJungleFarm", new CheckBox("Use W", false));
-            jungleMenu.Add("UseEJungleFarm", new CheckBox("Use E", false));
-            jungleMenu.Add("JungleFarmMana", new Slider("Min. Mana Percent: ", 50));
+            jungleMenu = Config.AddSubMenu("清野", "JungleFarm");
+            jungleMenu.Add("UseQJungleFarm", new CheckBox("使用 Q"));
+            jungleMenu.Add("UseWJungleFarm", new CheckBox("使用 W", false));
+            jungleMenu.Add("UseEJungleFarm", new CheckBox("使用 E", false));
+            jungleMenu.Add("JungleFarmMana", new Slider("最低蓝量%: ", 50));
 
             // Misc
-            miscMenu = Config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("InterruptSpells", new CheckBox("Interrupt Spells"));
-            miscMenu.Add("Misc.AutoW", new CheckBox("Auto Hit W if possible"));
-            miscMenu.Add("Ward", new KeyBind("Ward Jump / Flee", false, KeyBind.BindTypes.HoldActive, 'A'));
+            miscMenu = Config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("InterruptSpells", new CheckBox("技能打断"));
+            miscMenu.Add("Misc.AutoW", new CheckBox("如果可 W,自动使用"));
+            miscMenu.Add("Ward", new KeyBind("跳眼 / 逃跑", false, KeyBind.BindTypes.HoldActive, 'A'));
 
             Extra = new Extra();
             Utils = new Utils();
             PlayerSpells.Initialize();
 
             // Drawing
-            drawingMenu = Config.AddSubMenu("Drawings", "Drawings");
-            drawingMenu.Add("DrawQRange", new CheckBox("Q range"));
-            drawingMenu.Add("DrawQMinRange", new CheckBox("Min. Q range"));
-            drawingMenu.Add("DrawWard", new CheckBox("Ward Range"));
+            drawingMenu = Config.AddSubMenu("线圈", "Drawings");
+            drawingMenu.Add("DrawQRange", new CheckBox("Q 范围"));
+            drawingMenu.Add("DrawQMinRange", new CheckBox("最低 Q 范围"));
+            drawingMenu.Add("DrawWard", new CheckBox("眼距离"));
 
             map = new Map();
 

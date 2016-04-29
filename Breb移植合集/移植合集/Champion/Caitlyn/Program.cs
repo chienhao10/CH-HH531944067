@@ -82,50 +82,50 @@ namespace PortAIO.Champion.Caitlyn
 
         private static void LoadMenuOKTW()
         {
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("noti", new CheckBox("Show notification & line"));
-            drawMenu.Add("qRange", new CheckBox("Q range"));
-            drawMenu.Add("wRange", new CheckBox("W range"));
-            drawMenu.Add("eRange", new CheckBox("E rang"));
-            drawMenu.Add("rRange", new CheckBox("R range"));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("noti", new CheckBox("显示提示 & 线"));
+            drawMenu.Add("qRange", new CheckBox("Q 范围"));
+            drawMenu.Add("wRange", new CheckBox("W 范围"));
+            drawMenu.Add("eRange", new CheckBox("E 范围"));
+            drawMenu.Add("rRange", new CheckBox("R 范围"));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ2", new CheckBox("Auto Q"));
-            qMenu.Add("autoQ", new CheckBox("Reduce Q usee"));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ2", new CheckBox("自动 Q"));
+            qMenu.Add("autoQ", new CheckBox("减少Q使用次数"));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W on hard CC"));
-            wMenu.Add("telE", new CheckBox("Auto W teleport"));
-            wMenu.Add("bushW", new CheckBox("Auto W bush"));
-            wMenu.Add("Wspell", new CheckBox("W on special spell detection"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("对强控自动放W"));
+            wMenu.Add("telE", new CheckBox("对传送自动W"));
+            wMenu.Add("bushW", new CheckBox("草丛自动W"));
+            wMenu.Add("Wspell", new CheckBox("对特殊技能使用 W"));
             wMenu.Add("WmodeGC",
-                new Slider("Gap Closer position mode (0 : Dash end position | 1 : My Hero Position)", 0, 0, 1));
+                new Slider("防突进位置模式 (0 : 冲刺结束位置 | 1 : 我英雄位置)", 0, 0, 1));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                wMenu.Add("WGCchampion" + enemy.ChampionName, new CheckBox("Cast on enemy: " + enemy.ChampionName));
+                wMenu.Add("WGCchampion" + enemy.ChampionName, new CheckBox("对敌方使用: " + enemy.ChampionName));
 
-            eMenu = Config.AddSubMenu("E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E"));
-            eMenu.Add("harrasEQ", new CheckBox("Harass E + Q"));
-            eMenu.Add("EQks", new CheckBox("Ks E + Q + AA"));
-            eMenu.Add("useE", new KeyBind("Dash E HotKeySmartcast", false, KeyBind.BindTypes.HoldActive, 'T'));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("autoE", new CheckBox("自动 E"));
+            eMenu.Add("harrasEQ", new CheckBox("骚扰 E + Q"));
+            eMenu.Add("EQks", new CheckBox("抢头 E + Q + AA"));
+            eMenu.Add("useE", new KeyBind("智能冲刺 E 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
             eMenu.Add("EmodeGC",
-                new Slider("Gap Closer position mode (0 : Dash end position | 1 : Cursor Pos | 2 : Enemy Position)", 2,
+                new Slider("防突进位置模式 (0 : 冲刺结束位置 | 1 : 鼠标位置 | 2 : 敌人位置)", 2,
                     0, 2));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                eMenu.Add("EGCchampion" + enemy.ChampionName, new CheckBox("Cast on enemy:" + enemy.ChampionName));
+                eMenu.Add("EGCchampion" + enemy.ChampionName, new CheckBox("对敌方使用:" + enemy.ChampionName));
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R KS"));
-            rMenu.Add("Rcol", new Slider("R collision width [400]", 400, 1, 1000));
-            rMenu.Add("Rrange", new Slider("R minimum range [1000]", 1000, 1, 1500));
-            rMenu.Add("useR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'T'));
-            rMenu.Add("Rturrent", new CheckBox("Don't R under turret"));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("自动R抢头"));
+            rMenu.Add("Rcol", new Slider("R 体积碰撞宽度 [400]", 400, 1, 1000));
+            rMenu.Add("Rrange", new Slider("R 最低范围 [1000]", 1000, 1, 1500));
+            rMenu.Add("useR", new KeyBind("半自动 R按键", false, KeyBind.BindTypes.HoldActive, 'T'));
+            rMenu.Add("Rturrent", new CheckBox("塔下不R"));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQ", new CheckBox("Lane clear Q"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80, 30));
-            farmMenu.Add("LCminions", new Slider("LaneClear minimum minions", 2, 0, 10));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQ", new CheckBox("清线 Q"));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 80, 30));
+            farmMenu.Add("LCminions", new Slider("清线最低小兵数量", 2, 0, 10));
         }
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)

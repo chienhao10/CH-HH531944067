@@ -966,60 +966,60 @@ namespace UnderratedAIO.Champions
 
         private static void InitMenu()
         {
-            config = MainMenu.AddMenu("Gangplank ", "Gangplank");
+            config = MainMenu.AddMenu("船长 ", "Gangplank");
 
             // Draw settings
-            drawMenu = config.AddSubMenu("Drawings ", "dsettings");
-            drawMenu.Add("drawqq", new CheckBox("Draw Q range"));
-            drawMenu.Add("drawW", new CheckBox("Draw W"));
-            drawMenu.Add("drawee", new CheckBox("Draw E range"));
-            drawMenu.Add("drawWcd", new CheckBox("Draw E countdown"));
-            drawMenu.Add("drawEmini", new CheckBox("Draw killable minions around E"));
-            drawMenu.Add("drawEQ", new CheckBox("Draw EQ to cursor"));
+            drawMenu = config.AddSubMenu("线圈 ", "dsettings");
+            drawMenu.Add("drawqq", new CheckBox("显示 Q 范围"));
+            drawMenu.Add("drawW", new CheckBox("显示 W"));
+            drawMenu.Add("drawee", new CheckBox("显示 E 范围"));
+            drawMenu.Add("drawWcd", new CheckBox("显示 E 倒数"));
+            drawMenu.Add("drawEmini", new CheckBox("显示 E 附近可击杀小兵"));
+            drawMenu.Add("drawEQ", new CheckBox("显示 EQ 至鼠标"));
             drawMenu.Add("drawKillableSL",
-                new ComboBox("Show killable targets with R", 1, "OFF", "Above HUD", "Under GP"));
+                new ComboBox("显示 R 可击杀目标", 1, "关闭", "界面上方", "船长下方"));
 
             // Combo Settings
-            comboMenu = config.AddSubMenu("Combo ", "csettings");
-            comboMenu.Add("useq", new CheckBox("Use Q"));
-            comboMenu.Add("detoneateTarget", new CheckBox("Blow up target with E"));
-            comboMenu.Add("detoneateTargets", new Slider("Blow up enemies with E", 2, 1, 5));
-            comboMenu.Add("usew", new Slider("Use W under health", 20));
-            comboMenu.Add("useeAlways", new CheckBox("Use E always", false));
-            comboMenu.Add("eStacksC", new Slider("E : Keep stacks", 0, 0, 5));
-            comboMenu.Add("usee", new CheckBox("Use E to extend range"));
-            comboMenu.Add("useeAOE", new CheckBox("Put bonus barrel to AOE", false));
-            comboMenu.Add("EQtoCursor", new KeyBind("EQ to cursor", false, KeyBind.BindTypes.HoldActive, 'T'));
-            comboMenu.Add("QbarrelCursor", new KeyBind("Q barrel at cursor", false, KeyBind.BindTypes.HoldActive, 'H'));
-            comboMenu.Add("user", new CheckBox("Use R"));
-            comboMenu.Add("Rmin", new Slider("R min", 2, 1, 5));
-            comboMenu.Add("useIgnite", new CheckBox("Use Ignite"));
+            comboMenu = config.AddSubMenu("连招 ", "csettings");
+            comboMenu.Add("useq", new CheckBox("使用 Q"));
+            comboMenu.Add("detoneateTarget", new CheckBox("使用 E 炸伤目标"));
+            comboMenu.Add("detoneateTargets", new Slider("使用 E 炸伤敌人数量", 2, 1, 5));
+            comboMenu.Add("usew", new Slider("血量低于 x 使用 W", 20));
+            comboMenu.Add("useeAlways", new CheckBox("一直使用 E", false));
+            comboMenu.Add("eStacksC", new Slider("E : 保留层数", 0, 0, 5));
+            comboMenu.Add("usee", new CheckBox("使用E增加距离"));
+            comboMenu.Add("useeAOE", new CheckBox("放置额外的炸桶至范围型攻击", false));
+            comboMenu.Add("EQtoCursor", new KeyBind("EQ 至鼠标", false, KeyBind.BindTypes.HoldActive, 'T'));
+            comboMenu.Add("QbarrelCursor", new KeyBind("Q 鼠标炸桶", false, KeyBind.BindTypes.HoldActive, 'H'));
+            comboMenu.Add("user", new CheckBox("使用 R"));
+            comboMenu.Add("Rmin", new Slider("R 最少人数", 2, 1, 5));
+            comboMenu.Add("useIgnite", new CheckBox("使用点燃"));
 
             // Harass Settings
-            harassMenu = config.AddSubMenu("Harass ", "Hsettings");
-            harassMenu.Add("useqH", new CheckBox("Use Q harass"));
-            harassMenu.Add("useqLHH", new CheckBox("Use Q lasthit"));
-            harassMenu.Add("useeH", new CheckBox("Use E"));
-            harassMenu.Add("eStacksH", new Slider("Keep stacks", 0, 0, 5));
-            harassMenu.Add("minmanaH", new Slider("Keep X% mana", 1, 1));
+            harassMenu = config.AddSubMenu("骚扰 ", "Hsettings");
+            harassMenu.Add("useqH", new CheckBox("使用 Q"));
+            harassMenu.Add("useqLHH", new CheckBox("使用 Q 尾兵"));
+            harassMenu.Add("useeH", new CheckBox("使用 E"));
+            harassMenu.Add("eStacksH", new Slider("保留层数", 0, 0, 5));
+            harassMenu.Add("minmanaH", new Slider("保留 X% 蓝量", 1, 1));
 
             // LaneClear Settings
-            laneClearMenu = config.AddSubMenu("LaneClear ", "Lcsettings");
-            laneClearMenu.Add("useqLC", new CheckBox("Use Q"));
-            laneClearMenu.Add("useeLC", new CheckBox("Use E"));
-            laneClearMenu.Add("eMinHit", new Slider("Q : Min hit", 3, 1, 6));
-            laneClearMenu.Add("eStacksLC", new Slider("Q : Keep stacks", 0, 0, 5));
-            laneClearMenu.Add("minmana", new Slider("Keep X% mana", 1, 1));
+            laneClearMenu = config.AddSubMenu("清线 ", "Lcsettings");
+            laneClearMenu.Add("useqLC", new CheckBox("使用 Q"));
+            laneClearMenu.Add("useeLC", new CheckBox("使用 E"));
+            laneClearMenu.Add("eMinHit", new Slider("E : 最少命中", 3, 1, 6));
+            laneClearMenu.Add("eStacksLC", new Slider("E : 保留层数", 0, 0, 5));
+            laneClearMenu.Add("minmana", new Slider("保留 X% 蓝量", 1, 1));
 
             // Misc Settings
-            miscMenu = config.AddSubMenu("Misc ", "Msettings");
-            miscMenu.Add("AutoR", new CheckBox("Cast R to get assists", false));
-            miscMenu.Add("Rhealt", new Slider("R : Enemy health %", 35));
-            miscMenu.Add("RhealtMin", new Slider(" R : Enemy min health %", 10));
-            miscMenu.Add("AutoW", new CheckBox("W with QSS options"));
-            miscMenu.Add("AutoQBarrel", new CheckBox("AutoQ barrel near enemies", false));
+            miscMenu = config.AddSubMenu("杂项 ", "Msettings");
+            miscMenu.Add("AutoR", new CheckBox("使用 R 获得助攻", false));
+            miscMenu.Add("Rhealt", new Slider("使用 R : 敌方生命 %", 35));
+            miscMenu.Add("RhealtMin", new Slider(" 使用R  : 敌方最少生命 %", 10));
+            miscMenu.Add("AutoW", new CheckBox("W - 解控选择"));
+            miscMenu.Add("AutoQBarrel", new CheckBox("炸桶范围内敌人自动 Q 炸桶", false));
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用封包", false));
         }
     }
 

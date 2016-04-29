@@ -54,7 +54,7 @@ namespace ElDiana
                 {
                     Text.X = (int) barPos.X + XOffset;
                     Text.Y = (int) barPos.Y + YOffset - 13;
-                    Text.text = "Killable: " + (unit.Health - damage);
+                    Text.text = "可击杀: " + (unit.Health - damage);
                     Text.OnEndScene();
                 }
 

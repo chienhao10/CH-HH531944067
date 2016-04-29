@@ -38,7 +38,7 @@ namespace Kindred___YinYang
             E = new Spell(SpellSlot.E, 500);
             R = new Spell(SpellSlot.R, 550);
 
-            Config = MainMenu.AddMenu("Kindred - Yin Yang", "Kindred - Yin Yang");
+            Config = MainMenu.AddMenu("千玗-阴阳", "Kindred - Yin Yang");
             Language.MenuInit();
 
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
@@ -290,7 +290,7 @@ namespace Kindred___YinYang
                             x => x.IsValidTarget(1500) && x.IsValid && x.IsVisible && !x.IsDead && !x.IsZombie))
                 {
                     Drawing.DrawText(enemy.HPBarPosition.X, enemy.HPBarPosition.Y, Color.Gold,
-                        string.Format("{0} Basic Attack = Kill", Helper.AaIndicator(enemy)));
+                        string.Format("{0} 普攻 = 击杀", Helper.AaIndicator(enemy)));
                 }
             }
         }

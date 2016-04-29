@@ -23,7 +23,7 @@ namespace Feedlesticks
         /// <param name="args"></param>
         public static void Game_OnGameLoad()
         {
-            Menus.Config = MainMenu.AddMenu("Feedlestick", "Feedlestick");
+            Menus.Config = MainMenu.AddMenu("稻草人", "Feedlestick");
 
             {
                 Spells.Init();

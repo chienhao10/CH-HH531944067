@@ -25,74 +25,74 @@ namespace SephKayle
 
         private static void CreateMenu()
         {
-            Config = MainMenu.AddMenu("SephKayle", "SephKayle");
+            Config = MainMenu.AddMenu("Seph天使", "SephKayle");
 
             // Combo Options
-            comboMenu = Config.AddSubMenu("Combo", " Combo");
-            comboMenu.Add("UseQ", new CheckBox("Use Q"));
-            comboMenu.Add("UseW", new CheckBox("Use W"));
-            comboMenu.Add("UseE", new CheckBox("Use E"));
-            comboMenu.Add("UseR", new CheckBox("Use R"));
+            comboMenu = Config.AddSubMenu("连招", " Combo");
+            comboMenu.Add("UseQ", new CheckBox("使用 Q"));
+            comboMenu.Add("UseW", new CheckBox("使用 W"));
+            comboMenu.Add("UseE", new CheckBox("使用 E"));
+            comboMenu.Add("UseR", new CheckBox("使用 R"));
 
             // Harass
-            harassMenu = Config.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("Harass.Mode", new ComboBox("Harass Mode", 0, "Only Mixed", "Always"));
-            harassMenu.Add("Harass.Mana", new Slider("Min Mana %", 30, 1));
-            harassMenu.Add("Harass.Q", new CheckBox("Use Q"));
+            harassMenu = Config.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("Harass.Mode", new ComboBox("骚扰模式", 0, "混合", "一直"));
+            harassMenu.Add("Harass.Mana", new Slider("最低蓝量 %", 30, 1));
+            harassMenu.Add("Harass.Q", new CheckBox("使用 Q"));
 
 
             // Waveclear Options
-            clearMenu = Config.AddSubMenu("Clear", "Clear");
+            clearMenu = Config.AddSubMenu("清线", "Clear");
             clearMenu.Add("WC.Mana", new Slider("Min Mana %", 30, 1));
-            clearMenu.Add("UseQwc", new CheckBox("Use Q"));
-            clearMenu.Add("UseEwc", new CheckBox("Use E"));
+            clearMenu.Add("UseQwc", new CheckBox("使用 Q"));
+            clearMenu.Add("UseEwc", new CheckBox("使用 E"));
 
             // Farm Options
-            farmMenu = Config.AddSubMenu("Last Hit", "LH");
-            farmMenu.Add("UseQfarm", new CheckBox("Use Q"));
-            farmMenu.Add("UseEfarm", new CheckBox("Use E"));
+            farmMenu = Config.AddSubMenu("尾兵", "LH");
+            farmMenu.Add("UseQfarm", new CheckBox("使用 Q"));
+            farmMenu.Add("UseEfarm", new CheckBox("使用 E"));
 
             // HealManager Options
-            healMenu = Config.AddSubMenu("HealManager", "Heal Manager");
-            healMenu.Add("onlyhincdmg", new CheckBox("Only heal if incoming damage", false));
-            healMenu.Add("hdamagedetection", new CheckBox("Disable damage detection", false));
-            healMenu.Add("hcheckdmgafter", new CheckBox("Take HP after damage into consideration"));
+            healMenu = Config.AddSubMenu("HealManager", "治疗控制");
+            healMenu.Add("onlyhincdmg", new CheckBox("准备受到伤害再治疗", false));
+            healMenu.Add("hdamagedetection", new CheckBox("关闭伤害探测", false));
+            healMenu.Add("hcheckdmgafter", new CheckBox("计算收到伤害后的血量"));
             healMenu.AddSeparator();
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h => h.IsAlly))
             {
-                healMenu.Add("heal" + hero.ChampionName, new CheckBox("Heal " + hero.ChampionName));
-                healMenu.Add("hpct" + hero.ChampionName, new Slider("Health % " + hero.ChampionName, 35));
+                healMenu.Add("heal" + hero.ChampionName, new CheckBox("治疗 " + hero.ChampionName));
+                healMenu.Add("hpct" + hero.ChampionName, new Slider("血量% " + hero.ChampionName, 35));
                 healMenu.AddSeparator();
             }
 
             // UltimateManager Options
-            ultMenu = Config.AddSubMenu("UltManager", "Ultimate Manager");
-            ultMenu.Add("onlyuincdmg", new CheckBox("Only ult if incoming damage"));
-            ultMenu.Add("udamagedetection", new CheckBox("Disable damage detection", false));
-            ultMenu.Add("ucheckdmgafter", new CheckBox("Take HP after damage into consideration"));
+            ultMenu = Config.AddSubMenu("UltManager", "大招管理");
+            ultMenu.Add("onlyuincdmg", new CheckBox("只用于接近中的伤害"));
+            ultMenu.Add("udamagedetection", new CheckBox("关闭伤害探测", false));
+            ultMenu.Add("ucheckdmgafter", new CheckBox("计算收到伤害后的血量"));
             ultMenu.AddSeparator();
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h => h.IsAlly))
             {
-                ultMenu.Add("ult" + hero.ChampionName, new CheckBox("Ultimate " + hero.ChampionName));
-                ultMenu.Add("upct" + hero.ChampionName, new Slider("Health % " + hero.ChampionName, 25));
+                ultMenu.Add("ult" + hero.ChampionName, new CheckBox("大招 " + hero.ChampionName));
+                ultMenu.Add("upct" + hero.ChampionName, new Slider("血量% " + hero.ChampionName, 25));
                 ultMenu.AddSeparator();
             }
 
             // Misc Options
-            miscMenu = Config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("killsteal", new CheckBox("Killsteal"));
-            miscMenu.Add("UseElh", new CheckBox("Use E to lasthit"));
-            miscMenu.Add("Healingon", new CheckBox("Healing On"));
-            miscMenu.Add("Ultingon", new CheckBox("Ulting On"));
-            miscMenu.Add("Recallcheck", new CheckBox("Recall check", false));
-            miscMenu.Add("Debug", new CheckBox("Debug On", false));
+            miscMenu = Config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("killsteal", new CheckBox("抢头"));
+            miscMenu.Add("UseElh", new CheckBox("E 尾兵"));
+            miscMenu.Add("Healingon", new CheckBox("开启治疗"));
+            miscMenu.Add("Ultingon", new CheckBox("开启大招"));
+            miscMenu.Add("Recallcheck", new CheckBox("回城检查", false));
+            miscMenu.Add("Debug", new CheckBox("开启调试", false));
 
-            drawMenu = Config.AddSubMenu("Drawing", "Drawing");
-            drawMenu.Add("disableall", new CheckBox("Disable all"));
-            drawMenu.Add("DrawQ", new CheckBox("Draw Q"));
-            drawMenu.Add("DrawW", new CheckBox("Draw W"));
-            drawMenu.Add("DrawE", new CheckBox("Draw E"));
-            drawMenu.Add("DrawR", new CheckBox("Draw R"));
+            drawMenu = Config.AddSubMenu("线圈", "Drawing");
+            drawMenu.Add("disableall", new CheckBox("屏蔽线圈"));
+            drawMenu.Add("DrawQ", new CheckBox("显示 Q"));
+            drawMenu.Add("DrawW", new CheckBox("显示 W"));
+            drawMenu.Add("DrawE", new CheckBox("显示 E"));
+            drawMenu.Add("DrawR", new CheckBox("显示 R"));
         }
 
         public static bool getCheckBoxItem(Menu m, string item)

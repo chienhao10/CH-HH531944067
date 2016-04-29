@@ -219,18 +219,18 @@ namespace Challenger_Series.Plugins
         {
             base.InitializeMenu();
 
-            ComboMenu = MainMenu.AddSubMenu("Combo Settings: ", "koggiecombomenu");
-            ComboMenu.Add("koggieuseq", new CheckBox("Use Q", true));
-            ComboMenu.Add("koggieusew", new CheckBox("Use W", true));
-            ComboMenu.Add("koggieusee", new CheckBox("Use E", true));
-            ComboMenu.Add("koggieuser", new CheckBox("Use R", true));
-            ComboMenu.Add("koggiewintime", new CheckBox("Dont Activate W if In Danger!", false));
+            ComboMenu = MainMenu.AddSubMenu("连招设置: ", "koggiecombomenu");
+            ComboMenu.Add("koggieuseq", new CheckBox("使用 Q", true));
+            ComboMenu.Add("koggieusew", new CheckBox("使用 W", true));
+            ComboMenu.Add("koggieusee", new CheckBox("使用 E", true));
+            ComboMenu.Add("koggieuser", new CheckBox("使用 R", true));
+            ComboMenu.Add("koggiewintime", new CheckBox("在危险中不使用 W!", false));
 
-            HarassMenu = MainMenu.AddSubMenu("Harass Settings", "koggieharassmenu");
-            HarassMenu.Add("koggieuserharass", new CheckBox("Use R", true));
+            HarassMenu = MainMenu.AddSubMenu("骚扰设置", "koggieharassmenu");
+            HarassMenu.Add("koggieuserharass", new CheckBox("使用 R", true));
 
-            JungleclearMenu = MainMenu.AddSubMenu("Jungleclear Settings: ", "koggiejgclearmenu");
-            JungleclearMenu.AddGroupLabel("W if TARGET is: ");
+            JungleclearMenu = MainMenu.AddSubMenu("清线设置: ", "koggiejgclearmenu");
+            JungleclearMenu.AddGroupLabel("对目标使用 W : ");
             if (GetJungleCampsOnCurrentMap() != null)
             {
                 foreach (var mob in GetJungleCampsOnCurrentMap())
@@ -239,17 +239,17 @@ namespace Challenger_Series.Plugins
                 }
             }
 
-            DrawMenu = MainMenu.AddSubMenu("Drawing Settings", "koggiedrawmenu");
-            DrawMenu.Add("koggiedraww", new CheckBox("Draw W Range", true));
-            DrawMenu.Add("koggiedrawr", new CheckBox("Draw R Range", true));
+            DrawMenu = MainMenu.AddSubMenu("线圈设置", "koggiedrawmenu");
+            DrawMenu.Add("koggiedraww", new CheckBox("显示 W 范围", true));
+            DrawMenu.Add("koggiedrawr", new CheckBox("显示 R 范围", true));
 
-            HumanizerMenu = MainMenu.AddSubMenu("Humanizer Settings: ", "koggiehumanizermenu");
-            HumanizerMenu.Add("koggieminattacks", new Slider("Min attacks before moving", 2, 1, 10));
-            HumanizerMenu.Add("koggiehumanizermovetime", new Slider("Time for moving (milliseconds)", 200, 0, 1000));
-            HumanizerMenu.Add("koggiehumanizerenabled", new CheckBox("Enable Humanizer? ", true));
+            HumanizerMenu = MainMenu.AddSubMenu("人性化设置: ", "koggiehumanizermenu");
+            HumanizerMenu.Add("koggieminattacks", new Slider("移动前至少攻击 X 次数", 2, 1, 10));
+            HumanizerMenu.Add("koggiehumanizermovetime", new Slider("移动时间 (毫秒)", 200, 0, 1000));
+            HumanizerMenu.Add("koggiehumanizerenabled", new CheckBox("开启人性化设置? ", true));
 
-            MainMenu.Add("koggiermaxstacks", new Slider("R Max Stacks: ", 2, 0, 11));
-            MainMenu.Add("koggiesavewmana", new CheckBox("Always Save Mana For W!", true));
+            MainMenu.Add("koggiermaxstacks", new Slider("R 最高叠加: ", 2, 0, 11));
+            MainMenu.Add("koggiesavewmana", new CheckBox("总是为 W 保留蓝!", true));
         }
 
         #region ChampionLogic

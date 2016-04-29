@@ -41,46 +41,46 @@ namespace Illaoi___Tentacle_Kitty
             Q.SetSkillshot(.484f, 0, 500, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(.066f, 50, 1900, true, SkillshotType.SkillshotLine);
 
-            Config = MainMenu.AddMenu("Illaoi - Tentacle Kitty", "Illaoi - Tentacle Kitty");
+            Config = MainMenu.AddMenu("触手女", "Illaoi - Tentacle Kitty");
 
-            comboMenu = Config.AddSubMenu("Combo Settings", "Combo Settings");
-            comboMenu.Add("q.combo", new CheckBox("Use Q"));
-            comboMenu.Add("q.ghost.combo", new CheckBox("Use Q (Ghost)"));
-            comboMenu.Add("w.combo", new CheckBox("Use W"));
-            comboMenu.Add("e.combo", new CheckBox("Use E"));
-            comboMenu.Add("r.combo", new CheckBox("Use R"));
-            comboMenu.Add("r.min.hit", new Slider("(R) Min. Hit", 3, 1, 5));
+            comboMenu = Config.AddSubMenu("连招设置", "Combo Settings");
+            comboMenu.Add("q.combo", new CheckBox("使用 Q"));
+            comboMenu.Add("q.ghost.combo", new CheckBox("使用 Q (幽灵)"));
+            comboMenu.Add("w.combo", new CheckBox("使用 W"));
+            comboMenu.Add("e.combo", new CheckBox("使用 E"));
+            comboMenu.Add("r.combo", new CheckBox("使用 R"));
+            comboMenu.Add("r.min.hit", new Slider("(R) 最低命中数量", 3, 1, 5));
 
-            harassMenu = Config.AddSubMenu("Harass Settings", "Harass Settings");
-            harassMenu.Add("q.harass", new CheckBox("Use Q"));
-            harassMenu.Add("q.ghost.harass", new CheckBox("Use Q (Ghost)"));
-            harassMenu.Add("w.harass", new CheckBox("Use W"));
-            harassMenu.Add("e.harass", new CheckBox("Use E"));
-            harassMenu.Add("harass.mana", new Slider("Mana Manager", 20, 1, 99));
+            harassMenu = Config.AddSubMenu("骚扰设置", "Harass Settings");
+            harassMenu.Add("q.harass", new CheckBox("使用 Q"));
+            harassMenu.Add("q.ghost.harass", new CheckBox("使用 Q (幽灵)"));
+            harassMenu.Add("w.harass", new CheckBox("使用 W"));
+            harassMenu.Add("e.harass", new CheckBox("使用 E"));
+            harassMenu.Add("harass.mana", new Slider("蓝量设置", 20, 1, 99));
 
-            clearMenu = Config.AddSubMenu("Clear Settings", "Clear Settings");
-            clearMenu.Add("q.clear", new CheckBox("Use Q")); //
-            clearMenu.Add("q.minion.hit", new Slider("(Q) Min. Hit", 3, 1, 6));
-            clearMenu.Add("clear.mana", new Slider("Mana Manager", 20, 1, 99));
+            clearMenu = Config.AddSubMenu("清线设置", "Clear Settings");
+            clearMenu.Add("q.clear", new CheckBox("使用 Q")); //
+            clearMenu.Add("q.minion.hit", new Slider("(Q) 最低命中数量", 3, 1, 6));
+            clearMenu.Add("clear.mana", new Slider("蓝量设置", 20, 1, 99));
 
-            eMenu = Config.AddSubMenu("E Settings", "E Settings");
-            eMenu.AddGroupLabel("E Whitelist");
+            eMenu = Config.AddSubMenu("E 设置", "E Settings");
+            eMenu.AddGroupLabel("E 白名单");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
                 eMenu.Add("enemy." + enemy.CharData.BaseSkinName,
                     new CheckBox(string.Format("E: {0}", enemy.CharData.BaseSkinName),
                         HighChamps.Contains(enemy.CharData.BaseSkinName)));
 
 
-            ksMenu = Config.AddSubMenu("KillSteal Settings", "KillSteal Settings");
-            ksMenu.Add("q.ks", new CheckBox("Use Q"));
+            ksMenu = Config.AddSubMenu("抢头设置", "KillSteal Settings");
+            ksMenu.Add("q.ks", new CheckBox("使用 Q"));
 
-            drawMenu = Config.AddSubMenu("Draw Settings", "Draw Settings");
-            drawMenu.Add("aa.indicator", new CheckBox("AA Indicator"));
-            drawMenu.Add("q.draw", new CheckBox("Q Range"));
-            drawMenu.Add("w.draw", new CheckBox("W Range"));
-            drawMenu.Add("e.draw", new CheckBox("E Range"));
-            drawMenu.Add("r.draw", new CheckBox("R Range"));
-            drawMenu.Add("passive.draw", new CheckBox("Passive Draw"));
+            drawMenu = Config.AddSubMenu("线圈设置", "Draw Settings");
+            drawMenu.Add("aa.indicator", new CheckBox("AA 指示器"));
+            drawMenu.Add("q.draw", new CheckBox("Q 范围"));
+            drawMenu.Add("w.draw", new CheckBox("W 范围"));
+            drawMenu.Add("e.draw", new CheckBox("E 范围"));
+            drawMenu.Add("r.draw", new CheckBox("R 范围"));
+            drawMenu.Add("passive.draw", new CheckBox("显示被动"));
 
 
             Game.OnUpdate += Game_OnGameUpdate;

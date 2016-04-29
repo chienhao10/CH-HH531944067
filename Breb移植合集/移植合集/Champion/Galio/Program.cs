@@ -374,52 +374,52 @@ namespace UnderratedAIO.Champions
 
         private static void InitMenu()
         {
-            config = MainMenu.AddMenu("Galio ", "Galio");
+            config = MainMenu.AddMenu("加里奥 ", "Galio");
 
             // Draw settings
-            drawMenu = config.AddSubMenu("Drawings ", "dsettings");
-            drawMenu.Add("drawqq", new CheckBox("Draw Q range"));
-            drawMenu.Add("drawww", new CheckBox("Draw W range"));
-            drawMenu.Add("drawee", new CheckBox("Draw E range"));
-            drawMenu.Add("drawrr", new CheckBox("Draw R range"));
+            drawMenu = config.AddSubMenu("线圈 ", "dsettings");
+            drawMenu.Add("drawqq", new CheckBox("显示 Q 范围"));
+            drawMenu.Add("drawww", new CheckBox("显示 W 范围"));
+            drawMenu.Add("drawee", new CheckBox("显示 E 范围"));
+            drawMenu.Add("drawrr", new CheckBox("显示 R 范围"));
 
             // Combo Settings
-            comboMenu = config.AddSubMenu("Combo ", "csettings");
-            comboMenu.Add("useq", new CheckBox("Use Q"));
-            comboMenu.Add("useqRange", new Slider("Max range", (int) Q.Range, 0, (int) Q.Range));
-            comboMenu.Add("usew", new CheckBox("Use W", false));
-            comboMenu.Add("usee", new CheckBox("Use E"));
-            comboMenu.Add("user", new CheckBox("Use R"));
-            comboMenu.Add("Rmin", new Slider("R min", 2, 1, 5));
-            comboMenu.Add("manualRflash", new KeyBind("Flash R", false, KeyBind.BindTypes.HoldActive, 'T'));
-            comboMenu.Add("Rminflash", new Slider("R min", 3, 1, 5));
-            comboMenu.Add("useIgnite", new CheckBox("Use Ignite"));
+            comboMenu = config.AddSubMenu("连招 ", "csettings");
+            comboMenu.Add("useq", new CheckBox("使用 Q"));
+            comboMenu.Add("useqRange", new Slider("最大范围", (int) Q.Range, 0, (int) Q.Range));
+            comboMenu.Add("usew", new CheckBox("使用 W", false));
+            comboMenu.Add("usee", new CheckBox("使用 E"));
+            comboMenu.Add("user", new CheckBox("使用 R"));
+            comboMenu.Add("Rmin", new Slider("R 最低人数", 2, 1, 5));
+            comboMenu.Add("manualRflash", new KeyBind("闪现 R", false, KeyBind.BindTypes.HoldActive, 'T'));
+            comboMenu.Add("Rminflash", new Slider("R 最低人数", 3, 1, 5));
+            comboMenu.Add("useIgnite", new CheckBox("使用点燃"));
 
             // Harass Settings
-            harassMenu = config.AddSubMenu("Harass ", "Hsettings");
-            harassMenu.Add("useqH", new CheckBox("Use Q"));
-            harassMenu.Add("useeH", new CheckBox("Use E"));
-            harassMenu.Add("minmanaH", new Slider("Keep X% mana", 1, 1));
+            harassMenu = config.AddSubMenu("骚扰 ", "Hsettings");
+            harassMenu.Add("useqH", new CheckBox("使用 Q"));
+            harassMenu.Add("useeH", new CheckBox("使用 E"));
+            harassMenu.Add("minmanaH", new Slider("保留 X% 蓝量", 1, 1));
 
             // LaneClear Settings
-            laneClearMenu = config.AddSubMenu("LaneClear ", "Lcsettings");
-            laneClearMenu.Add("useqLC", new CheckBox("Use Q"));
-            laneClearMenu.Add("qMinHit", new Slider("Q min hit", 3, 1, 6));
-            laneClearMenu.Add("useeLC", new CheckBox("Use E"));
-            laneClearMenu.Add("eMinHit", new Slider("E min hit", 3, 1, 6));
-            laneClearMenu.Add("minmana", new Slider("Keep X% mana", 1, 1));
+            laneClearMenu = config.AddSubMenu("清线 ", "Lcsettings");
+            laneClearMenu.Add("useqLC", new CheckBox("使用 Q"));
+            laneClearMenu.Add("qMinHit", new Slider("Q 最少命中数量", 3, 1, 6));
+            laneClearMenu.Add("useeLC", new CheckBox("使用 E"));
+            laneClearMenu.Add("eMinHit", new Slider("E 最少命中数量", 3, 1, 6));
+            laneClearMenu.Add("minmana", new Slider("保留 X% 蓝量", 1, 1));
 
             // Misc Settings
-            miscMenu = config.AddSubMenu("Misc ", "Msettings");
-            miscMenu.Add("Interrupt", new CheckBox("Cast R to interrupt spells", false));
-            miscMenu.Add("useHigherHit", new CheckBox("Higher HitChance(Q-E)"));
-            miscMenu.Add("AutoW", new CheckBox("Auto cast W"));
-            miscMenu.Add("Wmin", new Slider("W min hits", 3, 1, 10));
-            miscMenu.Add("Wdam", new ComboBox("W to damage", 1, "Low", "Mid", "High", "Off"));
-            miscMenu.Add("AutoWmana", new Slider("Min mana", 50, 1));
-            miscMenu.Add("AutoWhealth", new Slider("Under health", 70, 1));
+            miscMenu = config.AddSubMenu("杂项 ", "Msettings");
+            miscMenu.Add("Interrupt", new CheckBox("使用R打断技能", false));
+            miscMenu.Add("useHigherHit", new CheckBox("加强命中率(Q-E)"));
+            miscMenu.Add("AutoW", new CheckBox("自动 W"));
+            miscMenu.Add("Wmin", new Slider("W 最少受到伤害数", 3, 1, 10));
+            miscMenu.Add("Wdam", new ComboBox("W 吸收伤害", 1, "低", "中", "高", "关闭"));
+            miscMenu.Add("AutoWmana", new Slider("最低蓝量", 50, 1));
+            miscMenu.Add("AutoWhealth", new Slider("低于血量时", 70, 1));
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用封包", false));
         }
     }
 }

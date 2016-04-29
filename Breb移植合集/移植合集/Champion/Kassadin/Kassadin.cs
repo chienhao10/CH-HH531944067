@@ -631,7 +631,7 @@ namespace Kassawin
                 {
                     Text.X = (int) barPos.X + XOffset;
                     Text.Y = (int) barPos.Y + YOffset - 13;
-                    Text.text = "Killable " + (int) (unit.Health - damage);
+                    Text.text = "可击杀 " + (int) (unit.Health - damage);
                     Text.OnEndScene();
                 }
                 Drawing.DrawLine(xPosDamage, yPos, xPosDamage, yPos + Height, 1, _color);

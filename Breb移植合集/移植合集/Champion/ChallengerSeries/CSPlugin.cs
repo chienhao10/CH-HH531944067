@@ -58,9 +58,9 @@ namespace Challenger_Series
         public CSPlugin()
         {
             MainMenu = EloBuddy.SDK.Menu.MainMenu.AddMenu("challengerseries", ObjectManager.Player.ChampionName + " To The Challenger");
-            CrossAssemblySettings = MainMenu.AddSubMenu("Challenger Utils: ");
-            CrossAssemblySettings.Add("performancechallengerx", new CheckBox("Use Performance Challenger", false));
-            CrossAssemblySettings.Add("triggeronupdate", new Slider("Trigger OnUpdate X times a second", 26, 20, 33));
+            CrossAssemblySettings = MainMenu.AddSubMenu("挑战者助手: ");
+            CrossAssemblySettings.Add("performancechallengerx", new CheckBox("使用 挑战者性能", false));
+            CrossAssemblySettings.Add("triggeronupdate", new Slider("触发 OnUpdate X 下/秒", 26, 20, 33));
 
             IsPerformanceChallengerEnabled = getCheckBoxItem(CrossAssemblySettings, "performancechallengerx");
             TriggerOnUpdate = getSliderItem(CrossAssemblySettings, "triggeronupdate");

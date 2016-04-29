@@ -82,61 +82,61 @@ namespace OneKeyToWin_AIO_Sebby
             W.SetSkillshot(0.25f, 80f, 1600f, false, SkillshotType.SkillshotLine);
             R.SetSkillshot(1.1f, 160f, 2000f, false, SkillshotType.SkillshotLine);
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("noti", new CheckBox("Show notification"));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
-            drawMenu.Add("qRange", new CheckBox("Q range"));
-            drawMenu.Add("wRange", new CheckBox("W range"));
-            drawMenu.Add("eRange", new CheckBox("E range"));
-            drawMenu.Add("rRange", new CheckBox("R range"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("noti", new CheckBox("显示提示"));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
+            drawMenu.Add("qRange", new CheckBox("Q 范围"));
+            drawMenu.Add("wRange", new CheckBox("W 范围"));
+            drawMenu.Add("eRange", new CheckBox("E 范围"));
+            drawMenu.Add("rRange", new CheckBox("R 范围"));
 
-            wMenu = Config.AddSubMenu("W Option");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
-            wMenu.Add("wPush", new CheckBox("W ally (push tower)"));
-            wMenu.Add("harrasW", new CheckBox("Harass W"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
+            wMenu.Add("wPush", new CheckBox("W 队友 (推塔)"));
+            wMenu.Add("harrasW", new CheckBox("骚扰 W"));
 
-            eMenu = Config.AddSubMenu("E Option");
-            eMenu.Add("smartE", new KeyBind("SmartCast E key", false, KeyBind.BindTypes.HoldActive, 'T'));
-            eMenu.Add("smartEW", new KeyBind("SmartCast E + W key", false, KeyBind.BindTypes.HoldActive, 'T'));
-            eMenu.Add("autoE", new CheckBox("Auto E"));
-            eMenu.Add("autoEgrab", new CheckBox("Auto E anti grab"));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("smartE", new KeyBind("智能 E 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
+            eMenu.Add("smartEW", new KeyBind("智能 E + W 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
+            eMenu.Add("autoE", new CheckBox("自动 E"));
+            eMenu.Add("autoEgrab", new CheckBox("自动 E 防抓（机器人）"));
 
             Dash = new OKTWdash(E);
 
-            rMenu = Config.AddSubMenu("R Option");
-            rMenu.AddGroupLabel("R Jungle Stealer");
-            rMenu.Add("Rjungle", new CheckBox("R Jungle stealer"));
-            rMenu.Add("Rdragon", new CheckBox("Dragon"));
-            rMenu.Add("Rbaron", new CheckBox("Baron"));
-            rMenu.Add("Rred", new CheckBox("Red"));
-            rMenu.Add("Rblue", new CheckBox("Blue"));
-            rMenu.Add("Rally", new CheckBox("Ally stealer", false));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.AddGroupLabel("R 偷野");
+            rMenu.Add("Rjungle", new CheckBox("R 偷野"));
+            rMenu.Add("Rdragon", new CheckBox("龙"));
+            rMenu.Add("Rbaron", new CheckBox("男爵"));
+            rMenu.Add("Rred", new CheckBox("红"));
+            rMenu.Add("Rblue", new CheckBox("蓝"));
+            rMenu.Add("Rally", new CheckBox("抢友军野", false));
             rMenu.AddSeparator();
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("Rcc", new CheckBox("R cc"));
-            rMenu.Add("Raoe", new Slider("R AOE", 3, 0, 5));
-            rMenu.Add("useR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'J'));
-            rMenu.Add("Rturrent", new CheckBox("Don't R under turret"));
-            rMenu.Add("MaxRangeR", new Slider("Max R range", 3000, 0, 5000));
-            rMenu.Add("MinRangeR", new Slider("Min R range", 900, 0, 5000));
+            rMenu.Add("autoR", new CheckBox("中单 R"));
+            rMenu.Add("Rcc", new CheckBox("R 不可移动目标"));
+            rMenu.Add("Raoe", new Slider("R 命中敌人数量", 3, 0, 5));
+            rMenu.Add("useR", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'J'));
+            rMenu.Add("Rturrent", new CheckBox("塔下不R"));
+            rMenu.Add("MaxRangeR", new Slider("最远 R 距离", 3000, 0, 5000));
+            rMenu.Add("MinRangeR", new Slider("最低 R 距离", 900, 0, 5000));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQ", new CheckBox("LaneClear Q"));
-            farmMenu.Add("FQ", new CheckBox("Farm Q out range"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 50));
-            farmMenu.Add("LCP", new CheckBox("FAST LaneClear"));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQ", new CheckBox("清线 Q"));
+            farmMenu.Add("FQ", new CheckBox("对远方小兵使用Q"));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 50));
+            farmMenu.Add("LCP", new CheckBox("快速清线"));
 
-            harassMenu = Config.AddSubMenu("Harass");
-            harassMenu.Add("HarassMana", new Slider("Harass Mana", 30));
+            harassMenu = Config.AddSubMenu("骚扰");
+            harassMenu.Add("骚扰蓝量", new Slider("骚扰蓝量", 30));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
                 harassMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
             }
 
-            miscMenu = Config.AddSubMenu("Misc");
-            miscMenu.Add("debug", new CheckBox("Debug", false));
-            miscMenu.Add("apEz", new CheckBox("AP Ezreal", false));
-            miscMenu.Add("stack", new CheckBox("Stack Tear if full mana"));
+            miscMenu = Config.AddSubMenu("杂项");
+            miscMenu.Add("debug", new CheckBox("调试", false));
+            miscMenu.Add("apEz", new CheckBox("AP EZ", false));
+            miscMenu.Add("stack", new CheckBox("满蓝时自动叠加女神"));
 
             Game.OnUpdate += Game_OnUpdate;
             Drawing.OnDraw += Drawing_OnDraw;

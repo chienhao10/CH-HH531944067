@@ -830,80 +830,80 @@ namespace MathFizz
             Menu = MainMenu.AddMenu(Player.ChampionName, Player.ChampionName);
 
             //Combo Menu
-            comboMenu = Menu.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("ComboMode",
-                new ComboBox("Combo mode", 0, "R to gapclose", "R in dash range", "R after dash", "R on dash"));
-            comboMenu.Add("HitChancewR", new ComboBox("R hitchance", 2, "Medium", "High", "Very High"));
-            comboMenu.Add("targetMinHPforR", new Slider("Minimum enemy HP(in %) to use R", 35));
-            comboMenu.Add("useZhonya", new CheckBox("Use Zhonya in combo (Recommended for lategame)"));
-            comboMenu.Add("useQcombo", new CheckBox("Use Q in combo"));
-            comboMenu.Add("useWcombo", new CheckBox("Use W in combo"));
-            comboMenu.Add("useEcombo", new CheckBox("Use E in combo"));
-            comboMenu.Add("UseEOnlyAfterAA", new CheckBox("Use E only after an autoattack", false));
-            comboMenu.Add("useRcombo", new CheckBox("Use R in combo"));
+            comboMenu = Menu.AddSubMenu("连招", "Combo");
+            comboMenu.Add("Combomode",
+                new ComboBox("连招模式", 0, "R 接近", "R 冲刺范围", "R 冲刺后", "R 冲刺中"));
+            comboMenu.Add("HitChancewR", new ComboBox("R 命中率", 2, "中", "高", "非常规"));
+            comboMenu.Add("targetMinHPforR", new Slider("敌人最低血量 % 使用R", 35));
+            comboMenu.Add("useZhonya", new CheckBox("连招使用金身 (后期推荐)"));
+            comboMenu.Add("useQcombo", new CheckBox("使用 Q"));
+            comboMenu.Add("useWcombo", new CheckBox("使用 W"));
+            comboMenu.Add("useEcombo", new CheckBox("使用 E"));
+            comboMenu.Add("UseEOnlyAfterAA", new CheckBox("普攻后再 E", false));
+            comboMenu.Add("useRcombo", new CheckBox("使用R"));
 
             //Harass Menu
-            harassMenu = Menu.AddSubMenu("Harass", "Harass");
+            harassMenu = Menu.AddSubMenu("骚扰", "Harass");
             harassMenu.Add("harassEMode",
-                new ComboBox("E mode", 0, "E to mouse position", "E to hit the enemy", "E to comeback",
-                    "E twice to comeback"));
-            harassMenu.Add("useharassQ", new CheckBox("Use Q to harass"));
-            harassMenu.Add("useharassW", new CheckBox("Use W to harass"));
-            harassMenu.Add("useharassE", new CheckBox("Use E to harass"));
-            harassMenu.Add("harassmana", new Slider("Minimum mana to harass in %"));
-            harassMenu.Add("useEWQ", new CheckBox("Harass with EE(W)Q Combo", false));
+                new ComboBox("E 模式", 0, "E 至鼠标位置", "E 至敌人", "E 回",
+                    "E 回（2E,短距离）"));
+            harassMenu.Add("useharassQ", new CheckBox("使用 Q"));
+            harassMenu.Add("useharassW", new CheckBox("使用 W"));
+            harassMenu.Add("useharassE", new CheckBox("使用 E"));
+            harassMenu.Add("harassmana", new Slider("最低蓝量使用%"));
+            harassMenu.Add("useEWQ", new CheckBox("使用 EE(W)Q 连击 进行骚扰", false));
 
             //LaneClear Menu
-            laneClearMenu = Menu.AddSubMenu("Laneclear", "Laneclear");
-            laneClearMenu.Add("laneclearQ", new CheckBox("Use Q to laneclear", false));
-            laneClearMenu.Add("laneclearW", new CheckBox("Use W to laneclear", false));
-            laneClearMenu.Add("laneclearE", new CheckBox("Use E to laneclear", false));
-            laneClearMenu.Add("lanemana", new Slider("Minimum mana to farm in %"));
+            laneClearMenu = Menu.AddSubMenu("清线", "Laneclear");
+            laneClearMenu.Add("laneclearQ", new CheckBox("使用 Q", false));
+            laneClearMenu.Add("laneclearW", new CheckBox("使用 W", false));
+            laneClearMenu.Add("laneclearE", new CheckBox("使用 E", false));
+            laneClearMenu.Add("lanemana", new Slider("最低蓝量使用%"));
 
             //JungleClear Menu
-            jungleClearMenu = Menu.AddSubMenu("Jungleclear", "Jungleclear");
-            jungleClearMenu.Add("jungleclearQ", new CheckBox("Use Q to jungleclear", false));
-            jungleClearMenu.Add("jungleclearW", new CheckBox("Use W to jungleclear", false));
-            jungleClearMenu.Add("jungleclearE", new CheckBox("Use E to jungleclear", false));
-            jungleClearMenu.Add("junglemana", new Slider("Minimum mana to jungleclear in %"));
+            jungleClearMenu = Menu.AddSubMenu("清野", "Jungleclear");
+            jungleClearMenu.Add("jungleclearQ", new CheckBox("使用 Q", false));
+            jungleClearMenu.Add("jungleclearW", new CheckBox("使用 W", false));
+            jungleClearMenu.Add("jungleclearE", new CheckBox("使用 E", false));
+            jungleClearMenu.Add("junglemana", new Slider("最低蓝量使用%"));
 
             //CustomCombo Menu
-            customComboMenu = Menu.AddSubMenu("Custom Combo's (require a selected target!)", "CustomCombo");
-            customComboMenu.AddGroupLabel("How to use CustomCombo's :");
-            customComboMenu.AddGroupLabel("1) Make sure every spells used in the combo are up.");
-            customComboMenu.AddGroupLabel("2) Select your Target.");
-            customComboMenu.AddGroupLabel("3) Press combo key until every spells are used.");
-            customComboMenu.AddGroupLabel("4) Press space key afterwards for ideal follow up.");
+            customComboMenu = Menu.AddSubMenu("自定义连技 (需要选择目标!)", "CustomCombo");
+            customComboMenu.AddGroupLabel("如何使用 :");
+            customComboMenu.AddGroupLabel("1) 确定所有技能无冷却.");
+            customComboMenu.AddGroupLabel("2) 选择目标.");
+            customComboMenu.AddGroupLabel("3) 按下连招键，直到所有技能都用了.");
+            customComboMenu.AddGroupLabel("4) 按下空格键，回到视角回到自己.");
             customComboMenu.Add("lateGameZhonyaCombo",
-                new KeyBind("EE to gapclose RWQ zhonya", false, KeyBind.BindTypes.HoldActive, 'G'));
-            customComboMenu.Add("lateGameZhonyaComboZhonya", new CheckBox("Use Zhonya with EE to gapclose RWQ"));
+                new KeyBind("EE 接近 RWQ 中亚", false, KeyBind.BindTypes.HoldActive, 'G'));
+            customComboMenu.Add("lateGameZhonyaComboZhonya", new CheckBox("EE 接近 RWQ连技 中使用中亚"));
             customComboMenu.Add("QminionREWCombo",
-                new KeyBind("Q laneminion/camp/champion to gapclose REW", false, KeyBind.BindTypes.HoldActive, 'H'));
+                new KeyBind("Q 小兵/野怪/英雄 进行接近 REW", false, KeyBind.BindTypes.HoldActive, 'H'));
             customComboMenu.Add("EFlashCombo",
-                new KeyBind("E Flash on target RWQ zhonya", false, KeyBind.BindTypes.HoldActive, 'J'));
-            customComboMenu.Add("EFlashComboZhonya", new CheckBox("Use Zhonya with E Flash on target RWQ"));
+                new KeyBind("E 闪现至目标 RWQ 中亚", false, KeyBind.BindTypes.HoldActive, 'J'));
+            customComboMenu.Add("EFlashComboZhonya", new CheckBox("E 闪现至目标 RWQ连技 中使用中亚"));
             customComboMenu.Add("Flee",
-                new KeyBind("Flee Key (Flee does not require a target)", false, KeyBind.BindTypes.HoldActive, 'Q'));
-            customComboMenu.Add("manualR", new KeyBind("Auto cast R key", false, KeyBind.BindTypes.HoldActive, 'K'));
+                new KeyBind("逃跑按键 (不需要选择目标)", false, KeyBind.BindTypes.HoldActive, 'Q'));
+            customComboMenu.Add("manualR", new KeyBind("自动使用 R 按键", false, KeyBind.BindTypes.HoldActive, 'K'));
             customComboMenu.Add("manualRHitchance",
-                new ComboBox("Auto cast R hitchance", 2, "Medium", "High", "Very High"));
+                new ComboBox("自动使用 R 命中率", 2, "中", "高", "非常高"));
 
             //Drawings Menu
-            drawingsMenu = Menu.AddSubMenu("Drawings", "Drawings");
-            drawingsMenu.Add("drawComboDamage", new CheckBox("Draw the predicted damage on target", false));
-            drawingsMenu.Add("drawQ", new CheckBox("Draw Q range", false));
-            drawingsMenu.Add("drawE", new CheckBox("Draw E range", false));
-            drawingsMenu.Add("drawEMax", new CheckBox("Draw E maximum range", false));
-            drawingsMenu.Add("drawRr", new CheckBox("Draw R range", false));
+            drawingsMenu = Menu.AddSubMenu("线圈", "Drawings");
+            drawingsMenu.Add("drawComboDamage", new CheckBox("显示预计连招伤害", false));
+            drawingsMenu.Add("drawQ", new CheckBox("显示 Q 范围", false));
+            drawingsMenu.Add("drawE", new CheckBox("显示 E 范围", false));
+            drawingsMenu.Add("drawEMax", new CheckBox("显示 E 最大范围", false));
+            drawingsMenu.Add("drawRr", new CheckBox("显示 R 范围", false));
             drawingsMenu.Add("drawMinionQCombo",
-                new CheckBox("Draw QminionREWCombo helper (Selected Target Only)", false));
-            drawingsMenu.Add("drawR", new CheckBox("Draw R prediction (Selected Target Only)", false));
+                new CheckBox("显示 Q小兵REW连招助手 (只在选择的目标)", false));
+            drawingsMenu.Add("drawR", new CheckBox("显示 R 预判 (只在选择的目标)", false));
             drawingsMenu.Add("drawRHitChance",
-                new CheckBox("Draw Hitchance status text of R (Selected Target Only)", false));
+                new CheckBox("显示  R命中率 状态文字 (只在选择的目标)", false));
             drawingsMenu.Add("drawRHitChanceX",
-                new Slider("X screen position of the Hitchance status text", 450, 0, 2000));
+                new Slider("X 命中率 状态文字屏幕位置", 450, 0, 2000));
             drawingsMenu.Add("drawRHitChanceY",
-                new Slider("Y screen position of the Hitchance status text", 200, 0, 2000));
+                new Slider("Y 命中率 状态文字屏幕位置", 200, 0, 2000));
 
             hydra = new Items.Item(3074, 185);
             tiamat = new Items.Item(3077, 185);

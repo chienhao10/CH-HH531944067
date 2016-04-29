@@ -578,51 +578,51 @@ namespace GFUELElise
         {
             try
             {
-                Menu = MainMenu.AddMenu("GFUEL ELISE", "GFUELELISE");
+                Menu = MainMenu.AddMenu("GFUEL 蜘蛛", "GFUELELISE");
 
-                comboMenu = Menu.AddSubMenu("Combo", "Combo");
-                comboMenu.Add("GFUELElise.Combo.Q", new CheckBox("Use Q"));
-                comboMenu.Add("GFUELElise.Combo.W", new CheckBox("Use W"));
-                comboMenu.Add("GFUELElise.Combo.E", new CheckBox("Use E"));
-                comboMenu.Add("GFUELElise.ComboSpider.Q", new CheckBox("Use Spider Q"));
-                comboMenu.Add("GFUELElise.ComboSpider.W", new CheckBox("Use Spider W"));
-                comboMenu.Add("GFUELElise.ComboSpider.E", new CheckBox("Use Spider E"));
-                comboMenu.Add("GFUELElise.Combo.R", new CheckBox("Switch forms automatic"));
-                comboMenu.Add("GFUELElise.Combo.Semi.E", new KeyBind("Cast E", false, KeyBind.BindTypes.HoldActive, 'T'));
-                comboMenu.Add("GFUELElise.R.nein", new Slider("Dont switch to human if mana under", 10));
+                comboMenu = Menu.AddSubMenu("连招", "Combo");
+                comboMenu.Add("GFUELElise.Combo.Q", new CheckBox("使用 Q"));
+                comboMenu.Add("GFUELElise.Combo.W", new CheckBox("使用 W"));
+                comboMenu.Add("GFUELElise.Combo.E", new CheckBox("使用 E"));
+                comboMenu.Add("GFUELElise.ComboSpider.Q", new CheckBox("使用 蜘蛛 Q"));
+                comboMenu.Add("GFUELElise.ComboSpider.W", new CheckBox("使用 蜘蛛 W"));
+                comboMenu.Add("GFUELElise.ComboSpider.E", new CheckBox("使用 蜘蛛 E"));
+                comboMenu.Add("GFUELElise.Combo.R", new CheckBox("自动切换形态"));
+                comboMenu.Add("GFUELElise.Combo.Semi.E", new KeyBind("使用按键 E", false, KeyBind.BindTypes.HoldActive, 'T'));
+                comboMenu.Add("GFUELElise.R.nein", new Slider("蓝量低于% 不切换成人类形态", 10));
 
-                harassMenu = Menu.AddSubMenu("Harass", "Harass");
-                harassMenu.Add("GFUELElise.Harass.Q", new CheckBox("Use Q"));
-                harassMenu.Add("GFUELElise.Harass.W", new CheckBox("Use W"));
+                harassMenu = Menu.AddSubMenu("骚扰", "Harass");
+                harassMenu.Add("GFUELElise.Harass.Q", new CheckBox("使用 Q"));
+                harassMenu.Add("GFUELElise.Harass.W", new CheckBox("使用 W"));
 
-                laneClearMenu = Menu.AddSubMenu("Laneclear", "Laneclear");
-                laneClearMenu.Add("GFUELElise.laneclear.Q", new CheckBox("Use Q"));
-                laneClearMenu.Add("GFUELElise.laneclear.W", new CheckBox("Use W"));
-                laneClearMenu.Add("GFUELElise.laneclear.SpiderQ", new CheckBox("Use Spider Q"));
-                laneClearMenu.Add("GFUELElise.laneclear.SpiderW", new CheckBox("Use Spider W"));
-                laneClearMenu.Add("GFUELElise.laneclear.SwitchR", new CheckBox("Switch R"));
-                laneClearMenu.Add("GFUELElise.laneclear.Mana", new Slider("Minimum mana", 20));
+                laneClearMenu = Menu.AddSubMenu("清线", "Laneclear");
+                laneClearMenu.Add("GFUELElise.laneclear.Q", new CheckBox("使用 Q"));
+                laneClearMenu.Add("GFUELElise.laneclear.W", new CheckBox("使用 W"));
+                laneClearMenu.Add("GFUELElise.laneclear.SpiderQ", new CheckBox("使用 蜘蛛 Q"));
+                laneClearMenu.Add("GFUELElise.laneclear.SpiderW", new CheckBox("使用 蜘蛛 W"));
+                laneClearMenu.Add("GFUELElise.laneclear.SwitchR", new CheckBox("切换 R"));
+                laneClearMenu.Add("GFUELElise.laneclear.Mana", new Slider("最低蓝量", 20));
 
-                jungleClearMenu = Menu.AddSubMenu("Jungleclear", "Jungleclear");
-                jungleClearMenu.Add("GFUELElise.jungleclear.Q", new CheckBox("Use Q"));
-                jungleClearMenu.Add("GFUELElise.jungleclear.W", new CheckBox("Use W"));
-                jungleClearMenu.Add("GFUELElise.jungleclear.SpiderQ", new CheckBox("Use Spider Q"));
-                jungleClearMenu.Add("GFUELElise.jungleclear.SpiderW", new CheckBox("Use Spider W"));
-                jungleClearMenu.Add("GFUELElise.jungleclear.SwitchR", new CheckBox("Switch R"));
+                jungleClearMenu = Menu.AddSubMenu("清野", "Jungleclear");
+                jungleClearMenu.Add("GFUELElise.jungleclear.Q", new CheckBox("使用 Q"));
+                jungleClearMenu.Add("GFUELElise.jungleclear.W", new CheckBox("使用 W"));
+                jungleClearMenu.Add("GFUELElise.jungleclear.SpiderQ", new CheckBox("使用 蜘蛛 Q"));
+                jungleClearMenu.Add("GFUELElise.jungleclear.SpiderW", new CheckBox("使用 蜘蛛 W"));
+                jungleClearMenu.Add("GFUELElise.jungleclear.SwitchR", new CheckBox("切换 R"));
                 jungleClearMenu.Add("GFUELElise.jungleclear.Mana", new Slider("Minimum mana", 20));
 
-                smiteMenu = Menu.AddSubMenu("Smite", "Smite");
-                smiteMenu.Add("GFUELElise.Smite.Nope", new CheckBox("Do not use smite in human", false));
-                smiteMenu.Add("GFUELElise.Smite", new CheckBox("Use smite in spider combo"));
+                smiteMenu = Menu.AddSubMenu("惩戒", "Smite");
+                smiteMenu.Add("GFUELElise.Smite.Nope", new CheckBox("人类形态不使用惩戒", false));
+                smiteMenu.Add("GFUELElise.Smite", new CheckBox("蜘蛛连招模式下使用惩戒"));
 
-                miscMenu = Menu.AddSubMenu("Miscellaneous", "Miscellaneous");
-                miscMenu.Add("GFUELElise.Auto.E", new CheckBox("Auto E immobile"));
-                miscMenu.Add("GFUELElise.Draw.Off", new CheckBox("Disable drawings", false));
-                miscMenu.Add("GFUELElise.Draw.Q", new CheckBox("Draw Q"));
-                miscMenu.Add("GFUELElise.Draw.W", new CheckBox("Draw W"));
-                miscMenu.Add("GFUELElise.Draw.E", new CheckBox("Draw E"));
-                miscMenu.Add("GFUELElise.Misc.Antigapcloser", new CheckBox("Use E - Antigapcloser"));
-                miscMenu.Add("GFUELElise.Misc.Interrupter", new CheckBox("Use E - interrupter"));
+                miscMenu = Menu.AddSubMenu("杂项", "Miscellaneous");
+                miscMenu.Add("GFUELElise.Auto.E", new CheckBox("自动 E 不可移动目标"));
+                miscMenu.Add("GFUELElise.Draw.Off", new CheckBox("屏蔽 线圈", false));
+                miscMenu.Add("GFUELElise.Draw.Q", new CheckBox("显示 Q"));
+                miscMenu.Add("GFUELElise.Draw.W", new CheckBox("显示 W"));
+                miscMenu.Add("GFUELElise.Draw.E", new CheckBox("显示 E"));
+                miscMenu.Add("GFUELElise.Misc.Antigapcloser", new CheckBox("使用 E - 防突进"));
+                miscMenu.Add("GFUELElise.Misc.Interrupter", new CheckBox("使用 E - 技能打断"));
             }
             catch (Exception exception)
             {

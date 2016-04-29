@@ -342,47 +342,47 @@ namespace JustHecarim
             Config = MainMenu.AddMenu(Menuname, Menuname);
 
             //Combo
-            comboMenu = Config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("UseQ", new CheckBox("Use Q"));
-            comboMenu.Add("UseW", new CheckBox("Use W"));
-            comboMenu.Add("UseE", new CheckBox("Use E"));
-            comboMenu.Add("UseR", new CheckBox("Use R"));
-            comboMenu.Add("Rene", new Slider("Min Enemies for R", 2, 1, 5));
-            comboMenu.Add("AutoR", new CheckBox("Auto R", false));
-            comboMenu.Add("Renem", new Slider("Min Enemies for Auto R", 3, 1, 5));
+            comboMenu = Config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("UseQ", new CheckBox("使用 Q"));
+            comboMenu.Add("UseW", new CheckBox("使用 W"));
+            comboMenu.Add("UseE", new CheckBox("使用 E"));
+            comboMenu.Add("UseR", new CheckBox("使用 R"));
+            comboMenu.Add("Rene", new Slider("R 最低敌人命中数", 2, 1, 5));
+            comboMenu.Add("AutoR", new CheckBox("自动 R", false));
+            comboMenu.Add("Renem", new Slider("自动R 最低敌人命中数", 3, 1, 5));
 
             //Harass
-            harassMenu = Config.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("hQ", new CheckBox("Use Q"));
-            harassMenu.Add("hQA", new CheckBox("Use Auto Q Harass"));
-            harassMenu.Add("hW", new CheckBox("Use W", false));
-            harassMenu.Add("hE", new CheckBox("Use E"));
-            harassMenu.Add("harassmana", new Slider("Mana Percentage", 30));
+            harassMenu = Config.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("hQ", new CheckBox("使用 Q"));
+            harassMenu.Add("hQA", new CheckBox("使用 自动Q骚扰"));
+            harassMenu.Add("hW", new CheckBox("使用 W", false));
+            harassMenu.Add("hE", new CheckBox("使用 E"));
+            harassMenu.Add("harassmana", new Slider("蓝量百分比", 30));
 
             //Laneclear
-            laneClear = Config.AddSubMenu("Clear", "Clear");
-            laneClear.Add("laneQ", new CheckBox("Use Q"));
-            laneClear.Add("fQ", new CheckBox("Farm with Q ( While pressing last hit )"));
-            laneClear.Add("laneE", new CheckBox("Use E"));
-            laneClear.Add("laneW", new CheckBox("Use W"));
-            laneClear.Add("wmin", new Slider("Min Minion for W", 3, 1, 5));
-            laneClear.Add("lanemana", new Slider("Mana Percentage", 30));
+            laneClear = Config.AddSubMenu("推线", "Clear");
+            laneClear.Add("laneQ", new CheckBox("使用 Q"));
+            laneClear.Add("fQ", new CheckBox("Q 农兵 ( 按尾兵键时 )"));
+            laneClear.Add("laneE", new CheckBox("使用 E"));
+            laneClear.Add("laneW", new CheckBox("使用 W"));
+            laneClear.Add("wmin", new Slider("最低小兵数量使用 W", 3, 1, 5));
+            laneClear.Add("lanemana", new Slider("蓝量百分比", 30));
 
             //Draw
-            drawMenu = Config.AddSubMenu("Draw", "Draw");
-            drawMenu.Add("Draw_Disabled", new CheckBox("Disable All Spell Drawings", false));
-            drawMenu.Add("Qdraw", new CheckBox("Draw Q Range"));
-            drawMenu.Add("Wdraw", new CheckBox("Draw W Range"));
-            drawMenu.Add("Rdraw", new CheckBox("Draw R Range"));
-            drawMenu.Add("combodamage", new CheckBox("Damage on HPBar"));
+            drawMenu = Config.AddSubMenu("线圈", "Draw");
+            drawMenu.Add("Draw_Disabled", new CheckBox("屏蔽所有线圈", false));
+            drawMenu.Add("Qdraw", new CheckBox("显示 Q 范围"));
+            drawMenu.Add("Wdraw", new CheckBox("显示 W 范围"));
+            drawMenu.Add("Rdraw", new CheckBox("显示 R 范围"));
+            drawMenu.Add("combodamage", new CheckBox("伤害指示器"));
 
             //Misc
-            miscMenu = Config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("ksQ", new CheckBox("Killsteal with Q"));
-            miscMenu.Add("ksR", new CheckBox("Killsteal with R", false));
-            miscMenu.Add("antigap", new CheckBox("AntiGapCloser with E", false));
-            miscMenu.Add("interrupte", new CheckBox("Interrupt with E"));
-            miscMenu.Add("interruptr", new CheckBox("Interrupt with R"));
+            miscMenu = Config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("ksQ", new CheckBox("抢头 Q"));
+            miscMenu.Add("ksR", new CheckBox("抢头 R", false));
+            miscMenu.Add("antigap", new CheckBox("防突进 E", false));
+            miscMenu.Add("interrupte", new CheckBox("技能打断 E"));
+            miscMenu.Add("interruptr", new CheckBox("技能打断 R"));
 
             Drawing.OnDraw += OnDraw;
             Game.OnUpdate += Game_OnGameUpdate;

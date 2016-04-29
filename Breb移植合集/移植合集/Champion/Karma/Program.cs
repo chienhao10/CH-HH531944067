@@ -76,24 +76,24 @@ namespace Karma
 
             _config = MainMenu.AddMenu(ChampionName, ChampionName);
 
-            comboMenu = _config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("UseQCombo", new CheckBox("Use Q"));
-            comboMenu.Add("UseWCombo", new CheckBox("Use W"));
-            comboMenu.Add("UseRCombo", new CheckBox("Use R"));
+            comboMenu = _config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("UseQCombo", new CheckBox("使用 Q"));
+            comboMenu.Add("UseWCombo", new CheckBox("使用 W"));
+            comboMenu.Add("UseRCombo", new CheckBox("使用 R"));
 
-            harassMenu = _config.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("UseQHarass", new CheckBox("Use Q"));
-            harassMenu.Add("UseWHarass", new CheckBox("Use W", false));
-            harassMenu.Add("UseRHarass", new CheckBox("Use R"));
+            harassMenu = _config.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("UseQHarass", new CheckBox("使用 Q"));
+            harassMenu.Add("UseWHarass", new CheckBox("使用 W", false));
+            harassMenu.Add("UseRHarass", new CheckBox("使用 R"));
 
-            miscMenu = _config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("UseEDefense", new CheckBox("Use E For Defense"));
+            miscMenu = _config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("UseEDefense", new CheckBox("使用 E 防御"));
 
-            drawMenu = _config.AddSubMenu("Drawings", "Drawings");
-            drawMenu.Add("QRange", new CheckBox("Q Range"));
-            drawMenu.Add("WRange", new CheckBox("W Range"));
-            drawMenu.Add("WRootRange", new CheckBox("W Root Range"));
-            drawMenu.Add("ERange", new CheckBox("E Range"));
+            drawMenu = _config.AddSubMenu("线圈", "Drawings");
+            drawMenu.Add("QRange", new CheckBox("Q 范围"));
+            drawMenu.Add("WRange", new CheckBox("W 范围"));
+            drawMenu.Add("WRootRange", new CheckBox("W 定身范围"));
+            drawMenu.Add("ERange", new CheckBox("E 范围"));
 
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
             Drawing.OnDraw += Drawing_OnDraw;

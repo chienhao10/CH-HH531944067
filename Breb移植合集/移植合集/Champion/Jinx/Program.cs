@@ -110,44 +110,44 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void LoadMenuOKTW()
         {
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("noti", new CheckBox("Show notification", false));
-            drawMenu.Add("semi", new CheckBox("Semi-manual R target", false));
-            drawMenu.Add("qRange", new CheckBox("Q range", false));
-            drawMenu.Add("wRange", new CheckBox("W range", false));
-            drawMenu.Add("eRange", new CheckBox("E range", false));
-            drawMenu.Add("rRange", new CheckBox("R range", false));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("noti", new CheckBox("显示提示", false));
+            drawMenu.Add("semi", new CheckBox("半自动 R 目标", false));
+            drawMenu.Add("qRange", new CheckBox("Q 范围", false));
+            drawMenu.Add("wRange", new CheckBox("W 范围", false));
+            drawMenu.Add("eRange", new CheckBox("E 范围", false));
+            drawMenu.Add("rRange", new CheckBox("R 范围", false));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 wMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q"));
-            qMenu.Add("Qharras", new CheckBox("Harass Q"));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ", new CheckBox("自动 Q"));
+            qMenu.Add("Qharras", new CheckBox("骚扰 Q"));
 
-            eMenu = Config.AddSubMenu("E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E on CC"));
-            eMenu.Add("comboE", new CheckBox("Auto E in Combo BETA"));
-            eMenu.Add("AGC", new CheckBox("AntiGapcloserE"));
-            eMenu.Add("opsE", new CheckBox("OnProcessSpellCastE"));
-            eMenu.Add("telE", new CheckBox("Auto E teleport"));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("autoE", new CheckBox("自动 E 定身目标"));
+            eMenu.Add("comboE", new CheckBox("连招自动 E （测试）"));
+            eMenu.Add("AGC", new CheckBox("防突进 E"));
+            eMenu.Add("opsE", new CheckBox("技能打断 E"));
+            eMenu.Add("telE", new CheckBox("自动 E 传送"));
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("Rjungle", new CheckBox("R Jungle stealer"));
-            rMenu.Add("Rdragon", new CheckBox("Dragon"));
-            rMenu.Add("Rbaron", new CheckBox("Baron"));
-            rMenu.Add("hitchanceR", new Slider("Hit Chance R", 2, 0, 3));
-            rMenu.Add("useR", new KeyBind("OneKeyToCast R", false, KeyBind.BindTypes.HoldActive, 'T')); //32 == space
-            rMenu.Add("Rturrent", new CheckBox("Don't R under turret"));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("自动 R"));
+            rMenu.Add("Rjungle", new CheckBox("R 偷野"));
+            rMenu.Add("Rdragon", new CheckBox("龙"));
+            rMenu.Add("Rbaron", new CheckBox("男爵"));
+            rMenu.Add("hitchanceR", new Slider("R 命中率", 2, 0, 3));
+            rMenu.Add("useR", new KeyBind("一键制胜 R", false, KeyBind.BindTypes.HoldActive, 'T')); //32 == space
+            rMenu.Add("Rturrent", new CheckBox("塔下不 R"));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQout", new CheckBox("Q farm out range AA"));
-            farmMenu.Add("farmQ", new CheckBox("Q LaneClear Q"));
-            farmMenu.Add("Mana", new Slider("LaneClear Q Mana", 80, 30));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQout", new CheckBox("攻击范围切换 Q"));
+            farmMenu.Add("farmQ", new CheckBox("Q 清线"));
+            farmMenu.Add("Mana", new Slider("Q 清线蓝量", 80, 30));
         }
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)

@@ -136,6 +136,33 @@ namespace Viktor
             else
                 return false;
         }
+
+        private static void CastE(AIHeroClient e)
+        {
+            if (e != null && e.IsVisible)
+            {
+                if (ObjectManager.Player.ServerPosition.Distance(e.ServerPosition) < E.Range)
+                {
+                    var EPred = E.GetPrediction(e, true);
+
+                    if (EPred.Hitchance >= LeagueSharp.Common.HitChance.High)
+                    {
+                        E.Cast(e.ServerPosition, EPred.CastPosition);
+                    }
+                }
+                else if (ObjectManager.Player.ServerPosition.Distance(e.ServerPosition) < 1200)
+                {
+                    var star = ObjectManager.Player.ServerPosition - 540 * (ObjectManager.Player.ServerPosition - e.ServerPosition).Normalized();
+                    var EPre = E.GetPrediction(e, true);
+
+                    if (EPre.Hitchance >= LeagueSharp.Common.HitChance.High)
+                    {
+                        E.Cast(star, EPre.CastPosition);
+                    }
+                }
+            }
+        }
+
         private static void OnCombo()
         {
             bool useQ = getCheckBoxItem(comboMenu, "comboUseQ") && Q.IsReady();
@@ -164,7 +191,7 @@ namespace Viktor
             if (useE)
             {
                 if (Etarget != null)
-                    PredictCastE(Etarget);
+                    CastE(Etarget);
             }
             if (useQ)
             {
@@ -226,7 +253,7 @@ namespace Viktor
                 var target = TargetSelector.GetTarget(maxRangeE, DamageType.Magical);
 
                 if (target != null)
-                    PredictCastE(target);
+                    CastE(target);
             }
         }
 
@@ -381,166 +408,6 @@ namespace Viktor
             }
 
             return false;
-        }
-
-        private static void PredictCastE(AIHeroClient target)
-        {
-            // Helpers
-            bool inRange = Vector2.DistanceSquared(target.ServerPosition.To2D(), player.Position.To2D()) < E.Range * E.Range;
-            PredictionOutput prediction;
-            bool spellCasted = false;
-
-            // Positions
-            Vector3 pos1, pos2;
-
-            // Champs
-            var nearChamps = (from champ in ObjectManager.Get<AIHeroClient>() where champ.IsValidTarget(maxRangeE) && target != champ select champ).ToList();
-            var innerChamps = new List<AIHeroClient>();
-            var outerChamps = new List<AIHeroClient>();
-            foreach (var champ in nearChamps)
-            {
-                if (Vector2.DistanceSquared(champ.ServerPosition.To2D(), player.Position.To2D()) < E.Range * E.Range)
-                    innerChamps.Add(champ);
-                else
-                    outerChamps.Add(champ);
-            }
-
-            // Minions
-            var nearMinions = MinionManager.GetMinions(player.Position, maxRangeE);
-            var innerMinions = new List<Obj_AI_Base>();
-            var outerMinions = new List<Obj_AI_Base>();
-            foreach (var minion in nearMinions)
-            {
-                if (Vector2.DistanceSquared(minion.ServerPosition.To2D(), player.Position.To2D()) < E.Range * E.Range)
-                    innerMinions.Add(minion);
-                else
-                    outerMinions.Add(minion);
-            }
-
-            // Main target in close range
-            if (inRange)
-            {
-                // Get prediction reduced speed, adjusted sourcePosition
-                E.Speed = speedE * 0.9f;
-                E.From = target.ServerPosition + (Vector3.Normalize(player.Position - target.ServerPosition) * (lengthE * 0.1f));
-                prediction = E.GetPrediction(target);
-                E.From = player.Position;
-
-                // Prediction in range, go on
-                if (prediction.CastPosition.Distance(player.Position) < E.Range)
-                    pos1 = prediction.CastPosition;
-                // Prediction not in range, use exact position
-                else
-                {
-                    pos1 = target.ServerPosition;
-                    E.Speed = speedE;
-                }
-
-                // Set new sourcePosition
-                E.From = pos1;
-                E.RangeCheckFrom = pos1;
-
-                // Set new range
-                E.Range = lengthE;
-
-                // Get next target
-                if (nearChamps.Count > 0)
-                {
-                    // Get best champion around
-                    var closeToPrediction = new List<AIHeroClient>();
-                    foreach (var enemy in nearChamps)
-                    {
-                        // Get prediction
-                        prediction = E.GetPrediction(enemy);
-                        // Validate target
-                        if (prediction.Hitchance >= LeagueSharp.Common.HitChance.High && Vector2.DistanceSquared(pos1.To2D(), prediction.CastPosition.To2D()) < (E.Range * E.Range) * 0.8)
-                            closeToPrediction.Add(enemy);
-                    }
-
-                    // Champ found
-                    if (closeToPrediction.Count > 0)
-                    {
-                        // Sort table by health DEC
-                        if (closeToPrediction.Count > 1)
-                            closeToPrediction.Sort((enemy1, enemy2) => enemy2.Health.CompareTo(enemy1.Health));
-
-                        // Set destination
-                        prediction = E.GetPrediction(closeToPrediction[0]);
-                        pos2 = prediction.CastPosition;
-
-                        // Cast spell
-                        CastE(pos1, pos2);
-                        spellCasted = true;
-                    }
-                }
-
-                // Spell not casted
-                if (!spellCasted)
-                    // Try casting on minion
-                    if (!PredictCastMinionE(pos1.To2D()))
-                        // Cast it directly
-                        CastE(pos1, E.GetPrediction(target).CastPosition);
-
-                // Reset spell
-                E.Speed = speedE;
-                E.Range = rangeE;
-                E.From = player.Position;
-                E.RangeCheckFrom = player.Position;
-            }
-
-            // Main target in extended range
-            else
-            {
-                // Radius of the start point to search enemies in
-                float startPointRadius = 150;
-
-                // Get initial start point at the border of cast radius
-                Vector3 startPoint = player.Position + Vector3.Normalize(target.ServerPosition - player.Position) * rangeE;
-
-                // Potential start from postitions
-                var targets = (from champ in nearChamps where Vector2.DistanceSquared(champ.ServerPosition.To2D(), startPoint.To2D()) < startPointRadius * startPointRadius && Vector2.DistanceSquared(player.Position.To2D(), champ.ServerPosition.To2D()) < rangeE * rangeE select champ).ToList();
-                if (targets.Count > 0)
-                {
-                    // Sort table by health DEC
-                    if (targets.Count > 1)
-                        targets.Sort((enemy1, enemy2) => enemy2.Health.CompareTo(enemy1.Health));
-
-                    // Set target
-                    pos1 = targets[0].ServerPosition;
-                }
-                else
-                {
-                    var minionTargets = (from minion in nearMinions where Vector2.DistanceSquared(minion.ServerPosition.To2D(), startPoint.To2D()) < startPointRadius * startPointRadius && Vector2.DistanceSquared(player.Position.To2D(), minion.ServerPosition.To2D()) < rangeE * rangeE select minion).ToList();
-                    if (minionTargets.Count > 0)
-                    {
-                        // Sort table by health DEC
-                        if (minionTargets.Count > 1)
-                            minionTargets.Sort((enemy1, enemy2) => enemy2.Health.CompareTo(enemy1.Health));
-
-                        // Set target
-                        pos1 = minionTargets[0].ServerPosition;
-                    }
-                    else
-                        // Just the regular, calculated start pos
-                        pos1 = startPoint;
-                }
-
-                // Predict target position
-                E.From = pos1;
-                E.Range = lengthE;
-                E.RangeCheckFrom = pos1;
-                prediction = E.GetPrediction(target);
-
-                // Cast the E
-                if (prediction.Hitchance >= LeagueSharp.Common.HitChance.High)
-                    CastE(pos1, prediction.CastPosition);
-
-                // Reset spell
-                E.Range = rangeE;
-                E.From = player.Position;
-                E.RangeCheckFrom = player.Position;
-            }
-
         }
 
         private static void CastE(Vector3 source, Vector3 destination)

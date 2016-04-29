@@ -54,71 +54,71 @@ namespace KhaZix
                 return;
             }
 
-            Menu = MainMenu.AddMenu("Seph KhaZix", "khazix");
+            Menu = MainMenu.AddMenu("Seph 螳螂", "khazix");
             Menu.AddLabel("Ported from Seph's KhaZix - Berb");
             Menu.AddSeparator();
 
-            Menu.AddGroupLabel("Combo");
-            Menu.Add("UseQCombo", new CheckBox("Use Q"));
-            Menu.Add("UseWCombo", new CheckBox("Use W"));
-            Menu.Add("UseECombo", new CheckBox("Use E"));
-            Menu.Add("UseRCombo", new CheckBox("Use R"));
-            Menu.Add("UseItems", new CheckBox("Use Items"));
+            Menu.AddGroupLabel("连招");
+            Menu.Add("UseQCombo", new CheckBox("使用 Q"));
+            Menu.Add("UseWCombo", new CheckBox("使用 W"));
+            Menu.Add("UseECombo", new CheckBox("使用 E"));
+            Menu.Add("UseRCombo", new CheckBox("使用 R"));
+            Menu.Add("UseItems", new CheckBox("使用 物品"));
             Menu.AddSeparator();
-            Menu.Add("UseEGapclose", new CheckBox("Use E To Gapclose for Q"));
-            Menu.Add("UseEGapcloseW", new CheckBox("Use E To Gapclose For W"));
-            Menu.Add("UseRGapcloseW", new CheckBox("Use R after long gapcloses"));
-            Menu.AddSeparator();
-
-            Menu.AddGroupLabel("Harass");
-            Menu.Add("UseQHarass", new CheckBox("Use Q"));
-            Menu.Add("UseWHarass", new CheckBox("Use W"));
-            Menu.Add("Harass.AutoWI", new CheckBox("Auto-W immobile"));
-            Menu.Add("Harass.AutoWD", new CheckBox("Auto W"));
+            Menu.Add("UseEGapclose", new CheckBox("使用 E 接近目标 Q"));
+            Menu.Add("UseEGapcloseW", new CheckBox("使用 E 接近目标 W"));
+            Menu.Add("UseRGapcloseW", new CheckBox("超出距离后再使用 R"));
             Menu.AddSeparator();
 
-            Menu.AddGroupLabel("Lane Clear");
-            Menu.Add("UseQFarm", new CheckBox("Use Q"));
-            Menu.Add("UseEFarm", new CheckBox("Use E"));
-            Menu.Add("UseWFarm", new CheckBox("Use W"));
-            Menu.Add("Farm.WHealth", new Slider("Health % to use W", 80));
-            Menu.Add("UseItemsFarm", new CheckBox("Use Items"));
+            Menu.AddGroupLabel("骚扰");
+            Menu.Add("UseQHarass", new CheckBox("使用 Q"));
+            Menu.Add("UseWHarass", new CheckBox("使用 W"));
+            Menu.Add("Harass.AutoWI", new CheckBox("自动 W 定身的"));
+            Menu.Add("Harass.AutoWD", new CheckBox("自动 W"));
             Menu.AddSeparator();
 
-            Menu.AddGroupLabel("Double Jump");
-            Menu.Add("djumpenabled", new CheckBox("Enabled"));
-            Menu.Add("delayQ", new Slider("Delay on Q", 1, 1, 5));
-            Menu.Add("JEDelay", new Slider("Delay on jumps", 250, 250, 500));
+            Menu.AddGroupLabel("清线");
+            Menu.Add("UseQFarm", new CheckBox("使用 Q"));
+            Menu.Add("UseEFarm", new CheckBox("使用 E"));
+            Menu.Add("UseWFarm", new CheckBox("使用 W"));
+            Menu.Add("Farm.WHealth", new Slider("血量% 使用 W", 80));
+            Menu.Add("UseItemsFarm", new CheckBox("使用 物品"));
+            Menu.AddSeparator();
+
+            Menu.AddGroupLabel("双跳");
+            Menu.Add("djumpenabled", new CheckBox("开启"));
+            Menu.Add("delayQ", new Slider("延迟 Q", 1, 1, 5));
+            Menu.Add("JEDelay", new Slider("延迟跳跃", 250, 250, 500));
             Menu.Add("jumpmode",
-                new Slider("1 : Default (jumps towards your nexus) | 2 : Custom - Settings below", 1, 1, 2));
+                new Slider("1 : 预设 (自己泉水方向) | 2 : 自订 - 以下设置", 1, 1, 2));
             Menu.AddSeparator();
-            Menu.Add("save", new CheckBox("Save Double Jump Abilities"));
-            Menu.Add("noauto", new CheckBox("Wait for Q instead of autos"));
-            Menu.Add("jcursor", new CheckBox("Jump to Cursor (true) or false for script logic"));
-            Menu.Add("jcursor2", new CheckBox("Second Jump to Cursor (true) or false for script logic"));
-            Menu.AddSeparator();
-
-            Menu.AddGroupLabel("Safety");
-            Menu.Add("Safety.Enabled", new CheckBox("Enable Safety Checks"));
-            Menu.Add("Safety.CountCheck", new CheckBox("Min Ally ratio to Enemies to jump"));
-            Menu.Add("Safety.TowerJump", new CheckBox("Avoid Tower Diving"));
-            Menu.Add("Safety.Override", new KeyBind("Safety Override Key", false, KeyBind.BindTypes.HoldActive, 'T'));
-            Menu.Add("Safety.MinHealth", new Slider("Healthy %", 15));
-            Menu.Add("Safety.Ratio", new Slider("Ally:Enemy Ratio (/5)", 1, 0, 5));
-            Menu.Add("Safety.noaainult", new CheckBox("No Autos while Stealth", false));
+            Menu.Add("save", new CheckBox("保留双跳"));
+            Menu.Add("noauto", new CheckBox("等待Q冷却结束"));
+            Menu.Add("jcursor", new CheckBox("第一跳跃至鼠标（脚本逻辑）"));
+            Menu.Add("jcursor2", new CheckBox("第二跳跃至鼠标（脚本逻辑）"));
             Menu.AddSeparator();
 
-            Menu.AddGroupLabel("Kill Steal Settings");
-            Menu.Add("Kson", new CheckBox("Use KillSteal"));
-            Menu.Add("UseQKs", new CheckBox("Use Q"));
-            Menu.Add("UseWKs", new CheckBox("Use W"));
-            Menu.Add("UseEKs", new CheckBox("Use E"));
-            Menu.Add("Ksbypass", new CheckBox("Bypass safety checks for E KS", false));
-            Menu.Add("UseEQKs", new CheckBox("Use EQ in KS"));
-            Menu.Add("UseEWKs", new CheckBox("Use EW in KS"));
-            Menu.Add("UseTiamatKs", new CheckBox("Use items"));
-            Menu.Add("Edelay", new Slider("E Delay (ms)", 0, 0, 300));
-            Menu.Add("UseIgnite", new CheckBox("Use Ignite"));
+            Menu.AddGroupLabel("安全检查");
+            Menu.Add("Safety.Enabled", new CheckBox("开启安全检查"));
+            Menu.Add("Safety.CountCheck", new CheckBox("查看附近友军再跳跃"));
+            Menu.Add("Safety.TowerJump", new CheckBox("防止越塔"));
+            Menu.Add("Safety.Override", new KeyBind("强制开启安全检查", false, KeyBind.BindTypes.HoldActive, 'T'));
+            Menu.Add("Safety.MinHealth", new Slider("血量 %", 15));
+            Menu.Add("Safety.Ratio", new Slider("附近友军 (/5)", 1, 0, 5));
+            Menu.Add("Safety.noaainult", new CheckBox("隐身时不普攻", false));
+            Menu.AddSeparator();
+
+            Menu.AddGroupLabel("抢头");
+            Menu.Add("Kson", new CheckBox("开启抢头"));
+            Menu.Add("UseQKs", new CheckBox("使用 Q"));
+            Menu.Add("UseWKs", new CheckBox("使用 W"));
+            Menu.Add("UseEKs", new CheckBox("使用 E"));
+            Menu.Add("Ksbypass", new CheckBox("无视安全检查，E抢头", false));
+            Menu.Add("UseEQKs", new CheckBox("使用 EQ 抢头"));
+            Menu.Add("UseEWKs", new CheckBox("使用 EW 抢头"));
+            Menu.Add("UseTiamatKs", new CheckBox("使用 items"));
+            Menu.Add("Edelay", new Slider("E 延迟 (毫秒)", 0, 0, 300));
+            Menu.Add("UseIgnite", new CheckBox("使用 点燃"));
             Menu.AddSeparator();
 
             var ign = Player.Spells.FirstOrDefault(o => o.SData.Name == "summonerdot");

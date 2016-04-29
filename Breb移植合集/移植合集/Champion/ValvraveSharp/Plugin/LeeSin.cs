@@ -343,15 +343,14 @@
 
         private static void CastQSmite(AIHeroClient target)
         {
-            var pred = Q.GetPrediction(target, false, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
-            if (pred.Hitchance < Q.MinHitChance)
+            var pred = QELO.GetPrediction(target);
+            if (pred.HitChance < EloBuddy.SDK.Enumerations.HitChance.High)
             {
                 return;
             }
-            var col = pred.GetCollision();
+            var col = pred.CollisionObjects.ToList();
             if (col.Count == 0 || (getCheckBoxItem(comboMenu, "QCol") && Common.CastSmiteKillCollision(col)))
             {
-                //Q.CastIfHitchanceMinimum(target, LeagueSharp.SDK.HitChance.High);
                 QELO.Cast(target);
             }
         }

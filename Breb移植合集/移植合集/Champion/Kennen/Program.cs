@@ -322,51 +322,51 @@ namespace UnderratedAIO.Champions
 
         private void InitMenu()
         {
-            config = MainMenu.AddMenu("Kennen", "Kennen");
+            config = MainMenu.AddMenu("凯南", "Kennen");
 
             // Draw settings
-            drawMenu = config.AddSubMenu("Drawings ", "dsettings");
-            drawMenu.Add("drawqq", new CheckBox("Draw Q range"));
-            drawMenu.Add("drawww", new CheckBox("Draw W range"));
-            drawMenu.Add("drawrr", new CheckBox("Draw R range"));
-            drawMenu.Add("drawrrr", new CheckBox("Draw R activate range"));
-            drawMenu.Add("drawcombo", new CheckBox("Draw combo damage"));
+            drawMenu = config.AddSubMenu("线圈 ", "dsettings");
+            drawMenu.Add("drawqq", new CheckBox("显示 Q 范围"));
+            drawMenu.Add("drawww", new CheckBox("显示 W 范围"));
+            drawMenu.Add("drawrr", new CheckBox("显示 R 范围"));
+            drawMenu.Add("drawrrr", new CheckBox("显示 R 开启范围"));
+            drawMenu.Add("drawcombo", new CheckBox("显示 连招伤害"));
 
             // Combo Settings
-            comboMenu = config.AddSubMenu("Combo ", "csettings");
-            comboMenu.Add("useq", new CheckBox("Use Q"));
-            comboMenu.Add("usew", new CheckBox("Use W"));
-            comboMenu.Add("usee", new CheckBox("Use E"));
-            comboMenu.Add("useemin", new Slider("Min health to E", 50));
-            comboMenu.Add("user", new Slider("Use R min", 4, 1, 5));
-            comboMenu.Add("userLow", new Slider("Or enemies under 75%", 3, 1, 5));
-            comboMenu.Add("usertarget", new CheckBox("Use R in 1v1"));
-            comboMenu.Add("userrange", new Slider("R activate range", 350, 0, 550));
+            comboMenu = config.AddSubMenu("连招 ", "csettings");
+            comboMenu.Add("useq", new CheckBox("使用 Q"));
+            comboMenu.Add("usew", new CheckBox("使用 W"));
+            comboMenu.Add("usee", new CheckBox("使用 E"));
+            comboMenu.Add("useemin", new Slider("最低血量使用 E", 50));
+            comboMenu.Add("user", new Slider("R 最低数量", 4, 1, 5));
+            comboMenu.Add("userLow", new Slider("或者附近敌人血量低于 75%", 3, 1, 5));
+            comboMenu.Add("usertarget", new CheckBox("使用 R 单挑"));
+            comboMenu.Add("userrange", new Slider("R 激活距离", 350, 0, 550));
 
             // Harass Settings
-            harassMenu = config.AddSubMenu("Harass ", "Hcsettings");
-            harassMenu.Add("useqLC", new CheckBox("Use Q"));
-            harassMenu.Add("usewLC", new CheckBox("Use W"));
+            harassMenu = config.AddSubMenu("骚扰 ", "Hcsettings");
+            harassMenu.Add("useqLC", new CheckBox("使用 Q"));
+            harassMenu.Add("usewLC", new CheckBox("使用 W"));
 
             // Clear Settings
-            clearMenu = config.AddSubMenu("Clear ", "Clearsettings");
-            clearMenu.Add("useqClear", new CheckBox("Use Q"));
-            clearMenu.Add("minw", new Slider("Min to W", 3, 1, 8));
-            clearMenu.Add("useeClear", new CheckBox("Use E"));
+            clearMenu = config.AddSubMenu("清线 ", "Clearsettings");
+            clearMenu.Add("useqClear", new CheckBox("使用 Q"));
+            clearMenu.Add("minw", new Slider("最低数量适使用 W", 3, 1, 8));
+            clearMenu.Add("useeClear", new CheckBox("使用 E"));
 
             // Misc Settings
-            miscMenu = config.AddSubMenu("Misc ", "Msettings");
-            miscMenu.Add("Minhelath", new Slider("Use Zhonya under x health", 35));
-            miscMenu.Add("autoq", new CheckBox("Auto Q to prepare stun"));
-            miscMenu.Add("autow", new CheckBox("Auto W to stun"));
-            miscMenu.Add("DmgType", new ComboBox("Damage Type", 0, "AP", "AD"));
+            miscMenu = config.AddSubMenu("杂项 ", "Msettings");
+            miscMenu.Add("Minhelath", new Slider("低于 X 血量使用中亚", 35));
+            miscMenu.Add("autoq", new CheckBox("准备击晕时，自动Q"));
+            miscMenu.Add("autow", new CheckBox("自动 W 晕眩"));
+            miscMenu.Add("DmgType", new ComboBox("伤害类型", 0, "AP", "AD"));
 
-            autoHarassMenu = config.AddSubMenu("Auto Harass", "autoQ");
-            autoHarassMenu.Add("KenAutoQ", new KeyBind("Auto Q toggle", false, KeyBind.BindTypes.PressToggle, 'H'));
-            autoHarassMenu.Add("KenminmanaaQ", new Slider("Keep X% energy", 40, 1));
-            autoHarassMenu.Add("qHit", new Slider("Q hitChance", 4, 1, 4));
+            autoHarassMenu = config.AddSubMenu("自动骚扰", "autoQ");
+            autoHarassMenu.Add("KenAutoQ", new KeyBind("自动 Q 开关", false, KeyBind.BindTypes.PressToggle, 'H'));
+            autoHarassMenu.Add("KenminmanaaQ", new Slider("保留 X% 能量", 40, 1));
+            autoHarassMenu.Add("qHit", new Slider("Q 命中率", 4, 1, 4));
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用封包", false));
         }
     }
 }

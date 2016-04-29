@@ -118,15 +118,14 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
         {
-            if (W.IsReady() && !Program.None && target.IsValidTarget())
+            if (W.IsReady())
             {
                 if (target is AIHeroClient)
                 {
                     var t = target as AIHeroClient;
                     if (Program.Combo && Player.Mana > RMANA + WMANA)
                         W.Cast();
-                    else if (getCheckBoxItem(wMenu, "harasW") && !Player.UnderTurret(true) &&
-                             Player.Mana > RMANA + WMANA + QMANA && getCheckBoxItem(wMenu, "haras" + t.ChampionName))
+                    else if (getCheckBoxItem(wMenu, "harasW") && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && getCheckBoxItem(wMenu, "haras" + t.ChampionName))
                     {
                         W.Cast();
                     }
@@ -134,15 +133,11 @@ namespace OneKeyToWin_AIO_Sebby
                 else
                 {
                     var t = TargetSelector.GetTarget(900, DamageType.Physical);
-                    if (t.IsValidTarget() && getCheckBoxItem(wMenu, "harasW") &&
-                        getCheckBoxItem(wMenu, "haras" + t.ChampionName) && !Player.UnderTurret(true) &&
-                        Player.Mana > RMANA + WMANA + QMANA && t.Distance(target.Position) < 500)
+                    if (t.IsValidTarget() && getCheckBoxItem(wMenu, "harasW") && getCheckBoxItem(wMenu, "haras" + t.ChampionName) && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t.Distance(target.Position) < 500)
                     {
                         W.Cast();
                     }
-
-                    if (target is Obj_AI_Minion && Program.LaneClear && getCheckBoxItem(farmMenu, "farmW") &&
-                        Player.ManaPercent > getSliderItem(farmMenu, "Mana") && !Player.UnderTurret(true))
+                    if (target is Obj_AI_Minion && Program.LaneClear && getCheckBoxItem(farmMenu, "farmW") && Player.ManaPercent > getSliderItem(farmMenu, "Mana") && !Player.UnderTurret(true))
                     {
                         var minions = Cache.GetMinions(target.Position, 500);
                         if (minions.Count >= getSliderItem(farmMenu, "LCminions"))
@@ -240,8 +235,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Q.Cast(enemy);
                 }
             }
-            else if (Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") &&
-                     getCheckBoxItem(farmMenu, "farmQ") && Player.Mana > RMANA + QMANA)
+            else if (Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") && getCheckBoxItem(farmMenu, "farmQ") && Player.Mana > RMANA + QMANA)
             {
                 var minionList = Cache.GetMinions(Player.ServerPosition, Q.Range);
                 var farmPosition = Q.GetLineFarmLocation(minionList, Q.Width);

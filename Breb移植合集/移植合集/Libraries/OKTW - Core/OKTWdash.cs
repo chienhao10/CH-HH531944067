@@ -20,7 +20,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
         {
             DashSpell = qwer;
 
-            Sub = Config.AddSubMenu(qwer.Slot + " Config");
+            Sub = Config.AddSubMenu(qwer.Slot + " Dash Config");
             Sub.Add("DashMode", new Slider("Dash MODE (0 : Cursor | 1 : Side | 2 : Safe Pos)", 2, 0, 2));
             Sub.Add("EnemyCheck", new Slider("Block dash in x enemies", 3, 0, 5));
             Sub.Add("WallCheck", new CheckBox("Block dash in wall"));

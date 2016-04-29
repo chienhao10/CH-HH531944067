@@ -133,59 +133,59 @@ namespace ElCorki
 
         public static void Initialize()
         {
-            _menu = MainMenu.AddMenu("ElCorki", "menu");
+            _menu = MainMenu.AddMenu("El飞机", "menu");
 
-            comboMenu = _menu.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("ElCorki.Combo.Q", new CheckBox("Use Q"));
-            comboMenu.Add("ElCorki.Combo.E", new CheckBox("Use E"));
-            comboMenu.Add("ElCorki.Combo.R", new CheckBox("Use R"));
-            comboMenu.Add("ElCorki.Combo.Ignite", new CheckBox("Use Ignite"));
-            comboMenu.Add("ElCorki.Combo.RStacks", new Slider("Keep R Stacks", 0, 0, 7));
-            comboMenu.Add("ElCorki.hitChance", new Slider("Hitchance Q (Lowest Hitchance to Highest) : ", 0, 0, 3));
+            comboMenu = _menu.AddSubMenu("连招", "Combo");
+            comboMenu.Add("ElCorki.Combo.Q", new CheckBox("使用 Q"));
+            comboMenu.Add("ElCorki.Combo.E", new CheckBox("使用 E"));
+            comboMenu.Add("ElCorki.Combo.R", new CheckBox("使用 R"));
+            comboMenu.Add("ElCorki.Combo.Ignite", new CheckBox("使用 点燃"));
+            comboMenu.Add("ElCorki.Combo.RStacks", new Slider("保留 R 层数", 0, 0, 7));
+            comboMenu.Add("ElCorki.hitChance", new Slider("Q 命中率 (最低至最高) : ", 0, 0, 3));
 
-            harassMenu = _menu.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("ElCorki.Harass.Q", new CheckBox("Use Q"));
-            harassMenu.Add("ElCorki.Harass.E", new CheckBox("Use E", false));
-            harassMenu.Add("ElCorki.Harass.R", new CheckBox("Use R"));
-            harassMenu.Add("ElCorki.Harass.RStacks", new Slider("Keep R Stacks", 0, 0, 7));
-            harassMenu.Add("ElCorki.harass.mana2", new Slider("Harass mana", 55));
+            harassMenu = _menu.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("ElCorki.Harass.Q", new CheckBox("使用 Q"));
+            harassMenu.Add("ElCorki.Harass.E", new CheckBox("使用 E", false));
+            harassMenu.Add("ElCorki.Harass.R", new CheckBox("使用 R"));
+            harassMenu.Add("ElCorki.Harass.RStacks", new Slider("保留 R 层数", 0, 0, 7));
+            harassMenu.Add("ElCorki.harass.mana2", new Slider("骚扰蓝量", 55));
             harassMenu.AddSeparator();
 
-            harassMenu.AddGroupLabel("Auto Harass");
+            harassMenu.AddGroupLabel("自动骚扰");
             harassMenu.Add("ElCorki.AutoHarass",
                 new KeyBind("[Toggle] Auto harass", false, KeyBind.BindTypes.PressToggle, 'U'));
-            harassMenu.Add("ElCorki.UseQAutoHarass", new CheckBox("Use Q"));
-            harassMenu.Add("ElCorki.UseRAutoHarass", new CheckBox("Use R"));
-            harassMenu.Add("ElCorki.harass.mana", new Slider("Auto harass mana", 55));
+            harassMenu.Add("ElCorki.UseQAutoHarass", new CheckBox("使用 Q"));
+            harassMenu.Add("ElCorki.UseRAutoHarass", new CheckBox("使用 R"));
+            harassMenu.Add("ElCorki.harass.mana", new Slider("自动骚扰蓝量", 55));
 
-            laneclearMenu = _menu.AddSubMenu("Clear", "Clear");
-            laneclearMenu.AddGroupLabel("Lane Clear");
-            laneclearMenu.Add("useQFarm", new CheckBox("Use Q"));
-            laneclearMenu.Add("ElCorki.Count.Minions", new Slider("Killable minions with Q >=", 2, 1, 5));
-            laneclearMenu.Add("useEFarm", new CheckBox("Use E"));
-            laneclearMenu.Add("ElCorki.Count.Minions.E", new Slider("Killable minions with E >=", 2, 1, 5));
-            laneclearMenu.Add("useRFarm", new CheckBox("Use R"));
-            laneclearMenu.Add("ElCorki.Count.Minions.R", new Slider("Killable minions with R >=", 2, 1, 5));
+            laneclearMenu = _menu.AddSubMenu("推线设置", "Clear");
+            laneclearMenu.AddGroupLabel("清线");
+            laneclearMenu.Add("useQFarm", new CheckBox("使用 Q"));
+            laneclearMenu.Add("ElCorki.Count.Minions", new Slider("使用Q,可击杀小兵数 >= X", 2, 1, 5));
+            laneclearMenu.Add("useEFarm", new CheckBox("使用 E"));
+            laneclearMenu.Add("ElCorki.Count.Minions.E", new Slider("使用E,可击杀小兵数 >= X", 2, 1, 5));
+            laneclearMenu.Add("useRFarm", new CheckBox("使用 R"));
+            laneclearMenu.Add("ElCorki.Count.Minions.R", new Slider("使用R,可击杀小兵数 >= X", 2, 1, 5));
             laneclearMenu.AddSeparator();
 
-            laneclearMenu.AddGroupLabel("Jungle Clear");
-            laneclearMenu.Add("useQFarmJungle", new CheckBox("Use Q in jungle"));
-            laneclearMenu.Add("useEFarmJungle", new CheckBox("Use E in jungle"));
-            laneclearMenu.Add("useRFarmJungle", new CheckBox("Use R in jungle"));
+            laneclearMenu.AddGroupLabel("清野");
+            laneclearMenu.Add("useQFarmJungle", new CheckBox("使用 Q"));
+            laneclearMenu.Add("useEFarmJungle", new CheckBox("使用 E"));
+            laneclearMenu.Add("useRFarmJungle", new CheckBox("使用 R"));
             laneclearMenu.AddSeparator();
 
-            laneclearMenu.AddGroupLabel("Both");
-            laneclearMenu.Add("minmanaclear", new Slider("Mana needed to clear ", 55));
+            laneclearMenu.AddGroupLabel("蓝量设置");
+            laneclearMenu.Add("minmanaclear", new Slider("清野/线蓝量设置 ", 55));
 
             //ElCorki.Misc
-            miscMenu = _menu.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("ElCorki.Draw.off", new CheckBox("Turn drawings off", false));
-            miscMenu.Add("ElCorki.Draw.Q", new CheckBox("Draw Q"));
-            miscMenu.Add("ElCorki.Draw.W", new CheckBox("Draw W"));
-            miscMenu.Add("ElCorki.Draw.E", new CheckBox("Draw E"));
-            miscMenu.Add("ElCorki.Draw.R", new CheckBox("Draw R"));
-            miscMenu.Add("ElCorki.misc.ks", new CheckBox("Killsteal mode"));
-            miscMenu.Add("ElCorki.misc.junglesteal", new CheckBox("Jungle steal mode"));
+            miscMenu = _menu.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("ElCorki.Draw.off", new CheckBox("关闭线圈", false));
+            miscMenu.Add("ElCorki.Draw.Q", new CheckBox("显示 Q"));
+            miscMenu.Add("ElCorki.Draw.W", new CheckBox("显示 W"));
+            miscMenu.Add("ElCorki.Draw.E", new CheckBox("显示 E"));
+            miscMenu.Add("ElCorki.Draw.R", new CheckBox("显示 R"));
+            miscMenu.Add("ElCorki.misc.ks", new CheckBox("偷野怪"));
+            miscMenu.Add("ElCorki.misc.junglesteal", new CheckBox("偷野模式"));
 
             Console.WriteLine(Resources.Corki_Initialize_Menu_Loaded);
         }

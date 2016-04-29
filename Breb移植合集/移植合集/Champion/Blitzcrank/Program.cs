@@ -67,55 +67,55 @@ namespace PortAIO.Champion.Blitzcrank
         {
             try
             {
-                _Menu = MainMenu.AddMenu("Blitzcrank", "Blitzcrank");
+                _Menu = MainMenu.AddMenu("机器人", "Blitzcrank");
 
-                ComboMenu = _Menu.AddSubMenu("Combo", "Combo");
-                ComboMenu.Add("Blitzcrank_CUse_Q", new CheckBox("Use Q"));
-                ComboMenu.Add("Blitzcrank_CUse_W", new CheckBox("Use W"));
-                ComboMenu.Add("Blitzcrank_CUse_E", new CheckBox("Use E"));
-                ComboMenu.Add("Blitzcrank_CUse_R", new CheckBox("Use R"));
+                ComboMenu = _Menu.AddSubMenu("连招", "Combo");
+                ComboMenu.Add("Blitzcrank_CUse_Q", new CheckBox("使用 Q"));
+                ComboMenu.Add("Blitzcrank_CUse_W", new CheckBox("使用 W"));
+                ComboMenu.Add("Blitzcrank_CUse_E", new CheckBox("使用 E"));
+                ComboMenu.Add("Blitzcrank_CUse_R", new CheckBox("使用 R"));
                 ComboMenu.AddSeparator();
-                ComboMenu.AddLabel("1 : Out of Range");
-                ComboMenu.AddLabel("2 : Impossible");
-                ComboMenu.AddLabel("3 : Low");
-                ComboMenu.AddLabel("4 : Medium");
-                ComboMenu.AddLabel("5 : High");
-                ComboMenu.AddLabel("6 : Very High");
-                ComboMenu.Add("Blitzcrank_CUseQ_Hit", new Slider("Q HitChance", 6, 1, 6));
+                ComboMenu.AddLabel("1 : 范围外");
+                ComboMenu.AddLabel("2 : 不可能");
+                ComboMenu.AddLabel("3 : 低");
+                ComboMenu.AddLabel("4 : 中");
+                ComboMenu.AddLabel("5 : 高");
+                ComboMenu.AddLabel("6 : 非常高");
+                ComboMenu.Add("Blitzcrank_CUseQ_Hit", new Slider("Q 命中率", 6, 1, 6));
 
-                HarassMenu = _Menu.AddSubMenu("Harass", "Harass");
-                HarassMenu.Add("Blitzcrank_HUse_Q", new CheckBox("Use Q"));
-                HarassMenu.Add("Blitzcrank_HUse_W", new CheckBox("Use W"));
-                HarassMenu.Add("Blitzcrank_HUse_E", new CheckBox("Use E"));
-                HarassMenu.Add("Blitzcrank_AManarate", new Slider("Mana %", 20));
+                HarassMenu = _Menu.AddSubMenu("骚扰", "Harass");
+                HarassMenu.Add("Blitzcrank_HUse_Q", new CheckBox("使用 Q"));
+                HarassMenu.Add("Blitzcrank_HUse_W", new CheckBox("使用 W"));
+                HarassMenu.Add("Blitzcrank_HUse_E", new CheckBox("使用 E"));
+                HarassMenu.Add("Blitzcrank_AManarate", new Slider("蓝量 %", 20));
 
-                KSMenu = _Menu.AddSubMenu("KillSteal", "KillSteal");
-                KSMenu.Add("Blitzcran_KUse_Q", new CheckBox("Use Q"));
-                KSMenu.Add("Blitzcran_KUse_R", new CheckBox("Use R"));
+                KSMenu = _Menu.AddSubMenu("抢头", "KillSteal");
+                KSMenu.Add("Blitzcran_KUse_Q", new CheckBox("使用 Q"));
+                KSMenu.Add("Blitzcran_KUse_R", new CheckBox("使用 R"));
 
-                MiscMenu = _Menu.AddSubMenu("Misc", "Misc");
-                MiscMenu.AddGroupLabel("Grab Settings");
+                MiscMenu = _Menu.AddSubMenu("杂项", "Misc");
+                MiscMenu.AddGroupLabel("抓人设置");
                 foreach (var enemy in ObjectManager.Get<AIHeroClient>())
                 {
                     if (enemy.Team != Player.Team)
                     {
                         MiscMenu.Add("Blitzcrank_GrabSelect" + enemy.ChampionName,
-                            new Slider("Grab Mode (0 : Enable | 1 : Don't | 2 : Auto) " + enemy.ChampionName, 0, 0, 2));
+                            new Slider("抓人模式 (0 : 开启 | 1 : 不抓 | 2 : 自动) " + enemy.ChampionName, 0, 0, 2));
                         MiscMenu.AddSeparator();
                     }
                 }
                 MiscMenu.AddSeparator();
-                MiscMenu.AddGroupLabel("Interrupt Settings");
-                MiscMenu.Add("Blitzcrank_InterQ", new CheckBox("Use Q"));
-                MiscMenu.Add("Blitzcrank_InterE", new CheckBox("Use E"));
-                MiscMenu.Add("Blitzcrank_InterR", new CheckBox("Use R"));
+                MiscMenu.AddGroupLabel("技能打断");
+                MiscMenu.Add("Blitzcrank_InterQ", new CheckBox("使用 Q"));
+                MiscMenu.Add("Blitzcrank_InterE", new CheckBox("使用 E"));
+                MiscMenu.Add("Blitzcrank_InterR", new CheckBox("使用 R"));
                 MiscMenu.AddSeparator();
-                MiscMenu.Add("Blitzcrank_GrabDash", new CheckBox("Grab to dashing enemy"));
+                MiscMenu.Add("Blitzcrank_GrabDash", new CheckBox("抓冲刺的敌人"));
 
-                DrawMenu = _Menu.AddSubMenu("Draw", "Draw");
-                DrawMenu.Add("Blitzcrank_Draw_Q", new CheckBox("Use Q", false));
-                DrawMenu.Add("Blitzcrank_Draw_R", new CheckBox("Use R", false));
-                DrawMenu.Add("Blitzcrank_Indicator", new CheckBox("Use Damage Indicator"));
+                DrawMenu = _Menu.AddSubMenu("线圈", "Draw");
+                DrawMenu.Add("Blitzcrank_Draw_Q", new CheckBox("使用 Q", false));
+                DrawMenu.Add("Blitzcrank_Draw_R", new CheckBox("使用 R", false));
+                DrawMenu.Add("Blitzcrank_Indicator", new CheckBox("显示伤害指示器"));
             }
             catch (Exception)
             {

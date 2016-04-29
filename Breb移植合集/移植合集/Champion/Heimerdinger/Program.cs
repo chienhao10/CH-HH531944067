@@ -102,34 +102,34 @@ namespace Two_Girls_One_Donger
             #region Menu
 
             //Menu
-            Config = MainMenu.AddMenu(Champion, "2Girls1Donger");
+            Config = MainMenu.AddMenu(Champion, "大头");
 
             //LaneClear
-            laneClearMenu = Config.AddSubMenu("Laneclear", "Laneclear");
-            laneClearMenu.Add("LaneclearW", new CheckBox("Use W"));
-            laneClearMenu.Add("LaneclearE", new CheckBox("Use E", false));
-            laneClearMenu.Add("LaneMana", new Slider("Minimum Mana for clear", 30));
+            laneClearMenu = Config.AddSubMenu("清线", "Laneclear");
+            laneClearMenu.Add("LaneclearW", new CheckBox("使用 W"));
+            laneClearMenu.Add("LaneclearE", new CheckBox("使用 E", false));
+            laneClearMenu.Add("LaneMana", new Slider("清线最低蓝量", 30));
 
             //C-C-C-Combo
-            comboMenu = Config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("UseQCombo", new CheckBox("Use Q"));
-            comboMenu.Add("UseQRCombo", new CheckBox("Use Q Upgrade"));
-            comboMenu.Add("QRcount", new Slider("Minimum Enemies for Q upgrade", 2, 1, 5));
-            comboMenu.Add("UseWCombo", new CheckBox("Use W"));
-            comboMenu.Add("UseWRCombo", new CheckBox("Use W Upgrade"));
-            comboMenu.Add("UseECombo", new CheckBox("Use E"));
-            comboMenu.Add("UseRCombo", new CheckBox("Use R"));
-            comboMenu.Add("UseERCombo", new CheckBox("Use E Upgrade"));
-            comboMenu.Add("ERcount", new Slider("Minimum Enemies to Stun", 3, 1, 5));
-            comboMenu.Add("KS", new CheckBox("Killsteal"));
-            comboMenu.Add("ZhoUlt", new CheckBox("Ult + Q > Zhonyas"));
+            comboMenu = Config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("UseQCombo", new CheckBox("使用 Q"));
+            comboMenu.Add("UseQRCombo", new CheckBox("使用 Q 升级"));
+            comboMenu.Add("QRcount", new Slider("最少敌人数量使用 Q.升级", 2, 1, 5));
+            comboMenu.Add("UseWCombo", new CheckBox("使用 W"));
+            comboMenu.Add("UseWRCombo", new CheckBox("使用 W.升级"));
+            comboMenu.Add("UseECombo", new CheckBox("使用 E"));
+            comboMenu.Add("UseRCombo", new CheckBox("使用 R"));
+            comboMenu.Add("UseERCombo", new CheckBox("使用 E.升级"));
+            comboMenu.Add("ERcount", new Slider("最低敌人数量进行晕眩", 3, 1, 5));
+            comboMenu.Add("KS", new CheckBox("抢头"));
+            comboMenu.Add("ZhoUlt", new CheckBox("大招 + Q > 中亚"));
 
             //MISCMENU
-            miscMenu = Config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("AntiGap", new CheckBox("Anti Gapcloser - E", false));
-            miscMenu.Add("Interrupt", new CheckBox("Interrupt Spells - E", false));
-            miscMenu.Add("AutoHarras", new KeyBind("Auto Harass W", false, KeyBind.BindTypes.PressToggle, 'J'));
-            miscMenu.Add("ManaW", new Slider("Auto Harass if % MP >", 30, 1));
+            miscMenu = Config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("AntiGap", new CheckBox("防突进 - E", false));
+            miscMenu.Add("Interrupt", new CheckBox("技能打断 - E", false));
+            miscMenu.Add("AutoHarras", new KeyBind("自动骚扰 W", false, KeyBind.BindTypes.PressToggle, 'J'));
+            miscMenu.Add("ManaW", new Slider("自动骚扰如果蓝量% >", 30, 1));
 
             // Interruption
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;

@@ -70,49 +70,49 @@ namespace BrianSharp.Plugin
             Q2.SetSkillshot(0.25f, 140, 1450, false, SkillshotType.SkillshotLine);
             E.SetSkillshot(0.5f, 175, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
-            config = MainMenu.AddMenu("Jarvin IV", Player.ChampionName + "_Plugin");
+            config = MainMenu.AddMenu("皇子", Player.ChampionName + "_Plugin");
 
-            comboMenu = config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("Q", new CheckBox("Use Q"));
-            comboMenu.Add("QFlagRange", new Slider("-> To Flag If Flag <", 400, 100, 880));
-            comboMenu.Add("W", new CheckBox("Use W"));
-            comboMenu.Add("WHpU", new Slider("-> If Player Hp <", 40));
-            comboMenu.Add("WCountA", new Slider("-> Or Enemy >=", 2, 1, 5));
-            comboMenu.Add("E", new CheckBox("Use E"));
-            comboMenu.Add("EQ", new CheckBox("-> Save E For EQ (Q Must On)"));
-            comboMenu.Add("R", new CheckBox("Use R"));
-            comboMenu.Add("RHpU", new Slider("-> If Enemy Hp <", 40));
-            comboMenu.Add("RCountA", new Slider("-> Or Enemy >=", 2, 1, 5));
+            comboMenu = config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("Q", new CheckBox("使用 Q"));
+            comboMenu.Add("QFlagRange", new Slider("-> 有旗子的话 Q <", 400, 100, 880));
+            comboMenu.Add("W", new CheckBox("使用 W"));
+            comboMenu.Add("WHpU", new Slider("-> 如果玩家HP <", 40));
+            comboMenu.Add("WCountA", new Slider("-> 或者敌人数量 >=", 2, 1, 5));
+            comboMenu.Add("E", new CheckBox("使用 E"));
+            comboMenu.Add("EQ", new CheckBox("-> 保留 E (Q 必须开启)"));
+            comboMenu.Add("R", new CheckBox("使用 R"));
+            comboMenu.Add("RHpU", new Slider("-> 如果敌人Hp <", 40));
+            comboMenu.Add("RCountA", new Slider("-> 或则敌人数量 >=", 2, 1, 5));
 
-            harassMenu = config.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("AutoQ", new KeyBind("Auto Q", false, KeyBind.BindTypes.PressToggle, 'H'));
-            harassMenu.Add("AutoQMpA", new Slider("-> If Mp >=", 50));
-            harassMenu.Add("Q", new CheckBox("Use Q"));
+            harassMenu = config.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("AutoQ", new KeyBind("自动 Q", false, KeyBind.BindTypes.PressToggle, 'H'));
+            harassMenu.Add("AutoQMpA", new Slider("-> 如果蓝量 >=", 50));
+            harassMenu.Add("Q", new CheckBox("使用 Q"));
 
-            clearMenu = config.AddSubMenu("Clear", "Clear");
-            clearMenu.Add("Q", new CheckBox("Use Q"));
-            clearMenu.Add("W", new CheckBox("Use W"));
-            clearMenu.Add("WHpU", new Slider("-> If Hp <", 40));
-            clearMenu.Add("E", new CheckBox("Use E"));
+            clearMenu = config.AddSubMenu("清线", "Clear");
+            clearMenu.Add("Q", new CheckBox("使用 Q"));
+            clearMenu.Add("W", new CheckBox("使用 W"));
+            clearMenu.Add("WHpU", new Slider("-> 如果 Hp <", 40));
+            clearMenu.Add("E", new CheckBox("使用 E"));
 
-            lastHitMenu = config.AddSubMenu("Last Hit", "LastHit");
-            lastHitMenu.Add("Q", new CheckBox("Use Q"));
+            lastHitMenu = config.AddSubMenu("尾兵", "LastHit");
+            lastHitMenu.Add("Q", new CheckBox("使用 Q"));
 
-            fleeMenu = config.AddSubMenu("Flee", "Flee");
-            fleeMenu.Add("EQ", new CheckBox("Use EQ"));
-            fleeMenu.Add("W", new CheckBox("Use W To Slow Enemy"));
+            fleeMenu = config.AddSubMenu("逃跑", "Flee");
+            fleeMenu.Add("EQ", new CheckBox("使用 EQ"));
+            fleeMenu.Add("W", new CheckBox("使用 W 减速敌人"));
 
-            miscMenu = config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("Packet", new CheckBox("Packets?"));
+            miscMenu = config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("Packet", new CheckBox("封包?"));
             miscMenu.AddSeparator();
-            miscMenu.AddGroupLabel("Kill Steal Settings");
-            miscMenu.Add("Q", new CheckBox("Use Q"));
-            miscMenu.Add("E", new CheckBox("Use E"));
-            miscMenu.Add("R", new CheckBox("Use R"));
+            miscMenu.AddGroupLabel("抢头设置");
+            miscMenu.Add("Q", new CheckBox("使用 Q"));
+            miscMenu.Add("E", new CheckBox("使用 E"));
+            miscMenu.Add("R", new CheckBox("使用 R"));
             miscMenu.AddSeparator();
 
-            miscMenu.AddGroupLabel("Interrupt");
-            miscMenu.Add("EQ", new CheckBox("Use EQ"));
+            miscMenu.AddGroupLabel("技能打断");
+            miscMenu.Add("EQ", new CheckBox("使用 EQ"));
             foreach (
                 var spell in
                     Interrupter.Spells.Where(i => HeroManager.Enemies.Any(a => i.ChampionName == a.ChampionName)))
@@ -121,11 +121,11 @@ namespace BrianSharp.Plugin
                     new CheckBox("-> Skill " + spell.Slot + " Of " + spell.ChampionName));
             }
 
-            drawMenu = config.AddSubMenu("Draw", "Draw");
-            drawMenu.Add("Q", new CheckBox("Q Range"));
-            drawMenu.Add("W", new CheckBox("W Range"));
-            drawMenu.Add("E", new CheckBox("E Range"));
-            drawMenu.Add("R", new CheckBox("R Range"));
+            drawMenu = config.AddSubMenu("线圈", "Draw");
+            drawMenu.Add("Q", new CheckBox("Q 范围"));
+            drawMenu.Add("W", new CheckBox("W 范围"));
+            drawMenu.Add("E", new CheckBox("E 范围"));
+            drawMenu.Add("R", new CheckBox("R 范围"));
 
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;

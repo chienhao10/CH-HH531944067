@@ -402,8 +402,8 @@ namespace IKalista
                                 Drawing.WorldToScreen(source.Position)[1],
                                 currentPercentage >= 100 ? Color.Gold : Color.White,
                                 currentPercentage >= 100
-                                    ? "Killable With E"
-                                    : "Current Damage: " + updatedCurrentPercentage + "%");
+                                    ? "E可击杀"
+                                    : "当前伤害: " + updatedCurrentPercentage + "%");
                         }
                     }
 
@@ -490,16 +490,16 @@ namespace IKalista
                 return;
             }
 
-            balistaMenu = this.menu.AddSubMenu("Balista");
-            balistaMenu.AddGroupLabel("Disabled Targets");
+            balistaMenu = this.menu.AddSubMenu("机器人合体技");
+            balistaMenu.AddGroupLabel("屏蔽目标");
             foreach (var hero in HeroManager.Enemies.Where(x => x.IsValid))
             {
-                balistaMenu.Add("disable" + hero.ChampionName, new CheckBox("Disable " + hero.ChampionName, false));
+                balistaMenu.Add("disable" + hero.ChampionName, new CheckBox("屏蔽 " + hero.ChampionName, false));
             }
 
-            balistaMenu.Add("minRange", new Slider("Min Range", 700, 100, 1450));
-            balistaMenu.Add("maxRange", new Slider("Max Range", 1500, 100, 1500));
-            balistaMenu.Add("useBalista", new CheckBox("Use Balista"));
+            balistaMenu.Add("minRange", new Slider("最低范围", 700, 100, 1450));
+            balistaMenu.Add("maxRange", new Slider("最高范围", 1500, 100, 1500));
+            balistaMenu.Add("useBalista", new CheckBox("使用合体技"));
         }
 
         /// <summary>
@@ -533,57 +533,57 @@ namespace IKalista
         /// </summary>
         private void InitMenu()
         {
-            this.menu = MainMenu.AddMenu("iKalista:Rework", "Kalista");
+            this.menu = MainMenu.AddMenu("i滑板鞋:重做版", "Kalista");
 
-            comboMenu = this.menu.AddSubMenu("Combo Options");
-            comboMenu.Add("useQ", new CheckBox("Use Q"));
-            comboMenu.Add("useQMin", new CheckBox("Q > Minon Combo"));
-            comboMenu.Add("useE", new CheckBox("Use E"));
-            comboMenu.Add("eLeaving", new CheckBox("Auto E Leaving"));
-            comboMenu.Add("ePercent", new Slider("Min Percent to E Leaving", 50, 10, 100));
-            comboMenu.Add("minStacks", new Slider("Min Stacks E", 10, 5, 20));
-            comboMenu.Add("eDamageReduction", new Slider("Damage Reduction", 20, 0, 100));
-            comboMenu.Add("eDeath", new CheckBox("E Before Death"));
-            comboMenu.Add("eDeathC", new Slider("E Death Damage %", 20, 10, 100));
-            comboMenu.Add("eHealth", new Slider("Health To E Death %", 15, 5, 50));
-            comboMenu.Add("saveAllyR", new CheckBox("Save Ally with R"));
-            comboMenu.Add("allyPercent", new Slider("Save Ally Percentage", 20, 0, 100));
-            comboMenu.Add("saveManaR", new CheckBox("Save Mana For Ultimate"));
+            comboMenu = this.menu.AddSubMenu("连招");
+            comboMenu.Add("useQ", new CheckBox("使用 Q"));
+            comboMenu.Add("useQMin", new CheckBox("Q > 小兵"));
+            comboMenu.Add("useE", new CheckBox("使用 E"));
+            comboMenu.Add("eLeaving", new CheckBox("自动放E"));
+            comboMenu.Add("ePercent", new Slider("最低蓝量使用E", 50, 10, 100));
+            comboMenu.Add("minStacks", new Slider("最低 E叠加", 10, 5, 20));
+            comboMenu.Add("eDamageReduction", new Slider("伤害减少计算", 20, 0, 100));
+            comboMenu.Add("eDeath", new CheckBox("死亡前 E"));
+            comboMenu.Add("eDeathC", new Slider("E 死亡前伤害 %", 20, 10, 100));
+            comboMenu.Add("eHealth", new Slider("血量% 时死亡前E", 15, 5, 50));
+            comboMenu.Add("saveAllyR", new CheckBox("R 拯救队友"));
+            comboMenu.Add("allyPercent", new Slider("队友血量百分比", 20, 0, 100));
+            comboMenu.Add("saveManaR", new CheckBox("为大招保留蓝"));
 
-            harassMenu = this.menu.AddSubMenu("Harass Options");
-            harassMenu.Add("useQH", new CheckBox("Use Q"));
-            harassMenu.Add("useEH", new CheckBox("Use E"));
-            harassMenu.Add("harassStacks", new Slider("Min Stacks for E", 6, 2, 15));
-            harassMenu.Add("useEMin", new CheckBox("Use Minion Harass"));
+            harassMenu = this.menu.AddSubMenu("骚扰");
+            harassMenu.Add("useQH", new CheckBox("使用 Q"));
+            harassMenu.Add("useEH", new CheckBox("使用 E"));
+            harassMenu.Add("harassStacks", new Slider("最低 E叠加", 6, 2, 15));
+            harassMenu.Add("useEMin", new CheckBox("使用 在小兵身上"));
 
-            laneClearMenu = this.menu.AddSubMenu("Laneclear Options");
-            laneClearMenu.Add("useQLC", new CheckBox("Use Q"));
-            laneClearMenu.Add("minHitQ", new Slider("Q Minions Killed", 3, 1, 7));
-            laneClearMenu.Add("useELC", new CheckBox("Use E"));
-            laneClearMenu.Add("minLC", new CheckBox("Minion Harass"));
-            laneClearMenu.Add("eUnkillable", new CheckBox("E Unkillable Minions"));
-            laneClearMenu.Add("qKillable", new CheckBox("Q Unkillable if no buff"));
-            laneClearMenu.Add("eHit", new Slider("Min Minions E", 4, 2, 10));
+            laneClearMenu = this.menu.AddSubMenu("清线");
+            laneClearMenu.Add("useQLC", new CheckBox("使用 Q"));
+            laneClearMenu.Add("minHitQ", new Slider("Q 可击杀数量", 3, 1, 7));
+            laneClearMenu.Add("useELC", new CheckBox("使用 E"));
+            laneClearMenu.Add("minLC", new CheckBox("小兵骚扰"));
+            laneClearMenu.Add("eUnkillable", new CheckBox("E, 不可击杀小兵"));
+            laneClearMenu.Add("qKillable", new CheckBox("Q, 不可击杀小兵（如果无冷却）"));
+            laneClearMenu.Add("eHit", new Slider("最低小兵 E", 4, 2, 10));
 
             this.InitializeBalista();
 
-            miscMenu = this.menu.AddSubMenu("Misc Options");
-            miscMenu.Add("fleeKey", new KeyBind("Flee Key", false, KeyBind.BindTypes.HoldActive, 'G'));
-            miscMenu.Add("useJungleSteal", new CheckBox("Enabled Jungle Steal"));
-            miscMenu.Add("jungStealMode", new ComboBox("Steal Mode", 0, "Jungle Mobs", "Siege Minions | Super Minions", "Both"));
-            miscMenu.Add("eDamageType", new ComboBox("E Calc Method", 0, "Common", "Custom"));
-            miscMenu.Add("qMana", new CheckBox("Save Mana For E"));
-            miscMenu.Add("sentBaron", new KeyBind("Sentinel Baron", false, KeyBind.BindTypes.HoldActive, 'T'));
-            miscMenu.Add("sentDragon", new KeyBind("Sentinel Dragon", false, KeyBind.BindTypes.HoldActive, 'Y'));
-            miscMenu.Add("autoTrinket", new CheckBox("Auto Blue Trinket"));
-            miscMenu.Add("exploit", new CheckBox("Exploit ? ", false));
+            miscMenu = this.menu.AddSubMenu("杂项");
+            miscMenu.Add("fleeKey", new KeyBind("逃跑按键", false, KeyBind.BindTypes.HoldActive, 'G'));
+            miscMenu.Add("useJungleSteal", new CheckBox("开启偷野"));
+            miscMenu.Add("jungStealMode", new ComboBox("偷野模式", 0, "野怪", "炮兵 | 超级兵", "两者"));
+            miscMenu.Add("eDamageType", new ComboBox("E 计算模式", 0, "普通", "自订"));
+            miscMenu.Add("qMana", new CheckBox("为E保留蓝"));
+            miscMenu.Add("sentBaron", new KeyBind("男爵 W", false, KeyBind.BindTypes.HoldActive, 'T'));
+            miscMenu.Add("sentDragon", new KeyBind("龙 W", false, KeyBind.BindTypes.HoldActive, 'Y'));
+            miscMenu.Add("autoTrinket", new CheckBox("自动蓝眼"));
+            miscMenu.Add("exploit", new CheckBox("开启BUG ? ", false));
 
-            drawMenu = this.menu.AddSubMenu("Drawing Options");
-            drawMenu.Add("drawSprite", new CheckBox("Draw Sprite for W"));
-            drawMenu.Add("drawPercentage", new CheckBox("Draw Percentage Damage"));
-            drawMenu.Add("drawJunglePercentage", new CheckBox("Draw Jungle Percentage Damage"));
-            drawMenu.Add("drawQ", new CheckBox("Draw Q Range", true));
-            drawMenu.Add("drawE", new CheckBox("Draw E Range", true));
+            drawMenu = this.menu.AddSubMenu("线圈");
+            drawMenu.Add("drawSprite", new CheckBox("显示 守卫"));
+            drawMenu.Add("drawPercentage", new CheckBox("显示伤害百分比"));
+            drawMenu.Add("drawJunglePercentage", new CheckBox("显示野怪伤害百分比"));
+            drawMenu.Add("drawQ", new CheckBox("显示 Q 范围", true));
+            drawMenu.Add("drawE", new CheckBox("显示 E 范围", true));
 
             SPrediction.Prediction.Initialize();
         }
