@@ -54,6 +54,12 @@ namespace ElSinged
             Drawing.OnDraw += Drawings.Drawing_OnDraw;
             checkTime = Environment.TickCount;
             Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
+
+            Menu = ElSingedMenu.Menu;
+            cMenu = ElSingedMenu.cMenu;
+            hMenu = ElSingedMenu.hMenu;
+            lcMenu = ElSingedMenu.lcMenu;
+            miscMenu = ElSingedMenu.miscMenu;
         }
 
         #endregion

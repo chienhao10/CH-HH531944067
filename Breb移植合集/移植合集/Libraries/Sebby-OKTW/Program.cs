@@ -359,7 +359,8 @@ namespace SebbyLib
                 }
                 DrawSpellPos = poutput2;
             }
-            else if (getSliderItem("PredictionMODE") == 0)
+
+            if (getSliderItem("PredictionMODE") == 0)
             {
                 if (getSliderItem("HitChance") == 0)
                 {

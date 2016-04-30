@@ -37,6 +37,8 @@ namespace PortAIO.Champion.Anivia
             W.SetSkillshot(0.6f, 1f, float.MaxValue, false, SkillshotType.SkillshotLine);
             R.SetSkillshot(2f, 420f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
+            Chat.Print("Berb : Using Common Pred w/ Medium Hitchance is the best for Anivia!");
+
             LoadMenuOKTW();
 
             Game.OnUpdate += Game_OnGameUpdate;
@@ -201,9 +203,7 @@ namespace PortAIO.Champion.Anivia
             {
                 if (SebbyLib.Program.Combo && Player.Mana > EMANA + QMANA - 10)
                     SebbyLib.Program.CastSpell(Q, t);
-                else if (SebbyLib.Program.Farm && getCheckBoxItem(QMenu, "harrasQ") &&
-                         getCheckBoxItem(QMenu, "haras" + t.ChampionName) && Player.Mana > RMANA + EMANA + QMANA + WMANA &&
-                         OktwCommon.CanHarras())
+                else if (SebbyLib.Program.Farm && getCheckBoxItem(QMenu, "harrasQ") && getCheckBoxItem(QMenu, "haras" + t.ChampionName) && Player.Mana > RMANA + EMANA + QMANA + WMANA && OktwCommon.CanHarras())
                 {
                     SebbyLib.Program.CastSpell(Q, t);
                 }
@@ -353,8 +353,7 @@ namespace PortAIO.Champion.Anivia
                     else
                         R.Cast();
                 }
-                else if (!SebbyLib.Program.None &&
-                         (RMissile.Position.CountEnemiesInRange(470) == 0 || Player.Mana < EMANA + QMANA))
+                else if ((RMissile.Position.CountEnemiesInRange(470) == 0 || Player.Mana < EMANA + QMANA))
                 {
                     R.Cast();
                 }
