@@ -39,13 +39,13 @@ namespace SKT_Series
 
         public static void InitMenu()
         {
-            _MainMenu = MainMenu.AddMenu("SKT T1_Lulu", "WawooK");
+            _MainMenu = MainMenu.AddMenu("SKT T1_露露", "WawooK");
 
-            comboMenu = _MainMenu.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("Combo_Q", new CheckBox("Use Q"));
-            comboMenu.Add("Combo_EQ", new CheckBox("Use E+Q"));
-            comboMenu.Add("Combo_E", new CheckBox("Use E"));
-            comboMenu.Add("Combo_R", new CheckBox("Use R"));
+            comboMenu = _MainMenu.AddSubMenu("连招", "Combo");
+            comboMenu.Add("Combo_Q", new CheckBox("使用 Q"));
+            comboMenu.Add("Combo_EQ", new CheckBox("使用 E+Q"));
+            comboMenu.Add("Combo_E", new CheckBox("使用 E"));
+            comboMenu.Add("Combo_R", new CheckBox("使用 R"));
 
             wMenu = _MainMenu.AddSubMenu("W", "W");
             wMenu.Add("Combo_W", new CheckBox("W"));
@@ -54,15 +54,15 @@ namespace SKT_Series
                 wMenu.Add("Combo_W" + hero.ChampionName, new CheckBox("W " + hero.ChampionName, false));
             }
 
-            autoMenu = _MainMenu.AddSubMenu("Auto Config", "Auto");
-            autoMenu.Add("W_Gap", new CheckBox("Auto_W Anti"));
-            autoMenu.Add("W_InR", new CheckBox("*W_Interrupt*"));
-            autoMenu.Add("R_InR", new CheckBox("*R_Interrupt*"));
-            autoMenu.Add("AutoE", new CheckBox("Auto E"));
+            autoMenu = _MainMenu.AddSubMenu("自动", "Auto");
+            autoMenu.Add("W_Gap", new CheckBox("自动  W 防突进"));
+            autoMenu.Add("W_InR", new CheckBox("*W_技能打断*"));
+            autoMenu.Add("R_InR", new CheckBox("*R_技能打断*"));
+            autoMenu.Add("AutoE", new CheckBox("自动 E"));
             autoMenu.AddSeparator();
-            autoMenu.AddGroupLabel("Auto R");
-            autoMenu.Add("AREnable", new CheckBox("Enable"));
-            autoMenu.Add("ARHP", new Slider("Auto_R HP %", 10));
+            autoMenu.AddGroupLabel("战斗 R");
+            autoMenu.Add("AREnable", new CheckBox("开启"));
+            autoMenu.Add("ARHP", new Slider("自动 R血量 %", 10));
         }
 
         public static void Game_OnGameLoad()

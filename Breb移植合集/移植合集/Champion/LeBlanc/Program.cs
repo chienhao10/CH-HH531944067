@@ -72,75 +72,75 @@ namespace PopBlanc
             R = SpellManager.R;
             ER = SpellManager.ER;
 
-            menu = MainMenu.AddMenu("PopBlanc", "PopBlanc");
+            menu = MainMenu.AddMenu("妖姬", "PopBlanc");
 
             qMenu = menu.AddSubMenu("Q");
-            qMenu.Add("ComboQ", new CheckBox("Use in Combo"));
-            qMenu.Add("HarassQ", new CheckBox("Use in Harass"));
-            qMenu.Add("LastHitQ", new CheckBox("Use in Last Hit"));
-            qMenu.Add("LaneClearQ", new CheckBox("Use in Lane Clear"));
-            qMenu.Add("FarmQMana", new Slider("Farm Minimum Mana", 40));
+            qMenu.Add("ComboQ", new CheckBox("连招使用"));
+            qMenu.Add("HarassQ", new CheckBox("骚扰使用"));
+            qMenu.Add("LastHitQ", new CheckBox("尾兵使用"));
+            qMenu.Add("LaneClearQ", new CheckBox("清线使用"));
+            qMenu.Add("FarmQMana", new Slider("尾兵最低蓝量", 40));
 
             wMenu = menu.AddSubMenu("W");
-            wMenu.Add("ComboW", new CheckBox("Use in Combo"));
-            wMenu.Add("HarassW", new CheckBox("Use in Harass"));
-            wMenu.Add("LaneClearW", new CheckBox("Use in Lane Clear"));
-            wMenu.Add("FarmWMinions", new Slider("Farm Minimum Minions", 3, 1, 5));
-            wMenu.Add("WBackHarass", new CheckBox("Harass W Back"));
-            wMenu.Add("WBackFarm", new CheckBox("Farm W Back"));
-            wMenu.Add("WBackClick", new CheckBox("Left Click W Back", false));
+            wMenu.Add("ComboW", new CheckBox("连招使用"));
+            wMenu.Add("HarassW", new CheckBox("骚扰使用"));
+            wMenu.Add("LaneClearW", new CheckBox("清线使用"));
+            wMenu.Add("FarmWMinions", new Slider("尾兵最少小兵数量", 3, 1, 5));
+            wMenu.Add("WBackHarass", new CheckBox("骚扰 W （回）"));
+            wMenu.Add("WBackFarm", new CheckBox("农兵 W （回）"));
+            wMenu.Add("WBackClick", new CheckBox("鼠标左键点击， W 回", false));
 
             eMenu = menu.AddSubMenu("E");
-            eMenu.Add("ComboE", new CheckBox("Use in Combo"));
-            eMenu.Add("HarassE", new CheckBox("Use in Harass"));
-            eMenu.Add("ERangeDecrease", new Slider("Decrease Range"));
+            eMenu.Add("ComboE", new CheckBox("连招使用"));
+            eMenu.Add("HarassE", new CheckBox("骚扰使用"));
+            eMenu.Add("ERangeDecrease", new Slider("缩短 E 范围"));
             E.Range = ERange - getSliderItem(eMenu, "ERangeDecrease");
-            eMenu.Add("ComboEFirst", new CheckBox("Combo E First", false));
-            eMenu.Add("AntiGapcloser", new CheckBox("AntiGapCloser with E"));
-            eMenu.Add("AutoEImmobile", new CheckBox("Auto E Immobile Targets"));
+            eMenu.Add("ComboEFirst", new CheckBox("连招先手 E", false));
+            eMenu.Add("AntiGapcloser", new CheckBox("防突进 E"));
+            eMenu.Add("AutoEImmobile", new CheckBox("自动 E 不可移动目标"));
 
             rMenu = menu.AddSubMenu("R");
-            rMenu.Add("ComboR", new CheckBox("Use in Combo"));
-            rMenu.Add("HarassR", new CheckBox("Use in Harass"));
-            rMenu.Add("LaneClearR", new CheckBox("Use in LaneClear", false));
-            rMenu.Add("AntiGapcloserR", new CheckBox("AntiGapCloser with R(E)", false));
-            rMenu.Add("RBackClick", new CheckBox("Left Click R(W) Back", false));
+            rMenu.Add("ComboR", new CheckBox("连招使用"));
+            rMenu.Add("HarassR", new CheckBox("骚扰使用"));
+            rMenu.Add("LaneClearR", new CheckBox("清线使用", false));
+            rMenu.Add("AntiGapcloserR", new CheckBox("防突进 R(E)", false));
+            rMenu.Add("RBackClick", new CheckBox("鼠标左键点击， R(W) 回", false));
 
-            comboMenu = menu.AddSubMenu("Combo", "Other Combos");
-            comboMenu.AddGroupLabel("2 Chainz (E > R(E))");
-            comboMenu.Add("2Key", new KeyBind("Combo Key", false, KeyBind.BindTypes.HoldActive, 'H'));
-            comboMenu.Add("2Selected", new CheckBox("Selected Target Only", false));
-            comboMenu.Add("2W", new CheckBox("Use W if out of range"));
+            comboMenu = menu.AddSubMenu("Combo", "其他连招");
+            comboMenu.AddGroupLabel("双链条 (E > R(E))");
+            comboMenu.Add("2Key", new KeyBind("连招键", false, KeyBind.BindTypes.HoldActive, 'H'));
+            comboMenu.Add("2Selected", new CheckBox("只选择的目标", false));
+            comboMenu.Add("2W", new CheckBox("超出范围使用 W"));
             comboMenu.AddSeparator();
 
             comboMenu.AddGroupLabel("AOECombo (W > R(W))");
-            comboMenu.Add("AOECombo", new KeyBind("Combo Key", false, KeyBind.BindTypes.HoldActive, 'N'));
-            comboMenu.Add("AOEW", new CheckBox("Use W"));
-            comboMenu.Add("GapcloseW", new CheckBox("Use W to Gapclose"));
-            comboMenu.Add("AOER", new CheckBox("Use R(W)"));
-            comboMenu.Add("AOEEnemies", new Slider("Minimum Enemies", 2, 1, 5));
+            comboMenu.Add("AOECombo", new KeyBind("连招键", false, KeyBind.BindTypes.HoldActive, 'N'));
+            comboMenu.Add("AOEW", new CheckBox("使用 W"));
+            comboMenu.Add("GapcloseW", new CheckBox("使用 W 接近"));
+            comboMenu.Add("AOER", new CheckBox("使用 R(W)"));
+            comboMenu.Add("AOEEnemies", new Slider("最少敌人数量", 2, 1, 5));
             comboMenu.AddSeparator();
-            comboMenu.Add("ComboOrbwalk", new CheckBox("Orbwalk when Comboing"));
+            comboMenu.Add("ComboOrbwalk", new CheckBox("连招时走位"));
 
-            ksMenu = menu.AddSubMenu("Killsteal");
-            ksMenu.Add("SmartKS", new CheckBox("Smart Killsteal"));
-            ksMenu.Add("KSMana", new Slider("Minimum Mana", 30));
-            ksMenu.Add("KSHealth", new Slider("Minimum Health to W", 40));
-            ksMenu.Add("KSGapclose", new CheckBox("Use W to Gapclose", false));
-            ksMenu.Add("KSEnemies", new Slider("Maximum Enemies to W", 3, 1, 4));
+            ksMenu = menu.AddSubMenu("抢头");
+            ksMenu.Add("SmartKS", new CheckBox("智能抢头"));
+            ksMenu.Add("KSMana", new Slider("最低蓝量", 30));
+            ksMenu.Add("KSHealth", new Slider("最低血量 W", 40));
+            ksMenu.Add("KSGapclose", new CheckBox("使用 W 接近", false));
+            ksMenu.Add("KSEnemies", new Slider("最大敌人数量 W", 3, 1, 4));
 
-            fleeMenu = menu.AddSubMenu("Flee", "Flee");
-            fleeMenu.Add("Flee", new KeyBind("Flee", false, KeyBind.BindTypes.HoldActive, 'T'));
-            fleeMenu.Add("FleeW", new CheckBox("Use W"));
-            fleeMenu.Add("FleeRW", new CheckBox("Use R(W)"));
-            fleeMenu.Add("FleeMove", new CheckBox("Move to Cursor Position"));
+            fleeMenu = menu.AddSubMenu("逃跑", "Flee");
+            fleeMenu.Add("Flee", new KeyBind("逃跑按键", false, KeyBind.BindTypes.HoldActive, 'T'));
+            fleeMenu.Add("FleeW", new CheckBox("使用 W"));
+            fleeMenu.Add("FleeRW", new CheckBox("使用 R(W)"));
+            fleeMenu.Add("FleeMove", new CheckBox("移动到鼠标位置"));
 
-            drawMenu = menu.AddSubMenu("Drawings");
-            drawMenu.Add("Draw0", new CheckBox("Draw Q Range"));
-            drawMenu.Add("Draw1", new CheckBox("Draw W Range"));
-            drawMenu.Add("Draw2", new CheckBox("Draw E Range"));
-            drawMenu.Add("DrawCD", new CheckBox("Draw on CD"));
-            drawMenu.Add("DrawWBack", new CheckBox("Draw W Back Position"));
+            drawMenu = menu.AddSubMenu("线圈");
+            drawMenu.Add("Draw0", new CheckBox("显示 Q 范围"));
+            drawMenu.Add("Draw1", new CheckBox("显示 W 范围"));
+            drawMenu.Add("Draw2", new CheckBox("显示 E 范围"));
+            drawMenu.Add("DrawCD", new CheckBox("显示冷却技能"));
+            drawMenu.Add("DrawWBack", new CheckBox("显示 W （回）位置"));
             drawMenu.AddSeparator();
 
             SpellManager.Initialize(menu);

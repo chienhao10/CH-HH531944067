@@ -47,7 +47,7 @@ namespace ElLeeSin
             var playerPos = Drawing.WorldToScreen(ObjectManager.Player.Position);
             if (getCheckBoxItem(InitMenu.drawMenu, "ElLeeSin.Draw.Insec.Text"))
             {
-                Drawing.DrawText(playerPos.X, playerPos.Y + 40, Color.White, "Flash Insec enabled");
+                Drawing.DrawText(playerPos.X, playerPos.Y + 40, Color.White, "开启闪现回旋踢");
             }
 
             if (getCheckBoxItem(InitMenu.drawMenu, "Draw.Insec.Lines")) //&& Program.spells[Program.Spells.R].IsReady()
@@ -68,7 +68,7 @@ namespace ElLeeSin
                         Drawing.WorldToScreen(newTarget.Position).X - 40,
                         Drawing.WorldToScreen(newTarget.Position).Y + 10,
                         Color.White,
-                        "Selected Target");
+                        "选择的目标");
 
                     Drawing.DrawCircle(Program.GetInsecPos(newTarget), 100, Color.DeepSkyBlue);
                 }

@@ -70,13 +70,13 @@ namespace ElEasy.Plugins
         {
             rootMenu = MainMenu.AddMenu("El雷欧娜", "ElLeona");
 
-            comboMenu = rootMenu.AddSubMenu("Combo", "Combo");
+            comboMenu = rootMenu.AddSubMenu("连招", "Combo");
             comboMenu.Add("ElEasy.Leona.Combo.Q", new CheckBox("使用 Q"));
             comboMenu.Add("ElEasy.Leona.Combo.W", new CheckBox("使用 W"));
             comboMenu.Add("ElEasy.Leona.Combo.E", new CheckBox("使用 E"));
             comboMenu.Add("ElEasy.Leona.Combo.R", new CheckBox("使用 R", false));
             comboMenu.Add("ElEasy.Leona.Combo.Count.Enemies", new Slider("R范围内敌人数量", 2, 1, 5));
-            comboMenu.Add("ElEasy.Leona.Hitchance", new ComboBox("命中率", 3, "低", "中", "高", "非常高" }, 3)));
+            comboMenu.Add("ElEasy.Leona.Hitchance", new ComboBox("命中率", 3, "低", "中", "高", "非常高"));
             comboMenu.Add("ElEasy.Leona.Combo.Ignite", new CheckBox("使用 点燃"));
 
             harassMenu = rootMenu.AddSubMenu("骚扰", "Harass");

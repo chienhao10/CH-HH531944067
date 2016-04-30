@@ -212,57 +212,57 @@ namespace MoonLux
 
         private static void CreateMenu()
         {
-            Menu = MainMenu.AddMenu("MoonLux", "ChewyLUXFF");
+            Menu = MainMenu.AddMenu("Moon光辉", "ChewyLUXFF");
 
-            comboMenu = Menu.AddSubMenu("Combo Settings", "ComboSettings");
-            comboMenu.Add("UseQCombo", new CheckBox("Use Q"));
-            comboMenu.Add("UseQSlowedCombo", new CheckBox("Use Q only if Slowed by E", false));
-            comboMenu.Add("UseWCombo", new CheckBox("Use W", false));
-            comboMenu.Add("UseECombo", new CheckBox("Use E"));
-            comboMenu.Add("UseRCombo", new CheckBox("Use R"));
-            comboMenu.Add("UseRComboMode", new ComboBox("R Mode", 1, "Always", "If Killable", "Too far"));
+            comboMenu = Menu.AddSubMenu("连招", "ComboSettings");
+            comboMenu.Add("UseQCombo", new CheckBox("使用 Q"));
+            comboMenu.Add("UseQSlowedCombo", new CheckBox("只被E减速后使用Q", false));
+            comboMenu.Add("UseWCombo", new CheckBox("使用 W", false));
+            comboMenu.Add("UseECombo", new CheckBox("使用 E"));
+            comboMenu.Add("UseRCombo", new CheckBox("使用 R"));
+            comboMenu.Add("UseRComboMode", new ComboBox("R 模式", 1, "一直", "可击杀", "超出距离"));
 
-            harassMenu = Menu.AddSubMenu("Harass Settings", "HarassSettings");
-            harassMenu.Add("UseQHarass", new CheckBox("Use Q"));
-            harassMenu.Add("UseWHarass", new CheckBox("Use W", false));
-            harassMenu.Add("UseEHarass", new CheckBox("Use E"));
-            harassMenu.Add("HarassMinMana", new Slider("Harass Min Mana", 50));
-            harassMenu.Add("HarassKeybind", new KeyBind("Harass! (toggle)", false, KeyBind.BindTypes.PressToggle, 84));
+            harassMenu = Menu.AddSubMenu("骚扰", "HarassSettings");
+            harassMenu.Add("UseQHarass", new CheckBox("使用 Q"));
+            harassMenu.Add("UseWHarass", new CheckBox("使用 W", false));
+            harassMenu.Add("UseEHarass", new CheckBox("使用 E"));
+            harassMenu.Add("HarassMinMana", new Slider("骚扰最低蓝量", 50));
+            harassMenu.Add("HarassKeybind", new KeyBind("骚扰! (开关)", false, KeyBind.BindTypes.PressToggle, 84));
 
-            waveClearMenu = Menu.AddSubMenu("Waveclear Settings", "WaveClearSettings");
-            waveClearMenu.Add("UseQWaveClear", new CheckBox("Use Q", false));
-            waveClearMenu.Add("UseEWaveClear", new CheckBox("Use E", false));
-            waveClearMenu.Add("UseRWaveClear", new CheckBox("Use R", false));
-            waveClearMenu.Add("WaveClearMinMana", new Slider("Wave Clear Min Mana", 75));
+            waveClearMenu = Menu.AddSubMenu("清线", "WaveClearSettings");
+            waveClearMenu.Add("UseQWaveClear", new CheckBox("使用 Q", false));
+            waveClearMenu.Add("UseEWaveClear", new CheckBox("使用 E", false));
+            waveClearMenu.Add("UseRWaveClear", new CheckBox("使用 R", false));
+            waveClearMenu.Add("WaveClearMinMana", new Slider("清线最低蓝量", 75));
 
-            ksMenu = Menu.AddSubMenu("Kill Steal Settings", "KSSettings");
-            ksMenu.Add("UseQKS", new CheckBox("Use Q"));
-            ksMenu.Add("UseEKS", new CheckBox("Use E", false));
-            ksMenu.Add("UseRKS", new CheckBox("Use R"));
+            ksMenu = Menu.AddSubMenu("抢头", "KSSettings");
+            ksMenu.Add("UseQKS", new CheckBox("使用 Q"));
+            ksMenu.Add("UseEKS", new CheckBox("使用 E", false));
+            ksMenu.Add("UseRKS", new CheckBox("使用 R"));
 
-            shieldMenu = Menu.AddSubMenu("Auto Shield Settings", "ASSettings");
-            shieldMenu.Add("ASHealthPercent", new Slider("Health Percent", 25));
-            shieldMenu.Add("ASDamagePercent", new Slider("Damage Percent", 20));
-            HeroManager.Allies.ForEach(x => shieldMenu.Add(x.ChampionName, new CheckBox("Shield " + x.ChampionName)));
+            shieldMenu = Menu.AddSubMenu("自动W 设置", "ASSettings");
+            shieldMenu.Add("ASHealthPercent", new Slider("生命 %", 25));
+            shieldMenu.Add("ASDamagePercent", new Slider("伤害 %", 20));
+            HeroManager.Allies.ForEach(x => shieldMenu.Add(x.ChampionName, new CheckBox("保护 " + x.ChampionName)));
 
-            jungleKsMenu = Menu.AddSubMenu("Jungle Steal Settings", "JungleKS");
-            jungleKsMenu.Add("StealBaron", new CheckBox("Steal Baron"));
-            jungleKsMenu.Add("StealDragon", new CheckBox("Steal Dragon"));
-            jungleKsMenu.Add("StealBlueBuff", new CheckBox("Steal Blue Buff"));
-            jungleKsMenu.Add("StealRedBuff", new CheckBox("Steal Red Buff"));
-            jungleKsMenu.Add("StealBuffMode", new ComboBox("Buff Stealer Mode", 0, "Only Enemy", "Both", "Only Ally"));
+            jungleKsMenu = Menu.AddSubMenu("偷野", "JungleKS");
+            jungleKsMenu.Add("StealBaron", new CheckBox("男爵"));
+            jungleKsMenu.Add("StealDragon", new CheckBox("龙"));
+            jungleKsMenu.Add("StealBlueBuff", new CheckBox("蓝"));
+            jungleKsMenu.Add("StealRedBuff", new CheckBox("红"));
+            jungleKsMenu.Add("StealBuffMode", new ComboBox("偷野模式", 0, "只敌方的", "双方", "只友军的"));
 
-            miscMenu = Menu.AddSubMenu("Miscellaneous Settings", "MiscSettings");
-            miscMenu.Add("SpellWeaveCombo", new CheckBox("Spell Weave"));
-            miscMenu.Add("QThroughMinions", new CheckBox("Cast Q through minions"));
-            miscMenu.Add("QGapcloser", new CheckBox("Use Q on a Gapcloser"));
+            miscMenu = Menu.AddSubMenu("杂项", "MiscSettings");
+            miscMenu.Add("SpellWeaveCombo", new CheckBox("连招使用全技能"));
+            miscMenu.Add("QThroughMinions", new CheckBox("通过小兵 Q"));
+            miscMenu.Add("QGapcloser", new CheckBox("防突进 Q"));
 
-            drawMenu = Menu.AddSubMenu("Drawing Settings", "DrawSettings");
-            drawMenu.Add("DrawQ", new CheckBox("Draw Q"));
-            drawMenu.Add("DrawW", new CheckBox("Draw W", false));
-            drawMenu.Add("DrawE", new CheckBox("Draw E"));
-            drawMenu.Add("DrawERad", new CheckBox("Draw E Radius"));
-            drawMenu.Add("DrawR", new CheckBox("Draw R"));
+            drawMenu = Menu.AddSubMenu("线圈", "DrawSettings");
+            drawMenu.Add("DrawQ", new CheckBox("显示 Q"));
+            drawMenu.Add("DrawW", new CheckBox("显示 W", false));
+            drawMenu.Add("DrawE", new CheckBox("显示 E"));
+            drawMenu.Add("DrawERad", new CheckBox("显示 E 半径"));
+            drawMenu.Add("DrawR", new CheckBox("显示 R"));
         }
 
         /// <summary>
