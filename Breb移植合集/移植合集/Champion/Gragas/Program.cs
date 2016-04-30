@@ -79,8 +79,8 @@ namespace GragasTheDrunkCarry
             comboMenu.Add("UseW", new CheckBox("使用 W?"));
             comboMenu.Add("UseE", new CheckBox("使用 E?"));
             comboMenu.Add("UseR", new CheckBox("使用 R?"));
-            comboMenu.Add("AutoB", new CheckBox("Auto Bomb?"));
-            comboMenu.Add("Insec", new KeyBind("Insec", false, KeyBind.BindTypes.HoldActive, 'A'));
+            comboMenu.Add("AutoB", new CheckBox("自动爆炸?"));
+            comboMenu.Add("Insec", new KeyBind("神R", false, KeyBind.BindTypes.HoldActive, 'A'));
 
             ksMenu = Config.AddSubMenu("抢头", "KS");
             ksMenu.Add("QKS", new CheckBox("使用 Q"));
