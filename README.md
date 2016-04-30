@@ -1,10 +1,10 @@
-Breb移植脚本地址源：bit.ly/1N8r0td
+Breb移植脚本地址源：http://bit.ly/1N8r0td
 因为论坛规定不能发布，所以新开Repo
 
 
 
-国内源：bit.ly/26CjjSn
-国外源：bit.ly/1TaKt8P
+国内源：http://bit.ly/26CjjSn
+国外源：http://bit.ly/1TaKt8P
 请直接复制到EB，远程安装使用。在国内使用第一个源，国外使用第二个。
 有任何问题请在QQ群问，或者发帖问。
 QQ：531944067
