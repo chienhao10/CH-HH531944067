@@ -3,6 +3,7 @@ using System.Linq;
 using EloBuddy.SDK;
 using ExorAIO.Utilities;
 using LeagueSharp.Common;
+using LeagueSharp.SDK.Core.Utils;
 
 namespace ExorAIO.Champions.Ryze
 {
@@ -17,17 +18,18 @@ namespace ExorAIO.Champions.Ryze
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Killsteal(EventArgs args)
         {
+
             /// <summary>
             ///     The KillSteal Q Logic.
             /// </summary>
             if (Variables.Q.IsReady() &&
                 Variables.getCheckBoxItem(Variables.QMenu, "qspell.ks"))
             {
-                foreach (var target in HeroManager.Enemies.Where(t => !Bools.IsSpellShielded(t) && t.Health < Variables.Q.GetDamage(t) && t.IsValidTarget(Variables.Q.Range - 100f)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(t => !Invulnerable.Check(t) && t.Health < Variables.Q.GetDamage(t) && t.IsValidTarget(Variables.Q.Range - 100f)))
                 {
-                    if (Variables.Q.GetPrediction(target).CollisionObjects.Count < 0)
+                    if (!Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => c.IsMinion))
                     {
-                        Variables.Q.Cast(Variables.Q.GetPrediction(target).CastPosition);
+                        Variables.Q.Cast(Variables.Q.GetPrediction(target).UnitPosition);
                         return;
                     }
                 }
@@ -39,12 +41,11 @@ namespace ExorAIO.Champions.Ryze
             if (Variables.W.IsReady() &&
                 Variables.getCheckBoxItem(Variables.WMenu, "wspell.ks"))
             {
-                foreach (var target in
-                    HeroManager.Enemies.Where(
-                        t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.IsValidTarget(Variables.W.Range) &&
-                            t.Health < Variables.W.GetDamage(t)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        !Invulnerable.Check(t) &&
+                        t.IsValidTarget(Variables.W.Range) &&
+                        t.Health < Variables.W.GetDamage(t)))
                 {
                     Variables.W.CastOnUnit(target);
                     return;
@@ -57,12 +58,11 @@ namespace ExorAIO.Champions.Ryze
             if (Variables.E.IsReady() &&
                 Variables.getCheckBoxItem(Variables.EMenu, "espell.ks"))
             {
-                foreach (var target in
-                    HeroManager.Enemies.Where(
-                        t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.IsValidTarget(Variables.E.Range) &&
-                            t.Health < Variables.E.GetDamage(t)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        !Invulnerable.Check(t) &&
+                        t.IsValidTarget(Variables.E.Range) &&
+                        t.Health < Variables.E.GetDamage(t)))
                 {
                     Variables.E.CastOnUnit(target);
                 }

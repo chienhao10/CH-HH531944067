@@ -3,6 +3,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using ExorAIO.Utilities;
 using LeagueSharp.Common;
+using System.Linq;
 
 namespace ExorAIO.Champions.Ryze
 {
@@ -27,13 +28,13 @@ namespace ExorAIO.Champions.Ryze
             ///     The Q Harass Logic.
             /// </summary>
             if (Variables.Q.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.Q.Range) &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana &&
+                Targets.Target.LSIsValidTarget(Variables.Q.Range) &&
+                GameObjects.Player.ManaPercent > ManaManager.NeededQMana &&
                 Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
             {
-                if (Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Count < 0)
+                if (!Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Any(c => c.IsMinion))
                 {
-                    Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).CastPosition);
+                    Variables.Q.Cast(Targets.Target);
                 }
             }
         }

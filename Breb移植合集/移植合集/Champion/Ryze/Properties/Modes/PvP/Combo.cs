@@ -44,7 +44,7 @@ namespace ExorAIO.Champions.Ryze
                 Targets.Target.IsValidTarget(Variables.Q.Range) &&
                 Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
             {
-                Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).UnitPosition);
+                Variables.Q.Cast(Targets.Target);
             }
 
             /// <summary>
