@@ -65,8 +65,8 @@ namespace ElUtilitySuite.Items.OffensiveItems
 
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("Youmuu's Ghostblade");
-            Menu.Add("Youmuucombo", new CheckBox("Use on Combo"));
+            Menu.AddGroupLabel("幽梦");
+            Menu.Add("Youmuucombo", new CheckBox("连招使用"));
         }
 
         public override bool ShouldUseItem()

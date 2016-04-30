@@ -64,9 +64,9 @@ namespace ElUtilitySuite.Items.OffensiveItems
 
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("Hextech Gunblade");
-            Menu.Add("UseHextechCombo", new CheckBox("Use on Combo"));
-            Menu.Add("HextechEnemyHp", new Slider("Use on Enemy Hp %", 70, 1));
+            Menu.AddGroupLabel("科技枪");
+            Menu.Add("UseHextechCombo", new CheckBox("连招使用"));
+            Menu.Add("HextechEnemyHp", new Slider("敌人血量 %", 70, 1));
         }
 
         /// <summary>

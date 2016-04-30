@@ -34,61 +34,61 @@ namespace vSupport_Series.Champions
             Q.SetSkillshot(1f, 125f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             R.SetSkillshot(0.5f, 260f, 850f, false, SkillshotType.SkillshotLine);
 
-            Config = MainMenu.AddMenu("vSupport Series: " + Player.ChampionName, "vSupport Series");
+            Config = MainMenu.AddMenu("V辅助合集: " + Player.ChampionName, "V辅助合集");
 
-            comboMenu = Config.AddSubMenu("Combo Settings", "Combo Settings");
-            comboMenu.Add("nami.q.combo", new CheckBox("Use Q"));
-            comboMenu.Add("nami.w.combo", new CheckBox("Use W"));
-            comboMenu.Add("nami.e.combo", new CheckBox("Use E"));
-            comboMenu.Add("nami.r.combo", new CheckBox("Use R"));
-            comboMenu.AddGroupLabel("R Settings");
-            comboMenu.Add("nami.min.enemy.count", new Slider("Min. Enemy Count", 3, 1, 5));
+            comboMenu = Config.AddSubMenu("连招", "Combo Settings");
+            comboMenu.Add("nami.q.combo", new CheckBox("使用 Q"));
+            comboMenu.Add("nami.w.combo", new CheckBox("使用 W"));
+            comboMenu.Add("nami.e.combo", new CheckBox("使用 E"));
+            comboMenu.Add("nami.r.combo", new CheckBox("使用 R"));
+            comboMenu.AddGroupLabel("R 设置");
+            comboMenu.Add("nami.min.enemy.count", new Slider("最少敌人数量", 3, 1, 5));
 
-            healMenu = Config.AddSubMenu("Heal Settings", "Heal Settings");
-            healMenu.Add("nami.heal.disable", new CheckBox("Disable Heal?", false));
-            healMenu.Add("nami.heal.mana", new Slider("Min. Mana to use Heal", 20, 1, 99));
-            healMenu.Add("nami.heal.self", new CheckBox("Heal self?"));
-            healMenu.Add("nami.heal.self.percent", new Slider("Min. HP to heal self", 30, 1, 99));
+            healMenu = Config.AddSubMenu("治疗设置", "Heal Settings");
+            healMenu.Add("nami.heal.disable", new CheckBox("屏蔽治疗?", false));
+            healMenu.Add("nami.heal.mana", new Slider("最低蓝量使用治疗", 20, 1, 99));
+            healMenu.Add("nami.heal.self", new CheckBox("治疗自己?"));
+            healMenu.Add("nami.heal.self.percent", new Slider("最低血量治疗自己", 30, 1, 99));
             healMenu.AddSeparator();
-            healMenu.AddGroupLabel("Heal Whitelist : ");
+            healMenu.AddGroupLabel("治疗白名单 : ");
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(o => o.IsAlly && !o.IsMe))
             {
                 healMenu.Add("heal." + ally.ChampionName,
-                    new CheckBox(string.Format("Heal: {0}", ally.CharData.BaseSkinName)));
+                    new CheckBox(string.Format("治疗: {0}", ally.CharData.BaseSkinName)));
                 healMenu.Add("heal.percent." + ally.ChampionName,
-                    new Slider(string.Format("Heal: {0} HP Percent ", ally.CharData.BaseSkinName), 30, 1, 99));
+                    new Slider(string.Format("治疗: {0} 生命 % ", ally.CharData.BaseSkinName), 30, 1, 99));
             }
 
-            wsettings = Config.AddSubMenu("(W) Settings", "(W) Settings");
-            wsettings.AddGroupLabel("(W) Whitelist");
+            wsettings = Config.AddSubMenu("(W) 设置", "(W) Settings");
+            wsettings.AddGroupLabel("(W) 白名单");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
                 wsettings.Add("wwhite." + enemy.CharData.BaseSkinName,
                     new CheckBox(string.Format("(W): {0}", enemy.CharData.BaseSkinName)));
             }
 
-            esettings = Config.AddSubMenu("(E) Settings", "(E) Settings");
-            esettings.Add("e.mana", new Slider("Min. Mana to use (E)", 20, 1, 99));
-            esettings.AddGroupLabel("(E) Whitelist");
+            esettings = Config.AddSubMenu("(E) 设置", "(E) Settings");
+            esettings.Add("e.mana", new Slider("最低蓝量使用 (E)", 20, 1, 99));
+            esettings.AddGroupLabel("(E) 白名单");
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(o => o.IsAlly && !o.IsMe))
             {
                 esettings.Add("ewhite." + ally.CharData.BaseSkinName,
                     new CheckBox(string.Format("(E): {0}", ally.CharData.BaseSkinName)));
             }
 
-            harass = Config.AddSubMenu("Harass Settings", "Harass Settings");
-            harass.Add("nami.q.harass", new CheckBox("Use Q"));
-            harass.Add("nami.w.harass", new CheckBox("Use W"));
-            harass.Add("nami.harass.mana", new Slider("Min. Mana Percent", 50, 1, 99));
+            harass = Config.AddSubMenu("骚扰设置", "Harass Settings");
+            harass.Add("nami.q.harass", new CheckBox("使用 Q"));
+            harass.Add("nami.w.harass", new CheckBox("使用 W"));
+            harass.Add("nami.harass.mana", new Slider("最低蓝量 %", 50, 1, 99));
 
-            drawing = Config.AddSubMenu("Draw Settings", "Draw Settings");
-            drawing.Add("nami.q.draw", new CheckBox("Q Range")); //.SetValue(new Circle(true, Color.Chartreuse)));
-            drawing.Add("nami.w.draw", new CheckBox("W Range")); //.SetValue(new Circle(true, Color.Yellow)));
-            drawing.Add("nami.e.draw", new CheckBox("E Range")); //.SetValue(new Circle(true, Color.White)));
-            drawing.Add("nami.r.draw", new CheckBox("R Range")); //.SetValue(new Circle(true, Color.SandyBrown)));
+            drawing = Config.AddSubMenu("线圈竖直", "Draw Settings");
+            drawing.Add("nami.q.draw", new CheckBox("Q 范围")); //.SetValue(new Circle(true, Color.Chartreuse)));
+            drawing.Add("nami.w.draw", new CheckBox("W 范围")); //.SetValue(new Circle(true, Color.Yellow)));
+            drawing.Add("nami.e.draw", new CheckBox("E 范围")); //.SetValue(new Circle(true, Color.White)));
+            drawing.Add("nami.r.draw", new CheckBox("R 范围")); //.SetValue(new Circle(true, Color.SandyBrown)));
 
-            miscMenu = Config.AddSubMenu("Misc Settings", "misc Settings");
-            miscMenu.Add("nami.q.hitchance", new ComboBox("Skillshot Hit Chance", 2, HitchanceNameArray));
+            miscMenu = Config.AddSubMenu("杂项", "misc Settings");
+            miscMenu.Add("nami.q.hitchance", new ComboBox("技能命中率", 2, HitchanceNameArray));
 
             Orbwalker.OnPostAttack += NamiAfterAttack;
             Game.OnUpdate += NamiOnUpdate;

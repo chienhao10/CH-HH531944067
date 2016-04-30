@@ -44,10 +44,10 @@ namespace SkinsSharp
         public static void GameLoad()
         {
 
-            menu = MainMenu.AddMenu("Skins#", "Skinswitcher");
+            menu = MainMenu.AddMenu("换肤#", "Skinswitcher");
 
-            menu.Add("forall", new CheckBox("Enable for all (reload required)", false));
-            menu.Add("onlydefault", new CheckBox("Keep loaded skins"));
+            menu.Add("forall", new CheckBox("全部开启 (需要F5)", false));
+            menu.Add("onlydefault", new CheckBox("持续保持换肤"));
 
             try
             {
@@ -66,7 +66,7 @@ namespace SkinsSharp
 
                     var currenthero = hero;
 
-                    menu.Add("skin." + hero.ChampionName, new ComboBox("Change Skin", 0, "Skin 0", "Skin 1", "Skin 2", "Skin 3", "Skin 4", "Skin 5", "Skin 6", "Skin 7", "Skin 8", "Skin 9", "Skin 10", "Skin 11", "Skin 12", "Skin 13", "Skin 14", "Skin 15"));
+                    menu.Add("skin." + hero.ChampionName, new ComboBox("换肤", 0, "Skin 0", "Skin 1", "Skin 2", "Skin 3", "Skin 4", "Skin 5", "Skin 6", "Skin 7", "Skin 8", "Skin 9", "Skin 10", "Skin 11", "Skin 12", "Skin 13", "Skin 14", "Skin 15"));
 
                     ChampSkins.Add(hero.Name, getBoxItem("skin." + hero.ChampionName));
 

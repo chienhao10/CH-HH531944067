@@ -80,12 +80,12 @@ The idea where the lines come from is that u can calculate how far they are from
 
         public BaseUlt()
         {
-            Menu = MainMenu.AddMenu("BaseUlt3", "BaseUlt3");
-            Menu.Add("showRecalls", new CheckBox("Show Recalls"));
-            Menu.Add("baseUlt", new CheckBox("Base Ult"));
-            Menu.Add("checkCollision", new CheckBox("Check Collision"));
-            Menu.Add("panicKey", new KeyBind("No Ult while SBTW", false, KeyBind.BindTypes.HoldActive, 32));
-            Menu.Add("regardlessKey", new KeyBind("No timelimit (hold)", false, KeyBind.BindTypes.HoldActive, 17)); //17 == ctrl
+            Menu = MainMenu.AddMenu("基地大招", "BaseUlt3");
+            Menu.Add("showRecalls", new CheckBox("显示回城倒数"));
+            Menu.Add("baseUlt", new CheckBox("基地大招"));
+            Menu.Add("checkCollision", new CheckBox("检查体积碰撞"));
+            Menu.Add("panicKey", new KeyBind("连招时不使用", false, KeyBind.BindTypes.HoldActive, 32));
+            Menu.Add("regardlessKey", new KeyBind("无 时间限制 (按下时)", false, KeyBind.BindTypes.HoldActive, 17)); //17 == ctrl
 
             var heroes = ObjectManager.Get<AIHeroClient>().ToList();
             var enemies = heroes.Where(x => x.IsEnemy).ToList();
@@ -95,21 +95,21 @@ The idea where the lines come from is that u can calculate how far they are from
 
             bool compatibleChamp = IsCompatibleChamp(ObjectManager.Player.ChampionName);
 
-            TeamUlt = Menu.AddSubMenu("Team Baseult Friends", "TeamUlt");
-            DisabledChampions = Menu.AddSubMenu("Disabled Champion targets", "DisabledChampions");
+            TeamUlt = Menu.AddSubMenu("队友基地大招", "TeamUlt");
+            DisabledChampions = Menu.AddSubMenu("屏蔽英雄目标", "DisabledChampions");
 
             if (compatibleChamp)
             {
                 foreach (AIHeroClient champ in Allies.Where(x => !x.IsMe && IsCompatibleChamp(x.ChampionName)))
-                    TeamUlt.Add(champ.ChampionName, new CheckBox("Ally with baseult: " + champ.ChampionName, false));
+                    TeamUlt.Add(champ.ChampionName, new CheckBox("一起使用基地大招: " + champ.ChampionName, false));
 
                 foreach (AIHeroClient champ in enemies)
-                    DisabledChampions.Add(champ.ChampionName, new CheckBox("Don't shoot: " + champ.ChampionName, false));
+                    DisabledChampions.Add(champ.ChampionName, new CheckBox("不攻击: " + champ.ChampionName, false));
             }
 
-            Notifications = Menu.AddSubMenu("Notifications", "Notifications");
-            Notifications.Add("notifRecFinished", new CheckBox("Recall finished"));
-            Notifications.Add("notifRecAborted", new CheckBox("Recall aborted"));
+            Notifications = Menu.AddSubMenu("提示", "Notifications");
+            Notifications.Add("notifRecFinished", new CheckBox("回城结束"));
+            Notifications.Add("notifRecAborted", new CheckBox("停止回城"));
 
             var objSpawnPoint = ObjectManager.Get<Obj_SpawnPoint>().FirstOrDefault(x => x.IsEnemy);
             if (objSpawnPoint != null)
@@ -345,19 +345,19 @@ The idea where the lines come from is that u can calculate how far they are from
                     case TeleportStatus.Start:
                         if (getCheckBoxItem(Notifications, "notifRecAborted"))
                         {
-                            Chat.Print(enemyInfo.Player.ChampionName + ": Recall STARTED");
+                            Chat.Print(enemyInfo.Player.ChampionName + ": Kai shi hui cheng!");
                         }
                         break;
                     case TeleportStatus.Abort:
                         if (getCheckBoxItem(Notifications, "notifRecAborted"))
                         {
-                            Chat.Print(enemyInfo.Player.ChampionName + ": Recall ABORTED");
+                            Chat.Print(enemyInfo.Player.ChampionName + ": Qu xiao hui cheng!");
                         }
                         break;
                     case TeleportStatus.Finish:
                         if (getCheckBoxItem(Notifications, "notifRecFinished"))
                         {
-                            Chat.Print(enemyInfo.Player.ChampionName + ": Recall FINISHED");
+                            Chat.Print(enemyInfo.Player.ChampionName + ": Hui cheng wan bi!");
                         }
                         break;
                 }

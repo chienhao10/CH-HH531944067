@@ -578,8 +578,8 @@ namespace ElUtilitySuite.Items
 
         public void CreateMenu(Menu rootMenu)
         {
-            zhonyaMenu = rootMenu.AddSubMenu("Zhonya's Hourglass", "zhonya");
-            zhonyaMenu.AddGroupLabel("Spells");
+            zhonyaMenu = rootMenu.AddSubMenu("中亚", "zhonya");
+            zhonyaMenu.AddGroupLabel("技能");
 
             foreach (var spell in Spells.Where(x => ObjectManager.Get<AIHeroClient>().Where(y => y.IsEnemy).Any(y => y.ChampionName.ToLower() == x.ChampionName)))
             {
@@ -592,8 +592,8 @@ namespace ElUtilitySuite.Items
                 }
             }
 
-            zhonyaMenu.Add("ZhonyaDangerous", new CheckBox("Use Zhonya"));
-            zhonyaMenu.Add("ZhonyaHP", new CheckBox("Use Zhonya on low HP"));
+            zhonyaMenu.Add("ZhonyaDangerous", new CheckBox("使用中亚"));
+            zhonyaMenu.Add("ZhonyaHP", new CheckBox("低血量时使用"));
         }
 
         /// <summary>

@@ -56,9 +56,9 @@ namespace UniversalPings
 
         private void Game_OnGameLoad(EventArgs args)
         {
-            _menu = MainMenu.AddMenu("Universal Pings", "UniversalPings");
-            _menu.Add("print", new ComboBox("Show", 0, "Champion", "Player", "Both"));
-            _menu.AddGroupLabel("[Block Settings]");
+            _menu = MainMenu.AddMenu("信号管理器", "UniversalPings");
+            _menu.Add("print", new ComboBox("显示", 0, "英雄", "玩家", "两者"));
+            _menu.AddGroupLabel("[屏蔽设定]");
             foreach (AIHeroClient hero in ObjectManager.Get<AIHeroClient>())
             {
                 if (hero.Team == ObjectManager.Player.Team && hero.NetworkId != ObjectManager.Player.NetworkId)

@@ -48,109 +48,109 @@ namespace KurisuNidalee
 
             #region Root Menu
 
-            Root = MainMenu.AddMenu("Kurisu's Nidalee", "nidalee");
-            Root.Add("pstyle", new ComboBox(":: Play Style", 1, "Single Target", "Multi-Target"));
-            Root.Add("usecombo2", new KeyBind(":: Tripple AA [beta]", false, KeyBind.BindTypes.HoldActive, 'Z'));
-            Root.Add("flee", new KeyBind(":: Flee/Walljumper [active]", false, KeyBind.BindTypes.HoldActive, 'A'));
-            Root.Add("ppred", new ComboBox(":: Prediction (F5 on Change)", 1, "Common", "OKTW"));
-            Root.Add("ndhqch", new ComboBox("-> Min Hitchance", 2, "Low", "Medium", "High", "Very High"));
+            Root = MainMenu.AddMenu("Kurisu 豹女", "nidalee");
+            Root.Add("pstyle", new ComboBox(":: 连招模式", 1, "单目标", "多目标"));
+            Root.Add("usecombo2", new KeyBind(":: 三连 普攻 AA [测试]", false, KeyBind.BindTypes.HoldActive, 'Z'));
+            Root.Add("flee", new KeyBind(":: 逃跑/跳墙 [开启按键]", false, KeyBind.BindTypes.HoldActive, 'A'));
+            Root.Add("ppred", new ComboBox(":: 预判 (需F5赵载入)", 1, "正常库", "OKTW库"));
+            Root.Add("ndhqch", new ComboBox("-> 命中率", 2, "低", "中", "高", "非常高"));
 
             # region Human
 
-            qHMenu = Root.AddSubMenu("(Q)  Javelin", "ndhq");
-            qHMenu.Add("ndhqcheck", new CheckBox("Check Hitchance"));
-            qHMenu.Add("qsmcol", new CheckBox("-> Smite Collision", false));
-            qHMenu.Add("ndhqco", new CheckBox("Enable in Combo"));
-            qHMenu.Add("ndhqha", new CheckBox("Enable in Harass"));
-            qHMenu.Add("ndhqjg", new CheckBox("Enable in Jungle"));
-            qHMenu.Add("ndhqwc", new CheckBox("Enable in WaveClear", false));
+            qHMenu = Root.AddSubMenu("(Q)人形态", "ndhq");
+            qHMenu.Add("ndhqcheck", new CheckBox("检查命中率"));
+            qHMenu.Add("qsmcol", new CheckBox("-> 惩戒体积碰撞物体", false));
+            qHMenu.Add("ndhqco", new CheckBox("连招使用"));
+            qHMenu.Add("ndhqha", new CheckBox("骚扰使用"));
+            qHMenu.Add("ndhqjg", new CheckBox("清野使用"));
+            qHMenu.Add("ndhqwc", new CheckBox("清线使用", false));
 
-            wHMenu = Root.AddSubMenu("(W) Bushwhack", "ndhw");
-            wHMenu.Add("ndhwco", new CheckBox("Enable in Combo", false));
-            wHMenu.Add("ndhwsp", new CheckBox("-> Reduce (W) Usage", false));
-            wHMenu.Add("ndhwjg", new CheckBox("Enable in Jungle"));
-            wHMenu.Add("ndhwwc", new CheckBox("Enable in WaveClear", false));
-            wHMenu.Add("ndhwforce", new ComboBox("Location", 0, "Prediction", "Behind Target"));
+            wHMenu = Root.AddSubMenu("(W) 人形态", "ndhw");
+            wHMenu.Add("ndhwco", new CheckBox("连招使用", false));
+            wHMenu.Add("ndhwsp", new CheckBox("-> 减速 (W) 使用率", false));
+            wHMenu.Add("ndhwjg", new CheckBox("清野使用"));
+            wHMenu.Add("ndhwwc", new CheckBox("清线使用", false));
+            wHMenu.Add("ndhwforce", new ComboBox("施放位置", 0, "预判", "目标身后"));
 
-            eHMenu = Root.AddSubMenu("(E)  Primal Surge", "ndhe");
-            eHMenu.Add("ndheon", new CheckBox("Enable Healing"));
-            eHMenu.Add("ndhemana", new Slider("-> Minumum Mana", 55, 1));
-            eHMenu.Add("ndhesw", new CheckBox("Switch Forms if Heal", false));
+            eHMenu = Root.AddSubMenu("(E) 人形态", "ndhe");
+            eHMenu.Add("ndheon", new CheckBox("开启治疗"));
+            eHMenu.Add("ndhemana", new Slider("-> 最低蓝量", 55, 1));
+            eHMenu.Add("ndhesw", new CheckBox("切换形态进行治疗", false));
             foreach (var hero in HeroManager.Allies)
             {
-                eHMenu.Add("xx" + hero.ChampionName, new CheckBox("Heal on " + hero.ChampionName));
-                eHMenu.Add("zz" + hero.ChampionName, new Slider(hero.ChampionName + " below Pct% ", 88, 1, 99));
+                eHMenu.Add("xx" + hero.ChampionName, new CheckBox("治疗" + hero.ChampionName));
+                eHMenu.Add("zz" + hero.ChampionName, new Slider(hero.ChampionName + " 低于 % ", 88, 1, 99));
             }
-            eHMenu.Add("ndheord", new ComboBox("Ally Priority:", 1, "Low HP", "Most AD/AP", "Max HP"));
+            eHMenu.Add("ndheord", new ComboBox("友军优先:", 1, "低血量的", "最高 AD/AP", "最多血量的"));
 
-            rHMenu = Root.AddSubMenu("(R) Aspect of the Cougar", "ndhr");
-            rHMenu.Add("ndhrco", new CheckBox("Enable in Combo"));
-            rHMenu.Add("ndhrcreq", new CheckBox("-> Require Swipe/Takedown"));
-            rHMenu.Add("ndhrha", new CheckBox("Enable in Harass"));
-            rHMenu.Add("ndhrjg", new CheckBox("Enable in Jungle"));
-            rHMenu.Add("ndhrjreq", new CheckBox("-> Require Swipe/Takedown"));
-            rHMenu.Add("ndhrwc", new CheckBox("Enable in WaveClear", false));
+            rHMenu = Root.AddSubMenu("(R) 切换形态", "ndhr");
+            rHMenu.Add("ndhrco", new CheckBox("连招使用"));
+            rHMenu.Add("ndhrcreq", new CheckBox("-> 需要 E/Q"));
+            rHMenu.Add("ndhrha", new CheckBox("骚扰使用"));
+            rHMenu.Add("ndhrjg", new CheckBox("清野使用"));
+            rHMenu.Add("ndhrjreq", new CheckBox("-> 需要 E/Q"));
+            rHMenu.Add("ndhrwc", new CheckBox("清线使用", false));
 
             #endregion
 
             #region Cougar
 
-            qCMenu = Root.AddSubMenu("(Q) Takedown", "ndcq");
-            qCMenu.Add("ndcqco", new CheckBox("Enable in Combo"));
-            qCMenu.Add("ndcqha", new CheckBox("Enable in Harass"));
-            qCMenu.Add("ndcqjg", new CheckBox("Enable in Jungle"));
-            qCMenu.Add("ndcqwc", new CheckBox("Enable in WaveClear"));
+            qCMenu = Root.AddSubMenu("(Q) 豹形态", "ndcq");
+            qCMenu.Add("ndcqco", new CheckBox("连招使用"));
+            qCMenu.Add("ndcqha", new CheckBox("骚扰使用"));
+            qCMenu.Add("ndcqjg", new CheckBox("清野使用"));
+            qCMenu.Add("ndcqwc", new CheckBox("清线使用"));
 
-            wCMenu = Root.AddSubMenu("(W) Pounce", "ndcw");
-            wCMenu.Add("ndcwcheck", new CheckBox("Check Hitchance", false));
-            wCMenu.Add("ndcwch", new ComboBox("-> Min Hitchance", 2, "Low", "Medium", "High", "Very High"));
-            wCMenu.Add("ndcwco", new CheckBox("Enable in Combo"));
-            wCMenu.Add("ndcwhunt", new CheckBox("-> Ignore Checks if Hunted", false));
-            wCMenu.Add("ndcwdistco", new CheckBox("-> Pounce Only if > AARange"));
-            wCMenu.Add("ndcwjg", new CheckBox("Enable in Jungle"));
-            wCMenu.Add("ndcwwc", new CheckBox("Enable in WaveClear"));
-            wCMenu.Add("ndcwdistwc", new CheckBox("-> Pounce Only if > AARange", false));
-            wCMenu.Add("ndcwene", new CheckBox("-> Dont Pounce into Enemies"));
-            wCMenu.Add("ndcwtow", new CheckBox("-> Dont Pounce into Turret"));
+            wCMenu = Root.AddSubMenu("(W) 豹形态", "ndcw");
+            wCMenu.Add("ndcwcheck", new CheckBox("检查命中率", false));
+            wCMenu.Add("ndcwch", new ComboBox("-> 最低命中率", 2, "低", "中", "高", "非常高"));
+            wCMenu.Add("ndcwco", new CheckBox("连招使用"));
+            wCMenu.Add("ndcwhunt", new CheckBox("-> 如果被标记则无视检查", false));
+            wCMenu.Add("ndcwdistco", new CheckBox("-> 超出普攻范围，才 W"));
+            wCMenu.Add("ndcwjg", new CheckBox("清野使用"));
+            wCMenu.Add("ndcwwc", new CheckBox("清线使用"));
+            wCMenu.Add("ndcwdistwc", new CheckBox("-> 超出普攻范围，才 W", false));
+            wCMenu.Add("ndcwene", new CheckBox("-> 不跳进敌方"));
+            wCMenu.Add("ndcwtow", new CheckBox("-> 不跳进敌方塔"));
 
-            eCMenu = Root.AddSubMenu("(E) Swipe", "ndce");
-            eCMenu.Add("ndcecheck", new CheckBox("Check Hitchance", false));
-            eCMenu.Add("ndcech", new ComboBox("-> Min Hitchance", 2, "Low", "Medium", "High", "Very High"));
-            eCMenu.Add("ndceco", new CheckBox("Enable in Combo"));
-            eCMenu.Add("ndceha", new CheckBox("Enable in Harass"));
-            eCMenu.Add("ndcejg", new CheckBox("Enable in Jungle"));
-            eCMenu.Add("ndcewc", new CheckBox("Enable in WaveClear"));
-            eCMenu.Add("ndcenum", new Slider("-> Minimum Minions Hit", 3, 1, 5));
+            eCMenu = Root.AddSubMenu("(E) 豹形态", "ndce");
+            eCMenu.Add("ndcecheck", new CheckBox("检查命中率", false));
+            eCMenu.Add("ndcech", new ComboBox("-> 最低命中率", 2, "低", "中", "高", "非常高"));
+            eCMenu.Add("ndceco", new CheckBox("连招使用"));
+            eCMenu.Add("ndceha", new CheckBox("骚扰使用"));
+            eCMenu.Add("ndcejg", new CheckBox("清野使用"));
+            eCMenu.Add("ndcewc", new CheckBox("清线使用"));
+            eCMenu.Add("ndcenum", new Slider("-> 最低命中小兵数", 3, 1, 5));
 
-            rCMenu = Root.AddSubMenu("(R) Aspect of the Cougar", "ndcr");
-            rCMenu.Add("ndcrco", new CheckBox("Enable in Combo"));
-            rCMenu.Add("ndcrha", new CheckBox("Enable in Harass"));
-            rCMenu.Add("ndcrjg", new CheckBox("Enable in Jungle"));
-            rCMenu.Add("ndcrwc", new CheckBox("Enable in WaveClear", false));
+            rCMenu = Root.AddSubMenu("(R) 切换形态", "ndcr");
+            rCMenu.Add("ndcrco", new CheckBox("连招使用"));
+            rCMenu.Add("ndcrha", new CheckBox("骚扰使用"));
+            rCMenu.Add("ndcrjg", new CheckBox("清野使用"));
+            rCMenu.Add("ndcrwc", new CheckBox("清线使用", false));
 
             #endregion
 
-            drawMenu = Root.AddSubMenu(":: Draw Settings", "dmenu");
-            drawMenu.Add("dp", new CheckBox(":: Draw Javelin Range", false));
-            drawMenu.Add("dti", new CheckBox(":: Draw Javelin Timer", false));
-            drawMenu.Add("dz", new CheckBox(":: Draw Pounce Range (Hunted)", false));
-            drawMenu.Add("dt", new CheckBox(":: Draw Target", false));
+            drawMenu = Root.AddSubMenu(":: 线圈", "dmenu");
+            drawMenu.Add("dp", new CheckBox(":: 显示 Q 范围", false));
+            drawMenu.Add("dti", new CheckBox(":: 显示 Q 倒数", false));
+            drawMenu.Add("dz", new CheckBox(":: 显示 W (被标记的)", false));
+            drawMenu.Add("dt", new CheckBox(":: 显示 目标", false));
 
-            jungleMenu = Root.AddSubMenu(":: Jungle Settings", "xmenu");
-            jungleMenu.Add("spcol", new CheckBox(":: Force (R) if (Q) Collision [jungle]", false));
+            jungleMenu = Root.AddSubMenu(":: 清野设置", "xmenu");
+            jungleMenu.Add("spcol", new CheckBox(":: 强制 (R) 如果 (Q) 被阻挡 [野区]", false));
             jungleMenu.Add("jgaacount",
-                new KeyBind(":: AA Weaving jungle] [beta]", false, KeyBind.BindTypes.PressToggle, 'H'));
-            jungleMenu.Add("aareq", new Slider("-> Required auto attack Count [jungle]", 2, 1, 5));
-            jungleMenu.Add("kitejg", new CheckBox(":: Pounce Away (Kite) [jungle]", false));
+                new KeyBind(":: 不普攻野怪 [测试]", false, KeyBind.BindTypes.PressToggle, 'H'));
+            jungleMenu.Add("aareq", new Slider("-> 需要计算攻击次数 [野区]", 2, 1, 5));
+            jungleMenu.Add("kitejg", new CheckBox(":: 跳走 (风筝) [野区]", false));
 
-            autoMenu = Root.AddSubMenu(":: Automatic Settings", "aamenu");
-            autoMenu.Add("alvl6", new CheckBox(":: Auto (R) Level Up", false));
-            autoMenu.Add("ndhqimm", new CheckBox(":: Auto (Q) Javelin Immobile", false));
-            autoMenu.Add("ndhwimm", new CheckBox(":: Auto (W) Bushwhack Immobile", false));
-            autoMenu.Add("ndhrgap", new CheckBox(":: Auto (R) Enemy Gapclosers"));
-            autoMenu.Add("ndcegap", new CheckBox(":: Auto (E) Swipe Gapclosers"));
-            autoMenu.Add("ndhqgap", new CheckBox(":: Auto (Q) Javelin Gapclosers"));
-            autoMenu.Add("ndcqgap", new CheckBox(":: Auto (Q) Takedown Gapclosers"));
+            autoMenu = Root.AddSubMenu(":: 自动设置", "aamenu");
+            autoMenu.Add("alvl6", new CheckBox(":: 自动 (R) 升级", false));
+            autoMenu.Add("ndhqimm", new CheckBox(":: 自动 (Q) 不可移动的", false));
+            autoMenu.Add("ndhwimm", new CheckBox(":: 自动 (W) 不可移动的", false));
+            autoMenu.Add("ndhrgap", new CheckBox(":: 自动 (R) 敌方突击者"));
+            autoMenu.Add("ndcegap", new CheckBox(":: 自动 (E) 敌方突击者"));
+            autoMenu.Add("ndhqgap", new CheckBox(":: 自动 (Q) 突击者"));
+            autoMenu.Add("ndcqgap", new CheckBox(":: 自动 (Q) 突击者"));
 
             #endregion
 

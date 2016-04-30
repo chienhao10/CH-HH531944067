@@ -74,8 +74,8 @@
                 return;
             }
 
-            healMenu = rootMenu.AddSubMenu("Heal", "Heal");
-            healMenu.Add("Heal.Activated", new CheckBox("Heal"));
+            healMenu = rootMenu.AddSubMenu("治疗", "Heal");
+            healMenu.Add("Heal.Activated", new CheckBox("开启治疗"));
             /*
             healMenu.Add("Heal.HP", new Slider("Health percentage", 20, 1));
             healMenu.Add("Heal.Damage", new Slider("Heal on % incoming damage", 20, 1));

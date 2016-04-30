@@ -79,9 +79,9 @@
                 return;
             }
 
-            igniteMenu = rootMenu.AddSubMenu("Ignite", "Ignite");
-            igniteMenu.Add("Ignite.Activated", new CheckBox("Ignite"));
-            igniteMenu.Add("Ignite.shieldCheck", new CheckBox("Check for shields"));
+            igniteMenu = rootMenu.AddSubMenu("点燃", "Ignite");
+            igniteMenu.Add("Ignite.Activated", new CheckBox("开启点燃"));
+            igniteMenu.Add("Ignite.shieldCheck", new CheckBox("护盾检查"));
         }
 
         public void Load()

@@ -53,7 +53,7 @@ namespace NabbTracker
         /// <summary>
         /// The Menu Codename.
         /// </summary>
-        public static string MainMenuCodeName = "NabbTracker";
+        public static string MainMenuCodeName = "Nabb计时器";
 
         /// <summary>
         /// The Text fcnt.

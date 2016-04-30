@@ -64,10 +64,10 @@ namespace ElUtilitySuite.Items.OffensiveItems
 
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("Frost Queen's Claim");
-            Menu.Add("UseFrostQueenCombo", new CheckBox("Use on Combo"));
-            Menu.Add("FrostQueenEnemyHp", new Slider("Use on Enemy Hp %", 70, 1));
-            Menu.Add("FrostQueenMyHp", new Slider("Use on My Hp %", 100, 1));
+            Menu.AddGroupLabel("冰雪女皇的指令");
+            Menu.Add("UseFrostQueenCombo", new CheckBox("连招使用"));
+            Menu.Add("FrostQueenEnemyHp", new Slider("当敌人血量 % 时使用", 70, 1));
+            Menu.Add("FrostQueenMyHp", new Slider("我血量 % 时使用", 100, 1));
         }
 
         /// <summary>

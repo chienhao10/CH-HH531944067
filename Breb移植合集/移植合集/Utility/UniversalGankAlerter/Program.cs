@@ -100,22 +100,22 @@ namespace UniversalGankAlerter
         {
             _previewCircle = new PreviewCircle();
 
-            _menu = MainMenu.AddMenu("Universal GankAlerter", "universalgankalerter");
+            _menu = MainMenu.AddMenu("Gank提示", "universalgankalerter");
 
-            _menu.Add("range", new Slider("Trigger range", 3000, 500, 5000));
+            _menu.Add("range", new Slider("触发范围", 3000, 500, 5000));
             _menu["range"].Cast<Slider>().OnValueChange += SliderRadiusValueChanged;
 
-            _menu.Add("cooldown", new Slider("Trigger cooldown (sec)", 10, 0, 60));
-            _menu.Add("lineduration", new Slider("Line duration (sec)", 10, 0, 20));
-            _menu.Add("shownames", new CheckBox("Show champion name"));
-            _menu.Add("drawminimaplines", new CheckBox("Draw minimap lines", false));
-            _menu.Add("dangerping", new CheckBox("Danger Ping (local)", false));
+            _menu.Add("cooldown", new Slider("触发倒计时 (秒)", 10, 0, 60));
+            _menu.Add("lineduration", new Slider("线形持续时间 (秒)", 10, 0, 20));
+            _menu.Add("shownames", new CheckBox("显示英雄名称"));
+            _menu.Add("drawminimaplines", new CheckBox("显示小地图线", false));
+            _menu.Add("dangerping", new CheckBox("危险型信号 (本地)", false));
 
-            _enemies = _menu.AddSubMenu("Enemies", "enemies");
-            _enemies.Add("jungleronly", new CheckBox("Warn jungler only (smite)", false));
+            _enemies = _menu.AddSubMenu("敌人", "enemies");
+            _enemies.Add("jungleronly", new CheckBox("只警告打野的英雄 (带惩戒的)", false));
 
-            _allies = _menu.AddSubMenu("Allies", "allies");
-            _allies.Add("allyjungleronly", new CheckBox("Warn jungler only (smite)"));
+            _allies = _menu.AddSubMenu("友军", "allies");
+            _allies.Add("allyjungleronly", new CheckBox("只警告打野的英雄 (带惩戒的)"));
 
             foreach (AIHeroClient hero in ObjectManager.Get<AIHeroClient>())
             {

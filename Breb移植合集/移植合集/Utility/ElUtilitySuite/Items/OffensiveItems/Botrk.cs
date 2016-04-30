@@ -63,9 +63,9 @@ namespace ElUtilitySuite.Items.OffensiveItems
 
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("Botrk");
-            Menu.Add("UseBotrkCombo", new CheckBox("Use on Combo"));
-            Menu.Add("BotrkEnemyHp", new Slider("Use on Enemy Hp %", 100, 1));
+            Menu.AddGroupLabel("破败");
+            Menu.Add("UseBotrkCombo", new CheckBox("连招使用"));
+            Menu.Add("BotrkEnemyHp", new Slider("敌人血量 %", 100, 1));
         }
 
         /// <summary>

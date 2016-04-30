@@ -66,41 +66,41 @@ namespace OneKeyToWin_AIO_Sebby
             R.SetSkillshot(0.5f, 360f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             QR.SetSkillshot(0.5f, 400f, 100f, false, SkillshotType.SkillshotCircle);
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("qRange", new CheckBox("Q range", false));
-            drawMenu.Add("wRange", new CheckBox("W range", false));
-            drawMenu.Add("eRange", new CheckBox("E range", false));
-            drawMenu.Add("rRange", new CheckBox("R range", false));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("qRange", new CheckBox("Q 范围", false));
+            drawMenu.Add("wRange", new CheckBox("W 范围", false));
+            drawMenu.Add("eRange", new CheckBox("E 范围", false));
+            drawMenu.Add("rRange", new CheckBox("R 范围", false));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能 "));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("W", new CheckBox("Auto W SpeedUp logic", false));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("W", new CheckBox("自动 W 加速逻辑", false));
 
-            eMenu = Config.AddSubMenu("E Shield Config");
-            eMenu.Add("autoW", new CheckBox("Auto E"));
-            eMenu.Add("hadrCC", new CheckBox("Auto E hard CC"));
-            eMenu.Add("poison", new CheckBox("Auto E poison"));
-            eMenu.Add("Wdmg", new Slider("E dmg % hp", 10));
-            eMenu.Add("AGC", new CheckBox("AntiGapcloserE"));
+            eMenu = Config.AddSubMenu("E 盾设置");
+            eMenu.Add("autoW", new CheckBox("自动 E"));
+            eMenu.Add("hadrCC", new CheckBox("自动 E 强控"));
+            eMenu.Add("poison", new CheckBox("自动 E 毒"));
+            eMenu.Add("Wdmg", new Slider("造成伤害 % 使用 E", 10));
+            eMenu.Add("AGC", new CheckBox("防突进 E"));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQout", new CheckBox("Farm Q out range aa minion"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 60));
-            farmMenu.Add("LCminions", new Slider("LaneClear minimum minions", 2, 0, 10));
-            farmMenu.Add("farmQ", new CheckBox("LaneClear Q"));
-            farmMenu.Add("farmW", new CheckBox("LaneClear W"));
-            farmMenu.Add("farmE", new CheckBox("LaneClear E", false));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQout", new CheckBox("超出普攻范围使用 Q"));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 60));
+            farmMenu.Add("LCminions", new Slider("清线最低小兵数", 2, 0, 10));
+            farmMenu.Add("farmQ", new CheckBox("清线 Q"));
+            farmMenu.Add("farmW", new CheckBox("清线 W"));
+            farmMenu.Add("farmE", new CheckBox("清线 E", false));
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("rCount", new Slider("Auto R x enemies", 3, 0, 5));
-            rMenu.Add("smartR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'T'));
-            rMenu.Add("OPTI", new CheckBox("OnPossibleToInterrupt R"));
-            rMenu.Add("Rturrent", new CheckBox("auto R under turrent"));
-            rMenu.Add("Rks", new CheckBox("R ks"));
-            rMenu.Add("Rlifesaver", new CheckBox("auto R life saver"));
-            rMenu.Add("Rblock", new CheckBox("Block R if 0 hit "));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("rCount", new Slider("自动 R x 敌人数量", 3, 0, 5));
+            rMenu.Add("smartR", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
+            rMenu.Add("OPTI", new CheckBox("尝试技能打断 R"));
+            rMenu.Add("Rturrent", new CheckBox("塔下自动 R"));
+            rMenu.Add("Rks", new CheckBox("R 抢头"));
+            rMenu.Add("Rlifesaver", new CheckBox("自动 R 自救"));
+            rMenu.Add("Rblock", new CheckBox("防空大助手"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                rMenu.Add("Ralways" + enemy.ChampionName, new CheckBox("Always R : " + enemy.ChampionName, false));
+                rMenu.Add("Ralways" + enemy.ChampionName, new CheckBox("总是 R : " + enemy.ChampionName, false));
 
             Game.OnUpdate += Game_OnGameUpdate;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;

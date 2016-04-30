@@ -14,7 +14,7 @@ namespace RandomUlt
 
         public static void Game_OnGameLoad()
         {
-            config = MainMenu.AddMenu("RandomUlt Beta", "RandomUlt Beta");
+            config = MainMenu.AddMenu("随机大招", "RandomUlt Beta");
             RandomUltM = config.AddSubMenu("Options", "Options");
             positions = new LastPositions(RandomUltM);
         }

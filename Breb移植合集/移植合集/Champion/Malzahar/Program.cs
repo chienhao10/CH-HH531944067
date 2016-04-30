@@ -41,47 +41,47 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Q.SetSkillshot(1.05f, 100, float.MaxValue, false, SkillshotType.SkillshotCircle);
             W.SetSkillshot(1.2f, 230, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("noti", new CheckBox("Show notification & line"));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
-            drawMenu.Add("qRange", new CheckBox("Q range", false));
-            drawMenu.Add("wRange", new CheckBox("W range", false));
-            drawMenu.Add("eRange", new CheckBox("E range", false));
-            drawMenu.Add("rRange", new CheckBox("R range", false));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("noti", new CheckBox("显示提示"));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
+            drawMenu.Add("qRange", new CheckBox("Q 范围", false));
+            drawMenu.Add("wRange", new CheckBox("W 范围", false));
+            drawMenu.Add("eRange", new CheckBox("E 范围", false));
+            drawMenu.Add("rRange", new CheckBox("R 范围", false));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q"));
-            qMenu.Add("harrasQ", new CheckBox("Harass Q"));
-            qMenu.Add("intQ", new CheckBox("Interrupt spells Q"));
-            qMenu.Add("gapQ", new CheckBox("Gapcloser Q"));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ", new CheckBox("自动 Q"));
+            qMenu.Add("harrasQ", new CheckBox("骚扰 Q"));
+            qMenu.Add("intQ", new CheckBox("Q 技能打断"));
+            qMenu.Add("gapQ", new CheckBox("防突进 Q"));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
-            wMenu.Add("harrasW", new CheckBox("Harass W"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
+            wMenu.Add("harrasW", new CheckBox("骚扰 W"));
 
-            eMenu = Config.AddSubMenu("E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E"));
-            eMenu.Add("harrasE", new CheckBox("Harras E"));
-            eMenu.Add("harrasEminion", new CheckBox("Try harras E on minion"));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("autoE", new CheckBox("自动 E"));
+            eMenu.Add("harrasE", new CheckBox("骚扰 E"));
+            eMenu.Add("harrasEminion", new CheckBox("尝试E 小兵进行骚扰"));
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("useR", new KeyBind("Fast combo key", false, KeyBind.BindTypes.HoldActive, 'T')); //32 == space
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("自动 R"));
+            rMenu.Add("useR", new KeyBind("快速连招(R)按键", false, KeyBind.BindTypes.HoldActive, 'T')); //32 == space
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                rMenu.Add("gapcloser" + enemy.ChampionName, new CheckBox("Gapclose : " + enemy.ChampionName, false));
+                rMenu.Add("gapcloser" + enemy.ChampionName, new CheckBox("防突进 : " + enemy.ChampionName, false));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                rMenu.Add("Ron" + enemy.ChampionName, new CheckBox("Fast Combo : " + enemy.ChampionName));
-            rMenu.Add("Rturrent", new CheckBox("Don't R under turret"));
+                rMenu.Add("Ron" + enemy.ChampionName, new CheckBox("快速连招 : " + enemy.ChampionName));
+            rMenu.Add("Rturrent", new CheckBox("塔下不 R"));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("farmQ", new CheckBox("Lane clear Q"));
-            farmMenu.Add("farmW", new CheckBox("Lane clear W"));
-            farmMenu.Add("farmE", new CheckBox("Lane clear E"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80));
-            farmMenu.Add("LCminions", new Slider("LaneClear minimum minions", 2, 0, 10));
-            farmMenu.Add("jungleE", new CheckBox("Jungle clear E"));
-            farmMenu.Add("jungleQ", new CheckBox("Jungle clear Q"));
-            farmMenu.Add("jungleW", new CheckBox("Jungle clear W"));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("farmQ", new CheckBox("清线 Q"));
+            farmMenu.Add("farmW", new CheckBox("清线 W"));
+            farmMenu.Add("farmE", new CheckBox("清线 E"));
+            farmMenu.Add("Mana", new Slider("清线蓝量", 80));
+            farmMenu.Add("LCminions", new Slider("清线最低小兵数", 2, 0, 10));
+            farmMenu.Add("jungleE", new CheckBox("清野 E"));
+            farmMenu.Add("jungleQ", new CheckBox("清野 Q"));
+            farmMenu.Add("jungleW", new CheckBox("清野 W"));
 
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;

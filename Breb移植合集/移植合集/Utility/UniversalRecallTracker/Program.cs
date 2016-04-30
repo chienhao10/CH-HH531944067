@@ -83,12 +83,12 @@ namespace UniversalRecallTracker
 
         public void Game_OnGameLoad(EventArgs args)
         {
-            menu = MainMenu.AddMenu("Universal RecallTracker", "universalrecalltracker");
+            menu = MainMenu.AddMenu("回城计时", "universalrecalltracker");
             menu.Add("x", new Slider("X", (int)((Drawing.Direct3DDevice.Viewport.Width - Resources.RecallBar.Width) / 2f), 0, Drawing.Direct3DDevice.Viewport.Width));
             menu.Add("y", new Slider("Y", (int)(Drawing.Direct3DDevice.Viewport.Height * 3f / 4f), 0, Drawing.Direct3DDevice.Viewport.Height));
-            menu.Add("textSize", new Slider("Text Size (F5 Reload)", 15, 5, 50));
-            menu.Add("chatWarning", new CheckBox("Chat Notification", false));
-            menu.Add("barScale", new Slider("Bar Scale %", 100, 0, 200));
+            menu.Add("textSize", new Slider("字体大小 (需要 F5载入)", 15, 5, 50));
+            menu.Add("chatWarning", new CheckBox("聊天提示", false));
+            menu.Add("barScale", new Slider("条形大小 %", 100, 0, 200));
 
             int i = 0;
 

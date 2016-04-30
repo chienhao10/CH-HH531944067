@@ -242,8 +242,8 @@
         public static Menu jngTimerMenu;
         public void CreateMenu(Menu rootMenu)
         {
-            jngTimerMenu = rootMenu.AddSubMenu("Jungle Timer", "JngTimer");
-            jngTimerMenu.Add("DrawTimers", new CheckBox("Draw Jungle Timers"));
+            jngTimerMenu = rootMenu.AddSubMenu("野区计时", "JngTimer");
+            jngTimerMenu.Add("DrawTimers", new CheckBox("显示野区计时"));
         }
 
         public void Load()

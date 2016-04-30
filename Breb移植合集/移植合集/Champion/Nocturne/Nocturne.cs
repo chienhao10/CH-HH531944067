@@ -278,41 +278,41 @@ namespace UnderratedAIO.Champions
 
         private void InitMenu()
         {
-            config = MainMenu.AddMenu("Nocturne", "Nocturne");
+            config = MainMenu.AddMenu("梦魇", "Nocturne");
 
             // Draw settings
-            menuD = config.AddSubMenu("Drawings ", "dsettings");
-            menuD.Add("drawqq", new CheckBox("Draw Q range"));
+            menuD = config.AddSubMenu("线圈 ", "dsettings");
+            menuD.Add("drawqq", new CheckBox("显示 Q 范围"));
                 //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
-            menuD.Add("drawee", new CheckBox("Draw E range"));
+            menuD.Add("drawee", new CheckBox("显示 E 范围"));
                 //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
-            menuD.Add("drawrr", new CheckBox("Draw R range"));
+            menuD.Add("drawrr", new CheckBox("显示 R 范围"));
                 //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
-            menuD.Add("bestpospas", new CheckBox("Best position for passive", false));
-            menuD.Add("drawcombo", new CheckBox("Draw combo damage"));
+            menuD.Add("bestpospas", new CheckBox("施放被动最好位置", false));
+            menuD.Add("drawcombo", new CheckBox("显示连招伤害"));
 
             // Combo
-            menuC = config.AddSubMenu("Combo ", "csettings");
-            menuC.Add("useq", new CheckBox("Use Q"));
-            menuC.Add("useqMaxRange", new Slider("Q max Range", 1000, 0, (int) Q.Range));
-            menuC.Add("usew", new CheckBox("Use W against targeted CC"));
-            menuC.Add("usee", new CheckBox("Use E"));
-            menuC.Add("useeMaxRange", new Slider("E max Range", 300, 0, (int) E.Range));
-            menuC.Add("user", new CheckBox("Use R in close range"));
-            menuC.Add("useIgnite", new CheckBox("Use Ignite"));
+            menuC = config.AddSubMenu("连招 ", "csettings");
+            menuC.Add("useq", new CheckBox("使用 Q"));
+            menuC.Add("useqMaxRange", new Slider("Q 最远距离", 1000, 0, (int) Q.Range));
+            menuC.Add("usew", new CheckBox("使用 W 防止强控"));
+            menuC.Add("usee", new CheckBox("使用 E"));
+            menuC.Add("useeMaxRange", new Slider("E 最远距离", 300, 0, (int) E.Range));
+            menuC.Add("user", new CheckBox("近距离接近使用 R"));
+            menuC.Add("useIgnite", new CheckBox("使用 的人"));
 
             // Harass Settings
-            menuH = config.AddSubMenu("Harass ", "Hsettings");
-            menuH.Add("useqH", new CheckBox("Use Q"));
-            menuH.Add("minmanaH", new Slider("Keep X% mana", 1, 1));
+            menuH = config.AddSubMenu("骚扰 ", "Hsettings");
+            menuH.Add("useqH", new CheckBox("使用 Q"));
+            menuH.Add("minmanaH", new Slider("保留 X% 蓝量", 1, 1));
 
             // LaneClear Settings
-            menuLC = config.AddSubMenu("LaneClear ", "Lcsettings");
-            menuLC.Add("useqLC", new CheckBox("Use Q"));
-            menuLC.Add("qhitLC", new Slider("Min hit", 2, 1, 10));
-            menuLC.Add("minmana", new Slider("Keep X% mana", 1, 1));
+            menuLC = config.AddSubMenu("清线 ", "Lcsettings");
+            menuLC.Add("useqLC", new CheckBox("使用 Q"));
+            menuLC.Add("qhitLC", new Slider("最低命中小兵数", 2, 1, 10));
+            menuLC.Add("minmana", new Slider("保留 X% 蓝量", 1, 1));
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用 封包", false));
         }
     }
 }

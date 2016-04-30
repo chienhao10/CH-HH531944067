@@ -352,40 +352,40 @@ namespace GFUELQuinn
         {
             try
             {
-                Menu = MainMenu.AddMenu("GFUEL QUINN", "GFUELQUINN");
+                Menu = MainMenu.AddMenu("GFUEL奎恩", "GFUELQUINN");
 
-                comboMenu = Menu.AddSubMenu("Combo", "Combo");
-                comboMenu.Add("GFUELQuinn.Combo.Q", new CheckBox("Use Q"));
-                comboMenu.Add("GFUELQuinn.Combo.E", new CheckBox("Use E"));
-                comboMenu.Add("GFUELQuinn.Combo.ForceE", new CheckBox("Force E Before Q in Bird"));
-                comboMenu.Add("GFUELQuinn.Combo.Ghostblade", new CheckBox("Use Ghostblade"));
+                comboMenu = Menu.AddSubMenu("连招", "Combo");
+                comboMenu.Add("GFUELQuinn.Combo.Q", new CheckBox("使用 Q"));
+                comboMenu.Add("GFUELQuinn.Combo.E", new CheckBox("使用 E"));
+                comboMenu.Add("GFUELQuinn.Combo.ForceE", new CheckBox("鸟形态强制E 后 Q"));
+                comboMenu.Add("GFUELQuinn.Combo.Ghostblade", new CheckBox("使用幽梦"));
 
-                harassMenu = Menu.AddSubMenu("Harass", "Harass");
-                harassMenu.Add("GFUELQuinn.Harass.Q", new CheckBox("Use Q"));
+                harassMenu = Menu.AddSubMenu("骚扰", "Harass");
+                harassMenu.Add("GFUELQuinn.Harass.Q", new CheckBox("使用 Q"));
 
-                laneclearMenu = Menu.AddSubMenu("Laneclear", "Laneclear");
-                laneclearMenu.Add("GFUELQuinn.laneclear.Q", new CheckBox("Use Q"));
-                laneclearMenu.Add("GFUELQuinn.laneclear.E", new CheckBox("Use E", false));
-                laneclearMenu.Add("GFUELQuinn.laneclear.count", new Slider("Minimum minion count", 3, 2, 6));
-                laneclearMenu.Add("GFUELQuinn.laneclear.Mana", new Slider("Minimum mana", 20, 0, 10));
+                laneclearMenu = Menu.AddSubMenu("清线", "Laneclear");
+                laneclearMenu.Add("GFUELQuinn.laneclear.Q", new CheckBox("使用 Q"));
+                laneclearMenu.Add("GFUELQuinn.laneclear.E", new CheckBox("使用 E", false));
+                laneclearMenu.Add("GFUELQuinn.laneclear.count", new Slider("最低小兵数量", 3, 2, 6));
+                laneclearMenu.Add("GFUELQuinn.laneclear.Mana", new Slider("最低蓝量", 20, 0, 10));
 
-                jungleclearMenu = Menu.AddSubMenu("Jungleclear", "Jungleclear");
-                jungleclearMenu.Add("GFUELQuinn.jungleclear.Q", new CheckBox("Use Q"));
-                jungleclearMenu.Add("GFUELQuinn.jungleclear.E", new CheckBox("Use E"));
-                jungleclearMenu.Add("GFUELQuinn.jungleclear.Mana", new Slider("Minimum mana", 20));
+                jungleclearMenu = Menu.AddSubMenu("清野", "Jungleclear");
+                jungleclearMenu.Add("GFUELQuinn.jungleclear.Q", new CheckBox("使用 Q"));
+                jungleclearMenu.Add("GFUELQuinn.jungleclear.E", new CheckBox("使用 E"));
+                jungleclearMenu.Add("GFUELQuinn.jungleclear.Mana", new Slider("最低蓝量", 20));
 
-                killstealMenu = Menu.AddSubMenu("Killsteal", "Killsteal");
-                killstealMenu.Add("GFUELElise.Killsteal.Q", new CheckBox("Killsteal Q"));
+                killstealMenu = Menu.AddSubMenu("抢头", "Killsteal");
+                killstealMenu.Add("GFUELElise.Killsteal.Q", new CheckBox("抢头 Q"));
 
-                miscellaneousMenu = Menu.AddSubMenu("Miscellaneous", "Miscellaneous");
-                miscellaneousMenu.Add("GFUELQuinn.Draw.Off", new CheckBox("Disable drawings", false));
-                miscellaneousMenu.Add("GFUELQuinn.Draw.Q", new CheckBox("Draw Q"));
-                miscellaneousMenu.Add("GFUELQuinn.Draw.E", new CheckBox("Draw E"));
+                miscellaneousMenu = Menu.AddSubMenu("杂项", "Miscellaneous");
+                miscellaneousMenu.Add("GFUELQuinn.Draw.Off", new CheckBox("关闭线圈", false));
+                miscellaneousMenu.Add("GFUELQuinn.Draw.Q", new CheckBox("显示 Q"));
+                miscellaneousMenu.Add("GFUELQuinn.Draw.E", new CheckBox("显示 E"));
                 miscellaneousMenu.AddSeparator();
-                miscellaneousMenu.Add("GFUELQuinn.Misc.Antigapcloser", new CheckBox("Use E - Antigapcloser"));
-                miscellaneousMenu.Add("GFUELQuinn.Misc.Interrupter", new CheckBox("Use E - interrupter"));
+                miscellaneousMenu.Add("GFUELQuinn.Misc.Antigapcloser", new CheckBox("使用 E - 防突进"));
+                miscellaneousMenu.Add("GFUELQuinn.Misc.Interrupter", new CheckBox("使用 E - 技能打断"));
                 miscellaneousMenu.AddSeparator();
-                miscellaneousMenu.Add("GFUELQuinn.Auto.R", new CheckBox("Auto R in base"));
+                miscellaneousMenu.Add("GFUELQuinn.Auto.R", new CheckBox("泉水自动 R"));
             }
             catch (Exception exception)
             {

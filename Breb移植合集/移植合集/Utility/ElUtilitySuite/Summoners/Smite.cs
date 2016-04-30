@@ -375,50 +375,50 @@
                 return;
             }
 
-            smiteMenu = rootMenu.AddSubMenu("Smite", "Smite");
-            smiteMenu.Add("ElSmite.Activated", new KeyBind("Smite Activated", false, KeyBind.BindTypes.PressToggle, 'M'));
-            smiteMenu.Add("Smite.Spell", new CheckBox("Use spell smite combo"));
+            smiteMenu = rootMenu.AddSubMenu("惩戒", "Smite");
+            smiteMenu.Add("ElSmite.Activated", new KeyBind("开启惩戒", false, KeyBind.BindTypes.PressToggle, 'M'));
+            smiteMenu.Add("Smite.Spell", new CheckBox("连招使用惩戒"));
 
             if (Game.MapId == GameMapId.SummonersRift)
             {
                 smiteMenu.AddSeparator();
-                smiteMenu.AddGroupLabel("Mob Smites");
-                smiteMenu.Add("SRU_Dragon", new CheckBox("Dragon"));
-                smiteMenu.Add("SRU_Baron", new CheckBox("Baron"));
-                smiteMenu.Add("SRU_Red", new CheckBox("Red buff"));
-                smiteMenu.Add("SRU_Blue", new CheckBox("Blue buff"));
-                smiteMenu.Add("SRU_RiftHerald", new CheckBox("Rift Herald"));
+                smiteMenu.AddGroupLabel("野怪惩戒");
+                smiteMenu.Add("SRU_Dragon", new CheckBox("龙"));
+                smiteMenu.Add("SRU_Baron", new CheckBox("男爵"));
+                smiteMenu.Add("SRU_Red", new CheckBox("红"));
+                smiteMenu.Add("SRU_Blue", new CheckBox("蓝"));
+                smiteMenu.Add("SRU_RiftHerald", new CheckBox("峡谷先锋"));
 
-                smiteMenu.Add("SRU_Gromp", new CheckBox("Gromp", false));
-                smiteMenu.Add("SRU_Murkwolf", new CheckBox("Wolves", false));
-                smiteMenu.Add("SRU_Krug", new CheckBox("Krug", false));
-                smiteMenu.Add("SRU_Razorbeak", new CheckBox("Chickens (Razorbeak)", false));
-                smiteMenu.Add("Sru_Crab", new CheckBox("Crab", false));
+                smiteMenu.Add("SRU_Gromp", new CheckBox("青蛙", false));
+                smiteMenu.Add("SRU_Murkwolf", new CheckBox("狼", false));
+                smiteMenu.Add("SRU_Krug", new CheckBox("石头人", false));
+                smiteMenu.Add("SRU_Razorbeak", new CheckBox("4鸟", false));
+                smiteMenu.Add("Sru_Crab", new CheckBox("河蟹", false));
                 smiteMenu.AddSeparator();
             }
 
             if (Game.MapId == GameMapId.TwistedTreeline)
             {
                 smiteMenu.AddSeparator();
-                smiteMenu.AddGroupLabel("Mob Smites");
-                smiteMenu.Add("TT_Spiderboss", new CheckBox("Vilemaw"));
-                smiteMenu.Add("TT_NGolem", new CheckBox("Golem"));
-                smiteMenu.Add("TT_NWolf", new CheckBox("Wolf"));
-                smiteMenu.Add("TT_NWraith", new CheckBox("Wraith"));
+                smiteMenu.AddGroupLabel("野怪惩戒");
+                smiteMenu.Add("TT_Spiderboss", new CheckBox("蜘蛛"));
+                smiteMenu.Add("TT_NGolem", new CheckBox("石头人"));
+                smiteMenu.Add("TT_NWolf", new CheckBox("狼"));
+                smiteMenu.Add("TT_NWraith", new CheckBox("幽灵"));
                 smiteMenu.AddSeparator();
             }
 
             //Champion Smite
-            smiteMenu.AddGroupLabel("Champion Smite");
-            smiteMenu.Add("ElSmite.KS.Activated", new CheckBox("Use smite to killsteal"));
-            smiteMenu.Add("ElSmite.KS.Combo", new CheckBox("Use smite in combo"));
+            smiteMenu.AddGroupLabel("惩戒英雄");
+            smiteMenu.Add("ElSmite.KS.Activated", new CheckBox("惩戒抢头"));
+            smiteMenu.Add("ElSmite.KS.Combo", new CheckBox("连招使用惩戒"));
             smiteMenu.AddSeparator();
 
             //Drawings
-            smiteMenu.AddGroupLabel("Drawings");
-            smiteMenu.Add("ElSmite.Draw.Range", new CheckBox("Draw smite Range"));
-            smiteMenu.Add("ElSmite.Draw.Text", new CheckBox("Draw smite text"));
-            smiteMenu.Add("ElSmite.Draw.Damage", new CheckBox("Draw smite Damage", false));
+            smiteMenu.AddGroupLabel("线圈");
+            smiteMenu.Add("ElSmite.Draw.Range", new CheckBox("惩戒范围"));
+            smiteMenu.Add("ElSmite.Draw.Text", new CheckBox("惩戒文字"));
+            smiteMenu.Add("ElSmite.Draw.Damage", new CheckBox("惩戒伤害", false));
         }
 
         public void Load()
@@ -547,12 +547,12 @@
                 {
                     if (drawText && this.Player.Spellbook.CanUseSpell(this.SmiteSpell.Slot) == SpellState.Ready)
                     {
-                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.GhostWhite, "Smite active");
+                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.GhostWhite, "惩戒 可用");
                     }
 
                     if (drawText && this.Player.Spellbook.CanUseSpell(this.SmiteSpell.Slot) != SpellState.Ready)
                     {
-                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "Smite cooldown");
+                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "惩戒 冷却");
                     }
 
                     if (drawDamage && this.SmiteDamage() != 0)
@@ -720,7 +720,7 @@
                 {
                     if (drawText && this.SmiteSpell != null)
                     {
-                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "Smite not active");
+                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "未激活惩戒");
                     }
                 }
 

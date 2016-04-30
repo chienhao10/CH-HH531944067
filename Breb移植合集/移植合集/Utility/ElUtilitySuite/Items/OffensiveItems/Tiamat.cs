@@ -59,8 +59,8 @@ namespace ElUtilitySuite.Items.OffensiveItems
 
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("Tiamat");
-            Menu.Add("Tiamatcombo", new CheckBox("Use on Combo"));
+            Menu.AddGroupLabel("提亚马特");
+            Menu.Add("Tiamatcombo", new CheckBox("连招使用"));
         }
 
         /// <summary>

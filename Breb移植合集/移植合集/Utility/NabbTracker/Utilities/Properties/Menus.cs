@@ -31,8 +31,8 @@ namespace NabbTracker
             /// The general Menu.
             /// </summary>
             Variables.Menu = MainMenu.AddMenu(Variables.MainMenuCodeName, Variables.MainMenuName);
-            Variables.Menu.Add("allies", new CheckBox("Enable Allies"));
-            Variables.Menu.Add("enemies", new CheckBox("Enable Enemies"));
+            Variables.Menu.Add("allies", new CheckBox("友军 开启"));
+            Variables.Menu.Add("enemies", new CheckBox("敌方 开启"));
 
             //WardTracker.AttachToMenu(Variables.Menu);
         }

@@ -303,47 +303,47 @@ namespace UnderratedAIO.Champions
 
         private void InitMenu()
         {
-            config = MainMenu.AddMenu("Nasus ", "Nasus");
+            config = MainMenu.AddMenu("納瑟斯 ", "Nasus");
 
             // Draw settings
-            menuD = config.AddSubMenu("Drawings ", "dsettings");
-            menuD.Add("drawww", new CheckBox("Draw W range"));
+            menuD = config.AddSubMenu("线圈 ", "dsettings");
+            menuD.Add("drawww", new CheckBox("显示 W 范围"));
                 //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
-            menuD.Add("drawee", new CheckBox("Draw E range"));
+            menuD.Add("drawee", new CheckBox("显示 E 范围"));
                 //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
-            menuD.Add("drawrr", new CheckBox("Draw R range"));
+            menuD.Add("drawrr", new CheckBox("显示 R 范围"));
                 //.SetValue(new Circle(false, Color.FromArgb(180, 100, 146, 166)));
 
             // Combo Settings
-            menuC = config.AddSubMenu("Combo ", "csettings");
-            menuC.Add("useq", new CheckBox("Use Q"));
-            menuC.Add("usew", new CheckBox("Use W"));
-            menuC.Add("usee", new CheckBox("Use E"));
-            menuC.Add("keepManaForR", new CheckBox("Keep mana for R"));
-            menuC.Add("useeslow", new CheckBox("Only for slowed enemy", false));
-            menuC.Add("user", new CheckBox("Use R in 1v1"));
-            menuC.Add("usertf", new Slider("R min enemy in teamfight", 2, 1, 5));
-            menuC.Add("useIgnite", new CheckBox("Use Ignite"));
+            menuC = config.AddSubMenu("连招 ", "csettings");
+            menuC.Add("useq", new CheckBox("使用 Q"));
+            menuC.Add("usew", new CheckBox("使用 W"));
+            menuC.Add("usee", new CheckBox("使用 E"));
+            menuC.Add("keepManaForR", new CheckBox("为R 保留蓝"));
+            menuC.Add("useeslow", new CheckBox("只给被减速的目标使用", false));
+            menuC.Add("user", new CheckBox("使用 R 1 V 1"));
+            menuC.Add("usertf", new Slider("R 最低敌人数量", 2, 1, 5));
+            menuC.Add("useIgnite", new CheckBox("使用 点燃"));
 
             // Harass Settings
-            menuH = config.AddSubMenu("Harass ", "Hsettings");
-            menuH.Add("useeH", new CheckBox("Use E"));
-            menuH.Add("minmanaH", new Slider("Keep X% mana", 1, 1));
+            menuH = config.AddSubMenu("骚扰 ", "Hsettings");
+            menuH.Add("useeH", new CheckBox("使用 E"));
+            menuH.Add("minmanaH", new Slider("保留 X% 蓝", 1, 1));
 
             // LaneClear Settings
-            menuLC = config.AddSubMenu("LaneClear ", "Lcsettings");
-            menuLC.Add("useeLC", new CheckBox("Use E"));
-            menuLC.Add("ehitLC", new Slider("E : Min hit", 4, 1, 10));
-            menuLC.Add("minmana", new Slider("Keep X% mana", 1, 1));
+            menuLC = config.AddSubMenu("清线 ", "Lcsettings");
+            menuLC.Add("useeLC", new CheckBox("使用 E"));
+            menuLC.Add("ehitLC", new Slider("E : 最少命中小兵数", 4, 1, 10));
+            menuLC.Add("minmana", new Slider("保留 X% 蓝", 1, 1));
 
             // Misc Menu
-            menuM = config.AddSubMenu("Misc ", "Msettings");
-            menuM.Add("autoQ", new CheckBox("Auto Q"));
-            menuM.Add("Rdamage", new CheckBox("Combo damage with R"));
-            menuM.Add("Qdamage", new CheckBox("Combo damage with Q"));
+            menuM = config.AddSubMenu("杂项 ", "Msettings");
+            menuM.Add("autoQ", new CheckBox("自动 Q"));
+            menuM.Add("Rdamage", new CheckBox("连招伤害 （包含R）"));
+            menuM.Add("Qdamage", new CheckBox("连招伤害 （包含Q）"));
 
             // Config
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用 封包", false));
         }
     }
 }

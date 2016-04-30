@@ -45,8 +45,8 @@
         public static Menu levelMenu;
         public void CreateMenu(Menu rootMenu)
         {
-            levelMenu = rootMenu.AddSubMenu("Ultimate Leveler", "UltLeveler");
-            levelMenu.Add("AutoLevelR", new CheckBox("Automaticly Level Up Ultimate"));
+            levelMenu = rootMenu.AddSubMenu("自动加点", "UltLeveler");
+            levelMenu.Add("AutoLevelR", new CheckBox("自动加点大招"));
 
             random = new Random(Environment.TickCount);
         }

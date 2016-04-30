@@ -78,8 +78,8 @@
                 return;
             }
 
-            barrierMenu = rootMenu.AddSubMenu("Barrier", "Barrier");
-            barrierMenu.Add("Barrier.Activated", new CheckBox("Barrier activated"));
+            barrierMenu = rootMenu.AddSubMenu("护盾", "Barrier");
+            barrierMenu.Add("Barrier.Activated", new CheckBox("开启护盾"));
             //barrierMenu.Add("Barrier.HP", new Slider("Barrier percentage", 20, 1));
             //barrierMenu.Add("Barrier.Damage", new Slider("Barrier on damage dealt %", 20, 1));
         }

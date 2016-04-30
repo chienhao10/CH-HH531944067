@@ -62,27 +62,27 @@ namespace Humanizer
 
         public static void Game_OnGameLoad()
         {
-            Menu = MainMenu.AddMenu("Humanizer", "Humanizer");
+            Menu = MainMenu.AddMenu("人性化", "Humanizer");
 
-            spells = Menu.AddSubMenu("Spells", "Spells");
+            spells = Menu.AddSubMenu("技能", "Spells");
             foreach (var spell in Items)
             {
                 spells.AddGroupLabel(spell.ToString());
-                spells.Add("Enabled" + spell, new CheckBox("Delay " + spell));
-                spells.Add("MinDelay" + spell, new Slider("Minimum Delay", 80));
-                spells.Add("MaxDelay" + spell, new Slider("Maximum Delay", 200, 100, 400));
+                spells.Add("Enabled" + spell, new CheckBox("延迟 " + spell));
+                spells.Add("MinDelay" + spell, new Slider("最低延迟", 80));
+                spells.Add("MaxDelay" + spell, new Slider("最高延迟", 200, 100, 400));
                 LastCast.Add(spell, 0);
                 spells.AddSeparator();
             }
-            spells.Add("DrawSpells", new CheckBox("Draw Blocked Spell Count"));
+            spells.Add("DrawSpells", new CheckBox("显示阻挡的技能数量"));
 
-            move = Menu.AddSubMenu("Movement", "Movement");
-            move.Add("MovementEnabled", new CheckBox("Enabled"));
-            move.Add("MovementHumanizeDistance", new CheckBox("Humanize Movement Distance"));
-            move.Add("MovementHumanizeRate", new CheckBox("Humanize Movement Rate"));
-            move.Add("MinDelay", new Slider("Minimum Delay", 80));
-            move.Add("MaxDelay", new Slider("Maximum Delay", 200, 100, 400));
-            move.Add("DrawMove", new CheckBox("Draw Blocked Movement Count"));
+            move = Menu.AddSubMenu("移动", "Movement");
+            move.Add("MovementEnabled", new CheckBox("开启"));
+            move.Add("MovementHumanizeDistance", new CheckBox("人性化移动距离"));
+            move.Add("MovementHumanizeRate", new CheckBox("人性化移动次数"));
+            move.Add("MinDelay", new Slider("最低延迟", 80));
+            move.Add("MaxDelay", new Slider("最高延迟", 200, 100, 400));
+            move.Add("DrawMove", new CheckBox("显示阻挡的移动数量"));
 
             BlockedSpells = new Render.Text("Blocked Spells: ", Drawing.Width - 200, Drawing.Height - 600, 28, Color.Green);
             BlockedSpells.VisibleCondition += sender => getCheckBoxItem(spells, "DrawSpells");

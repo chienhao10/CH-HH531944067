@@ -80,23 +80,23 @@ namespace RandomUlt.Helpers
                 SpawnPos = objSpawnPoint.Position;
             if (SupportedChamps())
             {
-                config.Add("UseR", new CheckBox("Use R"));
+                config.Add("UseR", new CheckBox("使用 R"));
                 if (player.ChampionName == "Gangplank")
                 {
-                    config.Add("gpWaves", new Slider("GP ult waves to damage", 2, 1, 7));
+                    config.Add("gpWaves", new Slider("船长 R 进行伤害", 2, 1, 7));
                 }
                 if (player.ChampionName == "Xerath")
                 {
-                    config.Add("XerathUlts", new Slider("Xerath ults to damage", 2, 1, 3));
+                    config.Add("XerathUlts", new Slider("泽拉斯 R 进行伤害", 2, 1, 3));
                 }
                 if (player.ChampionName == "Draven")
                 {
-                    config.Add("Backdamage", new CheckBox("Count second hit"));
-                    config.Add("CallBack", new CheckBox("Reduce time between hits"));
+                    config.Add("Backdamage", new CheckBox("计算 2R 伤害"));
+                    config.Add("CallBack", new CheckBox("缩减回来时间"));
                 }
                 config.Add("Hitchance", new Slider("Hitchance", 3, 1, 5));
                 config.AddSeparator();
-                config.AddGroupLabel("Don't Ult :");
+                config.AddGroupLabel("不大招 :");
                 foreach (var e in HeroManager.Enemies)
                 {
                     config.Add(e.ChampionName + "DontUltRandomUlt", new CheckBox(e.ChampionName, false));

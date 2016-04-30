@@ -93,10 +93,10 @@
             {
                 var plugins = Assembly.GetExecutingAssembly().GetTypes().Where(x => typeof(IPlugin).IsAssignableFrom(x) && !x.IsInterface).Select(x => GetActivator<IPlugin>(x.GetConstructors().First())(null));
 
-                menu = MainMenu.AddMenu("ElUtilitySuite", "ElUtilitySuite");
+                menu = MainMenu.AddMenu("EL活化剂", "ElUtilitySuite");
 
                 menu.AddSeparator();
-                menu.Add("usecombo", new KeyBind("Combo (Active)", false, KeyBind.BindTypes.HoldActive, 32));
+                menu.Add("usecombo", new KeyBind("连招 (开启)", false, KeyBind.BindTypes.HoldActive, 32));
                 menu.AddSeparator();
 
                 foreach (var plugin in plugins)

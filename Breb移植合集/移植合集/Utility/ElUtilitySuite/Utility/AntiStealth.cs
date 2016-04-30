@@ -108,9 +108,9 @@
         /// <returns></returns>
         public void CreateMenu(Menu rootMenu)
         {
-            var protectMenu = rootMenu.AddSubMenu("Anti-Stealth", "AntiStealth");
+            var protectMenu = rootMenu.AddSubMenu("反-隐形", "AntiStealth");
             {
-                protectMenu.Add("AntiStealthActive", new CheckBox("Place Pink Ward on Unit Stealth"));
+                protectMenu.Add("AntiStealthActive", new CheckBox("插真眼显示隐形单位"));
             }
 
             this.Menu = protectMenu;

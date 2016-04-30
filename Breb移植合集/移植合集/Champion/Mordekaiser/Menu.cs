@@ -27,110 +27,110 @@ namespace Mordekaiser
         {
             // Q
             MenuQ = Config.AddSubMenu("Q", "Q");
-            MenuQ.Add("UseQ.Combo", new CheckBox("Combo"));
-            MenuQ.Add("UseQ.Lane", new ComboBox("Lane Clear", 1, "Off", "On", "Only Siege/Super Minion"));
-            MenuQ.Add("UseQ.Jungle", new ComboBox("Jungle Clear", 1, "Off", "On", "Only Big Mobs"));
+            MenuQ.Add("UseQ.Combo", new CheckBox("连招"));
+            MenuQ.Add("UseQ.Lane", new ComboBox("清线", 1, "关闭", "开启", "只炮兵/超级兵"));
+            MenuQ.Add("UseQ.Jungle", new ComboBox("清野", 1, "关闭", "开启", "只大型野怪"));
             MenuQ.AddSeparator();
-            MenuQ.AddGroupLabel("Min. Heal Settings:");
-            MenuQ.Add("UseQ.Lane.MinHeal", new Slider("Lane Clear:", 30));
-            MenuQ.Add("UseQ.Jungle.MinHeal", new Slider("Jungle Clear:", 30));
+            MenuQ.AddGroupLabel("最低治疗设置:");
+            MenuQ.Add("UseQ.Lane.MinHeal", new Slider("清线:", 30));
+            MenuQ.Add("UseQ.Jungle.MinHeal", new Slider("清野:", 30));
 
             // W
             MenuW = Config.AddSubMenu("W", "W");
-            MenuW.Add("UseW.DamageRadius", new Slider("W Damage Radius Range (Default = 350):", 350, 250, 400));
+            MenuW.Add("UseW.DamageRadius", new Slider("W 伤害半径 (预设 = 350):", 350, 250, 400));
             MenuW.AddSeparator();
-            MenuW.Add("Allies.Active", new CheckBox("Combo"));
+            MenuW.Add("Allies.Active", new CheckBox("对友军使用"));
             MenuW.Add("Selected" + Utils.Player.Self.ChampionName,
-                new ComboBox(Utils.Player.Self.ChampionName + " (Yourself)",
-                    Utils.TargetSelector.Ally.GetPriority(Utils.Player.Self.ChampionName), "Don't", "Combo", "Everytime"));
+                new ComboBox(Utils.Player.Self.ChampionName + " (玩家自己)",
+                    Utils.TargetSelector.Ally.GetPriority(Utils.Player.Self.ChampionName), "从不", "连招", "一直"));
             MenuW.Add("SelectedGhost",
-                new ComboBox("Dragon / Ghost Enemy", Utils.TargetSelector.Ally.GetPriority("Dragon"), "Don't", "Combo",
-                    "Everytime"));
+                new ComboBox("龙 / 敌方幽灵", Utils.TargetSelector.Ally.GetPriority("Dragon"), "从不", "连招",
+                    "一直"));
             foreach (var ally in HeroManager.Allies.Where(a => !a.IsMe))
             {
                 MenuW.Add("Selected" + ally.ChampionName,
                     new ComboBox(ally.CharData.BaseSkinName, Utils.TargetSelector.Ally.GetPriority(ally.ChampionName),
-                        "Don't", "Combo", "Everytime"));
+                        "从不", "连招", "一直"));
             }
             MenuW.AddSeparator();
-            MenuW.AddGroupLabel("Lane / Jungle Settings:");
+            MenuW.AddGroupLabel("清线 / 清野设置:");
             MenuW.Add("UseW.Lane",
-                new Slider("Lane Clear : (0 : Off | 1-6 : # of minions | 7 : Auto (Recommended))", 7, 0, 7));
-            MenuW.Add("UseW.Jungle", new CheckBox("JungleClear"));
+                new Slider("权限 : (0 : 关闭 | 1-6 : # 个小兵 | 7 : 自动 (推荐))", 7, 0, 7));
+            MenuW.Add("UseW.Jungle", new CheckBox("清野"));
             MenuW.AddSeparator();
-            MenuW.AddGroupLabel("Drawings");
-            MenuW.Add("DrawW.Search", new CheckBox("W Range")); //.SetValue(new Circle(true, Color.Aqua)));
-            MenuW.Add("DrawW.DamageRadius", new CheckBox("W Damage Radius"));
+            MenuW.AddGroupLabel("线圈");
+            MenuW.Add("DrawW.Search", new CheckBox("W 范围")); //.SetValue(new Circle(true, Color.Aqua)));
+            MenuW.Add("DrawW.DamageRadius", new CheckBox("W 伤害半径"));
                 //.SetValue(new Circle(true, Color.Coral)));
 
             // E
             MenuE = Config.AddSubMenu("E", "E");
-            MenuE.Add("UseE.Combo", new CheckBox("Combo"));
-            MenuE.Add("UseE.Harass", new CheckBox("Harass"));
-            MenuE.Add("UseE.Lane", new CheckBox("Lane Clear"));
-            MenuE.Add("UseE.Jungle", new CheckBox("Jungle Clear"));
+            MenuE.Add("UseE.Combo", new CheckBox("连招"));
+            MenuE.Add("UseE.Harass", new CheckBox("骚扰"));
+            MenuE.Add("UseE.Lane", new CheckBox("清线"));
+            MenuE.Add("UseE.Jungle", new CheckBox("清野"));
             MenuE.AddSeparator();
-            MenuE.AddGroupLabel("Toggle Settings:");
-            MenuE.Add("UseE.Toggle", new KeyBind("E Toggle:", false, KeyBind.BindTypes.PressToggle, 'T'));
+            MenuE.AddGroupLabel("开关设置:");
+            MenuE.Add("UseE.Toggle", new KeyBind("E 开关:", false, KeyBind.BindTypes.PressToggle, 'T'));
             MenuE.AddSeparator();
-            MenuE.AddGroupLabel("Min. Heal Settings:");
-            MenuE.Add("UseE.Harass.MinHeal", new Slider("Harass:", 30));
-            MenuE.Add("UseE.Lane.MinHeal", new Slider("Lane Clear:", 30));
-            MenuE.Add("UseE.Jungle.MinHeal", new Slider("Jungle Clear:", 30));
+            MenuE.AddGroupLabel("最低治疗设置:");
+            MenuE.Add("UseE.Harass.MinHeal", new Slider("骚扰:", 30));
+            MenuE.Add("UseE.Lane.MinHeal", new Slider("清线:", 30));
+            MenuE.Add("UseE.Jungle.MinHeal", new Slider("清野:", 30));
             MenuE.AddSeparator();
-            MenuE.AddGroupLabel("Drawings");
-            MenuE.Add("DrawE.Search", new CheckBox("E Range")); //.SetValue(new Circle(true, Color.Aqua)));
+            MenuE.AddGroupLabel("线圈");
+            MenuE.Add("DrawE.Search", new CheckBox("E 范围")); //.SetValue(new Circle(true, Color.Aqua)));
 
             // R
             MenuR = Config.AddSubMenu("R", "R");
-            MenuR.Add("UseR.Active", new CheckBox("Use R"));
+            MenuR.Add("UseR.Active", new CheckBox("使用 R"));
             foreach (var enemy in HeroManager.Enemies)
             {
                 MenuR.Add("Selected" + enemy.ChampionName,
                     new ComboBox(enemy.ChampionName, Utils.TargetSelector.Enemy.GetPriority(enemy.ChampionName),
-                        "Don't Use", "Low", "Medium", "High"));
+                        "从不", "低", "中", "高"));
                     //.SetValue(new StringList(new[] { "Don't Use", "Low", "Medium", "High" }, Utils.TargetSelector.Enemy.GetPriority(enemy.ChampionName))));
             }
 
             MenuR.AddSeparator();
-            MenuR.AddGroupLabel("Drawings");
-            MenuR.Add("DrawR.Search", new CheckBox("R Skill Range")); //.SetValue(new Circle(true, Color.GreenYellow)));
-            MenuR.Add("DrawR.Status.Show", new ComboBox("Targeting Notification:", 0, "Off", "On", "Only High Target"));
+            MenuR.AddGroupLabel("线圈");
+            MenuR.Add("DrawR.Search", new CheckBox("R 范围")); //.SetValue(new Circle(true, Color.GreenYellow)));
+            MenuR.Add("DrawR.Status.Show", new ComboBox("目标提示:", 0, "关闭", "开启", "高，的目标"));
 
             //ghost
-            MenuGhost = Config.AddSubMenu("Ghost");
-            MenuGhost.AddGroupLabel("What do you want with the Ghost?");
-            MenuGhost.Add("Ghost.Use", new ComboBox("Do this:", 1, "Nothing", "Fight w/ Me", "Attack High Prio Targs)"));
+            MenuGhost = Config.AddSubMenu("幽灵");
+            MenuGhost.AddGroupLabel("给予幽灵什么命令?");
+            MenuGhost.Add("Ghost.Use", new ComboBox("命令:", 1, "什么都不做", "和我一起作战", "攻击重要目标"));
             MenuGhost.AddSeparator();
-            MenuGhost.AddGroupLabel("Drawings");
-            MenuGhost.Add("Ghost.Draw.Position", new CheckBox("Ghost Position"));
+            MenuGhost.AddGroupLabel("线圈");
+            MenuGhost.Add("Ghost.Draw.Position", new CheckBox("幽灵位置"));
                 //.SetValue(new Circle(true, Color.DarkRed)));
-            MenuGhost.Add("Ghost.Draw.AARange", new CheckBox("Ghost AA Range"));
+            MenuGhost.Add("Ghost.Draw.AARange", new CheckBox("幽灵普攻范围"));
                 //.SetValue(new Circle(true, Color.DarkRed)));
-            MenuGhost.Add("Ghost.Draw.ControlRange", new CheckBox("Ghost Control Range"));
+            MenuGhost.Add("Ghost.Draw.ControlRange", new CheckBox("幽灵控制范围"));
                 //.SetValue(new Circle(true, Color.WhiteSmoke)));
 
             //items
-            MenuItems = Config.AddSubMenu("Items");
-            MenuItems.AddGroupLabel("Use Items on This Mode:");
-            MenuItems.Add("Items.Combo", new CheckBox("Combo"));
-            MenuItems.Add("Items.Lane", new CheckBox("Lane Clear"));
-            MenuItems.Add("Items.Jungle", new CheckBox("Jungle Clear"));
+            MenuItems = Config.AddSubMenu("物品");
+            MenuItems.AddGroupLabel("以下模式使用物品:");
+            MenuItems.Add("Items.Combo", new CheckBox("连招"));
+            MenuItems.Add("Items.Lane", new CheckBox("清线"));
+            MenuItems.Add("Items.Jungle", new CheckBox("清野"));
 
             //draws
-            MenuDrawings = Config.AddSubMenu("Other Drawings", "Drawings");
+            MenuDrawings = Config.AddSubMenu("其他线圈", "Drawings");
             /* [ Damage After Combo ] */
-            MenuDrawings.Add("Draw.Calc.Q", new CheckBox("Q Damage"));
-            MenuDrawings.Add("Draw.Calc.W", new CheckBox("W Damage"));
-            MenuDrawings.Add("Draw.Calc.E", new CheckBox("E Damage"));
-            MenuDrawings.Add("Draw.Calc.R", new CheckBox("R Damage"));
-            MenuDrawings.Add("Draw.Calc.I", new CheckBox("Ignite Damage"));
+            MenuDrawings.Add("Draw.Calc.Q", new CheckBox("Q 伤害"));
+            MenuDrawings.Add("Draw.Calc.W", new CheckBox("W 伤害"));
+            MenuDrawings.Add("Draw.Calc.E", new CheckBox("E 伤害"));
+            MenuDrawings.Add("Draw.Calc.R", new CheckBox("R 伤害"));
+            MenuDrawings.Add("Draw.Calc.I", new CheckBox("点燃 伤害"));
                 //.SetFontStyle(FontStyle.Regular, SharpDX.Color.Aqua));
-            MenuDrawings.Add("Draw.Calc.T", new CheckBox("Item Damage"));
+            MenuDrawings.Add("Draw.Calc.T", new CheckBox("物品伤害"));
                 //.SetFontStyle(FontStyle.Regular, SharpDX.Color.Aqua));
             if (PlayerSpells.SmiteSlot != SpellSlot.Unknown)
             {
-                MenuDrawings.Add("Calc.S", new CheckBox("Smite Damage"));
+                MenuDrawings.Add("Calc.S", new CheckBox("惩戒伤害"));
                     //.SetFontStyle(FontStyle.Regular, SharpDX.Color.Aqua));
             }
         }

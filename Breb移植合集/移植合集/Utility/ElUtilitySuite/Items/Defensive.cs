@@ -82,17 +82,17 @@ namespace ElUtilitySuite.Items
 
         public void CreateMenu(Menu rootMenu)
         {
-            defenseMenu = rootMenu.AddSubMenu("Defensive", "DefensiveMenu");
-            defenseMenu.Add("1", new CheckBox("Zeke's Harbinger"));
-            defenseMenu.Add("2", new CheckBox("Banner of Command"));
-            defenseMenu.Add("3", new CheckBox("Face of the Mountain"));
-            defenseMenu.Add("4", new CheckBox("Locket of the Iron Solari"));
-            defenseMenu.Add("5", new CheckBox("Wooglet's Witchcap"));
-            defenseMenu.Add("6", new CheckBox("Seraph's Embrace"));
-            defenseMenu.Add("7", new CheckBox("Guardian's Horn"));
-            defenseMenu.Add("8", new CheckBox("Talisman of Ascension"));
-            defenseMenu.Add("9", new CheckBox("Righteous Glory"));
-            defenseMenu.Add("0", new CheckBox("Randuin's Omen"));
+            defenseMenu = rootMenu.AddSubMenu("防御", "DefensiveMenu");
+            defenseMenu.Add("1", new CheckBox("基克的使徒"));
+            defenseMenu.Add("2", new CheckBox("号令之旗"));
+            defenseMenu.Add("3", new CheckBox("崇山圣盾"));
+            defenseMenu.Add("4", new CheckBox("钢铁烈阳之匣"));
+            defenseMenu.Add("5", new CheckBox("沃格勒特的巫师帽"));
+            defenseMenu.Add("6", new CheckBox("炽天使之拥"));
+            defenseMenu.Add("7", new CheckBox("守护者的号角"));
+            defenseMenu.Add("8", new CheckBox("飞升护符"));
+            defenseMenu.Add("9", new CheckBox("正义荣光"));
+            defenseMenu.Add("0", new CheckBox("兰顿之兆"));
         }
 
         public void Load()

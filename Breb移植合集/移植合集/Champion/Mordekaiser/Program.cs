@@ -51,7 +51,7 @@ namespace Mordekaiser
             OnUpdate = new OnUpdate();
             LogicW.Initiate();
 
-            Config.Add("GameMode", new ComboBox("Game Mode:", 0, "AP", "AD", "Hybrid", "Tanky"));
+            Config.Add("GameMode", new ComboBox("游戏模式:", 0, "AP", "AD", "AP+AD", "肉"));
 
             Chat.Print(
                 "Mordekasier</font> <font color='#ff3232'> How to Train Your Dragon </font> <font color='#FFFFFF'>Loaded!</font>");

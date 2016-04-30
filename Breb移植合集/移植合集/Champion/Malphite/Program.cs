@@ -77,53 +77,53 @@ namespace ElEasy.Plugins
 
         public void CreateMenu()
         {
-            Menu = MainMenu.AddMenu("ElMalphite", "ElMalphite");
+            Menu = MainMenu.AddMenu("El石头人", "ElMalphite");
 
-            comboMenu = Menu.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("ElEasy.Malphite.Combo.Q", new CheckBox("Use Q"));
-            comboMenu.Add("ElEasy.Malphite.Combo.W", new CheckBox("Use W"));
-            comboMenu.Add("ElEasy.Malphite.Combo.E", new CheckBox("Use E"));
-            comboMenu.Add("ElEasy.Malphite.Combo.Ignite", new CheckBox("Use Ignite"));
+            comboMenu = Menu.AddSubMenu("连招", "Combo");
+            comboMenu.Add("ElEasy.Malphite.Combo.Q", new CheckBox("使用 Q"));
+            comboMenu.Add("ElEasy.Malphite.Combo.W", new CheckBox("使用 W"));
+            comboMenu.Add("ElEasy.Malphite.Combo.E", new CheckBox("使用 E"));
+            comboMenu.Add("ElEasy.Malphite.Combo.Ignite", new CheckBox("使用 点燃"));
 
-            rMenu = Menu.AddSubMenu("R Settings", "R");
-            rMenu.Add("ElEasy.Malphite.Combo.R", new CheckBox("Use R"));
-            rMenu.Add("ElEasy.Malphite.Combo.ForceR", new CheckBox("Force R when target can get killed", false));
+            rMenu = Menu.AddSubMenu("R 设置", "R");
+            rMenu.Add("ElEasy.Malphite.Combo.R", new CheckBox("使用 R"));
+            rMenu.Add("ElEasy.Malphite.Combo.ForceR", new CheckBox("强制 R 当目标可被击杀", false));
             rMenu.Add("ElEasy.Malphite.Combo.R.Mode",
-                new ComboBox("Mode ", 1, "Single target finisher", "Champions hit"));
-            rMenu.Add("ElEasy.Malphite.Combo.Count.R", new Slider("Minimum champions hit by R", 2, 1, 5));
+                new ComboBox("R 模式 ", 1, "单杀目标", "多英雄命中数"));
+            rMenu.Add("ElEasy.Malphite.Combo.Count.R", new Slider("最低 R 命中英雄数", 2, 1, 5));
 
-            harassMenu = Menu.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("ElEasy.Malphite.Harass.Q", new CheckBox("Use Q"));
-            harassMenu.Add("ElEasy.Malphite.Harass.E", new CheckBox("Use E"));
-            harassMenu.Add("ElEasy.Malphite.Harass.Player.Mana", new Slider("Minimum Mana", 55, 1));
-            harassMenu.AddGroupLabel("Auto Harass Settings");
+            harassMenu = Menu.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("ElEasy.Malphite.Harass.Q", new CheckBox("使用 Q"));
+            harassMenu.Add("ElEasy.Malphite.Harass.E", new CheckBox("使用 E"));
+            harassMenu.Add("ElEasy.Malphite.Harass.Player.Mana", new Slider("最低蓝量", 55, 1));
+            harassMenu.AddGroupLabel("自动骚扰");
             harassMenu.Add("ElEasy.Malphite.AutoHarass.Activate",
-                new KeyBind("Auto harass", false, KeyBind.BindTypes.PressToggle, 'L'));
-            harassMenu.Add("ElEasy.Malphite.AutoHarass.Q", new CheckBox("Use Q"));
-            harassMenu.Add("ElEasy.Malphite.AutoHarass.E", new CheckBox("Use E"));
+                new KeyBind("自动骚扰", false, KeyBind.BindTypes.PressToggle, 'L'));
+            harassMenu.Add("ElEasy.Malphite.AutoHarass.Q", new CheckBox("使用 Q"));
+            harassMenu.Add("ElEasy.Malphite.AutoHarass.E", new CheckBox("使用 E"));
             harassMenu.Add("ElEasy.Malphite.AutoHarass.PlayerMana", new Slider("Minimum mana", 55, 1));
 
-            clearMenu = Menu.AddSubMenu("Clear", "Clear");
+            clearMenu = Menu.AddSubMenu("推线", "Clear");
             clearMenu.AddGroupLabel("Wave Clear");
-            clearMenu.Add("ElEasy.Malphite.LaneClear.Q", new CheckBox("Use Q"));
-            clearMenu.Add("ElEasy.Malphite.LaneClear.W", new CheckBox("Use W"));
-            clearMenu.Add("ElEasy.Malphite.LaneClear.E", new CheckBox("Use E"));
-            clearMenu.AddGroupLabel("Jungle Clear");
-            clearMenu.Add("ElEasy.Malphite.JungleClear.Q", new CheckBox("Use Q"));
-            clearMenu.Add("ElEasy.Malphite.JungleClear.W", new CheckBox("Use W"));
-            clearMenu.Add("ElEasy.Malphite.JungleClear.E", new CheckBox("Use E"));
-            clearMenu.AddGroupLabel("Last Hit");
-            clearMenu.Add("ElEasy.Malphite.Lasthit.Q", new CheckBox("Use Q"));
+            clearMenu.Add("ElEasy.Malphite.LaneClear.Q", new CheckBox("使用 Q"));
+            clearMenu.Add("ElEasy.Malphite.LaneClear.W", new CheckBox("使用 W"));
+            clearMenu.Add("ElEasy.Malphite.LaneClear.E", new CheckBox("使用 E"));
+            clearMenu.AddGroupLabel("清野");
+            clearMenu.Add("ElEasy.Malphite.JungleClear.Q", new CheckBox("使用 Q"));
+            clearMenu.Add("ElEasy.Malphite.JungleClear.W", new CheckBox("使用 W"));
+            clearMenu.Add("ElEasy.Malphite.JungleClear.E", new CheckBox("使用 E"));
+            clearMenu.AddGroupLabel("尾兵");
+            clearMenu.Add("ElEasy.Malphite.Lasthit.Q", new CheckBox("使用 Q"));
             clearMenu.AddSeparator();
-            clearMenu.Add("ElEasy.Malphite.Clear.Player.Mana", new Slider("Minimum Mana for clear", 55, 1));
+            clearMenu.Add("ElEasy.Malphite.Clear.Player.Mana", new Slider("推线最低蓝量", 55, 1));
 
-            miscellaneousMenu = Menu.AddSubMenu("Miscellaneous", "Miscellaneous");
-            miscellaneousMenu.Add("ElEasy.Malphite.Interrupt.Activated", new CheckBox("Interrupt spells"));
-            miscellaneousMenu.Add("ElEasy.Malphite.Draw.off", new CheckBox("Turn drawings off"));
-            miscellaneousMenu.Add("ElEasy.Malphite.Castpos", new CheckBox("Draw R cast position"));
-            miscellaneousMenu.Add("ElEasy.Malphite.Draw.Q", new CheckBox("Draw Q"));
-            miscellaneousMenu.Add("ElEasy.Malphite.Draw.E", new CheckBox("Draw E"));
-            miscellaneousMenu.Add("ElEasy.Malphite.Draw.R", new CheckBox("Draw R"));
+            miscellaneousMenu = Menu.AddSubMenu("杂项", "Miscellaneous");
+            miscellaneousMenu.Add("ElEasy.Malphite.Interrupt.Activated", new CheckBox("技能打断"));
+            miscellaneousMenu.Add("ElEasy.Malphite.Draw.off", new CheckBox("关闭线圈"));
+            miscellaneousMenu.Add("ElEasy.Malphite.Castpos", new CheckBox("显示 R 施放位置"));
+            miscellaneousMenu.Add("ElEasy.Malphite.Draw.Q", new CheckBox("显示 Q"));
+            miscellaneousMenu.Add("ElEasy.Malphite.Draw.E", new CheckBox("显示 E"));
+            miscellaneousMenu.Add("ElEasy.Malphite.Draw.R", new CheckBox("显示 R"));
         }
 
         public Malphite()

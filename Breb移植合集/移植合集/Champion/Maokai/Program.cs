@@ -296,50 +296,50 @@ namespace UnderratedAIO.Champions
 
         private void InitMenu()
         {
-            config = MainMenu.AddMenu("Maokai", "Maokai");
+            config = MainMenu.AddMenu("扭曲树精", "Maokai");
 
             // Draw settings
-            drawMenu = config.AddSubMenu("Drawings ", "dsettings");
-            drawMenu.Add("drawqq", new CheckBox("Draw Q range"));
-            drawMenu.Add("drawww", new CheckBox("Draw W range"));
-            drawMenu.Add("drawee", new CheckBox("Draw E range"));
-            drawMenu.Add("drawrr", new CheckBox("Draw R range"));
+            drawMenu = config.AddSubMenu("线圈 ", "dsettings");
+            drawMenu.Add("drawqq", new CheckBox("显示 Q 范围"));
+            drawMenu.Add("drawww", new CheckBox("显示 W 范围"));
+            drawMenu.Add("drawee", new CheckBox("显示 E 范围"));
+            drawMenu.Add("drawrr", new CheckBox("显示 R 范围"));
 
             // Combo settings
-            comboMenu = config.AddSubMenu("Combo ", "csettings");
-            comboMenu.Add("useq", new CheckBox("Use Q"));
-            comboMenu.Add("useqroot", new CheckBox("Q : Only Immobile/CC'd"));
-            comboMenu.Add("useqrange", new Slider("Q max range", (int) Q.Range, 0, (int) Q.Range));
-            comboMenu.Add("usew", new CheckBox("Use W"));
-            comboMenu.Add("usee", new CheckBox("Use E"));
-            comboMenu.Add("blocke", new CheckBox("EW Combo if possible"));
-            comboMenu.Add("user", new Slider("Use R min", 1, 1, 5));
-            comboMenu.Add("rks", new CheckBox("R : Deactivate to KS target"));
-            comboMenu.Add("rmana", new Slider("R : Deactivate min mana", 20));
-            comboMenu.Add("selected", new CheckBox("Focus Selected target"));
-            comboMenu.Add("useIgnite", new CheckBox("Use Ignite"));
+            comboMenu = config.AddSubMenu("连招 ", "csettings");
+            comboMenu.Add("useq", new CheckBox("使用 Q"));
+            comboMenu.Add("useqroot", new CheckBox("Q : 只用在定身/不可移动目标"));
+            comboMenu.Add("useqrange", new Slider("Q 最远距离", (int) Q.Range, 0, (int) Q.Range));
+            comboMenu.Add("usew", new CheckBox("使用 W"));
+            comboMenu.Add("usee", new CheckBox("使用 E"));
+            comboMenu.Add("blocke", new CheckBox("尝试 EW 连招"));
+            comboMenu.Add("user", new Slider("使用 R 最低敌人数量", 1, 1, 5));
+            comboMenu.Add("rks", new CheckBox("R : 关闭R 抢头"));
+            comboMenu.Add("rmana", new Slider("R : 关闭R 蓝量", 20));
+            comboMenu.Add("selected", new CheckBox("集火选择的目标"));
+            comboMenu.Add("useIgnite", new CheckBox("使用 点燃"));
 
             // Harass Settings
-            harassMenu = config.AddSubMenu("Harass ", "Hsettings");
-            harassMenu.Add("useqH", new CheckBox("Use Q"));
-            harassMenu.Add("useeH", new CheckBox("Use E"));
-            harassMenu.Add("minmanaH", new Slider("Keep X% mana", 1, 1));
+            harassMenu = config.AddSubMenu("骚扰 ", "Hsettings");
+            harassMenu.Add("useqH", new CheckBox("使用 Q"));
+            harassMenu.Add("useeH", new CheckBox("使用 E"));
+            harassMenu.Add("minmanaH", new Slider("保留 X% 蓝量", 1, 1));
 
             // LaneClear Settings
-            laneClearMenu = config.AddSubMenu("LaneClear ", "Lcsettings");
-            laneClearMenu.Add("useqLC", new CheckBox("Use Q"));
-            laneClearMenu.Add("qhitLC", new Slider("Q : More than x minion", 2, 1, 10));
-            laneClearMenu.Add("useeLC", new CheckBox("Use E"));
-            laneClearMenu.Add("ehitLC", new Slider("E : More than x minion", 2, 1, 10));
-            laneClearMenu.Add("minmana", new Slider("Keep X% mana", 1, 1));
+            laneClearMenu = config.AddSubMenu("清线 ", "Lcsettings");
+            laneClearMenu.Add("useqLC", new CheckBox("使用 Q"));
+            laneClearMenu.Add("qhitLC", new Slider("Q : 多于 X 个小兵", 2, 1, 10));
+            laneClearMenu.Add("useeLC", new CheckBox("使用 E"));
+            laneClearMenu.Add("ehitLC", new Slider("E : 多于 X 个小兵", 2, 1, 10));
+            laneClearMenu.Add("minmana", new Slider("保留 X% 蓝量", 1, 1));
 
             // Misc Settings
-            miscMenu = config.AddSubMenu("Misc ", "Msettings");
-            miscMenu.Add("autoe", new CheckBox("Auto E target (Stun/snare...)"));
-            miscMenu.Add("useQgc", new CheckBox("Use Q on gapclosers", false));
-            miscMenu.Add("useQint", new CheckBox("Use W to interrupt"));
+            miscMenu = config.AddSubMenu("杂项 ", "Msettings");
+            miscMenu.Add("autoe", new CheckBox("自动 E 目标 (晕眩/禁锢...)"));
+            miscMenu.Add("useQgc", new CheckBox("使用 Q 防突进", false));
+            miscMenu.Add("useQint", new CheckBox("使用 W to 技能打断"));
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用 封包", false));
         }
     }
 }

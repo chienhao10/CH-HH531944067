@@ -54,24 +54,24 @@ namespace NabbTracker
 
                         switch (pg.Spellbook.GetSpell(Variables.SummonerSpellSlots[SummonerSpell]).Name.ToLower())
                         {
-                            case "summonerflash":        Variables.GetSummonerSpellName = "Flash";        break;
-                            case "summonerdot":          Variables.GetSummonerSpellName = "Ignite";       break;
-                            case "summonerheal":         Variables.GetSummonerSpellName = "Heal";         break;
-                            case "summonerteleport":     Variables.GetSummonerSpellName = "Teleport";     break;
-                            case "summonerexhaust":      Variables.GetSummonerSpellName = "Exhaust";      break;
-                            case "summonerhaste":        Variables.GetSummonerSpellName = "Ghost";        break;
-                            case "summonerbarrier":      Variables.GetSummonerSpellName = "Barrier";      break;
-                            case "summonerboost":        Variables.GetSummonerSpellName = "Cleanse";      break;
-                            case "summonermana":         Variables.GetSummonerSpellName = "Clarity";      break;
-                            case "summonerclairvoyance": Variables.GetSummonerSpellName = "Clairvoyance"; break;
-                            case "summonerodingarrison": Variables.GetSummonerSpellName = "Garrison";     break;
-                            case "summonersnowball":     Variables.GetSummonerSpellName = "Mark";         break;
+                            case "summonerflash":        Variables.GetSummonerSpellName = "闪现";        break;
+                            case "summonerdot":          Variables.GetSummonerSpellName = "点燃";       break;
+                            case "summonerheal":         Variables.GetSummonerSpellName = "治疗";         break;
+                            case "summonerteleport":     Variables.GetSummonerSpellName = "传送";     break;
+                            case "summonerexhaust":      Variables.GetSummonerSpellName = "虚弱";      break;
+                            case "summonerhaste":        Variables.GetSummonerSpellName = "鬼步";        break;
+                            case "summonerbarrier":      Variables.GetSummonerSpellName = "盾牌";      break;
+                            case "summonerboost":        Variables.GetSummonerSpellName = "净化";      break;
+                            case "summonermana":         Variables.GetSummonerSpellName = "明晰";      break;
+                            case "summonerclairvoyance": Variables.GetSummonerSpellName = "洞察"; break;
+                            case "summonerodingarrison": Variables.GetSummonerSpellName = "駐守";     break;
+                            case "summonersnowball":     Variables.GetSummonerSpellName = "标记";         break;
                             default:
-                                Variables.GetSummonerSpellName = "Smite";
+                                Variables.GetSummonerSpellName = "惩戒";
                                 break;
                         }
                         
-                        Variables.DisplayTextFont.DrawText(null, pg.Spellbook.GetSpell(Variables.SummonerSpellSlots[SummonerSpell]).CooldownExpires - Game.Time > 0 ? Variables.GetSummonerSpellName + ":" + string.Format("{0:0}", pg.Spellbook.GetSpell(Variables.SummonerSpellSlots[SummonerSpell]).CooldownExpires - Game.Time)  : Variables.GetSummonerSpellName + ": UP ", Variables.SummonerSpellX + (150 * ((SummonerSpell * (int)0.4) + 1)), Variables.SummonerSpellY + (SummonerSpell), pg.Spellbook.GetSpell(Variables.SummonerSpellSlots[SummonerSpell]).CooldownExpires - Game.Time > 0  ? Color.Red : Color.Yellow);
+                        Variables.DisplayTextFont.DrawText(null, pg.Spellbook.GetSpell(Variables.SummonerSpellSlots[SummonerSpell]).CooldownExpires - Game.Time > 0 ? Variables.GetSummonerSpellName + ":" + string.Format("{0:0}", pg.Spellbook.GetSpell(Variables.SummonerSpellSlots[SummonerSpell]).CooldownExpires - Game.Time)  : Variables.GetSummonerSpellName + ": 可用 ", Variables.SummonerSpellX + (150 * ((SummonerSpell * (int)0.4) + 1)), Variables.SummonerSpellY + (SummonerSpell), pg.Spellbook.GetSpell(Variables.SummonerSpellSlots[SummonerSpell]).CooldownExpires - Game.Time > 0  ? Color.Red : Color.Yellow);
                     }
                 }
             };

@@ -375,54 +375,54 @@ namespace UnderratedAIO.Champions
 
         private static void InitMenu()
         {
-            config = MainMenu.AddMenu("Poppy", "Poppy");
+            config = MainMenu.AddMenu("波比", "Poppy");
 
             // Draw settings
-            menuD = config.AddSubMenu("Drawings ", "dsettings");
-            menuD.Add("drawqq", new CheckBox("Draw Q range")); //.SetValue(new Circle(false, Color.DarkCyan));
-            menuD.Add("drawww", new CheckBox("Draw W range")); //.SetValue(new Circle(false, Color.DarkCyan));
-            menuD.Add("drawee", new CheckBox("Draw E range")); //.SetValue(new Circle(false, Color.DarkCyan));
-            menuD.Add("drawrr", new CheckBox("Draw R range")); //.SetValue(new Circle(false, Color.DarkCyan));
+            menuD = config.AddSubMenu("线圈 ", "dsettings");
+            menuD.Add("drawqq", new CheckBox("显示 Q 范围")); //.SetValue(new Circle(false, Color.DarkCyan));
+            menuD.Add("drawww", new CheckBox("显示 W 范围")); //.SetValue(new Circle(false, Color.DarkCyan));
+            menuD.Add("drawee", new CheckBox("显示 E 范围")); //.SetValue(new Circle(false, Color.DarkCyan));
+            menuD.Add("drawrr", new CheckBox("显示 R 范围")); //.SetValue(new Circle(false, Color.DarkCyan));
 
             // Combo Settings
-            menuC = config.AddSubMenu("Combo ", "csettings");
-            menuC.Add("useq", new CheckBox("Use Q"));
-            menuC.Add("usew", new CheckBox("Use W"));
-            menuC.Add("usee", new CheckBox("Use E"));
-            menuC.Add("useewall", new CheckBox("Use E only near walls"));
-            menuC.Add("useeflash", new CheckBox("Use flash to positioning", false));
+            menuC = config.AddSubMenu("连招 ", "csettings");
+            menuC.Add("useq", new CheckBox("使用 Q"));
+            menuC.Add("usew", new CheckBox("使用 W"));
+            menuC.Add("usee", new CheckBox("使用 E"));
+            menuC.Add("useewall", new CheckBox("只在墙附近使用 E"));
+            menuC.Add("useeflash", new CheckBox("使用 闪现至位置", false));
             menuC.Add("useeflashforced",
-                new KeyBind("Forced flash+E if possible", false, KeyBind.BindTypes.HoldActive, 'T'));
-            menuC.Add("user", new CheckBox("Use R to maximize dmg"));
-            menuC.Add("userindanger", new CheckBox("Use R in teamfight"));
-            menuC.Add("useIgnite", new CheckBox("Use Ignite"));
+                new KeyBind("尝试强制 闪现+E", false, KeyBind.BindTypes.HoldActive, 'T'));
+            menuC.Add("user", new CheckBox("使用 R 最大伤害"));
+            menuC.Add("userindanger", new CheckBox("使用 R 团战"));
+            menuC.Add("useIgnite", new CheckBox("使用 敌人"));
 
             // Harass Settings
-            menuH = config.AddSubMenu("Harass ", "Hsettings");
-            menuH.Add("useqH", new CheckBox("Use Q"));
-            menuH.Add("minmanaH", new Slider("Keep X% mana", 1, 1));
+            menuH = config.AddSubMenu("骚扰 ", "Hsettings");
+            menuH.Add("useqH", new CheckBox("使用 Q"));
+            menuH.Add("minmanaH", new Slider("保留 X% 蓝量", 1, 1));
 
             // LaneClear Settings
-            menuLC = config.AddSubMenu("Clear ", "Lcsettings");
-            menuLC.Add("useqLC", new CheckBox("Use Q"));
-            menuLC.Add("qMinHit", new Slider("   Q min hit", 3, 1, 6));
-            menuLC.Add("useeLC", new CheckBox("Use E"));
-            menuLC.Add("minmana", new Slider("Keep X% mana", 50, 1));
+            menuLC = config.AddSubMenu("推线 ", "Lcsettings");
+            menuLC.Add("useqLC", new CheckBox("使用 Q"));
+            menuLC.Add("qMinHit", new Slider("   Q 最低命中小兵数", 3, 1, 6));
+            menuLC.Add("useeLC", new CheckBox("使用 E"));
+            menuLC.Add("minmana", new Slider("保留 X% 蓝量", 50, 1));
 
             // Misc Settings
-            menuM = config.AddSubMenu("Misc", "Msettings");
-            menuM.Add("useEint", new CheckBox("Use E interrupt"));
-            menuM.Add("useEgap", new CheckBox("Use E on gapcloser near walls"));
+            menuM = config.AddSubMenu("杂项", "Msettings");
+            menuM.Add("useEint", new CheckBox("使用 E 技能打断"));
+            menuM.Add("useEgap", new CheckBox("使用 E 防突进至附近墙"));
             menuM.AddSeparator();
-            menuM.AddGroupLabel("0 = Disabled");
+            menuM.AddGroupLabel("0 = 关闭");
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy))
             {
                 menuM.Add("useAutoW" + hero.BaseSkinName,
-                    new Slider("Auto W : " + hero.BaseSkinName,
+                    new Slider("自动 W : " + hero.BaseSkinName,
                         CombatHelper.DashDatas.Any(d => d.ChampionName == hero.ChampionName) ? 5 : 0, 0, 5));
             }
 
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用 封包", false));
         }
     }
 }

@@ -93,15 +93,15 @@ namespace ElUtilitySuite.Items
         public static Menu potionsMenu;
         public void CreateMenu(Menu rootMenu)
         {
-            potionsMenu = rootMenu.AddSubMenu("Potions", "Potions");
-            potionsMenu.Add("Potions.Activated", new CheckBox("Potions activated"));
-            potionsMenu.Add("Potions.Health", new CheckBox("Health potions"));
-            potionsMenu.Add("Potions.Biscuit", new CheckBox("Biscuits"));
-            potionsMenu.Add("Potions.RefillablePotion", new CheckBox("Refillable Potion"));
-            potionsMenu.Add("Potions.HuntersPotion", new CheckBox("Hunters Potion"));
-            potionsMenu.Add("Potions.CorruptingPotion", new CheckBox("Corrupting Potion"));
+            potionsMenu = rootMenu.AddSubMenu("药水", "Potions");
+            potionsMenu.Add("Potions.Activated", new CheckBox("使用药水"));
+            potionsMenu.Add("Potions.Health", new CheckBox("红药"));
+            potionsMenu.Add("Potions.Biscuit", new CheckBox("饼干"));
+            potionsMenu.Add("Potions.RefillablePotion", new CheckBox("可充药水"));
+            potionsMenu.Add("Potions.HuntersPotion", new CheckBox("猎人药水"));
+            potionsMenu.Add("Potions.CorruptingPotion", new CheckBox("腐蚀药水"));
             potionsMenu.AddSeparator();
-            potionsMenu.Add("Potions.Player.Health", new Slider("Health percentage", 20));
+            potionsMenu.Add("Potions.Player.Health", new Slider("血量百分比", 20));
 
         }
 

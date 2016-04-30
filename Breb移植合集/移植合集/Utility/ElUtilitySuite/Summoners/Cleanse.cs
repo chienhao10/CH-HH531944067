@@ -802,12 +802,12 @@ namespace ElUtilitySuite.Summoners
 
         public void CreateMenu(Menu rootMenu)
         {
-            cleanseMenu = rootMenu.AddSubMenu("Cleanse/QSS", "CleanseV3");
+            cleanseMenu = rootMenu.AddSubMenu("净化/水银", "CleanseV3");
 
-            cleanseMenu.Add("CleanseActivated", new CheckBox("Use Cleanse"));
+            cleanseMenu.Add("CleanseActivated", new CheckBox("使用净化"));
             cleanseMenu.AddSeparator();
 
-            cleanseMenu.AddGroupLabel("Spells to QSS");
+            cleanseMenu.AddGroupLabel("水银 - 技能");
             foreach (var spell in Spells)
             {
                 cleanseMenu.Add(spell.MenuName != null ? spell.MenuName.Replace(" ", string.Empty) : spell.Name, new CheckBox(string.IsNullOrEmpty(spell.MenuName) ? spell.Name : spell.MenuName));
@@ -815,8 +815,8 @@ namespace ElUtilitySuite.Summoners
 
             cleanseMenu.AddSeparator();
 
-            cleanseMenu.AddGroupLabel("Humanizer Delay");
-            cleanseMenu.Add("CleanseMaxDelay", new Slider("Delay (MS)", 800, 0, 1500));
+            cleanseMenu.AddGroupLabel("人性化延迟");
+            cleanseMenu.Add("CleanseMaxDelay", new Slider("延迟 (毫秒)", 800, 0, 1500));
             cleanseMenu.AddSeparator();
 
         }

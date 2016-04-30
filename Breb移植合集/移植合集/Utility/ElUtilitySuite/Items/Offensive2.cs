@@ -53,7 +53,7 @@ namespace ElUtilitySuite.Items
         /// <returns></returns>
         public void CreateMenu(Menu rootMenu)
         {
-            Menu = rootMenu.AddSubMenu("Offensive", "omenu2");
+            Menu = rootMenu.AddSubMenu("进攻2", "omenu2");
 
             foreach (var item in offensiveItems)
             {

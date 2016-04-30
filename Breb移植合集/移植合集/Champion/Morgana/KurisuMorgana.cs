@@ -38,37 +38,37 @@ namespace KurisuMorgana
             _e = new Spell(SpellSlot.E, 750f);
             _r = new Spell(SpellSlot.R, 600f);
 
-            _menu = MainMenu.AddMenu("Kurisu's Morgana", "morgana");
+            _menu = MainMenu.AddMenu("Kurisu魔干那", "morgana");
 
-            menuQ = _menu.AddSubMenu("Dark Binding [Q]", "asdfasdf");
-            menuQ.Add("hitchanceq", new Slider("Binding Hitchance", 3, 1, 4));
-            menuQ.Add("useqcombo", new CheckBox("Use in Combo"));
-            menuQ.Add("useharassq", new CheckBox("Use in Harass", false));
-            menuQ.Add("useqanti", new CheckBox("Use on Gapcloser"));
-            menuQ.Add("useqauto", new CheckBox("Use on Immobile"));
-            menuQ.Add("useqdash", new CheckBox("Use on Dashing"));
-            menuQ.Add("autoqaa", new CheckBox("Use on Enemy Cast"));
+            menuQ = _menu.AddSubMenu("[Q]", "asdfasdf");
+            menuQ.Add("hitchanceq", new Slider("命中率", 3, 1, 4));
+            menuQ.Add("useqcombo", new CheckBox("连招使用"));
+            menuQ.Add("useharassq", new CheckBox("骚扰使用", false));
+            menuQ.Add("useqanti", new CheckBox("防突进使用"));
+            menuQ.Add("useqauto", new CheckBox("对不可移动的目标使用"));
+            menuQ.Add("useqdash", new CheckBox("对冲刺的目标使用"));
+            menuQ.Add("autoqaa", new CheckBox("敌方使用技能时使用"));
 
-            menuW = _menu.AddSubMenu("Tormented Soil [W]", "wmeasdfasdfasdfnu");
-            menuW.Add("hitchancew", new Slider("Tormentsoil Hitchance ", 3, 1, 4));
-            menuW.Add("calcw", new Slider("Calculated Ticks", 6, 3, 10));
-            menuW.Add("usewcombo", new CheckBox("Use in Combo"));
-            menuW.Add("useharassw", new CheckBox("Use in Harass", false));
-            menuW.Add("usewauto", new CheckBox("Use on Immobile"));
-            menuW.Add("waitfor", new CheckBox("Cast only on if Immobile"));
+            menuW = _menu.AddSubMenu("[W]", "wmeasdfasdfasdfnu");
+            menuW.Add("hitchancew", new Slider("命中率 ", 3, 1, 4));
+            menuW.Add("calcw", new Slider("计算次数", 6, 3, 10));
+            menuW.Add("usewcombo", new CheckBox("连招使用"));
+            menuW.Add("useharassw", new CheckBox("骚扰使用", false));
+            menuW.Add("usewauto", new CheckBox("对不可移动的目标使用"));
+            menuW.Add("waitfor", new CheckBox("只对不可移动的目标使用"));
 
-            menuE = _menu.AddSubMenu("BlackShield [E]", "emasdfasdfasdfenu");
+            menuE = _menu.AddSubMenu("[E]", "emasdfasdfasdfenu");
             menuE.Add("shieldtg", new CheckBox("Shield Only Target Spells", false));
             menuE.Add("usemorge", new CheckBox("Enabled"));
 
-            shieldMenu = _menu.AddSubMenu("Use Shield [Who?]", "usefor");
+            shieldMenu = _menu.AddSubMenu("使用盾 [为谁使用?]", "usefor");
             foreach (var frn in ObjectManager.Get<AIHeroClient>().Where(x => x.Team == Me.Team))
             {
-                shieldMenu.Add("useon" + frn.ChampionName, new CheckBox("Shield " + frn.ChampionName, !frn.IsMe));
+                shieldMenu.Add("useon" + frn.ChampionName, new CheckBox("E " + frn.ChampionName, !frn.IsMe));
             }
             shieldMenu.AddSeparator();
-            shieldMenu.AddGroupLabel("Enemy Shield :");
-            shieldMenu.AddLabel("Shield these skills.");
+            shieldMenu.AddGroupLabel("敌方技能 :");
+            shieldMenu.AddLabel("为这些技能使用盾.");
             shieldMenu.AddSeparator();
             foreach (var ene in ObjectManager.Get<AIHeroClient>().Where(x => x.Team != Me.Team))
             {
@@ -77,25 +77,25 @@ namespace KurisuMorgana
                 foreach (var lib in KurisuLib.CCList.Where(x => x.HeroName == ene.ChampionName))
                 {
                     shieldMenu.AddLabel(lib.Slot + " - " + lib.SpellMenuName);
-                    shieldMenu.Add(lib.SDataName + "on", new CheckBox("Enabled"));
+                    shieldMenu.Add(lib.SDataName + "on", new CheckBox("开启"));
                     shieldMenu.AddSeparator();
                 }
             }
 
-            menuR = _menu.AddSubMenu("Soul Shackles [R]", "rasdfasdfmenu");
-            menuR.Add("rkill", new CheckBox("Use in combo if killable"));
-            menuR.Add("rcount", new Slider("Use in combo if enemies >= ", 3, 1, 5));
-            menuR.Add("useautor", new Slider("Use automatic if enemies >= ", 4, 2, 5));
-            menuR.Add("usercombo", new CheckBox("Enabled"));
+            menuR = _menu.AddSubMenu("[R]", "rasdfasdfmenu");
+            menuR.Add("rkill", new CheckBox("使用R如果连招可击杀"));
+            menuR.Add("rcount", new Slider("如果敌人数量 >= ", 3, 1, 5));
+            menuR.Add("useautor", new Slider("自动使用如果敌人数量 >= ", 4, 2, 5));
+            menuR.Add("usercombo", new CheckBox("开启"));
 
-            wwmenu = _menu.AddSubMenu(":: Farm Settings", "wwmasdfasdfenu");
-            wwmenu.Add("farmw", new CheckBox("Use W"));
+            wwmenu = _menu.AddSubMenu(":: 农兵", "wwmasdfasdfenu");
+            wwmenu.Add("farmw", new CheckBox("使用 W"));
             wwmenu.Add("farmcount", new Slider("-> If Min Minions >=", 3, 1, 7));
 
-            miscMenu = _menu.AddSubMenu(":: Misc Settings", "miasdfasdfsc");
-            miscMenu.Add("harassmana", new Slider("Harass mana %", 55, 0, 99));
-            miscMenu.Add("support", new CheckBox(":: Support Mode", false));
-            miscMenu.Add("dp", new CheckBox(":: Drawings"));
+            miscMenu = _menu.AddSubMenu(":: 杂项", "miasdfasdfsc");
+            miscMenu.Add("harassmana", new Slider("骚扰蓝量 %", 55, 0, 99));
+            miscMenu.Add("support", new CheckBox(":: 辅助模式", false));
+            miscMenu.Add("dp", new CheckBox(":: 线圈"));
 
             // events
             Drawing.OnDraw += Drawing_OnDraw;

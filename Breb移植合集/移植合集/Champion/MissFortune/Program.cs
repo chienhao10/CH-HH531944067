@@ -42,45 +42,45 @@ namespace OneKeyToWin_AIO_Sebby
             E.SetSkillshot(0.5f, 200f, float.MaxValue, false, SkillshotType.SkillshotCircle);
             R.SetSkillshot(0.25f, 100f, 2000f, false, SkillshotType.SkillshotCircle);
 
-            drawMenu = Config.AddSubMenu("Draw");
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
-            drawMenu.Add("QRange", new CheckBox("Q range", false));
-            drawMenu.Add("ERange", new CheckBox("E range", false));
-            drawMenu.Add("RRange", new CheckBox("R range", false));
-            drawMenu.Add("noti", new CheckBox("Show notification & line"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
+            drawMenu.Add("QRange", new CheckBox("Q 范围", false));
+            drawMenu.Add("ERange", new CheckBox("E 范围", false));
+            drawMenu.Add("RRange", new CheckBox("R 范围", false));
+            drawMenu.Add("noti", new CheckBox("显示提示"));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q"));
-            qMenu.AddGroupLabel("Minion Config");
-            qMenu.Add("harasQ", new CheckBox("Use Q on minion"));
-            qMenu.Add("killQ", new CheckBox("Use Q only if can kill minion", false));
-            qMenu.Add("qMinionMove", new CheckBox("Don't use if minions moving"));
-            qMenu.Add("qMinionWidth", new Slider("Collision width calculation", 70, 0, 200));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ", new CheckBox("自动 Q"));
+            qMenu.AddGroupLabel("小兵设置");
+            qMenu.Add("harasQ", new CheckBox("Q 小兵"));
+            qMenu.Add("killQ", new CheckBox("可击杀小兵时才 Q", false));
+            qMenu.Add("qMinionMove", new CheckBox("小兵移动时不 Q"));
+            qMenu.Add("qMinionWidth", new Slider("体积碰撞宽度计算", 70, 0, 200));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
-            wMenu.Add("harasW", new CheckBox("Harass W"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
+            wMenu.Add("harasW", new CheckBox("骚扰 W"));
 
-            eMenu = Config.AddSubMenu("E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E"));
-            eMenu.Add("AGC", new CheckBox("AntiGapcloserE"));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("autoE", new CheckBox("自动 E"));
+            eMenu.Add("AGC", new CheckBox("防突进 E"));
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R"));
-            rMenu.Add("forceBlockMove", new CheckBox("Force block player"));
-            rMenu.Add("useR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'T'));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("自动 R"));
+            rMenu.Add("forceBlockMove", new CheckBox("屏蔽移动"));
+            rMenu.Add("useR", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
                 //32 == space
-            rMenu.Add("disableBlock", new KeyBind("Disable R key", false, KeyBind.BindTypes.HoldActive, 'R'));
+            rMenu.Add("disableBlock", new KeyBind("屏蔽 R 按键", false, KeyBind.BindTypes.HoldActive, 'R'));
                 //32 == space
-            rMenu.Add("Rturrent", new CheckBox("Don't R under turret"));
+            rMenu.Add("Rturrent", new CheckBox("塔下不 R"));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("jungleE", new CheckBox("Jungle clear E"));
-            farmMenu.Add("jungleQ", new CheckBox("Jungle Q ks"));
-            farmMenu.Add("jungleW", new CheckBox("Jungle clear W"));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("jungleE", new CheckBox("清野 E"));
+            farmMenu.Add("jungleQ", new CheckBox("Q 抢野"));
+            farmMenu.Add("jungleW", new CheckBox("清野 W"));
 
-            miscMenu = Config.AddSubMenu("Misc");
-            miscMenu.Add("newTarget", new CheckBox("Try change focus after attack "));
+            miscMenu = Config.AddSubMenu("杂项");
+            miscMenu.Add("newTarget", new CheckBox("尝试普攻后更换目标"));
 
 
             Game.OnUpdate += Game_OnGameUpdate;
@@ -452,25 +452,25 @@ namespace OneKeyToWin_AIO_Sebby
                     if (rDamage*8 > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.GreenYellow,
-                            "8 x R wave can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "8 波 R 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.GreenYellow);
                     }
                     else if (rDamage*5 > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Orange,
-                            "5 x R wave can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "5 波 R 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Orange);
                     }
                     else if (rDamage*3 > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Yellow,
-                            "3 x R wave can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "3 波 R 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                     else if (rDamage > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
-                            "1 x R wave can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "1 波 R 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Red);
                     }
                 }

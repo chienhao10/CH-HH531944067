@@ -68,17 +68,17 @@ namespace Mordekaiser
 
             if (SmiteSlot != SpellSlot.Unknown || IgniteSlot != SpellSlot.Unknown)
             {
-                menu.AddSubMenu("Summoners");
+                menu.AddSubMenu("召唤师技能");
                 if (SmiteSlot != SpellSlot.Unknown)
                 {
                     menu.Add("Spells.Smite.Enemy",
-                        new KeyBind("Use Smite for Enemy!", false, KeyBind.BindTypes.PressToggle, 'U'));
+                        new KeyBind("对英雄使用惩戒!", false, KeyBind.BindTypes.PressToggle, 'U'));
                     menu.Add("Spells.Smite.Monster",
-                        new KeyBind("Use Smite for Monsters!", false, KeyBind.BindTypes.PressToggle, 'J'));
+                        new KeyBind("对野怪使用惩戒!", false, KeyBind.BindTypes.PressToggle, 'J'));
                 }
                 if (IgniteSlot != SpellSlot.Unknown)
                 {
-                    menu.Add("Spells.Ignite", new CheckBox("Use Ignite!"));
+                    menu.Add("Spells.Ignite", new CheckBox("使用点燃!"));
                 }
             }
 

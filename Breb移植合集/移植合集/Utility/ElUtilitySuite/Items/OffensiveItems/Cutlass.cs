@@ -62,9 +62,9 @@ namespace ElUtilitySuite.Items.OffensiveItems
 
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("Cutlass");
-            Menu.Add("UseCutlassCombo", new CheckBox("Use on Combo"));
-            Menu.Add("CutlassMyHp", new Slider("Use on My Hp %", 100, 1));
+            Menu.AddGroupLabel("弯刀");
+            Menu.Add("UseCutlassCombo", new CheckBox("连招使用"));
+            Menu.Add("CutlassMyHp", new Slider("我生命 %", 100, 1));
         }
 
         /// <summary>

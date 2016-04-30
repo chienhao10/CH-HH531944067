@@ -1472,49 +1472,49 @@ namespace GodJungleTracker
             try
             {
                 //Start Menu
-                _menu = MainMenu.AddMenu("God Jungle Tracker", "God Jungle Tracker");
+                _menu = MainMenu.AddMenu("打野计时", "God Jungle Tracker");
 
                 //Ping
-                _menu.AddGroupLabel("Ping (Local)");
-                _menu.Add("pingdragon", new CheckBox("On Dragon Attack"));
-                _menu.Add("pingbaron", new CheckBox("On Baron Attack"));
-                _menu.Add("pingsmall", new CheckBox("On Small Camp Attack"));
-                _menu.Add("pingfow", new CheckBox("Only On Fog of War"));
-                _menu.Add("pingscreen", new CheckBox("Only If Camp Not On Screen"));
-                _menu.Add("pingdelay", new Slider("Ping Delay (s)", 10, 1, 20));
+                _menu.AddGroupLabel("提示 (本地)");
+                _menu.Add("pingdragon", new CheckBox("龙被攻击"));
+                _menu.Add("pingbaron", new CheckBox("男爵被攻击"));
+                _menu.Add("pingsmall", new CheckBox("小野怪被攻击"));
+                _menu.Add("pingfow", new CheckBox("只在战争迷雾内"));
+                _menu.Add("pingscreen", new CheckBox("只在看不到英雄时"));
+                _menu.Add("pingdelay", new Slider("警告延迟 (秒)", 10, 1, 20));
                 _menu.AddSeparator();
 
                 //Timers
-                _menu.AddGroupLabel("Timers");
-                _menu.AddGroupLabel("On Map");
-                _menu.Add("timeronmapformat", new ComboBox("Format : ", 0, "mm:ss", "ss"));
-                _menu.Add("timerfontmap", new Slider("Font Size", 20, 3, 30));
-                _menu.Add("timeronmap", new CheckBox("Enabled"));
+                _menu.AddGroupLabel("计时");
+                _menu.AddGroupLabel("地图上");
+                _menu.Add("timeronmapformat", new ComboBox("格式 : ", 0, "mm:ss", "ss"));
+                _menu.Add("timerfontmap", new Slider("字体大小", 20, 3, 30));
+                _menu.Add("timeronmap", new CheckBox("开启"));
                 _menu.AddSeparator();
-                _menu.AddGroupLabel("On Minimap");
-                _menu.Add("timeronminimapformat", new ComboBox("Format ", 0, "mm:ss", "ss"));
-                _menu.Add("timerfontminimap", new Slider("Font Height", 13, 3, 30));
-                _menu.Add("timeronminimap", new CheckBox("Enabled"));
+                _menu.AddGroupLabel("小地图上");
+                _menu.Add("timeronminimapformat", new ComboBox("格式 ", 0, "mm:ss", "ss"));
+                _menu.Add("timerfontminimap", new Slider("字体高度", 13, 3, 30));
+                _menu.Add("timeronminimap", new CheckBox("开启"));
                 _menu.AddSeparator();
             
                 //Drawing
-                _menu.AddGroupLabel("Drawing");
-                _menu.Add("circleradius", new Slider("Circle Radius", 300, 1, 500));
-                _menu.Add("circlewidth", new Slider("Circle Width", 1, 1, 4));
+                _menu.AddGroupLabel("线圈");
+                _menu.Add("circleradius", new Slider("圆圈半径", 300, 1, 500));
+                _menu.Add("circlewidth", new Slider("圆圈宽度", 1, 1, 4));
                 _menu.AddSeparator();
 
                 //Advanced
-                _menu.AddGroupLabel("Advanced");
-                _menu.Add("forcefindheaders", new CheckBox("Force Auto-Find Headers", false));
-                _menu.Add("headerOnAttack2" + GameVersion, new Slider("Header OnAttack", 0, 0, 400));
-                _menu.Add("headerOnMissileHit2" + GameVersion, new Slider("Header OnMissileHit", 0, 0, 400));
-                _menu.Add("headerOnDisengaged" + GameVersion, new Slider("Header OnDisengaged", 0, 0, 400));
-                _menu.Add("headerOnMonsterSkill" + GameVersion, new Slider("Header OnMonsterSkill", 0, 0, 400));
-                _menu.Add("headerOnCreateGromp" + GameVersion, new Slider("Header OnCreateGromp", 0, 0, 400));
-                _menu.Add("headerOnCreateCampIcon" + GameVersion, new Slider("Header OnCreateCampIcon", 0, 0, 400));
-                _menu.Add("updatetick", new Slider("Update Tick", 150, 0, 1000));
+                _menu.AddGroupLabel("高级");
+                _menu.Add("forcefindheaders", new CheckBox("强制自动找到 接入口", false));
+                _menu.Add("headerOnAttack2" + GameVersion, new Slider("接入口 OnAttack", 0, 0, 400));
+                _menu.Add("headerOnMissileHit2" + GameVersion, new Slider("接入口 OnMissileHit", 0, 0, 400));
+                _menu.Add("headerOnDisengaged" + GameVersion, new Slider("接入口 OnDisengaged", 0, 0, 400));
+                _menu.Add("headerOnMonsterSkill" + GameVersion, new Slider("接入口 OnMonsterSkill", 0, 0, 400));
+                _menu.Add("headerOnCreateGromp" + GameVersion, new Slider("接入口 OnCreateGromp", 0, 0, 400));
+                _menu.Add("headerOnCreateCampIcon" + GameVersion, new Slider("接入口 OnCreateCampIcon", 0, 0, 400));
+                _menu.Add("updatetick", new Slider("更新次数", 150, 0, 1000));
                 _menu.AddSeparator();
-                _menu.AddGroupLabel("Headers From Patch: " + GameVersion);
+                _menu.AddGroupLabel("接入口版本: " + GameVersion);
                 _menu.AddSeparator();
             }
             catch (Exception)

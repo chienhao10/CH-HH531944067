@@ -63,8 +63,8 @@ namespace ElUtilitySuite.Items.OffensiveItems
 
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("Titanic Hydra");
-            Menu.Add("TitanicHydracombo", new CheckBox("Use on Combo"));
+            Menu.AddGroupLabel("泰坦九头蛇");
+            Menu.Add("TitanicHydracombo", new CheckBox("连招使用"));
         }
 
         public override bool ShouldUseItem()

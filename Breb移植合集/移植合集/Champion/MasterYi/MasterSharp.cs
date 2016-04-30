@@ -51,33 +51,33 @@ namespace MasterSharp
             {
                 TargetedSkills.setUpSkills();
 
-                Config = MainMenu.AddMenu("MasterYi - Sharp", "MasterYi");
+                Config = MainMenu.AddMenu("易大师 Sharp", "MasterYi");
 
                 //Combo
-                comboMenu = Config.AddSubMenu("Combo Sharp", "combo");
-                comboMenu.Add("comboWreset", new CheckBox("AA reset W"));
-                comboMenu.Add("useQ", new CheckBox("Use Q to gap"));
-                comboMenu.Add("useE", new CheckBox("Use E"));
-                comboMenu.Add("useR", new CheckBox("Use R"));
-                comboMenu.Add("useSmite", new CheckBox("Use Smite"));
+                comboMenu = Config.AddSubMenu("连招", "combo");
+                comboMenu.Add("comboWreset", new CheckBox("普攻 W 重置"));
+                comboMenu.Add("useQ", new CheckBox("使用 Q 接近"));
+                comboMenu.Add("useE", new CheckBox("使用 E"));
+                comboMenu.Add("useR", new CheckBox("使用 R"));
+                comboMenu.Add("useSmite", new CheckBox("使用 惩戒"));
 
                 //Extra
-                extraMenu = Config.AddSubMenu("Extra Sharp", "extra");
-                extraMenu.Add("packets", new CheckBox("Use Packet cast", false));
+                extraMenu = Config.AddSubMenu("额外", "extra");
+                extraMenu.Add("packets", new CheckBox("使用 封包", false));
 
                 //SmartW
-                evadeMenu = Config.AddSubMenu("Q & W Dodger");
-                evadeMenu.Add("smartW", new CheckBox("Smart/Dodge W if cantQ"));
-                evadeMenu.Add("smartQDogue", new CheckBox("Q use dodge"));
-                evadeMenu.Add("useWatHP", new Slider("use W below HP", 100));
-                evadeMenu.Add("wqOnDead", new CheckBox("W or Q if will kill", false));
+                evadeMenu = Config.AddSubMenu("Q & W 躲避器");
+                evadeMenu.Add("smartW", new CheckBox("Q冷却时，智能 W 躲避"));
+                evadeMenu.Add("smartQDogue", new CheckBox("Q 躲避"));
+                evadeMenu.Add("useWatHP", new Slider("低血量 X 时使用 W", 100));
+                evadeMenu.Add("wqOnDead", new CheckBox("W 或 Q 如果可击杀", false));
                 getSkilshotMenuQ();
                 getSkilshotMenuW();
 
                 //Debug
-                debugMenu = Config.AddSubMenu("Drawing");
-                debugMenu.Add("drawCir", new CheckBox("Draw circles"));
-                debugMenu.Add("debugOn", new KeyBind("Debug stuff", false, KeyBind.BindTypes.HoldActive, 'A'));
+                debugMenu = Config.AddSubMenu("线圈");
+                debugMenu.Add("drawCir", new CheckBox("显示圆圈"));
+                debugMenu.Add("debugOn", new KeyBind("调试", false, KeyBind.BindTypes.HoldActive, 'A'));
 
                 Drawing.OnDraw += onDraw;
                 Game.OnUpdate += OnGameUpdate;
@@ -134,7 +134,7 @@ namespace MasterSharp
 
         public static void getSkilshotMenuQ()
         {
-            evadeMenu.AddGroupLabel("Q Dodge : ");
+            evadeMenu.AddGroupLabel("Q 躲避 : ");
             foreach (var hero in ObjectManager.Get<AIHeroClient>())
             {
                 if (hero.Team != ObjectManager.Player.Team)
@@ -145,9 +145,9 @@ namespace MasterSharp
                         {
                             evadeMenu.AddLabel(spell.MenuItemName + " :");
                             evadeMenu.Add("qEvadeAll" + spell.MenuItemName,
-                                new CheckBox("Evade with Q always", spell.IsDangerous));
+                                new CheckBox("一直使用 Q 躲避", spell.IsDangerous));
                             evadeMenu.Add("qEvade" + spell.MenuItemName,
-                                new CheckBox("Evade with Q Combo", spell.IsDangerous));
+                                new CheckBox("连招 Q 躲避", spell.IsDangerous));
                             evadeMenu.AddSeparator();
                         }
                     }
@@ -157,7 +157,7 @@ namespace MasterSharp
 
         public static void getSkilshotMenuW()
         {
-            evadeMenu.AddGroupLabel("W Dodge : ");
+            evadeMenu.AddGroupLabel("W 躲避 : ");
             foreach (var hero in ObjectManager.Get<AIHeroClient>())
             {
                 if (hero.Team != ObjectManager.Player.Team)
@@ -168,9 +168,9 @@ namespace MasterSharp
                         {
                             evadeMenu.AddLabel(spell.MenuItemName + " :");
                             evadeMenu.Add("wEvadeAll" + spell.MenuItemName,
-                                new CheckBox("Evade with W always", spell.IsDangerous));
+                                new CheckBox("一直使用 W 躲避", spell.IsDangerous));
                             evadeMenu.Add("wEvade" + spell.MenuItemName,
-                                new CheckBox("Evade with W Combo", spell.IsDangerous));
+                                new CheckBox("连招 W 躲避", spell.IsDangerous));
                             evadeMenu.AddSeparator();
                         }
                     }

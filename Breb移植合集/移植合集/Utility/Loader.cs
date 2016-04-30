@@ -79,15 +79,15 @@ namespace PortAIO.Utility
             Miscc.Add("champ", new CheckBox("英雄模式? (只会载入英雄脚本)", false));
             Miscc.Add("util", new CheckBox("功能模式? (只载入功能脚本)", false));
             Miscc.AddSeparator();
-            Miscc.Add("activator", new CheckBox("载入 ElUtilitySuite（活化剂）?"));
-            Miscc.Add("tracker", new CheckBox("载入 NabbTracker（计时器）?"));
+            Miscc.Add("activator", new CheckBox("载入 El活化剂?"));
+            Miscc.Add("tracker", new CheckBox("载入 Nabb计时器?"));
             Miscc.Add("recall", new CheckBox("载入 回城计时?"));
             Miscc.AddSeparator();
             Miscc.Add("skin", new CheckBox("载入 换肤?"));
             //Miscc.Add("evade", new CheckBox("Enable Evade?", false));
             Miscc.Add("godTracker", new CheckBox("载入 野区计时?", false));
             Miscc.AddSeparator();
-            Miscc.Add("ping", new CheckBox("载入 信号管理器（游戏内玩家发的信号）?", false));
+            Miscc.Add("ping", new CheckBox("载入 信号管理器（玩家信号）?", false));
             Miscc.Add("human", new CheckBox("载入 人性化?", false));
             Miscc.Add("gank", new CheckBox("载入 Gank提示?", false));
 
