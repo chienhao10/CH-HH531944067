@@ -19,6 +19,7 @@ namespace PortAIO.Champion.Blitzcrank
         public static int ErrorTime;
         public static AIHeroClient Player;
         public static Spell _Q, _W, _E, _R;
+        private static SpellSlot FlashSlot;
 
         public static Menu _Menu, ComboMenu, HarassMenu, KSMenu, MiscMenu, DrawMenu;
         // Default Setting
@@ -63,6 +64,19 @@ namespace PortAIO.Champion.Blitzcrank
             return ComboMenu["Blitzcrank_CUseQ_Hit"].Cast<Slider>().CurrentValue;
         }
 
+        private static void flashq()
+        {
+            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+
+            var target = TargetSelector.GetTarget(_Q.Range + 425, DamageType.Magical);
+            if (target == null || !_Q.IsReady())
+                return;
+            var x = target.Position.Extend(target, 450f).To3D();
+            var pred = _Q.GetPrediction(target).CastPosition;
+            Player.Spellbook.CastSpell(FlashSlot, x);
+            _Q.Cast(pred);
+        }
+
         private static void Menu()
         {
             try
@@ -74,6 +88,7 @@ namespace PortAIO.Champion.Blitzcrank
                 ComboMenu.Add("Blitzcrank_CUse_W", new CheckBox("使用 W"));
                 ComboMenu.Add("Blitzcrank_CUse_E", new CheckBox("使用 E"));
                 ComboMenu.Add("Blitzcrank_CUse_R", new CheckBox("使用 R"));
+                ComboMenu.Add("Blitzcrank_CUse_FlashQ", new KeyBind("闪现 Q (不好用）", false, KeyBind.BindTypes.HoldActive, 'T'));
                 ComboMenu.AddSeparator();
                 ComboMenu.AddLabel("1 : 范围外");
                 ComboMenu.AddLabel("2 : 不可能");
@@ -155,6 +170,7 @@ namespace PortAIO.Champion.Blitzcrank
         {
             Player = ObjectManager.Player;
             SkillSet();
+            FlashSlot = Player.GetSpellSlot("SummonerFlash");
             Menu();
             Game.OnUpdate += OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
@@ -163,6 +179,8 @@ namespace PortAIO.Champion.Blitzcrank
             Interrupter.OnInterruptableSpell += Interrupter2_OnInterruptableTarget;
             Orbwalker.OnPreAttack += Orbwalking_BeforeAttack;
             EloBuddy.Player.OnIssueOrder += Obj_AI_Base_OnIssueOrder;
+
+            Chat.Print("Flash Q is pretty bad, keep that in mind when using it.");
         }
 
         private static void OnGameUpdate(EventArgs args)
@@ -205,6 +223,11 @@ namespace PortAIO.Champion.Blitzcrank
                             _Q.CastIfHitchanceEquals(QTarget, FreshCommon.Hitchance("Blitzcrank_CUseQ_Hit"), true);
                     }
                 }
+
+				if (getKeyBindItem(ComboMenu, "Blitzcrank_CUse_FlashQ"))
+				{
+					flashq();
+				}
 
                 // Combo
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))

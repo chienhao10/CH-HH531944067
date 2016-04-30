@@ -183,7 +183,7 @@ namespace PortAIO.Champion.Caitlyn
             if (SebbyLib.Program.LagFree(0))
             {
                 SetMana();
-                R.Range = 500*R.Level + 1500;
+                R.Range = 500 * R.Level + 1500;
             }
 
             if (SebbyLib.Program.LagFree(1) && E.IsReady())
@@ -230,8 +230,8 @@ namespace PortAIO.Champion.Caitlyn
                         var w = predictedPosition - Player.ServerPosition;
                         double c1 = Vector3.Dot(w, v);
                         double c2 = Vector3.Dot(v, v);
-                        var b = c1/c2;
-                        var pb = Player.ServerPosition + (float) b*v;
+                        var b = c1 / c2;
+                        var pb = Player.ServerPosition + (float)b * v;
                         var length = Vector3.Distance(predictedPosition, pb);
                         if (length < getSliderItem(rMenu, "Rcol") + enemy.BoundingRadius &&
                             Player.Distance(predictedPosition) < Player.Distance(target.ServerPosition))
@@ -251,6 +251,16 @@ namespace PortAIO.Champion.Caitlyn
                     return;
                 if (getCheckBoxItem(wMenu, "autoW"))
                 {
+                    var target = TargetSelector.GetTarget(R.Range, DamageType.Physical);
+
+                    if (target != null)
+                    {
+                        if (W.GetPrediction(target).Hitchance >= HitChance.Medium && W.IsInRange(target))
+                        {
+                            W.Cast(W.GetPrediction(target).CastPosition);
+                        }
+                    }
+
                     foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy) && !enemy.HasBuff("caitlynyordletrapinternal")))
                     {
                         if (Utils.TickCount - W.LastCastAttemptT > 1000)
@@ -295,7 +305,7 @@ namespace PortAIO.Champion.Caitlyn
                 if ((SebbyLib.Program.Combo || SebbyLib.Program.Farm) && Player.Mana > RMANA + QMANA &&
                     Player.CountEnemiesInRange(400) == 0)
                 {
-                    foreach ( var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && (!OktwCommon.CanMove(enemy) || enemy.HasBuff("caitlynyordletrapinternal"))))
+                    foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && (!OktwCommon.CanMove(enemy) || enemy.HasBuff("caitlynyordletrapinternal"))))
                         Q.Cast(enemy, true);
                     if (Player.CountEnemiesInRange(bonusRange()) == 0 && OktwCommon.CanHarras())
                     {
@@ -344,7 +354,7 @@ namespace PortAIO.Champion.Caitlyn
                         }
                     }
 
-                    if (Player.Mana > RMANA + EMANA && Player.Health < Player.MaxHealth*0.3)
+                    if (Player.Mana > RMANA + EMANA && Player.Health < Player.MaxHealth * 0.3)
                     {
                         if (GetRealDistance(t) < 500)
                             E.Cast(t, true);
@@ -387,7 +397,7 @@ namespace PortAIO.Champion.Caitlyn
             EMANA = E.Instance.SData.Mana;
 
             if (!R.IsReady())
-                RMANA = QMANA - Player.PARRegenRate*Q.Instance.Cooldown;
+                RMANA = QMANA - Player.PARRegenRate * Q.Instance.Cooldown;
             else
                 RMANA = R.Instance.SData.Mana;
         }
@@ -451,8 +461,8 @@ namespace PortAIO.Champion.Caitlyn
                     var rDamage = R.GetDamage(t);
                     if (rDamage > t.Health)
                     {
-                        Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
-                            "R 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
+                        Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
+                            "大招 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                 }
@@ -461,7 +471,7 @@ namespace PortAIO.Champion.Caitlyn
                 if (tw.IsValidTarget())
                 {
                     if (Q.GetDamage(tw) > tw.Health)
-                        Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.4f, Color.Red,
+                        Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.4f, Color.Red,
                             "Q 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                 }
             }

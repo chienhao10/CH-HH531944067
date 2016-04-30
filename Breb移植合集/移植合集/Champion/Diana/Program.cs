@@ -124,11 +124,10 @@ namespace ElDiana
 
             comboMenu = _menu.AddSubMenu("连招", "Combo");
             comboMenu.AddGroupLabel("R 设置");
+            comboMenu.Add("ElDiana.Combo.R.Change", new KeyBind("切换 R 模式", false, KeyBind.BindTypes.HoldActive, 'L'));
             comboMenu.Add("ElDiana.Combo.R.Mode", new Slider("模式 (0 : 正常 | 1 : Misaya (R > Q)) : ", 0, 0, 1));
             comboMenu.Add("ElDiana.Combo.R", new CheckBox("使用 R"));
-            comboMenu.Add("ElDiana.Combo.R.MisayaMinRange",
-                new Slider("Misaya R 最低范围 ", Convert.ToInt32(spells[Spells.R].Range*0.8), 0,
-                    Convert.ToInt32(spells[Spells.R].Range)));
+            comboMenu.Add("ElDiana.Combo.R.MisayaMinRange", new Slider("Misaya R 最低范围 ", Convert.ToInt32(spells[Spells.R].Range*0.8), 0, Convert.ToInt32(spells[Spells.R].Range)));
             comboMenu.Add("ElDiana.Combo.R.PreventUnderTower", new Slider("低于血量% 不使用R", 20));
             comboMenu.AddSeparator();
             comboMenu.Add("ElDiana.Combo.Q", new CheckBox("使用 Q"));
@@ -222,20 +221,23 @@ namespace ElDiana
                 }
             }
 
-            if (drawR)
-            {
-                if (spells[Spells.R].Level > 0)
-                {
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spells[Spells.R].Range, Color.White);
-                }
-            }
-
             if (drawRMisaya)
             {
                 if (spells[Spells.R].Level > 0)
                 {
                     Render.Circle.DrawCircle(ObjectManager.Player.Position, misayaRange, Color.White);
                 }
+            }
+
+            var x = ObjectManager.Player.HPBarPosition.X;
+            var y = ObjectManager.Player.HPBarPosition.Y + 200;
+
+            if (getSliderItem(comboMenu, "ElDiana.Combo.R.Mode") == 0)
+            {
+                Drawing.DrawText(x, y + 20, Color.CornflowerBlue, "Current R Logic : Normal");
+            } else
+            {
+                Drawing.DrawText(x, y + 20, Color.Red, "Current R Logic : Misaya");
             }
         }
 
@@ -651,11 +653,28 @@ namespace ElDiana
             }
         }
 
+        public static int lastTime;
+
         private static void OnUpdate(EventArgs args)
         {
             if (Player.IsDead)
             {
                 return;
+            }
+
+            if (getKeyBindItem(comboMenu, "ElDiana.Combo.R.Change"))
+            {
+                if (getSliderItem(comboMenu, "ElDiana.Combo.R.Mode") == 0 && lastTime + 400 < Environment.TickCount)
+                {
+                    lastTime = Environment.TickCount;
+                    comboMenu["ElDiana.Combo.R.Mode"].Cast<Slider>().CurrentValue = 1;
+                }
+
+                if (getSliderItem(comboMenu, "ElDiana.Combo.R.Mode") == 1 && lastTime + 400 < Environment.TickCount)
+                {
+                    lastTime = Environment.TickCount;
+                    comboMenu["ElDiana.Combo.R.Mode"].Cast<Slider>().CurrentValue = 0;
+                }
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))

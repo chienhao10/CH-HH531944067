@@ -16,33 +16,25 @@ namespace ExorAIO.Champions.Ryze
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
-            if (Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+            if (Bools.HasSheenBuff() || !Targets.Target.IsValidTarget() || Bools.IsSpellShielded(Targets.Target))
             {
                 return;
             }
 
             /// <summary>
-            ///     The W Combo Logic.
+            ///     The R Combo Logic.
             /// </summary>
-            if (Variables.W.IsReady() &&
-                !Bools.IsImmobile(Targets.Target) &&
-                Targets.Target.IsValidTarget(Variables.W.Range) &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
+            if (Variables.R.IsReady() && Bools.IsImmobile(Targets.Target) && Variables.getCheckBoxItem(Variables.RMenu, "rspell.combo"))
             {
-                Variables.W.CastOnUnit(Targets.Target);
+                Variables.R.Cast();
             }
 
             /// <summary>
-            ///     The R Combo Logic.
+            ///     The W Combo Logic.
             /// </summary>
-            if (Variables.R.IsReady() &&
-                !Variables.W.IsReady() &&
-                Bools.IsImmobile(Targets.Target) &&
-                Variables.getCheckBoxItem(Variables.RMenu, "rspell.combo"))
+            if (Variables.W.IsReady() && !Bools.IsImmobile(Targets.Target) & Targets.Target.IsValidTarget(Variables.W.Range) && Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
             {
-                Variables.R.Cast();
+                Variables.W.CastOnUnit(Targets.Target);
             }
 
             /// <summary>
@@ -52,15 +44,13 @@ namespace ExorAIO.Champions.Ryze
                 Targets.Target.IsValidTarget(Variables.Q.Range) &&
                 Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
             {
-                Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).CastPosition);
+                Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).UnitPosition);
             }
 
             /// <summary>
             ///     The E Combo Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            if (Variables.E.IsReady() && Targets.Target.IsValidTarget(Variables.E.Range) && Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
             {
                 Variables.E.CastOnUnit(Targets.Target);
             }

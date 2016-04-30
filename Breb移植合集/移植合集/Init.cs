@@ -193,6 +193,7 @@ namespace PortAIO
                         break;
                     case "fiora": // Underrated AIO
                         UnderratedAIO.Champions.Fiora.OnLoad();
+                        //jesuisFiora.Program.Game_OnGameLoad();
                         break;
                     case "fizz": // Math Fizz
                         MathFizz.Program.Game_OnGameLoad();
@@ -292,8 +293,18 @@ namespace PortAIO
                         PopBlanc.Program.OnLoad();
                         break;
                     case "leesin": // El Lee Sin
-                        //ElLeeSin.Program.Game_OnGameLoad();
-                        Valvrave_Sharp.Program.MainA();
+                        switch (Loader.leesin)
+                        {
+                            case 0:
+                                Valvrave_Sharp.Program.MainA();
+                                break;
+                            case 1:
+                                ElLeeSin.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                Valvrave_Sharp.Program.MainA();
+                                break;
+                        }
                         //if (Loader.bubba)
                             //WreckingBall.WreckingBall.WreckingBallLoad();
                         break;

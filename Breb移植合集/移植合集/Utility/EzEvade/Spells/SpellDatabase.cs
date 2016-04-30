@@ -3613,5 +3613,11 @@ namespace ezEvade
             });*/
             #endregion Zyra
         }
+
+        public static SpellData GetByName(string spellName)
+        {
+            spellName = spellName.ToLower();
+            return Spells.FirstOrDefault(i => i.spellName.ToLower() == spellName || i.extraSpellNames.Contains(spellName));
+        }
     }
 }
