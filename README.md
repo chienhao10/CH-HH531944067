@@ -1,10 +1,10 @@
-Breb移植脚本地址源：https://github.com/chienhao10/CHportcn
+Breb移植脚本地址源：bit.ly/1N8r0td
 因为论坛规定不能发布，所以新开Repo
 
 
 
-国内源：http://git.oschina.net/chienhao/CH-HH531944067
-国外源：https://github.com/chienhao10/CH-HH531944067/
+国内源：bit.ly/26CjjSn
+国外源：bit.ly/1TaKt8P
 请直接复制到EB，远程安装使用。在国内使用第一个源，国外使用第二个。
 有任何问题请在QQ群问，或者发帖问。
 QQ：531944067
@@ -15,8 +15,6 @@ EB汉化脚本，由chienhao汉化
 漏洞滑板鞋在Definitely not Kappa文件夹下，具体使用和注意事项去帖子看
 基地大招也去帖子看
 
-国内源：http://git.oschina.net/chienhao/CH-HH531944067
-国外源：https://github.com/chienhao10
 CH主页：chienhao.strikingly.com
 
 
