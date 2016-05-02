@@ -18,8 +18,7 @@
             return Player.Instance.CalculateDamageOnUnit(
                 target,
                 DamageType.Magical,
-                (float)new double[] { 70, 110, 150, 190, 230 }[Program.Q.Level - 1]
-                + 0.65f * Player.Instance.TotalMagicalDamage);
+                (float)new double[] { 70, 110, 150, 190, 230 }[Program.Q.Level - 1] + 0.65f * Player.Instance.TotalMagicalDamage);
         }
     }
 }

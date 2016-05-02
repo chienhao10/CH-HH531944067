@@ -39,12 +39,7 @@
 
         private static Menu menuIni;
 
-        private static void Main(string[] args)
-        {
-            Loading.OnLoadingComplete += OnLoad;
-        }
-
-        private static void OnLoad(EventArgs args)
+        public static void Execute()
         {
             if (player.ChampionName != "AurelionSol")
             {
@@ -127,7 +122,8 @@
             {
                 return;
             }
-            if (miss.SpellCaster is AIHeroClient && miss.SpellCaster.IsValid && miss.SpellCaster.IsMe && miss.SData.Name.Contains("AurelionSolQMissile"))
+            if (miss.SpellCaster is AIHeroClient && miss.SpellCaster.IsValid && miss.SpellCaster.IsMe
+                && miss.SData.Name.Contains("AurelionSolQMissile"))
             {
                 QMissle = null;
             }
@@ -153,8 +149,7 @@
 
             var qsize = QMissle?.StartPosition.Distance(QMissle.Position);
             var f = (qsize + Q.Width) / 16;
-            if (f != null && (QMissle?.Position.CountEnemiesInRange((float)f)
-                                                   >= MiscMenu.Get<Slider>("AQ").CurrentValue && Q.Handle.ToggleState == 2))
+            if (f != null && (QMissle?.Position.CountEnemiesInRange((float)f) >= MiscMenu.Get<Slider>("AQ").CurrentValue && Q.Handle.ToggleState == 2))
             {
                 Q.Cast(Game.CursorPos);
             }
@@ -302,8 +297,7 @@
 
             if (useW)
             {
-                if (W.Handle.ToggleState != 2 && Wtarget != null && Wtarget.IsValidTarget(W.Range)
-                    && !Wtarget.IsValidTarget(W.Range - 250))
+                if (W.Handle.ToggleState != 2 && Wtarget != null && Wtarget.IsValidTarget(W.Range) && !Wtarget.IsValidTarget(W.Range - 250))
                 {
                     W.Cast();
                 }
@@ -311,8 +305,7 @@
 
             if (useW2)
             {
-                if (W.Handle.ToggleState == 2
-                    && (!Wtarget.IsValidTarget(W.Range) || Wtarget.IsValidTarget(W.Range - 250)))
+                if (W.Handle.ToggleState == 2 && (!Wtarget.IsValidTarget(W.Range) || Wtarget.IsValidTarget(W.Range - 250)))
                 {
                     W.Cast();
                 }
@@ -320,7 +313,12 @@
 
             if (useR && Rtarget != null && Rtarget.IsValidTarget(R.Range))
             {
-                foreach (var enemy in from enemy in EntityManager.Heroes.Enemies let startPos = enemy.ServerPosition let endPos = Player.Instance.ServerPosition.Extend(startPos, Player.Instance.Distance(enemy) + R.Range) let rectangle = new Geometry.Polygon.Rectangle((Vector2)startPos, endPos, R.Radius) where EntityManager.Heroes.Enemies.Count(x => rectangle.IsInside(x)) >= Rhit select enemy)
+                foreach (var enemy in from enemy in EntityManager.Heroes.Enemies
+                                      let startPos = enemy.ServerPosition
+                                      let endPos = Player.Instance.ServerPosition.Extend(startPos, Player.Instance.Distance(enemy) + R.Range)
+                                      let rectangle = new Geometry.Polygon.Rectangle((Vector2)startPos, endPos, R.Radius)
+                                      where EntityManager.Heroes.Enemies.Count(x => rectangle.IsInside(x)) >= Rhit
+                                      select enemy)
                 {
                     R.Cast(enemy.Position);
                 }
@@ -352,8 +350,7 @@
 
             if (useW)
             {
-                if (W.Handle.ToggleState != 2 && Wtarget != null && Wtarget.IsValidTarget(W.Range)
-                    && !Wtarget.IsValidTarget(W.Range - 250))
+                if (W.Handle.ToggleState != 2 && Wtarget != null && Wtarget.IsValidTarget(W.Range) && !Wtarget.IsValidTarget(W.Range - 250))
                 {
                     W.Cast();
                 }
@@ -361,8 +358,7 @@
 
             if (useW2)
             {
-                if (W.Handle.ToggleState == 2
-                    && (!Wtarget.IsValidTarget(W.Range) || Wtarget.IsValidTarget(W.Range - 250)))
+                if (W.Handle.ToggleState == 2 && (!Wtarget.IsValidTarget(W.Range) || Wtarget.IsValidTarget(W.Range - 250)))
                 {
                     W.Cast();
                 }
@@ -377,19 +373,12 @@
             if (useQ)
             {
                 // Credits stefsot
-                var minions = EntityManager.MinionsAndMonsters.GetLaneMinions(
-                    EntityManager.UnitTeam.Enemy,
-                    Player.Instance.Position,
-                    1500,
-                    false);
+                var minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, 1500, false);
 
                 var predictResult =
-                    Prediction.Position.PredictCircularMissileAoe(
-                        minions.Cast<Obj_AI_Base>().ToArray(),
-                        Q.Range,
-                        Q.Radius,
-                        Q.CastDelay,
-                        Q.Speed).OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length).FirstOrDefault();
+                    Prediction.Position.PredictCircularMissileAoe(minions.Cast<Obj_AI_Base>().ToArray(), Q.Range, Q.Radius, Q.CastDelay, Q.Speed)
+                        .OrderByDescending(r => r.GetCollisionObjects<Obj_AI_Minion>().Length)
+                        .FirstOrDefault();
 
                 if (predictResult != null && predictResult.CollisionObjects.Length >= 2)
                 {
@@ -399,11 +388,7 @@
 
             if (useW)
             {
-                var minions = EntityManager.MinionsAndMonsters.GetLaneMinions(
-                    EntityManager.UnitTeam.Enemy,
-                    Player.Instance.Position,
-                    W.Range,
-                    false);
+                var minions = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.Position, W.Range, false);
 
                 if (minions.Count() >= 2)
                 {
