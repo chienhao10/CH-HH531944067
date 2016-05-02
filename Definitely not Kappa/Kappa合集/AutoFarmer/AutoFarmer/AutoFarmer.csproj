@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E9C2605C-22E4-46FB-8A4B-8ED69C14766F}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoFarmer</RootNamespace>
+    <AssemblyName>AutoFarmer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EloBuddy">
+      <HintPath>..\..\..\..\..\Desktop\New folder\EloBuddy\System\EloBuddy.dll</HintPath>
+    </Reference>
+    <Reference Include="EloBuddy.SDK">
+      <HintPath>..\..\..\..\..\Desktop\New folder\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\..\..\Desktop\New folder\EloBuddy\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Library\GenesisLibrary.cs" />
+    <Compile Include="Library\SpellManager.cs" />
+    <Compile Include="Library\Spells\Aatrox.cs" />
+    <Compile Include="Library\Spells\Ahri.cs" />
+    <Compile Include="Library\Spells\Akali.cs" />
+    <Compile Include="Library\Spells\Alistar.cs" />
+    <Compile Include="Library\Spells\Amumu.cs" />
+    <Compile Include="Library\Spells\Anivia.cs" />
+    <Compile Include="Library\Spells\Annie.cs" />
+    <Compile Include="Library\Spells\Ashe.cs" />
+    <Compile Include="Library\Spells\Azir.cs" />
+    <Compile Include="Library\Spells\Bard.cs" />
+    <Compile Include="Library\Spells\Blitzcrank.cs" />
+    <Compile Include="Library\Spells\Brand.cs" />
+    <Compile Include="Library\Spells\Braum.cs" />
+    <Compile Include="Library\Spells\Caitlyn.cs" />
+    <Compile Include="Library\Spells\Cassiopeia.cs" />
+    <Compile Include="Library\Spells\Chogath.cs" />
+    <Compile Include="Library\Spells\Corki.cs" />
+    <Compile Include="Library\Spells\Darius.cs" />
+    <Compile Include="Library\Spells\Diana.cs" />
+    <Compile Include="Library\Spells\Draven.cs" />
+    <Compile Include="Library\Spells\DrMundo.cs" />
+    <Compile Include="Library\Spells\Ekko.cs" />
+    <Compile Include="Library\Spells\Evelynn.cs" />
+    <Compile Include="Library\Spells\Ezreal.cs" />
+    <Compile Include="Library\Spells\FiddleSticks.cs" />
+    <Compile Include="Library\Spells\Fiora.cs" />
+    <Compile Include="Library\Spells\Fizz.cs" />
+    <Compile Include="Library\Spells\Galio.cs" />
+    <Compile Include="Library\Spells\Gangplank.cs" />
+    <Compile Include="Library\Spells\Garen.cs" />
+    <Compile Include="Library\Spells\Gragas.cs" />
+    <Compile Include="Library\Spells\Graves.cs" />
+    <Compile Include="Library\Spells\Hecarim.cs" />
+    <Compile Include="Library\Spells\Heimerdinger.cs" />
+    <Compile Include="Library\Spells\Illaoi.cs" />
+    <Compile Include="Library\Spells\Irelia.cs" />
+    <Compile Include="Library\Spells\Janna.cs" />
+    <Compile Include="Library\Spells\JarvanIV.cs" />
+    <Compile Include="Library\Spells\Jax.cs" />
+    <Compile Include="Library\Spells\Jinx.cs" />
+    <Compile Include="Library\Spells\Kalista.cs" />
+    <Compile Include="Library\Spells\Karma.cs" />
+    <Compile Include="Library\Spells\Karthus.cs" />
+    <Compile Include="Library\Spells\Kassadin.cs" />
+    <Compile Include="Library\Spells\Katarina.cs" />
+    <Compile Include="Library\Spells\Kayle.cs" />
+    <Compile Include="Library\Spells\Kennen.cs" />
+    <Compile Include="Library\Spells\Khazix.cs" />
+    <Compile Include="Library\Spells\Kindred.cs" />
+    <Compile Include="Library\Spells\KogMaw.cs" />
+    <Compile Include="Library\Spells\Leblanc.cs" />
+    <Compile Include="Library\Spells\LeeSin.cs" />
+    <Compile Include="Library\Spells\Leona.cs" />
+    <Compile Include="Library\Spells\Lissandra.cs" />
+    <Compile Include="Library\Spells\Lucian.cs" />
+    <Compile Include="Library\Spells\Lulu.cs" />
+    <Compile Include="Library\Spells\Lux.cs" />
+    <Compile Include="Library\Spells\Malphite.cs" />
+    <Compile Include="Library\Spells\Malzahar.cs" />
+    <Compile Include="Library\Spells\Maokai.cs" />
+    <Compile Include="Library\Spells\MasterYi.cs" />
+    <Compile Include="Library\Spells\MissFortune.cs" />
+    <Compile Include="Library\Spells\MonkeyKing.cs" />
+    <Compile Include="Library\Spells\Mordekaiser.cs" />
+    <Compile Include="Library\Spells\Morgana.cs" />
+    <Compile Include="Library\Spells\Nami.cs" />
+    <Compile Include="Library\Spells\Nasus.cs" />
+    <Compile Include="Library\Spells\Nautilus.cs" />
+    <Compile Include="Library\Spells\Nocturne.cs" />
+    <Compile Include="Library\Spells\Nunu.cs" />
+    <Compile Include="Library\Spells\Olaf.cs" />
+    <Compile Include="Library\Spells\Pantheon.cs" />
+    <Compile Include="Library\Spells\Poppy.cs" />
+    <Compile Include="Library\Spells\Quinn.cs" />
+    <Compile Include="Library\Spells\Rammus.cs" />
+    <Compile Include="Library\Spells\RekSai.cs" />
+    <Compile Include="Library\Spells\Renekton.cs" />
+    <Compile Include="Library\Spells\Rengar.cs" />
+    <Compile Include="Library\Spells\Riven.cs" />
+    <Compile Include="Library\Spells\Rumble.cs" />
+    <Compile Include="Library\Spells\Ryze.cs" />
+    <Compile Include="Library\Spells\Sejuani.cs" />
+    <Compile Include="Library\Spells\Shaco.cs" />
+    <Compile Include="Library\Spells\Shen.cs" />
+    <Compile Include="Library\Spells\Shyvana.cs" />
+    <Compile Include="Library\Spells\Singed.cs" />
+    <Compile Include="Library\Spells\Sion.cs" />
+    <Compile Include="Library\Spells\Sivir.cs" />
+    <Compile Include="Library\Spells\Skarner.cs" />
+    <Compile Include="Library\Spells\Sona.cs" />
+    <Compile Include="Library\Spells\Soraka.cs" />
+    <Compile Include="Library\Spells\SpellBase.cs" />
+    <Compile Include="Library\Spells\Swain.cs" />
+    <Compile Include="Library\Spells\Syndra.cs" />
+    <Compile Include="Library\Spells\TahmKench.cs" />
+    <Compile Include="Library\Spells\Talon.cs" />
+    <Compile Include="Library\Spells\Taric.cs" />
+    <Compile Include="Library\Spells\Teemo.cs" />
+    <Compile Include="Library\Spells\Thresh.cs" />
+    <Compile Include="Library\Spells\Tristana.cs" />
+    <Compile Include="Library\Spells\Trundle.cs" />
+    <Compile Include="Library\Spells\Tryndamere.cs" />
+    <Compile Include="Library\Spells\TwistedFate.cs" />
+    <Compile Include="Library\Spells\Twitch.cs" />
+    <Compile Include="Library\Spells\Udyr.cs" />
+    <Compile Include="Library\Spells\Urgot.cs" />
+    <Compile Include="Library\Spells\Varus.cs" />
+    <Compile Include="Library\Spells\Vayne.cs" />
+    <Compile Include="Library\Spells\Veigar.cs" />
+    <Compile Include="Library\Spells\Velkoz.cs" />
+    <Compile Include="Library\Spells\Vi.cs" />
+    <Compile Include="Library\Spells\Viktor.cs" />
+    <Compile Include="Library\Spells\Vladimir.cs" />
+    <Compile Include="Library\Spells\Volibear.cs" />
+    <Compile Include="Library\Spells\Warwick.cs" />
+    <Compile Include="Library\Spells\Xerath.cs" />
+    <Compile Include="Library\Spells\XinZhao.cs" />
+    <Compile Include="Library\Spells\Yasuo.cs" />
+    <Compile Include="Library\Spells\Yorick.cs" />
+    <Compile Include="Library\Spells\Zac.cs" />
+    <Compile Include="Library\Spells\Zed.cs" />
+    <Compile Include="Library\Spells\Ziggs.cs" />
+    <Compile Include="Library\Spells\Zilean.cs" />
+    <Compile Include="Library\Spells\Zyra.cs" />
+    <Compile Include="AutoFarm.cs" />
+    <Compile Include="Modes\LaneClear.cs" />
+    <Compile Include="Modes\LastHit.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Library\README.md" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
