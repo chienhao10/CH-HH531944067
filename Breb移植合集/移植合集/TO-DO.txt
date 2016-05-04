@@ -1,4 +1,9 @@
 ﻿To-Do :
+- Check Kayle R
+- Fix Garen Q/E
+- Check W Mundo
+- Update PortAIO Logo @ https://cloud.githubusercontent.com/assets/8278110/15001430/3f3bb8b4-114c-11e6-8c69-6490a00d3c3f.gif
+- Re-Port SephKhaZix
 
 ------------------------------------------------------------------------
 
@@ -36,3 +41,4 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - Chewymoon Shaco
 - SimpleSion
 - ElEasy Sona
+- GosuMechanics Yasuo

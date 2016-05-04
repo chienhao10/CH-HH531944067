@@ -170,7 +170,7 @@ namespace SharpShooter.Plugins
                             }
 
                     //Jungleclear
-                    if (getCheckBoxItem(laneClearMenu, "qJungle"))
+                    if (getCheckBoxItem(jungleMenu, "qJungle"))
                         if (ObjectManager.Player.ManaPercent >= getSliderItem(jungleMenu, "jungleMana"))
                             if (_q.IsReady())
                             {

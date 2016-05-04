@@ -89,7 +89,7 @@ namespace ElUtilitySuite.Items
                                  },
                              new ZhonyaSpell
                                  {
-                                     ChampionName = "zed", SDataName = "zedr", MissileName = "", Delay = 700,
+                                     ChampionName = "zed", SDataName = "zedr", MissileName = "", Delay = 900,
                                      MissileSpeed = int.MaxValue, CastRange = 850f
                                  },
                              new ZhonyaSpell
@@ -578,7 +578,7 @@ namespace ElUtilitySuite.Items
 
         public void CreateMenu(Menu rootMenu)
         {
-            zhonyaMenu = rootMenu.AddSubMenu("中亚", "zhonya");
+            zhonyaMenu = rootMenu.AddSubMenu("中亚s", "zhonya");
             zhonyaMenu.AddGroupLabel("技能");
 
             foreach (var spell in Spells.Where(x => ObjectManager.Get<AIHeroClient>().Where(y => y.IsEnemy).Any(y => y.ChampionName.ToLower() == x.ChampionName)))

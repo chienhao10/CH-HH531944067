@@ -114,7 +114,7 @@ namespace SebbyLib
             }
             else
             {
-                Config.AddLabel("SPREDICTION NOT LOADED");
+                Config.AddLabel("S预判未加载");
             }
 
             if (AIOmode != 2)
@@ -272,7 +272,7 @@ namespace SebbyLib
                 if (DrawSpell.Type == SkillshotType.SkillshotCircle)
                     Render.Circle.DrawCircle(DrawSpellPos.CastPosition, DrawSpell.Width, Color.DimGray, 1);
 
-                drawText("Aiming " + DrawSpellPos.Hitchance,
+                drawText("瞄准 " + DrawSpellPos.Hitchance,
                     Player.Position.Extend(DrawSpellPos.CastPosition, 400).To3D(), Color.Gray);
             }
         }

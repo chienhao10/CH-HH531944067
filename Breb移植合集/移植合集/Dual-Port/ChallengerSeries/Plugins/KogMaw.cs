@@ -298,7 +298,7 @@ namespace Challenger_Series.Plugins
             if (!getCheckBoxItem(ComboMenu, "koggieuser") || !R.IsReady() || ObjectManager.Player.IsRecalling() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None)) return;
             if (getCheckBoxItem(MainMenu, "koggiesavewmana") && ObjectManager.Player.Mana < GetRMana() + GetWMana()) return;
             var myPos = ObjectManager.Player.ServerPosition;
-            foreach (var enemy in ValidTargets.Where(h => h.Distance(myPos) < R.Range && (!IsWActive() || h.Distance(myPos) > W.Range + 85) && h.HealthPercent < 25 && h.LSIsValidTarget()))
+            foreach (var enemy in ValidTargets.Where(h => h.Distance(myPos) < R.Range && h.HealthPercent < 25 && h.LSIsValidTarget()))
             {
                 if (getCheckBoxItem(ComboMenu, "onlyRHP"))
                 {
@@ -312,7 +312,7 @@ namespace Challenger_Series.Plugins
                 }
             }
             if (GetRStacks() >= getSliderItem(MainMenu, "koggiermaxstacks")) return;
-            if (IsWActive() || (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && !getCheckBoxItem(HarassMenu, "koggieuserharass"))) return;
+            if ((!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && !getCheckBoxItem(HarassMenu, "koggieuserharass"))) return;
 
             foreach (var enemy in ValidTargets.Where(h => h.Distance(myPos) < R.Range && h.LSIsValidTarget() && h.HealthPercent < 35))
             {

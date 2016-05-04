@@ -34,6 +34,11 @@ namespace NechritoRiven
             get { return getCheckBoxItem(emoteMenu, "qReset"); }
         }
 
+        public static bool FirstHydra
+        {
+            get { return getCheckBoxItem(misc, "FirstHydra"); }
+        }
+
         public static bool Dind
         {
             get { return getCheckBoxItem(draw, "Dind"); }
@@ -193,8 +198,8 @@ namespace NechritoRiven
             misc.Add("KeepQ", new CheckBox("保持 Q 状态"));
             misc.Add("QD", new Slider("Ping 延迟", 56, 20, 300));
             misc.Add("QLD", new Slider("技能 延迟", 56, 20, 300));
-            misc.Add("fastHKey", new KeyBind("快速骚扰按键", false, KeyBind.BindTypes.HoldActive, 'A'));
-            misc.Add("burstKey", new KeyBind("爆发按键", false, KeyBind.BindTypes.HoldActive, 'T'));
+            misc.Add("fastHKey", new KeyBind("快速骚扰按键", false, KeyBind.BindTypes.HoldActive, 'A'));            misc.Add("burstKey", new KeyBind("Burst", false, KeyBind.BindTypes.HoldActive, 'T'));
+            misc.Add("FirstHydra", new CheckBox("闪现九头蛇爆发 + W", false));
 
             draw = Config.AddSubMenu("线圈", "Draw");
             draw.Add("FleeSpot", new CheckBox("显示可逃跑位置"));
@@ -204,7 +209,7 @@ namespace NechritoRiven
             draw.Add("DrawTimer1", new CheckBox("显示 Q 结束时间", false));
             draw.Add("DrawTimer2", new CheckBox("显示 R 结束时间", false));
             draw.Add("DrawCB", new CheckBox("显示 连招 进攻", false));
-            draw.Add("DrawBT", new CheckBox("显示 爆发 进攻", false));
+            draw.Add("DrawBT", new CheckBox("爆发 进攻", false));
             draw.Add("DrawFH", new CheckBox("显示 快速骚扰 进攻", false));
             draw.Add("DrawHS", new CheckBox("显示 骚扰 进攻", false));
         }

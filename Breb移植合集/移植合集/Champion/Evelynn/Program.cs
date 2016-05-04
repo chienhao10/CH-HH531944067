@@ -86,7 +86,6 @@ namespace Evelynn
 
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnGameUpdate;
-            Spellbook.OnCastSpell += Spellbook_OnCastSpell;
         }
 
         private static void Drawing_OnDraw(EventArgs args)
@@ -119,19 +118,6 @@ namespace Evelynn
             }
         }
 
-        private static void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
-        {
-            if (sender.Owner.IsMe && args.Slot == SpellSlot.R)
-            {
-                if (ObjectManager.Get<AIHeroClient>()
-                    .Count(
-                        hero =>
-                            hero.IsValidTarget() &&
-                            hero.Distance(args.StartPosition.To2D()) <= R.Range) == 0)
-                    args.Process = false;
-            }
-        }
-
         private static void Combo()
         {
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
@@ -148,7 +134,10 @@ namespace Evelynn
                 if (getCheckBoxItem(comboMenu, "UseECombo") && E.IsReady())
                     E.CastOnUnit(target);
 
-                if (getCheckBoxItem(comboMenu, "UseRCombo") && R.IsReady() && GetComboDamage(target) > target.Health)
+                if (getCheckBoxItem(comboMenu, "UseRCombo") && R.IsReady())
+                    R.Cast(target, false, true);
+
+                if (getCheckBoxItem(comboMenu, "UseRCombo") && getCheckBoxItem(comboMenu, "UseRKillable") && R.IsReady() && GetComboDamage(target) > target.Health)
                     R.Cast(target, false, true);
             }
         }

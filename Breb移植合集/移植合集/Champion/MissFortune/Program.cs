@@ -22,7 +22,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static int LastAttackId;
         private static float RCastTime;
 
-        public static Menu drawMenu, qMenu, wMenu, eMenu, rMenu, farmMenu, miscMenu;
+        public static Menu drawMenu, qMenu, wMenu, eMenu, rMenu, farmMenu;
 
         public static AIHeroClient Player
         {
@@ -79,16 +79,12 @@ namespace OneKeyToWin_AIO_Sebby
             farmMenu.Add("jungleQ", new CheckBox("Q 抢野"));
             farmMenu.Add("jungleW", new CheckBox("清野 W"));
 
-            miscMenu = Config.AddSubMenu("杂项");
-            miscMenu.Add("newTarget", new CheckBox("尝试普攻后更换目标"));
-
-
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
             Orbwalker.OnPostAttack += afterAttack;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
-            //new SebbyLib.OktwCommon(); // not sure
+            new OktwCommon();
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -125,17 +121,20 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe && args.SData.Name == "MissFortuneBulletTime")
+            if (sender.IsMe)
             {
+                if (args.SData.Name != "MissFortuneBulletTime")
+                {
+                    return;
+                }
                 RCastTime = Game.Time;
                 Program.debug(args.SData.Name);
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
                 if (getCheckBoxItem(rMenu, "forceBlockMove"))
                 {
-                    OktwCommon.blockMove = true;
-                    OktwCommon.blockAttack = true;
-                    OktwCommon.blockSpells = true;
+                    Orbwalker.DisableAttacking = true;
+                    Orbwalker.DisableMovement = true;
                 }
             }
         }
@@ -199,63 +198,39 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 Orbwalker.DisableAttacking = false;
                 Orbwalker.DisableMovement = false;
-
-                OktwCommon.blockSpells = false;
-                OktwCommon.blockAttack = false;
-                OktwCommon.blockMove = false;
                 return;
             }
+
             if (Player.IsChannelingImportantSpell() || Game.Time - RCastTime < 0.3)
             {
                 if (getCheckBoxItem(rMenu, "forceBlockMove"))
                 {
-                    OktwCommon.blockMove = true;
-                    OktwCommon.blockAttack = true;
-                    OktwCommon.blockSpells = true;
+                    Orbwalker.DisableAttacking = true;
+                    Orbwalker.DisableMovement = true;
                 }
-
-                Orbwalker.DisableAttacking = true;
-                Orbwalker.DisableMovement = true;
 
                 Program.debug("cast R");
                 return;
             }
+
             Orbwalker.DisableAttacking = false;
             Orbwalker.DisableMovement = false;
+
             if (getCheckBoxItem(rMenu, "forceBlockMove"))
             {
-                OktwCommon.blockAttack = false;
-                OktwCommon.blockMove = false;
-                OktwCommon.blockSpells = false;
+                Orbwalker.DisableAttacking = false;
+                Orbwalker.DisableMovement = false;
             }
+
             if (R.IsReady() && getKeyBindItem(rMenu, "useR"))
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                if (t.IsValidTarget(R.Range))
+                if (t.LSIsValidTarget(R.Range))
                 {
+                    Console.WriteLine("1");
                     R.Cast(t, true, true);
                     RCastTime = Game.Time;
                     return;
-                }
-            }
-
-            if (getCheckBoxItem(miscMenu, "newTarget"))
-            {
-                var orbT = Orbwalker.LastTarget;
-
-                AIHeroClient t2 = null;
-
-                if (orbT is AIHeroClient)
-                    t2 = (AIHeroClient) orbT;
-
-                if (t2.IsValidTarget() && t2.NetworkId == LastAttackId)
-                {
-                    var ta = ObjectManager.Get<AIHeroClient>()
-                        .FirstOrDefault(enemy => enemy.IsValidTarget() && Orbwalking.InAutoAttackRange(enemy)
-                        && (enemy.NetworkId != LastAttackId || enemy.Health < Player.GetAutoAttackDamage(enemy)*2));
-
-                    if (ta != null)
-                        Orbwalker.ForcedTarget = ta;
                 }
             }
 
@@ -268,10 +243,10 @@ namespace OneKeyToWin_AIO_Sebby
             if (Program.LagFree(2) && !Orbwalker.IsAutoAttacking && Q.IsReady() && getCheckBoxItem(qMenu, "autoQ"))
                 LogicQ();
 
-            if (Program.LagFree(3) && !Orbwalker.IsAutoAttacking && E.IsReady() && getCheckBoxItem(eMenu, "autoE"))
+            if (Program.LagFree(3) && E.IsReady() && getCheckBoxItem(eMenu, "autoE"))
                 LogicE();
 
-            if (Program.LagFree(4) && !Orbwalker.IsAutoAttacking && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
+            if (Program.LagFree(4) && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
                 LogicR();
         }
 
@@ -341,15 +316,11 @@ namespace OneKeyToWin_AIO_Sebby
                     Program.CastSpell(E, t);
                 else if (Program.Combo && Player.Mana > RMANA + WMANA + QMANA + EMANA)
                 {
-                    if (!Orbwalking.InAutoAttackRange(t) || Player.CountEnemiesInRange(300) > 0 ||
-                        t.CountEnemiesInRange(250) > 1)
+                    if (!Orbwalking.InAutoAttackRange(t) || Player.CountEnemiesInRange(300) > 0 || t.CountEnemiesInRange(250) > 1)
                         Program.CastSpell(E, t);
                     else
                     {
-                        foreach (
-                            var enemy in
-                                Program.Enemies.Where(
-                                    enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
+                        foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(E.Range) && !OktwCommon.CanMove(enemy)))
                             E.Cast(enemy, true, true);
                     }
                 }
@@ -363,49 +334,48 @@ namespace OneKeyToWin_AIO_Sebby
 
             var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
 
-            if (t.IsValidTarget(R.Range) && OktwCommon.ValidUlt(t))
+            if (t.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(t))
             {
                 var rDmg = R.GetDamage(t)*new[] {0.5, 0.75, 1}[R.Level];
 
-                if (Player.CountEnemiesInRange(700) == 0 && t.CountAlliesInRange(400) == 0)
+                if (Player.LSCountEnemiesInRange(700) == 0 && t.CountAlliesInRange(400) == 0)
                 {
-                    var tDis = Player.Distance(t.ServerPosition);
+                    var tDis = Player.LSDistance(t.ServerPosition);
                     if (rDmg*7 > t.Health && tDis < 800)
                     {
-                        R.Cast(t, true, true);
+                        R.Cast(t, false, true);
                         RCastTime = Game.Time;
                     }
                     else if (rDmg*6 > t.Health && tDis < 900)
                     {
-                        R.Cast(t, true, true);
+                        R.Cast(t, false, true);
                         RCastTime = Game.Time;
                     }
                     else if (rDmg*5 > t.Health && tDis < 1000)
                     {
-                        R.Cast(t, true, true);
+                        R.Cast(t, false, true);
                         RCastTime = Game.Time;
                     }
                     else if (rDmg*4 > t.Health && tDis < 1100)
                     {
-                        R.Cast(t, true, true);
+                        R.Cast(t, false, true);
                         RCastTime = Game.Time;
                     }
                     else if (rDmg*3 > t.Health && tDis < 1200)
                     {
-                        R.Cast(t, true, true);
+                        R.Cast(t, false, true);
                         RCastTime = Game.Time;
                     }
                     else if (rDmg > t.Health && tDis < 1300)
                     {
-                        R.Cast(t, true, true);
+                        R.Cast(t, false, true);
                         RCastTime = Game.Time;
                     }
                     return;
                 }
-                if (rDmg*8 > t.Health - OktwCommon.GetIncomingDamage(t) && rDmg*2 < t.Health &&
-                    Player.CountEnemiesInRange(300) == 0 && !OktwCommon.CanMove(t))
+                if (rDmg*8 > t.Health - OktwCommon.GetIncomingDamage(t) && rDmg*2 < t.Health && Player.CountEnemiesInRange(300) == 0 && !OktwCommon.CanMove(t))
                 {
-                    R.Cast(t, true, true);
+                    R.Cast(t, false, true);
                     RCastTime = Game.Time;
                 }
             }

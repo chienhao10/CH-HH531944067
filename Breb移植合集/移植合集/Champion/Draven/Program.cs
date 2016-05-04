@@ -308,6 +308,10 @@ namespace RevampedDraven
 
         private static void OnEnemyGapcloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
         {
+            if (sender.IsAlly || e.Sender.IsAlly)
+            {
+                return;
+            }
             if (gapcloser)
             {
                 if (E.IsReady())

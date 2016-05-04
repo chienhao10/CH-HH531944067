@@ -205,24 +205,19 @@ namespace Elvarus
                     spells[Spells.E].CastOnBestTarget();
                 }
 
-                if (harassQ)
+                if (harassQ && spells[Spells.Q].IsReady())
                 {
                     if (!spells[Spells.Q].IsCharging)
                     {
                         spells[Spells.Q].StartCharging();
                     }
 
-                    if (spells[Spells.Q].IsReady())
+                    if (spells[Spells.Q].IsCharging)
                     {
                         var prediction = spells[Spells.Q].GetPrediction(target);
-                        var distance =
-                            Player.ServerPosition.Distance(
-                                prediction.UnitPosition
-                                + 200*(prediction.UnitPosition - Player.ServerPosition).Normalized(),
-                                true);
-                        if (distance < spells[Spells.Q].RangeSqr)
+                        if (prediction.Hitchance >= HitChance.VeryHigh)
                         {
-                            spells[Spells.Q].Cast(target);
+                            spells[Spells.Q].Cast(prediction.CastPosition);
                         }
                     }
                 }
@@ -313,19 +308,18 @@ namespace Elvarus
                                 enemy.IsValidTarget() && spells[Spells.Q].IsKillable(enemy) &&
                                 Player.Distance(enemy.Position) <= spells[Spells.Q].ChargedMaxRange))
                 {
-                    spells[Spells.Q].StartCharging();
+                    if (!spells[Spells.Q].IsCharging)
+                    {
+                        spells[Spells.Q].StartCharging();
+                    }
 
                     if (spells[Spells.Q].IsCharging)
                     {
-                        Orbwalker.DisableAttacking = true;
-                        if (spells[Spells.Q].IsKillable(target) && !target.IsInvulnerable)
+                        var prediction = spells[Spells.Q].GetPrediction(target);
+                        if (prediction.Hitchance >= HitChance.VeryHigh)
                         {
-                            spells[Spells.Q].Cast(target);
+                            spells[Spells.Q].Cast(prediction.CastPosition);
                         }
-                    }
-                    else
-                    {
-                        Orbwalker.DisableAttacking = false;
                     }
                 }
             }

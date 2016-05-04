@@ -321,7 +321,7 @@ namespace Viktor
             Vector2 endPos = new Vector2(0, 0);
             foreach (var minion in MinionManager.GetMinions(player.Position, rangeE, MinionTypes.All, MinionTeam.Neutral))
             {
-                var farmLocation = GetBestLaserFarmLocation(minion.Position.To2D(), (from mnion in MinionManager.GetMinions(minion.Position, lengthE, MinionTypes.All, MinionTeam.Neutral) select mnion.Position.To2D()).ToList<Vector2>(), E.Width, lengthE);
+                var farmLocation = GetBestLaserFarmLocation(minion.Position.LSTo2D(), (from mnion in MinionManager.GetMinions(minion.Position, lengthE, MinionTypes.All, MinionTeam.Neutral) select mnion.Position.LSTo2D()).ToList<Vector2>(), E.Width, lengthE);
                 if (farmLocation.MinionsHit > hitNum)
                 {
                     hitNum = farmLocation.MinionsHit;
@@ -342,11 +342,11 @@ namespace Viktor
             Vector2 endPos = new Vector2(0, 0);
             foreach (var minion in MinionManager.GetMinions(player.Position, rangeE))
             {
-                var farmLocation = GetBestLaserFarmLocation(minion.Position.To2D(), (from mnion in MinionManager.GetMinions(minion.Position, lengthE) select mnion.Position.To2D()).ToList<Vector2>(), E.Width, lengthE);
+                var farmLocation = GetBestLaserFarmLocation(minion.Position.LSTo2D(), (from mnion in MinionManager.GetMinions(minion.Position, lengthE) select mnion.Position.LSTo2D()).ToList<Vector2>(), E.Width, lengthE);
                 if (farmLocation.MinionsHit > hitNum)
                 {
                     hitNum = farmLocation.MinionsHit;
-                    startPos = minion.Position.To2D();
+                    startPos = minion.Position.LSTo2D();
                     endPos = farmLocation.Position;
                 }
             }
@@ -400,7 +400,7 @@ namespace Viktor
 
             if (farmLocation.MinionsHit >= requiredHitNumber)
             {
-                CastE(fromPosition, farmLocation.Position);
+                Player.CastSpell(SpellSlot.E, fromPosition.To3D(), farmLocation.Position.To3D());
                 return true;
             }
 
@@ -412,7 +412,7 @@ namespace Viktor
 
             if (farmLocation.MinionsHit >= requiredHitNumber)
             {
-                CastE(fromPosition, farmLocation.Position);
+                Player.CastSpell(SpellSlot.E, fromPosition.To3D(), farmLocation.Position.To3D());
                 return true;
             }
 
