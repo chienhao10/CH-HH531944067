@@ -5,6 +5,7 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
+using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
 using KoreanAIO.Managers;
@@ -16,27 +17,27 @@ namespace KoreanAIO.Champions
 {
     public class Xerath : ChampionBase
     {
-        public static class Spells
+        private static class Spells
         {
             public static class Q
             {
-                public static int CastRangeGrowthMin = 750;
-                public static int CastRangeGrowthMax = 1400;
-                public static float CastRangeGrowthStartTime = 0f;
-                public static float CastRangeGrowthDuration = 1.5f;
-                public static float CastRangeGrowthEndTime = 3f;
+                public const int CastRangeGrowthMin = 750;
+                public const int CastRangeGrowthMax = 1400;
+                public const float CastRangeGrowthStartTime = 0f;
+                public const float CastRangeGrowthDuration = 1.5f;
+                public const float CastRangeGrowthEndTime = 3f;
             }
 
             public static class W
             {
-                public static int CastRadiusSecondary = 250;
-                public static int CastRadius = 100;
+                public const int CastRadiusSecondary = 250;
+                public const int CastRadius = 100;
             }
 
             public static class E
             {
                 public static MissileClient Missile;
-                public static string MissileName = "xerathmagespearmissile";
+                public const string MissileName = "xerathmagespearmissile";
             }
         }
 
@@ -221,8 +222,8 @@ namespace KoreanAIO.Champions
             {
                 ClearMenu.AddValue("LaneClear", new GroupLabel("LaneClear"));
                 {
-                    ClearMenu.AddValue("LaneClear.Q", new Slider("Use Q if hit is greater than {0}", 0, 0, 10));
-                    ClearMenu.AddValue("LaneClear.W", new Slider("Use W if hit is greater than {0}", 3, 0, 10));
+                    ClearMenu.AddValue("LaneClear.Q", new Slider("Use Q if hit >= {0}", 0, 0, 10));
+                    ClearMenu.AddValue("LaneClear.W", new Slider("Use W if hit >= {0}", 3, 0, 10));
                     ClearMenu.AddValue("LaneClear.ManaPercent", new Slider("Minimum Mana Percent", 50));
                 }
                 ClearMenu.AddValue("JungleClear", new GroupLabel("JungleClear"));
@@ -256,17 +257,17 @@ namespace KoreanAIO.Champions
             }
         }
 
-        public override void OnDraw()
+        public override void OnDraw(Menu menu)
         {
             if (UltimateMenu.CheckBox("NearMouse.Enabled") && UltimateMenu.CheckBox("NearMouse.Draw") && IsCastingR)
             {
                 EloBuddy.SDK.Rendering.Circle.Draw(SharpDX.Color.Blue, UltimateMenu.Slider("NearMouse.Radius"), 1, MousePos);
             }
-            base.OnDraw();
+            base.OnDraw(menu);
         }
-        public override void OnEndScene()
+        public override void OnEndScene(Menu menu)
         {
-            if (DrawingsMenu.CheckBox("R.Killable") && R.IsReady && MyHero.Mana >= R.Mana)
+            if (menu.CheckBox("R.Killable") && R.IsReady && MyHero.Mana >= R.Mana)
             {
                 var count = 0;
                 foreach (var enemy in R.EnemyHeroes.Where(h => R.GetDamage(h) * Stacks >= h.TotalShieldHealth()))
@@ -284,7 +285,7 @@ namespace KoreanAIO.Champions
                     }
                 }
             }
-            base.OnEndScene();
+            base.OnEndScene(menu);
         }
 
         protected override void PermaActive()
@@ -300,6 +301,7 @@ namespace KoreanAIO.Champions
             {
                 Q.Range = Spells.Q.CastRangeGrowthMax;
             }
+            W.Width = Spells.W.CastRadiusSecondary;
             R.Range = 2000 + R.Instance.Level * 1200;
             Range = new[] { Q.IsReady ? Spells.Q.CastRangeGrowthMax : 0f, W.IsReady ? W.Range + W.Radius : 0, E.IsReady ? E.Range : 0, MyHero.GetAutoAttackRange() }.Max();
             if (Spells.E.Missile != null && !Spells.E.Missile.IsValidMissile())
@@ -341,32 +343,32 @@ namespace KoreanAIO.Champions
             }
             base.PermaActive();
         }
-        protected override void KillSteal()
+        protected override void KillSteal(Menu menu)
         {
             foreach (var enemy in UnitManager.ValidEnemyHeroesInRange.Where(h => h.HealthPercent <= 40f))
             {
                 var result = GetBestCombo(enemy);
-                if (KillStealMenu.CheckBox("Q") && (result.Q || Q.IsKillable(enemy)))
+                if (menu.CheckBox("Q") && (result.Q || Q.IsKillable(enemy)))
                 {
                     CastQ(enemy);
                 }
-                if (KillStealMenu.CheckBox("W") && (result.W || W.IsKillable(enemy)))
+                if (menu.CheckBox("W") && (result.W || W.IsKillable(enemy)))
                 {
                     CastW(enemy);
                 }
-                if (KillStealMenu.CheckBox("E") && (result.E || E.IsKillable(enemy)))
+                if (menu.CheckBox("E") && (result.E || E.IsKillable(enemy)))
                 {
                     CastE(enemy);
                 }
-                if (KillStealMenu.CheckBox("R") && IsCastingR && R.GetDamage(enemy) * Stacks >= enemy.TotalShieldHealth())
+                if (menu.CheckBox("R") && IsCastingR && R.GetDamage(enemy) * Stacks >= enemy.TotalShieldHealth())
                 {
                     R.Cast(enemy);
                 }
             }
-            base.KillSteal();
+            base.KillSteal(menu);
         }
 
-        protected override void Combo()
+        protected override void Combo(Menu menu)
         {
             if (Target != null)
             {
@@ -394,11 +396,11 @@ namespace KoreanAIO.Champions
                 {
                     return;
                 }
-                if (ComboMenu.CheckBox("E"))
+                if (menu.CheckBox("E"))
                 {
                     CastE(Target);
                 }
-                if (ComboMenu.CheckBox("W"))
+                if (menu.CheckBox("W"))
                 {
                     CastW(Target);
                 }
@@ -406,17 +408,17 @@ namespace KoreanAIO.Champions
                 {
                     return;
                 }
-                if (ComboMenu.CheckBox("Q"))
+                if (menu.CheckBox("Q"))
                 {
                     CastQ(Target);
                 }
             }
-            base.Combo();
+            base.Combo(menu);
         }
 
-        protected override void Harass()
+        protected override void Harass(Menu menu)
         {
-            if (MyHero.ManaPercent >= HarassMenu.Slider("ManaPercent"))
+            if (MyHero.ManaPercent >= menu.Slider("ManaPercent"))
             {
                 if (Target != null)
                 {
@@ -444,11 +446,11 @@ namespace KoreanAIO.Champions
                     {
                         return;
                     }
-                    if (HarassMenu.CheckBox("E"))
+                    if (menu.CheckBox("E"))
                     {
                         CastE(Target);
                     }
-                    if (HarassMenu.CheckBox("W"))
+                    if (menu.CheckBox("W"))
                     {
                         CastW(Target);
                     }
@@ -456,42 +458,42 @@ namespace KoreanAIO.Champions
                     {
                         return;
                     }
-                    if (HarassMenu.CheckBox("Q"))
+                    if (menu.CheckBox("Q"))
                     {
                         CastQ(Target);
                     }
                 }
             }
-            base.Harass();
+            base.Harass(menu);
         }
-        protected override void LaneClear()
+        protected override void LaneClear(Menu menu)
         {
-            if (MyHero.ManaPercent >= ClearMenu.Slider("LaneClear.ManaPercent"))
+            if (MyHero.ManaPercent >= menu.Slider("LaneClear.ManaPercent"))
             {
-                CastQ(Q.LaneClear(false, ClearMenu.Slider("LaneClear.Q")));
-                CastW(W.LaneClear(false, ClearMenu.Slider("LaneClear.W")));
+                CastQ(Q.LaneClear(false, menu.Slider("LaneClear.Q")));
+                CastW(W.LaneClear(false, menu.Slider("LaneClear.W")));
             }
-            base.LaneClear();
+            base.LaneClear(menu);
         }
 
-        protected override void JungleClear()
+        protected override void JungleClear(Menu menu)
         {
-            if (MyHero.ManaPercent >= ClearMenu.Slider("JungleClear.ManaPercent"))
+            if (MyHero.ManaPercent >= menu.Slider("JungleClear.ManaPercent"))
             {
-                if (ClearMenu.CheckBox("JungleClear.Q"))
+                if (menu.CheckBox("JungleClear.Q"))
                 {
                     CastQ(Q.JungleClear(false));
                 }
-                if (ClearMenu.CheckBox("JungleClear.W"))
+                if (menu.CheckBox("JungleClear.W"))
                 {
                     CastW(W.JungleClear(false));
                 }
-                if (ClearMenu.CheckBox("JungleClear.E"))
+                if (menu.CheckBox("JungleClear.E"))
                 {
                     CastE(E.JungleClear(false));
                 }
             }
-            base.JungleClear();
+            base.JungleClear(menu);
         }
 
 
@@ -533,6 +535,7 @@ namespace KoreanAIO.Champions
             }
             if (W.IsReady && target != null)
             {
+                W.Width = target.Type == GameObjectType.AIHeroClient ? Spells.W.CastRadius : Spells.W.CastRadiusSecondary;
                 W.Cast(target);
             }
         }

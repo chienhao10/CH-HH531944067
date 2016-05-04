@@ -66,6 +66,7 @@
     <Compile Include="Champions\ChampionBase.cs" />
     <Compile Include="Champions\Diana.cs" />
     <Compile Include="Champions\Orianna.cs" />
+    <Compile Include="Champions\Syndra.cs" />
     <Compile Include="Champions\Xerath.cs" />
     <Compile Include="Champions\Zed.cs" />
     <Compile Include="Managers\CacheManager.cs" />

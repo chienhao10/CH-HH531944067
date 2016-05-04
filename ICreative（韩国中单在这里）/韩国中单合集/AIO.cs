@@ -20,6 +20,7 @@ namespace KoreanAIO
         {
             Champion.Diana,
             Champion.Cassiopeia,
+            Champion.Syndra,
             Champion.Orianna,
             Champion.Xerath,
             Champion.Zed

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
+using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
 using KoreanAIO.Managers;
@@ -151,7 +152,7 @@ namespace KoreanAIO.Champions
                     ? WShadow.GetDistanceSqr(args.Sender)
                     : 16000000;
                 var rTarget = TargetSelector.GetTarget(R.Range, DamageType.Physical) ?? args.Sender;
-                var r1Distance = R.IsReady && IsR1 && rTarget != null && R.InRange(rTarget) &&
+                var r1Distance = R.IsReady && IsR1 && rTarget != null && R.IsInRange(rTarget) &&
                                  EvaderMenu.CheckBox("Evader.R1")
                     ? MyHero.GetDistanceSqr(args.Sender)
                     : 16000000;
@@ -227,14 +228,10 @@ namespace KoreanAIO.Champions
                 {
                     ComboMenu.AddValue("BlackList.R", new GroupLabel("Don't use R on:"));
                     var enemiesAdded = new HashSet<string>();
-                    foreach (var enemy in EntityManager.Heroes.Enemies)
+                    foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemiesAdded.Add(enemy.ChampionName)))
                     {
-                        if (!enemiesAdded.Contains(enemy.ChampionName))
-                        {
-                            ComboMenu.AddValue("BlackList." + enemy.ChampionName,
-                                new CheckBox(enemy.ChampionName, false));
-                            enemiesAdded.Add(enemy.ChampionName);
-                        }
+                        ComboMenu.AddValue("BlackList." + enemy.ChampionName,
+                            new CheckBox(enemy.ChampionName, false));
                     }
                 }
             }
@@ -250,9 +247,9 @@ namespace KoreanAIO.Champions
             {
                 ClearMenu.AddValue("LaneClear", new GroupLabel("LaneClear"));
                 {
-                    ClearMenu.AddValue("LaneClear.Q", new Slider("Use Q if hit is greater than {0}", 3, 0, 10));
-                    ClearMenu.AddValue("LaneClear.W", new Slider("Use W if hit is greater than {0}", 4, 0, 10));
-                    ClearMenu.AddValue("LaneClear.E", new Slider("Use E if hit is greater than {0}", 3, 0, 10));
+                    ClearMenu.AddValue("LaneClear.Q", new Slider("Use Q if hit >= {0}", 3, 0, 10));
+                    ClearMenu.AddValue("LaneClear.W", new Slider("Use W if hit >= {0}", 4, 0, 10));
+                    ClearMenu.AddValue("LaneClear.E", new Slider("Use E if hit >= {0}", 3, 0, 10));
                     ClearMenu.AddValue("LaneClear.ManaPercent", new Slider("Minimum Mana Percent", 50));
                 }
                 ClearMenu.AddValue("LastHit", new GroupLabel("LastHit"));
@@ -364,9 +361,9 @@ namespace KoreanAIO.Champions
             get { return W.IsReady && IsW1 && MyHero.Mana < W.Mana + Q.Mana; }
         }
 
-        public override void OnEndScene()
+        public override void OnEndScene(Menu menu)
         {
-            if (DrawingsMenu.CheckBox("IsDead"))
+            if (menu.CheckBox("IsDead"))
             {
                 if (EnemyIsDead)
                 {
@@ -378,12 +375,12 @@ namespace KoreanAIO.Champions
                     }
                 }
             }
-            base.OnEndScene();
+            base.OnEndScene(menu);
         }
 
-        public override void OnDraw()
+        public override void OnDraw(Menu menu)
         {
-            if (DrawingsMenu.CheckBox("Passive"))
+            if (menu.CheckBox("Passive"))
             {
                 foreach (
                     var enemy in
@@ -395,7 +392,7 @@ namespace KoreanAIO.Champions
                         6);
                 }
             }
-            base.OnDraw();
+            base.OnDraw(menu);
         }
 
         protected override void PermaActive()
@@ -557,7 +554,7 @@ namespace KoreanAIO.Champions
             }
             if (E.IsReady)
             {
-                foreach (var enemy in UnitManager.ValidEnemyHeroesInRange.Where(h => !E.InRange(h)))
+                foreach (var enemy in UnitManager.ValidEnemyHeroesInRange.Where(h => !E.IsInRange(h)))
                 {
                     CastE(enemy);
                 }
@@ -565,64 +562,64 @@ namespace KoreanAIO.Champions
             base.Flee();
         }
 
-        protected override void KillSteal()
+        protected override void KillSteal(Menu menu)
         {
             foreach (var enemy in UnitManager.ValidEnemyHeroesInRange.Where(h => h.HealthPercent <= 40f))
             {
                 var result = GetBestCombo(enemy);
-                if (KillStealMenu.CheckBox("Q") && (result.Q || Q.IsKillable(enemy)))
+                if (menu.CheckBox("Q") && (result.Q || Q.IsKillable(enemy)))
                 {
                     CastQ(enemy);
                 }
-                if (KillStealMenu.CheckBox("W") && enemy.HealthPercent <= 20f && NeedsW(enemy) &&
+                if (menu.CheckBox("W") && enemy.HealthPercent <= 20f && NeedsW(enemy) &&
                     (result.W || W.IsKillable(enemy)))
                 {
                     W.Cast(enemy);
                 }
-                if (KillStealMenu.CheckBox("E") && (result.E || E.IsKillable(enemy)))
+                if (menu.CheckBox("E") && (result.E || E.IsKillable(enemy)))
                 {
                     E.Cast(enemy);
                 }
             }
-            base.KillSteal();
+            base.KillSteal(menu);
         }
 
-        protected override void Combo()
+        protected override void Combo(Menu menu)
         {
             if (Target != null)
             {
-                if (ComboMenu.CheckBox("Items"))
+                if (menu.CheckBox("Items"))
                 {
                     ItemManager.CastOffensiveItems(Target);
                 }
-                if (R.IsReady && IsR1 && !ComboMenu.CheckBox("BlackList." + Target.ChampionName) && !IsCombo2)
+                if (R.IsReady && IsR1 && !menu.CheckBox("BlackList." + Target.ChampionName) && !IsCombo2)
                 {
-                    if (ComboMenu.CheckBox("R"))
+                    if (menu.CheckBox("R"))
                     {
                         CastR(Target);
                     }
-                    if (ComboMenu.CheckBox("Prevent"))
+                    if (menu.CheckBox("Prevent"))
                     {
                         return;
                     }
                 }
-                if (ComboMenu.CheckBox("W") && NeedsW(Target))
+                if (menu.CheckBox("W") && NeedsW(Target))
                 {
                     CastW(Target);
                 }
-                if (ComboMenu.CheckBox("E"))
+                if (menu.CheckBox("E"))
                 {
                     CastE(Target);
                 }
-                if (ComboMenu.CheckBox("Q"))
+                if (menu.CheckBox("Q"))
                 {
                     CastQ(Target);
                 }
             }
-            base.Combo();
+            base.Combo(menu);
         }
 
-        protected override void Harass()
+        protected override void Harass(Menu menu)
         {
             if (Target != null)
             {
@@ -632,7 +629,7 @@ namespace KoreanAIO.Champions
                     {
                         return;
                     }
-                    if (HarassMenu.CheckBox("WE") && W.IsReady && IsW1 && E.IsReady && !MyHero.IsInRange(Target, WRange + E.Radius))
+                    if (menu.CheckBox("WE") && W.IsReady && IsW1 && E.IsReady && !MyHero.IsInRange(Target, WRange + E.Radius))
                     {
                         return;
                     }
@@ -642,44 +639,44 @@ namespace KoreanAIO.Champions
                 }
                 else
                 {
-                    if (MyHero.ManaPercent >= HarassMenu.Slider("ManaPercent"))
+                    if (MyHero.ManaPercent >= menu.Slider("ManaPercent"))
                     {
                         CastE(Target);
                         CastQ(Target);
                     }
                 }
             }
-            base.Harass();
+            base.Harass(menu);
         }
 
-        protected override void LaneClear()
+        protected override void LaneClear(Menu menu)
         {
-            if (MyHero.ManaPercent >= ClearMenu.Slider("LaneClear.ManaPercent"))
+            if (MyHero.ManaPercent >= menu.Slider("LaneClear.ManaPercent"))
             {
-                var minion = W.LaneClear(false, ClearMenu.Slider("LaneClear.W"));
+                var minion = W.LaneClear(false, menu.Slider("LaneClear.W"));
                 CastW(minion);
-                CastQ(Q.LaneClear(false, ClearMenu.Slider("LaneClear.Q")));
-                CastE(E.LaneClear(false, ClearMenu.Slider("LaneClear.E")) ?? minion);
+                CastQ(Q.LaneClear(false, menu.Slider("LaneClear.Q")));
+                CastE(E.LaneClear(false, menu.Slider("LaneClear.E")) ?? minion);
             }
-            base.LaneClear();
+            base.LaneClear(menu);
         }
 
-        protected override void LastHit()
+        protected override void LastHit(Menu menu)
         {
-            if (MyHero.ManaPercent >= ClearMenu.Slider("LastHit.ManaPercent"))
+            if (MyHero.ManaPercent >= menu.Slider("LastHit.ManaPercent"))
             {
-                Q.LastHit((LastHitType)ClearMenu.Slider("LastHit.Q"));
-                E.LastHit((LastHitType)ClearMenu.Slider("LastHit.E"));
+                Q.LastHit((LastHitType)menu.Slider("LastHit.Q"));
+                E.LastHit((LastHitType)menu.Slider("LastHit.E"));
             }
-            base.LastHit();
+            base.LastHit(menu);
         }
 
-        protected override void JungleClear()
+        protected override void JungleClear(Menu menu)
         {
-            if (MyHero.ManaPercent >= ClearMenu.Slider("JungleClear.ManaPercent"))
+            if (MyHero.ManaPercent >= menu.Slider("JungleClear.ManaPercent"))
             {
                 Obj_AI_Minion minion = null;
-                if (ClearMenu.CheckBox("JungleClear.W"))
+                if (menu.CheckBox("JungleClear.W"))
                 {
                     minion = W.JungleClear(false);
                     if (ShouldWaitMana)
@@ -688,16 +685,16 @@ namespace KoreanAIO.Champions
                     }
                     CastW(minion);
                 }
-                if (ClearMenu.CheckBox("JungleClear.E"))
+                if (menu.CheckBox("JungleClear.E"))
                 {
                     CastE(E.JungleClear(false) ?? minion);
                 }
-                if (ClearMenu.CheckBox("JungleClear.Q"))
+                if (menu.CheckBox("JungleClear.Q"))
                 {
                     CastQ(Q.JungleClear(false));
                 }
             }
-            base.JungleClear();
+            base.JungleClear(menu);
         }
 
         public void CastQ(Obj_AI_Base target)

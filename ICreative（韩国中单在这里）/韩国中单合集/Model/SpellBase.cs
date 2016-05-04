@@ -37,6 +37,7 @@ namespace KoreanAIO.Model
         public int Speed;
         public SpellType Type = SpellType.Unknown;
         public int Width;
+        public Vector3? SourcePosition;
     }
 
     public class SpellBase
@@ -139,7 +140,7 @@ namespace KoreanAIO.Model
                 {
                     _enemyHeroesCanBeCalculated = false;
                     _enemyHeroes.Clear();
-                    _enemyHeroes.AddRange(UnitManager.ValidEnemyHeroes.Where(InRange));
+                    _enemyHeroes.AddRange(UnitManager.ValidEnemyHeroes.Where(IsInRange));
                 }
                 return _enemyHeroes;
             }
@@ -154,7 +155,7 @@ namespace KoreanAIO.Model
                     _laneClearMinionsCanBeCalculated = false;
                     _laneClearMinions.Clear();
                     _laneClearMinions.AddRange(
-                        Orbwalker.LaneClearMinionsList.Concat(Orbwalker.UnKillableMinionsList).Where(InRange));
+                        Orbwalker.LaneClearMinionsList.Concat(Orbwalker.UnKillableMinionsList).Where(IsInRange));
                 }
                 return _laneClearMinions;
             }
@@ -168,7 +169,7 @@ namespace KoreanAIO.Model
                 {
                     _enemyMinionsCanBeCalculated = false;
                     _enemyMinions.Clear();
-                    _enemyMinions.AddRange(EntityManager.MinionsAndMonsters.EnemyMinions.Where(InRange));
+                    _enemyMinions.AddRange(EntityManager.MinionsAndMonsters.EnemyMinions.Where(IsInRange));
                 }
                 return _enemyMinions;
             }
@@ -183,7 +184,7 @@ namespace KoreanAIO.Model
                     _monstersCanBeCalculated = false;
                     _monsters.Clear();
                     _monsters.AddRange(
-                        EntityManager.MinionsAndMonsters.Monsters.Where(InRange).OrderByDescending(m => m.MaxHealth));
+                        EntityManager.MinionsAndMonsters.Monsters.Where(IsInRange).OrderByDescending(m => m.MaxHealth));
                 }
                 return _monsters;
             }
@@ -366,7 +367,7 @@ namespace KoreanAIO.Model
             return result;
         }
 
-        public bool InRange(Obj_AI_Base target)
+        public bool IsInRange(Obj_AI_Base target)
         {
             switch (Type)
             {
@@ -403,6 +404,7 @@ namespace KoreanAIO.Model
         public PredictionResult GetPrediction(Obj_AI_Base target, CustomSettings custom = null)
         {
             var source = custom != null && custom.Source != null ? custom.Source : Source;
+            var sourcePosition = custom != null && custom.SourcePosition.HasValue ? custom.SourcePosition : source.Position;
             if (!CachedPredictions.ContainsKey(source.NetworkId))
             {
                 CachedPredictions.Add(source.NetworkId, new Dictionary<int, PredictionResult>());
@@ -422,15 +424,15 @@ namespace KoreanAIO.Model
                 {
                     case SpellType.Circular:
                         result = Prediction.Position.PredictCircularMissile(target, range, width, castDelay, speed,
-                            source.Position);
+                            sourcePosition);
                         break;
                     case SpellType.Cone:
                         result = Prediction.Position.PredictConeSpell(target, range, width, castDelay, speed,
-                            source.Position);
+                            sourcePosition);
                         break;
                     case SpellType.Self:
                         result = Prediction.Position.PredictCircularMissile(target, range, width, castDelay, speed,
-                            source.Position);
+                            sourcePosition);
                         break;
                     default:
                         result = Prediction.Position.PredictLinearMissile(target, range, width, castDelay, speed,
@@ -449,7 +451,7 @@ namespace KoreanAIO.Model
 
         public void Cast(Obj_AI_Base target, CustomSettings custom = null)
         {
-            if (!IsReady || Chat.IsOpen || !InRange(target))
+            if (!IsReady || Chat.IsOpen || !IsInRange(target))
             {
                 return;
             }
@@ -473,7 +475,7 @@ namespace KoreanAIO.Model
                 var pred = GetPrediction(target, custom);
                 if (pred.HitChancePercent >= HitChancePercent)
                 {
-                    if (WillHitYasuoWall(pred.CastPosition) || !PredictedPosInRange(target))
+                    if (WillHitYasuoWall(pred.CastPosition) || !RangeCheckSource.IsInRange(pred.CastPosition, Range))
                     {
                         return;
                     }
@@ -797,7 +799,7 @@ namespace KoreanAIO.Model
             return hash;
         }
 
-        public bool InRange(Obj_AI_Base target1, Obj_AI_Base target2)
+        public bool IsInRange(Obj_AI_Base target1, Obj_AI_Base target2)
         {
             if (!_cachedObjectsInRange.ContainsKey(target1.NetworkId))
             {
@@ -836,7 +838,7 @@ namespace KoreanAIO.Model
                         var pred = GetPrediction(obj);
                         if (pred.HitChancePercent >= HitChancePercent)
                         {
-                            var list = objAiBases.Where(o => !o.IdEquals(obj) && InRange(obj, o)).ToList();
+                            var list = objAiBases.Where(o => !o.IdEquals(obj) && IsInRange(obj, o)).ToList();
                             list.Add(obj);
                             if (!checkTarget || list.Contains(target))
                             {

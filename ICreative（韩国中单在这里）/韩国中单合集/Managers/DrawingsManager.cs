@@ -19,7 +19,7 @@ namespace KoreanAIO.Managers
                 {
                     return;
                 }
-                AIO.CurrentChampion.OnDraw();
+                AIO.CurrentChampion.OnDraw(Menu);
                 CircleManager.Draw();
                 ToggleManager.Draw();
             };
@@ -29,7 +29,7 @@ namespace KoreanAIO.Managers
                 {
                     return;
                 }
-                AIO.CurrentChampion.OnEndScene();
+                AIO.CurrentChampion.OnEndScene(Menu);
                 if (Menu.CheckBox("DamageIndicator"))
                 {
                     DamageIndicator.Draw();

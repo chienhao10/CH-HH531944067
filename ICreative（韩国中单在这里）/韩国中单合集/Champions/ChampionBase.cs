@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -30,6 +31,10 @@ namespace KoreanAIO.Champions
         public ChampionBase()
         {
             MenuManager.Initialize();
+            Game.OnUpdate += delegate
+            {
+                OnUpdate();
+            };
             Game.OnTick += delegate
             {
                 if (MyHero.IsDead || !AIO.Initialized)
@@ -37,7 +42,7 @@ namespace KoreanAIO.Champions
                     return;
                 }
                 PermaActive();
-                KillSteal();
+                KillSteal(KillStealMenu);
                 /*
                 if (Orbwalker.GotAutoAttackReset && Orbwalker.GetTarget() != null)
                 {
@@ -46,26 +51,26 @@ namespace KoreanAIO.Champions
                 */
                 if (ModeManager.Combo)
                 {
-                    Combo();
+                    Combo(ComboMenu);
                 }
                 else if (ModeManager.Harass)
                 {
-                    Harass();
+                    Harass(HarassMenu);
                 }
                 else if (ModeManager.LaneClear || ModeManager.JungleClear)
                 {
                     if (ModeManager.LaneClear)
                     {
-                        LaneClear();
+                        LaneClear(ClearMenu);
                     }
                     if (ModeManager.JungleClear)
                     {
-                        JungleClear();
+                        JungleClear(ClearMenu);
                     }
                 }
                 else if (ModeManager.LastHit)
                 {
-                    LastHit();
+                    LastHit(ClearMenu);
                 }
                 if (ModeManager.Flee)
                 {
@@ -84,7 +89,7 @@ namespace KoreanAIO.Champions
             get { return Game.CursorPos; }
         }
 
-        protected Menu Menu
+        protected Menu MainMenu
         {
             get { return MenuManager.Menu; }
         }
@@ -169,36 +174,42 @@ namespace KoreanAIO.Champions
         }
 
 
+        protected virtual void OnUpdate()
+        {
+
+        }
         protected virtual void PermaActive()
         {
+
         }
 
-        protected virtual void Combo()
+        protected virtual void Combo(Menu menu)
+        {
+
+        }
+
+        protected virtual void Harass(Menu menu)
         {
         }
 
-        protected virtual void Harass()
+        protected virtual void LaneClear(Menu menu)
+        {
+            LastHit(menu);
+        }
+
+        protected virtual void JungleClear(Menu menu)
         {
         }
 
-        protected virtual void LaneClear()
-        {
-            LastHit();
-        }
-
-        protected virtual void JungleClear()
+        protected virtual void LastHit(Menu menu)
         {
         }
 
-        protected virtual void LastHit()
-        {
-        }
-
-        protected virtual void KillSteal()
+        protected virtual void KillSteal(Menu menu)
         {
             foreach (var enemy in UnitManager.ValidEnemyHeroesInRange)
             {
-                if (KillStealMenu.CheckBox("Ignite") && Ignite.IsKillable(enemy))
+                if (menu.CheckBox("Ignite") && Ignite.IsKillable(enemy))
                 {
                     if (!MyHero.InAutoAttackRange(enemy) ||
                         MyHero.GetAttackDamage(enemy, true) <= enemy.TotalShieldHealth())
@@ -206,7 +217,7 @@ namespace KoreanAIO.Champions
                         Ignite.Cast(enemy);
                     }
                 }
-                if (KillStealMenu.CheckBox("Smite") && Smite.IsKillable(enemy))
+                if (menu.CheckBox("Smite") && Smite.IsKillable(enemy))
                 {
                     Smite.Cast(enemy);
                 }
@@ -217,11 +228,11 @@ namespace KoreanAIO.Champions
         {
         }
 
-        public virtual void OnDraw()
+        public virtual void OnDraw(Menu menu)
         {
         }
 
-        public virtual void OnEndScene()
+        public virtual void OnEndScene(Menu menu)
         {
         }
 
