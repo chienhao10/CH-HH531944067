@@ -55,16 +55,16 @@ namespace SPrediction
         /// </summary>
         public static void Initialize(string prefMenuName = "SPRED")
         {
-            s_Menu = MainMenu.AddMenu("SPrediction", prefMenuName);
-            s_Menu.Add("PREDICTONLIST", new Slider("Pred. Method (0 : Common/EB Pred)", 0, 0, 0));
-            s_Menu.Add("SPREDWINDUP", new CheckBox("Check for target AA Windup", false));
-            s_Menu.Add("SPREDMAXRANGEIGNORE", new Slider("Max Range Dodge Ignore (%)", 50));
-            s_Menu.Add("SPREDREACTIONDELAY", new Slider("Ignore Rection Delay", 0, 0, 200));
-            s_Menu.Add("SPREDDELAY", new Slider("Spell Delay", 0, 0, 200));
-            s_Menu.Add("SPREDHC", new KeyBind("Count HitChance", false, KeyBind.BindTypes.HoldActive, 32));
-            s_Menu.Add("SPREDDRAWINGX", new Slider("Drawing Pos X", Drawing.Width - 200, 0, Drawing.Width));
-            s_Menu.Add("SPREDDRAWINGY", new Slider("Drawing Pos Y", 0, 0, Drawing.Height));
-            s_Menu.Add("SPREDDRAWINGS", new CheckBox("Enable Drawings", false));
+            s_Menu = MainMenu.AddMenu("S预判", prefMenuName);
+            s_Menu.Add("PREDICTONLIST", new Slider("预判模式 (0 : S预判 | 1 : 库/EB 预判)", 0, 0, 1));
+            s_Menu.Add("SPREDWINDUP", new CheckBox("检查目标普攻重置", false));
+            s_Menu.Add("SPREDMAXRANGEIGNORE", new Slider("无视最远范围躲避 (%)", 50));
+            s_Menu.Add("SPREDREACTIONDELAY", new Slider("无视反应延迟", 0, 0, 200));
+            s_Menu.Add("SPREDDELAY", new Slider("技能延迟", 0, 0, 200));
+            s_Menu.Add("SPREDHC", new KeyBind("计算命中率", false, KeyBind.BindTypes.HoldActive, 32));
+            s_Menu.Add("SPREDDRAWINGX", new Slider("显示 位置 X", Drawing.Width - 200, 0, Drawing.Width));
+            s_Menu.Add("SPREDDRAWINGY", new Slider("显示 位置 Y", 0, 0, Drawing.Height));
+            s_Menu.Add("SPREDDRAWINGS", new CheckBox("开启线圈", false));
         }
 
         #endregion

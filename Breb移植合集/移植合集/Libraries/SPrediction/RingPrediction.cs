@@ -39,7 +39,7 @@ namespace SPrediction
         {
             return GetPrediction(input.Target, input.SpellWidth, ringRadius, input.SpellDelay, input.SpellMissileSpeed,
                 input.SpellRange, input.SpellCollisionable, input.Path, input.AvgReactionTime, input.LastMovChangeTime,
-                input.AvgPathLenght, input.From.To2D(), input.RangeCheckFrom.To2D());
+                input.AvgPathLenght, input.From.LSTo2D(), input.RangeCheckFrom.LSTo2D());
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace SPrediction
         {
             return GetPrediction(target, radius, ringRadius, delay, missileSpeed, range, collisionable,
                 target.GetWaypoints(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(),
-                ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
+                ObjectManager.Player.ServerPosition.LSTo2D(), ObjectManager.Player.ServerPosition.LSTo2D());
         }
 
         /// <summary>
@@ -88,10 +88,10 @@ namespace SPrediction
                 collisionable, path, avgt, movt, avgp, 360, from, rangeCheckFrom);
             if (result.HitChance > HitChance.Low)
             {
-                var direction = (result.CastPosition - from + target.Direction.To2D()).Normalized();
+                var direction = (result.CastPosition - from + target.Direction.LSTo2D()).LSNormalized();
                 result.CastPosition -= direction*(radius - ringRadius/2f);
 
-                if (result.CastPosition.Distance(from) > range)
+                if (result.CastPosition.LSDistance(from) > range)
                     result.HitChance = HitChance.OutOfRange;
             }
 

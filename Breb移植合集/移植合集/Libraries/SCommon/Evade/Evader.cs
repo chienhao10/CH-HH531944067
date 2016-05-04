@@ -56,7 +56,7 @@ namespace SCommon.Evade
             SpellDatabase.InitalizeSpellDatabase();
             SpecialMethod = method;
             EvadeSpell = spl;
-            evade = MainMenu.AddMenu("Evade", "SCommon.Evade.Root");
+            evade = MainMenu.AddMenu("S躲避", "SCommon.Evade.Root");
 
             foreach (var enemy in HeroManager.Enemies)
             {
@@ -71,22 +71,22 @@ namespace SCommon.Evade
             }
 
             evade.Add("EVADEMETHOD",
-                new Slider("Evade Method: (0 : Near Turret | 1 : Less Enemies | 2 : Auti) ", 2, 0, 2));
-            evade.Add("EVADEENABLE", new CheckBox("Enabled"));
+                new Slider("躲避方式 Method: (0 : 解决塔 | 1 : 更少敌人 | 2 : Auti) ", 2, 0, 2));
+            evade.Add("EVADEENABLE", new CheckBox("开启"));
 
             if (ObjectManager.Player.CharData.BaseSkinName == "Morgana")
             {
                 evade.AddSeparator();
-                evade.AddGroupLabel("Ally Shielding");
+                evade.AddGroupLabel("友军盾牌");
                 foreach (var ally in HeroManager.Allies)
                 {
                     if (!ally.IsMe)
                     {
-                        evade.Add("shield" + ally.ChampionName, new CheckBox("Shield " + ally.ChampionName, false));
+                        evade.Add("shield" + ally.ChampionName, new CheckBox("盾 " + ally.ChampionName, false));
                     }
                 }
 
-                evade.Add("SHIELDENABLED", new CheckBox("Enabled"));
+                evade.Add("SHIELDENABLED", new CheckBox("开启"));
                 evade.AddSeparator();
             }
 

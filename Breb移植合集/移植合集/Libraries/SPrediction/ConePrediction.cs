@@ -39,7 +39,7 @@ namespace SPrediction
         {
             return GetPrediction(input.Target, input.SpellWidth, input.SpellDelay, input.SpellMissileSpeed,
                 input.SpellRange, input.SpellCollisionable, input.Path, input.AvgReactionTime, input.LastMovChangeTime,
-                input.AvgPathLenght, input.LastAngleDiff, input.From.To2D(), input.RangeCheckFrom.To2D());
+                input.AvgPathLenght, input.LastAngleDiff, input.From.LSTo2D(), input.RangeCheckFrom.LSTo2D());
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace SPrediction
         {
             return GetPrediction(target, width, delay, missileSpeed, range, collisionable, target.GetWaypoints(),
                 target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), target.LastAngleDiff(),
-                ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
+                ObjectManager.Player.ServerPosition.LSTo2D(), ObjectManager.Player.ServerPosition.LSTo2D());
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace SPrediction
                 HeroManager.Enemies.Where(
                     p =>
                         p.IsValidTarget() &&
-                        Prediction.GetFastUnitPosition(p, delay, 0, from).Distance(rangeCheckFrom) < range);
+                        Prediction.GetFastUnitPosition(p, delay, 0, from).LSDistance(rangeCheckFrom) < range);
 
             foreach (var enemy in enemies)
             {
@@ -114,7 +114,7 @@ namespace SPrediction
                     from, rangeCheckFrom);
                 if (prediction.HitChance > HitChance.Medium)
                 {
-                    var to = from + (prediction.CastPosition - from).Normalized()*range;
+                    var to = from + (prediction.CastPosition - from).LSNormalized()*range;
                     var spellHitBox = ClipperWrapper.DefineSector(from, to, width, range);
                     var collidedEnemies =
                         HeroManager.Enemies.AsParallel()

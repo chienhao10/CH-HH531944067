@@ -99,10 +99,9 @@ namespace PortAIO.Champion.Caitlyn
             wMenu.Add("telE", new CheckBox("对传送自动W"));
             wMenu.Add("bushW", new CheckBox("草丛自动W"));
             wMenu.Add("Wspell", new CheckBox("对特殊技能使用 W"));
-            wMenu.Add("WmodeGC",
-                new Slider("防突进位置模式 (0 : 冲刺结束位置 | 1 : 我英雄位置)", 0, 0, 1));
+            wMenu.Add("WmodeGC", new Slider("防突进位置模式 (0 : 冲刺结束位置 | 1 : 我英雄位置)", 0, 0, 1));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                wMenu.Add("WGCchampion" + enemy.ChampionName, new CheckBox("对敌方使用: " + enemy.ChampionName));
+                wMenu.Add("WGCchampion" + enemy.ChampionName, new CheckBox("对敌方使用 : " + enemy.ChampionName));
 
             eMenu = Config.AddSubMenu("E 设置");
             eMenu.Add("autoE", new CheckBox("自动 E"));
@@ -462,7 +461,7 @@ namespace PortAIO.Champion.Caitlyn
                     if (rDamage > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
-                            "大招 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                 }
@@ -472,7 +471,7 @@ namespace PortAIO.Champion.Caitlyn
                 {
                     if (Q.GetDamage(tw) > tw.Health)
                         Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.4f, Color.Red,
-                            "Q 可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "Q can kill: " + t.ChampionName + " have: " + t.Health + "hp");
                 }
             }
         }

@@ -35,8 +35,8 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public void LoadOKTW()
         {
-            Sub = Config.AddSubMenu("AutoLvlUp OKTW©");
-            Sub.Add("AutoLvl", new CheckBox("ENABLE"));
+            Sub = Config.AddSubMenu("自动加点 OKTW©");
+            Sub.Add("AutoLvl", new CheckBox("开启"));
 
             Sub.AddLabel("0 : Q | 1 : W | 2 : E | 3 : R");
             Sub.Add("1", new Slider("1", 3, 0, 3));
@@ -44,7 +44,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             Sub.Add("3", new Slider("3", 1, 0, 3));
             Sub.Add("4", new Slider("4", 1, 0, 3));
 
-            Sub.Add("LvlStart", new Slider("Auto LVL start", 2, 1, 6));
+            Sub.Add("LvlStart", new Slider("等级 X 开始自动加点", 2, 1, 6));
 
             Game.OnUpdate += Game_OnGameUpdate;
             Obj_AI_Base.OnLevelUp += Obj_AI_Base_OnLevelUp;
@@ -81,7 +81,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             {
                 if ((lvl2 == lvl3 || lvl2 == lvl4 || lvl3 == lvl4) && (int) Game.Time%2 == 0)
                 {
-                    drawText("AutoLvlUp: PLEASE SET ABILITY SEQENCE", ObjectManager.Player.Position, Color.OrangeRed,
+                    drawText("自动加点: 请选择顺序！", ObjectManager.Player.Position, Color.OrangeRed,
                         -200);
                 }
             }

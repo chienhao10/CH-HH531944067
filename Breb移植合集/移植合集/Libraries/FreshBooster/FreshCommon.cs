@@ -148,27 +148,56 @@ namespace FreshBooster
         public static HitChance Hitchance(string Type)
         {
             var result = HitChance.Low;
-            switch (Program.getQHitChance())
+            if (ObjectManager.Player.ChampionName == EloBuddy.Champion.Blitzcrank.ToString())
             {
-                case 1:
-                    result = HitChance.OutOfRange;
-                    break;
-                case 2:
-                    result = HitChance.Impossible;
-                    break;
-                case 3:
-                    result = HitChance.Low;
-                    break;
-                case 4:
-                    result = HitChance.Medium;
-                    break;
-                case 5:
-                    result = HitChance.High;
-                    break;
-                case 6:
-                    result = HitChance.VeryHigh;
-                    break;
+                switch (Program.getQHitChance())
+                {
+                    case 1:
+                        result = HitChance.OutOfRange;
+                        break;
+                    case 2:
+                        result = HitChance.Impossible;
+                        break;
+                    case 3:
+                        result = HitChance.Low;
+                        break;
+                    case 4:
+                        result = HitChance.Medium;
+                        break;
+                    case 5:
+                        result = HitChance.High;
+                        break;
+                    case 6:
+                        result = HitChance.VeryHigh;
+                        break;
+                }
             }
+
+            if (ObjectManager.Player.ChampionName == EloBuddy.Champion.Veigar.ToString())
+            {
+                switch (Champion.Veigar.getQHitChance())
+                {
+                    case 1:
+                        result = HitChance.OutOfRange;
+                        break;
+                    case 2:
+                        result = HitChance.Impossible;
+                        break;
+                    case 3:
+                        result = HitChance.Low;
+                        break;
+                    case 4:
+                        result = HitChance.Medium;
+                        break;
+                    case 5:
+                        result = HitChance.High;
+                        break;
+                    case 6:
+                        result = HitChance.VeryHigh;
+                        break;
+                }
+            }
+
             return result;
         }
 

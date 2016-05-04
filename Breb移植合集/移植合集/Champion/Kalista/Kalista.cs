@@ -184,7 +184,7 @@ namespace iKalistaReborn
 
             if (getCheckBoxItem(drawingMenu, "com.ikalista.drawing.damagePercent"))
             {
-                foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.Distance(x) <= 2000f && !x.IsDead))
+                foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.Distance(x) <= 2000f && !x.IsDead && x.IsHPBarRendered))
                 {
                     var currentPercentage = Math.Round(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield(), 2);
 

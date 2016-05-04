@@ -165,48 +165,48 @@ namespace NechritoRiven
         {
             Config = MainMenu.AddMenu(menuName, menuName);
 
-            emoteMenu = Config.AddSubMenu("Animation", "Animation");
-            emoteMenu.Add("qReset", new CheckBox("Fast & Legit Q"));
-            emoteMenu.Add("Qstrange", new CheckBox("Animation (Troll!) | Enables Below", false));
-            emoteMenu.Add("animLaugh", new CheckBox("Laugh", false));
-            emoteMenu.Add("animTaunt", new CheckBox("Taunt", false));
-            emoteMenu.Add("animTalk", new CheckBox("Joke", false));
-            emoteMenu.Add("animDance", new CheckBox("Dance", false));
+            emoteMenu = Config.AddSubMenu("动作", "Animation");
+            emoteMenu.Add("qReset", new CheckBox("快速  & 人性化 Q"));
+            emoteMenu.Add("Qstrange", new CheckBox("开启动作 (乱玩!) | 开启已下动作", false));
+            emoteMenu.Add("animLaugh", new CheckBox("笑", false));
+            emoteMenu.Add("animTaunt", new CheckBox("嘲讽", false));
+            emoteMenu.Add("animTalk", new CheckBox("说笑话", false));
+            emoteMenu.Add("animDance", new CheckBox("跳舞", false));
 
-            combo = Config.AddSubMenu("Combo", "Combo");
-            combo.Add("KAPPA", new CheckBox("Force R OFF Will use R when killable"));
-            combo.Add("AlwaysR", new KeyBind("Force R", false, KeyBind.BindTypes.PressToggle, 'G'));
-            combo.Add("AlwaysF", new KeyBind("Force Flash", false, KeyBind.BindTypes.PressToggle, 'L'));
+            combo = Config.AddSubMenu("连招", "Combo");
+            combo.Add("KAPPA", new CheckBox("关闭 强制R 将只会在可击杀时才会使用"));
+            combo.Add("AlwaysR", new KeyBind("强制 R", false, KeyBind.BindTypes.PressToggle, 'G'));
+            combo.Add("AlwaysF", new KeyBind("强制 闪现", false, KeyBind.BindTypes.PressToggle, 'L'));
 
-            lane = Config.AddSubMenu("Lane", "Lane");
-            lane.Add("FastC", new CheckBox("Fast Laneclear", false));
-            lane.Add("LaneQ", new CheckBox("Use Q"));
-            lane.Add("LaneW", new CheckBox("Use W"));
-            lane.Add("LaneE", new CheckBox("Use E"));
+            lane = Config.AddSubMenu("清线", "Lane");
+            lane.Add("FastC", new CheckBox("快速清线", false));
+            lane.Add("LaneQ", new CheckBox("使用 Q"));
+            lane.Add("LaneW", new CheckBox("使用 W"));
+            lane.Add("LaneE", new CheckBox("使用 E"));
 
-            jngl = Config.AddSubMenu("Jungle", "Jungle");
-            jngl.Add("JungleQ", new CheckBox("Use Q"));
-            jngl.Add("JungleW", new CheckBox("Use W"));
-            jngl.Add("JungleE", new CheckBox("Use E"));
+            jngl = Config.AddSubMenu("清野", "Jungle");
+            jngl.Add("JungleQ", new CheckBox("使用 Q"));
+            jngl.Add("JungleW", new CheckBox("使用 W"));
+            jngl.Add("JungleE", new CheckBox("使用 E"));
 
-            misc = Config.AddSubMenu("Misc", "Misc");
-            misc.Add("KeepQ", new CheckBox("Keep Q Alive"));
-            misc.Add("QD", new Slider("Ping Delay", 56, 20, 300));
-            misc.Add("QLD", new Slider("Spell Delay", 56, 20, 300));
-            misc.Add("fastHKey", new KeyBind("Fast Harass", false, KeyBind.BindTypes.HoldActive, 'A'));
-            misc.Add("burstKey", new KeyBind("Burst", false, KeyBind.BindTypes.HoldActive, 'T'));
+            misc = Config.AddSubMenu("杂项", "Misc");
+            misc.Add("KeepQ", new CheckBox("保持 Q 状态"));
+            misc.Add("QD", new Slider("Ping 延迟", 56, 20, 300));
+            misc.Add("QLD", new Slider("技能 延迟", 56, 20, 300));
+            misc.Add("fastHKey", new KeyBind("快速骚扰按键", false, KeyBind.BindTypes.HoldActive, 'A'));
+            misc.Add("burstKey", new KeyBind("爆发按键", false, KeyBind.BindTypes.HoldActive, 'T'));
 
-            draw = Config.AddSubMenu("Draw", "Draw");
-            draw.Add("FleeSpot", new CheckBox("Draw Flee Spots"));
-            draw.Add("Dind", new CheckBox("Damage Indicator"));
-            draw.Add("DrawForceFlash", new CheckBox("Flash Status"));
-            draw.Add("DrawAlwaysR", new CheckBox("R Status"));
-            draw.Add("DrawTimer1", new CheckBox("Draw Q Expiry Time", false));
-            draw.Add("DrawTimer2", new CheckBox("Draw R Expiry Time", false));
-            draw.Add("DrawCB", new CheckBox("Combo Engage", false));
-            draw.Add("DrawBT", new CheckBox("Burst Engage", false));
-            draw.Add("DrawFH", new CheckBox("FastHarass Engage", false));
-            draw.Add("DrawHS", new CheckBox("Harass Engage", false));
+            draw = Config.AddSubMenu("线圈", "Draw");
+            draw.Add("FleeSpot", new CheckBox("显示可逃跑位置"));
+            draw.Add("Dind", new CheckBox("伤害指示器"));
+            draw.Add("DrawForceFlash", new CheckBox("闪现状态"));
+            draw.Add("DrawAlwaysR", new CheckBox("R 状态"));
+            draw.Add("DrawTimer1", new CheckBox("显示 Q 结束时间", false));
+            draw.Add("DrawTimer2", new CheckBox("显示 R 结束时间", false));
+            draw.Add("DrawCB", new CheckBox("显示 连招 进攻", false));
+            draw.Add("DrawBT", new CheckBox("显示 爆发 进攻", false));
+            draw.Add("DrawFH", new CheckBox("显示 快速骚扰 进攻", false));
+            draw.Add("DrawHS", new CheckBox("显示 骚扰 进攻", false));
         }
     }
 }

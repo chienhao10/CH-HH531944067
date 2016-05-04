@@ -255,7 +255,7 @@ namespace GFUELTalon
                     var prediction = W.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
                     {
-                        W.Cast(prediction.CastPosition);
+                        W.Cast(target);
                     }
                 }
 
@@ -297,7 +297,7 @@ namespace GFUELTalon
                     var prediction = W.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
                     {
-                        W.Cast(prediction.CastPosition);
+                        W.Cast(target);
                     }
                 }
             }
@@ -629,7 +629,7 @@ namespace GFUELTalon
                         var prediction = W.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)
                         {
-                            W.Cast(prediction.CastPosition);
+                            W.Cast(enemy);
                         }
                     }
                 }

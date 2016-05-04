@@ -156,8 +156,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     var t = TargetSelector.GetTarget(R.Range + 150, DamageType.Magical);
                     if (t.IsValidTarget() && OktwCommon.ValidUlt(t))
                     {
-                        Player.Spellbook.UpdateChargeableSpell(SpellSlot.R, R.GetPrediction(t, true).CastPosition, false,
-                            false);
+                        Player.Spellbook.UpdateChargeableSpell(SpellSlot.R, R.GetPrediction(t, true).CastPosition, false, false);
                     }
                 }
                 Orbwalker.DisableAttacking = true;
@@ -166,6 +165,12 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else if (R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
             {
                 LogicR();
+                Orbwalker.DisableAttacking = false;
+                Orbwalker.DisableMovement = false;
+            }
+
+            if (!Player.IsChannelingImportantSpell())
+            {
                 Orbwalker.DisableAttacking = false;
                 Orbwalker.DisableMovement = false;
             }
@@ -354,9 +359,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (pred.Hitchance >= HitChance.High)
                 {
                     if (Program.LagFree(1))
-                        pointList = AimQ(pred.CastPosition);
+                        pointList = AimQ(t.ServerPosition);
                     if (Program.LagFree(2))
-                        BestAim(pred.CastPosition);
+                        BestAim(t.ServerPosition);
                 }
             }
         }

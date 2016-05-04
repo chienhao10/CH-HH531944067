@@ -171,7 +171,7 @@ namespace SPrediction
             internal void Process(Spell spell)
             {
                 var arrivalT =
-                    Prediction.GetArrivalTime(spell.From.Distance(Unit.ServerPosition), spell.Delay, spell.Speed)*1000f;
+                    Prediction.GetArrivalTime(spell.From.LSDistance(Unit.ServerPosition), spell.Delay, spell.Speed)*1000f;
                 if (Utils.TickCount - StartTick >= Duration - arrivalT)
                 {
                     var pred = new Prediction.Result
@@ -179,7 +179,7 @@ namespace SPrediction
                         Input = new Prediction.Input(Unit, spell.Delay, spell.Speed, spell.Width, spell.Range,
                             spell.Collision, spell.Type, spell.From, spell.RangeCheckFrom),
                         Unit = Unit,
-                        CastPosition = Unit.ServerPosition.To2D()
+                        CastPosition = Unit.ServerPosition.LSTo2D()
                     };
                     pred.UnitPosition = pred.CastPosition;
                     pred.HitChance = HitChance.VeryHigh;

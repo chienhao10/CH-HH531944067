@@ -116,7 +116,7 @@ namespace KhaZix
             Menu.Add("Ksbypass", new CheckBox("无视安全检查，E抢头", false));
             Menu.Add("UseEQKs", new CheckBox("使用 EQ 抢头"));
             Menu.Add("UseEWKs", new CheckBox("使用 EW 抢头"));
-            Menu.Add("UseTiamatKs", new CheckBox("使用 items"));
+            Menu.Add("UseTiamatKs", new CheckBox("使用 物品"));
             Menu.Add("Edelay", new Slider("E 延迟 (毫秒)", 0, 0, 300));
             Menu.Add("UseIgnite", new CheckBox("使用 点燃"));
             Menu.AddSeparator();

@@ -41,12 +41,13 @@ namespace GFUELQuinn
                     IgniteSpell = new Spell(igniteSlot, 600f);
                 }
 
-                Q = new Spell(SpellSlot.Q, 1025f);
-                W = new Spell(SpellSlot.W, 2100f);
-                E = new Spell(SpellSlot.E, 675f);
+                Q = new Spell(SpellSlot.Q, 1000);
+                W = new Spell(SpellSlot.W, 2100);
+                E = new Spell(SpellSlot.E, 700);
                 R = new Spell(SpellSlot.R, 0);
 
-                Q.SetSkillshot(313f, 60f, 1550, true, SkillshotType.SkillshotLine);
+                Q.SetSkillshot(0.25f, 90f, 1550, true, SkillshotType.SkillshotLine);
+                Q.MinHitChance = HitChance.Medium;
 
                 Game.OnUpdate += OnUpdate;
                 Drawing.OnDraw += OnDraw;
@@ -106,7 +107,6 @@ namespace GFUELQuinn
         ///     The Q spell
         /// </value>
         private static Spell Q { get; set; }
-
         /// <summary>
         ///     Gets or sets the R spell.
         /// </summary>
@@ -158,6 +158,7 @@ namespace GFUELQuinn
 
             var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.IsValidTarget(Q.Range));
             Orbwalker.ForcedTarget = passiveTarget ?? null;
+
             if (getCheckBoxItem(comboMenu, "GFUELQuinn.Combo.Ghostblade"))
             {
                 var ghostBlade = ItemData.Youmuus_Ghostblade.GetItem();
@@ -165,6 +166,16 @@ namespace GFUELQuinn
                     && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(Player) + 100))
                 {
                     ghostBlade.Cast();
+                }
+            }
+
+            var enemy = HeroManager.Enemies.Find(e => e.Buffs.Any(b => b.Name.ToLower().Contains("quinnw") && e.IsValidTarget(E.Range)));
+            if (enemy != null)
+            {
+                if (!isBirdForm)
+                {
+                    Orbwalker.ForcedTarget = enemy;
+                    return;
                 }
             }
 
@@ -196,7 +207,7 @@ namespace GFUELQuinn
                     E.CastOnUnit(target);
                 }
 
-                if (getCheckBoxItem(comboMenu, "GFUELQuinn.Combo.Q") && target.Distance(Player.Position) < Q.Range && Q.IsReady())
+                if (getCheckBoxItem(comboMenu, "GFUELQuinn.Combo.Q") && Q.IsInRange(target) && Q.IsReady())
                 {
                     Q.Cast(target);
                 }
@@ -225,7 +236,7 @@ namespace GFUELQuinn
                     var prediction = Q.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
                     {
-                        Q.Cast(prediction.CastPosition);
+                        Q.Cast(target);
                     }
                 }
             }
@@ -480,7 +491,7 @@ namespace GFUELQuinn
                         var prediction = Q.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)
                         {
-                            Q.Cast(prediction.CastPosition);
+                            Q.Cast(enemy);
                         }
                     }
                 }
@@ -552,8 +563,7 @@ namespace GFUELQuinn
         {
             try
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ||
-                    Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
                 {
                     if (!(args.Target is AIHeroClient))
                     {

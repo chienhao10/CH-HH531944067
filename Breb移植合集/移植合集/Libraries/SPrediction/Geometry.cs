@@ -45,10 +45,10 @@ namespace SPrediction
             {
                 var from = self[i];
                 var to = self[i + 1];
-                var d = (int) to.Distance(from);
+                var d = (int) to.LSDistance(from);
                 if (d > distance)
                 {
-                    return from + distance*(to - from).Normalized();
+                    return from + distance*(to - from).LSNormalized();
                 }
                 distance -= d;
             }
@@ -65,7 +65,7 @@ namespace SPrediction
         /// <returns></returns>
         internal static Vector2 ClosestCirclePoint(Vector2 center, float radius, Vector2 point)
         {
-            var v = (point - center).Normalized();
+            var v = (point - center).LSNormalized();
             return center + v*radius;
         }
 
@@ -84,7 +84,7 @@ namespace SPrediction
 
         internal static bool IsBetween(this Vector2 b, Vector2 a, Vector2 c)
         {
-            return a.Distance(c) + c.Distance(b) - a.Distance(b) < float.Epsilon;
+            return a.LSDistance(c) + c.LSDistance(b) - a.LSDistance(b) < float.Epsilon;
         }
 
         //from Esk0r's evade's geometry class, orginal code: https://github.com/Esk0r/LeagueSharp/blob/master/Evade/Geometry.cs
@@ -206,8 +206,8 @@ namespace SPrediction
                 RStart = start;
                 REnd = end;
                 Width = width;
-                Direction = (end - start).Normalized();
-                Perpendicular = Direction.Perpendicular();
+                Direction = (end - start).LSNormalized();
+                Perpendicular = Direction.LSPerpendicular();
             }
 
             /// <summary>
@@ -266,11 +266,11 @@ namespace SPrediction
                     var outRadius = Radius/(float) Math.Cos(2*Math.PI/CircleLineSegmentN);
 
                     result.Add(Center);
-                    var Side1 = Direction.Rotated(-Angle*0.5f);
+                    var Side1 = Direction.LSRotated(-Angle*0.5f);
 
                     for (var i = 0; i <= CircleLineSegmentN; i++)
                     {
-                        var cDirection = Side1.Rotated(i*Angle/CircleLineSegmentN).Normalized();
+                        var cDirection = Side1.LSRotated(i*Angle/CircleLineSegmentN).LSNormalized();
                         result.Add(new Vector2(Center.X + outRadius*cDirection.X, Center.Y + outRadius*cDirection.Y));
                     }
 

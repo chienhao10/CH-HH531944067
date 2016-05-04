@@ -82,7 +82,7 @@ namespace ElUtilitySuite.Items
 
         public void CreateMenu(Menu rootMenu)
         {
-            defenseMenu = rootMenu.AddSubMenu("防御", "DefensiveMenu");
+            defenseMenu = rootMenu.AddSubMenu("防御物品", "DefensiveMenu");
             defenseMenu.Add("1", new CheckBox("基克的使徒"));
             defenseMenu.Add("2", new CheckBox("号令之旗"));
             defenseMenu.Add("3", new CheckBox("崇山圣盾"));

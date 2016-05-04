@@ -52,22 +52,22 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public void LoadOKTW()
         {
-            Sub = Config.AddSubMenu("Utility, Draws OKTW©");
-            Sub.Add("disableDraws", new CheckBox("DISABLE UTILITY DRAWS", false));
+            Sub = Config.AddSubMenu("功能集, 线圈 OKTW©");
+            Sub.Add("disableDraws", new CheckBox("屏蔽线圈", false));
 
-            Sub.AddGroupLabel("Enemy info grid");
-            Sub.Add("championInfo", new CheckBox("Game Info"));
-            Sub.Add("ShowKDA", new CheckBox("Show flash and R CD"));
-            Sub.Add("posX", new Slider("posX", 20));
-            Sub.Add("posY", new Slider("posY", 10));
+            Sub.AddGroupLabel("敌人信息表");
+            Sub.Add("championInfo", new CheckBox("游戏信息"));
+            Sub.Add("ShowKDA", new CheckBox("显示 KDA"));
+            Sub.Add("posX", new Slider("位置X", 20));
+            Sub.Add("posY", new Slider("位置Y", 10));
             Sub.AddSeparator();
 
-            Sub.Add("GankAlert", new CheckBox("Gank Alert"));
-            Sub.Add("HpBar", new CheckBox("Dmg indicators BAR OKTW© style"));
-            Sub.Add("ShowClicks", new CheckBox("Show enemy clicks"));
-            Sub.Add("SS", new CheckBox("SS notification"));
-            Sub.Add("showWards", new CheckBox("Show hidden objects, wards"));
-            Sub.Add("minimap", new CheckBox("Mini-map hack"));
+            Sub.Add("GankAlert", new CheckBox("GANK警告"));
+            Sub.Add("HpBar", new CheckBox("伤害指示器 OKTW© 模式"));
+            Sub.Add("ShowClicks", new CheckBox("显示敌人点击"));
+            Sub.Add("SS", new CheckBox("敌人不见（SS） 提示"));
+            Sub.Add("showWards", new CheckBox("显示隐藏物体, 眼"));
+            Sub.Add("minimap", new CheckBox("小地图挂"));
 
             Tahoma13B = new Font(Drawing.Direct3DDevice,
                 new FontDescription
@@ -356,13 +356,13 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         var ChampionInfoOne = OKTWtracker.ChampionInfoList.Find(x => x.NetworkId == enemy.NetworkId);
                         if (Game.Time - ChampionInfoOne.FinishRecallTime < 4)
                         {
-                            DrawFontTextScreen(Tahoma13, "FINISH", posX - 90, posY + positionDraw,
+                            DrawFontTextScreen(Tahoma13, "结束", posX - 90, posY + positionDraw,
                                 SharpDX.Color.GreenYellow);
                         }
                         else if (ChampionInfoOne.StartRecallTime <= ChampionInfoOne.AbortRecallTime &&
                                  Game.Time - ChampionInfoOne.AbortRecallTime < 4)
                         {
-                            DrawFontTextScreen(Tahoma13, "ABORT", posX - 90, posY + positionDraw,
+                            DrawFontTextScreen(Tahoma13, "停止", posX - 90, posY + positionDraw,
                                 SharpDX.Color.Yellow);
                         }
                         else if (Game.Time - ChampionInfoOne.StartRecallTime < 8)
@@ -388,7 +388,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         {
                             var fT = fSlot.CooldownExpires - Game.Time;
                             if (fT < 0)
-                                DrawFontTextScreen(Tahoma13, "F rdy", posX + 110, posY + positionDraw,
+                                DrawFontTextScreen(Tahoma13, "F 预备", posX + 110, posY + positionDraw,
                                     SharpDX.Color.GreenYellow);
                             else
                                 DrawFontTextScreen(Tahoma13, "F " + (int) fT, posX + 110, posY + positionDraw,
@@ -401,7 +401,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                             var t = rSlot.CooldownExpires - Game.Time;
 
                             if (t < 0)
-                                DrawFontTextScreen(Tahoma13, "R rdy", posX + 145, posY + positionDraw,
+                                DrawFontTextScreen(Tahoma13, "R 预备", posX + 145, posY + positionDraw,
                                     SharpDX.Color.GreenYellow);
                             else
                                 DrawFontTextScreen(Tahoma13, "R " + (int) t, posX + 145, posY + positionDraw,
@@ -494,7 +494,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
             if (Program.AIOmode == 2)
             {
-                Drawing.DrawText(Drawing.Width*0.2f, Drawing.Height*1f, Color.Cyan, "OKTW AIO only utility mode ON");
+                Drawing.DrawText(Drawing.Width*0.2f, Drawing.Height*1f, Color.Cyan, "OKTW AIO 功能集模式 开");
             }
         }
     }

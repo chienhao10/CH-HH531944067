@@ -203,7 +203,7 @@ namespace SPrediction
             var enemies =
                 HeroManager.Enemies.Where(
                     p =>
-                        p.IsValidTarget() &&
+                        p.LSIsValidTarget() &&
                         Prediction.GetFastUnitPosition(p, delay, 0, from).Distance(rangeCheckFrom) < range);
 
             foreach (var enemy in enemies)

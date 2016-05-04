@@ -20,20 +20,19 @@ namespace OneKeyToWin_AIO_Sebby.Core
         {
             DashSpell = qwer;
 
-            Sub = Config.AddSubMenu(qwer.Slot + " Dash Config");
-            Sub.Add("DashMode", new Slider("Dash MODE (0 : Cursor | 1 : Side | 2 : Safe Pos)", 2, 0, 2));
-            Sub.Add("EnemyCheck", new Slider("Block dash in x enemies", 3, 0, 5));
-            Sub.Add("WallCheck", new CheckBox("Block dash in wall"));
-            Sub.Add("TurretCheck", new CheckBox("Block dash under turret"));
-            Sub.Add("AAcheck", new CheckBox("Dash only in AA range"));
+            Sub = Config.AddSubMenu(qwer.Slot + " 冲刺设置");
+            Sub.Add("DashMode", new Slider("冲刺 模式 (0 : 鼠标 | 1 : 边上 | 2 : 安全位置)", 2, 0, 2));
+            Sub.Add("EnemyCheck", new Slider("X 敌人时防止冲进", 3, 0, 5));
+            Sub.Add("WallCheck", new CheckBox("防止撞墙"));
+            Sub.Add("TurretCheck", new CheckBox("防止进塔"));
+            Sub.Add("AAcheck", new CheckBox("只在普攻范围内冲刺"));
             Sub.AddSeparator();
-            Sub.AddGroupLabel("Gapcloser");
-            Sub.Add("GapcloserMode",
-                new Slider("Gapcloser MODE (0 : Cursor | 1 : Away - Safe Pos | 2 : Disable)", 1, 0, 2));
+            Sub.AddGroupLabel("接近/防突进");
+            Sub.Add("GapcloserMode", new Slider("接近/防突进 模式 (0 : 鼠标 | 1 : 远离 - 安全位置 | 2 : 关闭)", 1, 0, 2));
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
             {
-                Sub.Add("EGCchampion" + enemy.ChampionName, new CheckBox("Gapclose " + enemy.ChampionName));
+                Sub.Add("EGCchampion" + enemy.ChampionName, new CheckBox("使用在 " + enemy.ChampionName));
             }
 
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
@@ -61,36 +60,40 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         private void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (DashSpell.IsReady() && getCheckBoxItem("EGCchampion" + gapcloser.Sender.ChampionName))
+            if (DashSpell.IsReady())
             {
-                var GapcloserMode = getSliderItem("GapcloserMode");
-                if (GapcloserMode == 0)
+                if (Sub["EGCchampion" + gapcloser.Sender.ChampionName] == null) { return; }
+                if (getCheckBoxItem("EGCchampion" + gapcloser.Sender.ChampionName))
                 {
-                    var bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3D();
-                    if (IsGoodPosition(bestpoint))
-                        DashSpell.Cast(bestpoint);
-                }
-                else if (GapcloserMode == 1)
-                {
-                    var points = OktwCommon.CirclePoints(10, DashSpell.Range, Player.Position);
-                    var bestpoint = Player.Position.Extend(gapcloser.Sender.Position, -DashSpell.Range).To3D();
-                    var enemies = bestpoint.CountEnemiesInRange(DashSpell.Range);
-                    foreach (var point in points)
+                    var GapcloserMode = getSliderItem("GapcloserMode");
+                    if (GapcloserMode == 0)
                     {
-                        var count = point.CountEnemiesInRange(DashSpell.Range);
-                        if (count < enemies)
-                        {
-                            enemies = count;
-                            bestpoint = point;
-                        }
-                        else if (count == enemies && Game.CursorPos.Distance(point) < Game.CursorPos.Distance(bestpoint))
-                        {
-                            enemies = count;
-                            bestpoint = point;
-                        }
+                        var bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3D();
+                        if (IsGoodPosition(bestpoint))
+                            DashSpell.Cast(bestpoint);
                     }
-                    if (IsGoodPosition(bestpoint))
-                        DashSpell.Cast(bestpoint);
+                    else if (GapcloserMode == 1)
+                    {
+                        var points = OktwCommon.CirclePoints(10, DashSpell.Range, Player.Position);
+                        var bestpoint = Player.Position.Extend(gapcloser.Sender.Position, -DashSpell.Range).To3D();
+                        var enemies = bestpoint.CountEnemiesInRange(DashSpell.Range);
+                        foreach (var point in points)
+                        {
+                            var count = point.CountEnemiesInRange(DashSpell.Range);
+                            if (count < enemies)
+                            {
+                                enemies = count;
+                                bestpoint = point;
+                            }
+                            else if (count == enemies && Game.CursorPos.Distance(point) < Game.CursorPos.Distance(bestpoint))
+                            {
+                                enemies = count;
+                                bestpoint = point;
+                            }
+                        }
+                        if (IsGoodPosition(bestpoint))
+                            DashSpell.Cast(bestpoint);
+                    }
                 }
             }
         }
@@ -114,8 +117,8 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     var dir = (end - start).Normalized();
                     var pDir = dir.Perpendicular();
 
-                    var rightEndPos = end + pDir*Player.Distance(orbT);
-                    var leftEndPos = end - pDir*Player.Distance(orbT);
+                    var rightEndPos = end + pDir * Player.Distance(orbT);
+                    var leftEndPos = end - pDir * Player.Distance(orbT);
 
                     var rEndPos = new Vector3(rightEndPos.X, rightEndPos.Y, Player.Position.Z);
                     var lEndPos = new Vector3(leftEndPos.X, leftEndPos.Y, Player.Position.Z);
@@ -177,10 +180,10 @@ namespace OneKeyToWin_AIO_Sebby.Core
         {
             if (getCheckBoxItem("WallCheck"))
             {
-                var segment = DashSpell.Range/5;
+                var segment = DashSpell.Range / 5;
                 for (var i = 1; i <= 5; i++)
                 {
-                    if (Player.Position.Extend(dashPos, i*segment).LSIsWall())
+                    if (Player.Position.Extend(dashPos, i * segment).LSIsWall())
                         return false;
                 }
             }

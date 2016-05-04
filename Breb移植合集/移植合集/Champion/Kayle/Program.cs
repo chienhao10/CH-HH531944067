@@ -16,7 +16,7 @@ namespace SephKayle
         private static Menu Config, comboMenu, harassMenu, clearMenu, farmMenu, healMenu, ultMenu, miscMenu, drawMenu;
         private static AIHeroClient Player;
         private static readonly float incrange = 525;
-        private static Spell Q, W, E, R, Ignite;
+        private static Spell Q, W, E, R;
 
         private static bool Eon
         {
@@ -191,14 +191,9 @@ namespace SephKayle
                 {
                     Q.CastOnUnit(target);
                 }
-                if (target.Health <= igniteDmg && Player.Distance(target) <= Ignite.Range)
-                {
-                    Player.Spellbook.CastSpell(Ignite.Slot, target);
-                }
                 if (target.Health <= totalksdmg && Player.Distance(target) <= Q.Range)
                 {
                     Q.CastOnUnit(target);
-                    Player.Spellbook.CastSpell(Ignite.Slot, target);
                 }
             }
         }
@@ -595,11 +590,6 @@ namespace SephKayle
             W = new Spell(SpellSlot.W, 900);
             E = new Spell(SpellSlot.E, 0);
             R = new Spell(SpellSlot.R, 900);
-            var ignite = ObjectManager.Player.Spellbook.GetSpell(ObjectManager.Player.GetSpellSlot("summonerdot"));
-            if (ignite.Slot != SpellSlot.Unknown)
-            {
-                Ignite = new Spell(ignite.Slot, 600);
-            }
         }
 
         private enum HarassMode

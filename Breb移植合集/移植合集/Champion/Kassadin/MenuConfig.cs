@@ -17,6 +17,7 @@ namespace Kassawin
             comboMenu.Add("usert", new CheckBox("塔下不 [R]"));
             comboMenu.Add("useignite", new CheckBox("使用 [点燃]"));
             comboMenu.Add("rcount", new Slider("只使用 [R] 当有 X 层叠加", 1, 1, 5));
+            comboMenu.Add("rhp", new Slider("只使用 [R] 当 HP% 高于", 15));
 
             harassMenu = Config.AddSubMenu("骚扰", "Harass Settings");
             harassMenu.Add("useqharass", new CheckBox("使用 [Q]"));
@@ -59,7 +60,6 @@ namespace Kassawin
             drawMenu.Add("drawq", new CheckBox("显示 [Q] 范围"));
             drawMenu.Add("drawe", new CheckBox("显示 [E] 范围"));
             drawMenu.Add("drawr", new CheckBox("显示 [R] 范围"));
-            drawMenu.Add("drawqkill", new CheckBox("显示可用 [Q] 击杀的小兵"));
             drawMenu.Add("drawcount", new CheckBox("显示 [R] 层数"));
             drawMenu.Add("drawdamage", new CheckBox("显示 伤害"));
 

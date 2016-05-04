@@ -8,6 +8,7 @@ using ExorAIO.Champions.Pantheon;
 using ExorAIO.Champions.Renekton;
 using ExorAIO.Champions.Ryze;
 using ExorAIO.Champions.Tryndamere;
+using ExorAIO.Champions.Caitlyn;
 using ExorAIO.Utilities;
 
 namespace ExorAIO.Core
@@ -58,6 +59,9 @@ namespace ExorAIO.Core
                     break;
                 case "Ryze":
                     Ryze.OnLoad();
+                    break;
+                case "Caitlyn":
+                    Caitlyn.OnLoad();
                     break;
                 default:
                     Variables.IsLoaded = false;

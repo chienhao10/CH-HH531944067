@@ -833,7 +833,7 @@ namespace MathFizz
             comboMenu = Menu.AddSubMenu("连招", "Combo");
             comboMenu.Add("Combomode",
                 new ComboBox("连招模式", 0, "R 接近", "R 冲刺范围", "R 冲刺后", "R 冲刺中"));
-            comboMenu.Add("HitChancewR", new ComboBox("R 命中率", 2, "中", "高", "非常规"));
+            comboMenu.Add("HitChancewR", new ComboBox("R 命中率", 2, "中", "高", "非常高"));
             comboMenu.Add("targetMinHPforR", new Slider("敌人最低血量 % 使用R", 35));
             comboMenu.Add("useZhonya", new CheckBox("连招使用金身 (后期推荐)"));
             comboMenu.Add("useQcombo", new CheckBox("使用 Q"));

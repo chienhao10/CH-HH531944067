@@ -11,6 +11,16 @@ namespace ExorAIO.Utilities
     /// </summary>
     internal class Bools
     {
+
+        /// <summary>
+        ///     Gets a value indicating whether the target has protection or not.
+        /// </summary>
+        public static bool HasAnyImmunity(AIHeroClient unit, bool includeSpellShields = false)
+            =>
+                unit.IsInvulnerable ||
+                unit.HasBuffOfType(BuffType.SpellImmunity) ||
+                (includeSpellShields && unit.HasBuffOfType(BuffType.SpellShield));
+
         /// <summary>
         ///     Gets a value indicating whether the target has protection or not.
         /// </summary>

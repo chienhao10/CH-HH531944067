@@ -71,7 +71,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         public void LoadOKTW()
         {
-            Sub = Config.AddSubMenu("Activator OKTW©");
+            Sub = Config.AddSubMenu("活化剂 OKTW©");
 
             teleport = Player.GetSpellSlot("SummonerTeleport");
             heal = Player.GetSpellSlot("summonerheal");
@@ -101,99 +101,99 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (smite != SpellSlot.Unknown)
             {
-                Sub.AddGroupLabel("Summoner > Smite");
-                Sub.Add("SmiteEnemy", new CheckBox("Auto Smite enemy under 50% hp"));
-                Sub.Add("SmiteEnemyKS", new CheckBox("Auto Smite enemy KS"));
-                Sub.Add("Smite", new KeyBind("Auto Smite mobs OKTW", false, KeyBind.BindTypes.PressToggle, 'N'));
-                Sub.Add("Rdragon", new CheckBox("Dragon"));
-                Sub.Add("Rbaron", new CheckBox("Baron"));
-                Sub.Add("Rherald", new CheckBox("Herald"));
-                Sub.Add("Rred", new CheckBox("Red"));
-                Sub.Add("Rblue", new CheckBox("Blue"));
+                Sub.AddGroupLabel("召唤师 > 惩戒");
+                Sub.Add("SmiteEnemy", new CheckBox("自动惩戒低于 50% 血量英雄"));
+                Sub.Add("SmiteEnemyKS", new CheckBox("自动惩戒抢头"));
+                Sub.Add("Smite", new KeyBind("自动惩戒大野怪 OKTW", false, KeyBind.BindTypes.PressToggle, 'N'));
+                Sub.Add("Rdragon", new CheckBox("龙"));
+                Sub.Add("Rbaron", new CheckBox("男爵"));
+                Sub.Add("Rherald", new CheckBox("峡谷"));
+                Sub.Add("Rred", new CheckBox("红"));
+                Sub.Add("Rblue", new CheckBox("蓝"));
                 Sub.AddSeparator();
                 //Config.Item("Smite").Permashow(true);
             }
 
             if (exhaust != SpellSlot.Unknown)
             {
-                Sub.AddGroupLabel("Summoner > Exhaust");
-                Sub.Add("Exhaust", new CheckBox("Exhaust"));
-                Sub.Add("Exhaust1", new CheckBox("Exhaust if Channeling Important Spell"));
-                Sub.Add("Exhaust2", new CheckBox("Always in combo", false));
+                Sub.AddGroupLabel("召唤师 > 虚弱");
+                Sub.Add("Exhaust", new CheckBox("使用虚弱"));
+                Sub.Add("Exhaust1", new CheckBox("对吟唱目标使用虚弱"));
+                Sub.Add("Exhaust2", new CheckBox("连招时总是使用", false));
                 Sub.AddSeparator();
             }
 
             if (heal != SpellSlot.Unknown)
             {
-                Sub.AddGroupLabel("Summoner > Heal");
-                Sub.Add("Heal", new CheckBox("Heal"));
-                Sub.Add("AllyHeal", new CheckBox("AllyHeal"));
+                Sub.AddGroupLabel("召唤师 > 治疗");
+                Sub.Add("Heal", new CheckBox("使用治疗"));
+                Sub.Add("AllyHeal", new CheckBox("友军治疗"));
                 Sub.AddSeparator();
             }
             if (barrier != SpellSlot.Unknown)
             {
-                Sub.AddGroupLabel("Summoner > Barrier");
-                Sub.Add("Barrier", new CheckBox("Barrier"));
+                Sub.AddGroupLabel("召唤师 > 护盾");
+                Sub.Add("Barrier", new CheckBox("使用护盾"));
                 Sub.AddSeparator();
             }
             if (ignite != SpellSlot.Unknown)
             {
-                Sub.AddGroupLabel("Summoner > Ignite");
-                Sub.Add("Ignite", new CheckBox("Ignite"));
+                Sub.AddGroupLabel("召唤师 > 点燃");
+                Sub.Add("Ignite", new CheckBox("使用点燃"));
                 Sub.AddSeparator();
             }
 
             if (cleanse != SpellSlot.Unknown)
             {
-                Sub.AddGroupLabel("Summoner > Cleanse");
-                Sub.Add("Cleanse", new CheckBox("Cleanse"));
+                Sub.AddGroupLabel("召唤师 > 净化");
+                Sub.Add("Cleanse", new CheckBox("使用净化"));
                 Sub.AddSeparator();
             }
 
-            Sub.Add("pots", new CheckBox("Potion, ManaPotion, Flask, Biscuit"));
+            Sub.Add("pots", new CheckBox("药水, 蓝药, 瓶, 饼干"));
             Sub.AddSeparator();
 
             // OFFENSIVE
-            Sub.AddGroupLabel("Item > BOTRK");
-            Sub.Add("Botrk", new CheckBox("Botrk"));
-            Sub.Add("BotrkKS", new CheckBox("Botrk KS"));
-            Sub.Add("BotrkLS", new CheckBox("Botrk LifeSaver"));
-            Sub.Add("BotrkCombo", new CheckBox("Botrk always in combo", false));
+            Sub.AddGroupLabel("物品 > 破败");
+            Sub.Add("Botrk", new CheckBox("使用破败"));
+            Sub.Add("BotrkKS", new CheckBox("破抢头"));
+            Sub.Add("BotrkLS", new CheckBox("低血量使用"));
+            Sub.Add("BotrkCombo", new CheckBox("连招使用", false));
             Sub.AddSeparator();
 
-            Sub.AddGroupLabel("Item > Cutlass");
-            Sub.Add("Cutlass", new CheckBox("Cutlass"));
-            Sub.Add("CutlassKS", new CheckBox("Cutlass KS"));
-            Sub.Add("CutlassCombo", new CheckBox("Cutlass always in combo"));
+            Sub.AddGroupLabel("物品 > 弯刀");
+            Sub.Add("Cutlass", new CheckBox("使用弯刀"));
+            Sub.Add("CutlassKS", new CheckBox("弯刀抢头"));
+            Sub.Add("CutlassCombo", new CheckBox("连招使用"));
             Sub.AddSeparator();
 
-            Sub.AddGroupLabel("Item > Hextech");
-            Sub.Add("Hextech", new CheckBox("Hextech"));
-            Sub.Add("HextechKS", new CheckBox("Hextech KS"));
-            Sub.Add("HextechCombo", new CheckBox("Hextech always in combo"));
+            Sub.AddGroupLabel("物品 > 科技枪");
+            Sub.Add("Hextech", new CheckBox("使用科技枪"));
+            Sub.Add("HextechKS", new CheckBox("科技枪抢头"));
+            Sub.Add("HextechCombo", new CheckBox("连招使用"));
             Sub.AddSeparator();
 
-            Sub.AddGroupLabel("Item > Youmuus");
-            Sub.Add("Youmuus", new CheckBox("Youmuus"));
-            Sub.Add("YoumuusR", new CheckBox("TwitchR, AsheQ"));
-            Sub.Add("YoumuusKS", new CheckBox("Youmuus KS"));
-            Sub.Add("YoumuusCombo", new CheckBox("Youmuus always in combo", false));
+            Sub.AddGroupLabel("物品 > 幽梦");
+            Sub.Add("Youmuus", new CheckBox("使用幽梦"));
+            Sub.Add("YoumuusR", new CheckBox("图齐R, 艾希R"));
+            Sub.Add("YoumuusKS", new CheckBox("幽梦抢头"));
+            Sub.Add("YoumuusCombo", new CheckBox("连招使用", false));
             Sub.AddSeparator();
 
-            Sub.AddGroupLabel("Item > Hydra");
-            Sub.Add("Hydra", new CheckBox("Hydra"));
-            Sub.Add("HydraTitanic", new CheckBox("Hydra Titanic"));
+            Sub.AddGroupLabel("物品 > 九头蛇");
+            Sub.Add("Hydra", new CheckBox("使用九头蛇"));
+            Sub.Add("HydraTitanic", new CheckBox("使用泰坦九头"));
             Sub.AddSeparator();
 
-            Sub.AddGroupLabel("Item > FrostQueen");
-            Sub.Add("FrostQueen", new CheckBox("FrostQueen"));
+            Sub.AddGroupLabel("物品 > 冰雪女皇");
+            Sub.Add("FrostQueen", new CheckBox("使用冰雪女皇"));
             Sub.AddSeparator();
 
             // DEF
-            Sub.AddGroupLabel("Item > Defensive");
-            Sub.Add("Randuin", new CheckBox("Randuin"));
-            Sub.Add("FaceOfTheMountain", new CheckBox("FaceOfTheMountain"));
-            Sub.Add("Zhonya", new CheckBox("Zhonya"));
+            Sub.AddGroupLabel("物品 > 防守型");
+            Sub.Add("Randuin", new CheckBox("兰顿"));
+            Sub.Add("FaceOfTheMountain", new CheckBox("崇山"));
+            Sub.Add("Zhonya", new CheckBox("中亚"));
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
@@ -203,29 +203,29 @@ namespace OneKeyToWin_AIO_Sebby
                         spell.SData.TargettingType == SpellDataTargetType.Unit));
             }
 
-            Sub.Add("Seraph", new CheckBox("Seraph"));
-            Sub.Add("Solari", new CheckBox("Solari"));
+            Sub.Add("Seraph", new CheckBox("炽天使"));
+            Sub.Add("Solari", new CheckBox("鸟盾"));
             Sub.AddSeparator();
 
             // CLEANSERS
 
-            Sub.Add("Clean", new CheckBox("Quicksilver, Mikaels, Mercurial, Dervish"));
+            Sub.Add("Clean", new CheckBox("饰带, 米凯尔, 水银弯刀, 苦行僧之刃"));
 
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(ally => ally.IsAlly))
             {
-                Sub.Add("MikaelsAlly" + ally.ChampionName, new CheckBox("Mikaels :" + ally.ChampionName));
+                Sub.Add("MikaelsAlly" + ally.ChampionName, new CheckBox("米凯尔 :" + ally.ChampionName));
             }
 
-            Sub.Add("CSSdelay", new Slider("Delay x ms", 0, 0, 1000));
-            Sub.Add("cleanHP", new Slider("Use only under % HP", 80));
-            Sub.Add("CleanSpells", new CheckBox("ZedR FizzR MordekaiserR PoppyR VladimirR"));
-            Sub.Add("Stun", new CheckBox("Stun"));
-            Sub.Add("Snare", new CheckBox("Snare"));
-            Sub.Add("Charm", new CheckBox("Charm"));
-            Sub.Add("Fear", new CheckBox("Fear"));
-            Sub.Add("Suppression", new CheckBox("Suppression"));
-            Sub.Add("Taunt", new CheckBox("Taunt"));
-            Sub.Add("Blind", new CheckBox("Blind"));
+            Sub.Add("CSSdelay", new Slider("延迟 x 毫秒", 0, 0, 1000));
+            Sub.Add("cleanHP", new Slider("只在血量低于X 使用", 80));
+            Sub.Add("CleanSpells", new CheckBox("劫R 小鱼人R 钢铁R 波比R 吸血鬼R"));
+            Sub.Add("Stun", new CheckBox("晕眩"));
+            Sub.Add("Snare", new CheckBox("禁锢"));
+            Sub.Add("Charm", new CheckBox("魅惑"));
+            Sub.Add("Fear", new CheckBox("恐惧"));
+            Sub.Add("Suppression", new CheckBox("压制"));
+            Sub.Add("Taunt", new CheckBox("嘲讽"));
+            Sub.Add("Blind", new CheckBox("致盲"));
 
             Game.OnUpdate += Game_OnGameUpdate;
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;

@@ -753,7 +753,7 @@ namespace Vayne
             }
             if (target is AIHeroClient && UseQBool)
             {
-                if (Q.IsReady())
+                if (Q.IsReady() && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
                 {
                     var tg = target as AIHeroClient;
                     if (tg != null)

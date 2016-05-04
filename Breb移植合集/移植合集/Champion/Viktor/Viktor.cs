@@ -65,6 +65,9 @@ namespace Viktor
             E.SetSkillshot(0, 80, speedE, false, SkillshotType.SkillshotLine);
             R.SetSkillshot(0.25f, 450f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
+            EELO = new EloBuddy.SDK.Spell.Skillshot(SpellSlot.E, 525, SkillShotType.Linear, 250, int.MaxValue, 100);
+            EELO.AllowedCollisionCount = int.MaxValue;
+
             // Create menu
             SetupMenu();
 
@@ -136,32 +139,38 @@ namespace Viktor
             else
                 return false;
         }
+        private static int EMaxRange = 1225;
+        private static EloBuddy.SDK.Spell.Skillshot EELO;
 
-        private static void CastE(AIHeroClient e)
+        private static Vector3 startPos;
+
+        private static void CastE()
         {
-            if (e != null && e.IsVisible)
+            var target = TargetSelector.GetTarget(EMaxRange, DamageType.Magical);
+            if (target != null && target.IsEnemy && target.IsVisible)
             {
-                if (ObjectManager.Player.ServerPosition.Distance(e.ServerPosition) < E.Range)
+                if (player.ServerPosition.Distance(target.ServerPosition) < EELO.Range)
                 {
-                    var EPred = E.GetPrediction(e, true);
-
-                    if (EPred.Hitchance >= LeagueSharp.Common.HitChance.High)
+                    EELO.SourcePosition = target.ServerPosition;
+                    var prediction = EELO.GetPrediction(target);
+                    if (prediction.HitChance>= EloBuddy.SDK.Enumerations.HitChance.High)
                     {
-                        E.Cast(e.ServerPosition, EPred.CastPosition);
+                        Player.CastSpell(SpellSlot.E, prediction.UnitPosition, target.ServerPosition);
                     }
                 }
-                else if (ObjectManager.Player.ServerPosition.Distance(e.ServerPosition) < 1200)
+                else if (player.ServerPosition.Distance(target.ServerPosition) < EMaxRange)
                 {
-                    var star = ObjectManager.Player.ServerPosition - 540 * (ObjectManager.Player.ServerPosition - e.ServerPosition).Normalized();
-                    var EPre = E.GetPrediction(e, true);
-
-                    if (EPre.Hitchance >= LeagueSharp.Common.HitChance.High)
+                    startPos = player.ServerPosition.To2D().Extend(target.ServerPosition, E.Range).To3D();
+                    var prediction = EELO.GetPrediction(target);
+                    EELO.SourcePosition = startPos;
+                    if (prediction.HitChance >= EloBuddy.SDK.Enumerations.HitChance.High)
                     {
-                        E.Cast(star, EPre.CastPosition);
+                        Player.CastSpell(SpellSlot.E, prediction.UnitPosition, startPos);
                     }
                 }
             }
         }
+
 
         private static void OnCombo()
         {
@@ -171,7 +180,7 @@ namespace Viktor
             bool useR = getCheckBoxItem(comboMenu, "comboUseR") && R.IsReady();
             bool killpriority = getCheckBoxItem(comboMenu, "spPriority") && R.IsReady();
             bool rKillSteal = getCheckBoxItem(comboMenu, "rLastHit");
-            var Etarget = TargetSelector.GetTarget(maxRangeE, DamageType.Magical);
+            var Etarget = TargetSelector.GetTarget(EMaxRange, DamageType.Magical);
             var Qtarget = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
             var RTarget = TargetSelector.GetTarget(R.Range, DamageType.Magical);
             if (killpriority && Qtarget != null & Etarget != null && Etarget != Qtarget && ((Etarget.Health > TotalDmg(Etarget, false, true, false, false)) || (Etarget.Health > TotalDmg(Etarget, false, true, true, false) && Etarget == RTarget)) && Qtarget.Health < TotalDmg(Qtarget, true, true, false, false))
@@ -191,7 +200,7 @@ namespace Viktor
             if (useE)
             {
                 if (Etarget != null)
-                    CastE(Etarget);
+                    CastE();
             }
             if (useQ)
             {
@@ -253,7 +262,7 @@ namespace Viktor
                 var target = TargetSelector.GetTarget(maxRangeE, DamageType.Magical);
 
                 if (target != null)
-                    CastE(target);
+                    CastE();
             }
         }
 

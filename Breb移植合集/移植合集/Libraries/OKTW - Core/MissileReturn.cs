@@ -25,9 +25,9 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public MissileReturn(string missile, string missileReturnName, Spell qwer)
         {
-            Sub = Config.AddSubMenu("Missile Settings");
-            Sub.Add("aim", new CheckBox("Auto aim returned missile (" + qwer.Slot + ")"));
-            Sub.Add("drawHelper", new CheckBox("Show " + qwer.Slot + " helper"));
+            Sub = Config.AddSubMenu("弹道设置");
+            Sub.Add("aim", new CheckBox("自动对准回程弹道 (" + qwer.Slot + ")"));
+            Sub.Add("drawHelper", new CheckBox("显示 " + qwer.Slot + " 助手"));
 
             MissileName = missile;
             MissileReturnName = missileReturnName;
@@ -124,7 +124,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public Vector3 CalculateReturnPos()
         {
-            if (Missile != null && Missile.IsValid && Target.IsValidTarget())
+            if (Missile != null && Missile.IsValidMissile() && Target.IsValidTarget())
             {
                 var finishPosition = Missile.Position;
                 if (Missile.SData.Name.ToLower() == MissileName.ToLower())

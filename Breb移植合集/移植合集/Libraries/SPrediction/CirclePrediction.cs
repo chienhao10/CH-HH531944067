@@ -40,7 +40,7 @@ namespace SPrediction
         {
             return GetPrediction(input.Target, input.SpellWidth, input.SpellDelay, input.SpellMissileSpeed,
                 input.SpellRange, input.SpellCollisionable, input.Path, input.AvgReactionTime, input.LastMovChangeTime,
-                input.AvgPathLenght, input.LastAngleDiff, input.From.To2D(), input.RangeCheckFrom.To2D());
+                input.AvgPathLenght, input.LastAngleDiff, input.From.LSTo2D(), input.RangeCheckFrom.LSTo2D());
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace SPrediction
         {
             return GetPrediction(target, width, delay, missileSpeed, range, collisionable, target.GetWaypoints(),
                 target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), target.LastAngleDiff(),
-                ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
+                ObjectManager.Player.ServerPosition.LSTo2D(), ObjectManager.Player.ServerPosition.LSTo2D());
         }
 
         /// <summary>

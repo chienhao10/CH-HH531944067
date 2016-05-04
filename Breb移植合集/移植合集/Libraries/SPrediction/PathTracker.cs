@@ -73,20 +73,20 @@ namespace SPrediction
             }
             else
             {
-                var wp = args.Path.Select(p => p.To2D()).ToList();
+                var wp = args.Path.Select(p => p.LSTo2D()).ToList();
                 var sample1 = new List<Vector2>();
-                wp.Insert(0, sender.ServerPosition.To2D());
+                wp.Insert(0, sender.ServerPosition.LSTo2D());
 
                 for (var i = 0; i < wp.Count - 1; i++)
                 {
-                    var direction = (wp[i + 1] - wp[i]).Normalized();
+                    var direction = (wp[i + 1] - wp[i]).LSNormalized();
                     sample1.Add(direction);
                 }
 
                 var sample2 = new List<Vector2>();
                 for (var i = 0; i < enemy.LastWaypoints.Count - 1; i++)
                 {
-                    var direction = (enemy.LastWaypoints[i + 1] - enemy.LastWaypoints[i]).Normalized();
+                    var direction = (enemy.LastWaypoints[i + 1] - enemy.LastWaypoints[i]).LSNormalized();
                     sample2.Add(direction);
                 }
 

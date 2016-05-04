@@ -230,7 +230,7 @@ namespace ElRengarRevamped
                                 if (spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
                                 {
                                     var pred = spells[Spells.E].GetPrediction(target);
-                                    spells[Spells.E].Cast(pred.CastPosition);
+                                    spells[Spells.E].Cast(target);
                                 }
                                 break;
                             case 2:
@@ -265,7 +265,7 @@ namespace ElRengarRevamped
                             if (spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
                             {
                                 var pred = spells[Spells.E].GetPrediction(target);
-                                spells[Spells.E].Cast(pred.CastPosition);
+                                spells[Spells.E].Cast(target);
                             }
                             break;
 

@@ -6,6 +6,9 @@ using EloBuddy;
 using EloBuddy.SDK.Events;
 using ExorAIO.Core;
 using PortAIO.Utility;
+using LeagueSharp.Common;
+using SharpDX;
+using PortAIO.Properties;
 // ReSharper disable ObjectCreationAsStatement
 
 #endregion
@@ -19,12 +22,29 @@ namespace PortAIO
             Loading.OnLoadingComplete += Initialize;
         }
 
+        private static Render.Sprite Intro;
+        private static float IntroTimer = Game.Time;
         public static SCommon.PluginBase.Champion Champion;
         public static List<string> RandomUltChampsList = new List<string>(new[] { "Ezreal", "Jinx", "Ashe", "Draven", "Gangplank", "Ziggs", "Lux", "Xerath" });
         public static List<string> BaseUltList = new List<string>(new[] { "Jinx", "Ashe", "Draven", "Ezreal", "Karthus" });
 
+        private static System.Drawing.Bitmap LoadImg(string imgName)
+        {
+            var bitmap = Resources.ResourceManager.GetObject(imgName) as System.Drawing.Bitmap;
+            if (bitmap == null)
+            {
+                Console.WriteLine(imgName + ".png not found.");
+            }
+            return bitmap;
+        }
+
         private static void Initialize(EventArgs args)
         {
+            Intro = new Render.Sprite(LoadImg("PortLogo"), new Vector2((Drawing.Width / 2) - 175, (Drawing.Height / 2) - 300));
+            Intro.Add(0);
+            Intro.OnDraw();
+            LeagueSharp.Common.Utility.DelayAction.Add(5000, () => Intro.Remove());
+
             Loader.Menu();
 
             if (!Loader.champOnly)
@@ -115,12 +135,26 @@ namespace PortAIO
                     case "amumu": // Shine#
                         PortAIO.Champion.Amumu.Program.OnLoad();
                         break;
+                    case "caitlyn":
+                        switch (Loader.cait)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                Bootstrap.BuildMenu();
+                                Bootstrap.LoadChampion();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
                     case "anivia": // OKTW - Sebby - All Seeby champs go down here
                     case "thresh":
                     case "annie":
                     case "ashe": // Or (Challenger Series Ashe)
                     case "braum":
-                    case "caitlyn":
                     case "ekko":
                     case "ezreal":
                     case "graves":
@@ -173,8 +207,19 @@ namespace PortAIO
                         Bootstrap.BuildMenu();
                         Bootstrap.LoadChampion();
                         break;
-                    case "diana": // El Diana
-                        ElDiana.Diana.OnLoad();
+                    case "diana":
+                        switch (Loader.diana)
+                        {
+                            case 0:
+                                ElDiana.Diana.OnLoad();
+                                break;
+                            case 1:
+                                Nechrito_Diana.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                ElDiana.Diana.OnLoad();
+                                break;
+                        }
                         break;
                     case "drmundo": // Hestia's Mundo
                         Mundo.Mundo.OnLoad();
@@ -192,8 +237,7 @@ namespace PortAIO
                         Feedlesticks.Program.Game_OnGameLoad();
                         break;
                     case "fiora": // Underrated AIO
-                        UnderratedAIO.Champions.Fiora.OnLoad();
-                        //jesuisFiora.Program.Game_OnGameLoad();
+                        FioraProject.Program.Game_OnGameLoad();
                         break;
                     case "fizz": // Math Fizz
                         MathFizz.Program.Game_OnGameLoad();
@@ -245,6 +289,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 new iKalistaReborn.Kalista();
+                                break;
+                            case 2:
+                                Challenger_Series.Program.Main();
                                 break;
                             default:
                                 new iKalistaReborn.Kalista();
@@ -305,8 +352,6 @@ namespace PortAIO
                                 Valvrave_Sharp.Program.MainA();
                                 break;
                         }
-                        //if (Loader.bubba)
-                            //WreckingBall.WreckingBall.WreckingBallLoad();
                         break;
                     case "leona": // El Easy
                         new ElEasy.Plugins.Leona();
@@ -317,8 +362,8 @@ namespace PortAIO
                     case "lucian": // LCS Lucian
                         LCS_Lucian.Program.OnLoad();
                         break;
-                    case "lulu": // SKT
-                        SKT_Series.Program.Game_OnGameLoad();
+                    case "lulu": // LuluLicious
+                        new LuluLicious.Lulu();
                         break;
                     case "lux": // MoonLux
                         MoonLux.Program.GameOnOnGameLoad();
@@ -405,8 +450,8 @@ namespace PortAIO
                     case "varus": // ElVarus
                         Elvarus.Varus.Game_OnGameLoad();
                         break;
-                    case "veigar": // Synx Auto Carry
-                        Champion = new SAutoCarry.Champions.Veigar();
+                    case "veigar": // FreshBooster
+                        new FreshBooster.Champion.Veigar();
                         break;
                     case "reksai": // D-Reksai
                         D_RekSai.Program.Game_OnGameLoad();
@@ -483,8 +528,8 @@ namespace PortAIO
                     case "trundle": // ElTrundle
                         ElTrundle.Trundle.OnLoad();
                         break;
-                    case "taric": // PippyTaric
-                        PippyTaric.Program.LoadStuff();
+                    case "taric": // SkyLv_Taric
+                        new SkyLv_Taric.SkyLv_Taric();
                         break;
                     default:
                         Chat.Print("This champion is not supported yet but the utilities will still load! - Berb");

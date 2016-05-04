@@ -106,7 +106,7 @@ namespace Challenger_Series
 
             UseEKSBool = getCheckBoxItem(config, "useeks");
 
-            UseRComboBool = getCheckBoxItem(config, "usercombo");
+            UseRComboBool = getKeyBindItem(config, "usercombo");
 
             QGapcloseModeStringList = getBoxItem(config, "qgc");
 
@@ -117,154 +117,157 @@ namespace Challenger_Series
             UseRComboKeybind = getKeyBindItem(config, "usercombo");
 
             var target = TargetSelector.GetTarget(1000, DamageType.Physical);
-            if (R.IsReady() && target != null && target.IsHPBarRendered)
+            if (target != null)
             {
-                if (UseRComboKeybind)
+                if (R.IsReady() && target != null && target.IsHPBarRendered)
                 {
-                    pressedR = true;
-                    R.Cast(R.GetPrediction(target).UnitPosition);
-                }
-                if (target != null)
-                {
-                    if (ObjectManager.Player.HasBuff("ireliatranscendentbladesspell"))
+                    if (UseRComboKeybind)
                     {
-                        R.Cast(R.GetPrediction(target).UnitPosition);
+                        pressedR = true;
+                        R.Cast(target);
                     }
-                }
-                if (ObjectManager.Player.HealthPercent < 15 || target.Health < R.GetDamage(target))
-                {
-                    R.Cast(R.GetPrediction(target).UnitPosition);
-                }
-            }
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-            {
-                if (Q.IsReady())
-                {
-                    var killableEnemy =
-                        ObjectManager.Get<AIHeroClient>()
-                            .FirstOrDefault(
-                                hero =>
-                                    hero.IsEnemy && hero.IsValidTarget() && hero.Health < Q.GetDamage(hero) &&
-                                    hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 650);
-                    if (killableEnemy != null && killableEnemy.IsValidTarget())
+                    if (target != null)
                     {
-                        Q.Cast(killableEnemy);
-                    }
-
-                    var qMode = UseQComboStringList;
-                    if (qMode == 0)
-                    {
-                        var distBetweenMeAndTarget =
-                            ObjectManager.Player.ServerPosition.Distance(target.ServerPosition);
-                        if (distBetweenMeAndTarget > MinDistForQGapcloser)
+                        if (ObjectManager.Player.HasBuff("ireliatranscendentbladesspell"))
                         {
+                            R.Cast(target);
+                        }
+                    }
+                    if (ObjectManager.Player.HealthPercent < 15 || target.Health < R.GetDamage(target))
+                    {
+                        R.Cast(target);
+                    }
+                }
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                {
+                    if (Q.IsReady())
+                    {
+                        var killableEnemy =
+                            ObjectManager.Get<AIHeroClient>()
+                                .FirstOrDefault(
+                                    hero =>
+                                        hero.IsEnemy && hero.IsValidTarget() && hero.Health < Q.GetDamage(hero) &&
+                                        hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 650);
+                        if (killableEnemy != null && killableEnemy.IsValidTarget())
+                        {
+                            Q.Cast(killableEnemy);
+                        }
+
+                        var qMode = UseQComboStringList;
+                        if (qMode == 0)
+                        {
+                            var distBetweenMeAndTarget =
+                                ObjectManager.Player.ServerPosition.Distance(target.ServerPosition);
+                            if (distBetweenMeAndTarget > MinDistForQGapcloser)
+                            {
+                                if (distBetweenMeAndTarget < 650)
+                                {
+                                    Q.Cast(target);
+                                }
+                                else
+                                {
+                                    var minionGapclosingMode = QGapcloseModeStringList;
+                                    if (minionGapclosingMode == 0)
+                                    {
+                                        var gapclosingMinion =
+                                            ObjectManager.Get<Obj_AI_Minion>()
+                                                .Where(
+                                                    m =>
+                                                        m.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
+                                                        650 &&
+                                                        m.IsEnemy &&
+                                                        m.ServerPosition.Distance(target.ServerPosition) <
+                                                        distBetweenMeAndTarget && m.IsValidTarget() &&
+                                                        m.Health < Q.GetDamage(m))
+                                                .OrderBy(m => m.Position.Distance(target.ServerPosition))
+                                                .FirstOrDefault();
+                                        if (gapclosingMinion != null)
+                                        {
+                                            Q.Cast(gapclosingMinion);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var firstGapclosingMinion =
+                                            ObjectManager.Get<Obj_AI_Minion>()
+                                                .Where(
+                                                    m =>
+                                                        m.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
+                                                        650 && m.IsEnemy &&
+                                                        m.ServerPosition.Distance(target.ServerPosition) <
+                                                        distBetweenMeAndTarget &&
+                                                        m.IsValidTarget() && m.Health < Q.GetDamage(m))
+                                                .OrderByDescending(m => m.Position.Distance(target.ServerPosition))
+                                                .FirstOrDefault();
+                                        if (firstGapclosingMinion != null)
+                                        {
+                                            Q.Cast(firstGapclosingMinion);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (qMode == 1)
+                        {
+                            var distBetweenMeAndTarget =
+                                ObjectManager.Player.ServerPosition.Distance(target.ServerPosition);
                             if (distBetweenMeAndTarget < 650)
                             {
                                 Q.Cast(target);
                             }
                             else
                             {
-                                var minionGapclosingMode = QGapcloseModeStringList;
-                                if (minionGapclosingMode == 0)
+                                var firstGapclosingMinion =
+                                    ObjectManager.Get<Obj_AI_Minion>()
+                                        .Where(
+                                            m =>
+                                                m.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
+                                                650 && m.IsEnemy &&
+                                                m.ServerPosition.Distance(target.ServerPosition) <
+                                                distBetweenMeAndTarget &&
+                                                m.IsValidTarget() && m.Health < Q.GetDamage(m))
+                                        .OrderByDescending(m => m.Position.Distance(target.ServerPosition))
+                                        .FirstOrDefault();
+                                if (firstGapclosingMinion != null)
                                 {
-                                    var gapclosingMinion =
-                                        ObjectManager.Get<Obj_AI_Minion>()
-                                            .Where(
-                                                m =>
-                                                    m.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
-                                                    650 &&
-                                                    m.IsEnemy &&
-                                                    m.ServerPosition.Distance(target.ServerPosition) <
-                                                    distBetweenMeAndTarget && m.IsValidTarget() &&
-                                                    m.Health < Q.GetDamage(m))
-                                            .OrderBy(m => m.Position.Distance(target.ServerPosition))
-                                            .FirstOrDefault();
-                                    if (gapclosingMinion != null)
-                                    {
-                                        Q.Cast(gapclosingMinion);
-                                    }
-                                }
-                                else
-                                {
-                                    var firstGapclosingMinion =
-                                        ObjectManager.Get<Obj_AI_Minion>()
-                                            .Where(
-                                                m =>
-                                                    m.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
-                                                    650 && m.IsEnemy &&
-                                                    m.ServerPosition.Distance(target.ServerPosition) <
-                                                    distBetweenMeAndTarget &&
-                                                    m.IsValidTarget() && m.Health < Q.GetDamage(m))
-                                            .OrderByDescending(m => m.Position.Distance(target.ServerPosition))
-                                            .FirstOrDefault();
-                                    if (firstGapclosingMinion != null)
-                                    {
-                                        Q.Cast(firstGapclosingMinion);
-                                    }
+                                    Q.Cast(firstGapclosingMinion);
                                 }
                             }
                         }
                     }
-                    if (qMode == 1)
+                    if (E.IsReady())
                     {
-                        var distBetweenMeAndTarget =
-                            ObjectManager.Player.ServerPosition.Distance(target.ServerPosition);
-                        if (distBetweenMeAndTarget < 650)
+                        var killableEnemy =
+                            ObjectManager.Get<AIHeroClient>()
+                                .FirstOrDefault(
+                                    hero =>
+                                        hero.IsEnemy && !hero.IsDead && hero.Health < E.GetDamage(hero) &&
+                                        hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 425 &&
+                                        hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) >
+                                        ObjectManager.Player.GetAutoAttackRange());
+                        if (!Q.IsReady() && UseEKSBool)
                         {
-                            Q.Cast(target);
+                            E.Cast(killableEnemy);
                         }
-                        else
-                        {
-                            var firstGapclosingMinion =
-                                ObjectManager.Get<Obj_AI_Minion>()
-                                    .Where(
-                                        m =>
-                                            m.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <
-                                            650 && m.IsEnemy &&
-                                            m.ServerPosition.Distance(target.ServerPosition) <
-                                            distBetweenMeAndTarget &&
-                                            m.IsValidTarget() && m.Health < Q.GetDamage(m))
-                                    .OrderByDescending(m => m.Position.Distance(target.ServerPosition))
-                                    .FirstOrDefault();
-                            if (firstGapclosingMinion != null)
-                            {
-                                Q.Cast(firstGapclosingMinion);
-                            }
-                        }
-                    }
-                }
-                if (E.IsReady())
-                {
-                    var killableEnemy =
-                        ObjectManager.Get<AIHeroClient>()
-                            .FirstOrDefault(
-                                hero =>
-                                    hero.IsEnemy && !hero.IsDead && hero.Health < E.GetDamage(hero) &&
-                                    hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 425 &&
-                                    hero.ServerPosition.Distance(ObjectManager.Player.ServerPosition) >
-                                    ObjectManager.Player.GetAutoAttackRange());
-                    if (!Q.IsReady() && UseEKSBool)
-                    {
-                        E.Cast(killableEnemy);
-                    }
 
-                    var eMode = UseEComboStringList;
-                    if (eMode == 0)
-                    {
-                        if (ObjectManager.Player.HealthPercent <= target.HealthPercent)
+                        var eMode = UseEComboStringList;
+                        if (eMode == 0)
+                        {
+                            if (ObjectManager.Player.HealthPercent <= target.HealthPercent)
+                            {
+                                E.Cast(target);
+                            }
+                            if (target.HealthPercent < ObjectManager.Player.HealthPercent &&
+                                target.MoveSpeed > ObjectManager.Player.MoveSpeed - 5 &&
+                                ObjectManager.Player.ServerPosition.Distance(target.ServerPosition) > 300)
+                            {
+                                E.Cast(target);
+                            }
+                        }
+                        if (eMode == 1)
                         {
                             E.Cast(target);
                         }
-                        if (target.HealthPercent < ObjectManager.Player.HealthPercent &&
-                            target.MoveSpeed > ObjectManager.Player.MoveSpeed - 5 &&
-                            ObjectManager.Player.ServerPosition.Distance(target.ServerPosition) > 300)
-                        {
-                            E.Cast(target);
-                        }
-                    }
-                    if (eMode == 1)
-                    {
-                        E.Cast(target);
                     }
                 }
             }

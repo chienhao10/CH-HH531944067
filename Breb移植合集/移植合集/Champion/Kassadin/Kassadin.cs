@@ -27,8 +27,6 @@ namespace Kassawin
         private static readonly System.Drawing.Color FillColor = System.Drawing.Color.Blue;
 
         private static DamageToUnitDelegate _damageToUnit;
-        public static int dontatttimer;
-        public static bool dontAtt;
 
 
         public static int GetPassiveBuff
@@ -85,33 +83,7 @@ namespace Kassawin
             Game.OnUpdate += OnUpdate;
             Obj_AI_Base.OnSpellCast += OnDoCast;
             Obj_AI_Base.OnSpellCast += OnDoCasts;
-            Spellbook.OnCastSpell += OnCastSpell;
-            Obj_AI_Base.OnProcessSpellCast += OnProcess;
             Drawing.OnDraw += OnDraw;
-        }
-
-        private static void OnProcess(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (sender.IsMe)
-            {
-                if (args.SData.Name == "RiftWalk" || args.SData.Name == "ForcePulse" || args.SData.Name == "NetherBlade" ||
-                    args.SData.Name == "NullSphere")
-                {
-                    dontAtt = true;
-                }
-                else
-                    dontAtt = false;
-            }
-        }
-
-        private static void OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
-        {
-            if (args.Slot == SpellSlot.R || args.Slot == SpellSlot.E || args.Slot == SpellSlot.Q ||
-                args.Slot == SpellSlot.W)
-            {
-                dontAtt = true;
-                dontatttimer = Environment.TickCount;
-            }
         }
 
         private static float GetComboDamage(AIHeroClient enemy)
@@ -133,7 +105,7 @@ namespace Kassawin
             if (Player.GetSpellSlot("summonerdot").IsReady())
                 damage += IgniteDamage(enemy);
 
-            return (float) damage;
+            return (float)damage;
         }
 
         public static int DangerLevel(Interrupter2.InterruptableTargetEventArgs args)
@@ -161,7 +133,6 @@ namespace Kassawin
             var edraw = getCheckBoxItem(drawMenu, "drawe");
             var rdraw = getCheckBoxItem(drawMenu, "drawr");
             var drawcount = getCheckBoxItem(drawMenu, "drawcount");
-            var mindraw = getCheckBoxItem(drawMenu, "drawqkill");
 
             if (qdraw)
             {
@@ -186,47 +157,39 @@ namespace Kassawin
                 Drawing.DrawText(pos.X, pos.Y, System.Drawing.Color.Red, "[R] Stack");
                 Drawing.DrawText(pos.X + 70, pos.Y, System.Drawing.Color.Purple, ForcePulseCount().ToString());
             }
-
-            if (!mindraw) return;
-
-            foreach (
-                var min in
-                    MinionManager.GetMinions(Player.Position, Q.Range)
-                        .Where(x => x.Health < Q.GetDamage(x)))
-            {
-                Render.Circle.DrawCircle(min.Position, 80, System.Drawing.Color.Red, 5, true);
-            }
         }
 
         private static void OnDoCasts(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (!Orbwalking.IsAutoAttack(args.SData.Name)) return;
+
             if (!sender.IsMe) return;
+
             if (!args.SData.IsAutoAttack()) return;
+
             if (args.Target.Type != GameObjectType.obj_AI_Minion) return;
+
             var usew = getCheckBoxItem(farmMenu, "usewl");
+
             if (!usew) return;
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
-                var minions =
-                    MinionManager.GetMinions(Player.Position, 300);
+                var minions = MinionManager.GetMinions(Player.Position, 300);
 
                 if (W.IsReady())
                 {
-                    if (((Obj_AI_Base) args.Target).Health > Player.GetAutoAttackDamage((Obj_AI_Base) args.Target) + 50)
+                    if (((Obj_AI_Base)args.Target).Health > Player.GetAutoAttackDamage((Obj_AI_Base)args.Target) + 50)
                     {
                         W.Cast();
                         Orbwalker.ResetAutoAttack();
-                        Orbwalker.ForcedTarget = (Obj_AI_Base) args.Target;
                     }
-                    foreach (var min in minions.Where(
-                        x => x.NetworkId != ((Obj_AI_Base) args.Target).NetworkId))
+                    foreach (var min in minions.Where(x => x.NetworkId != ((Obj_AI_Base)args.Target).NetworkId))
                     {
-                        if (((Obj_AI_Base) args.Target).Health > Player.GetAutoAttackDamage((Obj_AI_Base) args.Target))
+                        if (((Obj_AI_Base)args.Target).Health > Player.GetAutoAttackDamage((Obj_AI_Base)args.Target))
                         {
                             W.Cast();
                             Orbwalker.ResetAutoAttack();
-                            Orbwalker.ForcedTarget = min;
                         }
                     }
                 }
@@ -238,8 +201,8 @@ namespace Kassawin
             if (!Orbwalking.IsAutoAttack(args.SData.Name)) return;
             if (!sender.IsMe) return;
             if (args.Target.Type != GameObjectType.AIHeroClient) return;
-            var target = (AIHeroClient) args.Target;
 
+            var target = (AIHeroClient)args.Target;
             var usew = getCheckBoxItem(comboMenu, "usew");
             if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)) return;
 
@@ -251,7 +214,6 @@ namespace Kassawin
                     {
                         W.Cast();
                         Orbwalker.ResetAutoAttack();
-                        Orbwalker.ForcedTarget = target;
                     }
                 }
             }
@@ -361,8 +323,7 @@ namespace Kassawin
 
         private static void LastHit()
         {
-            var minions = MinionManager.GetMinions(Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy,
-                MinionOrderTypes.MaxHealth);
+            var minions = MinionManager.GetMinions(Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
 
             if (minions.FirstOrDefault() == null) return;
             var useq = getCheckBoxItem(farmMenu, "useqlh");
@@ -387,8 +348,7 @@ namespace Kassawin
 
         private static void LaneClear()
         {
-            var minions = MinionManager.GetMinions(Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy,
-                MinionOrderTypes.MaxHealth);
+            var minions = MinionManager.GetMinions(Player.Position, Q.Range, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
 
             var useq = getCheckBoxItem(farmMenu, "useql");
             if (useq)
@@ -410,6 +370,7 @@ namespace Kassawin
                     }
                 }
             }
+
             if (minions.FirstOrDefault() == null) return;
 
 
@@ -446,8 +407,7 @@ namespace Kassawin
                 if (ForcePulseCount() >= count) return;
                 if (R.IsReady())
                 {
-                    var min =
-                        MinionManager.GetMinions(Player.Position, R.Range);
+                    var min = MinionManager.GetMinions(Player.Position, R.Range);
                     if (min.FirstOrDefault() != null)
                     {
                         var prediction = R.GetCircularFarmLocation(min, R.Width);
@@ -501,7 +461,6 @@ namespace Kassawin
         private static void fleeMode()
         {
             EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-            //    var getrrcount = GetValue("fleercoutn");
             var extendedposition = Player.Position.Extend(Game.CursorPos, 500);
 
             if (R.IsReady())
@@ -549,7 +508,7 @@ namespace Kassawin
         {
             if (_ignite == SpellSlot.Unknown || Player.Spellbook.CanUseSpell(_ignite) != SpellState.Ready)
                 return 0f;
-            return (float) Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
+            return (float)Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
         }
 
         private static void Combo()
@@ -593,17 +552,21 @@ namespace Kassawin
             }
 
             var rCount = getSliderItem(comboMenu, "rcount");
-            var extendedposition = Player.Position.Extend(target.Position, 500);
-            if (ForcePulseCount() < rCount && user && R.IsReady() && Player.IsFacing(target))
+            var extendedposition = Player.Position.LSExtend(target.Position, 500);
+            if (ForcePulseCount() < rCount && user && R.IsReady())
             {
-                if (target.UnderTurret(true) && userturret) return;
-                if (target.HealthPercent - 15 > Player.HealthPercent) return;
-                if (Q.IsReady() || (E.IsReady() && (eCanCast() || GetPassiveBuff == 5)) || W.IsReady())
+                if (userturret)
                 {
-                    if (Player.Mana >= Player.Spellbook.GetSpell(SpellSlot.R).SData.Mana + Q.ManaCost)
+                    if (target.UnderTurret(true))
                     {
-                        if (Player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target))
-                            R.Cast(extendedposition);
+                        return;
+                    }
+                }
+                if (Player.HealthPercent > getSliderItem(comboMenu, "rhp"))
+                {
+                    if (Q.IsReady() || E.IsReady() || W.IsReady())
+                    {
+                        R.Cast(extendedposition);
                     }
                 }
             }
@@ -622,21 +585,21 @@ namespace Kassawin
             {
                 var barPos = unit.HPBarPosition;
                 var damage = DamageToUnit(unit);
-                var percentHealthAfterDamage = Math.Max(0, unit.Health - damage)/unit.MaxHealth;
+                var percentHealthAfterDamage = Math.Max(0, unit.Health - damage) / unit.MaxHealth;
                 var yPos = barPos.Y + YOffset;
-                var xPosDamage = barPos.X + XOffset + Width*percentHealthAfterDamage;
-                var xPosCurrentHp = barPos.X + XOffset + Width*unit.Health/unit.MaxHealth;
+                var xPosDamage = barPos.X + XOffset + Width * percentHealthAfterDamage;
+                var xPosCurrentHp = barPos.X + XOffset + Width * unit.Health / unit.MaxHealth;
 
                 if (damage > unit.Health)
                 {
-                    Text.X = (int) barPos.X + XOffset;
-                    Text.Y = (int) barPos.Y + YOffset - 13;
-                    Text.text = "可击杀 " + (int) (unit.Health - damage);
+                    Text.X = (int)barPos.X + XOffset;
+                    Text.Y = (int)barPos.Y + YOffset - 13;
+                    Text.text = "Killable " + (int)(unit.Health - damage);
                     Text.OnEndScene();
                 }
                 Drawing.DrawLine(xPosDamage, yPos, xPosDamage, yPos + Height, 1, _color);
                 var differenceInHp = xPosCurrentHp - xPosDamage;
-                var pos1 = barPos.X + 9 + 107*percentHealthAfterDamage;
+                var pos1 = barPos.X + 9 + 107 * percentHealthAfterDamage;
                 for (var i = 0; i < differenceInHp; i++)
                 {
                     Drawing.DrawLine(pos1 + i, yPos, pos1 + i, yPos + Height, 1, FillColor);

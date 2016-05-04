@@ -50,7 +50,8 @@ namespace OneKeyToWin_AIO_Sebby
         {
             get
             {
-		return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit);            }
+                return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit);
+            }
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -417,13 +418,26 @@ namespace OneKeyToWin_AIO_Sebby
 
         public static void farmQ()
         {
-            if (Program.LaneClear)
+            if (Program.LaneClear && getCheckBoxItem(farmMenu, "farmQ") && Player.ManaPercent > getSliderItem(farmMenu, "Mana"))
             {
                 var mobs = EntityManager.MinionsAndMonsters.EnemyMinions.Where(x => x.IsInRange(Player, Q.Range));
-                if (mobs.Count() > 0 || mobs != null)
+                if (mobs != null)
                 {
-                    var mob = mobs.FirstOrDefault();
-                    Q.Cast(mob.Position);
+                    if (mobs.Count() > 0)
+                    {
+                        var mob = mobs.FirstOrDefault();
+                        Q.Cast(mob.Position);
+                    }
+                }
+
+                var monster = EntityManager.MinionsAndMonsters.Monsters.Where(x => x.IsInRange(Player, Q.Range));
+                if (monster != null)
+                {
+                    if (monster.Count() > 0)
+                    {
+                        var monsters = monster.FirstOrDefault();
+                        Q.Cast(monsters.Position);
+                    }
                 }
             }
 

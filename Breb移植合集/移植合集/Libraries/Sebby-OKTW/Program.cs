@@ -15,6 +15,7 @@ using HitChance = SebbyLib.Prediction.HitChance;
 using PredictionInput = SebbyLib.Prediction.PredictionInput;
 using PredictionOutput = SebbyLib.Prediction.PredictionOutput;
 using Spell = LeagueSharp.Common.Spell;
+using SPrediction;
 
 namespace SebbyLib
 {
@@ -80,7 +81,7 @@ namespace SebbyLib
         {
             return Config[item].Cast<KeyBind>().CurrentValue;
         }
-
+        public static bool SPredictionLoad;
         public static void GameOnOnGameLoad()
         {
             enemySpawn = ObjectManager.Get<Obj_SpawnPoint>().FirstOrDefault(x => x.IsEnemy);
@@ -93,33 +94,35 @@ namespace SebbyLib
 
             #region MENU ABOUT OKTW
 
-            Config.Add("debug", new CheckBox("Debug", false));
-            Config.Add("debugChat", new CheckBox("Debug Chat", false));
-            Config.Add("print", new CheckBox("OKTW NEWS in chat"));
+            Config.Add("debug", new CheckBox("调试", false));
+            Config.Add("debugChat", new CheckBox("调试信息", false));
+            Config.Add("print", new CheckBox("OKTW更新信息"));
 
             #endregion
 
-            Config.Add("AIOmode", new Slider("AIO mode (0 : Util & Champ | 1 : Only Champ | 2 : Only Util)", 0, 0, 2));
+            Config.Add("AIOmode", new Slider("AIO 模式 (0 : 功能集 & 英雄 | 1 : 只载入英雄 | 2 : 只载入功能集)", 0, 0, 2));
             AIOmode = getSliderItem("AIOmode");
 
-            if (AIOmode != 2)
+            Config.Add("PredictionMODE", new Slider("预判模式 (0 : 库预判 | 1 : OKTW© 预判 | 2 : S预判)", 0, 0, 2));
+            Config.Add("HitChance", new Slider("AIO 模式 (0 : 非常高 | 1 : 高 | 2 : 中)", 0, 0, 2));
+            Config.Add("debugPred", new CheckBox("显示 瞄准OKTW©预判", false));
+
+            if (getSliderItem("PredictionMODE") == 2)
             {
-                if (Player.ChampionName != "MissFortune")
-                {
-                    new OktwTs().LoadOKTW();
-                }
+                SPrediction.Prediction.Initialize(Config);
+                SPredictionLoad = true;
+            }
+            else
+            {
+                Config.AddLabel("SPREDICTION NOT LOADED");
             }
 
-            Config.Add("PredictionMODE", new Slider("Prediction MODE (0 : Common Pred | 1 : OKTW© PREDICTION)", 0, 0, 1));
-            Config.Add("HitChance", new Slider("AIO mode (0 : Very High | 1 : High | 2 : Medium)", 0, 0, 2));
-            Config.Add("debugPred", new CheckBox("Draw Aiming OKTW© PREDICTION", false));
-
             if (AIOmode != 2)
             {
-                Config.Add("supportMode", new CheckBox("Support Mode", false));
-                Config.Add("comboDisableMode", new CheckBox("Disable auto-attack in combo mode", false));
-                Config.Add("manaDisable", new CheckBox("Disable mana manager in combo"));
-                Config.Add("collAA", new CheckBox("Disable auto-attack if Yasuo wall collision"));
+                Config.Add("supportMode", new CheckBox("辅助模式", false));
+                Config.Add("comboDisableMode", new CheckBox("连招屏蔽普攻", false));
+                Config.Add("manaDisable", new CheckBox("连招时无视蓝量控制器"));
+                Config.Add("collAA", new CheckBox("面对亚索风墙停止普攻"));
 
                 #region LOAD CHAMPIONS
 
@@ -213,6 +216,12 @@ namespace SebbyLib
             {
                 if (hero.IsAlly && hero.Team == Player.Team)
                     Allies.Add(hero);
+            }
+
+            if (AIOmode != 1)
+            {
+                new OKTWward().LoadOKTW();
+                new OKTWtracker().LoadOKTW();
             }
 
             Game.OnUpdate += OnUpdate;
@@ -373,6 +382,30 @@ namespace SebbyLib
                 else if (getSliderItem("HitChance") == 2)
                 {
                     QWER.CastIfHitchanceEquals(target, LeagueSharp.Common.HitChance.Medium);
+                }
+            }
+
+            if (getSliderItem("PredictionMODE") == 2)
+            {
+                if (target is AIHeroClient && target.IsValid)
+                {
+                    var t = target as AIHeroClient;
+                    if (getSliderItem("HitChance") == 0)
+                    {
+                        QWER.SPredictionCast(t, LeagueSharp.Common.HitChance.VeryHigh);
+                    }
+                    else if (getSliderItem("HitChance") == 1)
+                    {
+                        QWER.SPredictionCast(t, LeagueSharp.Common.HitChance.High);
+                    }
+                    else if (getSliderItem("HitChance") == 2)
+                    {
+                        QWER.SPredictionCast(t, LeagueSharp.Common.HitChance.Medium);
+                    }
+                }
+                else
+                {
+                    QWER.CastIfHitchanceEquals(target, LeagueSharp.Common.HitChance.High);
                 }
             }
         }

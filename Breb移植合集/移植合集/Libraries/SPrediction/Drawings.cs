@@ -70,6 +70,43 @@ namespace SPrediction
         /// </summary>
         private static void Drawing_OnDraw(EventArgs args)
         {
+            if (ConfigMenu.SelectedPrediction == 0 && ConfigMenu.EnableDrawings)
+            {
+                foreach (var enemy in HeroManager.Enemies)
+                {
+                    var waypoints = enemy.GetWaypoints();
+                    if (waypoints != null && waypoints.Count > 1)
+                    {
+                        for (var i = 0; i < waypoints.Count - 1; i++)
+                        {
+                            var posFrom = Drawing.WorldToScreen(waypoints[i].To3D());
+                            var posTo = Drawing.WorldToScreen(waypoints[i + 1].To3D());
+                            Drawing.DrawLine(posFrom, posTo, 2, Color.Aqua);
+                        }
+
+                        var pos = Drawing.WorldToScreen(waypoints[waypoints.Count - 1].To3D());
+                        Drawing.DrawText(pos.X, pos.Y, Color.Black,
+                            (waypoints.PathLength()/enemy.MoveSpeed).ToString("0.00")); //arrival time
+                    }
+                }
+
+                if (Utils.TickCount - s_DrawTick <= 2000)
+                {
+                    var centerPos = Drawing.WorldToScreen((s_DrawPos - s_DrawDirection*5).To3D());
+                    var startPos = Drawing.WorldToScreen((s_DrawPos - s_DrawDirection*s_DrawWidth).To3D());
+                    var endPos = Drawing.WorldToScreen((s_DrawPos + s_DrawDirection*s_DrawWidth).To3D());
+                    Drawing.DrawLine(startPos, endPos, 3, Color.Gold);
+                    Drawing.DrawText(centerPos.X, centerPos.Y, Color.Red, s_DrawHitChance);
+                }
+
+                Drawing.DrawText(ConfigMenu.HitChanceDrawingX, ConfigMenu.HitChanceDrawingY, Color.Red,
+                    string.Format("Casted Spell Count: {0}", s_CastCount));
+                Drawing.DrawText(ConfigMenu.HitChanceDrawingX, ConfigMenu.HitChanceDrawingY + 20, Color.Red,
+                    string.Format("Hit Spell Count: {0}", s_HitCount));
+                Drawing.DrawText(ConfigMenu.HitChanceDrawingX, ConfigMenu.HitChanceDrawingY + 40, Color.Red,
+                    string.Format("Hitchance (%): {0}%",
+                        s_CastCount > 0 ? ((float) s_HitCount/s_CastCount*100).ToString("00.00") : "n/a"));
+            }
         }
 
         /// <summary>

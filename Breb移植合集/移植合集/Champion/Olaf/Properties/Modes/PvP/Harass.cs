@@ -26,12 +26,19 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     The Q Harass Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.Q.Range) &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
+            if (Variables.Q.IsReady() && Targets.Target.IsValidTarget(Variables.Q.Range) && ObjectManager.Player.ManaPercent > ManaManager.NeededQMana && Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
             {
-                Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).CastPosition.Extend(Variables.Q.GetPrediction(Targets.Target).CastPosition, 75f));
+                var castPosition = Targets.Target.Position.Extend(ObjectManager.Player.Position, -100);
+                var castPosition2 = Targets.Target.Position.Extend(ObjectManager.Player.Position, -70);
+
+                if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 300)
+                {
+                    Variables.Q.Cast(castPosition);
+                }
+                else
+                {
+                    Variables.Q.Cast(castPosition2);
+                }
             }
         }
     }

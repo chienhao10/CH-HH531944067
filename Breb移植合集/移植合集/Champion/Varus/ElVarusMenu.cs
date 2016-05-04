@@ -23,7 +23,6 @@ namespace Elvarus
             cMenu.Add("ElVarus.combo.always.Q", new CheckBox("always Q", false));
             cMenu.Add("ElVarus.Combo.E", new CheckBox("Use E"));
             cMenu.Add("ElVarus.Combo.R", new CheckBox("Use R"));
-            cMenu.Add("ElVarus.Combo.W.Focus", new CheckBox("Focus W target", false));
             cMenu.Add("ElVarus.Combo.R.Count", new Slider("R when enemies >= ", 1, 1, 5));
             cMenu.Add("ElVarus.Combo.Stack.Count", new Slider("Q when stacks >= ", 3, 1, 3));
             cMenu.Add("ElVarus.SemiR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'T'));

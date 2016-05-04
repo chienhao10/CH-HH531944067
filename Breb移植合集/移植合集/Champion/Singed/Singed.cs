@@ -126,6 +126,10 @@ namespace ElSinged
 
         private static void Combo()
         {
+            if (Player.CountEnemiesInRange(getSliderItem(miscMenu, "ElSinged.Misc.QRange")) < 1 && spells[Spells.Q].Instance.ToggleState == 2 && !getCheckBoxItem(miscMenu, "DontOffQ"))
+            {
+                spells[Spells.Q].Cast();
+            }
             var target = TargetSelector.GetTarget(spells[Spells.W].Range, DamageType.Magical);
             if (target == null)
             {
@@ -134,12 +138,9 @@ namespace ElSinged
 
             var comboCount = getSliderItem(cMenu, "ElSinged.Combo.R.Count");
 
-            var qTarget =
-                HeroManager.Enemies.FirstOrDefault(
-                    enemy => enemy.IsValidTarget() && enemy.Distance(Player) < 200 && Player.IsMoving && enemy.IsMoving);
+            var qTarget = HeroManager.Enemies.FirstOrDefault( enemy => enemy.IsValidTarget() && enemy.Distance(Player) < 200 && Player.IsMoving && enemy.IsMoving);
 
-            if (getCheckBoxItem(cMenu, "ElSinged.Combo.Q") && spells[Spells.Q].IsReady() &&
-                (qTarget != null || target.HasBuff("poisontrailtarget") || Player.Distance(target) <= 500))
+            if (getCheckBoxItem(cMenu, "ElSinged.Combo.Q") && spells[Spells.Q].IsReady() && (qTarget != null || target.HasBuff("poisontrailtarget") || Player.Distance(target) <= 500))
             {
                 CastQ();
             }
@@ -175,6 +176,10 @@ namespace ElSinged
 
         private static void Harass()
         {
+            if (Player.CountEnemiesInRange(getSliderItem(miscMenu, "ElSinged.Misc.QRange")) < 1 && spells[Spells.Q].Instance.ToggleState == 2 && !getCheckBoxItem(miscMenu, "DontOffQ"))
+            {
+                spells[Spells.Q].Cast();
+            }
             var target = TargetSelector.GetTarget(spells[Spells.W].Range, DamageType.Magical);
             if (target == null)
             {
@@ -236,6 +241,11 @@ namespace ElSinged
                 return;
             }
 
+            if (MinionManager.GetMinions(ObjectManager.Player.Position, 400).Count < 1 && spells[Spells.Q].Instance.ToggleState == 2 && !getCheckBoxItem(miscMenu, "DontOffQ"))
+            {
+                spells[Spells.Q].Cast();
+            }
+
             if (getCheckBoxItem(lcMenu, "ElSinged.Laneclear.E") && spells[Spells.E].GetDamage(minion) > minion.Health &&
                 minion.IsValidTarget(spells[Spells.E].Range))
             {
@@ -260,24 +270,21 @@ namespace ElSinged
         {
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                TurnOffQ();
                 Combo();
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
-                TurnOffQ();
                 LaneClear();
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
-                TurnOffQ();
                 Harass();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None) && !!getCheckBoxItem(miscMenu, "DontOffQ"))
             {
                 TurnOffQ();
             }

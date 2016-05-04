@@ -91,6 +91,12 @@ namespace ElZilean
             Game.OnUpdate += OnGameUpdate;
             Drawing.OnDraw += Drawings.Drawing_OnDraw;
             Orbwalker.OnPreAttack += OrbwalkingBeforeAttack;
+
+            comboMenu = ZileanMenu.comboMenu;
+            harassMenu = ZileanMenu.harassMenu;
+            clearMenu = ZileanMenu.clearMenu;
+            castUltMenu = ZileanMenu.castUltMenu;
+            miscMenu = ZileanMenu.miscMenu;
         }
 
         public static float GetComboDamage(Obj_AI_Base enemy)
@@ -151,7 +157,7 @@ namespace ElZilean
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)
                 {
-                    spells[Spells.Q].Cast(pred.UnitPosition);
+                    spells[Spells.Q].Cast(target);
                 }
             }
 
@@ -196,7 +202,7 @@ namespace ElZilean
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)
                 {
-                    spells[Spells.Q].Cast(pred.UnitPosition);
+                    spells[Spells.Q].Cast(target);
                 }
             }
 

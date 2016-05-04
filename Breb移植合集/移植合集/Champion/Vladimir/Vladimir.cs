@@ -247,12 +247,15 @@ namespace ElVladimirReborn
 
             if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.R.Killable"))
             {
+                if (spells[Spells.R].IsReady() && Player.GetSpellDamage(target, SpellSlot.R) > target.Health && !target.IsDead)
+                {
+                    spells[Spells.R].Cast(target);
+                }
                 if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.SmartUlt"))
                 {
                     var eQDamage = spells[Spells.Q].GetDamage(target) + spells[Spells.E].GetDamage(target);
 
-                    if (spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range)
-                        && spells[Spells.Q].GetDamage(target) >= target.Health)
+                    if (spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range) && spells[Spells.Q].GetDamage(target) >= target.Health)
                     {
                         spells[Spells.Q].Cast();
                     }
@@ -263,8 +266,7 @@ namespace ElVladimirReborn
                             spells[Spells.E].Cast();
                         }
                     }
-                    else if (spells[Spells.Q].IsReady() && spells[Spells.E].IsReady()
-                             && target.IsValidTarget(spells[Spells.Q].Range) && eQDamage >= target.Health)
+                    else if (spells[Spells.Q].IsReady() && spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.Q].Range) && eQDamage >= target.Health)
                     {
                         spells[Spells.Q].Cast();
                         if (GetEHits().Item1 > 0)
@@ -290,20 +292,18 @@ namespace ElVladimirReborn
             {
                 if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.R") && spells[Spells.R].IsReady())
                 {
-                    foreach (var x in
-                        HeroManager.Enemies.Where(hero => !hero.IsDead && hero.IsValidTarget(spells[Spells.R].Range)))
+                    foreach (var x in HeroManager.Enemies.Where(hero => !hero.IsDead && hero.IsValidTarget(spells[Spells.R].Range)))
                     {
                         var pred = spells[Spells.R].GetPrediction(x);
                         if (pred.AoeTargetsHitCount >= countEnemy)
                         {
-                            spells[Spells.R].Cast(pred.CastPosition);
+                            spells[Spells.R].Cast(x);
                         }
                     }
                 }
             }
 
-            if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.Ignite") && Player.Distance(target) <= 600
-                && IgniteDamage(target) >= target.Health)
+            if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.Ignite") && Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health)
             {
                 Player.Spellbook.CastSpell(ignite, target);
             }

@@ -34,6 +34,8 @@ namespace ElSinged
             miscMenu.Add("ElSinged.Draw.Q", new CheckBox("Draw Q")); //.SetValue(new Circle()));
             miscMenu.Add("ElSinged.Draw.W", new CheckBox("Draw W")); //.SetValue(new Circle()));
             miscMenu.Add("ElSinged.Draw.E", new CheckBox("Draw E")); //.SetValue(new Circle()));
+            miscMenu.Add("DontOffQ", new CheckBox("Do not turn off Q", false));
+            miscMenu.Add("ElSinged.Misc.QRange", new Slider("Q Search Range", 1000, 1000, 6000)); //.SetValue(new Circle()));
 
             Console.WriteLine("Menu Loaded");
         }

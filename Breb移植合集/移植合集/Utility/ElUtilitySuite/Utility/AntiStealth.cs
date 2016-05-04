@@ -11,6 +11,7 @@
     using EloBuddy;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
+    using EloBuddy.SDK;
     internal class AntiStealth : IPlugin
     {
         #region Static Fields
@@ -108,7 +109,7 @@
         /// <returns></returns>
         public void CreateMenu(Menu rootMenu)
         {
-            var protectMenu = rootMenu.AddSubMenu("反-隐形", "AntiStealth");
+            var protectMenu = rootMenu.AddSubMenu("反隐形单位", "AntiStealth");
             {
                 protectMenu.Add("AntiStealthActive", new CheckBox("插真眼显示隐形单位"));
             }
@@ -181,6 +182,40 @@
             }
         }
 
+        public static Item Pink = new Item(ItemId.Vision_Ward, 550f);
+        public static Item Sweep = new Item(ItemId.Sweeping_Lens_Trinket, getLevelSWEEP());
+        public static Item Oracle = new Item(ItemId.Oracle_Alteration, 550f);
+
+        public static float getLevelSWEEP()
+        {
+            var f = 0.0f;
+            if (ObjectManager.Player.Level >= 1 && ObjectManager.Player.Level < 4)
+            {
+                f = 500f;
+            }
+            if (ObjectManager.Player.Level >= 4 && ObjectManager.Player.Level < 7)
+            {
+                f = 800f;
+            }
+            if (ObjectManager.Player.Level >= 7 && ObjectManager.Player.Level < 10)
+            {
+                f = 1100f;
+            }
+            if (ObjectManager.Player.Level >= 10 && ObjectManager.Player.Level < 13)
+            {
+                f = 1400f;
+            }
+            if (ObjectManager.Player.Level >= 13 && ObjectManager.Player.Level < 16)
+            {
+                f = 1700f;
+            }
+            if (ObjectManager.Player.Level >= 16)
+            {
+                f = 2000f;
+            }
+            return f;
+        }
+
         /// <summary>
         /// </summary>
         /// <param name="sender"></param>
@@ -194,16 +229,22 @@
                 {
                     return;
                 }
-
                 var stealthChampion = Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (stealthChampion != null)
                 {
-                    var item = this.Items.Select(x => x.Item).FirstOrDefault(x => x.IsInRange(hero) && x.IsReady());
-                    if (item != null)
+                    var spellCastPosition = this.Player.LSDistance(args.End) > 600 ? this.Player.Position : args.End;
+                    if (Pink.IsReady() && Pink.IsOwned())
                     {
-                        var spellCastPosition = this.Player.LSDistance(args.End) > 600 ? this.Player.Position : args.End;
-                        LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => item.Cast(spellCastPosition));
+                        LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => Pink.Cast(spellCastPosition));
+                    }
+                    if (Sweep.IsReady() && Sweep.IsOwned())
+                    {
+                        LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => Sweep.Cast(spellCastPosition));
+                    }
+                    if (Oracle.IsReady() && Oracle.IsOwned())
+                    {
+                        LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => Oracle.Cast());
                     }
                 }
             }
