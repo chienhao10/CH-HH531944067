@@ -286,7 +286,7 @@ namespace SebbyLib
             {
                 var t = (AIHeroClient)args.Target;
                 if (6 * Player.GetAutoAttackDamage(t) < t.Health - OktwCommon.GetIncomingDamage(t) &&
-                    !t.HasBuff("luxilluminatingfraulein") && !Player.HasBuff("sheen"))
+                    !t.HasBuff("luxilluminatingfraulein") && !Player.HasBuff("sheen") && !Player.HasBuff("Mastery6261"))
                     args.Process = false;
             }
 

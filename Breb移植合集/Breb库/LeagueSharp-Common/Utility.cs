@@ -116,7 +116,7 @@ namespace LeagueSharp.Common
             return !(range < float.MaxValue) ||
                    !(Vector2.DistanceSquared(
                        (@from.To2D().IsValid() ? @from : HeroManager.Player.ServerPosition).To2D(),
-                       unitPosition.To2D()) > range*range);
+                       unitPosition.To2D()) > range * range);
         }
 
         public static SpellDataInst GetSpell(this AIHeroClient hero, SpellSlot slot)
@@ -143,7 +143,7 @@ namespace LeagueSharp.Common
             return spell != null && spell.Slot != SpellSlot.Unknown && t == 0
                 ? spell.State == SpellState.Ready
                 : spell.State == SpellState.Ready
-                  || (spell.State == SpellState.Cooldown && spell.CooldownExpires - Game.Time <= t/1000f);
+                  || (spell.State == SpellState.Cooldown && spell.CooldownExpires - Game.Time <= t / 1000f);
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace LeagueSharp.Common
         [Obsolete("Use TotalMagicalDamage attribute.", false)]
         public static float AbilityPower(this Obj_AI_Base @base)
         {
-            return @base.FlatMagicDamageMod + @base.PercentMagicDamageMod*@base.FlatMagicDamageMod;
+            return @base.FlatMagicDamageMod + @base.PercentMagicDamageMod * @base.FlatMagicDamageMod;
         }
 
         /// <summary>
@@ -368,7 +368,7 @@ namespace LeagueSharp.Common
             var Distance = distance;
             if (distance < 0)
             {
-                path[0] = path[0] + distance*(path[1] - path[0]).Normalized();
+                path[0] = path[0] + distance * (path[1] - path[0]).Normalized();
                 return path;
             }
 
@@ -377,7 +377,7 @@ namespace LeagueSharp.Common
                 var dist = path[i].Distance(path[i + 1]);
                 if (dist > Distance)
                 {
-                    result.Add(path[i] + Distance*(path[i + 1] - path[i]).Normalized());
+                    result.Add(path[i] + Distance * (path[i + 1] - path[i]).Normalized());
                     for (var j = i + 1; j < path.Count; j++)
                     {
                         result.Add(path[j]);
@@ -387,7 +387,7 @@ namespace LeagueSharp.Common
                 }
                 Distance -= dist;
             }
-            return result.Count > 0 ? result : new List<Vector2> {path.Last()};
+            return result.Count > 0 ? result : new List<Vector2> { path.Last() };
         }
 
         /// <summary>
@@ -418,10 +418,10 @@ namespace LeagueSharp.Common
             else if (WaypointTracker.StoredPaths.ContainsKey(unit.NetworkId))
             {
                 var path = WaypointTracker.StoredPaths[unit.NetworkId];
-                var timePassed = (Utils.TickCount - WaypointTracker.StoredTick[unit.NetworkId])/1000f;
-                if (path.PathLength() >= unit.MoveSpeed*timePassed)
+                var timePassed = (Utils.TickCount - WaypointTracker.StoredTick[unit.NetworkId]) / 1000f;
+                if (path.PathLength() >= unit.MoveSpeed * timePassed)
                 {
-                    result = CutPath(path, (int) (unit.MoveSpeed*timePassed));
+                    result = CutPath(path, (int)(unit.MoveSpeed * timePassed));
                 }
             }
 
@@ -444,7 +444,7 @@ namespace LeagueSharp.Common
 
             foreach (var point in wp)
             {
-                time += point.Distance(lastPoint)/speed;
+                time += point.Distance(lastPoint) / speed;
                 result.Add(new Vector2Time(point, time));
                 lastPoint = point;
             }
@@ -469,7 +469,7 @@ namespace LeagueSharp.Common
                 unit.Buffs.Any(
                     buff =>
                         buff.IsValid && buff.DisplayName == displayName &&
-                        buff.EndTime - Game.Time > tickCount - (includePing ? Game.Ping/2000f : 0));
+                        buff.EndTime - Game.Time > tickCount - (includePing ? Game.Ping / 2000f : 0));
         }
 
         /// <summary>
@@ -546,7 +546,7 @@ namespace LeagueSharp.Common
         public static NavMeshCell ToNavMeshCell(this Vector3 position)
         {
             var nav = NavMesh.WorldToGrid(position.X, position.Y);
-            return NavMesh.GetCell((short) nav.X, (short) nav.Y);
+            return NavMesh.GetCell((short)nav.X, (short)nav.Y);
         }
 
         [Obsolete("Use CountEnemiesInRange", false)]
@@ -631,11 +631,11 @@ namespace LeagueSharp.Common
                         .FindAll(
                             x =>
                                 x.NetworkId != originalunit.NetworkId &&
-                                point.Distance(x.ServerPosition, true) <= range*range);
+                                point.Distance(x.ServerPosition, true) <= range * range);
             }
             return
                 HeroManager.Allies
-                    .FindAll(x => point.Distance(x.ServerPosition, true) <= range*range);
+                    .FindAll(x => point.Distance(x.ServerPosition, true) <= range * range);
         }
 
         public static List<AIHeroClient> GetEnemiesInRange(this Obj_AI_Base unit, float range)
@@ -647,12 +647,12 @@ namespace LeagueSharp.Common
         {
             return
                 HeroManager.Enemies
-                    .FindAll(x => point.Distance(x.ServerPosition, true) <= range*range);
+                    .FindAll(x => point.Distance(x.ServerPosition, true) <= range * range);
         }
 
         public static List<T> GetObjects<T>(this Vector3 position, float range) where T : GameObject, new()
         {
-            return ObjectManager.Get<T>().Where(x => position.Distance(x.Position, true) < range*range).ToList();
+            return ObjectManager.Get<T>().Where(x => position.Distance(x.Position, true) < range * range).ToList();
         }
 
         public static List<T> GetObjects<T>(string objectName, float range, Vector3 rangeCheckFrom = new Vector3())
@@ -663,7 +663,7 @@ namespace LeagueSharp.Common
                 rangeCheckFrom = HeroManager.Player.ServerPosition;
             }
 
-            return ObjectManager.Get<T>().Where(x => rangeCheckFrom.Distance(x.Position, true) < range*range).ToList();
+            return ObjectManager.Get<T>().Where(x => rangeCheckFrom.Distance(x.Position, true) < range * range).ToList();
         }
 
 
@@ -686,10 +686,10 @@ namespace LeagueSharp.Common
             var pointList = new List<Vector3>();
             for (var i = 0; i < quality; i++)
             {
-                var angle = i*Math.PI*2/quality;
+                var angle = i * Math.PI * 2 / quality;
                 pointList.Add(
                     new Vector3(
-                        center.X + radius*(float) Math.Cos(angle), center.Y + radius*(float) Math.Sin(angle),
+                        center.X + radius * (float)Math.Cos(angle), center.Y + radius * (float)Math.Sin(angle),
                         center.Z));
             }
 
@@ -779,7 +779,7 @@ namespace LeagueSharp.Common
             {
                 return 0;
             }
-            return (short) (packetData[0] + packetData[1]*256);
+            return (short)(packetData[0] + packetData[1] * 256);
         }
 
         public static void SendAsPacket(this byte[] packetData,
@@ -884,10 +884,19 @@ namespace LeagueSharp.Common
                     return;
                 }
 
+                var height = Drawing.Height;
+                var width = Drawing.Width;
+
                 foreach (var unit in
                     HeroManager.Enemies.FindAll(h => h.IsValid && h.IsHPBarRendered))
                 {
                     var barPos = unit.HPBarPosition;
+
+                    if (barPos.X < -200 || barPos.X > width + 200)
+                        continue;
+                    if (barPos.Y < -200 || barPos.X > height + 200)
+                        continue;
+
                     var damage = _damageToUnit(unit);
                     var percentHealthAfterDamage = Math.Max(0, unit.Health - damage) / unit.MaxHealth;
                     var xPos = barPos.X + XOffset + Width * percentHealthAfterDamage;
@@ -1016,9 +1025,9 @@ namespace LeagueSharp.Common
                 {
                     return _currentMap;
                 }
-                if (MapById.ContainsKey((int) Game.MapId))
+                if (MapById.ContainsKey((int)Game.MapId))
                 {
-                    _currentMap = MapById[(int) Game.MapId];
+                    _currentMap = MapById[(int)Game.MapId];
                     return _currentMap;
                 }
 
@@ -1059,7 +1068,7 @@ namespace LeagueSharp.Common
             Build = Convert.ToInt32(d[2]);
             Revision = Convert.ToInt32(d[3]);
 
-            VersionArray = new[] {MajorVersion, MinorVersion, Build, Revision};
+            VersionArray = new[] { MajorVersion, MinorVersion, Build, Revision };
         }
 
         public static bool IsOlder(string version)

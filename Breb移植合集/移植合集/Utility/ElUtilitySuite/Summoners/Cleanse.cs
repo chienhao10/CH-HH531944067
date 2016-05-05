@@ -43,7 +43,7 @@ namespace ElUtilitySuite.Summoners
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Name = "itemdusknightfall", MenuName = "夜幕之刃", Evade = false, DoT = true,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 1650, Slot = SpellSlot.Unknown,
@@ -54,7 +54,7 @@ namespace ElUtilitySuite.Summoners
                                      Champion = "Taric", Name = "stun", MenuName = "宝石-晕眩", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
                                      Champion = "Lulu", Name = "polymorph", MenuName = "露露-变形", Evade = false,
@@ -292,12 +292,12 @@ namespace ElUtilitySuite.Summoners
                                      MenuName = "猪女-R", Evade = false, DoT = false, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 100, Slot = SpellSlot.R, Interval = 1.0
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Champion = "Fiora", Name = "fiorarmark", MenuName = "剑姬-R",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 100,
                                      Slot = SpellSlot.R, Interval = 1.0
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
                                      Champion = "Twitch", Name = "twitchdeadlyvenon", MenuName = "图奇-毒",

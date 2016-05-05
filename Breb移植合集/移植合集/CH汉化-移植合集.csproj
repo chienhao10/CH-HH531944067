@@ -498,6 +498,7 @@
     <Compile Include="Champion\Twitch\Program.cs" />
     <Compile Include="Champion\Udyr\Program.cs" />
     <Compile Include="Champion\Urgot\Urgot.cs" />
+    <Compile Include="Libraries\Sebby-OKTW\Movement.cs" />
     <Compile Include="Libraries\ValvraveSharp\Core\Common.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\Collision.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\Config.cs" />
@@ -695,6 +696,8 @@
     <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\Cutlass.cs" />
     <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\FrostQueen.cs" />
     <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\Hextech.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\HextechGLP-800.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\HextechProtobelt-01.cs" />
     <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\Hydra.cs" />
     <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\Tiamat.cs" />
     <Compile Include="Utility\ElUtilitySuite\Items\OffensiveItems\TitanicHydra.cs" />

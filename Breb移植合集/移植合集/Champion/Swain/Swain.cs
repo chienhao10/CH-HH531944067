@@ -58,12 +58,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         public static void LoadOKTW()
         {
-            Q = new Spell(SpellSlot.Q, 625);
+            Q = new Spell(SpellSlot.Q, 700);
             W = new Spell(SpellSlot.W, 900);
             E = new Spell(SpellSlot.E, 625);
             R = new Spell(SpellSlot.R, 675);
 
-            W.SetSkillshot(1.30f, 240f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            Q.SetSkillshot(0.5f, 200f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            W.SetSkillshot(1.5f, 240f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
             draw = Config.AddSubMenu("Draw");
             draw.Add("qRange", new CheckBox("Q range", false));
@@ -279,13 +280,18 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (t.IsValidTarget())
             {
                 if (t.Health < OktwCommon.GetKsDamage(t, Q) + E.GetDamage(t))
-                    Q.CastOnUnit(t);
+                    Q.Cast(t);
                 if (!getCheckBoxItem(q, "Quse" + t.ChampionName))
                     return;
                 if (Program.Combo && Player.Mana > RMANA + EMANA)
-                    Q.CastOnUnit(t);
+                    Q.Cast(t);
                 else if (Program.Farm && getCheckBoxItem(q, "harrasQ") && Player.Mana > RMANA + EMANA + WMANA + EMANA)
-                    Q.CastOnUnit(t);
+                    Q.Cast(t);
+                else if ((Program.Combo || Program.Farm))
+                {
+                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                        Q.Cast(enemy);
+                }
             }
         }
 

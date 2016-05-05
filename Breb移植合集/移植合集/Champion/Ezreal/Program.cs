@@ -172,7 +172,6 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 SetMana();
             }
-
             if (R.IsReady() && getCheckBoxItem(rMenu, "Rjungle"))
             {
                 KsJungle();
@@ -304,7 +303,7 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(1300, DamageType.Physical);
             var dashPosition = Player.Position.Extend(Game.CursorPos, E.Range);
 
-            if (Program.Enemies.Any(target => target.IsValidTarget(270) && target.IsMelee))
+            if (Program.Enemies.Any(target => target.IsValidTarget(300) && target.IsMelee))
             {
                 var dashPos = Dash.CastDash(true);
                 if (!dashPos.IsZero)

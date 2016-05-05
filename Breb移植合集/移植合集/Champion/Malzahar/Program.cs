@@ -20,8 +20,6 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static float QMANA, WMANA, EMANA, RMANA;
         private static float Rtime;
 
-        public static GameObject WMissile;
-
         public static Menu drawMenu, qMenu, wMenu, eMenu, rMenu, farmMenu;
 
         public static AIHeroClient Player
@@ -33,12 +31,12 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             Q = new Spell(SpellSlot.Q, 900);
             Qr = new Spell(SpellSlot.Q, 900);
-            W = new Spell(SpellSlot.W, 800);
+            W = new Spell(SpellSlot.W, 650);
             E = new Spell(SpellSlot.E, 650);
             R = new Spell(SpellSlot.R, 700);
 
             Qr.SetSkillshot(0.25f, 100, float.MaxValue, false, SkillshotType.SkillshotCircle);
-            Q.SetSkillshot(1.05f, 100, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            Q.SetSkillshot(0.75f, 80, float.MaxValue, false, SkillshotType.SkillshotCircle);
             W.SetSkillshot(1.2f, 230, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
             drawMenu = Config.AddSubMenu("线圈");
@@ -88,32 +86,16 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
             Spellbook.OnCastSpell += Spellbook_OnCastSpell;
-            GameObject.OnCreate += Obj_AI_Base_OnCreate;
-            GameObject.OnDelete += GameObject_OnDelete;
-        }
-
-        private static void GameObject_OnDelete(GameObject sender, EventArgs args)
-        {
-            if (sender.IsValid && sender.IsAlly)
-            {
-                if (sender.Name == "Malzahar_Base_W_flash.troy")
-                {
-                    WMissile = null;
-                }
-            }
-        }
-
-        private static void Obj_AI_Base_OnCreate(GameObject sender, EventArgs args)
-        {
-            if (sender.IsValid && sender.IsAlly)
-            {
-                if (sender.Name == "Malzahar_Base_W_flash.troy")
-                    WMissile = sender;
-            }
         }
 
         private static void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
+            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
+            {
+                args.Process = false;
+                return;
+            }
+
             if (args.Slot == SpellSlot.R)
             {
                 var t = TargetSelector.GetTarget(R.Range - 20, DamageType.Magical);
@@ -193,7 +175,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5)
+            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
             {
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
@@ -275,27 +257,18 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var wDmg = OktwCommon.GetKsDamage(t, W) + BonusDmg(t);
                 if (wDmg > t.Health)
                 {
-                    Program.CastSpell(W, t);
+                    W.Cast(Player.Position.LSExtend(t.Position, 450));
                 }
                 else if (wDmg + qDmg > t.Health && Player.Mana > QMANA + EMANA)
-                    Program.CastSpell(W, t);
+                    W.Cast(Player.Position.LSExtend(t.Position, 450));
                 else if (Program.Combo && Player.Mana > RMANA + WMANA)
-                    Program.CastSpell(W, t);
+                    W.Cast(Player.Position.LSExtend(t.Position, 450));
                 else if (Program.Farm && getCheckBoxItem(wMenu, "harrasW") && !Player.UnderTurret(true) &&
                          (Player.Mana > Player.MaxMana*0.8 || W.Level > Q.Level) &&
                          Player.Mana > RMANA + WMANA + EMANA + QMANA + WMANA && OktwCommon.CanHarras())
-                    Program.CastSpell(W, t);
-
-                if (Player.Mana > RMANA + WMANA)
-                {
-                    foreach (
-                        var enemy in
-                            Program.Enemies.Where(enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
-                        W.Cast(enemy, true);
-                }
+                    W.Cast(Player.Position.LSExtend(t.Position, 450));
             }
-            else if (Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") &&
-                     getCheckBoxItem(farmMenu, "farmW"))
+            else if (Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") && getCheckBoxItem(farmMenu, "farmW"))
             {
                 var allMinions = Cache.GetMinions(Player.ServerPosition, W.Range);
                 var farmPos = W.GetCircularFarmLocation(allMinions, W.Width);
@@ -374,8 +347,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 totalComboDamage += E.GetDamage(t);
 
-                if (W.IsReady() ||
-                    WMissile != null && WMissile.Position.Distance(t.Position) < 250 && Player.Mana > RMANA + WMANA)
+                if (W.IsReady() && Player.Mana > RMANA + WMANA)
                 {
                     totalComboDamage += W.GetDamage(t)*5;
                 }

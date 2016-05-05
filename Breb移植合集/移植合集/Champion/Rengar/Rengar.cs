@@ -84,7 +84,6 @@ namespace ElRengarRevamped
                 Orbwalker.OnPostAttack += AfterAttack;
                 Orbwalker.OnPreAttack += BeforeAttack;
                 Game.OnWndProc += OnClick;
-                Game.OnNotify += OnNotify;
             }
             catch (Exception e)
             {
@@ -95,19 +94,6 @@ namespace ElRengarRevamped
         #endregion
 
         #region Methods
-
-        private static void OnNotify(GameNotifyEventArgs args)
-        {
-            if (!MenuInit.getCheckBoxItem(MenuInit.miscMenu, "Misc.Mastery"))
-            {
-                return;
-            }
-
-            if (args.EventId == GameEventId.OnChampionKill)
-            {
-                Chat.Say("/masterybadge");
-            }
-        }
 
         private static void AfterAttack(AttackableUnit target, EventArgs args)
         {

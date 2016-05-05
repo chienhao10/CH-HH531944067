@@ -80,6 +80,7 @@ namespace Ziggs
 
             farmMenu = Config.AddSubMenu("Farm", "Farm");
             farmMenu.Add("UseQFarm", new CheckBox("Use Q"));
+            farmMenu.Add("UseWFarm", new CheckBox("Use W"));
             farmMenu.Add("UseEFarm", new CheckBox("Use E"));
             farmMenu.Add("ManaSliderFarm", new Slider("Mana To Farm", 25));
 
@@ -452,8 +453,10 @@ namespace Ziggs
             var allMinions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q2.Range);
 
             var useQi = getCheckBoxItem(farmMenu, "UseQFarm");
+            var useWi = getCheckBoxItem(farmMenu, "UseWFarm");
             var useEi = getCheckBoxItem(farmMenu, "UseEFarm");
             var useQ = useQi;
+            var useW = useWi;
             var useE = useEi;
 
             if (Q1.IsReady() && useQ)
@@ -466,6 +469,17 @@ namespace Ziggs
                 if (bLocation.MinionsHit > 0)
                 {
                     Q2.Cast(bLocation.Position.To3D());
+                }
+            }
+
+            if (W.IsReady() && useW)
+            {
+                var dmgpct = new[] { 25, 27.5, 30, 32.5, 35 }[W.Level - 1];
+
+                var killableTurret = ObjectManager.Get<Obj_AI_Turret>().Find(x => x.IsEnemy && ObjectManager.Player.Distance(x.Position) <= W.Range && x.HealthPercent < dmgpct);
+                if (killableTurret != null)
+                {
+                    W.Cast(killableTurret.Position);
                 }
             }
 

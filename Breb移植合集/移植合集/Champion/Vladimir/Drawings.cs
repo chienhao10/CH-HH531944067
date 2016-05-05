@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Drawing;
 using EloBuddy;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp.Common;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace ElVladimirReborn
 {

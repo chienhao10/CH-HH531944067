@@ -96,7 +96,6 @@ namespace ElRengarRevamped
             miscMenu.Add("Misc.Drawings.W", new CheckBox("Draw W"));
             miscMenu.Add("Misc.Drawings.E", new CheckBox("Draw E"));
             miscMenu.Add("Misc.Drawings.Minimap", new CheckBox("Draw R on minimap"));
-            miscMenu.Add("Misc.Mastery", new CheckBox("Mastery badge on kill", false));
         }
 
         #endregion

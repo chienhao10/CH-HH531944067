@@ -231,7 +231,7 @@ namespace OneKeyToWin_AIO_Sebby
                         !Orbwalking.InAutoAttackRange(minion) && GetRealPowPowRange(minion) < GetRealDistance(minion) &&
                         bonusRange() < GetRealDistance(minion)))
                 {
-                    var hpPred = HealthPrediction.GetHealthPrediction(minion, 200);
+                    var hpPred = HealthPrediction.GetHealthPrediction(minion, 400);
                     if (hpPred < Player.GetAutoAttackDamage(minion)*1.1 && hpPred > 5)
                     {
                         Orbwalker.ForcedTarget = minion;
@@ -622,13 +622,13 @@ namespace OneKeyToWin_AIO_Sebby
                 if (R.IsReady() && t.IsValidTarget() && R.GetDamage(t, 1) > t.Health)
                 {
                     Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
-                        "Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                        "R可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                     drawLine(t.Position, Player.Position, 5, Color.Red);
                 }
                 else if (t.IsValidTarget(2000) && W.GetDamage(t) > t.Health)
                 {
                     Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
-                        "W can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                        "W可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                     drawLine(t.Position, Player.Position, 3, Color.Yellow);
                 }
             }
