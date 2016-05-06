@@ -8,7 +8,7 @@ namespace Xerath
 {
     public static class Config
     {
-        public const string MenuName = "Xerath";
+        public const string MenuName = "CH汉化-泽拉斯";
         private static readonly Menu Menu;
 
         static Config()
@@ -29,7 +29,7 @@ namespace Xerath
 
         public static class Modes
         {
-            public const string MenuName = "Modes";
+            public const string MenuName = "模式";
             private static readonly Menu Menu;
 
             static Modes()
@@ -55,7 +55,7 @@ namespace Xerath
 
             public static class Combo
             {
-                public const string GroupName = "Combo";
+                public const string GroupName = "连招";
 
                 private static readonly CheckBox _useQ;
                 private static readonly CheckBox _useW;
@@ -91,14 +91,14 @@ namespace Xerath
                     // Initialize group
                     Menu.AddGroupLabel(GroupName);
 
-                    _useQ = Menu.Add("comboUseQ", new CheckBox("Use Q"));
-                    _useW = Menu.Add("comboUseW", new CheckBox("Use W"));
-                    _useE = Menu.Add("comboUseE", new CheckBox("Use E"));
-                    _useR = Menu.Add("comboUseR", new CheckBox("Use R", false));
+                    _useQ = Menu.Add("comboUseQ", new CheckBox("使用 Q"));
+                    _useW = Menu.Add("comboUseW", new CheckBox("使用 W"));
+                    _useE = Menu.Add("comboUseE", new CheckBox("使用 E"));
+                    _useR = Menu.Add("comboUseR", new CheckBox("使用 R", false));
 
-                    Menu.AddLabel("Advanced features:");
+                    Menu.AddLabel("高级设置:");
 
-                    _extraRangeQ = Menu.Add("comboExtraRangeQ", new Slider("Extra range for Q", 200, 0, 200));
+                    _extraRangeQ = Menu.Add("comboExtraRangeQ", new Slider("为Q 使用额外射程", 200, 0, 200));
                 }
 
                 public static void Initialize()
@@ -108,7 +108,7 @@ namespace Xerath
 
             public static class Harass
             {
-                public const string GroupName = "Harass";
+                public const string GroupName = "骚扰";
 
                 private static readonly CheckBox _useQ;
                 private static readonly CheckBox _useW;
@@ -144,14 +144,14 @@ namespace Xerath
                     // Initialize group
                     Menu.AddGroupLabel(GroupName);
 
-                    _useQ = Menu.Add("harassUseQ", new CheckBox("Use Q"));
-                    _useW = Menu.Add("harassUseW", new CheckBox("Use W"));
-                    _useE = Menu.Add("harassUseE", new CheckBox("Use E"));
+                    _useQ = Menu.Add("harassUseQ", new CheckBox("使用 Q"));
+                    _useW = Menu.Add("harassUseW", new CheckBox("使用 W"));
+                    _useE = Menu.Add("harassUseE", new CheckBox("使用 E"));
 
-                    Menu.AddLabel("Advanced features:");
+                    Menu.AddLabel("高级设置:");
 
-                    _extraRangeQ = Menu.Add("harassExtraRangeQ", new Slider("Extra range for Q", 200, 0, 200));
-                    _mana = Menu.Add("harassMana", new Slider("Mana usage in percent (%)", 30));
+                    _extraRangeQ = Menu.Add("harassExtraRangeQ", new Slider("为Q 使用额外射程", 200, 0, 200));
+                    _mana = Menu.Add("harassMana", new Slider("蓝量使用 (%)", 30));
                 }
 
                 public static void Initialize()
@@ -161,7 +161,7 @@ namespace Xerath
 
             public static class LaneClear
             {
-                public const string GroupName = "LaneClear";
+                public const string GroupName = "清线";
 
                 private static readonly CheckBox _useQ;
                 private static readonly CheckBox _useW;
@@ -197,14 +197,14 @@ namespace Xerath
                     // Initialize group
                     Menu.AddGroupLabel(GroupName);
 
-                    _useQ = Menu.Add("laneUseQ", new CheckBox("Use Q"));
-                    _useW = Menu.Add("laneUseW", new CheckBox("Use W"));
+                    _useQ = Menu.Add("laneUseQ", new CheckBox("使用 Q"));
+                    _useW = Menu.Add("laneUseW", new CheckBox("使用 W"));
 
-                    Menu.AddLabel("Advanced features:");
+                    Menu.AddLabel("高级设置:");
 
-                    _hitNumQ = Menu.Add("laneHitQ", new Slider("Hit number for Q", 3, 1, 10));
-                    _hitNumW = Menu.Add("laneHitW", new Slider("Hit number for W", 3, 1, 10));
-                    _mana = Menu.Add("laneMana", new Slider("Mana usage in percent (%)", 30));
+                    _hitNumQ = Menu.Add("laneHitQ", new Slider("Q 命中小兵数量", 3, 1, 10));
+                    _hitNumW = Menu.Add("laneHitW", new Slider("W 命中小兵数量", 3, 1, 10));
+                    _mana = Menu.Add("laneMana", new Slider("蓝量使用 (%)", 30));
                 }
 
                 public static void Initialize()
@@ -214,7 +214,7 @@ namespace Xerath
 
             public static class JungleClear
             {
-                public const string GroupName = "LaneClear";
+                public const string GroupName = "清野";
 
                 private static readonly CheckBox _useQ;
                 private static readonly CheckBox _useW;
@@ -238,9 +238,9 @@ namespace Xerath
                     // Initialize group
                     Menu.AddGroupLabel(GroupName);
 
-                    _useQ = Menu.Add("jungleUseQ", new CheckBox("Use Q"));
-                    _useW = Menu.Add("jungleUseW", new CheckBox("Use W"));
-                    _useE = Menu.Add("jungleUseE", new CheckBox("Use E"));
+                    _useQ = Menu.Add("jungleUseQ", new CheckBox("使用 Q"));
+                    _useW = Menu.Add("jungleUseW", new CheckBox("使用 W"));
+                    _useE = Menu.Add("jungleUseE", new CheckBox("使用 E"));
                 }
 
                 public static void Initialize()
@@ -262,16 +262,16 @@ namespace Xerath
 
         public static class Ultimate
         {
-            public const string MenuName = "Ultimate";
+            public const string MenuName = "大招";
             private static readonly Menu Menu;
 
             public static readonly string[] AvailableModes =
             {
-                "Smart targetting",
-                "Obvious scripting",
-                "Near mouse",
-                "On key press (auto)",
-                "On key press (near mouse)"
+                "智能选择目标",
+                "超神模式（明显脚本）",
+                "鼠标附近",
+                "使用发射按键 (自动)",
+                "使用发射按键 (鼠标附近)"
             };
 
             private static readonly CheckBox _enabled;
@@ -296,18 +296,18 @@ namespace Xerath
                 // Initialize menu
                 Menu = Config.Menu.AddSubMenu(MenuName);
 
-                _enabled = Menu.Add("enabled", new CheckBox("Enable settings below"));
+                _enabled = Menu.Add("enabled", new CheckBox("开启已下设置"));
 
                 _mode = new Slider("Mode: " + AvailableModes[0], 0, 0, AvailableModes.Length - 1);
-                _mode.OnValueChange += delegate { _mode.DisplayName = "Mode: " + AvailableModes[_mode.CurrentValue]; };
+                _mode.OnValueChange += delegate { _mode.DisplayName = "模式: " + AvailableModes[_mode.CurrentValue]; };
                 Menu.Add("mode", _mode);
-                Menu.AddLabel("Available modes:");
+                Menu.AddLabel("可选模式:");
                 for (var i = 0; i < AvailableModes.Length; i++)
                 {
                     Menu.AddLabel(string.Format("  - {0}: {1}", i, AvailableModes[i]));
                 }
 
-                _shootKey = Menu.Add("keyPress", new KeyBind("Shoot charge on press", false, KeyBind.BindTypes.HoldActive, 'T'));
+                _shootKey = Menu.Add("keyPress", new KeyBind("R 发射按键", false, KeyBind.BindTypes.HoldActive, 'T'));
             }
 
             public static void Initialize()
@@ -317,7 +317,7 @@ namespace Xerath
 
         public static class Misc
         {
-            public const string MenuName = "Miscellaneous";
+            public const string MenuName = "杂项";
             private static readonly Menu Menu;
 
             private static readonly CheckBox _gapcloser;
@@ -342,9 +342,9 @@ namespace Xerath
                 // Initialize menu
                 Menu = Config.Menu.AddSubMenu(MenuName);
 
-                _gapcloser = Menu.Add("miscGapcloseE", new CheckBox("Use E against gapclosers"));
-                _interrupter = Menu.Add("miscInterruptE", new CheckBox("Use E to interrupt dangerous spells"));
-                _alerter = Menu.Add("miscAlerter", new CheckBox("Altert in chat when someone is killable with R"));
+                _gapcloser = Menu.Add("miscGapcloseE", new CheckBox("E 防突进"));
+                _interrupter = Menu.Add("miscInterruptE", new CheckBox("E 技能打断"));
+                _alerter = Menu.Add("miscAlerter", new CheckBox("聊天提示R可击杀目标"));
             }
 
             public static void Initialize()
@@ -354,7 +354,7 @@ namespace Xerath
 
         public static class Drawing
         {
-            public const string MenuName = "Drawing";
+            public const string MenuName = "线圈";
             private static readonly Menu Menu;
 
             private static readonly CheckBox _drawQ;
@@ -395,15 +395,15 @@ namespace Xerath
                 // Initialize menu
                 Menu = Config.Menu.AddSubMenu(MenuName);
 
-                Menu.AddGroupLabel("Spell ranges");
-                _drawQ = Menu.Add("drawQ", new CheckBox("Q range"));
-                _drawW = Menu.Add("drawW", new CheckBox("W range"));
-                _drawE = Menu.Add("drawE", new CheckBox("E range"));
-                _drawR = Menu.Add("drawR", new CheckBox("R range", false));
+                Menu.AddGroupLabel("技能范围");
+                _drawQ = Menu.Add("drawQ", new CheckBox("Q 范围"));
+                _drawW = Menu.Add("drawW", new CheckBox("W 范围"));
+                _drawE = Menu.Add("drawE", new CheckBox("E 范围"));
+                _drawR = Menu.Add("drawR", new CheckBox("R 范围", false));
 
-                Menu.AddGroupLabel("Damage indicators");
-                _healthbar = Menu.Add("healthbar", new CheckBox("Healthbar overlay"));
-                _percent = Menu.Add("percent", new CheckBox("Damage percent info"));
+                Menu.AddGroupLabel("伤害指示器");
+                _healthbar = Menu.Add("healthbar", new CheckBox("血量显示"));
+                _percent = Menu.Add("percent", new CheckBox("伤害百分比"));
             }
 
             public static void Initialize()

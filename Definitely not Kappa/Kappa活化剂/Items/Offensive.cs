@@ -39,13 +39,17 @@
             OffMenu.AddSeparator();
             OffMenu.Add("eL", new Slider("敌方血量 X 时使用", 65, 0, 100));
             OffMenu.Add("oL", new Slider("自身血量 X 时使用", 65, 0, 100));
-
+            
             Orbwalker.OnPostAttack += Orbwalker_OnPostAttack;
             loaded = true;
         }
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
         {
+            if (!loaded)
+            {
+                return;
+            }
             if (!target.IsEnemy || !(target is AIHeroClient))
             {
                 return;
@@ -57,19 +61,27 @@
             var flags = Orbwalker.ActiveModesFlags;
             if (flags.HasFlag(Orbwalker.ActiveModes.Combo) && useHydra)
             {
-                if (Hydra.Cast())
+                if (Hydra.IsOwned() && Hydra.IsReady() && Hydra != null)
                 {
-                    Orbwalker.ResetAutoAttack();
+                    if (Hydra.Cast())
+                    {
+                        Orbwalker.ResetAutoAttack();
+                    }
                 }
 
-                if (Timat.Cast())
+                if (Timat.IsOwned() && Timat.IsReady() && Timat != null)
                 {
-                    Orbwalker.ResetAutoAttack();
+                    if (Timat.Cast())
+                    {
+                        Orbwalker.ResetAutoAttack();
+                    }
                 }
-
-                if (Titanic.Cast())
+                if (Titanic.IsOwned() && Titanic.IsReady() && Titanic != null)
                 {
-                    Orbwalker.ResetAutoAttack();
+                    if (Titanic.Cast())
+                    {
+                        Orbwalker.ResetAutoAttack();
+                    }
                 }
             }
         }

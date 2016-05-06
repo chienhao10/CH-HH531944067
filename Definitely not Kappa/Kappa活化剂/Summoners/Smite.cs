@@ -21,25 +21,22 @@
                                  && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
                 var smiteks = SummMenu["smiteks"].Cast<CheckBox>().CurrentValue && Smite.IsReady();
 
-                foreach (var mob in
-                    EntityManager.MinionsAndMonsters.GetJungleMonsters()
-                        .Where(
-                            jmob =>
-                            !jmob.HasBuffOfType(BuffType.Invulnerability) && jmob.IsHPBarRendered && jmob.IsMonster && jmob.IsVisible && !jmob.IsDead
-                            && !jmob.IsZombie && jmob.IsKillable()
-                            && ((SummMenu["龙"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Dragon")
-                                || (SummMenu["男爵"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Baron")
-                                || (SummMenu["青蛙"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Gromp")
-                                || (SummMenu["石头人"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Krug")
-                                || (SummMenu["4鸟"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Razorbeak")
-                                || (SummMenu["河蟹"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "Sru_Crab")
-                                || (SummMenu["狼"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Murkwolf")
-                                || (SummMenu["蓝"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Blue")
-                                || (SummMenu["红"].Cast<CheckBox>().CurrentValue && jmob.BaseSkinName == "SRU_Red")))
-                        .Where(mob => smitemob)
-                        .Where(mob => Player.Instance.GetSummonerSpellDamage(mob, DamageLibrary.SummonerSpells.Smite) >= mob.Health))
+                foreach (var jmob in EntityManager.MinionsAndMonsters.GetJungleMonsters())
                 {
-                    Smite.Cast(mob);
+                    if (jmob != null && Junglemobs.Contains(jmob.BaseSkinName) && smitemob)
+                    {
+                        if (jmob.IsHPBarRendered && jmob.IsKillable() && SummMenu[jmob.BaseSkinName].Cast<CheckBox>().CurrentValue)
+                        {
+                            var predhealth = Player.Instance.GetSummonerSpellDamage(jmob, DamageLibrary.SummonerSpells.Smite)
+                                             >= Prediction.Health.GetPrediction(jmob, Smite.CastDelay * 1000);
+                            var health = Player.Instance.GetSummonerSpellDamage(jmob, DamageLibrary.SummonerSpells.Smite) >= jmob.Health;
+
+                            if (predhealth || health)
+                            {
+                                Smite.Cast(jmob);
+                            }
+                        }
+                    }
                 }
 
                 foreach (var target in

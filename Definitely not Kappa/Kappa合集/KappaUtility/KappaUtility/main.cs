@@ -8,7 +8,7 @@ namespace KappaUtility
 {
     using EloBuddy.SDK.Events;
 
-    class main
+    internal class main
     {
         private static void Main(string[] args)
         {

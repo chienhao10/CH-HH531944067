@@ -30,6 +30,12 @@
 
         public static Spell.Skillshot porotoss;
 
+        public static readonly string[] Junglemobs =
+            {
+                "SRU_Dragon_Air", "SRU_Dragon_Earth", "SRU_Dragon_Fire", "SRU_Dragon_Water", "SRU_Dragon_Elder", "SRU_Baron", "SRU_Gromp", "SRU_Krug", "SRU_Razorbeak", "Sru_Crab", "SRU_Murkwolf",
+                "SRU_Blue", "SRU_Red", "AscXerath"
+            };
+
         public static Menu SummMenu { get; private set; }
 
         protected static bool loaded = false;
@@ -155,15 +161,10 @@
                 }
 
                 SummMenu.AddGroupLabel("对野怪使用惩戒:");
-                SummMenu.Add("blue", new CheckBox(" 蓝 "));
-                SummMenu.Add("red", new CheckBox(" 红 "));
-                SummMenu.Add("baron", new CheckBox(" 男爵 "));
-                SummMenu.Add("drake", new CheckBox(" 龙 "));
-                SummMenu.Add("gromp", new CheckBox(" 蛤蟆 "));
-                SummMenu.Add("krug", new CheckBox(" 石头人 "));
-                SummMenu.Add("razorbeak", new CheckBox(" 鸟怪 "));
-                SummMenu.Add("crab", new CheckBox(" 河蟹 "));
-                SummMenu.Add("murkwolf", new CheckBox(" 狼 "));
+                foreach (var mob in Junglemobs)
+                {
+                    SummMenu.Add(mob, new CheckBox(mob));
+                }
                 SummMenu.AddSeparator();
                 if (Player.Instance.Spellbook.GetSpell(SpellSlot.Summoner1).Name.ToLower().Contains("summonersmite"))
                 {
