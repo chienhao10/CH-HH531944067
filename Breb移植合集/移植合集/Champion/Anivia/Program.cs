@@ -31,11 +31,11 @@ namespace PortAIO.Champion.Anivia
             Q = new Spell(SpellSlot.Q, 1000);
             W = new Spell(SpellSlot.W, 950);
             E = new Spell(SpellSlot.E, 650);
-            R = new Spell(SpellSlot.R, 650);
+            R = new Spell(SpellSlot.R, 685);
 
             Q.SetSkillshot(0.25f, 110f, 870f, false, SkillshotType.SkillshotLine);
             W.SetSkillshot(0.6f, 1f, float.MaxValue, false, SkillshotType.SkillshotLine);
-            R.SetSkillshot(2f, 420f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            R.SetSkillshot(2f, 400f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
             Chat.Print("Berb : Using Common Pred w/ Medium Hitchance is the best for Anivia!");
 

@@ -72,8 +72,7 @@ namespace UnderratedAIO.Champions
 
         private static void Clear()
         {
-            if (getCheckBoxItem(laneClearMenu, "useeLC") && E.IsReady() && !GarenE &&
-                Environment.Minion.countMinionsInrange(player.Position, E.Range) > 2)
+            if (getCheckBoxItem(laneClearMenu, "useeLC") && E.IsReady() && !GarenE && Environment.Minion.countMinionsInrange(player.Position, E.Range) > 2)
             {
                 E.Cast(getCheckBoxItem(config, "packets"));
             }
@@ -81,8 +80,8 @@ namespace UnderratedAIO.Champions
 
         private static void AfterAttack(AttackableUnit target, EventArgs args)
         {
-            if (Q.IsReady() && getCheckBoxItem(miscMenu, "useqAAA") && !GarenE && target.IsEnemy &&
-                target is AIHeroClient)
+            var targetA = target as AIHeroClient;
+            if (Q.IsReady() && getCheckBoxItem(miscMenu, "useqAAA") && !GarenE && target.IsEnemy && !targetA.IsMinion && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && target is AIHeroClient)
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
                 Player.IssueOrder(GameObjectOrder.AutoAttack, target);
@@ -92,25 +91,24 @@ namespace UnderratedAIO.Champions
         private static void Combo()
         {
             var target = TargetSelector.GetTarget(700, DamageType.Physical);
+
             if (target == null)
             {
                 return;
             }
+
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
             var ignitedmg = (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
-            if (getCheckBoxItem(comboMenu, "useIgnite") && hasIgnite &&
-                ((R.IsReady() && ignitedmg + R.GetDamage(target) > target.Health) || ignitedmg > target.Health) &&
-                (target.Distance(player) > E.Range || player.HealthPercent < 20))
+            if (getCheckBoxItem(comboMenu, "useIgnite") && hasIgnite && ((R.IsReady() && ignitedmg + R.GetDamage(target) > target.Health) || ignitedmg > target.Health) && (target.Distance(player) > E.Range || player.HealthPercent < 20))
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
-            if (getCheckBoxItem(comboMenu, "useq") && Q.IsReady() &&
-                player.Distance(target) > player.AttackRange && !GarenE && !GarenQ &&
-                player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target) &&
-                CombatHelper.IsPossibleToReachHim(target, 0.30f, new float[5] {1.5f, 2f, 2.5f, 3f, 3.5f}[Q.Level - 1]))
+
+            if (getCheckBoxItem(comboMenu, "useq") && Q.IsReady() && player.Distance(target) > player.AttackRange && !GarenE && !GarenQ && player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target) && CombatHelper.IsPossibleToReachHim(target, 0.30f, new float[5] {1.5f, 2f, 2.5f, 3f, 3.5f}[Q.Level - 1]))
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
             }
+
             if (getCheckBoxItem(comboMenu, "useq") && Q.IsReady() && !GarenQ &&
                 (!GarenE || (Q.IsReady() && player.LSGetSpellDamage(target, SpellSlot.Q) > target.Health)))
             {
@@ -121,6 +119,7 @@ namespace UnderratedAIO.Champions
                 Q.Cast(getCheckBoxItem(config, "packets"));
                 Player.IssueOrder(GameObjectOrder.AutoAttack, target);
             }
+
             if (getCheckBoxItem(comboMenu, "usee") && E.IsReady() && !Q.IsReady() && !GarenQ && !GarenE &&
                 player.CountEnemiesInRange(E.Range) > 0)
             {

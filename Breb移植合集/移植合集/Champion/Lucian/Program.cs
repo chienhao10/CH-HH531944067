@@ -222,7 +222,7 @@ namespace LCS_Lucian
                 Harass();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Clear();
             }
@@ -330,25 +330,17 @@ namespace LCS_Lucian
             if (LucianSpells.Q.IsReady() && getCheckBoxItem(clearMenu, "lucian.q.clear") &&
                 ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
             {
-                foreach (
-                    var minion in
-                        MinionManager.GetMinions(ObjectManager.Player.ServerPosition, LucianSpells.Q.Range,
-                            MinionTypes.All,
-                            MinionTeam.NotAlly))
+                foreach (var minion in MinionManager.GetMinions(ObjectManager.Player.ServerPosition, LucianSpells.Q.Range, MinionTypes.All, MinionTeam.NotAlly))
                 {
-                    var prediction = Prediction.GetPrediction(minion, LucianSpells.Q.Delay,
-                        ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRadius);
+                    var prediction = Prediction.GetPrediction(minion, LucianSpells.Q.Delay, ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRadius);
 
-                    var collision = LucianSpells.Q.GetCollision(ObjectManager.Player.Position.To2D(),
-                        new List<Vector2> {prediction.UnitPosition.To2D()});
+                    var collision = LucianSpells.Q.GetCollision(ObjectManager.Player.Position.To2D(), new List<Vector2> {prediction.UnitPosition.To2D()});
 
                     foreach (var cs in collision)
                     {
                         if (collision.Count >= getSliderItem(clearMenu, "lucian.q.minion.hit.count"))
                         {
-                            if (collision.Last().Distance(ObjectManager.Player) -
-                                collision[0].Distance(ObjectManager.Player) <= 600
-                                && collision[0].Distance(ObjectManager.Player) <= 500)
+                            if (collision.Last().Distance(ObjectManager.Player) - collision[0].Distance(ObjectManager.Player) <= 600 && collision[0].Distance(ObjectManager.Player) <= 500)
                             {
                                 LucianSpells.Q.Cast(cs);
                             }

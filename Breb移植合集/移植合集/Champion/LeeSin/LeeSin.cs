@@ -351,8 +351,11 @@
 
             var predA = Q.GetPrediction(target, false, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
             var colA = predA.GetCollision();
-            if (colA == null) return;
-            if (colA.Count == 0 || (getCheckBoxItem(comboMenu, "QCol") && Common.CastSmiteKillCollision(colA)))
+            if (pred.HitChance >= EloBuddy.SDK.Enumerations.HitChance.High)
+            {
+                QELO.Cast(target);
+            }
+            else if ((getCheckBoxItem(comboMenu, "QCol") && Common.CastSmiteKillCollision(colA)))
             {
                 QELO.Cast(target);
             }
@@ -446,6 +449,7 @@
                     }
                 }
             }
+
             if (getCheckBoxItem(comboMenu, "Q") && Q.IsReady())
             {
                 if (IsQOne)
@@ -479,10 +483,12 @@
                     }
                 }
             }
+
             if (getCheckBoxItem(comboMenu, "E"))
             {
                 CastECombo();
             }
+
             if (getCheckBoxItem(comboMenu, "W"))
             {
                 CastW();
@@ -810,7 +816,7 @@
                 if (getCheckBoxItem(drawMenu, "KnockUp"))
                 {
                     var menu = getKeyBindItem(kuMenu, "RAuto");
-                    var text = $"自动击飞: {(menu ? "On" : "Off")} [{menu}]";
+                    var text = $"自动踢飞: {(menu ? "On" : "Off")} [{menu}]";
                     var pos = Drawing.WorldToScreen(Player.Position);
                     Drawing.DrawText(pos.X - (float)90 / 2, pos.Y + 20, menu ? Color.White : Color.Gray, text);
                 }

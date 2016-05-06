@@ -1,13 +1,19 @@
 ﻿using System;
-using EloBuddy;
-using EloBuddy.SDK;
 using LeagueSharp.Common;
-using Utility = LeagueSharp.Common.Utility;
+using LeagueSharp;
+using System.Linq;
+using EloBuddy.SDK;
+using EloBuddy;
 
 namespace NechritoRiven
 {
-    internal class FastHarass
+    class FastHarass
     {
+        private static void Game_OnUpdate(EventArgs args)
+        {
+            FastHarassLogic();
+        }
+
         public static void FastHarassLogic()
         {
             var target = TargetSelector.GetTarget(400, DamageType.Physical);
@@ -16,7 +22,7 @@ namespace NechritoRiven
                 if (target.IsValidTarget() && !target.IsZombie)
                 {
                     Logic.ForceCastQ(target);
-                    Utility.DelayAction.Add(1, Logic.ForceW);
+                    LeagueSharp.Common.Utility.DelayAction.Add(1, Logic.ForceW);
                 }
             }
             if (Spells._q.IsReady() && Program._qstack == 3)
@@ -24,7 +30,7 @@ namespace NechritoRiven
                 if (target.IsValidTarget() && !target.IsZombie)
                 {
                     Logic.ForceCastQ(target);
-                    Utility.DelayAction.Add(1, Logic.ForceW);
+                    LeagueSharp.Common.Utility.DelayAction.Add(1, Logic.ForceW);
                 }
             }
         }

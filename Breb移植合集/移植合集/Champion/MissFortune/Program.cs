@@ -248,6 +248,9 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (Program.LagFree(4) && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
                 LogicR();
+
+            Orbwalker.DisableAttacking = false;
+            Orbwalker.DisableMovement = false;
         }
 
         private static void LogicQ()

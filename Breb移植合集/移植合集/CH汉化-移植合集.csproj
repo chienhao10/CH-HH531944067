@@ -127,6 +127,24 @@
     <Compile Include="Champion\Braum\Program.cs" />
     <Compile Include="Champion\Caitlyn\Program.cs" />
     <Compile Include="Champion\Cassiopeia\Program.cs" />
+    <Compile Include="Champion\Kha%27Zix\Extensions.cs" />
+    <Compile Include="Champion\Kha%27Zix\Helper.cs" />
+    <Compile Include="Champion\Kha%27Zix\Khazix.cs" />
+    <Compile Include="Champion\Kha%27Zix\KhazixMenu.cs" />
+    <Compile Include="Champion\Riven\Classes\Dmg.cs" />
+    <Compile Include="Champion\Riven\Classes\FleeLogic.cs" />
+    <Compile Include="Champion\Riven\Classes\HpBarIndicator.cs" />
+    <Compile Include="Champion\Riven\Classes\Logic.cs" />
+    <Compile Include="Champion\Riven\Classes\MenuConfig.cs" />
+    <Compile Include="Champion\Riven\Classes\Modes\Burst.cs" />
+    <Compile Include="Champion\Riven\Classes\Modes\Combo.cs" />
+    <Compile Include="Champion\Riven\Classes\Modes\FastHarass.cs" />
+    <Compile Include="Champion\Riven\Classes\Modes\Flee.cs" />
+    <Compile Include="Champion\Riven\Classes\Modes\Harass.cs" />
+    <Compile Include="Champion\Riven\Classes\Modes\Jungle.cs" />
+    <Compile Include="Champion\Riven\Classes\Modes\Lane.cs" />
+    <Compile Include="Champion\Riven\Classes\Spells.cs" />
+    <Compile Include="Champion\Riven\Program.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\CSPlugin.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Kalista.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\KogMaw.cs" />
@@ -249,7 +267,6 @@
     <Compile Include="Champion\Katarina\Utility.cs" />
     <Compile Include="Champion\Kayle\Program.cs" />
     <Compile Include="Champion\Kennen\Program.cs" />
-    <Compile Include="Champion\Kha%27Zix\Program.cs" />
     <Compile Include="Champion\Kindred\Helper.cs" />
     <Compile Include="Champion\Kindred\Language.cs" />
     <Compile Include="Champion\Kindred\Program.cs" />
@@ -415,18 +432,6 @@
     <Compile Include="Champion\Rengar\MenuInit.cs" />
     <Compile Include="Champion\Rengar\Rengar.cs" />
     <Compile Include="Champion\Rengar\Standards.cs" />
-    <Compile Include="Champion\Riven\Classes\Dmg.cs" />
-    <Compile Include="Champion\Riven\Classes\Logic.cs" />
-    <Compile Include="Champion\Riven\Classes\MenuConfig.cs" />
-    <Compile Include="Champion\Riven\Classes\Modes\Burst.cs" />
-    <Compile Include="Champion\Riven\Classes\Modes\Combo.cs" />
-    <Compile Include="Champion\Riven\Classes\Modes\FastHarass.cs" />
-    <Compile Include="Champion\Riven\Classes\Modes\Flee.cs" />
-    <Compile Include="Champion\Riven\Classes\Modes\Harass.cs" />
-    <Compile Include="Champion\Riven\Classes\Modes\Jungle.cs" />
-    <Compile Include="Champion\Riven\Classes\Modes\Lane.cs" />
-    <Compile Include="Champion\Riven\Classes\Spells.cs" />
-    <Compile Include="Champion\Riven\Program.cs" />
     <Compile Include="Champion\Rumble\Rumble.cs" />
     <Compile Include="Champion\Ryze\Properties\Modes\Automatic.cs" />
     <Compile Include="Champion\Ryze\Properties\Modes\PvM\Clear.cs" />
@@ -971,6 +976,7 @@
     <Folder Include="Libraries\ValvraveSharp\Plugin\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\3f3bb8b4-114c-11e6-8c69-6490a00d3c3f.gif" />
     <Content Include="Resources\Images\cursor_drag.png" />
     <Content Include="Resources\Images\notifications_arrow.png" />
     <Content Include="Resources\Images\notifications_check.png" />

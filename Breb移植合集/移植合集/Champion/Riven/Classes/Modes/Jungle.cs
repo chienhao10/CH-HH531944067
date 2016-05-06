@@ -4,9 +4,12 @@ using EloBuddy.SDK;
 
 namespace NechritoRiven
 {
-    internal class Jungle
+    class Jungle
     {
-
+        private static void Game_OnUpdate(EventArgs args)
+        {
+            JungleLogic();
+        }
         public static void JungleLogic()
         {
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))

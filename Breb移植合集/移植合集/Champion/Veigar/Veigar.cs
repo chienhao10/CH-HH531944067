@@ -103,7 +103,6 @@ namespace FreshBooster.Champion
                 Harass.Add("Veigar_HUseQ", new CheckBox("Use Q"));
                 Harass.Add("Veigar_HUseW", new CheckBox("Use W - When target can't only move"));
                 Harass.Add("Veigar_HUseE", new CheckBox("Use E - When target can't only move"));
-                Harass.Add("Veigar_HUseR", new CheckBox("Use R"));
                 Harass.Add("Veigar_HManarate", new Slider("Mana %", 20));
                 Harass.Add("Veigar_AutoHUseQ", new KeyBind("Auto Harass", false, KeyBind.BindTypes.PressToggle, 'T'));
 
@@ -191,22 +190,22 @@ namespace FreshBooster.Champion
                 var ETarget = TargetSelector.GetTarget(_E.Range, DamageType.Magical);
                 var RTarget = TargetSelector.GetTarget(_E.Range, DamageType.Magical);
 
-                var KTarget = ObjectManager.Get<AIHeroClient>().OrderBy(x => x.Health).FirstOrDefault(x => x.IsEnemy && Player.Distance(x) < 900);
+                var KTarget = ObjectManager.Get<AIHeroClient>().OrderBy(x => x.Health).FirstOrDefault(x => x.IsEnemy && Player.LSDistance(x) < 900);
                 //KillSteal
                 if (KTarget != null && !KTarget.IsDead && KTarget.IsEnemy && KTarget.Health > 0)
                 {
-                    if (getCheckBoxItem(KillSteal, "Veigar_KseQ") && _Q.IsReady() && KTarget.Health < _Q.GetDamage(KTarget) && KTarget.Distance(Player) <= _Q.Range)
+                    if (getCheckBoxItem(KillSteal, "Veigar_KseQ") && _Q.IsReady() && KTarget.Health < _Q.GetDamage(KTarget) && KTarget.LSDistance(Player) <= _Q.Range)
                     {
                         _Q.CastIfHitchanceEquals(KTarget, Hitchance("Veigar_CUseQ_Hit"), true);
                         return;
                     }
-                    if (getCheckBoxItem(KillSteal, "Veigar_KseR") && _R.IsReady() && KTarget.Health < _R.GetDamage(KTarget) && KTarget.Distance(Player) <= _R.Range)
+                    if (getCheckBoxItem(KillSteal, "Veigar_KseR") && _R.IsReady() && KTarget.Health < _R.GetDamage(KTarget) && KTarget.LSDistance(Player) <= _R.Range)
                     {
                         _R.Cast(KTarget, true);
                         return;
                     }
 
-                    if (getCheckBoxItem(KillSteal, "Veigar_KseW") && _W.IsReady() && !KTarget.CanMove && KTarget.Health < _W.GetDamage(KTarget) && KTarget.Distance(Player) <= _W.Range)
+                    if (getCheckBoxItem(KillSteal, "Veigar_KseW") && _W.IsReady() && !KTarget.CanMove && KTarget.Health < _W.GetDamage(KTarget) && KTarget.LSDistance(Player) <= _W.Range)
                     {
                         _W.CastIfHitchanceEquals(KTarget, LeagueSharp.Common.HitChance.VeryHigh, true);
                         return;
@@ -230,7 +229,19 @@ namespace FreshBooster.Champion
                         _Q.CastIfHitchanceEquals(QTarget, Hitchance("Veigar_CUseQ_Hit"), true);
                         return;
                     }
-                    if (getCheckBoxItem(Combo, "Veigar_CUseR") && RTarget != null && _R.IsReady() && !getCheckBoxItem(Combo, "Veigar_CUseR_Select"))
+
+                    if (getCheckBoxItem(Combo, "Veigar_CUseR_Select") && getCheckBoxItem(Combo, "Veigar_CUseR") && _R.IsReady() && KTarget.Health < _R.GetDamage(KTarget) && KTarget.LSDistance(Player) <= _R.Range)
+                    {
+                        _R.Cast(KTarget, true);
+                        return;
+                    }
+
+                    if (getCheckBoxItem(Combo, "Veigar_CUseR_Select"))
+                    {
+                        return;
+                    }
+
+                    if (getCheckBoxItem(Combo, "Veigar_CUseR") && RTarget != null && _R.IsReady())
                     {
                         _R.Cast(RTarget, true);
                         return;
@@ -254,11 +265,6 @@ namespace FreshBooster.Champion
                         _Q.CastIfHitchanceEquals(QTarget, Hitchance("Veigar_CUseQ_Hit"), true);
                         return;
                     }
-                    if (getCheckBoxItem(Harass, "Veigar_HUseR") && RTarget != null && _R.IsReady())
-                    {
-                        _R.Cast(RTarget, true);
-                        return;
-                    }
                 }
 
                 //LaneClear
@@ -271,12 +277,12 @@ namespace FreshBooster.Champion
                         {
                             if (getCheckBoxItem(LaneClear, "Veigar_LUseQSet") && item.Health < _Q.GetDamage(item))
                             {
-                                _Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.Low, true);
+                                _Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.High, true);
                                 return;
                             }
                             if (!getCheckBoxItem(LaneClear, "Veigar_LUseQSet"))
                             {
-                                _Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.Low, true);
+                                _Q.CastIfHitchanceEquals(item, LeagueSharp.Common.HitChance.High, true);
                                 return;
                             }
                         }
@@ -314,13 +320,14 @@ namespace FreshBooster.Champion
         {
             if (!target.CanMove && !target.IsMoving)
             {
-                var EPosition = target.ServerPosition.Extend(Player.Position, 400);
+                var EPosition = target.ServerPosition.LSExtend(Player.Position, 400);
                 _E.Cast(EPosition, true);
                 return;
             }
-            if (target.Distance(Player) > 750)
+
+            if (target.LSDistance(Player) > 750)
             {
-                var EPosition = target.ServerPosition.Extend(Player.Position, 200);
+                var EPosition = target.ServerPosition.LSExtend(Player.Position, 200);
                 _E.Cast(EPosition, true);
                 return;
             }
@@ -337,7 +344,7 @@ namespace FreshBooster.Champion
             {
                 if (getCheckBoxItem(Misc, "Veigar_Anti-GapCloser") && _E.IsReady())
                 {
-                    var EPosition = gapcloser.End.Extend(Player.ServerPosition, 400);
+                    var EPosition = gapcloser.End.LSExtend(Player.ServerPosition, 400);
                     _E.Cast(EPosition, true);
                     return;
                 }
@@ -356,9 +363,9 @@ namespace FreshBooster.Champion
         {
             try
             {
-                if (getCheckBoxItem(Misc, "Veigar_Interrupt") && sender.IsEnemy && _E.IsReady() && sender.Distance(Player) < 1150)
+                if (getCheckBoxItem(Misc, "Veigar_Interrupt") && sender.IsEnemy && _E.IsReady() && sender.LSDistance(Player) < 1150)
                 {
-                    var EPosition = sender.ServerPosition.Extend(Player.Position, 400);
+                    var EPosition = sender.ServerPosition.LSExtend(Player.Position, 400);
                     _E.Cast(EPosition, true);
                     return;
                 }

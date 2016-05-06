@@ -56,6 +56,7 @@ namespace XinZhao
 
             /* [ Combo ] */
             comboMenu = Config.AddSubMenu("Combo", "Combo");
+            comboMenu.Add("useECombo", new CheckBox("Use E"));
             comboMenu.Add("EMinRange", new Slider("Min. E Range", 300, 200, 500));
             comboMenu.Add("ComboUseR", new CheckBox("Use R"));
             comboMenu.Add("ComboUseRS", new Slider("Min. Enemy Count:", 2, 1, 5));
@@ -196,7 +197,7 @@ namespace XinZhao
             var drawEMinRange = getCheckBoxItem(drawMenu, "DrawEMinRange");
             if (drawEMinRange)
             {
-                var eMinRange = getSliderItem(drawMenu, "EMinRange");
+                var eMinRange = getSliderItem(comboMenu, "EMinRange");
                 Render.Circle.DrawCircle(Player.Position, eMinRange, Color.Aqua, 1);
             }
 
@@ -229,7 +230,7 @@ namespace XinZhao
                 return;
             }
 
-            if (t.IsValidTarget(E.Range) && E.IsReady())
+            if (t.IsValidTarget(E.Range) && E.IsReady() && getCheckBoxItem(comboMenu, "useECombo"))
             {
                 var eMinRange = getSliderItem(comboMenu, "EMinRange");
                 if (ObjectManager.Player.Distance(t) >= eMinRange)

@@ -260,10 +260,11 @@ namespace SephKayle
             var senderhero = sender as AIHeroClient;
             var senderturret = sender as Obj_AI_Turret;
 
-            if (sender.IsAlly || (target == null) || !target.IsAlly)
+            if ((sender.IsAlly || sender.IsMe || sender.IsMinion) || (target == null) || (!target.IsAlly || !target.IsMe))
             {
                 return;
             }
+
             float setvaluehealth = getSliderItem(healMenu, "hpct" + target.ChampionName);
             float setvalueult = getSliderItem(ultMenu, "upct" + target.ChampionName);
 
@@ -275,8 +276,8 @@ namespace SephKayle
                 HealUltManager(true, false, target);
                 triggered = true;
             }
-            if (R.IsReady() && getCheckBoxItem(ultMenu, "ult" + target.ChampionName) &&
-                (target.HealthPercent <= setvalueult) && target.Distance(Player) <= R.Range)
+
+            if (R.IsReady() && getCheckBoxItem(ultMenu, "ult" + target.ChampionName) && (target.HealthPercent <= setvalueult) && target.Distance(Player) <= R.Range)
             {
                 if (args.SData.Name.ToLower().Contains("minion") && target.HealthPercent > 5)
                 {
@@ -284,10 +285,7 @@ namespace SephKayle
                 }
                 if (debug())
                 {
-                    Chat.Print("Ult target: " + target.ChampionName +
-                               " Ult reason: Target hp percent below set value of: " + setvalueult +
-                               " Current value is: " + target.HealthPercent + " Triggered by: Incoming spell: + " +
-                               args.SData.Name);
+                    Chat.Print("Ult target: " + target.ChampionName + " Ult reason: Target hp percent below set value of: " + setvalueult + " Current value is: " + target.HealthPercent + " Triggered by: Incoming spell: + " + args.SData.Name);
                 }
                 HealUltManager(false, true, target);
                 triggered = true;
@@ -301,10 +299,7 @@ namespace SephKayle
             var damage = sender.LSGetSpellDamage(target, args.SData.Name);
             var afterdmg = (target.Health - damage)/target.MaxHealth*100f;
 
-            if (W.IsReady() && Player.Distance(target) <= W.Range &&
-                getCheckBoxItem(healMenu, "heal" + target.ChampionName) &&
-                (target.HealthPercent <= setvaluehealth ||
-                 (getCheckBoxItem(healMenu, "hcheckdmgafter") && afterdmg <= setvaluehealth)))
+            if (W.IsReady() && Player.Distance(target) <= W.Range && getCheckBoxItem(healMenu, "heal" + target.ChampionName) && (target.HealthPercent <= setvaluehealth || (getCheckBoxItem(healMenu, "hcheckdmgafter") && afterdmg <= setvaluehealth)))
             {
                 if (getCheckBoxItem(healMenu, "hdamagedetection"))
                 {
@@ -339,8 +334,7 @@ namespace SephKayle
                         {
                             Chat.Print("Ult target: " + target.ChampionName +
                                        " Ult reason: Incoming spell damage and health below set value of " + setvalueult +
-                                       " Current value is: " + target.HealthPercent +
-                                       " Triggered by: Incoming spell: + " + args.SData.Name);
+                                       " Current value is: " + target.HealthPercent + " Triggered by: Incoming spell: + " + args.SData.Name);
                         }
                     }
                     HealUltManager(false, true, target);
@@ -356,6 +350,7 @@ namespace SephKayle
                 W.CastOnUnit(target);
                 return;
             }
+
             if (forceult && target != null && R.IsReady() && Player.Distance(target) <= R.Range)
             {
                 if (debug())
@@ -368,15 +363,7 @@ namespace SephKayle
 
             if (getCheckBoxItem(miscMenu, "Healingon") && !getCheckBoxItem(healMenu, "onlyhincdmg"))
             {
-                var herolistheal = ObjectManager.Get<AIHeroClient>()
-                    .Where(
-                        h =>
-                            (h.IsAlly || h.IsMe) && !h.IsZombie && !h.IsDead &&
-                            getCheckBoxItem(healMenu, "heal" + h.ChampionName) &&
-                            h.HealthPercent <= getSliderItem(healMenu, "hpct" + h.ChampionName) &&
-                            Player.Distance(h) <= R.Range)
-                    .OrderByDescending(i => i.IsMe)
-                    .ThenBy(i => i.HealthPercent);
+                var herolistheal = ObjectManager.Get<AIHeroClient>().Where(h => (h.IsAlly || h.IsMe) && !h.IsZombie && !h.IsDead && getCheckBoxItem(healMenu, "heal" + h.ChampionName) && h.HealthPercent <= getSliderItem(healMenu, "hpct" + h.ChampionName) && Player.Distance(h) <= R.Range).OrderByDescending(i => i.IsMe).ThenBy(i => i.HealthPercent);
 
                 if (W.IsReady())
                 {
@@ -402,15 +389,7 @@ namespace SephKayle
             if (getCheckBoxItem(miscMenu, "Ultingon") && !getCheckBoxItem(ultMenu, "onlyuincdmg"))
             {
                 Console.WriteLine(Player.HealthPercent);
-                var herolist = ObjectManager.Get<AIHeroClient>()
-                    .Where(
-                        h =>
-                            (h.IsAlly || h.IsMe) && !h.IsZombie && !h.IsDead &&
-                            getCheckBoxItem(ultMenu, "ult" + h.ChampionName) &&
-                            h.HealthPercent <= getSliderItem(ultMenu, "upct" + h.ChampionName) &&
-                            Player.Distance(h) <= R.Range && Player.CountEnemiesInRange(500) > 0)
-                    .OrderByDescending(i => i.IsMe)
-                    .ThenBy(i => i.HealthPercent);
+                var herolist = ObjectManager.Get<AIHeroClient>().Where(h => (h.IsAlly || h.IsMe) && !h.IsZombie && !h.IsDead && getCheckBoxItem(ultMenu, "ult" + h.ChampionName) && h.HealthPercent <= getSliderItem(ultMenu, "upct" + h.ChampionName) && Player.Distance(h) <= R.Range && Player.CountEnemiesInRange(600) > 0).OrderByDescending(i => i.IsMe).ThenBy(i => i.HealthPercent);
 
                 if (R.IsReady())
                 {

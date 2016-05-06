@@ -61,6 +61,16 @@ namespace PortAIO.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap _3f3bb8b4_114c_11e6_8c69_6490a00d3c3f {
+            get {
+                object obj = ResourceManager.GetObject("_3f3bb8b4_114c_11e6_8c69_6490a00d3c3f", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Injected.
         /// </summary>
         internal static string Corki_Game_OnGameLoad_Injected {

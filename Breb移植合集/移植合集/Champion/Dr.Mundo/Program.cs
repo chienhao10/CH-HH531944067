@@ -47,11 +47,9 @@ namespace Mundo
 
         private static void AfterAttack(AttackableUnit target, EventArgs args)
         {
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
-                if (getCheckBoxItem(comboMenu, "useE") && e.IsReady() && target is AIHeroClient &&
-                    target.IsValidTarget(e.Range))
+                if (getCheckBoxItem(comboMenu, "useE") && e.IsReady() && target is AIHeroClient && target.IsValidTarget(e.Range))
                 {
                     e.Cast();
                 }
@@ -59,8 +57,7 @@ namespace Mundo
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
-                if (getCheckBoxItem(clearMenu, "useEj") && e.IsReady() && target is Obj_AI_Minion &&
-                    target.IsValidTarget(e.Range))
+                if (getCheckBoxItem(clearMenu, "useEj") && e.IsReady() && target is Obj_AI_Minion && target.IsValidTarget(e.Range))
                 {
                     e.Cast();
                 }
@@ -104,7 +101,7 @@ namespace Mundo
                 comboMenu.Add("WHealthCombo", new Slider("最低血量% 使用W", 20, 1));
                 comboMenu.AddSeparator();
                 comboMenu.AddGroupLabel("E 设置");
-                comboMenu.Add("useE", new CheckBox("声音 E"));
+                comboMenu.Add("useE", new CheckBox("使用 E"));
                 comboMenu.AddSeparator();
 
                 harassMenu = config.AddSubMenu("骚扰设置");
@@ -243,11 +240,11 @@ namespace Mundo
                 }
             }
 
-            if (castW && CommonUtilities.Player.HealthPercent >= wHealth && !IsBurning() && target.IsValidTarget(400))
+            if (castW && CommonUtilities.Player.HealthPercent >= wHealth && !IsBurning() && target.IsValidTarget(500))
             {
                 w.Cast();
             }
-            else if (castW && IsBurning() && !FoundEnemies(450))
+            else if (castW && IsBurning() && !FoundEnemies(600))
             {
                 w.Cast();
             }

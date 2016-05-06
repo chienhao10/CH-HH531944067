@@ -40,12 +40,15 @@ namespace PortAIO
 
         private static void Initialize(EventArgs args)
         {
-            Intro = new Render.Sprite(LoadImg("PortLogo"), new Vector2((Drawing.Width / 2) - 175, (Drawing.Height / 2) - 300));
-            Intro.Add(0);
-            Intro.OnDraw();
-            LeagueSharp.Common.Utility.DelayAction.Add(5000, () => Intro.Remove());
-
             Loader.Menu();
+
+            if (Loader.intro)
+            {
+                Intro = new Render.Sprite(LoadImg("PortLogo"), new Vector2((Drawing.Width / 2) - 175, (Drawing.Height / 2) - 300));
+                Intro.Add(0);
+                Intro.OnDraw();
+                LeagueSharp.Common.Utility.DelayAction.Add(5000, () => Intro.Remove());
+            }
 
             if (!Loader.champOnly)
             {
@@ -317,7 +320,7 @@ namespace PortAIO
                         new UnderratedAIO.Champions.Kennen();
                         break;
                     case "khazix": // SephKhaZix
-                        KhaZix.Program.OnLoad();
+                        new SephKhazix.Khazix();
                         break;
                     case "kindred": // Yin Yang Kindred
                         Kindred___YinYang.Program.Game_OnGameLoad();

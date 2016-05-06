@@ -1,6 +1,5 @@
 ﻿using System;
 using LeagueSharp.Common;
-using ItemData = LeagueSharp.Common.Data.ItemData;
 using EloBuddy.SDK;
 
 namespace NechritoRiven
@@ -11,55 +10,55 @@ namespace NechritoRiven
         {
             BurstLogic();
         }
-
-        private static void FlashW()
-        {
-            var target = TargetSelector.SelectedTarget;
-            if (target != null && target.IsValidTarget() && !target.IsZombie)
-            {
-                Spells._w.Cast();
-                Utility.DelayAction.Add(10, () => Program.Player.Spellbook.CastSpell(Spells.Flash, target.Position));
-            }
-        }
-
-        private static void CastYoumoo() { if (ItemData.Youmuus_Ghostblade.GetItem().IsReady()) ItemData.Youmuus_Ghostblade.GetItem().Cast(); }
-        private static bool HasItem() => ItemData.Tiamat_Melee_Only.GetItem().IsReady() || ItemData.Ravenous_Hydra_Melee_Only.GetItem().IsReady();
-        private const string IsFirstR = "RivenFengShuiEngine";
-
         public static void BurstLogic()
         {
             var target = TargetSelector.SelectedTarget;
             if (target != null && target.IsValidTarget() && !target.IsZombie)
             {
-                if (Spells._r.IsReady() && Spells._r.Instance.Name == IsFirstR && Spells._w.IsReady() && Spells._e.IsReady() && Program.Player.Distance(target.Position) <= 250 + 70 + Program.Player.AttackRange)
+                // Flash
+                if (target.Health < Dmg.Totaldame(target) || MenuConfig.AlwaysF)
                 {
-                    Spells._e.Cast(target.Position);
-                    CastYoumoo();
-                    Logic.ForceR();
-                    Utility.DelayAction.Add(100, Logic.ForceW);
+                    if ((Program.Player.Distance(target.Position) <= 700) && (Program.Player.Distance(target.Position) >= 600) && Program.Player.Spellbook.GetSpell(Spells.Flash).IsReady() && Spells._r.IsReady() && Spells._e.IsReady() && Spells._w.IsReady())
+                    {
+                        Logic.CastYoumoo();
+                        if (Spells._e.IsReady() && Spells._r.IsReady() && Spells._r.Instance.Name == Program.IsFirstR)
+                        {
+                            Spells._e.Cast(target.Position);
+                            Spells._r.Cast();
+                        }
+                        if (Program.Player.Spellbook.GetSpell(Spells.Flash).IsReady())
+                        {
+                            Utility.DelayAction.Add(10, () => Program.Player.Spellbook.CastSpell(Spells.Flash, target.Position));
+                        }
+                        if (Spells._w.IsReady())
+                        {
+                            Spells._w.Cast(target);
+                            Utility.DelayAction.Add(35, Logic.CastHydra);
+                        }
+                        if (Spells._r.IsReady() && Spells._r.Instance.Name == Program.IsSecondR)
+                        {
+                            Spells._r.Cast(target.ServerPosition);
+                        }
+                        if (Spells._q.IsReady())
+                        { Utility.DelayAction.Add(150, () => Logic.ForceCastQ(target)); }
+
+                    }
                 }
-                else if (Spells._r.IsReady() && Spells._r.Instance.Name == IsFirstR && Spells._e.IsReady() && Spells._w.IsReady() && Spells._q.IsReady() && Program.Player.Distance(target.Position) <= 400 + 70 + Program.Player.AttackRange)
+                // Burst
+                if ((Program.Player.Distance(target.Position) <= Spells._e.Range + Program.Player.AttackRange + Program.Player.BoundingRadius - 20))
                 {
-                    Spells._e.Cast(target.Position);
-                    CastYoumoo();
-                    Logic.ForceR();
-                    Utility.DelayAction.Add(150, () => Logic.ForceCastQ(target));
+                    if (Spells._e.IsReady())
+                    { Spells._e.Cast(target.Position); }
+                    Logic.CastYoumoo();
+                    if (Spells._r.IsReady())
+                    { Logic.ForceR(); }
                     Utility.DelayAction.Add(160, Logic.ForceW);
-                }
-                else if (Program.Player.Spellbook.GetSpell(Spells.Flash).IsReady()
-                    && Spells._r.IsReady() && Spells._r.Instance.Name == IsFirstR && (Program.Player.Distance(target.Position) <= 800) && (!MenuConfig.FirstHydra || (MenuConfig.FirstHydra && !HasItem())))
-                {
-                    Spells._e.Cast(target.Position);
-                    CastYoumoo();
-                    Logic.ForceR();
-                    Utility.DelayAction.Add(180, FlashW);
-                }
-                else if (Program.Player.Spellbook.GetSpell(Spells.Flash).IsReady() && Spells._r.IsReady() && Spells._e.IsReady() && Spells._w.IsReady() && Spells._r.Instance.Name == IsFirstR && (Program.Player.Distance(target.Position) <= 800) && MenuConfig.FirstHydra && HasItem())
-                {
-                    Spells._e.Cast(target.Position);
-                    Logic.ForceR();
-                    Utility.DelayAction.Add(100, Logic.ForceItem);
-                    Utility.DelayAction.Add(210, FlashW);
+                    Utility.DelayAction.Add(70, Logic.ForceItem);
+                    Utility.DelayAction.Add(70, Logic.CastHydra);
+                    if (Spells._r.IsReady() && Spells._r.Instance.Name == Program.IsSecondR)
+                    { Spells._r.Cast(target.ServerPosition); }
+                    if (Spells._q.IsReady())
+                    { Utility.DelayAction.Add(150, () => Logic.ForceCastQ(target)); }
                 }
             }
         }

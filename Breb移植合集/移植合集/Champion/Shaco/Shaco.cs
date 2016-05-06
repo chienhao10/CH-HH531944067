@@ -254,14 +254,13 @@ namespace UnderratedAIO.Champions
             {
                 if (CanCloneAttack(clone))
                 {
-                    R.CastOnUnit(Gtarget, getCheckBoxItem(config, "packets"));
+                    //R.CastOnUnit(Gtarget, getCheckBoxItem(config, "packets"));
+                    Player.IssueOrder(GameObjectOrder.AutoAttackPet, Gtarget);
                 }
                 else if (player.HealthPercent > 25)
                 {
                     var prediction = Prediction.GetPrediction(Gtarget, 2);
-                    R.Cast(
-                        Gtarget.Position.Extend(prediction.UnitPosition, Orbwalking.GetRealAutoAttackRange(Gtarget)),
-                        getCheckBoxItem(config, "packets"));
+                    R.Cast(Gtarget.Position.Extend(prediction.UnitPosition, Orbwalking.GetRealAutoAttackRange(Gtarget)), getCheckBoxItem(config, "packets"));
                 }
 
                 GhostDelay = true;
@@ -462,8 +461,7 @@ namespace UnderratedAIO.Champions
 
             // Misc Settings
             menuM = config.AddSubMenu("Misc ", "Msettings");
-            menuM.Add("ghostTarget",
-                new ComboBox("Ghost target priority", 0, "Targetselector", "Lowest health", "Closest to you"));
+            menuM.Add("ghostTarget", new ComboBox("Ghost target priority", 0, "Targetselector", "Lowest health", "Closest to you"));
             menuM.Add("ksq", new CheckBox("KS E"));
             menuM.Add("ks", new CheckBox("KS Q+E"));
             menuM.Add("autoMoveClone", new CheckBox("Always move clone", false));

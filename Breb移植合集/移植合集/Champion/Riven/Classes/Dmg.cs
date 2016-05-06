@@ -1,22 +1,20 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
+using LeagueSharp;
 using LeagueSharp.Common;
-using Damage = LeagueSharp.Common.Damage;
 
 namespace NechritoRiven
 {
-    internal class Dmg
+    class Dmg
     {
         public static float IgniteDamage(AIHeroClient target)
         {
-            if (Spells.Ignite == SpellSlot.Unknown ||
-                Program.Player.Spellbook.CanUseSpell(Spells.Ignite) != SpellState.Ready)
+            if (Spells.Ignite == SpellSlot.Unknown || Program.Player.Spellbook.CanUseSpell(Spells.Ignite) != SpellState.Ready)
             {
                 return 0f;
             }
-            return (float) Program.Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
+            return (float)Program.Player.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
         }
-
         public static double Basicdmg(Obj_AI_Base target)
         {
             if (target != null)
@@ -41,10 +39,9 @@ namespace NechritoRiven
                 if (Spells._q.IsReady())
                 {
                     var qnhan = 4 - Program._qstack;
-                    dmg = dmg + Spells._q.GetDamage(target)*qnhan +
-                          Program.Player.GetAutoAttackDamage(target)*qnhan*(1 + passivenhan);
+                    dmg = dmg + Spells._q.GetDamage(target) * qnhan + Program.Player.GetAutoAttackDamage(target) * qnhan * (1 + passivenhan);
                 }
-                dmg = dmg + Program.Player.GetAutoAttackDamage(target)*(1 + passivenhan);
+                dmg = dmg + Program.Player.GetAutoAttackDamage(target) * (1 + passivenhan);
                 return dmg;
             }
             return 0;
@@ -71,18 +68,18 @@ namespace NechritoRiven
                     passivenhan = 0.25f;
                 else
                     passivenhan = 0.2f;
-
+                
                 if (Spells._w.IsReady()) damage = damage + Spells._w.GetDamage(enemy);
                 if (Spells._q.IsReady())
                 {
                     var qnhan = 4 - Program._qstack;
-                    damage = damage + Spells._q.GetDamage(enemy)*qnhan +
-                             Program.Player.GetAutoAttackDamage(enemy)*qnhan*(1 + passivenhan);
+                    damage = damage + Spells._q.GetDamage(enemy) * qnhan +
+                             (float)Program.Player.GetAutoAttackDamage(enemy) * qnhan * (1 + passivenhan);
                 }
-                damage = damage + Program.Player.GetAutoAttackDamage(enemy)*(1 + passivenhan);
+                damage = damage + (float)Program.Player.GetAutoAttackDamage(enemy) * (1 + passivenhan);
                 if (Spells._r.IsReady())
                 {
-                    return damage*1.2f + Spells._r.GetDamage(enemy);
+                    return damage * 1.2f + Spells._r.GetDamage(enemy);
                 }
                 return damage;
             }
@@ -94,7 +91,6 @@ namespace NechritoRiven
             return !target.IsInvulnerable && Totaldame(target) >= target.Health &&
                    Basicdmg(target) <= target.Health;
         }
-
 
         public static double Totaldame(Obj_AI_Base target)
         {
@@ -115,30 +111,27 @@ namespace NechritoRiven
                 passivenhan = 0.25;
             else
                 passivenhan = 0.2;
-
+            
             if (Spells._w.IsReady()) dmg = dmg + Spells._w.GetDamage(target);
             if (Spells._q.IsReady())
             {
                 var qnhan = 4 - Program._qstack;
-                dmg = dmg + Spells._q.GetDamage(target)*qnhan +
-                      Program.Player.GetAutoAttackDamage(target)*qnhan*(1 + passivenhan);
+                dmg = dmg + Spells._q.GetDamage(target) * qnhan + Program.Player.GetAutoAttackDamage(target) * qnhan * (1 + passivenhan);
             }
-            dmg = dmg + Program.Player.GetAutoAttackDamage(target)*(1 + passivenhan);
+            dmg = dmg + Program.Player.GetAutoAttackDamage(target) * (1 + passivenhan);
             if (!Spells._r.IsReady()) return dmg;
-            var rdmg = Rdame(target, target.Health - dmg*1.2);
-            return dmg*1.2 + rdmg;
+            var rdmg = Rdame(target, target.Health - dmg * 1.2);
+            return dmg * 1.2 + rdmg;
         }
 
         public static double Rdame(Obj_AI_Base target, double health)
         {
             if (target != null)
             {
-                var missinghealth = (target.MaxHealth - health)/target.MaxHealth > 0.75
-                    ? 0.75
-                    : (target.MaxHealth - health)/target.MaxHealth;
-                var pluspercent = missinghealth*2;
-                var rawdmg = new double[] {80, 120, 160}[Spells._r.Level - 1] + 0.6*Program.Player.FlatPhysicalDamageMod;
-                return Program.Player.CalcDamage(target, DamageType.Physical, rawdmg*(1 + pluspercent));
+                var missinghealth = (target.MaxHealth - health) / target.MaxHealth > 0.75 ? 0.75 : (target.MaxHealth - health) / target.MaxHealth;
+                var pluspercent = missinghealth * 2;
+                var rawdmg = new double[] { 80, 120, 160 }[Spells._r.Level - 1] + 0.6 * Program.Player.FlatPhysicalDamageMod;
+                return Program.Player.CalcDamage(target, DamageType.Physical, rawdmg * (1 + pluspercent));
             }
             return 0;
         }

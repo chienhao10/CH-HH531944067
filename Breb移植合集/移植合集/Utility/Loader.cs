@@ -35,6 +35,8 @@ namespace PortAIO.Utility
         public static bool gank { get { return Miscc["gank"].Cast<CheckBox>().CurrentValue; } }
         public static int diana { get { return Miscc["diana"].Cast<ComboBox>().CurrentValue; } }
         public static int cait { get { return Miscc["cait"].Cast<ComboBox>().CurrentValue; } }
+        public static bool intro { get { return Miscc["intro"].Cast<CheckBox>().CurrentValue; } }
+        //intro
 
         public static Menu Miscc;
 
@@ -50,7 +52,8 @@ namespace PortAIO.Utility
         public static void Menu()
         {
             Miscc = MainMenu.AddMenu("CH汉化控制台", "berbsicmisc");
-
+            Miscc.Add("intro", new CheckBox("加载 引导界面?", true));
+            Miscc.AddSeparator();
             Miscc.AddGroupLabel("英雄脚本切换");
             if (Champion.Contains(ObjectManager.Player.ChampionName))
             {
@@ -100,6 +103,7 @@ namespace PortAIO.Utility
             Miscc.Add("ping", new CheckBox("载入 信号管理器（玩家信号）?", false));
             Miscc.Add("human", new CheckBox("载入 人性化?", false));
             Miscc.Add("gank", new CheckBox("载入 Gank提示?", false));
+
 
             /*
             Miscc.Add("stream", new CheckBox("Enable StreamBuddy?", false));
