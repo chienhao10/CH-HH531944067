@@ -13,3 +13,4 @@
 # Crashing & Other Bugs
 #####Make sure you're playing on BORDERLESS and not FULLSCREEN.
 #####If the addon you are using isn't working, clear your AppData. If it doesn't work again, make a new issue.
+#####Skin Hack is causing some crashes, if you're crashing and you have Skin Hack enabled, try disabling it.

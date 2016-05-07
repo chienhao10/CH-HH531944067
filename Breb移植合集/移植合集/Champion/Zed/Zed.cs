@@ -280,7 +280,7 @@
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
                     && getKeyBindItem(comboMenu, "R") && RState == 0)
                 {
-                    var targetR = EntityManager.Heroes.Enemies.Where(i => i.IsInRange(Player, Q.Range + extraRange) && i.LSIsValidTarget()).OrderByDescending(i => TargetSelector.GetPriority(i)).ThenBy(i => i.DistanceToPlayer()).FirstOrDefault(i => getCheckBoxItem(comboMenu, "RCast" + i.ChampionName));
+                    var targetR = EntityManager.Heroes.Enemies.Where(i => i.IsInRange(Player, Q.Range + extraRange) && i.LSIsValidTarget()).OrderByDescending(i => TargetSelector.GetPriority(i)).ThenBy(i => i.DistanceToPlayer()).FirstOrDefault(i => getCheckBoxItem(comboMenu, "RCast" + i.NetworkId));
                     if (targetR != null)
                     {
                         return targetR;
@@ -504,7 +504,7 @@
             {
                 Swap(target);
                 var useR = getKeyBindItem(comboMenu, "R");
-                var targetR = getCheckBoxItem(comboMenu, "RCast" + target.ChampionName);
+                var targetR = getCheckBoxItem(comboMenu, "RCast" + target.NetworkId);
                 var stateR = RState;
                 var canCast = !useR || !targetR
                               || (stateR == 0 && target.Distance(Player) > getSliderItem(comboMenu, "RStopRange"))
@@ -881,7 +881,7 @@
                 var swapByR = Math.Abs(minDist - rDist) < float.Epsilon;
                 if (swapByW && minDist < R.Range && !R.IsInRange(target)
                     && getKeyBindItem(comboMenu, "R")
-                    && getCheckBoxItem(comboMenu, "RCast" + target.ChampionName) && RState == 0 && CanR && W.Cast())
+                    && getCheckBoxItem(comboMenu, "RCast" + target.NetworkId) && RState == 0 && CanR && W.Cast())
                 {
                     return;
                 }

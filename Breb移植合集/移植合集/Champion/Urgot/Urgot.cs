@@ -100,11 +100,11 @@ namespace OneKeyToWin_AIO_Sebby
             r.Add("useR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'T'));
                 //32 == space
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
-                r.Add("GapCloser" + enemy.ChampionName, new CheckBox("GapClose : " + enemy.ChampionName));
+                r.Add("GapCloser" + enemy.NetworkId, new CheckBox("GapClose : " + enemy.ChampionName));
 
             harass = Config.AddSubMenu("Harass");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                harass.Add("harras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                harass.Add("harras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             farm = Config.AddSubMenu("Farm");
             farm.Add("farmQ", new CheckBox("Farm Q"));
@@ -124,7 +124,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (R.IsReady())
             {
                 var t = gapcloser.Sender;
-                if (getCheckBoxItem(r, "GapCloser" + t.ChampionName) && t.IsValidTarget(R.Range))
+                if (getCheckBoxItem(r, "GapCloser" + t.NetworkId) && t.IsValidTarget(R.Range))
                 {
                     R.Cast(t);
                 }
@@ -254,7 +254,7 @@ namespace OneKeyToWin_AIO_Sebby
                         var enemy in
                             Program.Enemies.Where(
                                 enemy =>
-                                    enemy.IsValidTarget(Q.Range) && getCheckBoxItem(harass, "harras" + t.ChampionName)))
+                                    enemy.IsValidTarget(Q.Range) && getCheckBoxItem(harass, "harras" + t.NetworkId)))
                         Program.CastSpell(Q, enemy);
                 }
                 else if (OktwCommon.GetKsDamage(t, Q)*2 > t.Health)
@@ -307,7 +307,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else if (Program.Combo && Player.Mana > EMANA + QMANA*2 && qCd < 0.5f)
                     Program.CastSpell(E, t);
                 else if (Program.Farm && Player.Mana > RMANA + EMANA + QMANA*5 && getCheckBoxItem(e, "autoE") &&
-                         getCheckBoxItem(harass, "harras" + t.ChampionName))
+                         getCheckBoxItem(harass, "harras" + t.NetworkId))
                     Program.CastSpell(E, t);
                 else if ((Program.Combo || Program.Farm) && Player.Mana > RMANA + WMANA + EMANA)
                 {

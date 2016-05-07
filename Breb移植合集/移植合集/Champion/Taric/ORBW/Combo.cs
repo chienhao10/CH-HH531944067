@@ -126,19 +126,19 @@
 
                         if (Allytarget.IsValidTarget())
                         {
-                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHeroE.ChampionName + "AllyCCEComboFromAlly") && (AllyHeroE.IsCharmed || AllyHeroE.IsStunned || AllyHeroE.IsRooted || !AllyHeroE.CanAttack))
+                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHeroE.NetworkId + "AllyCCEComboFromAlly") && (AllyHeroE.IsCharmed || AllyHeroE.IsStunned || AllyHeroE.IsRooted || !AllyHeroE.CanAttack))
                             {
                                 E.Cast(Allytarget.ServerPosition, PacketCast);
                                 return;
                             }
 
-                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHeroE.ChampionName + "TargetCCEComboFromAlly") && (Allytarget.IsCharmed || Allytarget.IsStunned || Allytarget.IsRooted || !Allytarget.CanAttack))
+                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHeroE.NetworkId + "TargetCCEComboFromAlly") && (Allytarget.IsCharmed || Allytarget.IsStunned || Allytarget.IsRooted || !Allytarget.CanAttack))
                             {
                                 E.Cast(Allytarget.ServerPosition, PacketCast);
                                 return;
                             }
 
-                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHeroE.ChampionName + "AlwaysComboFromAlly"))
+                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHeroE.NetworkId + "AlwaysComboFromAlly"))
                             {
                                 E.Cast(Allytarget.ServerPosition, PacketCast);
                                 return;
@@ -154,8 +154,8 @@
                     if (Q.IsReady() && Player.Mana >= Q.ManaCost)
                     {
                         foreach (var AllyHeroQ in HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.Distance(x) < Q.Range &&
-                        Q.Instance.Ammo >= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumStacksQAlly") &&
-                        x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumHpQAlly")))
+                        Q.Instance.Ammo >= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumStacksQAlly") &&
+                        x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpQAlly")))
                         {
                             if (AllyHeroQ.IsValidTarget())
                             {
@@ -173,8 +173,8 @@
                     if (W.IsReady() && Player.Mana >= W.ManaCost)
                     {
                         var AllyHeroW = HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.Distance(x) <= W.Range &&
-                        !getCheckBoxItem(SkyLv_Taric.Combo, x.ChampionName + "IncomingDamageWAlly") &&
-                        x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumHpWAlly")).MinOrDefault(t => t.HealthPercent);
+                        !getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") &&
+                        x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")).MinOrDefault(t => t.HealthPercent);
 
                         if (AllyHeroW.IsValidTarget())
                         {

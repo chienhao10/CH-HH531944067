@@ -42,7 +42,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             qMenu.Add("minGrab", new Slider("Min range grab", 250, 125, (int)Q.Range));
             qMenu.Add("maxGrab", new Slider("Max range grab", (int)Q.Range, 125, (int)Q.Range));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
-                qMenu.Add("grab" + enemy.ChampionName, new CheckBox("Pull :" + enemy.ChampionName));
+                qMenu.Add("grab" + enemy.NetworkId, new CheckBox("Pull :" + enemy.ChampionName));
             qMenu.Add("GapQ", new CheckBox("OnEnemyGapcloser Q", true));
 
             wMenu = Config.AddSubMenu("W Option");
@@ -269,11 +269,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(maxGrab, DamageType.Physical);
 
-                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.ChampionName) && Player.Distance(t.ServerPosition) > minGrab)
+                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.Distance(t.ServerPosition) > minGrab)
                     Program.CastSpell(Q, t);
             }
 
-            foreach (var t in Program.Enemies.Where(t => t.IsValidTarget(maxGrab) && getCheckBoxItem(qMenu, "grab" + t.ChampionName) && Player.Distance(t.ServerPosition) > minGrab))
+            foreach (var t in Program.Enemies.Where(t => t.IsValidTarget(maxGrab) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.Distance(t.ServerPosition) > minGrab))
             {
                 if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield))
                 {

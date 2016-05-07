@@ -67,7 +67,7 @@
                 {
                     var Allytarget = ObjectManager.Get<AIHeroClient>().Where(t => !t.IsDead && t.Team != ObjectManager.Player.Team && AllyHero.LSDistance(t) < E.Range).FirstOrDefault();
 
-                    if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHero.ChampionName + "TargetInterruptEComboFromAlly") && Allytarget.NetworkId == sender.NetworkId)
+                    if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHero.NetworkId + "TargetInterruptEComboFromAlly") && Allytarget.NetworkId == sender.NetworkId)
                     {
                         E.Cast(sender.ServerPosition, PacketCast);
                         return;

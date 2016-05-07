@@ -63,8 +63,7 @@ namespace Wukong
             menuCombo.AddGroupLabel("Force Ultimate For:");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
-                menuCombo.Add("forceUlti" + enemy.ChampionName,
-                    new ComboBox(enemy.ChampionName, 0, "Off", "Everytime", "Just Killable"));
+                menuCombo.Add("forceUlti" + enemy.NetworkId, new ComboBox(enemy.ChampionName, 0, "Off", "Everytime", "Just Killable"));
             }
 
             // Harass
@@ -264,9 +263,9 @@ namespace Wukong
                 {
                     R.Cast();
                 }
-                else if (menuCombo["forceUlti" + t.ChampionName] != null && t.IsValidTarget(R.Range))
+                else if (menuCombo["forceUlti" + t.NetworkId] != null && t.IsValidTarget(R.Range))
                 {
-                    switch (getBoxItem(menuCombo, "forceUlti" + t.ChampionName))
+                    switch (getBoxItem(menuCombo, "forceUlti" + t.NetworkId))
                     {
                         case 1:
                             R.CastIfHitchanceEquals(t, HitChance.High);
@@ -404,8 +403,8 @@ namespace Wukong
                     .Where(
                         enemy =>
                             enemy.Team != Player.Team && !enemy.IsDead && enemy.IsVisible &&
-                            AssassinManager.assMenu["Assassin" + enemy.ChampionName] != null &&
-                            AssassinManager.getCheckBoxItem("Assassin" + enemy.ChampionName) &&
+                            AssassinManager.assMenu["Assassin" + enemy.NetworkId] != null &&
+                            AssassinManager.getCheckBoxItem("Assassin" + enemy.NetworkId) &&
                             Player.Distance(enemy) < assassinRange);
 
             if (AssassinManager.getBoxItem("AssassinSelectOption") == 1)

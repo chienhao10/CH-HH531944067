@@ -91,7 +91,7 @@ namespace LuluLicious
             wMenu.AddGroupLabel("Enemy Priority");
             foreach (var enemy in Enemies)
             {
-                wMenu.Add(enemy.ChampionName + "WPriority", new Slider(enemy.ChampionName, 1, 0, 5));
+                wMenu.Add(enemy.NetworkId + "WPriority", new Slider(enemy.ChampionName, 1, 0, 5));
             }
             wMenu.Add("WPriority", new CheckBox("Priority Enabled", false));
             wMenu.AddSeparator();
@@ -104,7 +104,7 @@ namespace LuluLicious
             eMenu.AddGroupLabel("Ally Shielding");
             foreach (var ally in Allies)
             {
-                eMenu.Add(ally.ChampionName + "EPriority", new Slider(ally.ChampionName + " Min Health", 20));
+                eMenu.Add(ally.NetworkId + "EPriority", new Slider(ally.ChampionName + " Min Health", 20));
             }
             eMenu.Add("EAuto", new CheckBox("Use E on Allies"));
             eMenu.Add("ECombo", new CheckBox("Use on Enemy in Combo"));
@@ -114,7 +114,7 @@ namespace LuluLicious
             rMenu.AddGroupLabel("Saver");
             foreach (var ally in Allies)
             {
-                rMenu.Add(ally.ChampionName + "RPriority", new Slider(ally.ChampionName + " Min Health", 15));
+                rMenu.Add(ally.NetworkId + "RPriority", new Slider(ally.ChampionName + " Min Health", 15));
             }
             rMenu.Add("RAuto", new CheckBox("Use R on Allies"));
             rMenu.AddSeparator();
@@ -159,7 +159,7 @@ namespace LuluLicious
             superMMenu = Menu.AddSubMenu("Superman", "Speedy Up!");
             foreach (var ally in Allies.Where(a => a.Team == ObjectManager.Player.Team))
             {
-                superMMenu.Add(ally.ChampionName + "WEPriority", new Slider(ally.ChampionName + " Priority", 1, 0, 5));
+                superMMenu.Add(ally.NetworkId + "WEPriority", new Slider(ally.ChampionName + " Priority", 1, 0, 5));
             }
             superMMenu.Add("Superman", new KeyBind("Use Speedy Up!", false, KeyBind.BindTypes.HoldActive, 'A'));
 
@@ -429,12 +429,12 @@ namespace LuluLicious
                 var hp = ally.GetPredictedHealthPercent();
 
                 if (useE && E.IsInRange(ally) &&
-                    hp <= getSliderItem(eMenu, ally.ChampionName + "EPriority"))
+                    hp <= getSliderItem(eMenu, ally.NetworkId + "EPriority"))
                 {
                     E.CastOnUnit(ally);
                 }
 
-                if (useR && hp <= getSliderItem(rMenu, ally.ChampionName + "RPriority") && R.CastOnUnit(ally))
+                if (useR && hp <= getSliderItem(rMenu, ally.NetworkId + "RPriority") && R.CastOnUnit(ally))
                 {
                     return true;
                 }
@@ -576,12 +576,12 @@ namespace LuluLicious
 
             var hp = (target.Health - damage) / target.MaxHealth * 100;
 
-            if (E.CanCast(target) && hp <= getSliderItem(eMenu, target.ChampionName + "EPriority"))
+            if (E.CanCast(target) && hp <= getSliderItem(eMenu, target.NetworkId + "EPriority"))
             {
                 E.CastOnUnit(target);
             }
 
-            if (R.CanCast(target) && hp <= getSliderItem(rMenu, target.ChampionName + "RPriority"))
+            if (R.CanCast(target) && hp <= getSliderItem(rMenu, target.NetworkId + "RPriority"))
             {
                 R.CastOnUnit(target);
             }

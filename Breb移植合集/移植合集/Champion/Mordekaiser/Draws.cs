@@ -63,7 +63,7 @@ namespace Mordekaiser
             {
                 foreach (var a in HeroManager.Enemies.Where(e => e.IsVisible && !e.IsDead && !e.IsZombie))
                 {
-                    var vSelected = Menu.getBoxItem(Menu.MenuR, "Selected" + a.ChampionName);
+                    var vSelected = Menu.getBoxItem(Menu.MenuR, "Selected" + a.NetworkId);
 
                     if (Menu.getBoxItem(Menu.MenuR, "DrawR.Status.Show") == 2 && vSelected != 3) continue;
 

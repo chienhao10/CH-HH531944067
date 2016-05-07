@@ -67,13 +67,13 @@ namespace PortAIO.Champion.Ashe
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
-                RMenu.Add("GapCloser" + enemy.ChampionName, new CheckBox("防突进 R : " + enemy.ChampionName, false));
+                RMenu.Add("GapCloser" + enemy.NetworkId, new CheckBox("防突进 R : " + enemy.ChampionName, false));
             }
 
             harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
-                harassMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                harassMenu.Add("haras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
             }
 
             FarmMenu = Config.AddSubMenu("农兵");
@@ -116,7 +116,7 @@ namespace PortAIO.Champion.Ashe
             if (R.IsReady())
             {
                 var Target = gapcloser.Sender;
-                if (Target.IsValidTarget(800) && getCheckBoxItem(RMenu, "GapCloser" + Target.ChampionName))
+                if (Target.IsValidTarget(800) && getCheckBoxItem(RMenu, "GapCloser" + Target.NetworkId))
                 {
                     R.Cast(Target.ServerPosition, true);
                     SebbyLib.Program.debug("AGC " + Target.ChampionName);
@@ -209,7 +209,7 @@ namespace PortAIO.Champion.Ashe
                         SebbyLib.Program.Enemies.Where(
                             enemy =>
                                 enemy.IsValidTarget(300) && enemy.IsMelee &&
-                                getCheckBoxItem(RMenu, "GapCloser" + enemy.ChampionName) && !OktwCommon.ValidUlt(enemy))
+                                getCheckBoxItem(RMenu, "GapCloser" + enemy.NetworkId) && !OktwCommon.ValidUlt(enemy))
                     )
                 {
                     R.Cast(enemy);
@@ -227,7 +227,7 @@ namespace PortAIO.Champion.Ashe
                     (Player.Mana > RMANA + QMANA || t.Health < 5*Player.GetAutoAttackDamage(Player)))
                     Q.Cast();
                 else if (SebbyLib.Program.Farm && Player.Mana > RMANA + QMANA + WMANA && getCheckBoxItem(QMenu, "harasQ") &&
-                         getCheckBoxItem(harassMenu, "haras" + t.ChampionName))
+                         getCheckBoxItem(harassMenu, "haras" + t.NetworkId))
                     Q.Cast();
             }
             else if (SebbyLib.Program.LaneClear)
@@ -257,7 +257,7 @@ namespace PortAIO.Champion.Ashe
                             SebbyLib.Program.Enemies.Where(
                                 enemy =>
                                     enemy.IsValidTarget(W.Range) &&
-                                    getCheckBoxItem(harassMenu, "haras" + t.ChampionName)))
+                                    getCheckBoxItem(harassMenu, "haras" + t.NetworkId)))
                         CastW(t);
                 }
                 else if (OktwCommon.GetKsDamage(t, W) > t.Health)

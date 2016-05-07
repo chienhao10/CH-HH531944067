@@ -40,17 +40,11 @@ namespace Mordekaiser
             MenuW.Add("UseW.DamageRadius", new Slider("W 伤害半径 (预设 = 350):", 350, 250, 400));
             MenuW.AddSeparator();
             MenuW.Add("Allies.Active", new CheckBox("对友军使用"));
-            MenuW.Add("Selected" + Utils.Player.Self.ChampionName,
-                new ComboBox(Utils.Player.Self.ChampionName + " (玩家自己)",
-                    Utils.TargetSelector.Ally.GetPriority(Utils.Player.Self.ChampionName), "从不", "连招", "一直"));
-            MenuW.Add("SelectedGhost",
-                new ComboBox("龙 / 敌方幽灵", Utils.TargetSelector.Ally.GetPriority("Dragon"), "从不", "连招",
-                    "一直"));
+            MenuW.Add("Selected" + Utils.Player.Self.ChampionName, new ComboBox(Utils.Player.Self.ChampionName + " (自己)", Utils.TargetSelector.Ally.GetPriority(Utils.Player.Self.ChampionName), "不使用", "连招", "一直"));
+            MenuW.Add("SelectedGhost", new ComboBox("龙 / 敌方幽灵", Utils.TargetSelector.Ally.GetPriority("龙"), "不使用", "连招", "一直"));
             foreach (var ally in HeroManager.Allies.Where(a => !a.IsMe))
             {
-                MenuW.Add("Selected" + ally.ChampionName,
-                    new ComboBox(ally.CharData.BaseSkinName, Utils.TargetSelector.Ally.GetPriority(ally.ChampionName),
-                        "从不", "连招", "一直"));
+            MenuW.Add("Selected" + ally.NetworkId, new ComboBox(ally.CharData.BaseSkinName, Utils.TargetSelector.Ally.GetPriority(ally.ChampionName), "不使用", "连招", "一直"));
             }
             MenuW.AddSeparator();
             MenuW.AddGroupLabel("清线 / 清野设置:");
@@ -61,7 +55,6 @@ namespace Mordekaiser
             MenuW.AddGroupLabel("线圈");
             MenuW.Add("DrawW.Search", new CheckBox("W 范围")); //.SetValue(new Circle(true, Color.Aqua)));
             MenuW.Add("DrawW.DamageRadius", new CheckBox("W 伤害半径"));
-                //.SetValue(new Circle(true, Color.Coral)));
 
             // E
             MenuE = Config.AddSubMenu("E", "E");
@@ -86,10 +79,7 @@ namespace Mordekaiser
             MenuR.Add("UseR.Active", new CheckBox("使用 R"));
             foreach (var enemy in HeroManager.Enemies)
             {
-                MenuR.Add("Selected" + enemy.ChampionName,
-                    new ComboBox(enemy.ChampionName, Utils.TargetSelector.Enemy.GetPriority(enemy.ChampionName),
-                        "从不", "低", "中", "高"));
-                    //.SetValue(new StringList(new[] { "Don't Use", "Low", "Medium", "High" }, Utils.TargetSelector.Enemy.GetPriority(enemy.ChampionName))));
+            MenuR.Add("Selected" + enemy.NetworkId, new ComboBox(enemy.ChampionName, Utils.TargetSelector.Enemy.GetPriority(enemy.ChampionName), "不使用", "低", "中", "高"));
             }
 
             MenuR.AddSeparator();
@@ -104,11 +94,8 @@ namespace Mordekaiser
             MenuGhost.AddSeparator();
             MenuGhost.AddGroupLabel("线圈");
             MenuGhost.Add("Ghost.Draw.Position", new CheckBox("幽灵位置"));
-                //.SetValue(new Circle(true, Color.DarkRed)));
             MenuGhost.Add("Ghost.Draw.AARange", new CheckBox("幽灵普攻范围"));
-                //.SetValue(new Circle(true, Color.DarkRed)));
             MenuGhost.Add("Ghost.Draw.ControlRange", new CheckBox("幽灵控制范围"));
-                //.SetValue(new Circle(true, Color.WhiteSmoke)));
 
             //items
             MenuItems = Config.AddSubMenu("物品");

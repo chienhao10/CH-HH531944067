@@ -38,8 +38,6 @@ namespace ElRengarRevamped
 
                     if (!RengarR)
                     {
-                        CastItems(target);
-
                         if (!HasPassive)
                         {
                             if (spells[Spells.E].IsReady() &&
@@ -63,9 +61,12 @@ namespace ElRengarRevamped
                         }
                     }
 
+                    CastItems(target);
+
                     if (spells[Spells.W].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.W"))
                     {
                         CastW();
+                        CastItems(target);
                     }
                 }
 
@@ -189,7 +190,7 @@ namespace ElRengarRevamped
         {
             try
             {
-                if (!spells[Spells.W].IsReady() || Environment.TickCount - Rengar.LastE <= 200)
+                if (!spells[Spells.W].IsReady())
                 {
                     return;
                 }

@@ -80,8 +80,8 @@
             foreach (var Ally in ObjectManager.Get<AIHeroClient>().Where(a => a.Team == Player.Team && a.NetworkId != Player.NetworkId))
             {
                 Combo.AddLabel(Ally.ChampionName);
-                Combo.Add(Ally.ChampionName + "MinimumHpQAlly", new Slider("Q Ally If Health Percent Under", 60, 0, 100));
-                Combo.Add(Ally.ChampionName + "MinimumStacksQAlly", new Slider("Minimum Q Stack To Use Q On Ally", 2, 1, 3));
+                Combo.Add(Ally.NetworkId + "MinimumHpQAlly", new Slider("Q Ally If Health Percent Under", 60, 0, 100));
+                Combo.Add(Ally.NetworkId + "MinimumStacksQAlly", new Slider("Minimum Q Stack To Use Q On Ally", 2, 1, 3));
                 Combo.AddSeparator();
             }
             //
@@ -95,8 +95,8 @@
             foreach (var Ally in ObjectManager.Get<AIHeroClient>().Where(a => a.Team == Player.Team && a.NetworkId != Player.NetworkId))
             {
                 Combo.AddLabel(Ally.ChampionName);
-                Combo.Add(Ally.ChampionName + "MinimumHpWAlly", new Slider("W Ally If Health Percent Under", 100, 0, 100));
-                Combo.Add(Ally.ChampionName + "IncomingDamageWAlly", new CheckBox("Only On Ally Incoming Damage", true));
+                Combo.Add(Ally.NetworkId + "MinimumHpWAlly", new Slider("W Ally If Health Percent Under", 100, 0, 100));
+                Combo.Add(Ally.NetworkId + "IncomingDamageWAlly", new CheckBox("Only On Ally Incoming Damage", true));
                 Combo.AddSeparator();
             }
             //
@@ -109,11 +109,11 @@
             foreach (var Ally in ObjectManager.Get<AIHeroClient>().Where(a => a.Team == Player.Team && a.NetworkId != Player.NetworkId))
             {
                 Combo.AddLabel(Ally.ChampionName);
-                Combo.Add(Ally.ChampionName + "AlwaysComboFromAlly", new CheckBox("Always E From This Ally If Can't Cast MySelf", true));
-                Combo.Add(Ally.ChampionName + "AllyCCEComboFromAlly", new CheckBox("On Ally CC'ed", true));
-                Combo.Add(Ally.ChampionName + "TargetCCEComboFromAlly", new CheckBox("On Target CC'ed", true));
-                Combo.Add(Ally.ChampionName + "TargetInterruptEComboFromAlly", new CheckBox("Auto E From Ally On Interruptable Target", true));
-                Combo.Add(Ally.ChampionName + "TargetDashEPEComboFromAlly", new CheckBox("On Target Dash End Position", true));
+                Combo.Add(Ally.NetworkId + "AlwaysComboFromAlly", new CheckBox("Always E From This Ally If Can't Cast MySelf", true));
+                Combo.Add(Ally.NetworkId + "AllyCCEComboFromAlly", new CheckBox("On Ally CC'ed", true));
+                Combo.Add(Ally.NetworkId + "TargetCCEComboFromAlly", new CheckBox("On Target CC'ed", true));
+                Combo.Add(Ally.NetworkId + "TargetInterruptEComboFromAlly", new CheckBox("Auto E From Ally On Interruptable Target", true));
+                Combo.Add(Ally.NetworkId + "TargetDashEPEComboFromAlly", new CheckBox("On Target Dash End Position", true));
                 Combo.AddSeparator();
             }
             //

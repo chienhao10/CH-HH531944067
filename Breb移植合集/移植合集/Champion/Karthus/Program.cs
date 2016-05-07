@@ -72,7 +72,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             qMenu.Add("harrasQ", new CheckBox("骚扰 Q"));
             qMenu.Add("QHarassMana", new Slider("骚扰蓝量", 30));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                qMenu.Add("Qon" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                qMenu.Add("Qon" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             wMenu = Config.AddSubMenu("W 设置");
             wMenu.Add("autoW", new CheckBox("自动 W"));
@@ -80,7 +80,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             wMenu.Add("WmodeCombo", new ComboBox("W 连招模式", 1, "一直", "移动 - 追逐"));
             wMenu.Add("WmodeGC", new ComboBox("防突进/接近位置", 0, "冲刺后结束为止", "我英雄位置"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                wMenu.Add("WGCchampion" + enemy.ChampionName, new CheckBox("W : " + enemy.ChampionName));
+                wMenu.Add("WGCchampion" + enemy.NetworkId, new CheckBox("W : " + enemy.ChampionName));
 
             eMenu = Config.AddSubMenu("E 设置");
             eMenu.Add("autoE", new CheckBox("E范围内自动开启"));
@@ -95,7 +95,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                harassMenu.Add("harras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                harassMenu.Add("harras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             farmMenu = Config.AddSubMenu("农兵");
             farmMenu.Add("farmQout", new CheckBox("超出普攻距离使用 Q"));
@@ -263,12 +263,12 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (t.IsValidTarget() && getCheckBoxItem(qMenu, "Qon" + t.ChampionName))
+            if (t.IsValidTarget() && getCheckBoxItem(qMenu, "Qon" + t.NetworkId))
             {
                 if (Program.Combo && Player.Mana > RMANA + QMANA + WMANA)
                     Program.CastSpell(Q, t);
                 else if (Program.Farm && OktwCommon.CanHarras() && getCheckBoxItem(qMenu, "harrasQ")
-                         && getCheckBoxItem(harassMenu, "harras" + t.ChampionName) &&
+                         && getCheckBoxItem(harassMenu, "harras" + t.NetworkId) &&
                          Player.ManaPercent > getSliderItem(qMenu, "QHarassMana"))
                     Program.CastSpell(Q, t);
                 else if (OktwCommon.GetKsDamage(t, Q) > t.Health)

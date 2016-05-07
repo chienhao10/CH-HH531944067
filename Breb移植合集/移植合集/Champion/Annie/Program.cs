@@ -82,7 +82,7 @@ namespace PortAIO.Champion.Annie
             RMenu.AddLabel("3 : 可晕眩时");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
             {
-                RMenu.Add("UM" + enemy.ChampionName, new Slider(enemy.ChampionName, 0, 0, 3));
+                RMenu.Add("UM" + enemy.NetworkId, new Slider(enemy.ChampionName, 0, 0, 3));
             }
             RMenu.AddSeparator();
             RMenu.Add("autoRks", new CheckBox("自动 R 抢头"));
@@ -136,7 +136,7 @@ namespace PortAIO.Champion.Annie
                 {
                     if (enemy.IsValidTarget(R.Range))
                     {
-                        var Rmode = getSliderItem(RMenu, "UM" + enemy.ChampionName);
+                        var Rmode = getSliderItem(RMenu, "UM" + enemy.NetworkId);
 
                         if (Rmode == 2)
                             continue;

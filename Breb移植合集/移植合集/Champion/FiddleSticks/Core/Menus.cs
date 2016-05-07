@@ -26,9 +26,7 @@ namespace Feedlesticks.Core
             qMenu.AddGroupLabel("Q 白名单");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
-                qMenu.Add("q.enemy." + enemy.ChampionName,
-                    new CheckBox(string.Format("Q: {0}", enemy.CharData.BaseSkinName),
-                        Piorty.HighChamps.Contains(enemy.CharData.BaseSkinName)));
+                qMenu.Add("q.enemy." + enemy.NetworkId, new CheckBox(string.Format("Q: {0}", enemy.CharData.BaseSkinName), Piorty.HighChamps.Contains(enemy.CharData.BaseSkinName)));
             }
             qMenu.Add("auto.q.immobile", new CheckBox("自动 (Q) 无法移动目标"));
             qMenu.Add("auto.q.channeling", new CheckBox("自动 (Q) 吟唱技能的目标"));
@@ -37,7 +35,7 @@ namespace Feedlesticks.Core
             wMenu.AddGroupLabel("W 白名单");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
-                wMenu.Add("w.enemy." + enemy.ChampionName,
+                wMenu.Add("w.enemy." + enemy.NetworkId,
                     new CheckBox(string.Format("W: {0}", enemy.CharData.BaseSkinName),
                         Piorty.HighChamps.Contains(enemy.CharData.BaseSkinName)));
             }

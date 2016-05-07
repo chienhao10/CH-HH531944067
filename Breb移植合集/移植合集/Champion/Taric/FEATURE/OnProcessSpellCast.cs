@@ -83,7 +83,7 @@
                                 {
                                     if (W.IsReady() && Player.Mana >= W.ManaCost)
                                     {
-                                        foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.Distance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.ChampionName + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumHpWAlly")))
+                                        foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.Distance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")))
                                         {
                                             foreach (var SendingUnit in HeroManager.Enemies.Where(x => x.NetworkId == sender.NetworkId))
                                             {
@@ -102,7 +102,7 @@
                             {
                                 if (W.IsReady() && Player.Mana >= W.ManaCost)
                                 {
-                                    foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.Distance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.ChampionName + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumHpWAlly")))
+                                    foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.Distance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")))
                                     {
                                         foreach (var SendingUnit in HeroManager.Enemies.Where(x => x.NetworkId == sender.NetworkId))
                                         {

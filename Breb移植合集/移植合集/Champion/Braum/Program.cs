@@ -79,13 +79,13 @@ namespace PortAIO.Champion.Braum
             ewMenu.AddGroupLabel("使用在 : ");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team == Player.Team))
             {
-                ewMenu.Add("Eon" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                ewMenu.Add("Eon" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
             }
             ewMenu.AddGroupLabel("防突进");
             ewMenu.Add("AGC", new CheckBox("防突进 E + W"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
-                ewMenu.Add("gapcloser" + enemy.ChampionName, new CheckBox("Antigapclose : " + enemy.ChampionName));
+                ewMenu.Add("gapcloser" + enemy.NetworkId, new CheckBox("Antigapclose : " + enemy.ChampionName));
             }
 
             rMenu = Config.AddSubMenu("R 设置");
@@ -97,14 +97,13 @@ namespace PortAIO.Champion.Braum
             rMenu.Add("OnInterruptableSpell", new CheckBox("可打断技能"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
             {
-                rMenu.Add("Rmode" + enemy.ChampionName,
-                    new Slider(enemy.ChampionName + " 0 : 正常 | 1 : 一直 | 2 : 从不 | 3 : 正常 + 防突进 R"));
+            rMenu.Add("Rmode" + enemy.NetworkId, new Slider(enemy.ChampionName + " 0 : 正常 | 1 : 一直 | 2 : 从不 | 3 : 正常 + 防突进 R"));
             }
 
             harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
-                harassMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                harassMenu.Add("haras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
             }
 
             Game.OnUpdate += Game_OnGameUpdate;
@@ -116,7 +115,7 @@ namespace PortAIO.Champion.Braum
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var t = gapcloser.Sender;
-            if (!getCheckBoxItem(ewMenu, "gapcloser" + t.ChampionName))
+            if (!getCheckBoxItem(ewMenu, "gapcloser" + t.NetworkId))
                 return;
 
             if (getCheckBoxItem(ewMenu, "AGC"))
@@ -126,7 +125,7 @@ namespace PortAIO.Champion.Braum
                     var allyHero = SebbyLib.Program.Allies.Where(ally => ally.Distance(Player) <= W.Range && !ally.IsMe)
                         .OrderBy(ally => ally.Distance(gapcloser.End)).FirstOrDefault();
 
-                    if (allyHero != null && getCheckBoxItem(ewMenu, "Eon" + allyHero.ChampionName))
+                    if (allyHero != null && getCheckBoxItem(ewMenu, "Eon" + allyHero.NetworkId))
                         W.Cast(allyHero);
                 }
                 if (E.IsReady())
@@ -136,7 +135,7 @@ namespace PortAIO.Champion.Braum
             if (Q.IsReady() && getCheckBoxItem(qMenu, "AGCq"))
                 Q.Cast(t);
 
-            if (R.IsReady() && getSliderItem(rMenu, "Rmode" + t.ChampionName) == 3)
+            if (R.IsReady() && getSliderItem(rMenu, "Rmode" + t.NetworkId) == 3)
                 R.Cast(t);
         }
 
@@ -177,7 +176,7 @@ namespace PortAIO.Champion.Braum
                             SebbyLib.Program.Enemies.Where(
                                 enemy =>
                                     enemy.IsValidTarget(Q.Range) &&
-                                    getCheckBoxItem(harassMenu, "haras" + enemy.ChampionName)))
+                                    getCheckBoxItem(harassMenu, "haras" + enemy.NetworkId)))
                     {
                         SebbyLib.Program.CastSpell(Q, enemy);
                     }
@@ -201,7 +200,7 @@ namespace PortAIO.Champion.Braum
                     SebbyLib.Program.Enemies.Where(t => t.IsValidTarget(R.Range) && OktwCommon.ValidUlt(t))
                         .OrderBy(t => t.Health))
             {
-                var Rmode = getSliderItem(rMenu, "Rmode" + t.ChampionName);
+                var Rmode = getSliderItem(rMenu, "Rmode" + t.NetworkId);
 
                 if (Rmode == 2)
                     continue;
@@ -236,8 +235,7 @@ namespace PortAIO.Champion.Braum
             if (!sender.IsEnemy)
                 return;
 
-            if (ewMenu["spell" + args.SData.Name] != null &&
-                !getCheckBoxItem(ewMenu, "spell" + args.SData.Name))
+            if (ewMenu["spell" + args.SData.Name] == null || !getCheckBoxItem(ewMenu, "spell" + args.SData.Name))
                 return;
 
             if (E.IsReady() && getCheckBoxItem(ewMenu, "autoE") && OktwCommon.CanHitSkillShot(Player, args))
@@ -252,7 +250,7 @@ namespace PortAIO.Champion.Braum
                         SebbyLib.Program.Allies.Where(
                             ally =>
                                 ally.IsValid && Player.Distance(ally.ServerPosition) < W.Range &&
-                                getCheckBoxItem(ewMenu, "Eon" + ally.ChampionName)))
+                                getCheckBoxItem(ewMenu, "Eon" + ally.NetworkId)))
                 {
                     if (OktwCommon.CanHitSkillShot(ally, args) ||
                         OktwCommon.GetIncomingDamage(ally, 1) > ally.Health*getSliderItem(ewMenu, "Edmg")*0.01)

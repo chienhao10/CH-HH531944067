@@ -91,7 +91,7 @@ namespace OneKeyToWin_AIO_Sebby
             qMenu = Config.AddSubMenu("Q 设置", "Q Config");
             qMenu.Add("autoQ", new CheckBox("自动 Q"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
-                qMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                qMenu.Add("haras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             wMenu = Config.AddSubMenu("W 设置", "W Config");
             wMenu.Add("autoW", new CheckBox("自动 W"));
@@ -199,7 +199,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (Program.Combo && Player.Mana > RMANA + QMANA)
                     Program.CastSpell(Q, t);
-                else if (Program.Farm && getCheckBoxItem(qMenu, "haras" + t.ChampionName) &&
+                else if (Program.Farm && getCheckBoxItem(qMenu, "haras" + t.NetworkId) &&
                          Player.Mana > RMANA + EMANA + WMANA + QMANA + QMANA)
                     Program.CastSpell(Q, t);
                 else

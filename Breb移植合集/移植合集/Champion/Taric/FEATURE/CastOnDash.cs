@@ -94,7 +94,7 @@
 
                         if (sender.NetworkId == Allytarget.NetworkId)
                         {
-                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHero.ChampionName + "TargetDashEPEComboFromAlly"))
+                            if (getCheckBoxItem(SkyLv_Taric.Combo, AllyHero.NetworkId + "TargetDashEPEComboFromAlly"))
                             {
                                 var delay = (int)(args.EndTick - Game.Time - E.Delay - 0.1f);
                                 if (delay > 0)

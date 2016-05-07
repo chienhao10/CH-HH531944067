@@ -106,7 +106,7 @@ namespace PortAIO.Champion.Anivia
             QMenu.Add("harrasQ", new CheckBox("骚扰 Q"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
-                QMenu.Add("haras" + enemy.ChampionName, new CheckBox("骚扰 :" + enemy.ChampionName));
+                QMenu.Add("haras" + enemy.NetworkId, new CheckBox("骚扰 :" + enemy.ChampionName));
             }
 
             WMenu = Config.AddSubMenu("W 设置");
@@ -203,7 +203,7 @@ namespace PortAIO.Champion.Anivia
             {
                 if (SebbyLib.Program.Combo && Player.Mana > EMANA + QMANA - 10)
                     SebbyLib.Program.CastSpell(Q, t);
-                else if (SebbyLib.Program.Farm && getCheckBoxItem(QMenu, "harrasQ") && getCheckBoxItem(QMenu, "haras" + t.ChampionName) && Player.Mana > RMANA + EMANA + QMANA + WMANA && OktwCommon.CanHarras())
+                else if (SebbyLib.Program.Farm && getCheckBoxItem(QMenu, "harrasQ") && getCheckBoxItem(QMenu, "haras" + t.NetworkId) && Player.Mana > RMANA + EMANA + QMANA + WMANA && OktwCommon.CanHarras())
                 {
                     SebbyLib.Program.CastSpell(Q, t);
                 }

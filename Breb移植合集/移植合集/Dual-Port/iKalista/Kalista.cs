@@ -182,7 +182,7 @@ namespace IKalista
                     MinionOrderTypes.MaxHealth)
                     .FirstOrDefault(
                         x =>
-                        x.GetTotalHealth() <= Damages.GetActualDamage(x) && !x.Name.Contains("Mini")
+                        Extensions.IsRendKillable(x) && !x.Name.Contains("Mini")
                         && !x.Name.Contains("Dragon") && !x.Name.Contains("Baron"));
 
             var bigMinions =
@@ -194,7 +194,7 @@ namespace IKalista
                     MinionOrderTypes.MaxHealth)
                     .FirstOrDefault(
                         x =>
-                        x.GetTotalHealth() <= Damages.GetActualDamage(x)
+                        Extensions.IsRendKillable(x)
                         && (x.BaseSkinName.ToLower().Contains("siege") || x.BaseSkinName.ToLower().Contains("super")));
 
             var baron =
@@ -204,7 +204,7 @@ namespace IKalista
                     MinionTypes.All,
                     MinionTeam.Neutral,
                     MinionOrderTypes.MaxHealth)
-                    .FirstOrDefault(x => x.IsValid && x.GetTotalHealth() < Damages.GetActualDamage(x) && x.Name.Contains("Baron"));
+                    .FirstOrDefault(x => x.IsValid && Extensions.IsRendKillable(x) && x.Name.Contains("Baron"));
 
             var dragon =
                 MinionManager.GetMinions(
@@ -213,7 +213,7 @@ namespace IKalista
                     MinionTypes.All,
                     MinionTeam.Neutral,
                     MinionOrderTypes.MaxHealth)
-                    .FirstOrDefault(x => x.IsValid && x.GetTotalHealth() < Damages.GetActualDamage(x) && x.Name.Contains("Dragon"));
+                    .FirstOrDefault(x => x.IsValid && Extensions.IsRendKillable(x) && x.Name.Contains("Dragon"));
 
             switch (getBoxItem(miscMenu, "jungStealMode"))
             {
@@ -365,10 +365,10 @@ namespace IKalista
         /// </summary>
         private void InitEvents()
         {
-            LeagueSharp.Common.Utility.HpBarDamageIndicator.DamageToUnit = Damages.GetActualDamage;
+            LeagueSharp.Common.Utility.HpBarDamageIndicator.DamageToUnit = Extensions.GetRendDamage;
             LeagueSharp.Common.Utility.HpBarDamageIndicator.Enabled = true;
 
-            CustomDamageIndicator.Initialize(Damages.GetActualDamage);
+            CustomDamageIndicator.Initialize(Extensions.GetRendDamage);
 
             Game.OnUpdate += this.OnUpdate;
 
@@ -394,7 +394,7 @@ namespace IKalista
                     {
                         foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.Distance(x) <= 2000f && !x.IsDead))
                         {
-                            var currentPercentage = Damages.GetActualDamage(source) * 100 / source.GetTotalHealth();
+                            var currentPercentage = Extensions.GetRendDamage(source) * 100 / source.GetTotalHealth();
                             var updatedCurrentPercentage = (int)Math.Ceiling(currentPercentage);
 
                             Drawing.DrawText(
@@ -402,8 +402,8 @@ namespace IKalista
                                 Drawing.WorldToScreen(source.Position)[1],
                                 currentPercentage >= 100 ? Color.Gold : Color.White,
                                 currentPercentage >= 100
-                                    ? "Killable With E"
-                                    : "Current Damage: " + updatedCurrentPercentage + "%");
+                                    ? "E可击杀"
+                                    : "当前伤害: " + updatedCurrentPercentage + "%");
                         }
                     }
 
@@ -413,7 +413,7 @@ namespace IKalista
                             ObjectManager.Get<Obj_AI_Minion>().Where(x => ObjectManager.Player.Distance(x) <= spells[SpellSlot.E].Range && !x.IsDead
                                 && x.Team == GameObjectTeam.Neutral))
                         {
-                            var currentPercentage = Damages.GetActualDamage(jungleMobs) * 100 / jungleMobs.GetTotalHealth();
+                            var currentPercentage = Extensions.GetRendDamage(jungleMobs) * 100 / jungleMobs.GetTotalHealth();
                             var updatedCurrentPercentage = (int)Math.Ceiling(currentPercentage);
 
                             var changeby = 40;
@@ -434,7 +434,11 @@ namespace IKalista
                                         Drawing.DrawText(jungleMobs.HPBarPosition.X, jungleMobs.HPBarPosition.Y + changeby, Color.GreenYellow,
                                             string.Format("{0}%", updatedCurrentPercentage));
                                         break;
-                                    case "SRU_Dragon":
+                                    case "SRU_Dragon_Air":
+                                    case "SRU_Dragon_Water":
+                                    case "SRU_Dragon_Elder":
+                                    case "SRU_Dragon_Fire":
+                                    case "SRU_Dragon_Earth":
                                         Drawing.DrawText(jungleMobs.HPBarPosition.X, jungleMobs.HPBarPosition.Y + changeby, Color.GreenYellow,
                                             string.Format("{0}%", updatedCurrentPercentage));
                                         break;
@@ -474,7 +478,7 @@ namespace IKalista
                 return;
             }
 
-            if (getCheckBoxItem(laneClearMenu, "eUnkillable") && Damages.GetActualDamage(killableMinion) > killableMinion.GetTotalHealth() + 10 && this.spells[SpellSlot.E].CanCast(killableMinion) && killableMinion.HasBuff("KalistaExpungeMarker"))
+            if (getCheckBoxItem(laneClearMenu, "eUnkillable") && Extensions.GetRendDamage(killableMinion) > killableMinion.GetTotalHealth() + 10 && this.spells[SpellSlot.E].CanCast(killableMinion) && killableMinion.HasBuff("KalistaExpungeMarker"))
             {
                 this.spells[SpellSlot.E].Cast();
             }
@@ -629,7 +633,7 @@ namespace IKalista
         /// </summary>
         private void KillstealQ()
         {
-            foreach (var source in HeroManager.Enemies.Where(x => this.spells[SpellSlot.E].IsInRange(x) && Damages.GetActualDamage(x) > x.GetTotalHealth()))
+            foreach (var source in HeroManager.Enemies.Where(x => this.spells[SpellSlot.E].IsInRange(x) && Extensions.IsRendKillable(x)))
             {
                 if (source.IsValidTarget(this.spells[SpellSlot.E].Range) && !this.HasUndyingBuff(source))
                 {
@@ -680,7 +684,7 @@ namespace IKalista
                 foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[SpellSlot.E].Range) && x.HasBuff("KalistaExpungeMarker")))
                 {
                     var stacks = enemy.GetBuffCount("kalistaexpungemarker");
-                    var damage = Math.Ceiling(Damages.GetActualDamage(enemy) * 100 / enemy.GetTotalHealth());
+                    var damage = Math.Ceiling(Extensions.GetRendDamage(enemy) * 100 / enemy.GetTotalHealth());
 
                     if (getCheckBoxItem(comboMenu, "eLeaving") && damage >= getSliderItem(comboMenu, "ePercent") && enemy.HealthPercent > 20 && enemy.ServerPosition.Distance(ObjectManager.Player.ServerPosition, true) > Math.Pow(this.spells[SpellSlot.E].Range * 0.8, 2) && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
                     {
@@ -757,15 +761,15 @@ namespace IKalista
                 var rendTarget =
                     HeroManager.Enemies.Where(
                         x =>
-                        x.IsValidTarget(this.spells[SpellSlot.E].Range) && Damages.GetActualDamage(x) >= 1
+                        x.IsValidTarget(this.spells[SpellSlot.E].Range) && Extensions.GetRendDamage(x) >= 1
                         && !x.HasBuffOfType(BuffType.Invulnerability) && !x.HasBuffOfType(BuffType.SpellShield))
-                        .OrderByDescending(x => Damages.GetActualDamage(x))
+                        .OrderByDescending(x => Extensions.GetRendDamage(x))
                         .FirstOrDefault();
 
                 if (rendTarget != null)
                 {
                     var stackCount = rendTarget.GetBuffCount("kalistaexpungemarker");
-                    if (Damages.GetActualDamage(rendTarget) > rendTarget.GetTotalHealth() || stackCount >= getSliderItem(comboMenu, "minStacks"))
+                    if (Extensions.IsRendKillable(rendTarget) || stackCount >= getSliderItem(comboMenu, "minStacks"))
                     {
                         if (Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT < 500)
                         {
@@ -782,15 +786,15 @@ namespace IKalista
             {
                 var minion =
                     MinionManager.GetMinions(this.spells[SpellSlot.E].Range, MinionTypes.All, MinionTeam.NotAlly)
-                        .Where(x => x.GetTotalHealth() <= Damages.GetActualDamage(x))
+                        .Where(x => Extensions.IsRendKillable(x))
                         .OrderBy(x => x.GetTotalHealth())
                         .FirstOrDefault();
                 var target =
                     HeroManager.Enemies.Where(
                         x =>
-                        this.spells[SpellSlot.E].CanCast(x) && Damages.GetActualDamage(x) >= 1
+                        this.spells[SpellSlot.E].CanCast(x) && Extensions.GetRendDamage(x) >= 1
                         && !x.HasBuffOfType(BuffType.SpellShield))
-                        .OrderByDescending(x => Damages.GetActualDamage(x))
+                        .OrderByDescending(x => Extensions.GetRendDamage(x))
                         .FirstOrDefault();
 
                 if (minion != null && target != null && this.spells[SpellSlot.E].CanCast(minion) && this.spells[SpellSlot.E].CanCast(target) && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
@@ -838,17 +842,14 @@ namespace IKalista
 
             var harassableMinion =
                 MinionManager.GetMinions(this.spells[SpellSlot.E].Range, MinionTypes.All, MinionTeam.NotAlly)
-                    .Where(x => x.GetTotalHealth() <= Damages.GetActualDamage(x))
+                    .Where(x => Extensions.IsRendKillable(x))
                     .OrderBy(x => x.GetTotalHealth())
                     .FirstOrDefault();
 
             var rendTarget =
                 HeroManager.Enemies.Where(
                     x =>
-                    this.spells[SpellSlot.E].IsInRange(x) && Damages.GetActualDamage(x) >= 1
-                    && !x.HasBuffOfType(BuffType.Invulnerability) && !x.HasBuffOfType(BuffType.SpellShield))
-                    .OrderByDescending(x => Damages.GetActualDamage(x))
-                    .FirstOrDefault();
+                    this.spells[SpellSlot.E].IsInRange(x) && Extensions.GetRendDamage(x) >= 1 && !x.HasBuffOfType(BuffType.Invulnerability) && !x.HasBuffOfType(BuffType.SpellShield)).OrderByDescending(x => Extensions.GetRendDamage(x)).FirstOrDefault();
 
             if (getCheckBoxItem(laneClearMenu, "minLC") && harassableMinion != null && rendTarget != null && this.spells[SpellSlot.E].CanCast(harassableMinion) && this.spells[SpellSlot.E].CanCast(rendTarget) && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
             {
@@ -858,7 +859,7 @@ namespace IKalista
 
             if (this.spells[SpellSlot.E].IsReady() && getCheckBoxItem(laneClearMenu, "useELC"))
             {
-                var count = minions.Count(x => this.spells[SpellSlot.E].CanCast(x) && x.GetTotalHealth() < Damages.GetActualDamage(x));
+                var count = minions.Count(x => this.spells[SpellSlot.E].CanCast(x) && Extensions.IsRendKillable(x));
 
                 if (count >= getSliderItem(laneClearMenu, "eHit") && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
                 {
@@ -937,10 +938,10 @@ namespace IKalista
 
             if (getCheckBoxItem(comboMenu, "eDeath") && enemies > 2 && ObjectManager.Player.HealthPercent <= getSliderItem(comboMenu, "eHealth") && this.spells[SpellSlot.E].IsReady())
             {
-                var target = HeroManager.Enemies.Where(x => this.spells[SpellSlot.E].IsInRange(x) && x.HasBuff("KalistaExpungeMarker")).OrderBy(x => Damages.GetActualDamage(x)).FirstOrDefault();
+                var target = HeroManager.Enemies.Where(x => this.spells[SpellSlot.E].IsInRange(x) && x.HasBuff("KalistaExpungeMarker")).OrderBy(x => Extensions.GetRendDamage(x)).FirstOrDefault();
                 if (target != null)
                 {
-                    var stacks = Damages.GetActualDamage(target);
+                    var stacks = Extensions.GetRendDamage(target);
                     var damage = Math.Ceiling(stacks * 100 / target.GetTotalHealth());
                     if (damage >= getSliderItem(comboMenu, "eDeathC") && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
                     {

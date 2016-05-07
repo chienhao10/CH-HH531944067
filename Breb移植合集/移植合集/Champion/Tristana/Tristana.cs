@@ -238,14 +238,14 @@ namespace ElTristana
                 {
                     if (hero.IsEnemy)
                     {
-                        var getEnemies = getCheckBoxItem(comboMenu, "ElTristana.E.On" + hero.ChampionName);
-                        if (comboMenu["ElTristana.E.On" + hero.ChampionName] != null && getEnemies)
+                        var getEnemies = getCheckBoxItem(comboMenu, "ElTristana.E.On" + hero.NetworkId);
+                        if (comboMenu["ElTristana.E.On" + hero.NetworkId] != null && getEnemies)
                         {
                             spells[Spells.E].Cast(hero);
                             Orbwalker.ForcedTarget = hero;
                         }
 
-                        if (comboMenu["ElTristana.E.On" + hero.ChampionName] != null && !getEnemies && Player.CountEnemiesInRange(1500) == 1)
+                        if (comboMenu["ElTristana.E.On" + hero.NetworkId] != null && !getEnemies && Player.CountEnemiesInRange(1500) == 1)
                         {
                             spells[Spells.E].Cast(hero);
                             Orbwalker.ForcedTarget = hero;
@@ -420,8 +420,8 @@ namespace ElTristana
                 {
                     if (hero.IsEnemy)
                     {
-                        var getEnemies = getCheckBoxItem(harassMenu, "ElTristana.E.On.Harass" + hero.CharData.BaseSkinName);
-                        if (harassMenu["ElTristana.E.On.Harass" + hero.CharData.BaseSkinName] != null && getEnemies)
+                        var getEnemies = getCheckBoxItem(harassMenu, "ElTristana.E.On.Harass" + hero.NetworkId);
+                        if (harassMenu["ElTristana.E.On.Harass" + hero.NetworkId] != null && getEnemies)
                         {
                             spells[Spells.E].Cast(hero);
                             Orbwalker.ForcedTarget = hero;

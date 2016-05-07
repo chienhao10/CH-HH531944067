@@ -82,7 +82,7 @@ namespace OneKeyToWin_AIO_Sebby
             wMenu = Config.AddSubMenu("Harass");
             wMenu.Add("harasW", new CheckBox("Harras W"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
-                wMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                wMenu.Add("haras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             eMenu = Config.AddSubMenu("E Shield Config");
             eMenu.AddGroupLabel("E On : ");
@@ -125,7 +125,7 @@ namespace OneKeyToWin_AIO_Sebby
                     var t = target as AIHeroClient;
                     if (Program.Combo && Player.Mana > RMANA + WMANA)
                         W.Cast();
-                    else if (getCheckBoxItem(wMenu, "harasW") && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && getCheckBoxItem(wMenu, "haras" + t.ChampionName))
+                    else if (getCheckBoxItem(wMenu, "harasW") && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && getCheckBoxItem(wMenu, "haras" + t.NetworkId))
                     {
                         W.Cast();
                     }
@@ -133,7 +133,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else
                 {
                     var t = TargetSelector.GetTarget(900, DamageType.Physical);
-                    if (t.IsValidTarget() && getCheckBoxItem(wMenu, "harasW") && getCheckBoxItem(wMenu, "haras" + t.ChampionName) && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t.Distance(target.Position) < 500)
+                    if (t.IsValidTarget() && getCheckBoxItem(wMenu, "harasW") && getCheckBoxItem(wMenu, "haras" + t.NetworkId) && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t.Distance(target.Position) < 500)
                     {
                         W.Cast();
                     }
@@ -154,7 +154,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (!E.IsReady() || args.SData.IsAutoAttack() || Player.HealthPercent > getSliderItem(eMenu, "Edmg") || !getCheckBoxItem(eMenu, "autoE") || !sender.IsEnemy || sender.IsMinion || !sender.IsValid<AIHeroClient>() || args.SData.Name.ToLower() == "tormentedsoil")
                 return;
 
-            if (eMenu["spell" + args.SData.Name] != null && !getCheckBoxItem(eMenu, "spell" + args.SData.Name))
+            if (eMenu["spell" + args.SData.Name] == null || !getCheckBoxItem(eMenu, "spell" + args.SData.Name))
                 return;
 
             if (args.Target != null)
@@ -211,7 +211,7 @@ namespace OneKeyToWin_AIO_Sebby
                     Q.Cast(t, true);
                 else if (Program.Combo && Player.Mana > RMANA + QMANA)
                     Program.CastSpell(Q, t);
-                else if (Program.Farm && getCheckBoxItem(wMenu, "haras" + t.ChampionName) && !Player.UnderTurret(true))
+                else if (Program.Farm && getCheckBoxItem(wMenu, "haras" + t.NetworkId) && !Player.UnderTurret(true))
                 {
                     if (Player.Mana > Player.MaxMana*0.9)
                         Program.CastSpell(Q, t);

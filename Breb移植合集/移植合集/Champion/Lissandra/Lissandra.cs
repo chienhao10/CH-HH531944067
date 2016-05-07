@@ -59,12 +59,12 @@ namespace SephLissandra
         public static void OnLoad()
         {
             Player = ObjectManager.Player;
+            DefineSpells();
             if (Player.CharData.BaseSkinName != "Lissandra")
             {
                 return;
             }
             LissMenu.CreateMenu();
-            DefineSpells();
             Game.OnUpdate += GameTick;
             Game.OnUpdate += MonitorMissilePosition;
             AntiGapcloser.OnEnemyGapcloser += OnGapClose;
@@ -221,7 +221,7 @@ namespace SephLissandra
                     return;
                 }
                 if (getCheckBoxItem(interruptMenu, "Interrupter.AG.UseR") &&
-                    !getCheckBoxItem(blackListMenu, "Blacklist." + sender.ChampionName) &&
+                    !getCheckBoxItem(blackListMenu, "Blacklist." + sender.NetworkId) &&
                     Vector3.Distance(sender.ServerPosition, Player.ServerPosition) <= Spells["R"].Range)
                 {
                     Spells["R"].Cast(sender);
@@ -245,7 +245,7 @@ namespace SephLissandra
                     return;
                 }
                 if (getCheckBoxItem(interruptMenu, "Interrupter.UseR") &&
-                    !getCheckBoxItem(blackListMenu, "Blacklist." + sender.ChampionName) &&
+                    !getCheckBoxItem(blackListMenu, "Blacklist." + sender.NetworkId) &&
                     Vector3.Distance(sender.ServerPosition, Player.ServerPosition) <= Spells["R"].Range)
                 {
                     Spells["R"].Cast(sender);
@@ -285,7 +285,7 @@ namespace SephLissandra
                 var prediction2 = Spells["Q"].GetPrediction(target);
                 if (prediction2.Hitchance >= LissUtils.GetHitChance("Hitchance.Q"))
                 {
-                    Spells["Q"].Cast(prediction2.CastPosition);
+                    Spells["Q"].Cast(target);
                     return;
                 }
             }
@@ -299,7 +299,7 @@ namespace SephLissandra
                     var pred = Spells["Q2"].GetPrediction(target);
                     if (pred.Hitchance >= LissUtils.GetHitChance("Hitchance.Q"))
                     {
-                        Spells["Q2"].Cast(pred.CastPosition);
+                        Spells["Q2"].Cast(target);
                     }
                 }
             }
@@ -433,7 +433,7 @@ namespace SephLissandra
                         h =>
                             h.IsValidTarget(Spells["R"].Range) &&
                             h.CountEnemiesInRange(Spells["R"].Range) >= getSliderItem(comboMenu, "Combo.Rcount") &&
-                            !getCheckBoxItem(blackListMenu, "Blacklist." + h.ChampionName)).ToList();
+                            !getCheckBoxItem(blackListMenu, "Blacklist." + h.NetworkId)).ToList();
 
             if (Player.CountEnemiesInRange(Spells["R"].Range) >= getSliderItem(comboMenu, "Combo.Rcount"))
             {
@@ -453,7 +453,7 @@ namespace SephLissandra
                     return;
                 }
             }
-            if (getCheckBoxItem(blackListMenu, "Blacklist." + currenttarget.ChampionName))
+            if (getCheckBoxItem(blackListMenu, "Blacklist." + currenttarget.NetworkId))
             {
                 return;
             }
@@ -490,7 +490,7 @@ namespace SephLissandra
                         (h.IsValidTarget() &&
                          Vector3.Distance(h.ServerPosition, Player.ServerPosition) <= Spells["R"].Range ||
                          (h.IsKillableFromPoint(Player.ServerPosition) && h.IsValidTarget() && !h.IsInvulnerable)) &&
-                        !getCheckBoxItem(blackListMenu, "Blacklist." + h.ChampionName)).ToList();
+                        !getCheckBoxItem(blackListMenu, "Blacklist." + h.NetworkId)).ToList();
 
             var arranged = possibilities.OrderByDescending(h => h.CountEnemiesInRange(Spells["R"].Range));
             if (getCheckBoxItem(miscMenu, "Misc.PrioritizeUnderTurret"))
@@ -525,8 +525,7 @@ namespace SephLissandra
 
         private static void KillSteal()
         {
-            var targets =
-                HeroManager.Enemies.Where(x => x.IsValidTarget() && !x.IsInvulnerable & !x.IsZombie);
+            var targets = HeroManager.Enemies.Where(x => x.IsValidTarget() && !x.IsInvulnerable & !x.IsZombie);
 
             var objAiHeroes = targets as IList<AIHeroClient> ?? targets.ToList();
             if (SpellSlot.Q.IsReady() && getCheckBoxItem(ksMenu, "Killsteal.UseQ"))
@@ -542,7 +541,7 @@ namespace SephLissandra
                         var pred = Spells["Q"].GetPrediction(qtarget);
                         if (pred != null)
                         {
-                            Spells["Q"].Cast(pred.CastPosition);
+                            Spells["Q"].Cast(qtarget);
                         }
                     }
                 }
@@ -575,7 +574,7 @@ namespace SephLissandra
                         var pred = Spells["E"].GetPrediction(etarget);
                         if (pred != null)
                         {
-                            Spells["E"].Cast(pred.CastPosition);
+                            Spells["E"].Cast(etarget);
                         }
                     }
                 }
@@ -619,7 +618,7 @@ namespace SephLissandra
                             (Vector3.Distance(Player.ServerPosition, h.ServerPosition) < Spells["R"].Range) &&
                             h.CountEnemiesInRange(Spells["R"].Range) > 1 &&
                             h.Health < Player.GetSpellDamage(h, SpellSlot.R) &&
-                            !getCheckBoxItem(blackListMenu, "Blacklist." + h.ChampionName)).MinOrDefault(h => h.Health);
+                            !getCheckBoxItem(blackListMenu, "Blacklist." + h.NetworkId)).MinOrDefault(h => h.Health);
                 if (Rtarget != null)
                 {
                     Spells["R"].Cast(Rtarget);

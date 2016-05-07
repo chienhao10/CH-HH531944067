@@ -78,8 +78,8 @@ namespace KurisuNidalee
             eHMenu.Add("ndhesw", new CheckBox("切换形态进行治疗", false));
             foreach (var hero in HeroManager.Allies)
             {
-                eHMenu.Add("xx" + hero.ChampionName, new CheckBox("治疗" + hero.ChampionName));
-                eHMenu.Add("zz" + hero.ChampionName, new Slider(hero.ChampionName + " 低于 % ", 88, 1, 99));
+                eHMenu.Add("xx" + hero.NetworkId, new CheckBox("治疗" + hero.ChampionName));
+                eHMenu.Add("zz" + hero.NetworkId, new Slider(hero.ChampionName + " 低于 % ", 88, 1, 99));
             }
             eHMenu.Add("ndheord", new ComboBox("友军优先:", 1, "低血量的", "最高 AD/AP", "最多血量的"));
 
@@ -191,7 +191,7 @@ namespace KurisuNidalee
 
             foreach (var ally in Allies().Where(hero => !hero.IsMelee))
             {
-                if (ally.NetworkId != sender.NetworkId || !getCheckBoxItem(eHMenu, "xx" + ally.ChampionName))
+                if (ally.NetworkId != sender.NetworkId || !getCheckBoxItem(eHMenu, "xx" + ally.NetworkId))
                 {
                     return;
                 }
@@ -426,10 +426,10 @@ namespace KurisuNidalee
                     foreach (
                         var hero in
                             Allies().Where(
-                                h => getCheckBoxItem(eHMenu, "xx" + h.ChampionName) &&
+                                h => getCheckBoxItem(eHMenu, "xx" + h.NetworkId) &&
                                      h.IsValidTarget(KL.Spells["Primalsurge"].Range) &&
                                      h.Health/h.MaxHealth*100 <
-                                     getSliderItem(eHMenu, "zz" + h.ChampionName)))
+                                     getSliderItem(eHMenu, "zz" + h.NetworkId)))
                     {
                         if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None) ||
                             hero.Health/hero.MaxHealth*100 <= 20 || !KL.CatForm())

@@ -192,7 +192,7 @@ namespace Challenger_Series
             PriorityMenu = MainMenu.AddSubMenu("优先治疗", "sttcselector");
             foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(h => h.IsAlly && !h.IsMe))
             {
-                PriorityMenu.Add("STTCSelector" + ally.ChampionName + "Priority", new Slider(ally.ChampionName, GetPriorityFromDb(ally.ChampionName), 1, 5));
+                PriorityMenu.Add("STTCSelector" + ally.NetworkId + "Priority", new Slider(ally.ChampionName, GetPriorityFromDb(ally.ChampionName), 1, 5));
             }
 
             MainMenu.Add("rakaqonlyifmyhp", new Slider("只在我的生命低于 X% 使用Q", 100, 0, 100));
@@ -377,9 +377,9 @@ namespace Challenger_Series
         public float GetPriority(AIHeroClient hero)
         {
             var p = 1;
-            if (PriorityMenu["STTCSelector" + hero.ChampionName + "Priority"] != null)
+            if (PriorityMenu["STTCSelector" + hero.NetworkId + "Priority"] != null)
             {
-                p = PriorityMenu["STTCSelector" + hero.ChampionName + "Priority"].Cast<Slider>().CurrentValue;
+                p = PriorityMenu["STTCSelector" + hero.NetworkId + "Priority"].Cast<Slider>().CurrentValue;
             }
             else
             {

@@ -183,7 +183,7 @@ namespace PortAIO.Champion.Alistar
                 healMenu.AddSeparator();
                 foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly))
                 {
-                    healMenu.Add("healon" + x.ChampionName, new CheckBox("Use for " + x.ChampionName));
+                    healMenu.Add("healon" + x.NetworkId, new CheckBox("使用 " + x.ChampionName));
                 }
 
 
@@ -413,7 +413,7 @@ namespace PortAIO.Champion.Alistar
                         .Any(
                             x =>
                                 x.IsAlly && !x.IsDead &&
-                                getCheckBoxItem(healMenu, string.Format("healon{0}", x.ChampionName)) &&
+                                getCheckBoxItem(healMenu, string.Format("healon{0}", x.NetworkId)) &&
                                 ((int) (args.Damage/x.MaxHealth*100) > getSliderItem(healMenu, "Heal.Damage") ||
                                  x.HealthPercent < getSliderItem(healMenu, "Heal.HP")) && x.Distance(Player) < E.Range &&
                                 x.CountEnemiesInRange(1000) >= 1))

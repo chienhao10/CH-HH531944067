@@ -8,7 +8,6 @@ To-Check :
 ------------------------------------------------------------------------
 
 Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
-- Re-Port NechritoRiven (The update was to big to just C&P changes)
 - Nechrito Twitch/Nidalee (When it comes out)
 - Challenger Series Lucian/Ashe
 - iLucian
@@ -38,3 +37,7 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - SimpleSion
 - ElEasy Sona
 - GosuMechanics Yasuo
+- Universal Leveler or Auto Level Up
+- Sebby Ban Wars
+- Auto Buy
+- DZAwareness

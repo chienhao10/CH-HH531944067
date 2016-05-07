@@ -128,7 +128,7 @@
             ksMenu.AddGroupLabel("额外 R 设置");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
-                ksMenu.Add("RCast" + enemy.ChampionName, new CheckBox("使用在 " + enemy.ChampionName, false));
+                ksMenu.Add("RCast" + enemy.NetworkId, new CheckBox("使用在 " + enemy.ChampionName, false));
             }
 
             drawMenu = config.AddSubMenu("Draw", "线圈");
@@ -652,7 +652,7 @@
             }
             if (getCheckBoxItem(ksMenu, "R") && R.IsReady())
             {
-                var targetList = EntityManager.Heroes.Enemies.Where(x => !x.IsDead && R.IsInRange(x) && getCheckBoxItem(ksMenu, "RCast" + x.ChampionName) && x.LSIsValidTarget()).ToList();
+                var targetList = EntityManager.Heroes.Enemies.Where(x => !x.IsDead && R.IsInRange(x) && getCheckBoxItem(ksMenu, "RCast" + x.NetworkId) && x.LSIsValidTarget()).ToList();
                 if (targetList == null)
                 {
                     return;

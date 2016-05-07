@@ -38,7 +38,7 @@ namespace KurisuMorgana
             _e = new Spell(SpellSlot.E, 750f);
             _r = new Spell(SpellSlot.R, 600f);
 
-            _menu = MainMenu.AddMenu("Kurisu魔干那", "morgana");
+            _menu = MainMenu.AddMenu("Kurisu甘娜", "morgana");
 
             menuQ = _menu.AddSubMenu("[Q]", "asdfasdf");
             menuQ.Add("hitchanceq", new Slider("命中率", 3, 1, 4));
@@ -58,13 +58,13 @@ namespace KurisuMorgana
             menuW.Add("waitfor", new CheckBox("只对不可移动的目标使用"));
 
             menuE = _menu.AddSubMenu("[E]", "emasdfasdfasdfenu");
-            menuE.Add("shieldtg", new CheckBox("Shield Only Target Spells", false));
-            menuE.Add("usemorge", new CheckBox("Enabled"));
+            menuE.Add("shieldtg", new CheckBox("对目标技能使用E", false));
+            menuE.Add("usemorge", new CheckBox("开启"));
 
             shieldMenu = _menu.AddSubMenu("使用盾 [为谁使用?]", "usefor");
             foreach (var frn in ObjectManager.Get<AIHeroClient>().Where(x => x.Team == Me.Team))
             {
-                shieldMenu.Add("useon" + frn.ChampionName, new CheckBox("E " + frn.ChampionName, !frn.IsMe));
+            shieldMenu.Add("useon" + frn.NetworkId, new CheckBox("护盾 " + frn.ChampionName, !frn.IsMe));
             }
             shieldMenu.AddSeparator();
             shieldMenu.AddGroupLabel("敌方技能 :");
@@ -90,7 +90,7 @@ namespace KurisuMorgana
 
             wwmenu = _menu.AddSubMenu(":: 农兵", "wwmasdfasdfenu");
             wwmenu.Add("farmw", new CheckBox("使用 W"));
-            wwmenu.Add("farmcount", new Slider("-> If Min Minions >=", 3, 1, 7));
+            wwmenu.Add("farmcount", new Slider("-> 如果最低小兵 >=", 3, 1, 7));
 
             miscMenu = _menu.AddSubMenu(":: 杂项", "miasdfasdfsc");
             miscMenu.Add("harassmana", new Slider("骚扰蓝量 %", 55, 0, 99));

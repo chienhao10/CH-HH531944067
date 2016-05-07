@@ -30,7 +30,7 @@ namespace ExorAIO.Champions.Nautilus
             if (Variables.R.IsReady() && Targets.Target.IsValidTarget(Variables.R.Range) &&
                 Variables.getCheckBoxItem(Variables.RMenu, "rspell.combo") &&
                 Variables.getCheckBoxItem(Variables.WhiteListMenu,
-                    "rspell.whitelist." + Targets.Target.ChampionName.ToLower()))
+                    "rspell.whitelist." + Targets.Target.NetworkId))
             {
                 Variables.R.CastOnUnit(Targets.Target);
                 return;

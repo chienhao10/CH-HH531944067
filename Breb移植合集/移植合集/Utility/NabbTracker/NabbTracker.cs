@@ -28,8 +28,10 @@ namespace NabbTracker
             Menus.Initialize();          
             Drawings.Initialize();
 
-            HTrackerSDK.WardTracker.OnLoad(Variables.Menu);
-            
+            if (Variables.Menu["ward"].Cast<CheckBox>().CurrentValue)
+            {
+                HTrackerSDK.WardTracker.OnLoad(Variables.Menu);
+            }
         }
     }
 }

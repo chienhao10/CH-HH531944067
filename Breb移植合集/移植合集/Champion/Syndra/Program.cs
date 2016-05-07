@@ -89,20 +89,20 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             e.Add("useQE", new KeyBind("Semi-manual Q + E near mouse key", false, KeyBind.BindTypes.PressToggle, 'T'));
                 //32 == space
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                e.Add("Egapcloser" + enemy.ChampionName, new CheckBox("Q + E Gap : " + enemy.ChampionName));
+                e.Add("Egapcloser" + enemy.NetworkId, new CheckBox("Q + E Gap : " + enemy.ChampionName));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                e.Add("Eon" + enemy.ChampionName, new CheckBox("Q + E :" + enemy.ChampionName));
+                e.Add("Eon" + enemy.NetworkId, new CheckBox("Q + E :" + enemy.ChampionName));
 
             r = Config.AddSubMenu("R Config");
             r.Add("autoR", new CheckBox("Auto R KS"));
             r.Add("Rcombo", new CheckBox("Extra combo dmg calculation"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                r.Add("Rmode" + enemy.ChampionName,
+                r.Add("Rmode" + enemy.NetworkId,
                     new ComboBox("Use on : " + enemy.ChampionName, 0, "KS", "Always", "Never"));
 
             harass = Config.AddSubMenu("Harass");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                harass.Add("harras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                harass.Add("harras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             farm = Config.AddSubMenu("Farm");
             farm.Add("farmQout", new CheckBox("Last hit Q minion out range AA"));
@@ -148,7 +148,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && getCheckBoxItem(e, "Egapcloser" + gapcloser.Sender.ChampionName))
+            if (E.IsReady() && getCheckBoxItem(e, "Egapcloser" + gapcloser.Sender.NetworkId))
             {
                 if (Q.IsReady())
                 {
@@ -237,10 +237,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (OktwCommon.GetKsDamage(t, E) + Q.GetDamage(t) > t.Health)
                     TryBallE(t);
-                if (Program.Combo && Player.Mana > RMANA + EMANA + QMANA && getCheckBoxItem(e, "Eon" + t.ChampionName))
+                if (Program.Combo && Player.Mana > RMANA + EMANA + QMANA && getCheckBoxItem(e, "Eon" + t.NetworkId))
                     TryBallE(t);
                 if (Program.Farm && Player.Mana > RMANA + EMANA + QMANA + WMANA && getCheckBoxItem(e, "harrasE") &&
-                    getCheckBoxItem(harass, "harras" + t.ChampionName))
+                    getCheckBoxItem(harass, "harras" + t.NetworkId))
                     TryBallE(t);
             }
         }
@@ -254,7 +254,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             foreach (
                 var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(R.Range) && OktwCommon.ValidUlt(enemy)))
             {
-                var Rmode = getBoxItem(r, "Rmode" + enemy.ChampionName);
+                var Rmode = getBoxItem(r, "Rmode" + enemy.NetworkId);
 
                 if (Rmode == 2)
                     continue;
@@ -294,7 +294,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     if (Program.Combo && Player.Mana > RMANA + QMANA + WMANA)
                         CatchW(t);
                     else if (Program.Farm && getCheckBoxItem(w, "harrasW") &&
-                             getCheckBoxItem(harass, "harras" + t.ChampionName)
+                             getCheckBoxItem(harass, "harras" + t.NetworkId)
                              && Player.ManaPercent > getSliderItem(q, "QHarassMana") && OktwCommon.CanHarras())
                     {
                         CatchW(t);
@@ -346,7 +346,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Program.Combo && Player.Mana > RMANA + QMANA + EMANA && !E.IsReady())
                     Program.CastSpell(Q, t);
                 else if (Program.Farm && getCheckBoxItem(q, "harrasQ") &&
-                         getCheckBoxItem(harass, "harras" + t.ChampionName) &&
+                         getCheckBoxItem(harass, "harras" + t.NetworkId) &&
                          Player.ManaPercent > getSliderItem(q, "QHarassMana") && OktwCommon.CanHarras())
                     Program.CastSpell(Q, t);
                 else if (OktwCommon.GetKsDamage(t, Q) > t.Health)

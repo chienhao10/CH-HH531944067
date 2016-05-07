@@ -100,7 +100,7 @@ namespace OneKeyToWin_AIO_Sebby
             rMenu.Add("Rlifesaver", new CheckBox("自动 R 自救"));
             rMenu.Add("Rblock", new CheckBox("防空大助手"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                rMenu.Add("Ralways" + enemy.ChampionName, new CheckBox("总是 R : " + enemy.ChampionName, false));
+                rMenu.Add("Ralways" + enemy.NetworkId, new CheckBox("总是 R : " + enemy.ChampionName, false));
 
             Game.OnUpdate += Game_OnGameUpdate;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
@@ -264,7 +264,7 @@ namespace OneKeyToWin_AIO_Sebby
                             BallPos.Distance(Prediction.GetPrediction(t, R.Delay).CastPosition) < R.Width &&
                             BallPos.Distance(t.ServerPosition) < R.Width))
             {
-                if (Program.Combo && getCheckBoxItem(rMenu, "Ralways" + t.ChampionName))
+                if (Program.Combo && getCheckBoxItem(rMenu, "Ralways" + t.NetworkId))
                 {
                     R.Cast();
                 }

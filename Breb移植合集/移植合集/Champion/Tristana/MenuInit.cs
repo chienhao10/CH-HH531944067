@@ -22,7 +22,7 @@ namespace ElTristana
             comboMenu.Add("ElTristana.Combo.Always.RE", new CheckBox("Use E + R finisher"));
             comboMenu.Add("ElTristana.Combo.E.Mana", new Slider("Minimum mana for E", 25));
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy))
-                comboMenu.Add("ElTristana.E.On" + hero.ChampionName, new CheckBox("E? : " + hero.ChampionName));
+                comboMenu.Add("ElTristana.E.On" + hero.NetworkId, new CheckBox("E? : " + hero.ChampionName));
 
             suicideMenu = Menu_.AddSubMenu("W settings", "Suicide menu");
             suicideMenu.Add("ElTristana.W", new CheckBox("Use this special feature", false));
@@ -38,8 +38,7 @@ namespace ElTristana
             harassMenu.Add("ElTristana.Harass.QE", new CheckBox("Use Q only with E"));
             harassMenu.Add("ElTristana.Harass.E.Mana", new Slider("Minimum mana for E", 25));
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy))
-                harassMenu.Add("ElTristana.E.On.Harass" + hero.CharData.BaseSkinName,
-                    new CheckBox("E? : " + hero.CharData.BaseSkinName));
+                harassMenu.Add("ElTristana.E.On.Harass" + hero.NetworkId, new CheckBox("E? : " + hero.CharData.BaseSkinName));
 
             laneClearMenu = Menu_.AddSubMenu("Laneclear", "Laneclear");
             laneClearMenu.Add("ElTristana.LaneClear.Q", new CheckBox("Use Q"));

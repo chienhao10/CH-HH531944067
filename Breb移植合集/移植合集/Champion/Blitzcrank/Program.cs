@@ -114,7 +114,7 @@ namespace PortAIO.Champion.Blitzcrank
                 {
                     if (enemy.Team != Player.Team)
                     {
-                        MiscMenu.Add("Blitzcrank_GrabSelect" + enemy.ChampionName,
+                        MiscMenu.Add("Blitzcrank_GrabSelect" + enemy.NetworkId,
                             new Slider("抓人模式 (0 : 开启 | 1 : 不抓 | 2 : 自动) " + enemy.ChampionName, 0, 0, 2));
                         MiscMenu.AddSeparator();
                     }
@@ -214,7 +214,7 @@ namespace PortAIO.Champion.Blitzcrank
                 foreach (var enemy in ObjectManager.Get<AIHeroClient>())
                 {
                     if (enemy.Team != Player.Team && QTarget != null &&
-                        getSliderItem(MiscMenu, "Blitzcrank_GrabSelect" + enemy.ChampionName) == 2 && _Q.IsReady() &&
+                        getSliderItem(MiscMenu, "Blitzcrank_GrabSelect" + enemy.NetworkId) == 2 && _Q.IsReady() &&
                         QTarget.ChampionName == enemy.ChampionName)
                     {
                         if (QTarget.CanMove && QTarget.Distance(Player.Position) < _Q.Range*0.9)
@@ -233,7 +233,7 @@ namespace PortAIO.Champion.Blitzcrank
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
                     if (getCheckBoxItem(ComboMenu, "Blitzcrank_CUse_Q") && _Q.IsReady() && QTarget != null &&
-                        getSliderItem(MiscMenu, "Blitzcrank_GrabSelect" + QTarget.ChampionName) != 1)
+                        getSliderItem(MiscMenu, "Blitzcrank_GrabSelect" + QTarget.NetworkId) != 1)
                     {
                         _Q.CastIfHitchanceEquals(QTarget, FreshCommon.Hitchance("Blitzcrank_CUseQ_Hit"), true);
                     }
@@ -251,7 +251,7 @@ namespace PortAIO.Champion.Blitzcrank
                     getSliderItem(HarassMenu, "Blitzcrank_AManarate") < Player.ManaPercent)
                 {
                     if (getCheckBoxItem(HarassMenu, "Blitzcrank_HUse_Q") && _Q.IsReady() && QTarget != null &&
-                        getSliderItem(MiscMenu, "Blitzcrank_GrabSelect" + QTarget.ChampionName) != 1)
+                        getSliderItem(MiscMenu, "Blitzcrank_GrabSelect" + QTarget.NetworkId) != 1)
                     {
                         _Q.CastIfHitchanceEquals(QTarget, FreshCommon.Hitchance("Blitzcrank_CUseQ_Hit"), true);
                     }

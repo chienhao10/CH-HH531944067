@@ -80,9 +80,9 @@ namespace UnderratedAIO.Champions
 
         private void InitRumble()
         {
-            Q = new Spell(SpellSlot.Q, 600);
+            Q = new Spell(SpellSlot.Q, 500);
             W = new Spell(SpellSlot.W);
-            E = new Spell(SpellSlot.E, 800);
+            E = new Spell(SpellSlot.E, 950);
             E.SetSkillshot(0.25f, 70, 1200, true, SkillshotType.SkillshotLine);
             R = new Spell(SpellSlot.R, 1700);
             R.SetSkillshot(0.4f, 130, 2500, false, SkillshotType.SkillshotLine);

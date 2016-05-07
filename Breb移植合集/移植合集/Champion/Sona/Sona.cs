@@ -49,21 +49,18 @@ namespace vSupport_Series.Champions
             {
                 if (LowPriority.Contains(ally.ChampionName))
                 {
-                    heal.Add("sona.heal" + ally.ChampionName, new CheckBox("Heal: " + ally.ChampionName));
-                    heal.Add("sona.heal.percent" + ally.ChampionName,
-                        new Slider("Min. " + ally.ChampionName + " HP Percent", 15, 1, 99));
+                    heal.Add("sona.heal" + ally.NetworkId, new CheckBox("Heal: " + ally.ChampionName));
+                    heal.Add("sona.heal.percent" + ally.NetworkId, new Slider("Min. " + ally.ChampionName + " HP Percent", 15, 1, 99));
                 }
                 if (MediumPriority.Contains(ally.ChampionName))
                 {
-                    heal.Add("sona.heal" + ally.ChampionName, new CheckBox("Heal: " + ally.ChampionName));
-                    heal.Add("sona.heal.percent" + ally.ChampionName,
-                        new Slider("Min. new CheckBox(" + ally.ChampionName + " HP Percent", 20, 1, 99));
+                    heal.Add("sona.heal" + ally.NetworkId, new CheckBox("Heal: " + ally.ChampionName));
+                    heal.Add("sona.heal.percent" + ally.NetworkId, new Slider("Min. new CheckBox(" + ally.ChampionName + " HP Percent", 20, 1, 99));
                 }
                 if (HighChamps.Contains(ally.ChampionName))
                 {
-                    heal.Add("sona.heal" + ally.ChampionName, new CheckBox("Heal: " + ally.ChampionName));
-                    heal.Add("sona.heal.percent" + ally.ChampionName,
-                        new Slider("Min. " + ally.ChampionName + " HP Percent", 30, 1, 99));
+                    heal.Add("sona.heal" + ally.NetworkId, new CheckBox("Heal: " + ally.ChampionName));
+                    heal.Add("sona.heal.percent" + ally.NetworkId, new Slider("Min. " + ally.ChampionName + " HP Percent", 30, 1, 99));
                 }
             }
 
@@ -178,8 +175,8 @@ namespace vSupport_Series.Champions
                     return;
                 }
 
-                if (shield != null && getCheckBoxItem(heal, "sona.heal" + shield.ChampionName) &&
-                    shield.HealthPercent < getSliderItem(heal, "sona.heal.percent" + shield.ChampionName) &&
+                if (shield != null && getCheckBoxItem(heal, "sona.heal" + shield.NetworkId) &&
+                    shield.HealthPercent < getSliderItem(heal, "sona.heal.percent" + shield.NetworkId) &&
                     ObjectManager.Player.HealthPercent > getSliderItem(heal, "sona.heal.limit"))
                 {
                     W.Cast(shield);

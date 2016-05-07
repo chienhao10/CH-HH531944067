@@ -149,8 +149,8 @@
             if (getBoxItem(SkyLv_Taric.Combo, "Taric.UseQAllyMode") == 1 && Q.IsReady() && Player.Mana >= Q.ManaCost)
             {
                 foreach (var AllyHeroQ in HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.LSDistance(x) < Q.Range && 
-                Q.Instance.Ammo >= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumStacksQAlly") &&
-                x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumHpQAlly")))
+                Q.Instance.Ammo >= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumStacksQAlly") &&
+                x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpQAlly")))
                 {
                     if (AllyHeroQ.LSIsValidTarget())
                     {
@@ -169,7 +169,7 @@
 
             if (getBoxItem(SkyLv_Taric.Combo, "Taric.UseWAllyMode") == 1 && W.IsReady() && Player.Mana >= W.ManaCost)
             {
-                var AllyHeroW = HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.LSDistance(x) <= W.Range && !getCheckBoxItem(SkyLv_Taric.Combo, x.ChampionName + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.ChampionName + "MinimumHpWAlly")).MinOrDefault(t => t.HealthPercent);
+                var AllyHeroW = HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.LSDistance(x) <= W.Range && !getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")).MinOrDefault(t => t.HealthPercent);
 
                 if (AllyHeroW.LSIsValidTarget())
                 {

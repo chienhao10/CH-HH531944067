@@ -45,7 +45,7 @@ namespace ElRengarRevamped
 
         public static void OnClick(WndEventArgs args)
         {
-            if (args.Msg != (uint) WindowsMessages.WM_LBUTTONDOWN)
+            if (args.Msg != (uint)WindowsMessages.WM_LBUTTONDOWN)
             {
                 return;
             }
@@ -130,7 +130,7 @@ namespace ElRengarRevamped
                     !(MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio") == 0 ||
                       MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio") == 1 && Ferocity == 5))
                 {
-                    var x = Prediction.GetPrediction(args.Target as Obj_AI_Base, Player.AttackCastDelay + 0.04f);
+                    var x = Prediction.GetPrediction(args.Target as Obj_AI_Base, Player.AttackCastDelay * 1000);
                     if (Player.Position.To2D().Distance(x.UnitPosition.To2D())
                         >= Player.BoundingRadius + Player.AttackRange + args.Target.BoundingRadius)
                     {
@@ -155,7 +155,7 @@ namespace ElRengarRevamped
                 }
 
                 if (MenuInit.getCheckBoxItem(MenuInit.healMenu, "Heal.AutoHeal")
-                    && Player.Health/Player.MaxHealth*100
+                    && Player.Health / Player.MaxHealth * 100
                     <= MenuInit.getSliderItem(MenuInit.healMenu, "Heal.HP") && spells[Spells.W].IsReady())
                 {
                     spells[Spells.W].Cast();
@@ -195,7 +195,7 @@ namespace ElRengarRevamped
         {
             try
             {
-                if (!sender.IsMe)
+                if (!sender.IsMe || !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
                     return;
                 }
@@ -206,43 +206,41 @@ namespace ElRengarRevamped
                     return;
                 }
 
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+
+                if (Ferocity == 5)
                 {
-                    if (Ferocity == 5)
+                    switch (MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio"))
                     {
-                        switch (MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio"))
-                        {
-                            case 0:
-                                if (spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
-                                {
-                                    var pred = spells[Spells.E].GetPrediction(target);
-                                    spells[Spells.E].Cast(target);
-                                }
-                                break;
-                            case 2:
-                                if (spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
-                                {
-                                    spells[Spells.Q].Cast();
-                                }
+                        case 0:
+                            if (spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                            {
+                                var pred = spells[Spells.E].GetPrediction(target);
+                                spells[Spells.E].Cast(target);
+                            }
+                            break;
+                        case 2:
+                            if (spells[Spells.Q].IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                            {
+                                spells[Spells.Q].Cast();
+                            }
 
-                                if (target.IsValidTarget(spells[Spells.Q].Range))
-                                {
-                                    Utility.DelayAction.Add(
-                                        50,
-                                        () =>
+                            if (target.IsValidTarget(spells[Spells.Q].Range))
+                            {
+                                ActiveModes.CastItems(target);
+                                Utility.DelayAction.Add(
+                                    50,
+                                    () =>
+                                    {
+                                        if (target.IsValidTarget(spells[Spells.W].Range))
                                         {
-                                            if (target.IsValidTarget(spells[Spells.W].Range))
-                                            {
-                                                spells[Spells.W].Cast();
-                                            }
+                                            spells[Spells.W].Cast();
+                                        }
 
-                                            spells[Spells.E].Cast(target);
-                                            ActiveModes.CastItems(target);
-                                        });
-                                }
+                                        spells[Spells.E].Cast(target);
+                                    });
+                            }
 
-                                break;
-                        }
+                            break;
                     }
 
                     switch (MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio"))
@@ -261,13 +259,6 @@ namespace ElRengarRevamped
                                 spells[Spells.Q].Cast();
                             }
                             break;
-                    }
-
-                    if (args.Duration - 100 - Game.Ping/2 > 0)
-                    {
-                        Utility.DelayAction.Add(
-                            args.Duration - 100 - Game.Ping/2,
-                            () => { ActiveModes.CastItems(target); });
                     }
                 }
             }
@@ -346,22 +337,22 @@ namespace ElRengarRevamped
                     {
                         case 0:
                             Drawing.DrawText(
-                                Drawing.Width*0.70f,
-                                Drawing.Height*0.95f,
+                                Drawing.Width * 0.70f,
+                                Drawing.Height * 0.95f,
                                 Color.Yellow,
                                 "Prioritized spell: E");
                             break;
                         case 1:
                             Drawing.DrawText(
-                                Drawing.Width*0.70f,
-                                Drawing.Height*0.95f,
+                                Drawing.Width * 0.70f,
+                                Drawing.Height * 0.95f,
                                 Color.White,
                                 "Prioritized spell: W");
                             break;
                         case 2:
                             Drawing.DrawText(
-                                Drawing.Width*0.70f,
-                                Drawing.Height*0.95f,
+                                Drawing.Width * 0.70f,
+                                Drawing.Height * 0.95f,
                                 Color.White,
                                 "Prioritized spell: Q");
                             break;
@@ -528,7 +519,7 @@ namespace ElRengarRevamped
                     }
                 }
 
-                spells[Spells.R].Range = 1000 + spells[Spells.R].Level*1000;
+                spells[Spells.R].Range = 1000 + spells[Spells.R].Level * 1000;
             }
             catch (Exception e)
             {

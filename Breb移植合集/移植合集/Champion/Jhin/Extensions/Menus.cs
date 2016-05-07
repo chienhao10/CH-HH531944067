@@ -47,16 +47,12 @@ namespace Jhin___The_Virtuoso.Extensions
             wMenu.Add("w.combo.min.distance", new Slider("最低距离", 400, 1, 2500));
             wMenu.Add("w.combo.max.distance", new Slider("最远距离", 1000, 1, 2500));
             wMenu.Add("w.passive.combo", new CheckBox("使用 W 如果敌方有标记", false));
-            wMenu.Add("w.hit.chance",
-                new ComboBox("(W) 命中率", 2, "低", "中", "高", "非常规", "不可移动的"));
-                //.SetValue(new StringList(Provider.HitchanceNameArray, 2)));
+            wMenu.Add("w.hit.chance", new ComboBox("(W) 命中率", 2, "低", "中", "高", "非常高", "不可移动的"));
 
             eMenu = Config.AddSubMenu(":: E", ":: E");
             eMenu.Add("e.combo", new CheckBox("使用 (E)"));
             eMenu.Add("e.combo.teleport", new CheckBox("自动 (E) 传送的"));
-            eMenu.Add("e.hit.chance",
-                new ComboBox("(E) 命中率", 2, "低", "中", "高", "非常规", "不可移动的"));
-                //.SetValue(new StringList(Provider.HitchanceNameArray, 2)));
+            eMenu.Add("e.hit.chance", new ComboBox("(E) 命中率", 2, "低", "中", "高", "非常高", "不可移动的"));
 
             harassMenu = Config.AddSubMenu(":: 骚扰设置", ":: Harass Settings");
             harassMenu.AddGroupLabel(":: W");
@@ -87,13 +83,11 @@ namespace Jhin___The_Virtuoso.Extensions
             miscMenu.AddLabel(":: R - 白名单");
             foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValid))
             {
-                miscMenu.Add("r.combo." + enemy.ChampionName, new CheckBox("(R): " + enemy.ChampionName));
+                miscMenu.Add("r.combo." + enemy.NetworkId, new CheckBox("(R): " + enemy.ChampionName));
             }
             miscMenu.Add("r.combo", new CheckBox("使用 (R)"));
             miscMenu.Add("auto.shoot.bullets", new CheckBox("如果按下 (R) 将自动发射子弹"));
-            miscMenu.Add("r.hit.chance",
-                new ComboBox("(R) 命中率", 1, "低", "中", "高", "非常规", "不可移动的"));
-                //.SetValue(new StringList(Provider.HitchanceNameArray, 1)));
+            miscMenu.Add("r.hit.chance", new ComboBox("(R) 命中率", 1, "低", "中", "高", "非常高", "不可移动的"));
             miscMenu.Add("semi.manual.ult", new KeyBind("半自动 (R)!", false, KeyBind.BindTypes.HoldActive, 'A'));
 
             drawMenu = Config.AddSubMenu(":: 线圈", ":: Drawings");

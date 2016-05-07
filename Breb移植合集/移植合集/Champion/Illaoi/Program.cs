@@ -66,9 +66,7 @@ namespace Illaoi___Tentacle_Kitty
             eMenu = Config.AddSubMenu("E 设置", "E Settings");
             eMenu.AddGroupLabel("E 白名单");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
-                eMenu.Add("enemy." + enemy.CharData.BaseSkinName,
-                    new CheckBox(string.Format("E: {0}", enemy.CharData.BaseSkinName),
-                        HighChamps.Contains(enemy.CharData.BaseSkinName)));
+                eMenu.Add("enemy." + enemy.NetworkId, new CheckBox(string.Format("E: {0}", enemy.CharData.BaseSkinName), HighChamps.Contains(enemy.CharData.BaseSkinName)));
 
 
             ksMenu = Config.AddSubMenu("抢头设置", "KillSteal Settings");
@@ -230,7 +228,7 @@ namespace Illaoi___Tentacle_Kitty
                 foreach (
                     var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
                 {
-                    if (getCheckBoxItem(eMenu, "enemy." + enemy.CharData.BaseSkinName) &&
+                    if (getCheckBoxItem(eMenu, "enemy." + enemy.NetworkId) &&
                         E.GetPrediction(enemy).Hitchance >= HitChance.High
                         && E.GetPrediction(enemy).CollisionObjects.Count == 0)
                     {
@@ -294,7 +292,7 @@ namespace Illaoi___Tentacle_Kitty
                 foreach (
                     var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(E.Range) && !o.IsDead && !o.IsZombie))
                 {
-                    if (getCheckBoxItem(eMenu, "enemy." + enemy.CharData.BaseSkinName) &&
+                    if (getCheckBoxItem(eMenu, "enemy." + enemy.NetworkId) &&
                         E.GetPrediction(enemy).Hitchance >= HitChance.High
                         && E.GetPrediction(enemy).CollisionObjects.Count == 0)
                     {

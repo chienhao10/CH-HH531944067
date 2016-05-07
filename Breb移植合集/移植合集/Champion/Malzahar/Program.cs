@@ -66,9 +66,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             rMenu.Add("autoR", new CheckBox("自动 R"));
             rMenu.Add("useR", new KeyBind("快速连招(R)按键", false, KeyBind.BindTypes.HoldActive, 'T')); //32 == space
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                rMenu.Add("gapcloser" + enemy.ChampionName, new CheckBox("防突进 : " + enemy.ChampionName, false));
+                rMenu.Add("gapcloser" + enemy.NetworkId, new CheckBox("防突进 : " + enemy.ChampionName, false));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                rMenu.Add("Ron" + enemy.ChampionName, new CheckBox("快速连招 : " + enemy.ChampionName));
+                rMenu.Add("Ron" + enemy.NetworkId, new CheckBox("快速连招 : " + enemy.ChampionName));
             rMenu.Add("Rturrent", new CheckBox("塔下不 R"));
 
             farmMenu = Config.AddSubMenu("农兵");
@@ -154,7 +154,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 Q.Cast(gapcloser.End);
             }
-            else if (R.IsReady() && getCheckBoxItem(rMenu, "gapcloser" + gapcloser.Sender.ChampionName) &&
+            else if (R.IsReady() && getCheckBoxItem(rMenu, "gapcloser" + gapcloser.Sender.NetworkId) &&
                      t.IsValidTarget(R.Range))
             {
                 R.CastOnUnit(t);
@@ -188,7 +188,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (R.IsReady() && getKeyBindItem(rMenu, "useR"))
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                if (t.IsValidTarget(R.Range) && getCheckBoxItem(rMenu, "Ron" + t.ChampionName))
+                if (t.IsValidTarget(R.Range) && getCheckBoxItem(rMenu, "Ron" + t.NetworkId))
                 {
                     R.CastOnUnit(t);
                     return;

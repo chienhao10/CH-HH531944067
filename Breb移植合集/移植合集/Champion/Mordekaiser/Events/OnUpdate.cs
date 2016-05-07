@@ -41,7 +41,7 @@ namespace Mordekaiser.Events
 
             if (Player.CountEnemiesInRange(wHitRange) > 0)
             {
-                if (Menu.getBoxItem(Menu.MenuW, "Selected" + Player.ChampionName) == 2)
+                if (Menu.getBoxItem(Menu.MenuW, "Selected" + Player.NetworkId) == 2)
                 {
                     W.CastOnUnit(Utils.Player.Self);
                 }
@@ -62,7 +62,7 @@ namespace Mordekaiser.Events
             foreach (var ally in HeroManager.Allies.Where(
                 a => !a.IsDead && !a.IsMe && a.Position.Distance(Player.Position) < W.Range)
                 .Where(ally => ally.CountEnemiesInRange(wHitRange) > 0)
-                .Where(ally => Menu.getBoxItem(Menu.MenuW, "Selected" + ally.ChampionName) == 2)
+                .Where(ally => Menu.getBoxItem(Menu.MenuW, "Selected" + ally.NetworkId) == 2)
                 )
             {
                 W.CastOnUnit(ally);

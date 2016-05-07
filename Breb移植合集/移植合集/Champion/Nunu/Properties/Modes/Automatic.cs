@@ -77,7 +77,7 @@ namespace ExorAIO.Champions.Nunu
                                 a.IsValidTarget(Variables.W.Range) &&
                                 (HeroManager.Enemies.Any(t => t.IsValidTarget(1200f)) || Targets.Minions.Any()) &&
                                 Variables.getCheckBoxItem(Variables.WhiteListMenu,
-                                    "wspell.whitelist." + a.ChampionName.ToLower()))
+                                    "wspell.whitelist." + a.NetworkId))
                         .OrderBy(
                             o =>
                                 ObjectManager.Player.TotalAttackDamage))

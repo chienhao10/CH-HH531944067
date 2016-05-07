@@ -130,20 +130,20 @@ namespace UnderratedAIO.Champions
         {
             var allies =
                 HeroManager.Allies.Where(a => a.Distance(player) < W.Range && !a.IsMe)
-                    .OrderByDescending(a => getSliderItem(AllyDef, "Priority" + a.ChampionName))
+                    .OrderByDescending(a => getSliderItem(AllyDef, "Priority" + a.NetworkId))
                     .ToArray();
             if (allies.Any())
             {
                 for (var i = 0; i <= allies.Count() - 1; i++)
                 {
                     var allyData = IncDamages.GetAllyData(allies[i].NetworkId);
-                    if (allyData == null || !getCheckBoxItem(AllyDef, "useEat" + allies[i].ChampionName))
+                    if (allyData == null || !getCheckBoxItem(AllyDef, "useEat" + allies[i].NetworkId))
                     {
                         continue;
                     }
                     if (CheckCasting(allies[i]) && !allies[i].IsInvulnerable)
                     {
-                        if (((getSliderItem(AllyDef, "EatUnderHealthP" + allies[i].ChampionName) >
+                        if (((getSliderItem(AllyDef, "EatUnderHealthP" + allies[i].NetworkId) >
                               allies[i].HealthPercent && allyData.ProjectileDamageTaken > 50) ||
                              allyData.ProjectileDamageTaken > allies[i].Health) && !allies[i].Spellbook.IsCastingSpell)
                         {
@@ -153,17 +153,17 @@ namespace UnderratedAIO.Champions
 
                         if (allyData.ProjectileDamageTaken >
                             allies[i].Health*
-                            getSliderItem(AllyDef, "EatDamage" + allies[i].ChampionName)/100)
+                            getSliderItem(AllyDef, "EatDamage" + allies[i].NetworkId) /100)
                         {
                             lastWtarget = Team.Ally;
                             W.CastOnUnit(allies[i], true);
                         }
-                        if (getCheckBoxItem(AllyDef, "targetedCC" + allies[i].ChampionName) && allyData.AnyCC)
+                        if (getCheckBoxItem(AllyDef, "targetedCC" + allies[i].NetworkId) && allyData.AnyCC)
                         {
                             lastWtarget = Team.Ally;
                             W.CastOnUnit(allies[i], true);
                         }
-                        if (getCheckBoxItem(AllyDef, "ontargetedCC" + allies[i].ChampionName) &&
+                        if (getCheckBoxItem(AllyDef, "ontargetedCC" + allies[i].NetworkId) &&
                             allyData.ProjectileDamageTaken > 50 &&
                             (allies[i].HasBuffOfType(BuffType.Knockup) || allies[i].HasBuffOfType(BuffType.Fear) ||
                              allies[i].HasBuffOfType(BuffType.Flee) || allies[i].HasBuffOfType(BuffType.Stun) ||
@@ -174,8 +174,8 @@ namespace UnderratedAIO.Champions
                         }
                     }
                     if (i + 1 <= allies.Count() - 1 &&
-                        getSliderItem(AllyDef, "Priority" + allies[i + 1].ChampionName) <
-                        getSliderItem(AllyDef, "Priority" + allies[i].ChampionName))
+                        getSliderItem(AllyDef, "Priority" + allies[i + 1].NetworkId) <
+                        getSliderItem(AllyDef, "Priority" + allies[i].NetworkId))
                     {
                         if (getCheckBoxItem(AllyDef, "allyPrior"))
                         {
@@ -462,13 +462,12 @@ namespace UnderratedAIO.Champions
             foreach (var ally in HeroManager.Allies.Where(a => !a.IsMe))
             {
                 AllyDef.AddGroupLabel(ally.ChampionName + "settings");
-                AllyDef.Add("EatUnderHealthP" + ally.ChampionName, new Slider("Eat X% health", 20));
-                AllyDef.Add("EatDamage" + ally.ChampionName, new Slider("Eat at Damage in %health", 40));
-                AllyDef.Add("targetedCC" + ally.ChampionName, new CheckBox("Eat before Targeted CC"));
-                AllyDef.Add("ontargetedCC" + ally.ChampionName, new CheckBox("Eat on CC"));
-                AllyDef.Add("Priority" + ally.ChampionName,
-                    new Slider("Priority", Environment.Hero.GetPriority(ally.ChampionName), 1, 5));
-                AllyDef.Add("useEat" + ally.ChampionName, new CheckBox("Enabled"));
+                AllyDef.Add("EatUnderHealthP" + ally.NetworkId, new Slider("Eat X% health", 20));
+                AllyDef.Add("EatDamage" + ally.NetworkId, new Slider("Eat at Damage in %health", 40));
+                AllyDef.Add("targetedCC" + ally.NetworkId, new CheckBox("Eat before Targeted CC"));
+                AllyDef.Add("ontargetedCC" + ally.NetworkId, new CheckBox("Eat on CC"));
+                AllyDef.Add("Priority" + ally.NetworkId, new Slider("Priority", Environment.Hero.GetPriority(ally.ChampionName), 1, 5));
+                AllyDef.Add("useEat" + ally.NetworkId, new CheckBox("Enabled"));
                 AllyDef.AddSeparator();
             }
             AllyDef.Add("dontuseDevourcasting", new CheckBox("Don't interrupt ally"));

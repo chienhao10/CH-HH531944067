@@ -53,7 +53,7 @@ namespace Wukong
             foreach (
                 var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != ObjectManager.Player.Team))
             {
-                assMenu.Add("Assassin" + enemy.ChampionName,
+                assMenu.Add("Assassin" + enemy.NetworkId,
                     new CheckBox(" " + enemy.ChampionName, TargetSelector.GetPriority(enemy) > 3));
             }
 
@@ -97,8 +97,7 @@ namespace Wukong
             foreach (
                 var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != ObjectManager.Player.Team))
             {
-                //assMenu.Item("Assassin" + enemy.ChampionName).SetValue(false);
-                assMenu["Assassin" + enemy.ChampionName].Cast<CheckBox>().CurrentValue = false;
+                assMenu["Assassin" + enemy.NetworkId].Cast<CheckBox>().CurrentValue = false;
             }
         }
 
@@ -147,15 +146,15 @@ namespace Wukong
                         {
                             case 0:
                                 ClearAssassinList();
-                                assMenu["Assassin" + objAiHero.ChampionName].Cast<CheckBox>().CurrentValue = true;
+                                assMenu["Assassin" + objAiHero.NetworkId].Cast<CheckBox>().CurrentValue = true;
                                 Chat.Print(
                                     string.Format(
                                         "<font color='FFFFFF'>Added to Assassin List</font> <font color='#09F000'>{0} ({1})</font>",
                                         objAiHero.Name, objAiHero.ChampionName));
                                 break;
                             case 1:
-                                var menuStatus = getCheckBoxItem("Assassin" + objAiHero.ChampionName);
-                                assMenu["Assassin" + objAiHero.ChampionName].Cast<CheckBox>().CurrentValue = !menuStatus;
+                                var menuStatus = getCheckBoxItem("Assassin" + objAiHero.NetworkId);
+                                assMenu["Assassin" + objAiHero.NetworkId].Cast<CheckBox>().CurrentValue = !menuStatus;
                                 Chat.Print(
                                     string.Format(
                                         "<font color='{0}'>{1}</font> <font color='#09F000'>{2} ({3})</font>",
@@ -189,7 +188,7 @@ namespace Wukong
                 DrawText(_textBold, "_____________", Drawing.Width*0.89f, Drawing.Height*0.58f, Color.White);
                 for (var i = 0; i < objAiHeroes.Count(); i++)
                 {
-                    var xValue = getCheckBoxItem("Assassin" + objAiHeroes[i].ChampionName);
+                    var xValue = getCheckBoxItem("Assassin" + objAiHeroes[i].NetworkId);
                     DrawTextBold(
                         xValue ? _textBold : _text, objAiHeroes[i].ChampionName, Drawing.Width*0.895f,
                         Drawing.Height*0.58f + (float) (i + 1)*15,
@@ -210,8 +209,8 @@ namespace Wukong
                     .Where(enemy => enemy.Team != ObjectManager.Player.Team)
                     .Where(
                         enemy =>
-                            enemy.IsVisible && assMenu["Assassin" + enemy.ChampionName] != null && !enemy.IsDead)
-                    .Where(enemy => getCheckBoxItem("Assassin" + enemy.ChampionName)))
+                            enemy.IsVisible && assMenu["Assassin" + enemy.NetworkId] != null && !enemy.IsDead)
+                    .Where(enemy => getCheckBoxItem("Assassin" + enemy.NetworkId)))
             {
                 if (ObjectManager.Player.Distance(enemy) < drawSearchRange)
                 {

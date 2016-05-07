@@ -78,7 +78,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             q.Add("harrasQ", new CheckBox("Harass Q"));
             q.AddSeparator();
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                q.Add("Quse" + enemy.ChampionName, new CheckBox("Q : " + enemy.ChampionName));
+                q.Add("Quse" + enemy.NetworkId, new CheckBox("Q : " + enemy.ChampionName));
 
             w = Config.AddSubMenu("W Config");
             w.Add("autoW", new CheckBox("Auto W on hard CC"));
@@ -88,13 +88,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             w.Add("Waoe", new Slider("Auto W x enemies", 3, 0, 5));
             w.Add("WmodeGC", new ComboBox("Gap Closer position mode", 0, "Dash end position", "My hero position"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                w.Add("WGCchampion" + enemy.ChampionName, new CheckBox("W : " + enemy.ChampionName));
+                w.Add("WGCchampion" + enemy.NetworkId, new CheckBox("W : " + enemy.ChampionName));
 
             e = Config.AddSubMenu("E Config");
             e.Add("autoE", new CheckBox("Auto E"));
             e.Add("harrasE", new CheckBox("Harass E"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                e.Add("Euse" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                e.Add("Euse" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             r = Config.AddSubMenu("R Config");
             r.Add("autoR", new CheckBox("Auto R"));
@@ -143,7 +143,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (W.IsReady() && Player.Mana > RMANA + WMANA)
             {
                 var t = gapcloser.Sender;
-                if (t.IsValidTarget(W.Range) && getCheckBoxItem(w, "WGCchampion" + t.ChampionName))
+                if (t.IsValidTarget(W.Range) && getCheckBoxItem(w, "WGCchampion" + t.NetworkId))
                 {
                     W.Cast(getBoxItem(w, "WmodeGC") == 0 ? gapcloser.End : Player.ServerPosition);
                 }
@@ -281,7 +281,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (t.Health < OktwCommon.GetKsDamage(t, Q) + E.GetDamage(t))
                     Q.Cast(t);
-                if (!getCheckBoxItem(q, "Quse" + t.ChampionName))
+                if (!getCheckBoxItem(q, "Quse" + t.NetworkId))
                     return;
                 if (Program.Combo && Player.Mana > RMANA + EMANA)
                     Q.Cast(t);
@@ -302,7 +302,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (t.Health < E.GetDamage(t) + OktwCommon.GetKsDamage(t, Q))
                     E.CastOnUnit(t);
-                if (!getCheckBoxItem(e, "Euse" + t.ChampionName))
+                if (!getCheckBoxItem(e, "Euse" + t.NetworkId))
                     return;
                 if (Program.Combo && Player.Mana > RMANA + EMANA)
                     E.CastOnUnit(t);

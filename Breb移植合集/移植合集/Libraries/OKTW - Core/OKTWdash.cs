@@ -32,7 +32,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
             {
-                Sub.Add("EGCchampion" + enemy.ChampionName, new CheckBox("使用在 " + enemy.ChampionName));
+                Sub.Add("EGCchampion" + enemy.NetworkId, new CheckBox("使用在 " + enemy.ChampionName));
             }
 
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
@@ -62,8 +62,8 @@ namespace OneKeyToWin_AIO_Sebby.Core
         {
             if (DashSpell.IsReady())
             {
-                if (Sub["EGCchampion" + gapcloser.Sender.ChampionName] == null) { return; }
-                if (getCheckBoxItem("EGCchampion" + gapcloser.Sender.ChampionName))
+                if (Sub["EGCchampion" + gapcloser.Sender.NetworkId] == null) { return; }
+                if (getCheckBoxItem("EGCchampion" + gapcloser.Sender.NetworkId))
                 {
                     var GapcloserMode = getSliderItem("GapcloserMode");
                     if (GapcloserMode == 0)

@@ -46,53 +46,44 @@ namespace SkinsSharp
 
             menu = MainMenu.AddMenu("换肤#", "Skinswitcher");
 
-            menu.Add("forall", new CheckBox("全部开启 (需要F5)", false));
             menu.Add("onlydefault", new CheckBox("持续保持换肤"));
 
             try
             {
-                foreach (var hero in HeroManager.AllHeroes)
+                HeroList.Add(ObjectManager.Player);
+
+                WasDead.Add(ObjectManager.Player, false);
+
+                Enabled.Add(ObjectManager.Player.NetworkId, false);
+
+                var currenthero = ObjectManager.Player;
+
+                menu.Add("skin." + ObjectManager.Player.ChampionName, new ComboBox("换肤", 0, "Skin 0", "Skin 1", "Skin 2", "Skin 3", "Skin 4", "Skin 5", "Skin 6", "Skin 7", "Skin 8", "Skin 9", "Skin 10", "Skin 11", "Skin 12", "Skin 13", "Skin 14", "Skin 15"));
+
+                ChampSkins.Add(ObjectManager.Player.Name, getBoxItem("skin." + ObjectManager.Player.ChampionName));
+
+                if (OnlyDefault && ObjectManager.Player.CharData.BaseSkinName == ObjectManager.Player.BaseSkinName)
                 {
-                    if (!getCheckBoxItem("forall") && hero.Name != ObjectManager.Player.Name)
-                    {
-                        continue;
-                    }
-
-                    HeroList.Add(hero);
-
-                    WasDead.Add(hero, false);
-
-                    Enabled.Add(hero.NetworkId, false);
-
-                    var currenthero = hero;
-
-                    menu.Add("skin." + hero.ChampionName, new ComboBox("换肤", 0, "Skin 0", "Skin 1", "Skin 2", "Skin 3", "Skin 4", "Skin 5", "Skin 6", "Skin 7", "Skin 8", "Skin 9", "Skin 10", "Skin 11", "Skin 12", "Skin 13", "Skin 14", "Skin 15"));
-
-                    ChampSkins.Add(hero.Name, getBoxItem("skin." + hero.ChampionName));
-
-                    if (OnlyDefault && hero.CharData.BaseSkinName == hero.BaseSkinName)
-                    {
-                        Enabled[hero.NetworkId] = true;
-                        hero.SetSkin(hero.ChampionName, ChampSkins[hero.Name]);
-                    }
-                    else if (!OnlyDefault)
-                    {
-                        Enabled[hero.NetworkId] = true;
-                        hero.SetSkin(hero.ChampionName, ChampSkins[hero.Name]);
-                    }
-
-                    menu["skin." + hero.ChampionName].Cast<ComboBox>().OnValueChange += delegate(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
-                    {
-                        Enabled[hero.NetworkId] = true;
-                        var skinid = args.NewValue;
-                        if (hero.ChampionName == "Ezreal" && skinid == 5)
-                        {
-                            skinid += 1;
-                        }
-                        ChampSkins[currenthero.Name] = skinid;
-                        currenthero.SetSkin(currenthero.ChampionName, ChampSkins[currenthero.Name]);
-                    };
+                    Enabled[ObjectManager.Player.NetworkId] = true;
+                    ObjectManager.Player.SetSkin(ObjectManager.Player.ChampionName, ChampSkins[ObjectManager.Player.Name]);
                 }
+                else if (!OnlyDefault)
+                {
+                    Enabled[ObjectManager.Player.NetworkId] = true;
+                    ObjectManager.Player.SetSkin(ObjectManager.Player.ChampionName, ChampSkins[ObjectManager.Player.Name]);
+                }
+
+                menu["skin." + ObjectManager.Player.ChampionName].Cast<ComboBox>().OnValueChange += delegate (ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)
+                {
+                    Enabled[ObjectManager.Player.NetworkId] = true;
+                    var skinid = args.NewValue;
+                    if (ObjectManager.Player.ChampionName == "Ezreal" && skinid == 5)
+                    {
+                        skinid += 1;
+                    }
+                    ChampSkins[currenthero.Name] = skinid;
+                    currenthero.SetSkin(currenthero.ChampionName, ChampSkins[currenthero.Name]);
+                };
             }
             catch (Exception e)
             {
@@ -105,45 +96,16 @@ namespace SkinsSharp
 
         static void RenewSkins(EventArgs args)
         {
-            foreach (var hero in HeroList)
+            if (ObjectManager.Player.IsDead && !WasDead[ObjectManager.Player])
             {
-                if (!getCheckBoxItem("forall") && !hero.IsMe)
-                {
-                    continue;
-                }
-                if (hero.IsDead && !WasDead[hero])
-                {
-                    WasDead[hero] = true;
-                    continue;
-                }
-                if (!hero.IsDead && WasDead[hero] && Enabled[hero.NetworkId])
-                {
-                    hero.SetSkin(hero.ChampionName, ChampSkins[hero.Name]);
-                    WasDead[hero] = false;
-                }
+                WasDead[ObjectManager.Player] = true;
+                return;
             }
-        }
 
-
-        static void FloatPropertyChange(GameObject sender, GameObjectFloatPropertyChangeEventArgs args)
-        {
-            try
+            if (!ObjectManager.Player.IsDead && WasDead[ObjectManager.Player] && Enabled[ObjectManager.Player.NetworkId])
             {
-                if (!(sender is AIHeroClient) || args.Property != "mHP" || sender.Name != ObjectManager.Player.Name && !getCheckBoxItem("forall"))
-                {
-                    return;
-                }
-
-                var hero = (AIHeroClient)sender;
-
-                if (args.Value.Equals(args.Value) && args.Value.Equals(hero.MaxHealth) && !hero.IsDead)
-                {
-                    hero.SetSkin(hero.ChampionName, ChampSkins[hero.Name]);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
+                ObjectManager.Player.SetSkin(ObjectManager.Player.ChampionName, ChampSkins[ObjectManager.Player.Name]);
+                WasDead[ObjectManager.Player] = false;
             }
         }
     }

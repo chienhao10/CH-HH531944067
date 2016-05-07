@@ -69,71 +69,71 @@
             Q2.CastCondition += () => !isBlockQ;
             Q3.CastCondition += () => !isBlockQ && IsDashing;
 
-            comboMenu = config.AddSubMenu("连招", "Combo");
-            comboMenu.AddGroupLabel("Q: 持续开启");
-            comboMenu.AddGroupLabel("E 接近设置");
-            comboMenu.Add("EGap", new CheckBox("使用 E"));
-            comboMenu.Add("EMode", new ComboBox("跟随模式", 0, "敌人", "鼠标"));
-            comboMenu.Add("ETower", new CheckBox("E 塔下", false));
-            comboMenu.Add("EStackQ", new CheckBox("有间距时叠加 Q", false));
-            comboMenu.AddGroupLabel("R 设置");
-            comboMenu.Add("R", new KeyBind("使用 R", false, KeyBind.BindTypes.PressToggle, 'X'));
-            comboMenu.Add("RDelay", new CheckBox("延迟施放"));
-            comboMenu.Add("RHpU", new Slider("R 如果敌方生命 < (%)", 60));
-            comboMenu.Add("RCountA", new Slider("或者数量 >=", 2, 1, 5));
+            comboMenu = config.AddSubMenu("Combo", "Combo");
+            comboMenu.AddGroupLabel("Q: Always On");
+            comboMenu.AddGroupLabel("E Gap Settings");
+            comboMenu.Add("EGap", new CheckBox("Use E"));
+            comboMenu.Add("EMode", new ComboBox("Follow Mode", 0, "Enemy", "Mouse"));
+            comboMenu.Add("ETower", new CheckBox("Under Tower", false));
+            comboMenu.Add("EStackQ", new CheckBox("Stack Q While Gap", false));
+            comboMenu.AddGroupLabel("R Settings");
+            comboMenu.Add("R", new KeyBind("Use R", false, KeyBind.BindTypes.PressToggle, 'X'));
+            comboMenu.Add("RDelay", new CheckBox("Delay Cast"));
+            comboMenu.Add("RHpU", new Slider("If Enemies Hp < (%)", 60));
+            comboMenu.Add("RCountA", new Slider("Or Count >=", 2, 1, 5));
 
-            hybridMenu = config.AddSubMenu("混合", "Hybrid");
-            hybridMenu.AddGroupLabel("Q: 持续开启");
-            hybridMenu.Add("Q3", new CheckBox("使用 Q3"));
-            hybridMenu.Add("QLastHit", new CheckBox("尾兵 (Q1/2)"));
-            hybridMenu.AddGroupLabel("自动 Q 设置");
-            hybridMenu.Add("AutoQ", new KeyBind("开关按键", false, KeyBind.BindTypes.PressToggle, 'T'));
-            hybridMenu.Add("AutoQ3", new CheckBox("使用 Q3", false));
+            hybridMenu = config.AddSubMenu("Hybrid", "Hybrid");
+            hybridMenu.AddGroupLabel("Q: Always On");
+            hybridMenu.Add("Q3", new CheckBox("Also Q3"));
+            hybridMenu.Add("QLastHit", new CheckBox("Last Hit (Q1/2)"));
+            hybridMenu.AddGroupLabel("Auto Q Settings");
+            hybridMenu.Add("AutoQ", new KeyBind("KeyBind", false, KeyBind.BindTypes.PressToggle, 'T'));
+            hybridMenu.Add("AutoQ3", new CheckBox("Also Q3", false));
 
-            lcMenu = config.AddSubMenu("LaneClear", "清线");
-            lcMenu.AddGroupLabel("Q 设置");
-            lcMenu.Add("Q", new CheckBox("使用 Q"));
+            lcMenu = config.AddSubMenu("LaneClear", "Lane Clear");
+            lcMenu.AddGroupLabel("Q Settings");
+            lcMenu.Add("Q", new CheckBox("Use Q"));
             lcMenu.Add("Q3", new CheckBox("Also Q3", false));
-            lcMenu.AddGroupLabel("E 设置");
-            lcMenu.Add("E", new CheckBox("使用 E"));
-            lcMenu.Add("ELastHit", new CheckBox("只用于尾兵", false));
-            lcMenu.Add("ETower", new CheckBox("E塔下", false));
+            lcMenu.AddGroupLabel("E Settings");
+            lcMenu.Add("E", new CheckBox("Use E"));
+            lcMenu.Add("ELastHit", new CheckBox("Last Hit Only", false));
+            lcMenu.Add("ETower", new CheckBox("Under Tower", false));
 
-            lhMenu = config.AddSubMenu("LastHit", "尾兵");
-            lhMenu.AddGroupLabel("Q 设置");
-            lhMenu.Add("Q", new CheckBox("使用 Q"));
-            lhMenu.Add("Q3", new CheckBox("使用 Q3", false));
-            lhMenu.AddGroupLabel("E 设置");
-            lhMenu.Add("E", new CheckBox("使用 E"));
-            lhMenu.Add("ETower", new CheckBox("E塔下", false));
+            lhMenu = config.AddSubMenu("LastHit", "Last Hit");
+            lhMenu.AddGroupLabel("Q Settings");
+            lhMenu.Add("Q", new CheckBox("Use Q"));
+            lhMenu.Add("Q3", new CheckBox("Also Q3", false));
+            lhMenu.AddGroupLabel("E Settings");
+            lhMenu.Add("E", new CheckBox("Use E"));
+            lhMenu.Add("ETower", new CheckBox("Under Tower", false));
 
-            ksMenu = config.AddSubMenu("KillSteal", "抢头");
-            ksMenu.Add("Q", new CheckBox("使用 Q"));
-            ksMenu.Add("E", new CheckBox("使用 E"));
-            ksMenu.Add("R", new CheckBox("使用 R"));
+            ksMenu = config.AddSubMenu("KillSteal", "Kill Steal");
+            ksMenu.Add("Q", new CheckBox("Use Q"));
+            ksMenu.Add("E", new CheckBox("Use E"));
+            ksMenu.Add("R", new CheckBox("Use R"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
-                ksMenu.Add("RCast" + enemy.ChampionName, new CheckBox("R使用 " + enemy.ChampionName, false));
+                ksMenu.Add("RCast" + enemy.NetworkId, new CheckBox("Cast On " + enemy.ChampionName, false));
             }
 
-            fleeMenu = config.AddSubMenu("逃跑", "Flee");
-            fleeMenu.Add("E", new KeyBind("使用 E", false, KeyBind.BindTypes.HoldActive, 'C'));
-            fleeMenu.Add("Q", new CheckBox("冲刺时叠加Q"));
+            fleeMenu = config.AddSubMenu("Flee", "Flee");
+            fleeMenu.Add("E", new KeyBind("Use E", false, KeyBind.BindTypes.HoldActive, 'C'));
+            fleeMenu.Add("Q", new CheckBox("Stack Q While Dash"));
 
             if (EntityManager.Heroes.Enemies.Any())
             {
                 Evade.Init();
             }
 
-            drawMenu = config.AddSubMenu("线圈", "Draw");
-            drawMenu.Add("Q", new CheckBox("Q 范围", false));
-            drawMenu.Add("E", new CheckBox("E 范围", false));
-            drawMenu.Add("R", new CheckBox("R 范围", false));
-            drawMenu.Add("UseR", new CheckBox("连招使用 R 状态"));
-            drawMenu.Add("StackQ", new CheckBox("自动叠加 Q 状态"));
+            drawMenu = config.AddSubMenu("Draw", "Draw");
+            drawMenu.Add("Q", new CheckBox("Q Range", false));
+            drawMenu.Add("E", new CheckBox("E Range", false));
+            drawMenu.Add("R", new CheckBox("R Range", false));
+            drawMenu.Add("UseR", new CheckBox("R In Combo Status"));
+            drawMenu.Add("StackQ", new CheckBox("Auto Stack Q Status"));
 
-            miscMenu = config.AddSubMenu("杂项", "Misc");
-            miscMenu.Add("StackQ", new KeyBind("自动叠加 Q", false, KeyBind.BindTypes.PressToggle, 'Z'));
+            miscMenu = config.AddSubMenu("Misc", "Misc");
+            miscMenu.Add("StackQ", new KeyBind("Auto Stack Q", false, KeyBind.BindTypes.PressToggle, 'Z'));
 
             Evade.Evading += Evading;
             Evade.TryEvading += TryEvading;
@@ -742,7 +742,7 @@
                     var target =
                         targets.Where(
                             i =>
-                            getCheckBoxItem(ksMenu, "RCast" + i.ChampionName)
+                            getCheckBoxItem(ksMenu, "RCast" + i.NetworkId)
                             && (i.Health + i.AttackShield <= R.GetDamage(i)
                                 || (Q.IsReady(1000) && i.Health + i.AttackShield <= R.GetDamage(i) + GetQDmg(i)))
                             && !Invulnerable.Check(i, R.DamageType))
@@ -930,7 +930,7 @@
                 {
                     var menuR = getKeyBindItem(comboMenu, "R");
                     var pos = Drawing.WorldToScreen(Player.Position);
-                    var text = $"连招R: {(menuR ? "On" : "Off")}";
+                    var text = $"Use R In Combo: {(menuR ? "On" : "Off")}";
                     Drawing.DrawText(pos.X - (float)50 / 2, pos.Y + 40, menuR ? Color.White : Color.Gray, text);
                 }
             }
@@ -938,7 +938,7 @@
             {
                 var menu = getKeyBindItem(miscMenu, "StackQ");
                 var text =
-                    $"自动叠加 Q: {(menu ? (haveQ3 ? "Full" : (Q.IsReady() ? "Ready" : "Not Ready")) : "Off")}";
+                    $"Auto Stack Q: {(menu ? (haveQ3 ? "Full" : (Q.IsReady() ? "Ready" : "Not Ready")) : "Off")}";
                 var pos = Drawing.WorldToScreen(Player.Position);
                 Drawing.DrawText(
                     pos.X - (float)50 / 2,

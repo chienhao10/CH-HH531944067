@@ -106,7 +106,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             harassMenu = Config.AddSubMenu("Harass");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                harassMenu.Add("harras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                harassMenu.Add("harras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
             farmMenu = Config.AddSubMenu("Farm");
             farmMenu.Add("separate", new CheckBox("Separate laneclear from harras", false));
@@ -301,7 +301,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 else if (Program.Combo && Player.Mana > RMANA + WMANA)
                     Program.CastSpell(W, t);
                 else if (Program.Farm && OktwCommon.CanHarras() && getCheckBoxItem(wMenu, "harrasW") &&
-                         getCheckBoxItem(harassMenu, "harras" + t.ChampionName) &&
+                         getCheckBoxItem(harassMenu, "harras" + t.NetworkId) &&
                          Player.Mana > RMANA + WMANA + EMANA + QMANA + WMANA)
                     Program.CastSpell(W, t);
                 else if (Program.Combo || Program.Farm)
@@ -349,7 +349,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Q.StartCharging();
                     }
                     else if (t.IsValidTarget(1200) && Program.Farm && Player.Mana > RMANA + EMANA + QMANA + QMANA &&
-                             getCheckBoxItem(harassMenu, "harras" + t.ChampionName) && !Player.UnderTurret(true) &&
+                             getCheckBoxItem(harassMenu, "harras" + t.NetworkId) && !Player.UnderTurret(true) &&
                              OktwCommon.CanHarras())
                     {
                         Q.StartCharging();

@@ -77,7 +77,7 @@ namespace PortAIO.Champion.Ekko
             harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.Team != Player.Team))
             {
-                harassMenu.Add("haras" + enemy.ChampionName, new CheckBox(enemy.ChampionName));
+                harassMenu.Add("haras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
             }
 
             farmMenu = Config.AddSubMenu("农兵");
@@ -255,7 +255,7 @@ namespace PortAIO.Champion.Ekko
                 missileManager.Target = t;
                 if (SebbyLib.Program.Combo && Player.Mana > RMANA + QMANA)
                     SebbyLib.Program.CastSpell(Q, t);
-                else if (SebbyLib.Program.Farm && getCheckBoxItem(harassMenu, "haras" + t.ChampionName) &&
+                else if (SebbyLib.Program.Farm && getCheckBoxItem(harassMenu, "haras" + t.NetworkId) &&
                          Player.Mana > RMANA + WMANA + QMANA + QMANA && OktwCommon.CanHarras())
                     SebbyLib.Program.CastSpell(Q, t);
                 else if (OktwCommon.GetKsDamage(t, Q)*2 > t.Health)
@@ -274,7 +274,7 @@ namespace PortAIO.Champion.Ekko
                 missileManager.Target = t1;
                 if (SebbyLib.Program.Combo && Player.Mana > RMANA + QMANA)
                     SebbyLib.Program.CastSpell(Q1, t1);
-                else if (SebbyLib.Program.Farm && getCheckBoxItem(harassMenu, "haras" + t1.ChampionName) &&
+                else if (SebbyLib.Program.Farm && getCheckBoxItem(harassMenu, "haras" + t1.NetworkId) &&
                          Player.Mana > RMANA + WMANA + QMANA + QMANA && OktwCommon.CanHarras())
                     SebbyLib.Program.CastSpell(Q1, t1);
                 else if (OktwCommon.GetKsDamage(t1, Q1)*2 > t1.Health)

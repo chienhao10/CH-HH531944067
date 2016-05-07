@@ -37,12 +37,12 @@ namespace ElUtilitySuite.Summoners
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Unknown,
                                      Interval = 1.0
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Name = "summonerexhaustdebuff", MenuName = "召唤师 虚弱", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
-                                 },
+                                 },*/
                              /*new CleanseSpell
                                  {
                                      Name = "itemdusknightfall", MenuName = "夜幕之刃", Evade = false, DoT = true,

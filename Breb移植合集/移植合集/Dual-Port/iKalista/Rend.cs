@@ -27,56 +27,16 @@ namespace IKalista
                 DamagePercentages = new float[] { 1, 1, 1, 1, 1 }
             });
         }
-
-        public static float GetRendDamage(Obj_AI_Base target)
-        {
-            return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, GetRawRendDamage(target)) * (Player.Instance.HasBuff("summonerexhaust") ? 0.6f : 1);
-        }
-
-        public static float GetRawRendDamage(Obj_AI_Base target)
-        {
-            var stacks = (target.HasRendBuff() ? target.GetRendBuff().Count : 0) - 1;
-            if (stacks > -1)
-            {
-                var index = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).Level - 1;
-                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] + Player.Instance.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
-            }
-
-            return 0;
-        }
-
-        public static float GetActualDamage(Obj_AI_Base target)
-        {
-            if (!ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).IsReady || !target.HasRendBuff()) return 0f;
-
-            var damage = GetRendDamage(target);
-
-            if (target.Name.Contains("Baron"))
-            {
-                damage = Player.Instance.HasBuff("barontarget") ? damage * 0.5f : damage;
-            }
-
-            else if (target.Name.Contains("Dragon"))
-            {
-                damage = Player.Instance.HasBuff("s5test_dragonslayerbuff") ? damage * (1 - (.07f * Player.Instance.GetBuffCount("s5test_dragonslayerbuff"))) : damage;
-            }
-
-            if (Player.Instance.HasBuff("summonerexhaust"))
-            {
-                damage = damage * 0.6f;
-            }
-
-            if (target.HasBuff("FerociousHowl"))
-            {
-                damage = damage * 0.7f;
-            }
-
-            return damage - Kalista.getSliderItem(IKalista.Kalista.comboMenu, "eDamageReduction");
-        }
     }
 
     public static class Extensions
     {
+
+        private static readonly float[] RawRendDamage = { 20, 30, 40, 50, 60 };
+        private static readonly float[] RawRendDamageMultiplier = { 0.6f, 0.6f, 0.6f, 0.6f, 0.6f };
+        private static readonly float[] RawRendDamagePerSpear = { 10, 14, 19, 25, 32 };
+        private static readonly float[] RawRendDamagePerSpearMultiplier = { 0.2f, 0.225f, 0.25f, 0.275f, 0.3f };
+
         public static bool HasRendBuff(this Obj_AI_Base target)
         {
             return target.GetRendBuff() != null;
@@ -87,40 +47,59 @@ namespace IKalista
             return target.Buffs.Find(b => b.Caster.IsMe && b.IsValid() && b.DisplayName == "KalistaExpungeMarker");
         }
 
-        public static bool IsRendKillable(this Obj_AI_Base target)
+        public static bool IsRendKillable(Obj_AI_Base target, float? damage = null)
         {
-            if (target == null
-                || !target.IsValidTarget(950 + 200)
-                || !target.HasRendBuff()
-                || target.Health <= 0
-                || !ObjectManager.Player.Spellbook.GetSpell(SpellSlot.E).IsReady)
+            // Validate unit
+            if (target == null || !target.IsValidTarget() || !target.HasRendBuff())
             {
                 return false;
             }
 
+            // Take into account all kinds of shields
+            var totalHealth = target.TotalShieldHealth();
+
             var hero = target as AIHeroClient;
             if (hero != null)
             {
+                // Validate that target has no undying buff or spellshield
                 if (hero.HasUndyingBuff() || hero.HasSpellShield())
                 {
                     return false;
                 }
 
-                if (hero.ChampionName == "Blitzcrank")
+                // Take into account Blitzcranks passive
+                if (hero.ChampionName == "Blitzcrank" && !target.HasBuff("BlitzcrankManaBarrierCD") && !target.HasBuff("ManaBarrier"))
                 {
-                    if (!hero.HasBuff("BlitzcrankManaBarrierCD") && !hero.HasBuff("ManaBarrier"))
-                    {
-                        return Damages.GetActualDamage(target) > (target.GetTotalHealth() + (hero.Mana / 2));
-                    }
-
-                    if (hero.HasBuff("ManaBarrier") && !(hero.AllShield > 0))
-                    {
-                        return false;
-                    }
+                    totalHealth += target.Mana / 2;
                 }
             }
 
-            return Damages.GetActualDamage(target) > target.GetTotalHealth();
+            return (damage ?? GetRendDamage(target)) > totalHealth;
+        }
+
+        public static float GetRendDamage(AIHeroClient target)
+        {
+            return GetRendDamage(target, -1);
+        }
+
+        public static float GetRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
+        {
+            // Calculate the damage and return
+            return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, GetRawRendDamage(target, customStacks, rendBuff)) *
+                   (Player.Instance.HasBuff("SummonerExhaustSlow") ? 0.6f : 1); // Take into account Exhaust, migh just add that to the SDK
+        }
+
+        public static float GetRawRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
+        {
+            rendBuff = rendBuff ?? target.GetRendBuff();
+            var stacks = (customStacks > -1 ? customStacks : rendBuff != null ? rendBuff.Count : 0) - 1;
+            if (stacks > -1)
+            {
+                var index = Player.Instance.Spellbook.GetSpell(SpellSlot.E).Level - 1;
+                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] + Player.Instance.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
+            }
+
+            return 0;
         }
 
         public static bool HasUndyingBuff(this AIHeroClient target)
