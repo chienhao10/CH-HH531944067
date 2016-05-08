@@ -20,7 +20,7 @@ namespace PortAIO.Utility
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
         public static bool useTracker { get { return Miscc["tracker"].Cast<CheckBox>().CurrentValue; } }
         public static bool useRecall { get { return Miscc["recall"].Cast<CheckBox>().CurrentValue; } }
-        public static bool useSkin { get { return Miscc["skin"].Cast<CheckBox>().CurrentValue; } }
+        //public static bool useSkin { get { return Miscc["skin"].Cast<CheckBox>().CurrentValue; } }
         public static bool champOnly { get { return Miscc["champ"].Cast<CheckBox>().CurrentValue; } }
         public static bool utilOnly { get { return Miscc["util"].Cast<CheckBox>().CurrentValue; } }
         public static bool evade { get { return Miscc["evade"].Cast<CheckBox>().CurrentValue; } }
@@ -36,7 +36,12 @@ namespace PortAIO.Utility
         public static int diana { get { return Miscc["diana"].Cast<ComboBox>().CurrentValue; } }
         public static int cait { get { return Miscc["cait"].Cast<ComboBox>().CurrentValue; } }
         public static bool intro { get { return Miscc["intro"].Cast<CheckBox>().CurrentValue; } }
-        //intro
+        public static int twitch { get { return Miscc["twitch"].Cast<ComboBox>().CurrentValue; } }
+        public static int nidalee { get { return Miscc["nidalee"].Cast<ComboBox>().CurrentValue; } }
+        public static int lucian { get { return Miscc["lucian"].Cast<ComboBox>().CurrentValue; } }
+        public static int ashe { get { return Miscc["ashe"].Cast<ComboBox>().CurrentValue; } }
+        public static int vayne { get { return Miscc["vayne"].Cast<ComboBox>().CurrentValue; } }
+
 
         public static Menu Miscc;
 
@@ -47,7 +52,7 @@ namespace PortAIO.Utility
 
         public static List<string> RandomUltChampsList = new List<string>(new[] { "Ezreal", "Jinx", "Ashe", "Draven", "Gangplank", "Ziggs", "Lux", "Xerath" });
         public static List<string> BaseUltList = new List<string>(new[] { "Jinx", "Ashe", "Draven", "Ezreal", "Karthus"});
-        public static List<string> Champion = new List<string>(new[] { "Soraka", "KogMaw", "LeeSin", "Kalista", "Diana", "Caitlyn" });
+        public static List<string> Champion = new List<string>(new[] { "Soraka", "KogMaw", "LeeSin", "Kalista", "Diana", "Caitlyn", "Twitch", "Nidalee", "Lucian", "Ashe", "Vayne"});
 
         public static void Menu()
         {
@@ -81,6 +86,26 @@ namespace PortAIO.Utility
                 {
                     Miscc.Add("cait", new ComboBox("切换 女警脚本 : ", 0, "OKTW", "Exor系列 : AIO"));
                 }
+                if (Player.ChampionName.Equals(Champion[6]))
+                {
+                    Miscc.Add("twitch", new ComboBox("切换 老鼠脚本 : ", 0, "OKTW", "Nechrito 老鼠"));
+                }
+                if (Player.ChampionName.Equals(Champion[7]))
+                {
+                    Miscc.Add("nidalee", new ComboBox("切换 豹女脚本 : ", 0, "Kurisu", "Nechrito"));
+                }
+                if (Player.ChampionName.Equals(Champion[8]))
+                {
+                    Miscc.Add("lucian", new ComboBox("切换 卢锡安脚本 : ", 0, "LCS 卢锡安", "挑战者系列"));
+                }
+                if (Player.ChampionName.Equals(Champion[9]))
+                {
+                    Miscc.Add("ashe", new ComboBox("切换 艾希脚本 : ", 0, "OKTW", "挑战者系列"));
+                }
+                if (Player.ChampionName.Equals(Champion[10]))
+                {
+                    Miscc.Add("vayne", new ComboBox("切换 薇恩脚本 : ", 0, "挑战者薇恩", "薇恩猎手：重生(VHR)"));
+                }
             }
             else
             {
@@ -96,14 +121,13 @@ namespace PortAIO.Utility
             Miscc.Add("tracker", new CheckBox("载入 Nabb计时器?"));
             Miscc.Add("recall", new CheckBox("载入 回城计时?"));
             Miscc.AddSeparator();
-            Miscc.Add("skin", new CheckBox("载入 换肤?"));
+            //Miscc.Add("skin", new CheckBox("Enable Skin Hack?"));
             //Miscc.Add("evade", new CheckBox("Enable Evade?", false));
             Miscc.Add("godTracker", new CheckBox("载入 野区计时（El活化剂中有?", false));
             Miscc.AddSeparator();
             Miscc.Add("ping", new CheckBox("载入 信号管理器（玩家信号）?", false));
             Miscc.Add("human", new CheckBox("载入 人性化?", false));
             Miscc.Add("gank", new CheckBox("载入 Gank提示?", false));
-
 
             /*
             Miscc.Add("stream", new CheckBox("Enable StreamBuddy?", false));

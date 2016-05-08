@@ -1,4 +1,5 @@
 ﻿To-Do :
+- TF Lane Clear
 
 ------------------------------------------------------------------------
 
@@ -8,10 +9,6 @@ To-Check :
 ------------------------------------------------------------------------
 
 Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
-- Nechrito Twitch/Nidalee (When it comes out)
-- Challenger Series Lucian/Ashe
-- iLucian
-- Vayne Hunter Reborn
 - Hoe's Jayce
 - YasuoPro
 - e.Motion Katarina
@@ -41,3 +38,4 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - Sebby Ban Wars
 - Auto Buy
 - DZAwareness
+- Zed is Back

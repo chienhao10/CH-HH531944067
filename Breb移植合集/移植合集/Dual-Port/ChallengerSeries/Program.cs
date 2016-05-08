@@ -33,6 +33,12 @@ namespace Challenger_Series
                     case "Kalista":
                         new Plugins.Kalista();
                         break;
+                    case "Lucian":
+                        new Plugins.Lucian();
+                        break;
+                    case "Ashe":
+                        new Plugins.Ashe();
+                        break;
                     default:
                         //Variables.Orbwalker.Enabled = false;
                         break;

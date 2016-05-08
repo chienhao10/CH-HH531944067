@@ -516,9 +516,12 @@ namespace MoonLux
                 DoHarass();
             }
 
-            if (!Player.LSIsRecalling() && ECasted && EObject.Position.CountEnemiesInRange(350) >= 1)
+            if (EObject != null && Player.CountEnemiesInRange(E.Range + 200) < 1)
             {
-                E.Cast();
+                if (!Player.LSIsRecalling() && ECasted && EObject.Position.CountEnemiesInRange(350) >= 1)
+                {
+                    E.Cast();
+                }
             }
 
             KillSteal();
