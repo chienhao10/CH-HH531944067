@@ -1,25 +1,27 @@
 ﻿using System.Linq;
+using LeagueSharp;
+using LeagueSharp.Common;
 using EloBuddy;
 using EloBuddy.SDK;
-using LeagueSharp.Common;
 
 namespace YasuoPro
 {
-    internal static class ItemManager
+    static class ItemManager
     {
-        private static readonly AIHeroClient Player = ObjectManager.Player;
+
+        private static AIHeroClient Player = ObjectManager.Player;
 
         internal class Item
         {
+            internal ItemCastType type;
             internal int eneinrangecount;
             internal Items.Item item;
             internal int minioncount;
-            internal ItemCastType type;
 
-            public Item(int itemid, float range, ItemCastType type, int eneinrange = 1)
+            public Item(int itemid, float range, ItemCastType type, int eneinrange = 1, int minioncount = 1)
             {
                 this.type = type;
-                eneinrangecount = eneinrange;
+                this.eneinrangecount = eneinrange;
                 item = new Items.Item(itemid, range);
             }
 
@@ -34,7 +36,7 @@ namespace YasuoPro
                 if (!farmcast)
                 {
                     if ((type == ItemCastType.SelfCast || type == ItemCastType.RangeCast) &&
-                        Player.CountEnemiesInRange(item.Range) >= eneinrangecount)
+                        Player.LSCountEnemiesInRange(item.Range) >= eneinrangecount)
                     {
                         item.Cast();
                         return true;
@@ -49,8 +51,7 @@ namespace YasuoPro
 
                 else if (farmcast)
                 {
-                    if ((type == ItemCastType.SelfCast || type == ItemCastType.RangeCast) &&
-                        ObjectManager.Get<Obj_AI_Minion>().Count(x => x.IsValidTarget(item.Range)) >= minioncount)
+                    if ((type == ItemCastType.SelfCast || type == ItemCastType.RangeCast) && ObjectManager.Get<Obj_AI_Minion>().Count(x=> x.LSIsValidTarget(item.Range)) >= minioncount)
                     {
                         item.Cast();
                         return true;

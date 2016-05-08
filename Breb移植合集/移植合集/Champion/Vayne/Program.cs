@@ -7,7 +7,7 @@ using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using Evade;
+using EvadeB;
 using SAutoCarry.Champions.Helpers;
 using SharpDX;
 using SOLOVayne;

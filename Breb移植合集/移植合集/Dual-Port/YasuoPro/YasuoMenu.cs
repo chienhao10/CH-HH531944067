@@ -1,35 +1,14 @@
-﻿using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
+﻿using System.Reflection;
+using System.Linq;
 using LeagueSharp.Common;
+using EloBuddy.SDK.Menu;
 
 namespace YasuoPro
 {
     internal static class YasuoMenu
     {
-        internal static Menu Config;
+        internal static Menu Config, ComboM, HarassM, EvadeM, KillstealM, FarmingM, WaveclearM, MiscM, DrawingsM;
         internal static Yasuo Yas;
-
-        public static Menu ComboA, HarassA, KillstealA, FarmingA, WaveclearA, MiscA, DrawingsA, Flee;
-
-        public static bool getCheckBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(Menu m, string item)
-        {
-            return m[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(Menu m, string item)
-        {
-            return m[item].Cast<KeyBind>().CurrentValue;
-        }
-
-        public static int getBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<ComboBox>().CurrentValue;
-        }
 
         public static void Init(Yasuo yas)
         {
@@ -37,175 +16,218 @@ namespace YasuoPro
 
             Config = MainMenu.AddMenu("亚索Pro", "YasuoPro");
 
-            ComboA = Config.AddSubMenu("连招");
-            Combo.Attach(ComboA);
+            ComboM = Config.AddSubMenu("连招");
+            YasuoMenu.Combo.Attach(ComboM);
 
-            HarassA = Config.AddSubMenu("骚扰");
-            Harass.Attach(HarassA);
+            HarassM = Config.AddSubMenu("骚扰");
+            YasuoMenu.Harass.Attach(HarassM);
 
-            KillstealA = Config.AddSubMenu("抢头");
-            Killsteal.Attach(KillstealA);
+            EvadeM = Config.AddSubMenu("躲避");
+            YasuoMenu.Evade.Attach(EvadeM);
 
-            FarmingA = Config.AddSubMenu("尾兵");
-            Farm.Attach(FarmingA);
+            KillstealM = Config.AddSubMenu("抢头");
+            YasuoMenu.Killsteal.Attach(KillstealM);
 
-            WaveclearA = Config.AddSubMenu("清线");
-            Waveclear.Attach(WaveclearA);
+            FarmingM = Config.AddSubMenu("尾兵");
+            YasuoMenu.Farm.Attach(FarmingM);
 
-            MiscA = Config.AddSubMenu("杂项");
-            Misc.Attach(MiscA);
+            WaveclearM = Config.AddSubMenu("清线");
+            YasuoMenu.Waveclear.Attach(WaveclearM);
 
-            DrawingsA = Config.AddSubMenu("线圈");
-            Drawings.Attach(DrawingsA);
+            MiscM = Config.AddSubMenu("杂项");
+            YasuoMenu.Misc.Attach(MiscM);
 
-            Flee = Config.AddSubMenu("逃跑设置", "Flee");
-            Flee.Add("Flee.Mode", new ComboBox("逃跑模式", 0, "至泉水", "至友军", "至鼠标"));
-            Flee.Add("Flee.StackQ", new CheckBox("逃跑时叠加Q"));
-            Flee.Add("Flee.UseQ2", new CheckBox("使用龙卷风", false));
+            DrawingsM = Config.AddSubMenu("线圈");
+            YasuoMenu.Drawings.Attach(DrawingsM);
+        }
+
+        struct Combo
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddGroupLabel("物品");
+                menu.AddBool("Items.Enabled", "使用 物品");
+                menu.AddBool("Items.UseTIA", "使用 提亚马特");
+                menu.AddBool("Items.UseHDR", "使用 九头蛇");
+                menu.AddBool("Items.UseBRK", "使用 破败");
+                menu.AddBool("Items.UseBLG", "使用 弯刀");
+                menu.AddBool("Items.UseYMU", "使用 幽梦");
+                menu.AddSeparator();
+                menu.AddGroupLabel("连招 :");
+                menu.AddBool("Combo.UseQ", "使用 Q");
+                menu.AddBool("Combo.UseQ2", "使用 Q2");
+                menu.AddBool("Combo.StackQ", "叠加 Q 如果不在范围内");
+                menu.AddBool("Combo.UseW", "使用 W");
+                menu.AddBool("Combo.UseE", "使用 E");
+                menu.AddBool("Combo.UseEQ", "使用 EQ");
+                menu.AddBool("Combo.ETower", "使用 E 塔下", false);
+                menu.AddBool("Combo.EAdvanced", "预判 E 路线");
+                menu.AddBool("Combo.NoQ2Dash", "冲刺时不 Q2", false);
+                menu.AddBool("Combo.UseIgnite", "使用 点燃");
+                menu.AddSeparator();
+                menu.AddGroupLabel("大招 设置");
+                foreach (var hero in HeroManager.Enemies)
+                {
+                    menu.AddBool("ult" + hero.ChampionName, "大招 " + hero.ChampionName);
+                }
+                menu.AddSeparator();
+                menu.AddSList("Combo.UltMode", "大招 优先顺序", new string[] { "最低血量", "目标选择器", "命中最多" }, 0);
+                menu.AddSlider("Combo.knockupremainingpct", "击飞目标剩下血量 % 使用大招", 95, 40, 100);
+                menu.AddBool("Combo.UseR", "使用 R");
+                menu.AddBool("Combo.UltTower", "塔下大招r", false);
+                menu.AddBool("Combo.UltOnlyKillable", "R 只用在可击杀的目标", false);
+                menu.AddBool("Combo.RPriority", "优先使用在击飞5个英雄时", true);
+                menu.AddSeparator();
+                menu.AddSlider("Combo.RMinHit", "最少英雄数使用 R", 1, 1, 5);
+                menu.AddBool("Combo.OnlyifMin", "只大招最低敌人数量", false);
+                menu.AddSeparator();
+                menu.AddSlider("Combo.MinHealthUlt", "最低血量 % 使用R", 0, 0, 100);
+            }
+        }
+
+        struct Harass
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddKeyBind("Harass.KB", "骚扰按键", KeyCode("H"), EloBuddy.SDK.Menu.Values.KeyBind.BindTypes.PressToggle);
+                menu.AddSeparator();
+                menu.AddBool("Harass.InMixed", "混合模式使用骚扰", false);
+                menu.AddBool("Harass.UseQ", "使用 Q");
+                menu.AddBool("Harass.UseQ2", "使用 Q2");
+                menu.AddBool("Harass.UseE", "使用 E", false);
+                menu.AddBool("Harass.UseEMinion", "使用 E 小兵", false);
+            }
+        }
+
+        struct Farm
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddBool("Farm.UseQ", "使用 Q");
+                menu.AddBool("Farm.UseQ2", "使用 Q - 龙卷风");
+                menu.AddSlider("Farm.Qcount", "对小兵使用 Q (龙卷风)", 1, 1, 10);
+                menu.AddBool("Farm.UseE", "使用 E");
+            }
+        }
+
+
+        struct Waveclear
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddGroupLabel("清线物品");
+                menu.AddBool("Waveclear.UseItems", "使用 物品");
+                menu.AddSlider("Waveclear.MinCountHDR", "最低小兵数量使用九头", 2, 1, 10);
+                menu.AddSlider("Waveclear.MinCountYOU", "最低小兵数量使用幽梦", 2, 1, 10);
+                menu.AddBool("Waveclear.UseTIA", "使用 提亚马特");
+                menu.AddBool("Waveclear.UseHDR", "使用 九头");
+                menu.AddBool("Waveclear.UseYMU", "使用 幽梦", false);
+                menu.AddSeparator();
+                menu.AddGroupLabel("清线 :");
+                menu.AddBool("Waveclear.UseQ", "使用 Q");
+                menu.AddBool("Waveclear.UseQ2", "使用 Q - 龙卷风");
+                menu.AddSlider("Waveclear.Qcount", "对小兵使用 Q (龙卷风)", 1, 1, 10);
+                menu.AddSeparator();
+                menu.AddBool("Waveclear.UseE", "使用 E");
+                menu.AddSlider("Waveclear.Edelay", "E 延迟", 0, 0, 400);
+                menu.AddBool("Waveclear.ETower", "使用 E 塔下", false);
+                menu.AddBool("Waveclear.UseENK", "使用 E (就算不可击杀)");
+                menu.AddSeparator();
+                menu.AddBool("Waveclear.Smart", "智能清线");
+            }
+        }
+
+        struct Killsteal
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddBool("Killsteal.Enabled", "抢头");
+                menu.AddBool("Killsteal.UseQ", "使用 Q");
+                menu.AddBool("Killsteal.UseE", "使用 E");
+                menu.AddBool("Killsteal.UseR", "使用 R");
+                menu.AddBool("Killsteal.UseIgnite", "使用 点燃");
+                menu.AddBool("Killsteal.UseItems", "使用 物品");
+            }
+        }
+
+
+        struct Evade
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddGroupLabel("目标技能");
+
+                foreach (var spell in TargettedDanger.spellList.Where(x => HeroManager.Enemies.Any(e => e.CharData.BaseSkinName == x.championName)))
+                {
+                    menu.AddBool("enabled." + spell.spellName, spell.spellName + " (" + spell.championName + ")", true);
+                    menu.AddSlider("enabled." + spell.spellName + ".delay", spell.spellName + " 延迟", 0, 0, 1000);
+                    menu.AddSeparator();
+                }
+
+                menu.AddGroupLabel("测试技能");
+                foreach (var spell in TargettedDanger.spellList.Where(x => HeroManager.Enemies.Any(e => x.championName == "Baron")))
+                {
+                    menu.AddBool("enabled." + spell.spellName, spell.spellName + " (" + spell.championName + ")", true);
+                }
+                menu.AddSeparator();
+                menu.AddBool("Evade.Enabled", "躲避已开启");
+                menu.AddBool("Evade.OnlyDangerous", "只躲避危险的", false);
+                menu.AddBool("Evade.FOW", "躲避来自战争迷雾的技能");
+                menu.AddBool("Evade.WTS", "对目标技能使用风墙");
+                menu.AddBool("Evade.WSS", "对技能使用风墙");
+                menu.AddBool("Evade.UseW", "使用风墙躲避");
+                menu.AddBool("Evade.UseE", "使用 E 躲避");
+                menu.AddSeparator();
+                menu.AddSlider("Evade.MinDangerLevelWW", "最低危险等级使用风墙", 1, 1, 5);
+                menu.AddSlider("Evade.MinDangerLevelE", "最低危险等级使用 E", 1, 1, 5);
+                menu.AddSlider("Evade.Delay", "风墙延迟", 0, 0, 1000);
+            }
+        }
+
+
+        struct Misc
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddGroupLabel("逃跑");
+                menu.AddSList("Flee.Mode", "Flee Mode", new[] { "至泉水", "至友军", "至鼠标" }, 2);
+                menu.AddBool("Flee.Smart", "智能逃跑", true);
+                menu.AddBool("Flee.StackQ", "逃跑时叠加Q");
+                menu.AddBool("Flee.UseQ2", "使用龙卷风", false);
+                menu.AddSeparator();
+                menu.AddGroupLabel("杂项 :");
+                menu.AddBool("Misc.SafeE", "E 安全检查");
+                menu.AddBool("Misc.AutoStackQ", "自动叠加 Q", false);
+                menu.AddBool("Misc.AutoR", "自动大招");
+                menu.AddSlider("Misc.RMinHit", "最低敌人数量 R", 1, 1, 5);
+                menu.AddSeparator();
+                menu.AddKeyBind("Misc.TowerDive", "越塔按键", KeyCode("T"), EloBuddy.SDK.Menu.Values.KeyBind.BindTypes.HoldActive);
+                menu.AddSeparator();
+                menu.AddSList("Hitchance.Q", "Q 命中率", new[] { HitChance.Low.ToString(), HitChance.Medium.ToString(), HitChance.High.ToString(), HitChance.VeryHigh.ToString() }, 2);
+                menu.AddSlider("Misc.Healthy", "X 血量为安全", 5, 0, 100);
+                menu.AddSeparator();
+                menu.AddBool("Misc.AG", "使用 Q (龙卷风) 防突进");
+                menu.AddBool("Misc.Interrupter", "使用 Q (龙卷风) 技能打断");
+                menu.AddBool("Misc.Walljump", "使用 跳墙", false);
+                menu.AddBool("Misc.Debug", "调试", false);
+            }
+        }
+
+        struct Drawings
+        {
+            internal static void Attach(Menu menu)
+            {
+                menu.AddBool("Drawing.Disable", "屏蔽线圈", true);
+                menu.AddCircle("Drawing.DrawQ", "显示 Q");//, Yas.Qrange, System.Drawing.Color.Red);
+                menu.AddCircle("Drawing.DrawE", "显示 E");//, Yas.Erange, System.Drawing.Color.CornflowerBlue);
+                menu.AddCircle("Drawing.DrawR", "显示 R");//, Yas.Rrange, System.Drawing.Color.DarkOrange);
+                menu.AddBool("Drawing.SS", "显示技能释放位置", false);
+            }
         }
 
         internal static uint KeyCode(string s)
         {
             return s.ToCharArray()[0];
-        }
-
-        private struct Combo
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.AddGroupLabel("物品");
-                menu.Add("Items.Enabled", new CheckBox("使用 物品"));
-                menu.Add("Items.UseTIA", new CheckBox("使用 提亚马特"));
-                menu.Add("Items.UseHDR", new CheckBox("使用 九头蛇"));
-                menu.Add("Items.UseBRK", new CheckBox("使用 破败"));
-                menu.Add("Items.UseBLG", new CheckBox("使用 弯刀"));
-                menu.Add("Items.UseYMU", new CheckBox("使用 幽梦"));
-                menu.AddSeparator();
-
-                menu.AddGroupLabel("连招");
-                menu.Add("Combo.UseQ", new CheckBox("使用 Q"));
-                menu.Add("Combo.UseQ2", new CheckBox("使用 Q2"));
-                menu.Add("Combo.StackQ", new CheckBox("叠加 Q 如果不在范围内"));
-                menu.Add("Combo.UseW", new CheckBox("使用 W"));
-                menu.Add("Combo.UseE", new CheckBox("使用 E"));
-                menu.Add("Combo.ETower", new CheckBox("使用 E 塔下", false));
-                menu.Add("Combo.EAdvanced", new CheckBox("预判 E 路线"));
-                menu.Add("Combo.NoQ2Dash", new CheckBox("冲刺时不 Q2", false));
-                menu.AddSeparator();
-
-                menu.AddGroupLabel("大招 设置");
-                foreach (var hero in HeroManager.Enemies)
-                {
-                    menu.Add("ult" + hero.ChampionName, new CheckBox("大招 " + hero.ChampionName));
-                }
-                menu.Add("Combo.UltMode",
-                    new ComboBox("大招 优先顺序", 0, "最低血量", "目标选择器", "命中最多"));
-                menu.Add("Combo.knockupremainingpct", new Slider("剩下 % 使用大招", 95, 40));
-                menu.Add("Combo.UseR", new CheckBox("使用 R"));
-                menu.Add("Combo.UltTower", new CheckBox("塔下大招", false));
-                menu.Add("Combo.UltOnlyKillable", new CheckBox("R 只用在可击杀的目标", false));
-                menu.Add("Combo.RPriority", new CheckBox("优先使用在击飞5个英雄时"));
-                menu.Add("Combo.RMinHit", new Slider("最少英雄数使用R", 1, 1, 5));
-                menu.Add("Combo.OnlyifMin", new CheckBox("只大招最低敌人数量", false));
-                menu.Add("Combo.MinHealthUlt", new Slider("最低血量 % 使用R"));
-                menu.AddSeparator();
-
-                menu.Add("Combo.UseIgnite", new CheckBox("使用 点燃"));
-            }
-        }
-
-        private struct Harass
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.Add("Harass.KB", new KeyBind("骚扰按键", false, KeyBind.BindTypes.PressToggle, 'H'));
-                menu.Add("Harass.InMixed", new CheckBox("混合模式使用骚扰", false));
-                menu.Add("Harass.UseQ", new CheckBox("使用 Q"));
-                menu.Add("Harass.UseQ2", new CheckBox("使用 Q2"));
-                menu.Add("Harass.UseE", new CheckBox("使用 E", false));
-                menu.Add("Harass.UseEMinion", new CheckBox("使用 E 小兵", false));
-            }
-        }
-
-        private struct Farm
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.Add("Farm.UseQ", new CheckBox("使用 Q"));
-                menu.Add("Farm.UseQ2", new CheckBox("使用 Q - 龙卷风"));
-                menu.Add("Farm.Qcount", new Slider("对小兵使用 Q （龙卷风）", 1, 1, 10));
-                menu.Add("Farm.UseE", new CheckBox("使用 E"));
-            }
-        }
-
-
-        private struct Waveclear
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.AddGroupLabel("物品");
-                menu.Add("Waveclear.UseItems", new CheckBox("使用 物品"));
-                menu.Add("Waveclear.MinCountHDR", new Slider("最低小兵数量使用九头", 2, 1, 10));
-                menu.Add("Waveclear.MinCountYOU", new Slider("最低小兵数量使用幽梦", 2, 1, 10));
-                menu.Add("Waveclear.UseTIA", new CheckBox("使用 提亚马特"));
-                menu.Add("Waveclear.UseHDR", new CheckBox("使用 九头"));
-                menu.Add("Waveclear.UseYMU", new CheckBox("使用 幽梦", false));
-                menu.AddSeparator();
-
-                menu.AddGroupLabel("清线");
-                menu.Add("Waveclear.UseQ", new CheckBox("使用 Q"));
-                menu.Add("Waveclear.UseQ2", new CheckBox("使用 Q - 龙卷风"));
-                menu.Add("Waveclear.Qcount", new Slider("对小兵使用 Q （龙卷风）", 1, 1, 10));
-                menu.Add("Waveclear.UseE", new CheckBox("使用 E"));
-                menu.Add("Waveclear.ETower", new CheckBox("使用 E 塔下", false));
-                menu.Add("Waveclear.UseENK", new CheckBox("使用 E （就算不可击杀)"));
-                menu.Add("Waveclear.Smart", new CheckBox("智能清线"));
-            }
-        }
-
-        private struct Killsteal
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.Add("Killsteal.Enabled", new CheckBox("抢头"));
-                menu.Add("Killsteal.UseQ", new CheckBox("使用 Q"));
-                menu.Add("Killsteal.UseE", new CheckBox("使用 E"));
-                menu.Add("Killsteal.UseR", new CheckBox("使用 R"));
-                menu.Add("Killsteal.UseIgnite", new CheckBox("使用 点燃"));
-                menu.Add("Killsteal.UseItems", new CheckBox("使用 物品"));
-            }
-        }
-
-        private struct Misc
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.Add("Misc.SafeE", new CheckBox("E 安全检查"));
-                menu.Add("Misc.AutoStackQ", new CheckBox("制度叠加 Q", false));
-                menu.Add("Misc.AutoR", new CheckBox("自动大招"));
-                menu.Add("Misc.RMinHit", new Slider("最低敌人数量 R", 1, 1, 5));
-                menu.Add("Misc.TowerDive", new KeyBind("越塔按键", false, KeyBind.BindTypes.HoldActive, 'T'));
-                menu.Add("Hitchance.Q",
-                    new ComboBox("Q 命中率", 2, HitChance.Low.ToString(), HitChance.Medium.ToString(),
-                        HitChance.High.ToString(), HitChance.VeryHigh.ToString()));
-                menu.Add("Misc.Healthy", new Slider("正常血量", 5));
-                menu.Add("Misc.AG", new CheckBox("使用 Q (龙卷风) 防突进"));
-                menu.Add("Misc.Interrupter", new CheckBox("使用 Q (龙卷风) 技能打断"));
-                menu.Add("Misc.Walljump", new CheckBox("使用 跳墙", false));
-                menu.Add("Misc.Debug", new CheckBox("调试", false));
-            }
-        }
-
-        private struct Drawings
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.Add("Drawing.Disable", new CheckBox("屏蔽线圈"));
-                menu.Add("Drawing.DrawQ", new CheckBox("显示 Q")); // Yas.Qrange, System.Drawing.Color.Red);
-                menu.Add("Drawing.DrawE", new CheckBox("显示 E")); // Yas.Erange, System.Drawing.Color.CornflowerBlue);
-                menu.Add("Drawing.DrawR", new CheckBox("显示 R")); // Yas.Rrange, System.Drawing.Color.DarkOrange);
-                menu.Add("Drawing.SS", new CheckBox("显示技能释放位置", false));
-            }
         }
     }
 }

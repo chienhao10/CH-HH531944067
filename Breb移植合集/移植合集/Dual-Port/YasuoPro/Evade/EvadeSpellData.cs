@@ -17,10 +17,14 @@
 #region
 
 using EloBuddy;
+using LeagueSharp;
+using LeagueSharp.Common;
+using Evade;
+using EloBuddy.SDK.Menu.Values;
 
 #endregion
 
-namespace Evade
+namespace EvadeA
 {
     public enum SpellValidTargets
     {
@@ -31,21 +35,21 @@ namespace Evade
         EnemyWards,
 
         AllyChampions,
-        EnemyChampions
+        EnemyChampions,
     }
 
     /// <summary>
-    ///     Class containing the needed info about the evading spells.
+    /// Class containing the needed info about the evading spells.
     /// </summary>
     internal class EvadeSpellData
     {
         public delegate float MoveSpeedAmount();
 
-        public int _dangerLevel;
-
+        public bool CanShieldAllies;
         public string CheckSpellName = "";
         public int Delay;
         public bool FixedRange;
+        public bool Invert;
 
         public bool IsBlink;
         public bool IsDash;
@@ -58,13 +62,16 @@ namespace Evade
         public float MaxRange;
         public MoveSpeedAmount MoveSpeedTotalAmount;
         public string Name;
+        public bool RequiresPreMove;
+        public bool SelfCast;
         public SpellSlot Slot;
 
         public int Speed;
+        public SpellValidTargets[] ValidTargets;
 
-        public EvadeSpellData()
-        {
-        }
+        public int _dangerLevel;
+
+        public EvadeSpellData() { }
 
         public EvadeSpellData(string name, int dangerLevel)
         {
@@ -72,11 +79,40 @@ namespace Evade
             _dangerLevel = dangerLevel;
         }
 
+        public bool IsTargetted
+        {
+            get { return ValidTargets != null; }
+        }
+
+        public int DangerLevel
+        {
+            get
+            {
+                if (Config.evadeSpells["DangerLevel" + Name] != null)
+                {
+                    return Config.evadeSpells["DangerLevel" + Name].Cast<Slider>().CurrentValue;
+                }
+                return _dangerLevel;
+            }
+        }
+
+        public bool Enabled
+        {
+            get
+            {
+                if (Config.evadeSpells["Enabled" + Name] != null)
+                {
+                    return Config.evadeSpells["Enabled" + Name].Cast<CheckBox>().CurrentValue;
+                }
+                return true;
+            }
+        }
+
         public bool IsReady()
         {
-            return (CheckSpellName == "" || ObjectManager.Player.Spellbook.GetSpell(Slot).Name == CheckSpellName) &&
-                   ((IsSummonerSpell && ObjectManager.Player.Spellbook.CanUseSpell(Slot) == SpellState.Ready) ||
-                    (!IsSummonerSpell && ObjectManager.Player.Spellbook.CanUseSpell(Slot) == SpellState.Ready));
+            return ((CheckSpellName == "" || ObjectManager.Player.Spellbook.GetSpell(Slot).Name == CheckSpellName) &&
+                    ((IsSummonerSpell && ObjectManager.Player.Spellbook.CanUseSpell(Slot) == SpellState.Ready) ||
+                     (!IsSummonerSpell && ObjectManager.Player.Spellbook.CanUseSpell(Slot) == SpellState.Ready)));
         }
     }
 
