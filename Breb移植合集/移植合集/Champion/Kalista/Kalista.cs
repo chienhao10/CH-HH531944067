@@ -186,17 +186,9 @@ namespace iKalistaReborn
             {
                 foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.Distance(x) <= 2000f && !x.IsDead && x.IsHPBarRendered))
                 {
-                    var currentPercentage = Math.Round(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield(), 2);
+                    var currentPercentage = Math.Round(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield(), 1);
 
-                    Drawing.DrawText(
-                        Drawing.WorldToScreen(source.Position)[0],
-                        Drawing.WorldToScreen(source.Position)[1],
-                        currentPercentage >= 100
-                            ? Color.DarkOliveGreen
-                            : Color.White,
-                        currentPercentage >= 100
-                            ? "E可击杀"
-                            : "当前伤害: " + currentPercentage + "%");
+                    Drawing.DrawText(Drawing.WorldToScreen(source.Position)[0], Drawing.WorldToScreen(source.Position)[1], currentPercentage >= 100 ? Color.DarkOliveGreen : Color.White, currentPercentage >= 100 ? "E 可击杀" : "当前伤害: " + Math.Ceiling(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield()) + "%");
                 }
             }
         }

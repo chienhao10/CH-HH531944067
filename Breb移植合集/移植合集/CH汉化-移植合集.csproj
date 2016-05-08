@@ -191,6 +191,9 @@
     <Compile Include="Champion\FiddleSticks\Core\Spells.cs" />
     <Compile Include="Champion\FiddleSticks\Programs.cs" />
     <Compile Include="Dual-Port\e.MotionKatarina\Program.cs" />
+    <Compile Include="Dual-Port\ElXerath\Drawings.cs" />
+    <Compile Include="Dual-Port\ElXerath\ElXerathMenu.cs" />
+    <Compile Include="Dual-Port\ElXerath\Xerath.cs" />
     <Compile Include="Dual-Port\ExorCait\Caitlyn.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Modes\Automatic.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Modes\PvM\Clear.cs" />
@@ -205,6 +208,7 @@
     <Compile Include="Dual-Port\ExorCait\Properties\Utilities\Targets.cs" />
     <Compile Include="Dual-Port\iLucian\Lucian.cs" />
     <Compile Include="Dual-Port\iLucian\MenuHelper\MenuGenerator.cs" />
+    <Compile Include="Dual-Port\iLucian\Utils\MathHelper.cs" />
     <Compile Include="Dual-Port\iLucian\Variables.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\Dmg.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\HpBarIndicator.cs" />
@@ -823,6 +827,7 @@
     <Compile Include="Utility\ElUtilitySuite\Summoners\Smite.cs" />
     <Compile Include="Utility\ElUtilitySuite\Trackers\JungleTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\AntiStealth.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Utility\Flash.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\UltimateLeveler.cs" />
     <Compile Include="Utility\EzEvade\Core\Evade.cs" />
     <Compile Include="Utility\EzEvade\Core\EvadeHelper.cs" />
@@ -894,6 +899,8 @@
     <Compile Include="Utility\RandomUlt\Helpers\LastPositions.cs" />
     <Compile Include="Utility\RandomUlt\Program.cs" />
     <Compile Include="Utility\SkinHack\Program.cs" />
+    <Compile Include="Utility\SkinSDK\MenuConfig.cs" />
+    <Compile Include="Utility\SkinSDK\Program.cs" />
     <Compile Include="Utility\UniversalGankAlerter\Program.cs" />
     <Compile Include="Utility\UniversalPingBlock\Program.cs" />
     <Compile Include="Utility\UniversalRecallTracker\Program.cs" />

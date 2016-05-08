@@ -204,13 +204,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (Q.IsCharging && (int)(Game.Time * 10) % 2 == 0)
-            {
-                EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-            }
+            if (Program.LagFree(3) && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
+                LogicR();
 
             //Program.debug(""+OktwCommon.GetPassiveTime(Player, "XerathArcanopulseChargeUp"));
-            if (IsCastingR)
+            if (IsCastingR || Player.IsChannelingImportantSpell())
             {
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
@@ -219,6 +217,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 Orbwalker.DisableAttacking = false;
                 Orbwalker.DisableMovement = false;
+            }
+
+            if (Q.IsCharging && (int)(Game.Time * 10) % 2 == 0)
+            {
+                EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
             }
 
             if (Program.LagFree(1))
@@ -236,7 +239,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                             .OrderByDescending(x => x.Health)
                             .FirstOrDefault();
 
-                    if (minion != null)
+                    if (minion != null && OktwCommon.CanHarras())
                         Orbwalker.ForcedTarget = minion;
                 }
             }
@@ -245,8 +248,6 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 LogicE();
             if (Program.LagFree(2) && W.IsReady() && !Orbwalker.IsAutoAttacking && getCheckBoxItem(wMenu, "autoW"))
                 LogicW();
-            if (Program.LagFree(3) && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
-                LogicR();
             if (Program.LagFree(4) && Q.IsReady() && !Orbwalker.IsAutoAttacking && getCheckBoxItem(qMenu, "autoQ"))
                 LogicQ();
         }

@@ -72,8 +72,8 @@ namespace SephKhazix
             djump.Add("djumpenabled", new CheckBox("开启"));
             djump.Add("JEDelay", new Slider("延迟跳跃", 250, 250, 500));
             djump.Add("jumpmode", new ComboBox("跳跃模式", 0, "预设 (自己泉水方向)", "自订 - 以下设置"));
-            djump.Add("save", new CheckBox("保留双跳进"));
-            djump.Add("noauto", new CheckBox("等待Q冷却结束"));
+            djump.Add("save", new CheckBox("保留双跳进", false));
+            djump.Add("noauto", new CheckBox("等待Q冷却结束", false));
             djump.Add("jcursor", new CheckBox("第一跳跃至鼠标（脚本逻辑）"));
             djump.Add("secondjump", new CheckBox("进行第二次跳跃"));
             djump.Add("jcursor2", new CheckBox("第二跳跃至鼠标（脚本逻辑）"));

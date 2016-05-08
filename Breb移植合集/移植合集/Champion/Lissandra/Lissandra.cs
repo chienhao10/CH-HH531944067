@@ -217,7 +217,7 @@ namespace SephLissandra
                 if (getCheckBoxItem(interruptMenu, "Interrupter.AG.UseW") &&
                     Vector3.Distance(args.End, Player.ServerPosition) <= Spells["W"].Range)
                 {
-                    Spells["W"].CastOnUnit(Player);
+                    Utility.DelayAction.Add(300, () => Spells["W"].CastOnUnit(Player));
                     return;
                 }
                 if (getCheckBoxItem(interruptMenu, "Interrupter.AG.UseR") &&
@@ -433,20 +433,20 @@ namespace SephLissandra
                         h =>
                             h.IsValidTarget(Spells["R"].Range) &&
                             h.CountEnemiesInRange(Spells["R"].Range) >= getSliderItem(comboMenu, "Combo.Rcount") &&
-                            !getCheckBoxItem(blackListMenu, "Blacklist." + h.NetworkId)).ToList();
+                            !getCheckBoxItem(blackListMenu, "Blacklist." + h.NetworkId) && h.HealthPercent > getSliderItem(comboMenu, "Combo.MinRHealth")).ToList();
 
             if (Player.CountEnemiesInRange(Spells["R"].Range) >= getSliderItem(comboMenu, "Combo.Rcount"))
             {
                 Check.Add(Player);
             }
-            if (Check != null)
+            if (Check.Any())
             {
                 if (Check.Contains(Player) && !LissUtils.isHealthy())
                 {
                     Spells["R"].CastOnUnit(Player);
                     return;
                 }
-                var target = Check.FirstOrDefault();
+                var target = Check.MaxOrDefault(TargetSelector.GetPriority);
                 if (target != null)
                 {
                     Spells["R"].Cast(target);
@@ -457,7 +457,7 @@ namespace SephLissandra
             {
                 return;
             }
-            if (currenttarget.IsKillableFromPoint(Player.ServerPosition))
+            if (currenttarget.IsKillableFromPoint(Player.ServerPosition) && Player.Distance(currenttarget) < Spells["R"].Range)
             {
                 Spells["R"].Cast(currenttarget);
                 return;
@@ -497,14 +497,12 @@ namespace SephLissandra
             {
                 var EnemyUnderTurret =
                     arranged.Where(h => LissUtils.PointUnderAllyTurret(h.ServerPosition) && !h.IsInvulnerable);
-                if (EnemyUnderTurret != null)
+
+                var Enemytofocus = EnemyUnderTurret.MaxOrDefault(h => h.CountEnemiesInRange(Spells["R"].Range));
+                if (Enemytofocus != null)
                 {
-                    var Enemytofocus = EnemyUnderTurret.MaxOrDefault(h => h.CountEnemiesInRange(Spells["R"].Range));
-                    if (Enemytofocus != null)
-                    {
-                        Spells["R"].Cast(Enemytofocus);
-                        return;
-                    }
+                    Spells["R"].Cast(Enemytofocus);
+                    return;
                 }
             }
 

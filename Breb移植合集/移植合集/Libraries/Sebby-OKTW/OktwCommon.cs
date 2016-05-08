@@ -418,11 +418,11 @@ namespace SebbyLib
             if (!sender.IsMe)
                 return;
 
-            if (blockMove && !args.IsAttackMove)
+            if (blockMove && args.Order != GameObjectOrder.AttackUnit)
             {
                 args.Process = false;
             }
-            if (blockAttack && args.IsAttackMove)
+            if (blockAttack && args.Order == GameObjectOrder.AttackUnit)
             {
                 args.Process = false;
             }

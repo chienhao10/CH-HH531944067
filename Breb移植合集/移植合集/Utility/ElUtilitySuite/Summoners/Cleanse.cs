@@ -113,12 +113,13 @@ namespace ElUtilitySuite.Summoners
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Unknown,
                                      Interval = 1.0
                                  },
-                             new CleanseSpell
+                            /* new CleanseSpell
                                  {
                                      Champion = "Vi", Name = "virknockup", MenuName = "薇 R 击飞", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
-                                 },
+                                 },*/
+                                 
                              new CleanseSpell
                                  {
                                      Champion = "Gangplank", Name = "gangplankpassiveattackdot",

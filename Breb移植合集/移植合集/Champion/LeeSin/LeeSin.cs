@@ -145,7 +145,6 @@
             Console.WriteLine("-----------DON'T MIND THE ERRORS BELOW-----------------");
             Console.WriteLine("-----------DON'T MIND THE ERRORS BELOW-----------------");
             Console.WriteLine("-----------DON'T MIND THE ERRORS BELOW-----------------");
-
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
             Game.OnUpdate += args =>
@@ -441,8 +440,7 @@
                         {
                             return;
                         }
-                        if (!R.IsInRange(target) && target.DistanceToPlayer() < WardManager.WardRange + R.Range - 50
-                            && Player.Mana >= 80 && !isDashing)
+                        if (!R.IsInRange(target) && target.DistanceToPlayer() < WardManager.WardRange + R.Range - 50 && Player.Mana >= 80 && !isDashing)
                         {
                             Flee(target.ServerPosition, true);
                         }
@@ -454,7 +452,7 @@
             {
                 if (IsQOne)
                 {
-                    var target = Q.GetTarget(0);
+                    var target = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
                     if (target != null)
                     {
                         CastQSmite(target);
@@ -474,8 +472,7 @@
                     else if (getCheckBoxItem(comboMenu, "Q2Obj"))
                     {
                         var targetQ2 = Q2.GetTarget(200);
-                        if (targetQ2 != null && objQ.Distance(targetQ2) < targetQ2.DistanceToPlayer()
-                            && !targetQ2.InAutoAttackRange() && Q2.Cast())
+                        if (targetQ2 != null && objQ.Distance(targetQ2) < targetQ2.DistanceToPlayer() && !targetQ2.InAutoAttackRange() && Q2.Cast())
                         {
                             isDashing = true;
                             return;
@@ -484,12 +481,12 @@
                 }
             }
 
-            if (getCheckBoxItem(comboMenu, "E"))
+            if (getCheckBoxItem(comboMenu, "E") && E.IsReady())
             {
                 CastECombo();
             }
 
-            if (getCheckBoxItem(comboMenu, "W"))
+            if (getCheckBoxItem(comboMenu, "W") && W.IsReady())
             {
                 CastW();
             }

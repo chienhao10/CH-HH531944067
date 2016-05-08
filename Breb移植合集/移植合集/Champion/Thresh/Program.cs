@@ -300,7 +300,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             bool rKs = getCheckBoxItem(rMenu, "rKs");
             foreach (var target in Program.Enemies.Where(target => target.IsValidTarget(R.Range) && target.HasBuff("rocketgrab2")))
             {
-                if (rKs && R.GetDamage(target) > target.Health)
+                if (rKs && R.GetDamage(target) > target.Health && R.IsInRange(target))
                     R.Cast();
             }
             if (Player.CountEnemiesInRange(R.Range) >= getSliderItem(rMenu, "rCount") && getSliderItem(rMenu, "rCount") > 0)
@@ -308,7 +308,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (getCheckBoxItem(rMenu, "comboR"))
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                if (t.IsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo))
+                if (t.IsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo) && R.IsInRange(t))
                 {
                     if (Player.Distance(t.ServerPosition) > Player.Distance(t.Position))
                         R.Cast();

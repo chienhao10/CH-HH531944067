@@ -54,7 +54,7 @@ namespace iKalistaReborn.Utils
         ///     The <see cref="float" />.
         /// </returns>
         public static float GetHealthWithShield(this Obj_AI_Base target)
-            => target.AllShield > 0 ? target.Health + target.AllShield : target.Health + 10;
+            => target.AllShield > 0 ? target.Health + target.AllShield : target.Health;
 
         /// <summary>
         ///     Gets the rend buff
@@ -169,7 +169,7 @@ namespace iKalistaReborn.Utils
             }
 
 
-            return baseDamage > target.GetHealthWithShield();
+            return (baseDamage - 30) > target.GetHealthWithShield();
         }
 
         /// <summary>

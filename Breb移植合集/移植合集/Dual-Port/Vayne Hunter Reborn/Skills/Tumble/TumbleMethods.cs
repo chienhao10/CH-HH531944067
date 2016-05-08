@@ -87,7 +87,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 return;
             }
             
-            if (!Variables.spells[SpellSlot.Q].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString()))
+            if (!Variables.spells[SpellSlot.Q].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString().ToLower()))
             {
                 return;
             }
@@ -104,7 +104,14 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 {
                     DefaultQCast(Game.CursorPos, firstMinion);
                     Orbwalker.ForcedTarget = firstMinion;
+                } else
+                {
+                    Orbwalker.ForcedTarget = null;
                 }
+            }
+            else
+            {
+                Orbwalker.ForcedTarget = null;
             }
 
         }
@@ -228,7 +235,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 }
             }
             
-            if (Variables.spells[SpellSlot.R].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString()) && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (Variables.spells[SpellSlot.R].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString().ToLower()) && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 if (ObjectManager.Player.CountEnemiesInRange(750f) >=
                     getSliderItem(MenuGenerator.comboMenu, "dz191.vhr.combo.r.minenemies"))

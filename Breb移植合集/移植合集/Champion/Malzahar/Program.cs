@@ -93,6 +93,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
             {
                 args.Process = false;
+                Orbwalker.DisableAttacking = true;
+                Orbwalker.DisableMovement = true;
                 return;
             }
 
@@ -148,6 +150,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
+            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
+            {
+                Orbwalker.DisableAttacking = true;
+                Orbwalker.DisableMovement = true;
+                return;
+            }
+
             var t = gapcloser.Sender;
 
             if (Q.IsReady() && getCheckBoxItem(qMenu, "gapQ") && t.IsValidTarget(Q.Range))
@@ -161,9 +170,15 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
         }
 
-        private static void Interrupter2_OnInterruptableTarget(AIHeroClient t,
-            Interrupter2.InterruptableTargetEventArgs args)
+        private static void Interrupter2_OnInterruptableTarget(AIHeroClient t, Interrupter2.InterruptableTargetEventArgs args)
         {
+            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
+            {
+                Orbwalker.DisableAttacking = true;
+                Orbwalker.DisableMovement = true;
+                return;
+            }
+
             if (!getCheckBoxItem(qMenu, "intQ") || !Q.IsReady())
                 return;
 
@@ -182,6 +197,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 Program.debug("cast R");
                 return;
             }
+
             Orbwalker.DisableAttacking = false;
             Orbwalker.DisableMovement = false;
 

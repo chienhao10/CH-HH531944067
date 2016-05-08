@@ -75,8 +75,8 @@ namespace EvadeA
         public static string PlayerChampionName;
 
         private static readonly Random RandomN = new Random();
-        private static int LastSentMovePacketT = 0;
-        private static int LastSentMovePacketT2 = 0;
+        //private static int LastSentMovePacketT = 0;
+        //private static int LastSentMovePacketT2 = 0;
 
         public static bool Evading
         {
@@ -85,7 +85,7 @@ namespace EvadeA
             {
                 if (value == true)
                 {
-                    LastSentMovePacketT = 0;
+                    //LastSentMovePacketT = 0;
                     ObjectManager.Player.SendMovePacket(EvadePoint);
                 }
 
@@ -443,14 +443,14 @@ namespace EvadeA
 
             return;
 
-            /*Avoid evading while stunned or immobile.*/
+            /*
+
             if (Utils.ImmobileTime(ObjectManager.Player) - Utils.TickCount > Game.Ping / 2 + 70)
             {
                 Evading = false;
                 return;
             }
 
-            /*Avoid evading while dashing.*/
             if (ObjectManager.Player.LSIsDashing())
             {
                 Evading = false;
@@ -509,7 +509,6 @@ namespace EvadeA
             var safeResult = IsSafe(PlayerPosition);
             var safePath = IsSafePath(currentPath, 100);
 
-            /*FOLLOWPATH*/
             if (FollowPath && !NoSolutionFound && (Keepfollowing || !Evading) && EvadeToPoint.IsValid() && safeResult.IsSafe)
             {
                 if (EvadeSpellDatabase.Spells.Any(evadeSpell => evadeSpell.Name == "Walking" && evadeSpell.Enabled))
@@ -573,6 +572,7 @@ namespace EvadeA
                     }
                 }
             }
+            */
         }
 
 

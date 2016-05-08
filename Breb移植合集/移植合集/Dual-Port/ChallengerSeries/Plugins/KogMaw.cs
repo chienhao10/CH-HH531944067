@@ -233,8 +233,6 @@ namespace Challenger_Series.Plugins
             ComboMenu.Add("koggieusee", new CheckBox("使用 E", true));
             ComboMenu.Add("koggieuser", new CheckBox("使用 R", true));
             ComboMenu.Add("koggiewintime", new CheckBox("在危险中不使用 W!", false));
-            ComboMenu.Add("onlyRHP", new CheckBox("只用R当目标血量 X"));
-            ComboMenu.Add("hpOfTarget", new Slider("目标血量 %"));
 
             HarassMenu = MainMenu.AddSubMenu("骚扰设置", "koggieharassmenu");
             HarassMenu.Add("koggieuserharass", new CheckBox("使用 R", true));
@@ -300,11 +298,6 @@ namespace Challenger_Series.Plugins
             var myPos = ObjectManager.Player.ServerPosition;
             foreach (var enemy in ValidTargets.Where(h => h.Distance(myPos) < R.Range && h.HealthPercent < 25 && h.LSIsValidTarget()))
             {
-                if (getCheckBoxItem(ComboMenu, "onlyRHP"))
-                {
-                    if (enemy.HealthPercent > getSliderItem(ComboMenu, "hpOfTarget"))
-                        return;
-                }
                 var prediction = R.GetPrediction(enemy, true);
                 if ((int)prediction.Hitchance > (int)HitChance.Medium)
                 {

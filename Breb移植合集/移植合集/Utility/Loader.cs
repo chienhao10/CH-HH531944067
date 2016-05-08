@@ -20,7 +20,7 @@ namespace PortAIO.Utility
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
         public static bool useTracker { get { return Miscc["tracker"].Cast<CheckBox>().CurrentValue; } }
         public static bool useRecall { get { return Miscc["recall"].Cast<CheckBox>().CurrentValue; } }
-        //public static bool useSkin { get { return Miscc["skin"].Cast<CheckBox>().CurrentValue; } }
+        public static bool useSkin { get { return Miscc["skin"].Cast<CheckBox>().CurrentValue; } }
         public static bool champOnly { get { return Miscc["champ"].Cast<CheckBox>().CurrentValue; } }
         public static bool utilOnly { get { return Miscc["util"].Cast<CheckBox>().CurrentValue; } }
         public static bool evade { get { return Miscc["evade"].Cast<CheckBox>().CurrentValue; } }
@@ -44,6 +44,7 @@ namespace PortAIO.Utility
         public static int jayce { get { return Miscc["jayce"].Cast<ComboBox>().CurrentValue; } }
         public static int yasuo { get { return Miscc["yasuo"].Cast<ComboBox>().CurrentValue; } }
         public static int katarina { get { return Miscc["katarina"].Cast<ComboBox>().CurrentValue; } }
+        public static int xerath { get { return Miscc["xerath"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -55,7 +56,7 @@ namespace PortAIO.Utility
 
         public static List<string> RandomUltChampsList = new List<string>(new[] { "Ezreal", "Jinx", "Ashe", "Draven", "Gangplank", "Ziggs", "Lux", "Xerath" });
         public static List<string> BaseUltList = new List<string>(new[] { "Jinx", "Ashe", "Draven", "Ezreal", "Karthus"});
-        public static List<string> Champion = new List<string>(new[] { "Soraka", "KogMaw", "LeeSin", "Kalista", "Diana", "Caitlyn", "Twitch", "Nidalee", "Lucian", "Ashe", "Vayne", "Jayce", "Yasuo", "Katarina" });
+        public static List<string> Champion = new List<string>(new[] { "Soraka", "KogMaw", "LeeSin", "Kalista", "Diana", "Caitlyn", "Twitch", "Nidalee", "Lucian", "Ashe", "Vayne", "Jayce", "Yasuo", "Katarina", "Xerath" });
 
         public static void Menu()
         {
@@ -120,6 +121,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[13]))
                 {
                     Miscc.Add("katarina", new ComboBox("切换 卡特脚本 : ", 0, "Staberina", "e.Motion卡特"));
+                }
+                if (Player.ChampionName.Equals(Champion[14]))
+                {
+                    Miscc.Add("xerath", new ComboBox("切换 泽拉斯脚本 : ", 0, "OKTW", "El泽拉斯"));
                 }
             }
             else

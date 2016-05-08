@@ -32,6 +32,7 @@ namespace SephLissandra
             comboMenu.Add("Combo.ecountW", new Slider("2E + W 最少敌人数量", 2, 0, 5));
             comboMenu.Add("Combo.ecountR", new Slider("2E + R 最少敌人数量", 2, 0, 5));
             comboMenu.Add("Combo.Rcount", new Slider("最少敌人数量 自身R", 2, 0, 5));
+            comboMenu.Add("Combo.MinRHealth", new Slider("敌人血量 X 以上使用R", 25, 1, 100));
 
             ksMenu = Config.AddSubMenu("抢头", "Killsteal");
             ksMenu.Add("Killsteal", new CheckBox("使用抢头"));

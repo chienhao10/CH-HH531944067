@@ -9,8 +9,6 @@ To-Check :
 ------------------------------------------------------------------------
 
 Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
-- ElXerath
-- iMeh Xerath
 - Nechrito Gragas
 - iDzEzreal
 - The Cheater
@@ -36,3 +34,5 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - Auto Buy
 - DZAwareness
 - Zed is Back
+- Swiftly Teemo
+- EzEvade (full)

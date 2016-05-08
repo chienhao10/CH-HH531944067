@@ -37,6 +37,7 @@ namespace iLucian.MenuHelper
             miscOptions = Variables.Menu.AddSubMenu(":: I卢锡安 - 杂项", "com.ilucian.misc");
             miscOptions.Add("com.ilucian.misc.usePrediction", new CheckBox("使用 W 预判", true));
             miscOptions.Add("com.ilucian.misc.gapcloser", new CheckBox("使用 E 接近/防突进", true));
+            miscOptions.Add("com.ilucian.misc.eqKs", new CheckBox("EQ - 抢头", true));
         }
     }
 }

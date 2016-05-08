@@ -122,7 +122,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
         public static Vector3 GetSmartQPosition()
         {
             if (!getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.tumble.smartq") ||
-                !Variables.spells[SpellSlot.E].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString()))
+                !Variables.spells[SpellSlot.E].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString().ToLower()))
             {
                 return Vector3.Zero;
             }

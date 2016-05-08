@@ -596,7 +596,7 @@ namespace SebbyLib.Prediction
         {
             speed = (Math.Abs(speed - (-1)) < float.Epsilon) ? input.Unit.MoveSpeed : speed;
 
-            if (path.Count <= 1 || !input.Unit.CanAttack)
+            if (path.Count <= 1 || (!input.Unit.CanAttack && !input.Unit.LSIsDashing()))
             {
                 return new PredictionOutput
                 {
