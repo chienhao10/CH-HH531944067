@@ -68,6 +68,7 @@ namespace VayneHunter_Reborn.Skills.Condemn
         private static void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
             return;
+            /*
             if (sender != null && sender.Owner != null && sender.Owner.IsMe && args.Slot == SpellSlot.E && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)))
             {
                 if (!(args.Target is AIHeroClient))
@@ -84,6 +85,7 @@ namespace VayneHunter_Reborn.Skills.Condemn
                     }
                 }
             }
+            */
         }
 
         public static Obj_AI_Base GetCondemnTarget(Vector3 fromPosition)

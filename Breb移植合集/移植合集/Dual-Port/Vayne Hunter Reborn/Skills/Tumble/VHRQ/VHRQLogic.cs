@@ -88,9 +88,7 @@ namespace VayneHunter_Reborn.Skills.Tumble.VHRQ
 
             return null;
 
-            return
-                HeroManager.Enemies
-                    .FirstOrDefault(en => en.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null), true, from));
+            //return HeroManager.Enemies.FirstOrDefault(en => en.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null), true, from));
         }
 
         public static bool IsSafeEx(Vector3 position)

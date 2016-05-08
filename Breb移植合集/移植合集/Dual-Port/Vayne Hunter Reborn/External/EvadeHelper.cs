@@ -212,7 +212,7 @@ namespace VayneHunter_Reborn.External
             }
         }
 
-        private static void OnDeleteMissile(Skillshot skillshot, Obj_SpellMissile missile)
+        private static void OnDeleteMissile(Skillshot skillshot, MissileClient missile)
         {
             if (skillshot.SpellData.SpellName == "VelkozQ")
             {

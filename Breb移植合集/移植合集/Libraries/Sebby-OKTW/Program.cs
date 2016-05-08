@@ -153,7 +153,7 @@ namespace SebbyLib
                         Graves.LoadOKTW();
                         break;
                     case "Jayce":
-                        Jayce.LoadOKTW();
+                        OneKeyToWin_AIO_Sebby.Champions.Jayce.LoadOKTW();
                         break;
                     case "Jinx":
                         Jinx.LoadOKTW();

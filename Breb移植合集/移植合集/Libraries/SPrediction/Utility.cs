@@ -45,7 +45,7 @@ namespace SPrediction
         /// <returns></returns>
         internal static bool IsImmobileTarget(Obj_AI_Base target)
         {
-            return target.Buffs.Count(p => IsImmobilizeBuff(p.Type)) > 0;
+            return target.Buffs.Any(p => IsImmobilizeBuff(p.Type));
         }
 
         /// <summary>
@@ -55,9 +55,7 @@ namespace SPrediction
         /// <returns></returns>
         internal static float LeftImmobileTime(Obj_AI_Base target)
         {
-            return
-                target.Buffs.Where(p => p.IsActive && IsImmobilizeBuff(p.Type) && p.EndTime >= Game.Time)
-                    .Max(q => q.EndTime - Game.Time);
+            return target.Buffs.Where(p => p.IsActive && IsImmobilizeBuff(p.Type) && p.EndTime > Game.Time).Max(q => q.EndTime - Game.Time);
         }
 
         /// <summary>

@@ -445,20 +445,19 @@ namespace SPrediction
                 if (dashInfo.IsBlink)
                 {
                     result.HitChance = HitChance.Impossible;
-                    result.CastPosition = target.ServerPosition.LSTo2D();
+                    result.CastPosition = dashInfo.EndPos;
                     return result;
                 }
 
-                result.CastPosition = GetFastUnitPosition(target, dashInfo.Path, delay, missileSpeed, from,
-                    dashInfo.Speed);
+                result.CastPosition = GetFastUnitPosition(target, dashInfo.Path, delay, missileSpeed, from, dashInfo.Speed);
                 result.HitChance = HitChance.Dashing;
 
                 result.Lock(false);
             }
             else
             {
-                result.HitChance = HitChance.Impossible;
-                result.CastPosition = target.ServerPosition.LSTo2D();
+                result = GetPrediction(target, width, delay, missileSpeed, range, collisionable, type, target.GetWaypoints(), 0, 0, 0, 0, from, rangeCheckFrom);
+                result.Lock(false);
             }
             return result;
         }
@@ -643,11 +642,6 @@ namespace SPrediction
                             result.CastPosition = pCenter;
                             result.UnitPosition = pCenter;
                                 //+ (direction * (t - Math.Min(arriveTimeA, arriveTimeB)) * moveSpeed);
-                            /*if (currentPosition.IsBetween(ObjectManager.Player.ServerPosition.LSTo2D(), result.CastPosition))
-                            {
-                                result.CastPosition = currentPosition;
-                                Console.WriteLine("corrected");
-                            }*/
                             return result;
                         }
                     }
@@ -679,8 +673,7 @@ namespace SPrediction
             if (from == null)
                 from = ObjectManager.Player.ServerPosition.LSTo2D();
 
-            if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient) target).IsChannelingImportantSpell()) ||
-                Utility.IsImmobileTarget(target))
+            if (path.Count <= 1 || (target is AIHeroClient && target.Spellbook.IsChanneling) || Utility.IsImmobileTarget(target))
                 return target.ServerPosition.LSTo2D();
 
             if (target.LSIsDashing())
@@ -730,8 +723,7 @@ namespace SPrediction
         /// <param name="moveSpeed">Move speed</param>
         /// <param name="distanceSet"></param>
         /// <returns></returns>
-        public static Vector2 GetFastUnitPosition(Obj_AI_Base target, List<Vector2> path, float delay,
-            float missileSpeed = 0, Vector2? from = null, float moveSpeed = 0, float distanceSet = 0)
+        public static Vector2 GetFastUnitPosition(Obj_AI_Base target, List<Vector2> path, float delay, float missileSpeed = 0, Vector2? from = null, float moveSpeed = 0, float distanceSet = 0)
         {
             if (from == null)
                 from = target.ServerPosition.LSTo2D();
@@ -739,8 +731,7 @@ namespace SPrediction
             if (moveSpeed == 0)
                 moveSpeed = target.MoveSpeed;
 
-            if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient) target).IsChannelingImportantSpell()) ||
-                Utility.IsImmobileTarget(target))
+            if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient) target).IsChannelingImportantSpell()) || Utility.IsImmobileTarget(target))
                 return target.ServerPosition.LSTo2D();
 
             if (target.LSIsDashing())

@@ -189,6 +189,20 @@ namespace PortAIO
                                 break;
                         }
                         break;
+                    case "jayce":
+                        switch (Loader.jayce)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                Jayce.Jayce.OnLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
                     case "anivia": // OKTW - Sebby - All Seeby champs go down here
                     case "thresh":
                     case "annie":
@@ -196,7 +210,6 @@ namespace PortAIO
                     case "ekko":
                     case "ezreal":
                     case "graves":
-                    case "jayce":
                     case "jinx":
                     case "karthus":
                     case "missfortune":

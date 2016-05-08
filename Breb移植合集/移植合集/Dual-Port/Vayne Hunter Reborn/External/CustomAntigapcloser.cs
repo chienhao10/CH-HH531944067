@@ -651,7 +651,7 @@ namespace VayneHunter_Reborn.External
 
         public static void BuildMenu(Menu mainMenu)
         {
-            GPMenu = mainMenu.AddSubMenu("[VHR] 防突进列表", "dz191.vhr.agplist");
+            GPMenu = mainMenu.AddSubMenu("[VHR] AntiGapclosers List", "dz191.vhr.agplist");
             {
                 var enemyHeroesNames = ObjectManager.Get<AIHeroClient>().Where(h => h.IsEnemy).Select(hero => hero.ChampionName).ToList();
 

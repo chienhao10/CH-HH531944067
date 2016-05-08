@@ -145,6 +145,9 @@
     <Compile Include="Champion\Riven\Classes\Modes\Lane.cs" />
     <Compile Include="Champion\Riven\Classes\Spells.cs" />
     <Compile Include="Champion\Riven\Program.cs" />
+    <Compile Include="Dual-Port\AJayce\Helper.cs" />
+    <Compile Include="Dual-Port\AJayce\Jayce.cs" />
+    <Compile Include="Dual-Port\AJayce\MenuConfig.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\CSPlugin.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Ashe.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Kalista.cs" />

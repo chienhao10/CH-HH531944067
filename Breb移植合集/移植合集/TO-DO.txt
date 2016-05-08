@@ -9,7 +9,6 @@ To-Check :
 ------------------------------------------------------------------------
 
 Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
-- Hoe's Jayce
 - YasuoPro
 - e.Motion Katarina
 - ElXerath

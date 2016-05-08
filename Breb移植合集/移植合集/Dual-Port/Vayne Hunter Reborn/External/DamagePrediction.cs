@@ -25,7 +25,7 @@ namespace VayneHunter_Reborn.External
     class DamagePrediction
     {
         public delegate void OnKillableDelegate(AIHeroClient sender, AIHeroClient target, SpellData sData);
-        public static event OnKillableDelegate OnSpellWillKill;
+        //public static event OnKillableDelegate OnSpellWillKill;
 
         static DamagePrediction()
         {
