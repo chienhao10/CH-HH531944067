@@ -15,16 +15,16 @@ namespace KoreanAIO.Champions
 
         public Cassiopeia()
         {
-            Q = new SpellBase(SpellSlot.Q, SpellType.Circular, 850)
+            Q = new SpellBase(SpellSlot.Q, SpellType.Circular, 750)
             {
                 Width = 130,
                 CastDelay = 400
             };
-            W = new SpellBase(SpellSlot.W, SpellType.Circular, 850)
+            W = new SpellBase(SpellSlot.W, SpellType.Circular, 800)
             {
-                Width = 106,
+                Width = 180,
                 CastDelay = 250,
-                Speed = 2500
+                Speed = 3000
             };
             E = new SpellBase(SpellSlot.E, SpellType.Targeted, 700)
             {
@@ -488,13 +488,13 @@ namespace KoreanAIO.Champions
                 {
                     case SpellSlot.Q:
                         return MyHero.CalculateDamageOnUnit(target, DamageType.Magical,
-                            40f * level + 35f + 0.45f * MyHero.FlatMagicDamageMod) / 2f;
+                            45f * level + 30f + 0.45f * MyHero.FlatMagicDamageMod);
                     case SpellSlot.W:
                         return MyHero.CalculateDamageOnUnit(target, DamageType.Magical,
-                            45f * level + 45f + 0.9f * MyHero.FlatMagicDamageMod) / 2;
+                            15f * level + 5f + 0.15f * MyHero.FlatMagicDamageMod) * 2.5f;
                     case SpellSlot.E:
                         return MyHero.CalculateDamageOnUnit(target, DamageType.Magical,
-                            25f * level + 30f + 0.55f * MyHero.FlatMagicDamageMod);
+                            4f * level + 48f + 0.1f * MyHero.FlatMagicDamageMod + (IsPoisoned(target) ? (-20 + 30 * level + 0.35f * MyHero.FlatMagicDamageMod) : 0f));
                     case SpellSlot.R:
                         return MyHero.CalculateDamageOnUnit(target, DamageType.Magical,
                             100f * level + 50f + 0.5f * MyHero.FlatMagicDamageMod);

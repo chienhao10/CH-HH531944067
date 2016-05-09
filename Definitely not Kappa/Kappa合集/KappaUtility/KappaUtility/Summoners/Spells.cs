@@ -8,11 +8,9 @@
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK.Rendering;
-
-    using Common;
-
     using EloBuddy.SDK.Enumerations;
-    using EloBuddy.SDK.Spells;
+
+    using KappaUtility.Common;
 
     using SharpDX;
 
@@ -32,8 +30,9 @@
 
         public static readonly string[] Junglemobs =
             {
-                "SRU_Dragon_Air", "SRU_Dragon_Earth", "SRU_Dragon_Fire", "SRU_Dragon_Water", "SRU_Dragon_Elder", "SRU_Baron", "SRU_Gromp", "SRU_Krug", "SRU_Razorbeak", "Sru_Crab", "SRU_Murkwolf",
-                "SRU_Blue", "SRU_Red", "AscXerath"
+                "SRU_Dragon_Air", "SRU_Dragon_Earth", "SRU_Dragon_Fire", "SRU_Dragon_Water", "SRU_Dragon_Elder",
+                "SRU_Baron", "SRU_Gromp", "SRU_Krug", "SRU_RiftHerald", "Sru_Crab", "SRU_Murkwolf", "SRU_Blue",
+                "SRU_Red", "AscXerath"
             };
 
         public static Menu SummMenu { get; private set; }
@@ -137,7 +136,8 @@
                 Exhaust = new Spell.Targeted(Player.Instance.GetSpellSlotFromName("SummonerExhaust"), 650);
             }
 
-            if (Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("SummonerSmite")) != null)
+            var smitespell = Player.Spells.FirstOrDefault(o => o.SData.Name.ToLower().Contains("summonersmite"));
+            if (smitespell != null)
             {
                 SummMenu.AddGroupLabel("惩戒（重击）设置");
                 SummMenu.Add(
@@ -160,24 +160,19 @@
                     }
                 }
 
-                SummMenu.AddGroupLabel("对野怪使用惩戒:");
+                SummMenu.AddGroupLabel("Use Smite On Monster:");
                 foreach (var mob in Junglemobs)
                 {
                     SummMenu.Add(mob, new CheckBox(mob));
                 }
                 SummMenu.AddSeparator();
-                if (Player.Instance.Spellbook.GetSpell(SpellSlot.Summoner1).Name.ToLower().Contains("summonersmite"))
-                {
-                    Smite = new Spell.Targeted(SpellSlot.Summoner1, 555);
-                }
 
-                if (Player.Instance.Spellbook.GetSpell(SpellSlot.Summoner2).Name.ToLower().Contains("summonersmite"))
-                {
-                    Smite = new Spell.Targeted(SpellSlot.Summoner2, 555);
-                }
+                Smite = new Spell.Targeted(smitespell.Slot, 555);
+                Orbwalker.OnPostAttack += Summoners.Smite.Orbwalker_OnPostAttack;
             }
 
-            if (Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("SummonerPoroThrow")) != null)
+            if (Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("SummonerPoroThrow")) != null
+                || Player.Spells.FirstOrDefault(o => o.SData.Name.ToLower().Contains("summonersnowball")) != null)
             {
                 SummMenu.AddGroupLabel("雪球设置");
                 SummMenu.Add(Player.Instance.ChampionName + "EnablePoro", new KeyBind("Enable Poro Toggle", true, KeyBind.BindTypes.PressToggle, 'M'));
@@ -191,9 +186,21 @@
                     var cb = new CheckBox(enemy.BaseSkinName) { CurrentValue = false };
                     SummMenu.Add("Dontporo" + enemy.BaseSkinName, cb);
                 }
-
-                porotoss = new Spell.Skillshot(Player.Instance.GetSpellSlotFromName("SummonerPoroThrow"), 2250, SkillShotType.Linear, 50, 1000, 50)
-                               { AllowedCollisionCount = 0 };
+                if (Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("SummonerPoroThrow")) != null)
+                {
+                    porotoss = new Spell.Skillshot(
+                        Player.Instance.GetSpellSlotFromName("SummonerPoroThrow"),
+                        2250,
+                        SkillShotType.Linear,
+                        50,
+                        1000,
+                        50) { AllowedCollisionCount = 0 };
+                }
+                if (Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("SummonerSnowball")) != null)
+                {
+                    porotoss = new Spell.Skillshot(Player.Instance.GetSpellSlotFromName("SummonerSnowball"), 1600, SkillShotType.Linear, 50, 1000, 50)
+                                   { AllowedCollisionCount = 0 };
+                }
             }
             loaded = true;
         }
@@ -257,21 +264,21 @@
 
             var ally = ObjectManager.Get<AIHeroClient>().FirstOrDefault(a => a.IsValid && a.IsAlly && a.IsVisible);
 
-            if (porotoss != null && Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("SummonerPoroThrow")) != null)
+            if (porotoss != null && !porotoss.Name.ToLower().Contains("snowballfollowupcast"))
             {
                 if (SummMenu[Player.Instance.ChampionName + "Enableactiveporo"].Cast<KeyBind>().CurrentValue
                     || SummMenu[Player.Instance.ChampionName + "Enableporo"].Cast<KeyBind>().CurrentValue)
                 {
-                    foreach (var pred in
-                        EntityManager.Heroes.Enemies.Where(e => e.IsValidTarget(porotoss.Range))
-                            .Where(
-                                enemy =>
-                                porotoss.IsReady() && enemy.IsValidTarget(porotoss.Range) && enemy != null
-                                && !SummMenu["Dontporo" + enemy.BaseSkinName].Cast<CheckBox>().CurrentValue)
-                            .Select(enemy => porotoss.GetPrediction(enemy))
-                            .Where(pred => pred.HitChance > HitChance.High))
+                    foreach (var enemy in EntityManager.Heroes.Enemies.Where(e => e.IsKillable() && e.IsValidTarget(porotoss.Range)))
                     {
-                        porotoss.Cast(pred.CastPosition);
+                        if (enemy != null)
+                        {
+                            var pred = porotoss.GetPrediction(enemy);
+                            if (pred.HitChance >= HitChance.High)
+                            {
+                                porotoss.Cast(pred.CastPosition);
+                            }
+                        }
                     }
                 }
             }

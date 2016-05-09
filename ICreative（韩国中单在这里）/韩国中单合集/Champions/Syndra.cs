@@ -683,7 +683,7 @@ namespace KoreanAIO.Champions
                 {
                     case SpellSlot.Q:
                         return (target.Type == GameObjectType.AIHeroClient && level == 5 ? 1.15f : 1) * MyHero.CalculateDamageOnUnit(target, DamageType.Magical,
-                            45f * level + 5f + 0.6f * MyHero.FlatMagicDamageMod);
+                            45f * level + 5f + 0.75f * MyHero.FlatMagicDamageMod);
                     case SpellSlot.W:
                         return MyHero.CalculateDamageOnUnit(target, DamageType.Magical,
                             40f * level + 40f + 0.7f * MyHero.FlatMagicDamageMod);

@@ -51,10 +51,6 @@
                                         "提莫R: " + Convert.ToString(endTime, CultureInfo.InstalledUICulture),
                                         2);
                                 }
-                                else if (trap.GetBuff("BantamTrap") == null)
-                                {
-                                    Drawing.DrawText(Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30), Color.White, "提莫R", 2);
-                                }
 
                                 Circle.Draw(SharpDX.Color.White, trap.BoundingRadius * 3, trap.Position);
                             }
@@ -68,10 +64,6 @@
                                         Color.White,
                                         "烬陷阱: " + Convert.ToString(endTime, CultureInfo.InstalledUICulture),
                                         2);
-                                }
-                                else if (trap.GetBuff("JhinETrap") == null)
-                                {
-                                    Drawing.DrawText(Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30), Color.White, "烬陷阱", 2);
                                 }
 
                                 Circle.Draw(SharpDX.Color.White, trap.BoundingRadius * 3, trap.Position);
@@ -87,10 +79,6 @@
                                     Color.White,
                                     "小丑W: " + Convert.ToString(endTime, CultureInfo.InvariantCulture),
                                     2);
-                            }
-                            else if (trap.GetBuff("JackInTheBox") == null)
-                            {
-                                Drawing.DrawText(Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30), Color.White, "小丑W", 2);
                             }
 
                             Circle.Draw(SharpDX.Color.White, trap.BoundingRadius * 15, trap.Position);

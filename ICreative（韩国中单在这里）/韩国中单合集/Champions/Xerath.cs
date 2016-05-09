@@ -55,7 +55,7 @@ namespace KoreanAIO.Champions
         }
         public int Stacks
         {
-            get { return IsCastingR ? MyHero.GetBuffCount("XerathRShots") : 3; }
+            get { return IsCastingR ? MyHero.GetBuffCount("XerathRShots") : (R.Level + 2); }
         }
         public bool StartWithCc
         {
@@ -72,7 +72,7 @@ namespace KoreanAIO.Champions
             Q = new SpellBase(SpellSlot.Q, SpellType.Linear, 1500)
             {
                 CastDelay = 500,
-                Width = 100,
+                Width = 95,
             };
             W = new SpellBase(SpellSlot.W, SpellType.Circular, 1000)
             {
@@ -89,7 +89,7 @@ namespace KoreanAIO.Champions
             };
             R = new SpellBase(SpellSlot.R, SpellType.Circular, 5600)
             {
-                Width = 190,
+                Width = 200,
                 CastDelay = 600,
             };
             foreach (var enemy in EntityManager.Heroes.Enemies)
@@ -572,7 +572,7 @@ namespace KoreanAIO.Champions
                             50f * level + 30f + 0.45f * MyHero.FlatMagicDamageMod);
                     case SpellSlot.R:
                         return MyHero.CalculateDamageOnUnit(target, DamageType.Magical,
-                            55f * level + 135f + 0.43f * MyHero.FlatMagicDamageMod);
+                            30f * level + 160f + 0.43f * MyHero.FlatMagicDamageMod);
                 }
             }
             return base.GetSpellDamage(slot, target);

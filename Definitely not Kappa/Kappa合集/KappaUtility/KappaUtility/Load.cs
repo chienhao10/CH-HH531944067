@@ -37,7 +37,7 @@
             UtliMenu.Add("AutoTear", new CheckBox("开启女神叠加"));
             UtliMenu.Add("AutoReveal", new CheckBox("开启自动插眼"));
             UtliMenu.Add("GanksDetector", new CheckBox("开启Gank提示"));
-            UtliMenu.Add("Tracker", new CheckBox("开启计时器"));
+            UtliMenu.Add("Tracker", new CheckBox("开启记录器"));
             UtliMenu.Add("SkinHax", new CheckBox("开启换肤"));
             UtliMenu.Add("Spells", new CheckBox("开启召唤师技能"));
             UtliMenu.Add("Potions", new CheckBox("开启吃药"));
