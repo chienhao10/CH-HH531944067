@@ -105,31 +105,31 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[9]))
                 {
-                    Miscc.Add("ashe", new ComboBox("Use addon for Ashe : ", 0, "OKTW", "ChallengerSeries"));
+                    Miscc.Add("ashe", new ComboBox("切换 艾希脚本 : ", 0, "OKTW", "挑战者系列"));
                 }
                 if (Player.ChampionName.Equals(Champion[10]))
                 {
-                    Miscc.Add("vayne", new ComboBox("Use addon for Vayne : ", 0, "ChallengerVayne", "VayneHunterReborn"));
+                    Miscc.Add("vayne", new ComboBox("切换 薇恩脚本 : ", 0, "挑战者Vayne", "薇恩猎手：重生（VHR)"));
                 }
                 if (Player.ChampionName.Equals(Champion[11]))
                 {
-                    Miscc.Add("jayce", new ComboBox("Use addon for Jayce : ", 0, "OKTW", "Hoe's Jayce"));
+                    Miscc.Add("jayce", new ComboBox("切换 杰斯脚本 : ", 0, "OKTW", "Hoe's 杰斯"));
                 }
                 if (Player.ChampionName.Equals(Champion[12]))
                 {
-                    Miscc.Add("yasuo", new ComboBox("Use addon for Yasuo : ", 0, "ValvraveSharp", "YasuoPro"));
+                    Miscc.Add("yasuo", new ComboBox("切换 亚索脚本 : ", 0, "ValvraveSharp", "亚索Pro"));
                 }
                 if (Player.ChampionName.Equals(Champion[13]))
                 {
-                    Miscc.Add("katarina", new ComboBox("Use addon for Katarina : ", 0, "Staberina", "e.Motion Katarina"));
+                    Miscc.Add("katarina", new ComboBox("切换 卡特脚本 : ", 0, "Staberina", "e.Motion卡特"));
                 }
                 if (Player.ChampionName.Equals(Champion[14]))
                 {
-                    Miscc.Add("xerath", new ComboBox("Use addon for Xerath : ", 0, "OKTW", "ElXerath"));
+                    Miscc.Add("xerath", new ComboBox("切换 泽拉斯脚本 : ", 0, "OKTW", "El泽拉斯"));
                 }
                 if (Player.ChampionName.Equals(Champion[15]))
                 {
-                    Miscc.Add("gragas", new ComboBox("Use addon for Gragas : ", 0, "Drunk Carry", "Nechrito"));
+                    Miscc.Add("gragas", new ComboBox("切换 酒桶脚本 : ", 0, "Drunk Carry", "Nechrito"));
                 }
             }
             else
