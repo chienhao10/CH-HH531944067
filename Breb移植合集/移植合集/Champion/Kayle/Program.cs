@@ -53,7 +53,7 @@ namespace SephKayle
             farmMenu.Add("UseEfarm", new CheckBox("使用 E"));
 
             // HealManager Options
-            healMenu = Config.AddSubMenu("HealManager", "治疗控制");
+            healMenu = Config.AddSubMenu("治疗控制", "HealManager");
             healMenu.Add("onlyhincdmg", new CheckBox("准备受到伤害再治疗", false));
             healMenu.Add("hdamagedetection", new CheckBox("关闭伤害探测", false));
             healMenu.Add("hcheckdmgafter", new CheckBox("计算收到伤害后的血量"));
@@ -66,7 +66,7 @@ namespace SephKayle
             }
 
             // UltimateManager Options
-            ultMenu = Config.AddSubMenu("UltManager", "大招管理");
+            ultMenu = Config.AddSubMenu("大招管理", "UltManager");
             ultMenu.Add("onlyuincdmg", new CheckBox("只用于接近中的伤害"));
             ultMenu.Add("udamagedetection", new CheckBox("关闭伤害探测", false));
             ultMenu.Add("ucheckdmgafter", new CheckBox("计算收到伤害后的血量"));
