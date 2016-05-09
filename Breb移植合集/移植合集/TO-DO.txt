@@ -1,4 +1,5 @@
 ﻿To-Do :
+- Fix Ezreal still stacking tear even after 750 stacks
 - TF Lane Clear
 
 ------------------------------------------------------------------------
@@ -9,7 +10,6 @@ To-Check :
 ------------------------------------------------------------------------
 
 Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
-- Nechrito Gragas
 - iDzEzreal
 - The Cheater
 - AIOCaster

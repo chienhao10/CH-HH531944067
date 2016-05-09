@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -19,32 +20,19 @@ namespace ezEvade.SpecialSpells
 
         public void LoadSpecialSpell(SpellData spellData)
         {
-            if (spellData.spellName == "YasuoQW")
+            if (spellData.spellName == "YasuoQW" || spellData.spellName == "YasuoQ3W")
             {
-                AIHeroClient hero = EntityManager.Heroes.Enemies.FirstOrDefault(h => h.ChampionName == "Yasuo");
-                if (hero == null)
+                var hero = HeroManager.Enemies.FirstOrDefault(h => h.ChampionName == "Yasuo");
+                if (hero != null)
                 {
-                    return;
+                    AIHeroClient.OnProcessSpellCast += (sender, args) => ProcessSpell_YasuoQW(sender, args, spellData);
                 }
-
-                AIHeroClient.OnProcessSpellCast += (sender, args) => ProcessSpell_YasuoQW(sender, args, spellData);
             }
-
-            if (spellData.spellName == "yasuoq3w")
-            {
-                AIHeroClient hero = EntityManager.Heroes.Enemies.FirstOrDefault(h => h.ChampionName == "Yasuo");
-                if (hero == null)
-                {
-                    return;
-                }
-
-                AIHeroClient.OnProcessSpellCast += (sender, args) => ProcessSpell_YasuoQW(sender, args, spellData);
-            } 
         }
 
         private static void ProcessSpell_YasuoQW(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args, SpellData spellData)
         {
-            if (hero.IsEnemy && args.SData.Name == "yasuoq")
+            if (hero.IsEnemy && args.SData.Name == "YasuoQ")
             {
                 var castTime = (hero.Spellbook.CastTime - Game.Time) * 1000;
 

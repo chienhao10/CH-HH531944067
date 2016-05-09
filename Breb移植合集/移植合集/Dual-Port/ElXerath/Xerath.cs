@@ -197,7 +197,7 @@
             var useR = getCheckBoxItem(ElXerathMenu.rMenu, "ElXerath.R.AutoUseR");
             var tapkey = getKeyBindItem(ElXerathMenu.rMenu, "ElXerath.R.OnTap");
             var ultRadius = getSliderItem(ElXerathMenu.rMenu, "ElXerath.R.Radius");
-            var drawROn = getCheckBoxItem(ElXerathMenu.rMenu, "ElXerath.Draw.RON");
+            var drawROn = getCheckBoxItem(ElXerathMenu.miscMenu, "ElXerath.Draw.RON");
 
             if (!useR)
             {
@@ -584,9 +584,9 @@
 
             if (spells[Spells.R].IsReady() && showNotifications && Environment.TickCount - lastNotification > 5000)
             {
-                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && (float)Player.GetSpellDamage(h, SpellSlot.R) * 3 > h.Health))
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && !h.IsAlly && (float)Player.GetSpellDamage(h, SpellSlot.R) * 3 > h.Health))
                 {
-                    Chat.Print(enemy.ChampionName + ": ke ji sha!", Color.White, 4000);
+                    Chat.Print(enemy.ChampionName + ": is killable", Color.White, 4000);
                     lastNotification = Environment.TickCount;
                 }
             }

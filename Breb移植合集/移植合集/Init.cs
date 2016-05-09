@@ -319,7 +319,18 @@ namespace PortAIO
                         Slutty_Gnar_Reworked.Gnar.OnLoad();
                         break;
                     case "gragas": // Gragas - Drunk Carry
-                        GragasTheDrunkCarry.Gragas.Game_OnGameLoad();
+                        switch (Loader.gragas)
+                        {
+                            case 0:
+                                GragasTheDrunkCarry.Gragas.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                Nechrito_Gragas.Program.OnGameLoad();
+                                break;
+                            default:
+                                GragasTheDrunkCarry.Gragas.Game_OnGameLoad();
+                                break;
+                        }
                         break;
                     case "hecarim": // JustyHecarim
                         JustHecarim.Program.OnLoad();

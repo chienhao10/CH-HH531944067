@@ -45,6 +45,7 @@ namespace PortAIO.Utility
         public static int yasuo { get { return Miscc["yasuo"].Cast<ComboBox>().CurrentValue; } }
         public static int katarina { get { return Miscc["katarina"].Cast<ComboBox>().CurrentValue; } }
         public static int xerath { get { return Miscc["xerath"].Cast<ComboBox>().CurrentValue; } }
+        public static int gragas { get { return Miscc["gragas"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -56,7 +57,7 @@ namespace PortAIO.Utility
 
         public static List<string> RandomUltChampsList = new List<string>(new[] { "Ezreal", "Jinx", "Ashe", "Draven", "Gangplank", "Ziggs", "Lux", "Xerath" });
         public static List<string> BaseUltList = new List<string>(new[] { "Jinx", "Ashe", "Draven", "Ezreal", "Karthus"});
-        public static List<string> Champion = new List<string>(new[] { "Soraka", "KogMaw", "LeeSin", "Kalista", "Diana", "Caitlyn", "Twitch", "Nidalee", "Lucian", "Ashe", "Vayne", "Jayce", "Yasuo", "Katarina", "Xerath" });
+        public static List<string> Champion = new List<string>(new[] { "Soraka", "KogMaw", "LeeSin", "Kalista", "Diana", "Caitlyn", "Twitch", "Nidalee", "Lucian", "Ashe", "Vayne", "Jayce", "Yasuo", "Katarina", "Xerath", "Gragas" });
 
         public static void Menu()
         {
@@ -80,7 +81,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[3]))
                 {
-                    Miscc.Add("kalista", new ComboBox("切换 滑板鞋脚本 : ", 0, "i滑板鞋", "i滑板鞋 - 重生"));
+                    Miscc.Add("kalista", new ComboBox("切换 滑板鞋脚本 : ", 0, "i滑板鞋", "i滑板鞋 - 重生", "挑战者系列"));
                 }
                 if (Player.ChampionName.Equals(Champion[4]))
                 {
@@ -100,31 +101,35 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[8]))
                 {
-                    Miscc.Add("lucian", new ComboBox("切换 卢锡安脚本 : ", 0, "LCS 卢锡安", "挑战者系列"));
+                    Miscc.Add("lucian", new ComboBox("切换 卢锡安脚本 : ", 0, "LCS 卢锡安", "挑战者系列", "i卢锡安"));
                 }
                 if (Player.ChampionName.Equals(Champion[9]))
                 {
-                    Miscc.Add("ashe", new ComboBox("切换 艾希脚本 : ", 0, "OKTW", "挑战者系列"));
+                    Miscc.Add("ashe", new ComboBox("Use addon for Ashe : ", 0, "OKTW", "ChallengerSeries"));
                 }
                 if (Player.ChampionName.Equals(Champion[10]))
                 {
-                    Miscc.Add("vayne", new ComboBox("切换 薇恩脚本 : ", 0, "挑战者薇恩", "薇恩猎手：重生(VHR)"));
+                    Miscc.Add("vayne", new ComboBox("Use addon for Vayne : ", 0, "ChallengerVayne", "VayneHunterReborn"));
                 }
                 if (Player.ChampionName.Equals(Champion[11]))
                 {
-                    Miscc.Add("jayce", new ComboBox("切换 杰斯脚本 : ", 0, "OKTW", "Hoe's 杰斯"));
+                    Miscc.Add("jayce", new ComboBox("Use addon for Jayce : ", 0, "OKTW", "Hoe's Jayce"));
                 }
                 if (Player.ChampionName.Equals(Champion[12]))
                 {
-                    Miscc.Add("yasuo", new ComboBox("切换 亚索脚本 : ", 0, "ValvraveSharp", "亚索Pro"));
+                    Miscc.Add("yasuo", new ComboBox("Use addon for Yasuo : ", 0, "ValvraveSharp", "YasuoPro"));
                 }
                 if (Player.ChampionName.Equals(Champion[13]))
                 {
-                    Miscc.Add("katarina", new ComboBox("切换 卡特脚本 : ", 0, "Staberina", "e.Motion卡特"));
+                    Miscc.Add("katarina", new ComboBox("Use addon for Katarina : ", 0, "Staberina", "e.Motion Katarina"));
                 }
                 if (Player.ChampionName.Equals(Champion[14]))
                 {
-                    Miscc.Add("xerath", new ComboBox("切换 泽拉斯脚本 : ", 0, "OKTW", "El泽拉斯"));
+                    Miscc.Add("xerath", new ComboBox("Use addon for Xerath : ", 0, "OKTW", "ElXerath"));
+                }
+                if (Player.ChampionName.Equals(Champion[15]))
+                {
+                    Miscc.Add("gragas", new ComboBox("Use addon for Gragas : ", 0, "Drunk Carry", "Nechrito"));
                 }
             }
             else
@@ -141,7 +146,7 @@ namespace PortAIO.Utility
             Miscc.Add("tracker", new CheckBox("载入 Nabb计时器?"));
             Miscc.Add("recall", new CheckBox("载入 回城计时?"));
             Miscc.AddSeparator();
-            //Miscc.Add("skin", new CheckBox("Enable Skin Hack?"));
+            Miscc.Add("skin", new CheckBox("开启换肤?"));
             //Miscc.Add("evade", new CheckBox("Enable Evade?", false));
             Miscc.Add("godTracker", new CheckBox("载入 野区计时（El活化剂中有?", false));
             Miscc.AddSeparator();

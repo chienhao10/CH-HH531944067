@@ -217,6 +217,12 @@
     <Compile Include="Dual-Port\NechritoDiana\Classes\Modes.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\Spells.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Program.cs" />
+    <Compile Include="Dual-Port\NechritoGragas\Classes\Dmg.cs" />
+    <Compile Include="Dual-Port\NechritoGragas\Classes\HpBarIndicator.cs" />
+    <Compile Include="Dual-Port\NechritoGragas\Classes\MenuConfig.cs" />
+    <Compile Include="Dual-Port\NechritoGragas\Classes\Mode.cs" />
+    <Compile Include="Dual-Port\NechritoGragas\Classes\Spells.cs" />
+    <Compile Include="Dual-Port\NechritoGragas\Program.cs" />
     <Compile Include="Dual-Port\NechritoNidalee\Core.cs" />
     <Compile Include="Dual-Port\NechritoNidalee\Drawings\Drawing.cs" />
     <Compile Include="Dual-Port\NechritoNidalee\Drawings\HpBarIndicator.cs" />
