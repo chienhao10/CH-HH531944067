@@ -28,11 +28,16 @@
 
         public static Spell.Skillshot porotoss;
 
-        public static readonly string[] Junglemobs =
+        public static readonly string[] SRJunglemobs =
             {
                 "SRU_Dragon_Air", "SRU_Dragon_Earth", "SRU_Dragon_Fire", "SRU_Dragon_Water", "SRU_Dragon_Elder",
-                "SRU_Baron", "SRU_Gromp", "SRU_Krug", "SRU_RiftHerald", "Sru_Crab", "SRU_Murkwolf", "SRU_Blue",
+                "SRU_Baron", "SRU_Gromp", "SRU_Krug", "SRU_Razorbeak", "SRU_RiftHerald", "Sru_Crab", "SRU_Murkwolf", "SRU_Blue",
                 "SRU_Red", "AscXerath"
+            };
+
+        public static readonly string[] TTJunglemobs =
+            {
+                "TT_NWraith", "TT_NWolf", "TT_NGolem", "TT_Spiderboss"
             };
 
         public static Menu SummMenu { get; private set; }
@@ -146,11 +151,37 @@
                 SummMenu.Add(
                     Player.Instance.ChampionName + "EnableactiveSmite",
                     new KeyBind("开启惩戒", false, KeyBind.BindTypes.HoldActive));
+                SummMenu.Add("drawSmite", new CheckBox("显示惩戒范围", false));
+                SummMenu.AddSeparator(1);
+                SummMenu.AddGroupLabel("惩戒设置:");
                 SummMenu.Add("smitemob", new CheckBox("惩戒野怪", false));
+                SummMenu.Add("smitesavej", new CheckBox("保留1次惩戒", false));
+
+                if (Game.MapId == GameMapId.SummonersRift)
+                {
+                    SummMenu.AddLabel("惩戒召唤师峡谷野怪:");
+                    foreach (var mob in SRJunglemobs)
+                    {
+                        SummMenu.Add(mob, new CheckBox(mob));
+                    }
+                    SummMenu.AddSeparator();
+                }
+
+                if (Game.MapId == GameMapId.TwistedTreeline)
+                {
+                    SummMenu.AddLabel("惩戒扭曲丛林野怪:");
+                    foreach (var mob in TTJunglemobs)
+                    {
+                        SummMenu.Add(mob, new CheckBox(mob));
+                    }
+                    SummMenu.AddSeparator(1);
+                }
+
+                SummMenu.AddGroupLabel("惩戒英雄:");
                 SummMenu.Add("smitecombo", new CheckBox("连招惩戒", false));
                 SummMenu.Add("smiteks", new CheckBox("惩戒抢头", false));
-                SummMenu.Add("drawSmite", new CheckBox("显示惩戒范围", false));
-                SummMenu.AddGroupLabel("对英雄不使用惩戒:");
+                SummMenu.Add("smitesaveh", new CheckBox("保留1次惩戒", false));
+                SummMenu.AddLabel("不为以下使用惩戒:");
                 foreach (var enemy in ObjectManager.Get<AIHeroClient>())
                 {
                     var cb = new CheckBox(enemy.BaseSkinName) { CurrentValue = false };
@@ -159,13 +190,6 @@
                         SummMenu.Add("DontSmite" + enemy.BaseSkinName, cb);
                     }
                 }
-
-                SummMenu.AddGroupLabel("Use Smite On Monster:");
-                foreach (var mob in Junglemobs)
-                {
-                    SummMenu.Add(mob, new CheckBox(mob));
-                }
-                SummMenu.AddSeparator();
 
                 Smite = new Spell.Targeted(smitespell.Slot, 555);
                 Orbwalker.OnPostAttack += Summoners.Smite.Orbwalker_OnPostAttack;

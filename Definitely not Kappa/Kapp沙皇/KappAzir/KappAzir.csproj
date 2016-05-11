@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BB55F928-C8E2-42AE-8017-FEEC04AF7035}</ProjectGuid>
+    <ProjectGuid>{ACE38CEE-7B1F-47CE-AA83-A71FE2949919}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KappaUtility</RootNamespace>
-    <AssemblyName>KappaUtility</AssemblyName>
+    <RootNamespace>KappAzir</RootNamespace>
+    <AssemblyName>KappAzir</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -40,40 +39,44 @@
     <Reference Include="EloBuddy.SDK">
       <HintPath>..\..\..\..\..\..\Desktop\New folder\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
     </Reference>
+    <Reference Include="Mario`s Lib">
+      <HintPath>..\..\..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\Mario`s Lib.dll</HintPath>
+    </Reference>
     <Reference Include="SharpDX">
       <HintPath>..\..\..\..\..\..\Desktop\New folder\EloBuddy\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>..\..\..\..\..\..\Desktop\New folder\EloBuddy\System\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\DamageHandler.cs" />
-    <Compile Include="Common\Helpers.cs" />
-    <Compile Include="Items\Defensive.cs" />
-    <Compile Include="Items\Offensive.cs" />
-    <Compile Include="Items\Potions.cs" />
-    <Compile Include="Items\Zhonya.cs" />
-    <Compile Include="Load.cs" />
+    <Compile Include="DamageIndicator.cs" />
+    <Compile Include="DrawingsManager.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="main.cs" />
-    <Compile Include="Misc\AutoLvlUp.cs" />
-    <Compile Include="Items\AutoQSS.cs" />
-    <Compile Include="Misc\AutoReveal.cs" />
-    <Compile Include="Items\AutoTear.cs" />
-    <Compile Include="Misc\SkinHax.cs" />
-    <Compile Include="Summoners\Flash.cs" />
-    <Compile Include="Trackers\Surrender.cs" />
+    <Compile Include="Menus.cs" />
+    <Compile Include="Modes\Active.cs" />
+    <Compile Include="Modes\AutoHarass.cs" />
+    <Compile Include="Modes\Combo.cs" />
+    <Compile Include="Modes\Flee.cs" />
+    <Compile Include="Modes\Harass.cs" />
+    <Compile Include="Modes\InSec.cs" />
+    <Compile Include="Modes\Jumper.cs" />
+    <Compile Include="Modes\JungleClear.cs" />
+    <Compile Include="Modes\KillSteal.cs" />
+    <Compile Include="Modes\LaneClear.cs" />
+    <Compile Include="Modes\LastHit.cs" />
+    <Compile Include="Modes\ModeManager.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Summoners\Smite.cs" />
-    <Compile Include="Summoners\Spells.cs" />
-    <Compile Include="Trackers\GanksDetector.cs" />
-    <Compile Include="Trackers\Tracker.cs" />
-    <Compile Include="Trackers\Traps.cs" />
+    <Compile Include="SpellsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

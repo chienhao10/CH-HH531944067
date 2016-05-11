@@ -1,11 +1,15 @@
 ﻿namespace KappaUtility.Items
 {
+    using System.Linq;
+
     using EloBuddy;
     using EloBuddy.SDK;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
 
     using Common;
+
+    using Enumerable = System.Linq.Enumerable;
 
     internal class Potions
     {
@@ -64,6 +68,11 @@
                 PotMenu["BP"].Cast<CheckBox>().CurrentValue && Biscuit.IsOwned() && Biscuit.IsReady()
                 && !Player.Instance.HasBuff(Biscuit.ItemInfo.Name);
 
+        public static readonly string[] PotBuffs =
+            {
+                "ItemCrystalFlask", "ItemCrystalFlaskJungle", "ItemDarkCrystalFlask", "RegenerationPotion"
+            };
+
         internal static void OnLoad()
         {
             PotMenu = Load.UtliMenu.AddSubMenu("药水");
@@ -95,7 +104,7 @@
 
         private static void Obj_AI_Base_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!(args.Target is AIHeroClient))
+            if (!(args.Target is AIHeroClient) || Player.Instance.Buffs.FirstOrDefault(b => PotBuffs.Contains(b.Name)) != null)
             {
                 return;
             }
@@ -159,7 +168,7 @@
 
         private static void Obj_AI_Base_OnBasicAttack(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!(args.Target is AIHeroClient))
+            if (!(args.Target is AIHeroClient) || Player.Instance.Buffs.FirstOrDefault(b => PotBuffs.Contains(b.Name)) != null)
             {
                 return;
             }
