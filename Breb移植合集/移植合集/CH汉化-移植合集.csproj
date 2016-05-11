@@ -868,6 +868,7 @@
     <Compile Include="Utility\EzEvade\SpecialSpells\Orianna.cs" />
     <Compile Include="Utility\EzEvade\SpecialSpells\Sion.cs" />
     <Compile Include="Utility\EzEvade\SpecialSpells\Syndra.cs" />
+    <Compile Include="Utility\EzEvade\SpecialSpells\Taric.cs" />
     <Compile Include="Utility\EzEvade\SpecialSpells\Viktor.cs" />
     <Compile Include="Utility\EzEvade\SpecialSpells\Xerath.cs" />
     <Compile Include="Utility\EzEvade\SpecialSpells\Yasuo.cs" />

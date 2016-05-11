@@ -35,11 +35,11 @@ namespace iKalistaReborn.Utils
                 Radius = SpellManager.Spell[SpellSlot.Q].Width,
                 Delay = SpellManager.Spell[SpellSlot.Q].Delay,
                 Speed = SpellManager.Spell[SpellSlot.Q].Speed,
-                CollisionObjects = new[] {CollisionableObjects.Minions}
+                CollisionObjects = new[] { CollisionableObjects.Minions }
             };
 
             return
-                Collision.GetCollision(new List<Vector3> {targetPosition}, input)
+                Collision.GetCollision(new List<Vector3> { targetPosition }, input)
                     .OrderBy(x => x.Distance(source))
                     .ToList();
         }
@@ -54,7 +54,7 @@ namespace iKalistaReborn.Utils
         ///     The <see cref="float" />.
         /// </returns>
         public static float GetHealthWithShield(this Obj_AI_Base target)
-            => target.AllShield > 0 ? target.Health + target.AllShield : target.Health;
+            => target.AttackShield > 0 ? target.Health + target.AttackShield : target.Health + 10;
 
         /// <summary>
         ///     Gets the rend buff
@@ -65,12 +65,9 @@ namespace iKalistaReborn.Utils
         /// <returns>
         ///     The <see cref="BuffInstance" />.
         /// </returns>
-        public static BuffInstance GetRendBuff(this Obj_AI_Base target)
-        {
-            return
+        public static BuffInstance GetRendBuff(this Obj_AI_Base target) =>
                 target.Buffs.Find(
                     b => b.Caster.IsMe && b.IsValid && b.DisplayName.ToLowerInvariant() == "kalistaexpungemarker");
-        }
 
         /// <summary>
         ///     Gets the current <see cref="BuffInstance" /> Count of Expunge
@@ -82,9 +79,7 @@ namespace iKalistaReborn.Utils
         ///     The <see cref="int" />.
         /// </returns>
         public static int GetRendBuffCount(this Obj_AI_Base target)
-        {
-            return target.Buffs.Count(x => x.Name == "kalistaexpungemarker");
-        }
+            => target.Buffs.Count(x => x.Name == "kalistaexpungemarker");
 
         /// <summary>
         ///     Gets the Rend Damage for each target
@@ -95,43 +90,7 @@ namespace iKalistaReborn.Utils
         /// <returns>
         ///     The <see cref="float" />.
         /// </returns>
-        public static float GetRendDamage(Obj_AI_Base target)
-        {
-            // If that target doesn't have a rend stack then calculating this is pointless
-            if (!target.HasRendBuff() || target.Health < 1)
-            {
-                return 0f;
-            }
-
-            // The base damage of E
-            var baseDamage = SpellManager.Spell[SpellSlot.E].GetDamage(target);
-
-            // With exhaust players damage is reduced by 40%
-            if (ObjectManager.Player.HasBuff("summonerexhaust"))
-            {
-                return baseDamage*0.6f;
-            }
-
-            // Alistars ultimate reduces damage dealt by 70%
-            if (target.HasBuff("FerociousHowl"))
-            {
-                return baseDamage*0.3f;
-            }
-
-            // Damage to dragon is reduced by 7% * (stacks)
-            if (target.Name.Contains("Dragon") && ObjectManager.Player.HasBuff("s5test_dragonslayerbuff"))
-            {
-                return baseDamage*(1f - 0.075f*ObjectManager.Player.GetBuffCount("s5test_dragonslayerbuff"));
-            }
-
-            // Damage to baron is reduced by 50% if the player has the 'barontarget'
-            if (target.Name.Contains("Baron") && ObjectManager.Player.HasBuff("barontarget"))
-            {
-                return baseDamage*0.5f;
-            }
-
-            return baseDamage;
-        }
+        public static float GetRendDamage(Obj_AI_Base target) => SpellManager.Spell[SpellSlot.E].GetDamage(target);
 
         public static bool IsRendKillable(this Obj_AI_Base target)
         {
@@ -157,10 +116,10 @@ namespace iKalistaReborn.Utils
                 {
                     baseDamage *= 0.5f;
                 }
-                if (target.Name.Contains("Dragon") && ObjectManager.Player.HasBuff("s5test_dragonslayerbuff"))
-                {
-                    baseDamage *= (1f - (0.07f * ObjectManager.Player.GetBuffCount("s5test_dragonslayerbuff")));
-                }
+                //if (target.Name.Contains("Dragon") && ObjectManager.Player.HasBuff("s5test_dragonslayerbuff"))
+                //{
+                    //baseDamage *= (1f - (0.07f * ObjectManager.Player.GetBuffCount("s5test_dragonslayerbuff")));
+                //}
             }
 
             if (ObjectManager.Player.HasBuff("SummonerExhaustSlow"))
@@ -169,7 +128,7 @@ namespace iKalistaReborn.Utils
             }
 
 
-            return (baseDamage - 30) > target.GetHealthWithShield();
+            return baseDamage > target.GetHealthWithShield();
         }
 
         /// <summary>
@@ -181,10 +140,7 @@ namespace iKalistaReborn.Utils
         /// <returns>
         ///     The <see cref="bool" />.
         /// </returns>
-        public static bool HasRendBuff(this Obj_AI_Base target)
-        {
-            return target.GetRendBuff() != null;
-        }
+        public static bool HasRendBuff(this Obj_AI_Base target) => target?.GetRendBuff() != null;
 
         /// <summary>
         ///     Checks if the given target has an invulnerable buff
@@ -239,10 +195,7 @@ namespace iKalistaReborn.Utils
         /// <returns>
         ///     The <see cref="bool" />.
         /// </returns>
-        public static bool IsMobKillable(this Obj_AI_Base target)
-        {
-            return IsRendKillable(target);
-        }
+        public static bool IsMobKillable(this Obj_AI_Base target) => IsRendKillable(target);
 
         /*public static bool IsRendKillable(this Obj_AI_Hero target)
         {

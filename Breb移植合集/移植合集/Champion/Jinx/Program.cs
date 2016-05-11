@@ -88,7 +88,7 @@ namespace OneKeyToWin_AIO_Sebby
                 var realDistance = GetRealDistance(t) - 50;
                 if (Program.Combo &&
                     (realDistance < GetRealPowPowRange(t) ||
-                     (Player.Mana < RMANA + 20 && Player.GetAutoAttackDamage(t)*3 < t.Health)))
+                     (Player.Mana < RMANA + 20 && Player.GetAutoAttackDamage(t) * 3 < t.Health)))
                     Q.Cast();
                 else if (Program.Farm && getCheckBoxItem(qMenu, "Qharras") &&
                          (realDistance > bonusRange() || realDistance < GetRealPowPowRange(t) ||
@@ -232,7 +232,7 @@ namespace OneKeyToWin_AIO_Sebby
                         bonusRange() < GetRealDistance(minion)))
                 {
                     var hpPred = HealthPrediction.GetHealthPrediction(minion, 400);
-                    if (hpPred < Player.GetAutoAttackDamage(minion)*1.1 && hpPred > 5)
+                    if (hpPred < Player.GetAutoAttackDamage(minion) * 1.1 && hpPred > 5)
                     {
                         Orbwalker.ForcedTarget = minion;
                         Q.Cast();
@@ -249,7 +249,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     var distance = GetRealDistance(t);
                     if (Program.Combo &&
-                        (Player.Mana > RMANA + WMANA + 10 || Player.GetAutoAttackDamage(t)*3 > t.Health))
+                        (Player.Mana > RMANA + WMANA + 10 || Player.GetAutoAttackDamage(t) * 3 > t.Health))
                         Q.Cast();
                     else if (Program.Farm && !Orbwalker.IsAutoAttacking && Orbwalking.CanAttack() &&
                              getCheckBoxItem(qMenu, "Qharras") && !ObjectManager.Player.UnderTurret(true) &&
@@ -345,16 +345,9 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (getCheckBoxItem(eMenu, "telE"))
                 {
-                    foreach (
-                        var Object in
-                            ObjectManager.Get<Obj_AI_Base>()
-                                .Where(
-                                    Obj =>
-                                        Obj.IsEnemy && Obj.LSDistance(Player.ServerPosition) < E.Range &&
-                                        (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
-                    {
-                        E.Cast(Object.Position);
-                    }
+                    var trapPos = OktwCommon.GetTrapPos(E.Range);
+                    if (!trapPos.IsZero)
+                        E.Cast(trapPos);
                 }
 
                 if (Program.Combo && Player.IsMoving && getCheckBoxItem(eMenu, "comboE") &&
@@ -362,7 +355,7 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
                     if (t.LSIsValidTarget(E.Range) && E.GetPrediction(t).CastPosition.LSDistance(t.Position) > 200 &&
-                        (int) E.GetPrediction(t).Hitchance == 5)
+                        (int)E.GetPrediction(t).Hitchance == 5)
                     {
                         E.CastIfWillHit(t, 2);
                         if (t.HasBuffOfType(BuffType.Slow))
@@ -449,7 +442,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static float bonusRange()
         {
-            return 670f + Player.BoundingRadius + 25*Player.Spellbook.GetSpell(SpellSlot.Q).Level;
+            return 670f + Player.BoundingRadius + 25 * Player.Spellbook.GetSpell(SpellSlot.Q).Level;
         }
 
         private static float GetRealPowPowRange(GameObject target)
@@ -515,14 +508,14 @@ namespace OneKeyToWin_AIO_Sebby
 
                     else
                     {
-                        var DmgSec = (DragonDmg - mob.Health)*(Math.Abs(DragonTime - Game.Time)/4);
+                        var DmgSec = (DragonDmg - mob.Health) * (Math.Abs(DragonTime - Game.Time) / 4);
                         //debug("DS  " + DmgSec);
                         if (DragonDmg - mob.Health > 0)
                         {
                             var timeTravel = GetUltTravelTime(Player, R.Speed, R.Delay, mob.Position);
                             var timeR = (mob.Health -
                                          Player.CalcDamage(mob, DamageType.Physical,
-                                             250 + 100*R.Level + Player.FlatPhysicalDamageMod + 300))/(DmgSec/4);
+                                             250 + 100 * R.Level + Player.FlatPhysicalDamageMod + 300)) / (DmgSec / 4);
                             if (timeTravel > timeR)
                                 R.Cast(mob.Position);
                         }
@@ -547,10 +540,10 @@ namespace OneKeyToWin_AIO_Sebby
                 if (acceldifference > 150f) //it only accelerates 150 units
                     acceldifference = 150f;
                 var difference = distance - 1500f;
-                missilespeed = (1350f*speed + acceldifference*(speed + accelerationrate*acceldifference) +
-                                difference*2200f)/distance;
+                missilespeed = (1350f * speed + acceldifference * (speed + accelerationrate * acceldifference) +
+                                difference * 2200f) / distance;
             }
-            return distance/missilespeed + delay;
+            return distance / missilespeed + delay;
         }
 
         private static void SetMana()
@@ -569,7 +562,7 @@ namespace OneKeyToWin_AIO_Sebby
             EMANA = E.Instance.SData.Mana;
 
             if (!R.IsReady())
-                RMANA = WMANA - Player.PARRegenRate*W.Instance.Cooldown;
+                RMANA = WMANA - Player.PARRegenRate * W.Instance.Cooldown;
             else
                 RMANA = R.Instance.SData.Mana;
         }

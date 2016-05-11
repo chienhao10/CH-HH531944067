@@ -48,13 +48,18 @@ namespace IKalista
         /// <summary>
         ///     The dictionary to call the Spell slot and the Spell Class
         /// </summary>
-        private readonly Dictionary<SpellSlot, LeagueSharp.Common.Spell> spells = new Dictionary<SpellSlot, LeagueSharp.Common.Spell>
+        public static readonly Dictionary<SpellSlot, LeagueSharp.Common.Spell> spells = new Dictionary<SpellSlot, LeagueSharp.Common.Spell>
                                                                    {
                                                                        { SpellSlot.Q, new LeagueSharp.Common.Spell(SpellSlot.Q, 1150) }, 
                                                                        { SpellSlot.W, new LeagueSharp.Common.Spell(SpellSlot.W, 5200) }, 
                                                                        { SpellSlot.E, new LeagueSharp.Common.Spell(SpellSlot.E, 950) }, 
                                                                        { SpellSlot.R, new LeagueSharp.Common.Spell(SpellSlot.R, 1200) }
                                                                    };
+
+        public static float getEDamage(Obj_AI_Base target)
+        {
+            return spells[SpellSlot.E].GetDamage(target);
+        }
 
         #region Constructors and Destructors
 
@@ -85,45 +90,6 @@ namespace IKalista
         #region Public Methods and Operators
 
         /// <summary>
-        ///     TODO The show notification.
-        /// </summary>
-        /// <param name="message">
-        ///     TODO The message.
-        /// </param>
-        /// <param name="colour">
-        ///     TODO The color.
-        /// </param>
-        /// <param name="duration">
-        ///     TODO The duration.
-        /// </param>
-        /// <param name="dispose">
-        ///     TODO The dispose.
-        /// </param>
-        public static void ShowNotification(string message, Color colour, int duration = -1, bool dispose = true)
-        {
-            //var notify = new Notification(message).SetTextColor(colour);
-            //Notifications.AddNotification(notify);
-            //if (dispose)
-            //{
-            //LeagueSharp.Common.Utility.DelayAction.Add(duration, () => notify.Dispose());
-            //}
-        }
-
-        /// <summary>
-        ///     Gets the targets health including the shield amount
-        /// </summary>
-        /// <param name="target">
-        ///     The Target
-        /// </param>
-        /// <returns>
-        ///     The targets health
-        /// </returns>
-        public float GetActualHealth(Obj_AI_Base target)
-        {
-            return target.GetTotalHealth() + 5;
-        }
-
-        /// <summary>
         ///     TODO The has undying buff.
         /// </summary>
         /// <param name="target">
@@ -132,7 +98,7 @@ namespace IKalista
         /// <returns>
         ///     The <see cref="bool" />.
         /// </returns>
-        public bool HasUndyingBuff(AIHeroClient target)
+        public static bool HasUndyingBuff(AIHeroClient target)
         {
             // Tryndamere R
             if (target.ChampionName == "Tryndamere"
@@ -176,7 +142,7 @@ namespace IKalista
             var junglelMinions =
                 MinionManager.GetMinions(
                     ObjectManager.Player.ServerPosition,
-                    this.spells[SpellSlot.E].Range,
+                    spells[SpellSlot.E].Range,
                     MinionTypes.All,
                     MinionTeam.Neutral,
                     MinionOrderTypes.MaxHealth)
@@ -188,7 +154,7 @@ namespace IKalista
             var bigMinions =
                 MinionManager.GetMinions(
                     ObjectManager.Player.ServerPosition,
-                    this.spells[SpellSlot.E].Range,
+                    spells[SpellSlot.E].Range,
                     MinionTypes.All,
                     MinionTeam.Enemy,
                     MinionOrderTypes.MaxHealth)
@@ -200,7 +166,7 @@ namespace IKalista
             var baron =
                 MinionManager.GetMinions(
                     ObjectManager.Player.ServerPosition,
-                    this.spells[SpellSlot.E].Range,
+                    spells[SpellSlot.E].Range,
                     MinionTypes.All,
                     MinionTeam.Neutral,
                     MinionOrderTypes.MaxHealth)
@@ -209,7 +175,7 @@ namespace IKalista
             var dragon =
                 MinionManager.GetMinions(
                     ObjectManager.Player.ServerPosition,
-                    this.spells[SpellSlot.E].Range,
+                    spells[SpellSlot.E].Range,
                     MinionTypes.All,
                     MinionTeam.Neutral,
                     MinionOrderTypes.MaxHealth)
@@ -218,30 +184,28 @@ namespace IKalista
             switch (getBoxItem(miscMenu, "jungStealMode"))
             {
                 case 0: // jungle mobs
-                    if ((junglelMinions != null && this.spells[SpellSlot.E].CanCast(junglelMinions))
-                        || (baron != null && this.spells[SpellSlot.E].CanCast(baron))
-                        || (dragon != null && this.spells[SpellSlot.E].CanCast(dragon)))
+                    if ((junglelMinions != null && spells[SpellSlot.E].CanCast(junglelMinions) && Extensions.IsRendKillable(junglelMinions)) || (baron != null && spells[SpellSlot.E].CanCast(baron) && Extensions.IsRendKillable(baron)) || (dragon != null && spells[SpellSlot.E].CanCast(dragon) && Extensions.IsRendKillable(dragon)))
                     {
-                        this.spells[SpellSlot.E].Cast();
+                        spells[SpellSlot.E].Cast();
                     }
 
                     break;
 
                 case 1: // siege and super
-                    if (bigMinions != null)
+                    if (bigMinions != null && Extensions.IsRendKillable(bigMinions))
                     {
-                        this.spells[SpellSlot.E].Cast();
+                        spells[SpellSlot.E].Cast();
                     }
 
                     break;
 
                 case 2: // both
-                    if ((junglelMinions != null && this.spells[SpellSlot.E].CanCast(junglelMinions))
-                        || (baron != null && this.spells[SpellSlot.E].CanCast(baron))
-                        || (dragon != null && this.spells[SpellSlot.E].CanCast(dragon))
-                        || (bigMinions != null && this.spells[SpellSlot.E].CanCast(bigMinions)))
+                    if ((junglelMinions != null && spells[SpellSlot.E].CanCast(junglelMinions) && Extensions.IsRendKillable(bigMinions))
+                        || (baron != null && spells[SpellSlot.E].CanCast(baron) && Extensions.IsRendKillable(baron))
+                        || (dragon != null && spells[SpellSlot.E].CanCast(dragon) && Extensions.IsRendKillable(dragon))
+                        || (bigMinions != null && spells[SpellSlot.E].CanCast(bigMinions) && Extensions.IsRendKillable(bigMinions)))
                     {
-                        this.spells[SpellSlot.E].Cast();
+                        spells[SpellSlot.E].Cast();
                     }
 
                     break;
@@ -253,7 +217,7 @@ namespace IKalista
         /// </summary>
         private void DoWallFlee()
         {
-            if (!this.spells[SpellSlot.Q].IsReady() || !getKeyBindItem(miscMenu, "fleeKey") || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
+            if (!spells[SpellSlot.Q].IsReady() || !getKeyBindItem(miscMenu, "fleeKey") || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee))
             {
                 return;
             }
@@ -262,7 +226,7 @@ namespace IKalista
             var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, JumpRange);
             if (this.IsOverWall(ObjectManager.Player.ServerPosition, extendedPosition) && !extendedPosition.IsWall())
             {
-                this.spells[SpellSlot.Q].Cast(extendedPosition);
+                spells[SpellSlot.Q].Cast(extendedPosition);
             }
         }
 
@@ -283,9 +247,9 @@ namespace IKalista
             var input = new PredictionInput
                             {
                                 Unit = source,
-                                Radius = this.spells[SpellSlot.Q].Width,
-                                Delay = this.spells[SpellSlot.Q].Delay,
-                                Speed = this.spells[SpellSlot.Q].Speed
+                                Radius = spells[SpellSlot.Q].Width,
+                                Delay = spells[SpellSlot.Q].Delay,
+                                Speed = spells[SpellSlot.Q].Speed
                             };
 
             input.CollisionObjects[0] = CollisionableObjects.Minions;
@@ -315,7 +279,7 @@ namespace IKalista
                     ObjectManager.Get<AIHeroClient>()
                         .Where(enem => enem.IsValid && enem.IsEnemy && enem.Distance(ObjectManager.Player) <= 2450f))
                 {
-                    if (getCheckBoxItem(balistaMenu, "disable" + target.ChampionName) || !this.spells[SpellSlot.R].IsReady()
+                    if (getCheckBoxItem(balistaMenu, "disable" + target.ChampionName) || !spells[SpellSlot.R].IsReady()
                         || !getCheckBoxItem(balistaMenu, "useBalista"))
                     {
                         return;
@@ -327,7 +291,7 @@ namespace IKalista
                         {
                             if (target.Buffs[i].Name == "rocketgrab2" && target.Buffs[i].IsActive)
                             {
-                                this.spells[SpellSlot.R].Cast();
+                                spells[SpellSlot.R].Cast();
                             }
                         }
                     }
@@ -343,20 +307,20 @@ namespace IKalista
             var baronPosition = new Vector3(4944, 10388, -712406f);
             var dragonPosition = new Vector3(9918f, 4474f, -71.2406f);
 
-            if (!this.spells[SpellSlot.W].IsReady())
+            if (!spells[SpellSlot.W].IsReady())
             {
                 return;
             }
 
             if (getKeyBindItem(miscMenu, "sentBaron")
-                && ObjectManager.Player.Distance(baronPosition) <= this.spells[SpellSlot.W].Range)
+                && ObjectManager.Player.Distance(baronPosition) <= spells[SpellSlot.W].Range)
             {
-                this.spells[SpellSlot.W].Cast(baronPosition);
+                spells[SpellSlot.W].Cast(baronPosition);
             }
             else if (getKeyBindItem(miscMenu, "sentDragon")
-                     && ObjectManager.Player.Distance(dragonPosition) <= this.spells[SpellSlot.W].Range)
+                     && ObjectManager.Player.Distance(dragonPosition) <= spells[SpellSlot.W].Range)
             {
-                this.spells[SpellSlot.W].Cast(dragonPosition);
+                spells[SpellSlot.W].Cast(dragonPosition);
             }
         }
 
@@ -473,14 +437,14 @@ namespace IKalista
         void Orbwalker_OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
             var killableMinion = target as Obj_AI_Base;
-            if (killableMinion == null || !this.spells[SpellSlot.E].IsReady())
+            if (killableMinion == null || !spells[SpellSlot.E].IsReady())
             {
                 return;
             }
 
-            if (getCheckBoxItem(laneClearMenu, "eUnkillable") && Extensions.GetRendDamage(killableMinion) > killableMinion.GetTotalHealth() + 10 && this.spells[SpellSlot.E].CanCast(killableMinion) && killableMinion.HasBuff("KalistaExpungeMarker"))
+            if (getCheckBoxItem(laneClearMenu, "eUnkillable") && Extensions.GetRendDamage(killableMinion) > killableMinion.GetTotalHealth() + 10 && spells[SpellSlot.E].CanCast(killableMinion) && killableMinion.HasBuff("KalistaExpungeMarker"))
             {
-                this.spells[SpellSlot.E].Cast();
+                spells[SpellSlot.E].Cast();
             }
         }
 
@@ -503,7 +467,7 @@ namespace IKalista
 
             balistaMenu.Add("minRange", new Slider("最低范围", 700, 100, 1450));
             balistaMenu.Add("maxRange", new Slider("最广范围", 1500, 100, 1500));
-            balistaMenu.Add("useBalista", new CheckBox("使用机器人合体"));
+            balistaMenu.Add("useBalista", new CheckBox("使用机器人合体技"));
         }
 
         /// <summary>
@@ -597,8 +561,8 @@ namespace IKalista
         /// </summary>
         private void InitSpells()
         {
-            this.spells[SpellSlot.Q].SetSkillshot(0.25f, 40f, 1200f, true, SkillshotType.SkillshotLine);
-            this.spells[SpellSlot.R].SetSkillshot(0.50f, 1500f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            spells[SpellSlot.Q].SetSkillshot(0.25f, 40f, 1200f, true, SkillshotType.SkillshotLine);
+            spells[SpellSlot.R].SetSkillshot(0.50f, 1500f, float.MaxValue, false, SkillshotType.SkillshotCircle);
         }
 
         /// <summary>
@@ -633,12 +597,12 @@ namespace IKalista
         /// </summary>
         private void KillstealQ()
         {
-            foreach (var source in HeroManager.Enemies.Where(x => this.spells[SpellSlot.E].IsInRange(x) && Extensions.IsRendKillable(x)))
+            foreach (var source in EntityManager.Heroes.Enemies.Where(x => spells[SpellSlot.E].IsInRange(x) && Extensions.IsRendKillable(x)))
             {
-                if (source.IsValidTarget(this.spells[SpellSlot.E].Range) && !this.HasUndyingBuff(source))
+                if (source.IsValidTarget(spells[SpellSlot.E].Range) && !HasUndyingBuff(source) && Extensions.IsRendKillable(source))
                 {
-                    this.spells[SpellSlot.E].Cast();
-                    this.spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
+                    spells[SpellSlot.E].Cast();
+                    spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
                 }
             }
         }
@@ -663,15 +627,15 @@ namespace IKalista
                 }
             }
 
-            if (this.spells[SpellSlot.Q].IsReady() && getCheckBoxItem(comboMenu, "useQ") && !ObjectManager.Player.IsDashing()
+            if (spells[SpellSlot.Q].IsReady() && getCheckBoxItem(comboMenu, "useQ") && !ObjectManager.Player.IsDashing()
                 && !Orbwalker.IsAutoAttacking)
             {
                 foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[SpellSlot.Q].Range)))
                 {
-                    var prediction = this.spells[SpellSlot.Q].GetSPrediction(enemy);
+                    var prediction = spells[SpellSlot.Q].GetSPrediction(enemy);
                     if (prediction.HitChance >= LeagueSharp.Common.HitChance.High)
                     {
-                        this.spells[SpellSlot.Q].Cast(prediction.CastPosition);
+                        spells[SpellSlot.Q].Cast(enemy);
                     }
                     else if (prediction.HitChance == LeagueSharp.Common.HitChance.Collision)
                     {
@@ -679,17 +643,17 @@ namespace IKalista
                     }
                 }
             }
-            if (this.spells[SpellSlot.E].IsReady() && getCheckBoxItem(comboMenu, "useE"))
+            if (spells[SpellSlot.E].IsReady() && getCheckBoxItem(comboMenu, "useE"))
             {
                 foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[SpellSlot.E].Range) && x.HasBuff("KalistaExpungeMarker")))
                 {
                     var stacks = enemy.GetBuffCount("kalistaexpungemarker");
                     var damage = Math.Ceiling(Extensions.GetRendDamage(enemy) * 100 / enemy.GetTotalHealth());
 
-                    if (getCheckBoxItem(comboMenu, "eLeaving") && damage >= getSliderItem(comboMenu, "ePercent") && enemy.HealthPercent > 20 && enemy.ServerPosition.Distance(ObjectManager.Player.ServerPosition, true) > Math.Pow(this.spells[SpellSlot.E].Range * 0.8, 2) && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
+                    if (getCheckBoxItem(comboMenu, "eLeaving") && damage >= getSliderItem(comboMenu, "ePercent") && enemy.HealthPercent > 20 && enemy.ServerPosition.Distance(ObjectManager.Player.ServerPosition, true) > Math.Pow(spells[SpellSlot.E].Range * 0.8, 2) && Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT > 500)
                     {
-                        this.spells[SpellSlot.E].Cast();
-                        this.spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
+                        spells[SpellSlot.E].Cast();
+                        spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
                     }
                 }
             }
@@ -717,30 +681,30 @@ namespace IKalista
         private void OnHarass()
         {
             var spearTarget = TargetSelector.GetTarget(
-                this.spells[SpellSlot.Q].Range,
+                spells[SpellSlot.Q].Range,
                 DamageType.Physical);
-            if (getCheckBoxItem(harassMenu, "useQH") && this.spells[SpellSlot.Q].IsReady() && !Orbwalker.IsAutoAttacking && !ObjectManager.Player.IsDashing())
+            if (getCheckBoxItem(harassMenu, "useQH") && spells[SpellSlot.Q].IsReady() && !Orbwalker.IsAutoAttacking && !ObjectManager.Player.IsDashing())
             {
-                if (getCheckBoxItem(miscMenu, "qMana") && ObjectManager.Player.Mana < this.spells[SpellSlot.Q].Instance.SData.Mana + this.spells[SpellSlot.E].Instance.SData.Mana && this.spells[SpellSlot.Q].GetDamage(spearTarget) < spearTarget.GetTotalHealth())
+                if (getCheckBoxItem(miscMenu, "qMana") && ObjectManager.Player.Mana < spells[SpellSlot.Q].Instance.SData.Mana + spells[SpellSlot.E].Instance.SData.Mana && spells[SpellSlot.Q].GetDamage(spearTarget) < spearTarget.GetTotalHealth())
                 {
                     return;
                 }
 
-                if (getCheckBoxItem(comboMenu, "saveManaR") && this.spells[SpellSlot.R].IsReady()
+                if (getCheckBoxItem(comboMenu, "saveManaR") && spells[SpellSlot.R].IsReady()
                     && ObjectManager.Player.Mana
-                    < this.spells[SpellSlot.Q].Instance.SData.Mana + this.spells[SpellSlot.R].Instance.SData.Mana)
+                    < spells[SpellSlot.Q].Instance.SData.Mana + spells[SpellSlot.R].Instance.SData.Mana)
                 {
                     return;
                 }
 
                 foreach (var unit in
-                    HeroManager.Enemies.Where(x => x.IsValidTarget(this.spells[SpellSlot.Q].Range))
-                        .Where(unit => this.spells[SpellSlot.Q].GetSPrediction(unit).HitChance == LeagueSharp.Common.HitChance.Immobile))
+                    HeroManager.Enemies.Where(x => x.IsValidTarget(spells[SpellSlot.Q].Range))
+                        .Where(unit => spells[SpellSlot.Q].GetSPrediction(unit).HitChance == LeagueSharp.Common.HitChance.Immobile))
                 {
-                    this.spells[SpellSlot.Q].Cast(unit.ServerPosition);
+                    spells[SpellSlot.Q].Cast(unit);
                 }
 
-                var prediction = this.spells[SpellSlot.Q].GetSPrediction(spearTarget);
+                var prediction = spells[SpellSlot.Q].GetSPrediction(spearTarget);
                 if (!Orbwalker.IsAutoAttacking && !ObjectManager.Player.IsDashing())
                 {
                     switch (prediction.HitChance)
@@ -750,7 +714,7 @@ namespace IKalista
                             break;
                         case LeagueSharp.Common.HitChance.High:
                         case LeagueSharp.Common.HitChance.VeryHigh:
-                            this.spells[SpellSlot.Q].Cast(prediction.CastPosition);
+                            spells[SpellSlot.Q].Cast(spearTarget);
                             break;
                     }
                 }
@@ -761,7 +725,7 @@ namespace IKalista
                 var rendTarget =
                     HeroManager.Enemies.Where(
                         x =>
-                        x.IsValidTarget(this.spells[SpellSlot.E].Range) && Extensions.GetRendDamage(x) >= 1
+                        x.IsValidTarget(spells[SpellSlot.E].Range) && Extensions.GetRendDamage(x) >= 1
                         && !x.HasBuffOfType(BuffType.Invulnerability) && !x.HasBuffOfType(BuffType.SpellShield))
                         .OrderByDescending(x => Extensions.GetRendDamage(x))
                         .FirstOrDefault();
@@ -771,13 +735,13 @@ namespace IKalista
                     var stackCount = rendTarget.GetBuffCount("kalistaexpungemarker");
                     if (Extensions.IsRendKillable(rendTarget) || stackCount >= getSliderItem(comboMenu, "minStacks"))
                     {
-                        if (Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT < 500)
+                        if (Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT < 500)
                         {
                             return;
                         }
 
-                        this.spells[SpellSlot.E].Cast();
-                        this.spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
+                        spells[SpellSlot.E].Cast();
+                        spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
                     }
                 }
             }
@@ -785,22 +749,22 @@ namespace IKalista
             if (getCheckBoxItem(harassMenu, "useEMin"))
             {
                 var minion =
-                    MinionManager.GetMinions(this.spells[SpellSlot.E].Range, MinionTypes.All, MinionTeam.NotAlly)
+                    MinionManager.GetMinions(spells[SpellSlot.E].Range, MinionTypes.All, MinionTeam.NotAlly)
                         .Where(x => Extensions.IsRendKillable(x))
                         .OrderBy(x => x.GetTotalHealth())
                         .FirstOrDefault();
                 var target =
                     HeroManager.Enemies.Where(
                         x =>
-                        this.spells[SpellSlot.E].CanCast(x) && Extensions.GetRendDamage(x) >= 1
+                        spells[SpellSlot.E].CanCast(x) && Extensions.GetRendDamage(x) >= 1
                         && !x.HasBuffOfType(BuffType.SpellShield))
                         .OrderByDescending(x => Extensions.GetRendDamage(x))
                         .FirstOrDefault();
 
-                if (minion != null && target != null && this.spells[SpellSlot.E].CanCast(minion) && this.spells[SpellSlot.E].CanCast(target) && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
+                if (minion != null && target != null && spells[SpellSlot.E].CanCast(minion) && spells[SpellSlot.E].CanCast(target) && Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT > 500)
                 {
-                    this.spells[SpellSlot.E].Cast();
-                    this.spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
+                    spells[SpellSlot.E].Cast();
+                    spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
                 }
             }
         }
@@ -810,13 +774,13 @@ namespace IKalista
         /// </summary>
         private void OnLaneClear()
         {
-            var minions = MinionManager.GetMinions(this.spells[SpellSlot.E].Range);
+            var minions = MinionManager.GetMinions(spells[SpellSlot.E].Range);
 
-            if (getCheckBoxItem(laneClearMenu, "useQLC") && this.spells[SpellSlot.Q].IsReady())
+            if (getCheckBoxItem(laneClearMenu, "useQLC") && spells[SpellSlot.Q].IsReady())
             {
-                if (getCheckBoxItem(comboMenu, "saveManaR") && this.spells[SpellSlot.R].IsReady()
+                if (getCheckBoxItem(comboMenu, "saveManaR") && spells[SpellSlot.R].IsReady()
                     && ObjectManager.Player.Mana
-                    < this.spells[SpellSlot.Q].Instance.SData.Mana + this.spells[SpellSlot.R].Instance.SData.Mana)
+                    < spells[SpellSlot.Q].Instance.SData.Mana + spells[SpellSlot.R].Instance.SData.Mana)
                 {
                     return;
                 }
@@ -828,20 +792,20 @@ namespace IKalista
                             ObjectManager.Player,
                             ObjectManager.Player.ServerPosition.LSExtend(
                                 selectedMinion.ServerPosition,
-                                this.spells[SpellSlot.Q].Range))
+                                spells[SpellSlot.Q].Range))
                         .Count(
                             collisionMinion =>
-                            collisionMinion.GetTotalHealth() < this.spells[SpellSlot.Q].GetDamage(collisionMinion))
+                            collisionMinion.GetTotalHealth() < spells[SpellSlot.Q].GetDamage(collisionMinion))
                     where killcount >= getSliderItem(laneClearMenu, "minHitQ")
                     where !Orbwalker.IsAutoAttacking && !ObjectManager.Player.IsDashing()
                     select selectedMinion)
                 {
-                    this.spells[SpellSlot.Q].Cast(selectedMinion.ServerPosition);
+                    spells[SpellSlot.Q].Cast(selectedMinion.ServerPosition);
                 }
             }
 
             var harassableMinion =
-                MinionManager.GetMinions(this.spells[SpellSlot.E].Range, MinionTypes.All, MinionTeam.NotAlly)
+                MinionManager.GetMinions(spells[SpellSlot.E].Range, MinionTypes.All, MinionTeam.NotAlly)
                     .Where(x => Extensions.IsRendKillable(x))
                     .OrderBy(x => x.GetTotalHealth())
                     .FirstOrDefault();
@@ -849,22 +813,22 @@ namespace IKalista
             var rendTarget =
                 HeroManager.Enemies.Where(
                     x =>
-                    this.spells[SpellSlot.E].IsInRange(x) && Extensions.GetRendDamage(x) >= 1 && !x.HasBuffOfType(BuffType.Invulnerability) && !x.HasBuffOfType(BuffType.SpellShield)).OrderByDescending(x => Extensions.GetRendDamage(x)).FirstOrDefault();
+                    spells[SpellSlot.E].IsInRange(x) && Extensions.GetRendDamage(x) >= 1 && !x.HasBuffOfType(BuffType.Invulnerability) && !x.HasBuffOfType(BuffType.SpellShield)).OrderByDescending(x => Extensions.GetRendDamage(x)).FirstOrDefault();
 
-            if (getCheckBoxItem(laneClearMenu, "minLC") && harassableMinion != null && rendTarget != null && this.spells[SpellSlot.E].CanCast(harassableMinion) && this.spells[SpellSlot.E].CanCast(rendTarget) && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
+            if (getCheckBoxItem(laneClearMenu, "minLC") && harassableMinion != null && rendTarget != null && spells[SpellSlot.E].CanCast(harassableMinion) && spells[SpellSlot.E].CanCast(rendTarget) && Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT > 500)
             {
-                this.spells[SpellSlot.E].Cast();
-                this.spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
+                spells[SpellSlot.E].Cast();
+                spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
             }
 
-            if (this.spells[SpellSlot.E].IsReady() && getCheckBoxItem(laneClearMenu, "useELC"))
+            if (spells[SpellSlot.E].IsReady() && getCheckBoxItem(laneClearMenu, "useELC"))
             {
-                var count = minions.Count(x => this.spells[SpellSlot.E].CanCast(x) && Extensions.IsRendKillable(x));
+                var count = minions.Count(x => spells[SpellSlot.E].CanCast(x) && Extensions.IsRendKillable(x));
 
-                if (count >= getSliderItem(laneClearMenu, "eHit") && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
+                if (count >= getSliderItem(laneClearMenu, "eHit") && Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT > 500)
                 {
-                    this.spells[SpellSlot.E].Cast();
-                    this.spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
+                    spells[SpellSlot.E].Cast();
+                    spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
                 }
             }
         }
@@ -898,7 +862,7 @@ namespace IKalista
 
                 if (soulboundhero != null && soulboundhero.HealthPercent < getSliderItem(comboMenu, "allyPercent"))
                 {
-                    this.spells[SpellSlot.R].Cast();
+                    spells[SpellSlot.R].Cast();
                 }
             }
         }
@@ -934,19 +898,19 @@ namespace IKalista
             this.HandleSentinels();
             this.KillstealQ();
 
-            var enemies = HeroManager.Enemies.Count(x => ObjectManager.Player.Distance(x) <= this.spells[SpellSlot.E].Range);
+            var enemies = HeroManager.Enemies.Count(x => ObjectManager.Player.Distance(x) <= spells[SpellSlot.E].Range);
 
-            if (getCheckBoxItem(comboMenu, "eDeath") && enemies > 2 && ObjectManager.Player.HealthPercent <= getSliderItem(comboMenu, "eHealth") && this.spells[SpellSlot.E].IsReady())
+            if (getCheckBoxItem(comboMenu, "eDeath") && enemies > 2 && ObjectManager.Player.HealthPercent <= getSliderItem(comboMenu, "eHealth") && spells[SpellSlot.E].IsReady())
             {
-                var target = HeroManager.Enemies.Where(x => this.spells[SpellSlot.E].IsInRange(x) && x.HasBuff("KalistaExpungeMarker")).OrderBy(x => Extensions.GetRendDamage(x)).FirstOrDefault();
+                var target = HeroManager.Enemies.Where(x => spells[SpellSlot.E].IsInRange(x) && x.HasBuff("KalistaExpungeMarker")).OrderBy(x => Extensions.GetRendDamage(x)).FirstOrDefault();
                 if (target != null)
                 {
                     var stacks = Extensions.GetRendDamage(target);
                     var damage = Math.Ceiling(stacks * 100 / target.GetTotalHealth());
-                    if (damage >= getSliderItem(comboMenu, "eDeathC") && Environment.TickCount - this.spells[SpellSlot.E].LastCastAttemptT > 500)
+                    if (damage >= getSliderItem(comboMenu, "eDeathC") && Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT > 500)
                     {
-                        this.spells[SpellSlot.E].Cast();
-                        this.spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
+                        spells[SpellSlot.E].Cast();
+                        spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
                     }
                 }
             }
@@ -978,14 +942,14 @@ namespace IKalista
         /// </param>
         private void QCollisionCheck(AIHeroClient target)
         {
-            var minions = MinionManager.GetMinions(ObjectManager.Player.Position, this.spells[SpellSlot.Q].Range);
+            var minions = MinionManager.GetMinions(ObjectManager.Player.Position, spells[SpellSlot.Q].Range);
 
             if (minions.Count < 1 || !getCheckBoxItem(comboMenu, "useQMin") || Orbwalker.IsAutoAttacking || ObjectManager.Player.IsDashing())
             {
                 return;
             }
 
-            foreach (var minion in minions.Where(x => x.IsValidTarget(this.spells[SpellSlot.Q].Range)))
+            foreach (var minion in minions.Where(x => x.IsValidTarget(spells[SpellSlot.Q].Range)))
             {
                 var difference = ObjectManager.Player.Distance(target) - ObjectManager.Player.Distance(minion);
 
@@ -993,24 +957,24 @@ namespace IKalista
                 {
                     var point =
                         minion.ServerPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(), -i).To3D();
-                    var time = this.spells[SpellSlot.Q].Delay
-                               + (ObjectManager.Player.Distance(point) / this.spells[SpellSlot.Q].Speed * 1000f);
+                    var time = spells[SpellSlot.Q].Delay
+                               + (ObjectManager.Player.Distance(point) / spells[SpellSlot.Q].Speed * 1000f);
 
                     var prediction = LeagueSharp.Common.Prediction.GetPrediction(target, time);
 
-                    var collision = this.spells[SpellSlot.Q].GetCollision(
+                    var collision = spells[SpellSlot.Q].GetCollision(
                         point.To2D(),
                         new List<Vector2> { prediction.UnitPosition.To2D() });
 
-                    if (collision.Any(x => x.GetTotalHealth() > this.spells[SpellSlot.Q].GetDamage(x)))
+                    if (collision.Any(x => x.GetTotalHealth() > spells[SpellSlot.Q].GetDamage(x)))
                     {
                         return;
                     }
 
-                    if (prediction.UnitPosition.Distance(point) <= this.spells[SpellSlot.Q].Width
-                        && !minions.Any(m => m.Distance(point) <= this.spells[SpellSlot.Q].Width))
+                    if (prediction.UnitPosition.Distance(point) <= spells[SpellSlot.Q].Width
+                        && !minions.Any(m => m.Distance(point) <= spells[SpellSlot.Q].Width))
                     {
-                        this.spells[SpellSlot.Q].Cast(minion);
+                        spells[SpellSlot.Q].Cast(minion);
                     }
                 }
             }

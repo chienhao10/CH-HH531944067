@@ -506,7 +506,7 @@
                 {
                     if (this.SmiteSpell.IsReady())
                     {
-                        if (Minion.IsValidTarget(this.SmiteSpell.Range))
+                        if (Minion.IsValidTarget(570f))
                         {
                             if (this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite) >= Minion.Health && this.SmiteSpell.CanCast(Minion))
                             {
@@ -732,12 +732,12 @@
                     if (smiteActive && drawSmite
                         && this.Player.Spellbook.CanUseSpell(smiteSpell.Slot) == SpellState.Ready)
                     {
-                        Render.Circle.DrawCircle(this.Player.Position, 500, Color.Green);
+                        Render.Circle.DrawCircle(this.Player.Position, 570, Color.Green);
                     }
 
                     if (drawSmite && this.Player.Spellbook.CanUseSpell(smiteSpell.Slot) != SpellState.Ready)
                     {
-                        Render.Circle.DrawCircle(this.Player.Position, 500, Color.Red);
+                        Render.Circle.DrawCircle(this.Player.Position, 570, Color.Red);
                     }
                 }
             }
@@ -793,7 +793,7 @@
                     && this.ComboModeActive)
                 {
                     var smiteComboEnemy =
-                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.IsValidTarget(500));
+                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.IsValidTarget(570));
                     if (smiteComboEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, smiteComboEnemy);

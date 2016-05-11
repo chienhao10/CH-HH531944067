@@ -32,7 +32,11 @@ namespace iKalistaReborn
         public static Dictionary<string, string> JungleMinions = new Dictionary<string, string>
         {
             {"SRU_Baron", "Baron"},
-            {"SRU_Dragon", "Dragon"},
+            {"SRU_Dragon_Water", "Water Dragon"},
+            {"SRU_Dragon_Fire", "Fire Dragon"},
+            {"SRU_Dragon_Earth", "Earth Dragon"},
+            {"SRU_Dragon_Air", "Air Dragon"},
+            {"SRU_Dragon_Elder", "Elder Dragon"},
             {"SRU_Blue", "Blue Buff"},
             {"SRU_Red", "Red Buff"},
             {"SRU_Crab", "Crab"},

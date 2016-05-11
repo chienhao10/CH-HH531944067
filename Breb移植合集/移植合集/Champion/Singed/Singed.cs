@@ -42,8 +42,6 @@ namespace ElSinged
                 return;
             }
 
-            Console.WriteLine("Injected");
-
             ignite = Player.GetSpellSlot("summonerdot");
 
             spells[Spells.W].SetSkillshot(0.5f, 350, 700, false, SkillshotType.SkillshotCircle);
@@ -52,8 +50,6 @@ namespace ElSinged
             Game.OnUpdate += OnGameUpdate;
             Orbwalker.OnPreAttack += OrbwalkingBeforeAttack;
             Drawing.OnDraw += Drawings.Drawing_OnDraw;
-            checkTime = Environment.TickCount;
-            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
 
             Menu = ElSingedMenu.Menu;
             cMenu = ElSingedMenu.cMenu;
@@ -102,8 +98,6 @@ namespace ElSinged
             {Spells.E, new Spell(SpellSlot.E, 125)},
             {Spells.R, new Spell(SpellSlot.R, 0)}
         };
-
-        private static int checkTime;
 
         private static SpellSlot ignite;
 
@@ -255,14 +249,6 @@ namespace ElSinged
             if (getCheckBoxItem(lcMenu, "ElSinged.Laneclear.Q") && spells[Spells.Q].IsReady())
             {
                 spells[Spells.Q].Cast();
-            }
-        }
-
-        private static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (spells[Spells.Q].Instance.Name == args.SData.Name)
-            {
-                checkTime = Environment.TickCount + 1000;
             }
         }
 

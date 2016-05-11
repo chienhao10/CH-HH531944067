@@ -41,7 +41,7 @@ namespace NabbTracker
         /// <summary>
         ///     The legendary name regex list.
         /// </summary>
-        private static readonly string[] LegendaryNameRegex = {"SRU_Dragon", "SRU_Baron"};
+        private static readonly string[] LegendaryNameRegex = {"SRU_Dragon_Water", "SRU_Dragon_Fire", "SRU_Dragon_Earth", "SRU_Dragon_Air", "SRU_Dragon_Elder", "SRU_Baron"};
 
         /// <summary>
         ///     The small name regex list.

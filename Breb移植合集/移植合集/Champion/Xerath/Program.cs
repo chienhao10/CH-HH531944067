@@ -75,51 +75,51 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             Q.SetCharged("XerathArcanopulseChargeUp", "XerathArcanopulseChargeUp", 700, 1550, 1.5f);
 
-            drawMenu = Config.AddSubMenu("Drawings");
-            drawMenu.Add("noti", new CheckBox("Show notification & line"));
-            drawMenu.Add("onlyRdy", new CheckBox("Draw only ready spells"));
-            drawMenu.Add("qRange", new CheckBox("Q range", false));
-            drawMenu.Add("wRange", new CheckBox("W range", false));
-            drawMenu.Add("eRange", new CheckBox("E range", false));
-            drawMenu.Add("rRange", new CheckBox("R range", false));
-            drawMenu.Add("rRangeMini", new CheckBox("R range minimap"));
+            drawMenu = Config.AddSubMenu("线圈");
+            drawMenu.Add("noti", new CheckBox("显示提示"));
+            drawMenu.Add("onlyRdy", new CheckBox("只显示无冷却技能"));
+            drawMenu.Add("qRange", new CheckBox("Q 范围", false));
+            drawMenu.Add("wRange", new CheckBox("W 范围", false));
+            drawMenu.Add("eRange", new CheckBox("E 范围", false));
+            drawMenu.Add("rRange", new CheckBox("R 范围", false));
+            drawMenu.Add("rRangeMini", new CheckBox("R 小地图范围"));
 
-            qMenu = Config.AddSubMenu("Q Config");
-            qMenu.Add("autoQ", new CheckBox("Auto Q"));
+            qMenu = Config.AddSubMenu("Q 设置");
+            qMenu.Add("autoQ", new CheckBox("自动 Q"));
 
-            wMenu = Config.AddSubMenu("W Config");
-            wMenu.Add("autoW", new CheckBox("Auto W"));
-            wMenu.Add("harrasW", new CheckBox("Harras W"));
+            wMenu = Config.AddSubMenu("W 设置");
+            wMenu.Add("autoW", new CheckBox("自动 W"));
+            wMenu.Add("harrasW", new CheckBox("骚扰 W"));
 
-            eMenu = Config.AddSubMenu("E Config");
-            eMenu.Add("autoE", new CheckBox("Auto E"));
-            eMenu.Add("harrasE", new CheckBox("Harras E"));
+            eMenu = Config.AddSubMenu("E 设置");
+            eMenu.Add("autoE", new CheckBox("自动 E"));
+            eMenu.Add("harrasE", new CheckBox("骚扰 E"));
 
-            rMenu = Config.AddSubMenu("R Config");
-            rMenu.Add("autoR", new CheckBox("Auto R 2 x dmg R"));
-            rMenu.Add("autoRlast", new CheckBox("Cast last position if no target"));
-            rMenu.Add("useR", new KeyBind("Semi-manual cast R key", false, KeyBind.BindTypes.HoldActive, 'T'));
+            rMenu = Config.AddSubMenu("R 设置");
+            rMenu.Add("autoR", new CheckBox("自动 R 2"));
+            rMenu.Add("autoRlast", new CheckBox("如果无目标则施法至目标最后位置"));
+            rMenu.Add("useR", new KeyBind("半自动R按键", false, KeyBind.BindTypes.HoldActive, 'T'));
             //32 == space
-            rMenu.Add("trinkiet", new CheckBox("Auto blue trinkiet"));
-            rMenu.Add("delayR", new Slider("custome R delay ms (1000ms = 1 sec)", 0, 0, 3000));
-            rMenu.Add("MaxRangeR", new Slider("Max R adjustment (R range - slider)", 0, 0, 5000));
+            rMenu.Add("trinkiet", new CheckBox("自动蓝眼"));
+            rMenu.Add("delayR", new Slider("自定义延迟 (1000毫秒 = 1 秒)", 0, 0, 3000));
+            rMenu.Add("MaxRangeR", new Slider("最大化R调整 (R 范围)", 0, 0, 5000));
 
-            harassMenu = Config.AddSubMenu("Harass");
+            harassMenu = Config.AddSubMenu("骚扰");
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 harassMenu.Add("harras" + enemy.NetworkId, new CheckBox(enemy.ChampionName));
 
-            farmMenu = Config.AddSubMenu("Farm");
-            farmMenu.Add("separate", new CheckBox("Separate laneclear from harras", false));
-            farmMenu.Add("farmQ", new CheckBox("Lane clear Q"));
-            farmMenu.Add("farmW", new CheckBox("Lane clear W"));
-            farmMenu.Add("Mana", new Slider("LaneClear Mana", 80));
-            farmMenu.Add("LCminions", new Slider("LaneClear minimum minions", 2, 0, 10));
-            farmMenu.Add("jungleE", new CheckBox("Jungle clear E"));
-            farmMenu.Add("jungleQ", new CheckBox("Jungle clear Q"));
-            farmMenu.Add("jungleW", new CheckBox("Jungle clear W"));
+            farmMenu = Config.AddSubMenu("农兵");
+            farmMenu.Add("separate", new CheckBox("清线", false));
+            farmMenu.Add("farmQ", new CheckBox("使用 Q"));
+            farmMenu.Add("farmW", new CheckBox("使用 W"));
+            farmMenu.Add("Mana", new Slider("使用蓝量", 80));
+            farmMenu.Add("LCminions", new Slider("清野", 2, 0, 10));
+            farmMenu.Add("jungleE", new CheckBox("使用 E"));
+            farmMenu.Add("jungleQ", new CheckBox("使用 Q"));
+            farmMenu.Add("jungleW", new CheckBox("使用 W"));
 
-            miscMenu = Config.AddSubMenu("Misc");
-            miscMenu.Add("force", new CheckBox("Force passive use in combo on minion"));
+            miscMenu = Config.AddSubMenu("杂项");
+            miscMenu.Add("force", new CheckBox("连招时强制对小兵使用被动"));
 
             Game.OnUpdate += Game_OnGameUpdate;
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
@@ -532,19 +532,19 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     if (rDamage * 3 > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
-                            "3 x Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "3发R 可击杀: " + t.ChampionName + " 剩下: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                     else if (rDamage * 2 > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
-                            "2 x Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "2发R 可击杀: " + t.ChampionName + " 剩下: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                     else if (rDamage > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
-                            "1 x Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "1发R 可击杀: " + t.ChampionName + " 剩下: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                 }

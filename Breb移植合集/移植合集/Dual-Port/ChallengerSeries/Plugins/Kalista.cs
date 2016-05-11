@@ -17,6 +17,7 @@ using EloBuddy;
 namespace Challenger_Series.Plugins
 {
     using LeagueSharp.SDK.Core.Utils;
+    using Plugins;
     using Collision = LeagueSharp.SDK.Collision;
 
     public class Kalista : CSPlugin
@@ -28,6 +29,7 @@ namespace Challenger_Series.Plugins
         public LeagueSharp.SDK.Spell W { get; set; }
         public LeagueSharp.SDK.Spell W2 { get; set; }
         public LeagueSharp.SDK.Spell E { get; set; }
+        public LeagueSharp.Common.Spell ELS { get; set; }
         public LeagueSharp.SDK.Spell E2 { get; set; }
         public LeagueSharp.SDK.Spell R { get; set; }
         public LeagueSharp.SDK.Spell R2 { get; set; }
@@ -39,6 +41,9 @@ namespace Challenger_Series.Plugins
             W = new LeagueSharp.SDK.Spell(SpellSlot.W, 5000);
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 1000f);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 1400f);
+
+            ELS = new LeagueSharp.Common.Spell(SpellSlot.E, 950);
+
             Q.SetSkillshot(0.25f, 40f, 1200f, true, SkillshotType.SkillshotLine);
             InitMenu();
             DelayedOnUpdate += OnUpdate;
@@ -65,7 +70,8 @@ namespace Challenger_Series.Plugins
         private void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
         {
             Orbwalker.ForcedTarget = null;
-            if (Q.IsReady() && target.LSIsValidTarget())
+            var t = target as Obj_AI_Base;
+            if (Q.IsReady() && target.LSIsValidTarget() && !t.IsMinion)
             {
                 this.QLogic(target);
                 if (UseQStackTransferBool)
@@ -77,8 +83,6 @@ namespace Challenger_Series.Plugins
 
         public override void OnUpdate(EventArgs args)
         {
-            base.OnUpdate(args);
-
             if (E.IsReady()) this.ELogic();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && Q.IsReady() && Orbwalker.CanMove)
             {
@@ -274,11 +278,12 @@ namespace Challenger_Series.Plugins
 
         void ELogic()
         {
-            if (ValidTargets.Any(t => IsRendKillable(t)))
+            if (EntityManager.Heroes.Enemies.Any(t => IsRendKillable(t)))
             {
                 E.Cast();
             }
-            if (GameObjects.JungleLarge.Any(IsRendKillable) || ObjectManager.Get<Obj_AI_Minion>().Any(m => (m.CharData.BaseSkinName.Contains("Baron") || m.CharData.BaseSkinName.Contains("Dragon") || m.CharData.BaseSkinName.Contains("Crab") || m.CharData.BaseSkinName.Contains("Herald")) && this.IsRendKillable(m)))
+
+            if (EntityManager.MinionsAndMonsters.Monsters.Any(IsRendKillable) || ObjectManager.Get<Obj_AI_Minion>().Any(m => (m.CharData.BaseSkinName.Contains("Baron") || m.CharData.BaseSkinName.Contains("Dragon") || m.CharData.BaseSkinName.Contains("Crab") || m.CharData.BaseSkinName.Contains("Herald")) && this.IsRendKillable(m)))
             {
                 E.Cast();
             }
@@ -287,6 +292,7 @@ namespace Challenger_Series.Plugins
             {
                 E.Cast();
             }
+
             if (UseEIfResettedByAMinionBool && ObjectManager.Player.ManaPercent > EResetByAMinionMinManaSlider)
             {
                 if (ValidTargets.Any(e => e != null ? e.Distance(ObjectManager.Player.ServerPosition) > 615 : false && GetRendBuff(e).Count >= MinEnemyStacksForEMinionResetSlider) && EntityManager.MinionsAndMonsters.EnemyMinions.Any(m => IsRendKillable(m)))
@@ -344,14 +350,14 @@ namespace Challenger_Series.Plugins
                                 if (args.SData.ConsideredAsAutoAttack)
                                 {
                                     IncomingDamageToSoulboundAlly.Add(
-                                        SoulboundAlly.ServerPosition.Distance(sender.ServerPosition)/
+                                        SoulboundAlly.ServerPosition.Distance(sender.ServerPosition) /
                                         args.SData.MissileSpeed +
-                                        Game.Time, (float) sender.GetAutoAttackDamage(SoulboundAlly));
+                                        Game.Time, (float)sender.GetAutoAttackDamage(SoulboundAlly));
                                     return;
                                 }
                                 if (sender is AIHeroClient)
                                 {
-                                    var attacker = (AIHeroClient) sender;
+                                    var attacker = (AIHeroClient)sender;
                                     var slot = attacker.GetSpellSlot(args.SData.Name);
 
                                     if (slot != SpellSlot.Unknown)
@@ -369,7 +375,7 @@ namespace Challenger_Series.Plugins
                                         if (slot.HasFlag(SpellSlot.Q | SpellSlot.W | SpellSlot.E | SpellSlot.R))
                                         {
                                             InstantDamageOnSoulboundAlly.Add(Game.Time + 2,
-                                                (float) attacker.LSGetSpellDamage(SoulboundAlly, slot));
+                                                (float)attacker.LSGetSpellDamage(SoulboundAlly, slot));
                                         }
                                     }
                                 }
@@ -439,7 +445,7 @@ namespace Challenger_Series.Plugins
         private static readonly float[] RawRendDamageMultiplier = { 0.6f, 0.6f, 0.6f, 0.6f, 0.6f };
         private static readonly float[] RawRendDamagePerSpear = { 10, 14, 19, 25, 32 };
         private static readonly float[] RawRendDamagePerSpearMultiplier = { 0.2f, 0.225f, 0.25f, 0.275f, 0.3f };
-        
+
         /// <summary>
         /// Those buffs make the target either unkillable or a pain in the ass to kill, just wait until they end
         /// </summary>
@@ -487,6 +493,7 @@ namespace Challenger_Series.Plugins
 
         public bool IsRendKillable(Obj_AI_Base target)
         {
+
             // Validate unit
             if (target == null) { return false; }
             if (!HasRendBuff(target)) { return false; }
@@ -495,36 +502,86 @@ namespace Challenger_Series.Plugins
                 if (ShouldntRend((AIHeroClient)target)) return false;
             }
 
-            // Take into account all kinds of shields
-            var totalHealth = GetTotalHealthWithShieldsApplied(target);
+            if (target == null)
+                return false;
 
-            var dmg = GetRendDamage(target);
+            var baseDamage = ELS.GetDamage(target);
 
-            if (target.Name.Contains("Baron") && ObjectManager.Player.HasBuff("barontarget"))
+            if (target is AIHeroClient)
             {
-                dmg *= 0.5f;
+                if (HasUndyingBuff(target) || target.Health < 1 || target.HasBuffOfType(BuffType.SpellShield))
+                    return false;
+
+                if (target.HasBuff("meditate"))
+                {
+                    baseDamage *= (0.5f - 0.05f * target.Spellbook.GetSpell(SpellSlot.W).Level);
+                }
             }
-            //you deal -7% dmg to dragon for each killed dragon
-            if (target.Name.Contains("Dragon") && ObjectManager.Player.HasBuff("s5test_dragonslayerbuff"))
+
+            if (target is Obj_AI_Minion)
             {
-                dmg *= (1f - (0.075f * ObjectManager.Player.GetBuffCount("s5test_dragonslayerbuff")));
+                if (target.Name.Contains("Baron") && ObjectManager.Player.HasBuff("barontarget"))
+                {
+                    baseDamage *= 0.5f;
+                }
             }
-            return dmg > totalHealth;
+
+            if (ObjectManager.Player.HasBuff("SummonerExhaustSlow"))
+            {
+                baseDamage *= 0.55f;
+            }
+
+
+            return (baseDamage - this.ReduceRendDamageBySlider) > GetHealthWithShield(target);
+        }
+
+        public static float GetHealthWithShield(Obj_AI_Base target)
+            => target.AttackShield > 0 ? target.Health + target.AttackShield : target.Health + 10;
+
+        public bool HasUndyingBuff(Obj_AI_Base target1)
+        {
+            var target = target1 as AIHeroClient;
+
+            if (target == null) return false;
+            // Tryndamere R
+            if (target.ChampionName == "Tryndamere"
+                && target.Buffs.Any(
+                    b => b.Caster.NetworkId == target.NetworkId && b.IsValid && b.DisplayName == "Undying Rage"))
+            {
+                return true;
+            }
+
+            // Zilean R
+            if (target.Buffs.Any(b => b.IsValid && b.DisplayName == "Chrono Shift"))
+            {
+                return true;
+            }
+
+            if (target.HasBuff("kindredrnodeathbuff"))
+            {
+                return true;
+            }
+
+            // Kayle R
+            if (target.Buffs.Any(b => b.IsValid && b.DisplayName == "JudicatorIntervention"))
+            {
+                return true;
+            }
+
+            //TODO poppy
+
+            return false;
         }
 
         public float GetFloatRendDamage(Obj_AI_Base target)
         {
             return (float)GetRendDamage(target, -1);
         }
-        public double GetRendDamage(Obj_AI_Base target)
-        {
-            return GetRendDamage(target, -1);
-        }
 
         public double GetRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
         {
             // Calculate the damage and return
-            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical, GetRawRendDamage(target, customStacks, rendBuff) - this.ReduceRendDamageBySlider); 
+            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical, GetRawRendDamage(target, customStacks, rendBuff) - this.ReduceRendDamageBySlider);
         }
 
         public float GetRawRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
@@ -534,12 +591,11 @@ namespace Challenger_Series.Plugins
             if (stacks > -1)
             {
                 var index = E.Level - 1;
-                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] +
-                       ObjectManager.Player.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
+                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] + ObjectManager.Player.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
             }
 
             return 0;
         }
-#endregion
+        #endregion
     }
 }

@@ -236,6 +236,25 @@ namespace SebbyLib
                     .FirstOrDefault() - Game.Time;
         }
 
+        public static Vector3 GetTrapPos(float range)
+        {
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValid && enemy.Distance(Player.ServerPosition) < range && enemy.HasBuff("zhonyasringshield") || enemy.HasBuff("BardRStasis")))
+            {
+                return enemy.Position;
+            }
+
+            foreach (var obj in ObjectManager.Get<Obj_GeneralParticleEmitter>().Where(obj => obj.IsValid && obj.Position.Distance(Player.Position) < range))
+            {
+                var name = obj.Name.ToLower();
+
+                if (name.Contains("GateMarker_red.troy".ToLower()) || name.Contains("global_ss_teleport_target_red.troy".ToLower())
+                    || name.Contains("R_indicator_red.troy".ToLower()))
+                    return obj.Position;
+            }
+
+            return Vector3.Zero;
+        }
+
         public static bool CollisionYasuo(Vector3 from, Vector3 to)
         {
             if (!YasuoInGame)

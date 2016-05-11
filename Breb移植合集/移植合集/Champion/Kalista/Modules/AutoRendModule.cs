@@ -6,6 +6,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using iKalistaReborn.Utils;
 using LeagueSharp.Common;
+using EloBuddy.SDK;
 
 namespace iKalistaReborn.Modules
 {
@@ -32,10 +33,9 @@ namespace iKalistaReborn.Modules
 
         public void OnExecute()
         {
-            foreach (var source in HeroManager.Enemies.Where(x => x.IsValid && x.HasRendBuff() && SpellManager.Spell[SpellSlot.E].IsInRange(x)))
+            foreach (var source in EntityManager.Heroes.Enemies.Where(x => x.LSIsValidTarget() && x.HasRendBuff() && SpellManager.Spell[SpellSlot.E].IsInRange(x)))
             {
-                if (source.IsRendKillable() ||
-                    source.GetRendBuffCount() >= getSliderItem(comboMenu, "com.ikalista.combo.stacks"))
+                if (source.IsRendKillable() || source.GetRendBuffCount() >= getSliderItem(comboMenu, "com.ikalista.combo.stacks"))
                 {
                     SpellManager.Spell[SpellSlot.E].Cast();
                 }

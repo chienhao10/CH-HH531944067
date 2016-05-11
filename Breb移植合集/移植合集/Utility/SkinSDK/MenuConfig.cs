@@ -8,13 +8,13 @@ namespace SDK_SkinChanger
 {
     class MenuConfig
     {
-        private const string MenuName = "SDK SkinChanger";
+        private const string MenuName = "SDK 换肤";
         public static Menu MainMenu { get; set; } = EloBuddy.SDK.Menu.MainMenu.AddMenu(MenuName, MenuName);
 
         public static void Load()
         {
-            SkinMenu = MainMenu.AddSubMenu("SkinChanger", "SkinChanger");
-            SkinMenu.Add("Skins", new ComboBox("Skins", 0, "Default", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ));
+            SkinMenu = MainMenu.AddSubMenu("换肤", "SkinChanger");
+            SkinMenu.Add("Skins", new ComboBox("皮肤", 0, "Default", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" ));
             SkinChanger = SkinMenu["Skins"].Cast<ComboBox>().CurrentValue;
             SkinMenu["Skins"].Cast<ComboBox>().OnValueChange += MenuConfig_OnValueChange;
         }

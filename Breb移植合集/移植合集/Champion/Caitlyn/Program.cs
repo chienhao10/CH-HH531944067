@@ -276,14 +276,11 @@ namespace PortAIO.Champion.Caitlyn
                 }
 
                 if (getCheckBoxItem(wMenu, "telE"))
-                    foreach (
-                        var Object in
-                            ObjectManager.Get<Obj_AI_Base>()
-                                .Where(
-                                    Obj =>
-                                        Obj.Team != Player.Team && Obj.Distance(Player.ServerPosition) < W.Range &&
-                                        (Obj.HasBuff("teleport_target") || Obj.HasBuff("Pantheon_GrandSkyfall_Jump"))))
-                        W.Cast(Object.Position, true);
+                {
+                    var trapPos = OktwCommon.GetTrapPos(W.Range);
+                    if (!trapPos.IsZero)
+                        W.Cast(trapPos);
+                }
             }
         }
 
@@ -461,7 +458,7 @@ namespace PortAIO.Champion.Caitlyn
                     if (rDamage > t.Health)
                     {
                         Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
-                            "Ult can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "R 可击杀: " + t.ChampionName + " 剩下: " + t.Health + "hp");
                         drawLine(t.Position, Player.Position, 10, Color.Yellow);
                     }
                 }
@@ -471,7 +468,7 @@ namespace PortAIO.Champion.Caitlyn
                 {
                     if (Q.GetDamage(tw) > tw.Health)
                         Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.4f, Color.Red,
-                            "Q can kill: " + t.ChampionName + " have: " + t.Health + "hp");
+                            "Q 可击杀: " + t.ChampionName + " 剩下: " + t.Health + "hp");
                 }
             }
         }

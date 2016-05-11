@@ -22,18 +22,18 @@ namespace TwistedFate
     {
         private static Menu Config;
 
-        private static Spell Q;
-        private static readonly float Qangle = 28*(float) Math.PI/180;
+        private static Spell Q, W;
+        private static readonly float Qangle = 28 * (float)Math.PI / 180;
         private static Vector2 PingLocation;
         private static int LastPingT;
         private static AIHeroClient Player;
         private static int CastQTick;
 
-        public static Menu q, w, menuItems, r, misc, drawings;
+        public static Menu q, w, menuItems, r, misc, drawings, laneclearMenu, jungleclearMenu;
 
         private static void Ping(Vector2 position)
         {
-            if (Utils.TickCount - LastPingT < 30*1000)
+            if (Utils.TickCount - LastPingT < 30 * 1000)
             {
                 return;
             }
@@ -80,6 +80,8 @@ namespace TwistedFate
             Q = new Spell(SpellSlot.Q, 1450);
             Q.SetSkillshot(0.25f, 40f, 1000f, false, SkillshotType.SkillshotLine);
 
+            W = new Spell(SpellSlot.W);
+
             //Make the menu
             Config = MainMenu.AddMenu("Twisted Fate", "TwistedFate");
 
@@ -93,6 +95,20 @@ namespace TwistedFate
             w.Add("SelectBlue", new KeyBind("Select Blue", false, KeyBind.BindTypes.HoldActive, 'E'));
             w.Add("SelectRed", new KeyBind("Select Red", false, KeyBind.BindTypes.HoldActive, 'T'));
 
+            laneclearMenu = Config.AddSubMenu("Laneclear", "laneclearset");
+            laneclearMenu.Add("laneclearUseQ", new CheckBox("Use Q"));
+            laneclearMenu.Add("laneclearQmana", new Slider("Cast Q If Mana % >", 50));
+            laneclearMenu.Add("laneclearQmc", new Slider("Cast Q If Hit Minion Number >=", 5, 2, 7));
+            laneclearMenu.Add("laneclearUseW", new CheckBox("Use W"));
+            laneclearMenu.Add("laneclearredmc", new Slider("Red Instead of Blue If Minion Number >=", 3, 2, 5));
+            laneclearMenu.Add("laneclearbluemana", new Slider("Blue Instead of Red If Mana % <", 30));
+
+            jungleclearMenu = Config.AddSubMenu("Jungleclear", "jungleclearset");
+            jungleclearMenu.Add("jungleclearUseQ", new CheckBox("Use Q"));
+            jungleclearMenu.Add("jungleclearQmana", new Slider("Cast Q If Mana % >0", 30));
+            jungleclearMenu.Add("jungleclearUseW", new CheckBox("Use W"));
+            jungleclearMenu.Add("jungleclearbluemana", new Slider("Pick Blue If Mana % <", 30));
+
             menuItems = Config.AddSubMenu("Items", "Items");
             menuItems.Add("itemBotrk", new CheckBox("Botrk"));
             menuItems.Add("itemYoumuu", new CheckBox("Youmuu"));
@@ -103,14 +119,15 @@ namespace TwistedFate
 
             misc = Config.AddSubMenu("Misc", "Misc");
             misc.Add("PingLH", new CheckBox("Ping low health enemies (Only local)"));
+            misc.Add("DontGoldCardDuringCombo", new CheckBox("Don't select gold card on combo", false));
 
             drawings = Config.AddSubMenu("Drawings", "Drawings");
             drawings.Add("Qcircle", new CheckBox("Q Range"));
-                //.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
+            //.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
             drawings.Add("Rcircle", new CheckBox("R Range"));
-                //.SetValue(new Circle(true, Color.FromArgb(100, 255, 255, 255))));
+            //.SetValue(new Circle(true, Color.FromArgb(100, 255, 255, 255))));
             drawings.Add("Rcircle2", new CheckBox("R Range (minimap)"));
-                //.SetValue(new Circle(true, Color.FromArgb(255, 255, 255, 255))));
+            //.SetValue(new Circle(true, Color.FromArgb(255, 255, 255, 255))));
 
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
@@ -137,6 +154,62 @@ namespace TwistedFate
                 getCheckBoxItem(r, "AutoY"))
             {
                 CardSelector.StartSelecting(Cards.Yellow);
+            }
+        }
+
+        static void LaneClear()
+        {
+            if (Q.IsReady() && getCheckBoxItem(laneclearMenu, "laneclearUseQ") && Player.ManaPercent > getSliderItem(laneclearMenu, "laneclearQmana"))
+            {
+                var allMinionsQ = MinionManager.GetMinions(Player.ServerPosition, Q.Range, MinionTypes.All, MinionTeam.Enemy);
+                var locQ = Q.GetLineFarmLocation(allMinionsQ);
+
+                if (locQ.MinionsHit >= getSliderItem(laneclearMenu, "laneclearQmc"))
+                    Q.Cast(locQ.Position);
+            }
+
+            if (W.IsReady() && getCheckBoxItem(laneclearMenu, "laneclearUseW"))
+            {
+                var minioncount = MinionManager.GetMinions(Player.Position, 1500).Count;
+
+                if (minioncount > 0)
+                {
+                    if (Player.ManaPercent > getSliderItem(laneclearMenu, "laneclearbluemana"))
+                    {
+                        if (minioncount >= getSliderItem(laneclearMenu, "laneclearredmc"))
+                            CardSelector.StartSelecting(Cards.Red);
+                        else
+                            CardSelector.StartSelecting(Cards.Blue);
+                    }
+                    else
+                        CardSelector.StartSelecting(Cards.Blue);
+                }
+            }
+        }
+
+        static void JungleClear()
+        {
+            var mobs = MinionManager.GetMinions(Player.ServerPosition, Orbwalking.GetRealAutoAttackRange(Player) + 100, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth);
+
+            if (mobs.Count <= 0)
+                return;
+
+            if (Q.IsReady() && getCheckBoxItem(jungleclearMenu, "jungleclearUseQ") && Player.ManaPercent > getSliderItem(jungleclearMenu, "jungleclearQmana"))
+            {
+                Q.Cast(mobs[0].Position);
+            }
+
+            if (W.IsReady() && getCheckBoxItem(jungleclearMenu, "jungleclearUseW"))
+            {
+                if (Player.ManaPercent > getSliderItem(jungleclearMenu, "jungleclearbluemana"))
+                {
+                    if (mobs.Count >= 2)
+                        CardSelector.StartSelecting(Cards.Red);
+                    else
+                        CardSelector.StartSelecting(Cards.Yellow);
+                }
+                else
+                    CardSelector.StartSelecting(Cards.Blue);
             }
         }
 
@@ -171,7 +244,7 @@ namespace TwistedFate
             var result = 0;
 
             var startPoint = ObjectManager.Player.ServerPosition.To2D();
-            var originalDirection = Q.Range*(position - startPoint).Normalized();
+            var originalDirection = Q.Range * (position - startPoint).Normalized();
             var originalEndPoint = startPoint + originalDirection;
 
             for (var i = 0; i < points.Count; i++)
@@ -186,7 +259,7 @@ namespace TwistedFate
                     if (k == 2) endPoint = startPoint + originalDirection.Rotated(-Qangle);
 
                     if (point.Distance(startPoint, endPoint, true, true) <
-                        (Q.Width + hitBoxes[i])*(Q.Width + hitBoxes[i]))
+                        (Q.Width + hitBoxes[i]) * (Q.Width + hitBoxes[i]))
                     {
                         result++;
                         break;
@@ -203,7 +276,7 @@ namespace TwistedFate
             var hitBoxes = new List<int>();
 
             var startPoint = ObjectManager.Player.ServerPosition.To2D();
-            var originalDirection = Q.Range*(unitPosition - startPoint).Normalized();
+            var originalDirection = Q.Range * (unitPosition - startPoint).Normalized();
 
             foreach (var enemy in ObjectManager.Get<AIHeroClient>())
             {
@@ -213,7 +286,7 @@ namespace TwistedFate
                     if (pos.Hitchance >= HitChance.Medium)
                     {
                         points.Add(pos.UnitPosition.To2D());
-                        hitBoxes.Add((int) enemy.BoundingRadius);
+                        hitBoxes.Add((int)enemy.BoundingRadius);
                     }
                 }
             }
@@ -234,9 +307,9 @@ namespace TwistedFate
                 {
                     var pos = posiblePositions[i];
                     var direction = (pos - startPoint).Normalized().Perpendicular();
-                    var k = 2/3*(unit.BoundingRadius + Q.Width);
-                    posiblePositions.Add(startPoint - k*direction);
-                    posiblePositions.Add(startPoint + k*direction);
+                    var k = 2 / 3 * (unit.BoundingRadius + Q.Width);
+                    posiblePositions.Add(startPoint - k * direction);
+                    posiblePositions.Add(startPoint + k * direction);
                 }
             }
 
@@ -262,7 +335,7 @@ namespace TwistedFate
         private static float ComboDamage(AIHeroClient hero)
         {
             var dmg = 0d;
-            dmg += Player.GetSpellDamage(hero, SpellSlot.Q)*2;
+            dmg += Player.GetSpellDamage(hero, SpellSlot.Q) * 2;
             dmg += Player.GetSpellDamage(hero, SpellSlot.W);
             dmg += Player.GetSpellDamage(hero, SpellSlot.Q);
 
@@ -271,7 +344,7 @@ namespace TwistedFate
                 dmg += ObjectManager.Player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite);
             }
 
-            return (float) dmg;
+            return (float)dmg;
         }
 
         private static void Game_OnGameUpdate(EventArgs args)
@@ -287,6 +360,12 @@ namespace TwistedFate
                 {
                     Ping(enemy.Position.To2D());
                 }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            {
+                LaneClear();
+                JungleClear();
+            }
 
             if (getKeyBindItem(q, "CastQ"))
             {
@@ -305,7 +384,7 @@ namespace TwistedFate
             var combo = Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
 
             //Select cards.
-            if (getKeyBindItem(w, "SelectYellow") || combo)
+            if (getKeyBindItem(w, "SelectYellow") || combo && !getCheckBoxItem(misc, "DontGoldCardDuringCombo"))
             {
                 CardSelector.StartSelecting(Cards.Yellow);
             }
@@ -328,7 +407,7 @@ namespace TwistedFate
             if (ObjectManager.Player.Spellbook.CanUseSpell(SpellSlot.Q) == SpellState.Ready && (autoQD || autoQI))
                 foreach (var enemy in ObjectManager.Get<AIHeroClient>())
                 {
-                    if (enemy.IsValidTarget(Q.Range*2))
+                    if (enemy.IsValidTarget(Q.Range * 2))
                     {
                         var pred = Q.GetPrediction(enemy);
                         if ((pred.Hitchance == HitChance.Immobile && autoQI) ||
