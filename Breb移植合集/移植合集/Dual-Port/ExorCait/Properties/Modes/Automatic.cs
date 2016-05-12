@@ -42,9 +42,9 @@ namespace ExorAIO.Champions.Caitlyn
             /// </summary>
             if (Variables.W.IsReady() && Menus.getCheckBoxItem(Variables.WMenu, "wspell.auto"))
             {
-                foreach (AIHeroClient target in HeroManager.Enemies.Where(t => Bools.IsImmobile(t) && !Bools.IsSpellShielded(t) && t.LSIsValidTarget(Variables.W.Range)))
+                foreach (AIHeroClient target in HeroManager.Enemies.Where(t => Bools.IsImmobile(t) && !Bools.IsSpellShielded(t) && t.LSIsValidTarget(Variables.W.Range) && t.IsEnemy))
                 {
-                    if (!ObjectManager.Get<Obj_AI_Minion>().Any(m => m.LSDistance(target.Position) < 100f && m.CharData.BaseSkinName.Contains("Cupcake")))
+                    if (!ObjectManager.Get<Obj_AI_Minion>().Any(m => m.LSDistance(target.Position) < 200f && m.CharData.BaseSkinName.Contains("Cupcake")))
                     {
                         Variables.W.Cast(target.Position);
                     }

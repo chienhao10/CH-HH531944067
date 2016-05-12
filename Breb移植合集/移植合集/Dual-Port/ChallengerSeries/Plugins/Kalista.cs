@@ -128,7 +128,7 @@ namespace Challenger_Series.Plugins
 
             if (DrawEDamage)
             {
-                HpBarDamageIndicator.DamageToUnit = GetFloatRendDamage;
+                HpBarDamageIndicator.DamageToUnit = GetRawRendDamage;
             }
             HpBarDamageIndicator.Enabled = DrawEDamage;
         }
@@ -476,14 +476,14 @@ namespace Challenger_Series.Plugins
             return target.HasBuffOfType(BuffType.SpellShield) && target.HasBuffOfType(BuffType.SpellImmunity);
         }
 
-        private BuffInstance GetRendBuff(Obj_AI_Base target)
+        public BuffInstance GetRendBuff(Obj_AI_Base target)
         {
-            return target.Buffs.FirstOrDefault(b => b.Name == "kalistaexpungemarker");
+            return target.Buffs.Find(b => b.Caster.IsMe && b.IsValid() && b.DisplayName == "KalistaExpungeMarker");
         }
 
-        private bool HasRendBuff(Obj_AI_Base target)
+        public bool HasRendBuff(Obj_AI_Base target)
         {
-            return this.GetRendBuff(target) != null;
+            return GetRendBuff(target) != null;
         }
 
         private double GetTotalHealthWithShieldsApplied(Obj_AI_Base target)
@@ -491,48 +491,101 @@ namespace Challenger_Series.Plugins
             return target.Health + target.AllShield;
         }
 
+        public static bool HasSpellShield(AIHeroClient target)
+        {
+            //Banshee's Veil
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "bansheesveil"))
+            {
+                return true;
+            }
+
+            //Sivir E
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "SivirE"))
+            {
+                return true;
+            }
+
+            //Nocturne W
+            if (target.Buffs.Any(b => b.IsValid() && b.DisplayName == "NocturneW"))
+            {
+                return true;
+            }
+
+            //Other spellshields
+            return target.HasBuffOfType(BuffType.SpellShield) || target.HasBuffOfType(BuffType.SpellImmunity);
+        }
+
         public bool IsRendKillable(Obj_AI_Base target)
         {
-
-            // Validate unit
-            if (target == null) { return false; }
-            if (!HasRendBuff(target)) { return false; }
-            if (target is AIHeroClient && target.Health > 1)
+            if (target == null || !target.IsValidTarget(E.Range + 200) || !HasRendBuff(target) || target.Health <= 0 || !E.IsReady())
             {
-                if (ShouldntRend((AIHeroClient)target)) return false;
-            }
-
-            if (target == null)
                 return false;
+            }
 
-            var baseDamage = ELS.GetDamage(target);
-
-            if (target is AIHeroClient)
+            var hero = target as AIHeroClient;
+            if (hero != null)
             {
-                if (HasUndyingBuff(target) || target.Health < 1 || target.HasBuffOfType(BuffType.SpellShield))
+                if (hero.HasUndyingBuff() || HasSpellShield(hero))
+                {
                     return false;
+                }
 
-                if (target.HasBuff("meditate"))
+                if (hero.ChampionName == "Blitzcrank")
                 {
-                    baseDamage *= (0.5f - 0.05f * target.Spellbook.GetSpell(SpellSlot.W).Level);
+                    if (!hero.HasBuff("BlitzcrankManaBarrierCD") && !hero.HasBuff("ManaBarrier"))
+                    {
+                        return GetActualDamage(target) > (GetTotalHealth(target) + (hero.Mana / 2));
+                    }
+
+                    if (hero.HasBuff("ManaBarrier") && !(hero.AllShield > 0))
+                    {
+                        return false;
+                    }
                 }
             }
 
-            if (target is Obj_AI_Minion)
+            return (GetActualDamage(target) - this.ReduceRendDamageBySlider) > GetTotalHealth(target);
+        }
+
+        public float GetTotalHealth(Obj_AI_Base target)
+        {
+            return target.Health + target.AllShield + target.AttackShield + target.MagicShield + (target.HPRegenRate * 2);
+        }
+
+        public float GetActualDamage(Obj_AI_Base target)
+        {
+            if (!E.IsReady() || !HasRendBuff(target)) return 0f;
+
+            var damage = GetRendDamage(target);
+
+            if (target.Name.Contains("Baron"))
             {
-                if (target.Name.Contains("Baron") && ObjectManager.Player.HasBuff("barontarget"))
-                {
-                    baseDamage *= 0.5f;
-                }
+                // Buff Name: barontarget or barondebuff
+                // Baron's Gaze: Baron Nashor takes 50% reduced damage from champions he's damaged in the last 15 seconds. 
+                damage = Player.Instance.HasBuff("barontarget")
+                    ? damage * 0.5f
+                    : damage;
             }
 
-            if (ObjectManager.Player.HasBuff("SummonerExhaustSlow"))
+            else if (target.Name.Contains("Dragon"))
             {
-                baseDamage *= 0.55f;
+                // DragonSlayer: Reduces damage dealt by 7% per a stack
+                damage = Player.Instance.HasBuff("s5test_dragonslayerbuff")
+                    ? damage * (1 - (.07f * Player.Instance.GetBuffCount("s5test_dragonslayerbuff")))
+                    : damage;
             }
 
+            if (Player.Instance.HasBuff("summonerexhaust"))
+            {
+                damage = damage * 0.6f;
+            }
 
-            return (baseDamage - this.ReduceRendDamageBySlider) > GetHealthWithShield(target);
+            if (target.HasBuff("FerociousHowl"))
+            {
+                damage = damage * 0.7f;
+            }
+
+            return damage;
         }
 
         public static float GetHealthWithShield(Obj_AI_Base target)
@@ -573,25 +626,20 @@ namespace Challenger_Series.Plugins
             return false;
         }
 
-        public float GetFloatRendDamage(Obj_AI_Base target)
+        public float GetRendDamage(Obj_AI_Base target)
         {
-            return (float)GetRendDamage(target, -1);
+            return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, GetRawRendDamage(target)) *
+                   (Player.Instance.HasBuff("summonerexhaust") ? 0.6f : 1);
         }
 
-        public double GetRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
+        public float GetRawRendDamage(Obj_AI_Base target)
         {
-            // Calculate the damage and return
-            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical, GetRawRendDamage(target, customStacks, rendBuff) - this.ReduceRendDamageBySlider);
-        }
-
-        public float GetRawRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
-        {
-            rendBuff = rendBuff ?? GetRendBuff(target);
-            var stacks = (customStacks > -1 ? customStacks : rendBuff != null ? rendBuff.Count : 0) - 1;
+            var stacks = (HasRendBuff(target) ? GetRendBuff(target).Count : 0) - 1;
             if (stacks > -1)
             {
                 var index = E.Level - 1;
-                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] + ObjectManager.Player.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
+                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] +
+                       Player.Instance.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
             }
 
             return 0;

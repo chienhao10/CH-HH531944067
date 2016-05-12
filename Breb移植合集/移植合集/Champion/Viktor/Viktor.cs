@@ -74,11 +74,50 @@ namespace Viktor
             // Register events
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
-            AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
             Orbwalker.OnUnkillableMinion += Orbwalker_OnUnkillableMinion;
             Orbwalker.OnPreAttack += OrbwalkingOnBeforeAttack;
-            Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
+
+            EloBuddy.SDK.Events.Gapcloser.OnGapcloser += Gapcloser_OnGapcloser;
+            EloBuddy.SDK.Events.Interrupter.OnInterruptableSpell += Interrupter_OnInterruptableSpell;
         }
+
+        private static void Gapcloser_OnGapcloser(AIHeroClient sender, EloBuddy.SDK.Events.Gapcloser.GapcloserEventArgs e)
+        {
+            if (getCheckBoxItem(misc, "miscGapcloser") && W.IsInRange(e.End))
+            {
+                GapCloserPos = e.End;
+                if (LeagueSharp.Common.Geometry.LSDistance(e.Start, e.End) > e.Sender.Spellbook.GetSpell(e.Slot).SData.CastRangeDisplayOverride && e.Sender.Spellbook.GetSpell(e.Slot).SData.CastRangeDisplayOverride > 100)
+                {
+                    GapCloserPos = LeagueSharp.Common.Geometry.LSExtend(e.Start, e.End, e.Sender.Spellbook.GetSpell(e.Slot).SData.CastRangeDisplayOverride);
+                }
+                W.Cast(GapCloserPos.To2D(), true);
+            }
+        }
+
+        private static void Interrupter_OnInterruptableSpell(Obj_AI_Base sender, EloBuddy.SDK.Events.Interrupter.InterruptableSpellEventArgs e)
+        {
+            if (sender.IsAlly || sender.IsMe)
+            {
+                return;
+            }
+            if (e.DangerLevel >= DangerLevel.High)
+            {
+                var useW = getCheckBoxItem(misc, "wInterrupt");
+                var useR = getCheckBoxItem(misc, "rInterrupt");
+
+                if (useW && W.IsReady() && sender.IsValidTarget(W.Range) &&
+                    (Game.Time + 1.5 + W.Delay) >= e.EndTime)
+                {
+                    if (W.Cast(sender) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
+                        return;
+                }
+                else if (useR && sender.IsValidTarget(R.Range) && R.Instance.Name == "ViktorChaosStorm")
+                {
+                    R.Cast(sender);
+                }
+            }
+        }
+
         private static void Orbwalker_OnUnkillableMinion(Obj_AI_Base target, Orbwalker.UnkillableMinionArgs args)
         {
             QLastHit((Obj_AI_Base)target);
@@ -427,39 +466,6 @@ namespace Viktor
         private static void CastE(Vector2 source, Vector2 destination)
         {
             E.Cast(source, destination);
-        }
-
-        private static void Interrupter2_OnInterruptableTarget(AIHeroClient unit, Interrupter2.InterruptableTargetEventArgs args)
-        {
-            if (args.DangerLevel >= Interrupter2.DangerLevel.High)
-            {
-                var useW = getCheckBoxItem(misc, "wInterrupt");
-                var useR = getCheckBoxItem(misc, "rInterrupt");
-
-                if (useW && W.IsReady() && unit.IsValidTarget(W.Range) &&
-                    (Game.Time + 1.5 + W.Delay) >= args.EndTime)
-                {
-                    if (W.Cast(unit) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)
-                        return;
-                }
-                else if (useR && unit.IsValidTarget(R.Range) && R.Instance.Name == "ViktorChaosStorm")
-                {
-                    R.Cast(unit);
-                }
-            }
-        }
-
-        private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
-        {
-            if (getCheckBoxItem(misc, "miscGapcloser") && W.IsInRange(gapcloser.End))
-            {
-                GapCloserPos = gapcloser.End;
-                if (LeagueSharp.Common.Geometry.LSDistance(gapcloser.Start, gapcloser.End) > gapcloser.Sender.Spellbook.GetSpell(gapcloser.Slot).SData.CastRangeDisplayOverride && gapcloser.Sender.Spellbook.GetSpell(gapcloser.Slot).SData.CastRangeDisplayOverride > 100)
-                {
-                    GapCloserPos = LeagueSharp.Common.Geometry.LSExtend(gapcloser.Start, gapcloser.End, gapcloser.Sender.Spellbook.GetSpell(gapcloser.Slot).SData.CastRangeDisplayOverride);
-                }
-                W.Cast(GapCloserPos.To2D(), true);
-            }
         }
         private static void AutoW()
         {

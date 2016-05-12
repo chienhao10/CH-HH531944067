@@ -1,6 +1,5 @@
 ﻿To-Do :
 - Check Sejuani
-- Check loading with GP
 - Check Anivia randomly casting spells
 - Mordekaiser Crashing on Ult @ Low HP
 - Fix Karthus Orbwalker
@@ -11,7 +10,10 @@
 - Caitlyn on W hard CC
 - Bard Flee
 - Check loading from Valvrave to YasuoPro
-- Check Kog'Maw R
+- Sentinel Kalista
+- Add auto-semi key for lantern (not sure how to do this, might not do it)
+- Add a Humanizer for w in combo
+- Check LB AOE Combo
 
 ------------------------------------------------------------------------
 

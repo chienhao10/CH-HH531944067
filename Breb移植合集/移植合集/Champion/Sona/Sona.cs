@@ -109,9 +109,12 @@ namespace vSupport_Series.Champions
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
-        private static void SonaOnInterruptableTarget(AIHeroClient sender,
-            Interrupter2.InterruptableTargetEventArgs args)
+        private static void SonaOnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
+            if (sender.IsMe || sender.IsAlly)
+            {
+                return;
+            }
             if (R.IsReady() && sender.IsValidTarget(R.Range) && getCheckBoxItem(misc, "sona.inter"))
             {
                 R.CastIfHitchanceEquals(sender, HitChance.High);
@@ -120,6 +123,10 @@ namespace vSupport_Series.Champions
 
         private static void SonaOnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
+            if (gapcloser.Sender.IsMe || gapcloser.Sender.IsAlly)
+            {
+                return;
+            }
             if (R.IsReady() && getCheckBoxItem(misc, "sona.anti") &&
                 R.GetPrediction(gapcloser.Sender).Hitchance > HitChance.High
                 && gapcloser.Sender.IsValidTarget(1000))
@@ -196,7 +203,7 @@ namespace vSupport_Series.Champions
                 foreach (
                     var target in HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
                 {
-                    if (R.GetDamage(target) > target.Health)
+                    if (R.GetDamage(target) > target.Health && R.IsInRange(target))
                     {
                         R.CastIfHitchanceEquals(target, SpellHitChance(Config, "sona.hitchance"));
                     }
@@ -220,7 +227,10 @@ namespace vSupport_Series.Champions
                 foreach (
                     var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
                 {
-                    R.CastIfHitchanceEquals(enemy, SpellHitChance(Config, "sona.hitchance"));
+                    if (R.IsInRange(enemy))
+                    {
+                        R.CastIfHitchanceEquals(enemy, SpellHitChance(Config, "sona.hitchance"));
+                    }
                 }
             }
         }

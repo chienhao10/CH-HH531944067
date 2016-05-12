@@ -134,7 +134,7 @@ namespace Challenger_Series.Plugins
                     var prediction = Q.GetPrediction(enemy);
                     if ((int)prediction.Hitchance >= (int)HitChance.VeryHigh)
                     {
-                        Q.Cast(prediction.UnitPosition);
+                        Q.Cast(enemy);
                     }
                 }
             }
@@ -293,7 +293,7 @@ namespace Challenger_Series.Plugins
 
         private void RLogic()
         {
-            if (!getCheckBoxItem(ComboMenu, "koggieuser") || !R.IsReady() || ObjectManager.Player.IsRecalling() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None)) return;
+            if (!getCheckBoxItem(ComboMenu, "koggieuser") || !R.IsReady() || ObjectManager.Player.IsRecalling()) return;
             if (getCheckBoxItem(MainMenu, "koggiesavewmana") && ObjectManager.Player.Mana < GetRMana() + GetWMana()) return;
             var myPos = ObjectManager.Player.ServerPosition;
             foreach (var enemy in ValidTargets.Where(h => h.Distance(myPos) < R.Range && h.HealthPercent < 25 && h.LSIsValidTarget()))
