@@ -198,7 +198,7 @@ namespace Mordekaiser.Events
             var t = TargetSelector.GetTarget(Spells.R.Range, DamageType.Magical);
             if (t.IsValidTarget() && t.Health <= ObjectManager.Player.LSGetSpellDamage(t, SpellSlot.R))
             {
-                Spells.R.CastOnUnit(t);
+                Spells.R.Cast(t);
             }
         }
 

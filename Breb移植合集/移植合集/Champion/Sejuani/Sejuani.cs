@@ -153,7 +153,7 @@ namespace ElSejuani
                     var pred = spells[Spells.R].GetPrediction(x);
                     if (pred.AoeTargetsHitCount >= countEnemyR)
                     {
-                        spells[Spells.R].Cast(pred.CastPosition);
+                        spells[Spells.R].Cast(x);
                     }
                 }
             }
@@ -320,8 +320,7 @@ namespace ElSejuani
                     }
                 }
 
-                if (spells[Spells.W].IsReady() && clearW
-                    && minion.ServerPosition.Distance(Player.ServerPosition, true) >= spells[Spells.W].Range)
+                if (spells[Spells.W].IsReady() && clearW && minion.ServerPosition.Distance(Player.ServerPosition, true) >= spells[Spells.W].Range)
                 {
                     spells[Spells.W].Cast();
                 }
@@ -347,8 +346,7 @@ namespace ElSejuani
                 Combo();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 LaneClear();
                 JungleClear();
@@ -382,7 +380,7 @@ namespace ElSejuani
             var prediction = spells[Spells.R].GetPrediction(target);
             if (prediction.Hitchance >= HitChance.High)
             {
-                spells[Spells.R].Cast(prediction.CastPosition);
+                spells[Spells.R].Cast(target);
             }
         }
 

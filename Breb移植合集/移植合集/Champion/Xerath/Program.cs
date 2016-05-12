@@ -204,7 +204,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (Program.LagFree(3) && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
+            //if (Program.LagFree(3) && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
+            if (Program.LagFree(3) && R.IsReady())
                 LogicR();
 
             //Program.debug(""+OktwCommon.GetPassiveTime(Player, "XerathArcanopulseChargeUp"));
@@ -265,7 +266,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     R.Cast();
                 }
-                if (!t.IsValidTarget(W.Range) && !IsCastingR && t.CountAlliesInRange(500) == 0 && Player.CountEnemiesInRange(1100) == 0)
+                if (!t.IsValidTarget(W.Range) && getCheckBoxItem(rMenu, "autoR") && !IsCastingR && t.CountAlliesInRange(500) == 0 && Player.CountEnemiesInRange(1100) == 0)
                 {
                     if (OktwCommon.GetKsDamage(t, R) + (R.GetDamage(t) * R.Level) > t.Health)
                     {

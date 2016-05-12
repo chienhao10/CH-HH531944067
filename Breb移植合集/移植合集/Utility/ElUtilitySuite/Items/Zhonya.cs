@@ -340,12 +340,6 @@ namespace ElUtilitySuite.Items
                                  },
                              new ZhonyaSpell
                                  {
-                                     ChampionName = "shyvana", SDataName = "shyvanatransformcast",
-                                     MissileName = "shyvanatransformcast", Delay = 100, MissileSpeed = 1100,
-                                     CastRange = 1000f
-                                 },
-                             new ZhonyaSpell
-                                 {
                                      ChampionName = "skarner", SDataName = "skarnerimpale", MissileName = "", Delay = 350,
                                      MissileSpeed = int.MaxValue, CastRange = 350f
                                  },

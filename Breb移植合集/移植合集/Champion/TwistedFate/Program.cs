@@ -355,8 +355,7 @@ namespace TwistedFate
                         ObjectManager.Get<AIHeroClient>()
                             .Where(
                                 h =>
-                                    ObjectManager.Player.Spellbook.CanUseSpell(SpellSlot.R) == SpellState.Ready &&
-                                    h.IsValidTarget() && ComboDamage(h) > h.Health))
+                                    ObjectManager.Player.Spellbook.CanUseSpell(SpellSlot.R) == SpellState.Ready && h.IsValidTarget() && h.IsEnemy && ComboDamage(h) > h.Health))
                 {
                     Ping(enemy.Position.To2D());
                 }

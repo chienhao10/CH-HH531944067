@@ -145,6 +145,7 @@
             Console.WriteLine("-----------DON'T MIND THE ERRORS BELOW-----------------");
             Console.WriteLine("-----------DON'T MIND THE ERRORS BELOW-----------------");
             Console.WriteLine("-----------DON'T MIND THE ERRORS BELOW-----------------");
+
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
             Game.OnUpdate += args =>
@@ -342,15 +343,21 @@
 
         private static void CastQSmite(AIHeroClient target)
         {
+            if (!Q.IsReady() || !IsQOne)
+            {
+                return;
+            }
+
             var pred = QELO.GetPrediction(target);
-            if (pred.HitChance < EloBuddy.SDK.Enumerations.HitChance.High)
+
+            if ((pred.HitChance < EloBuddy.SDK.Enumerations.HitChance.High))
             {
                 return;
             }
 
             var predA = Q.GetPrediction(target, false, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall);
             var colA = predA.GetCollision();
-            if (pred.HitChance >= EloBuddy.SDK.Enumerations.HitChance.High)
+            if (pred.HitChance >= EloBuddy.SDK.Enumerations.HitChance.High && pred.HitChance != EloBuddy.SDK.Enumerations.HitChance.Collision)
             {
                 QELO.Cast(target);
             }
@@ -462,7 +469,7 @@
                         CastQSmite(target);
                     }
                 }
-                else if (getCheckBoxItem(comboMenu, "Q2") && !IsDashing && objQ.IsValidTarget(Q2.Range))
+                else if (getCheckBoxItem(comboMenu, "Q2") && !IsDashing && objQ.IsValidTarget(Q2.Range) && !IsQOne)
                 {
                     var target = objQ as AIHeroClient;
                     if (target != null)
@@ -627,8 +634,12 @@
                     var target = Q.GetTarget(0);
                     if (target != null && (target.Health + target.AttackShield <= Q.GetDamage(target) || (target.Health + target.AttackShield <= GetQ2Dmg(target, Q.GetDamage(target)) + Player.GetAutoAttackDamage(target) && Player.Mana - Q.Instance.SData.Mana >= 30)))
                     {
+                        var pred = QELO.GetPrediction(target);
                         //Q.CastIfHitchanceMinimum(target, LeagueSharp.SDK.HitChance.High);
-                        QELO.Cast(target);
+                        if (pred.HitChance >= EloBuddy.SDK.Enumerations.HitChance.High && pred.HitChance != EloBuddy.SDK.Enumerations.HitChance.Collision)
+                        {
+                            QELO.Cast(target);
+                        }
                         return;
                     }
                 }

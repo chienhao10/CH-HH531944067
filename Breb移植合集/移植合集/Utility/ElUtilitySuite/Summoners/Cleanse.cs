@@ -31,227 +31,227 @@ namespace ElUtilitySuite.Summoners
 
             Spells = new List<CleanseSpell>
                          {
-                             new CleanseSpell
-                                 {
-                                     Name = "summonerdot", MenuName = "召唤师 点燃", Evade = false, DoT = true,
-                                     EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Unknown,
-                                     Interval = 1.0
-                                 },
                              /*new CleanseSpell
                                  {
-                                     Name = "summonerexhaustdebuff", MenuName = "召唤师 虚弱", Evade = false,
+                                     Name = "summonerdot", MenuName = "Summoner Ignite", Evade = false, DoT = true,
+                                     EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Unknown,
+                                     Interval = 1.0
+                                 },*/
+                             /*new CleanseSpell
+                                 {
+                                     Name = "summonerexhaustdebuff", MenuName = "Summoner Exhaust", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
                                  },*/
                              /*new CleanseSpell
                                  {
-                                     Name = "itemdusknightfall", MenuName = "夜幕之刃", Evade = false, DoT = true,
+                                     Name = "itemdusknightfall", MenuName = "Duskblade", Evade = false, DoT = true,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 1650, Slot = SpellSlot.Unknown,
-                                     Interval = 1.0
-                                 },
-                             new CleanseSpell
-                                 {
-                                     Champion = "Taric", Name = "stun", MenuName = "宝石-晕眩", Evade = false,
-                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
                                  },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Lulu", Name = "polymorph", MenuName = "露露-变形", Evade = false,
-                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
-                                     Interval = 1.0
-                                 },
-                             new CleanseSpell
-                                 {
-                                     Champion = "Nocturne", Name = "fear", MenuName = "梦魇-恐惧", Evade = false,
+                                     Champion = "Taric", Name = "stun", MenuName = "Taric Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Pantheon", Name = "stun", MenuName = "潘森-晕眩", Evade = false,
+                                     Champion = "Lulu", Name = "polymorph", MenuName = "Lulu polymorph", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Leona", Name = "stun", MenuName = "雷欧娜-晕眩", Evade = false,
+                                     Champion = "Nocturne", Name = "fear", MenuName = "Nocturne Fear", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E,
+                                     Interval = 1.0
+                                 },
+                             new CleanseSpell
+                                 {
+                                     Champion = "Pantheon", Name = "stun", MenuName = "Pantheon Stun", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
+                                     Interval = 1.0
+                                 },
+                             new CleanseSpell
+                                 {
+                                     Champion = "Leona", Name = "stun", MenuName = "Leona Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Q,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Quinn", Name = "QuinnQSightReduction", MenuName = "奎恩-致盲",
+                                     Champion = "Quinn", Name = "QuinnQSightReduction", MenuName = "Quinn Blind",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Q, Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Teemo", Name = "blind", MenuName = "提莫-致盲", Evade = false,
+                                     Champion = "Teemo", Name = "blind", MenuName = "Teemo Blind", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Ashe", Name = "stun", MenuName = "艾希 (R)", Evade = false, DoT = false,
+                                     Champion = "Ashe", Name = "stun", MenuName = "Ashe (R)", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "AurelionSol", Name = "stun", MenuName = "龙兽-晕眩", Evade = false, DoT = false,
+                                     Champion = "AurelionSol", Name = "stun", MenuName = "Aurelion Sol stun", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Brand", Name = "stun", MenuName = "火男-晕眩", Evade = false,
+                                     Champion = "Brand", Name = "stun", MenuName = "Brand stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Ekko", Name = "stun", MenuName = "艾克-晕眩", Evade = false, DoT = false,
+                                     Champion = "Ekko", Name = "stun", MenuName = "Ekko stun", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Unknown,
                                      Interval = 1.0
                                  },
-                            /* new CleanseSpell
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Vi", Name = "virknockup", MenuName = "薇 R 击飞", Evade = true,
+                                     Champion = "Vi", Name = "virknockup", MenuName = "Vi R Knockup", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
                                  },*/
-                                 
-                             new CleanseSpell
+
+                             /*new CleanseSpell
                                  {
                                      Champion = "Gangplank", Name = "gangplankpassiveattackdot",
-                                     MenuName = "船长被动-灼伤", Evade = false, DoT = true, EvadeTimer = 0,
+                                     MenuName = "Gangplank Passive Burn", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Unknown, Interval = .8
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Teemo", Name = "bantamtraptarget", MenuName = "提莫 蘑菇",
+                                     Champion = "Teemo", Name = "bantamtraptarget", MenuName = "Teemo Shroom",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Teemo", Name = "toxicshotparticle", MenuName = "提莫 E",
+                                     Champion = "Teemo", Name = "toxicshotparticle", MenuName = "Teemo Toxic Shot",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.E, Interval = 1.0
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Ahri", Name = "ahriseduce", MenuName = "阿狸-魅惑", Evade = false,
+                                     Champion = "Ahri", Name = "ahriseduce", MenuName = "Ahri Charm", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Talon", Name = "talonbleeddebuf", MenuName = "泰隆-流血", Evade = false,
+                                     Champion = "Talon", Name = "talonbleeddebuf", MenuName = "Talon Bleed", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Q,
                                      Interval = .8
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
                                      Champion = "Malzahar", Name = "alzaharnethergrasp",
-                                     MenuName = "玛尔扎哈 (R)", Evade = false, DoT = true, EvadeTimer = 0,
+                                     MenuName = "Malzahar Nether Grasp (R)", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R, Interval = .8
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Champion = "Malzahar", Name = "alzaharmaleficvisions",
-                                     MenuName = "玛尔扎哈 (E)", Evade = false, DoT = true, EvadeTimer = 0,
+                                     MenuName = "Malzahar Ficvisions (E)", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E, Interval = .8
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Soraka", Name = "SorakaESnare", MenuName = "索拉卡 E 定身",
+                                     Champion = "Soraka", Name = "SorakaESnare", MenuName = "Soraka E snare",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.E, Interval = 1.0
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
-                                     Champion = "FiddleSticks", Name = "Drain", MenuName = "稻草人-吸血", Evade = false,
+                                     Champion = "FiddleSticks", Name = "Drain", MenuName = "Fiddle Drain", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
-                                     Champion = "FiddleSticks", Name = "fleeslow", MenuName = "稻草人-恐惧", Evade = false,
+                                     Champion = "FiddleSticks", Name = "fleeslow", MenuName = "Fiddle Fear", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "FiddleSticks", Name = "Silence", MenuName = "稻草人-沉默",
+                                     Champion = "FiddleSticks", Name = "Silence", MenuName = "Fiddle Silence",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.E, Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Chogath", Name = "Silence", MenuName = "大虫子-沉默", Evade = false,
+                                     Champion = "Chogath", Name = "Silence", MenuName = "Cho Silence", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Galio", Name = "galioidolofdurand", MenuName = "加里奥 （R）",
+                                     Champion = "Galio", Name = "galioidolofdurand", MenuName = "Galio Idol of Durand",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R, Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Nasus", Name = "nasusw", MenuName = "狗头 (W）", Evade = false,
+                                     Champion = "Nasus", Name = "nasusw", MenuName = "Nasus Wither", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Champion = "Hecarim", Name = "hecarimdefilelifeleech",
-                                     MenuName = "人马 (R)", Evade = false, DoT = true, EvadeTimer = 0,
+                                     MenuName = "Hecarim Defile Leech", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.W, Interval = 1.0
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Swain", Name = "swaintorment", MenuName = "斯温 (E)", Evade = false,
+                                     Champion = "Swain", Name = "swaintorment", MenuName = "Swain Torment", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Brand", Name = "brandablaze", MenuName = "火男被动-灼伤",
+                                     Champion = "Brand", Name = "brandablaze", MenuName = "Brand Burn Passive",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 0.5
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Fizz", Name = "fizzseastonetrident", MenuName = "鱼人(W)",
+                                     Champion = "Fizz", Name = "fizzseastonetrident", MenuName = "Fizz Burn Passive",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = .8
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
                                      Champion = "Tristana", Name = "tristanaechargesound",
-                                     MenuName = "小炮（E)", Evade = false, DoT = true, EvadeTimer = 0,
+                                     MenuName = "Tristana Explosive Charge", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E, Interval = .8
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Darius", Name = "DariusNoxianTacticsONH", MenuName = "達瑞斯 (W)",
+                                     Champion = "Darius", Name = "DariusNoxianTacticsONH", MenuName = "Darius (W)",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.W, Interval = 1.0
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Nidalee", Name = "bushwackdamage", MenuName = "豹女 (W)",
+                                     Champion = "Nidalee", Name = "bushwackdamage", MenuName = "Nidalee Bushwhack",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.W, Interval = .8
                                  },
                              new CleanseSpell
                                  {
                                      Champion = "Nidalee", Name = "nidaleepassivehunted",
-                                     MenuName = "豹女被动-标记", Evade = false, DoT = true, EvadeTimer = 0,
+                                     MenuName = "Nidalee Passive Mark", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Unknown, Interval = .8
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
                                      Name = "missfortunescattershotslow", Evade = false, DoT = true, EvadeTimer = 0,
@@ -264,348 +264,358 @@ namespace ElUtilitySuite.Summoners
                                      Champion = "MissFortune", Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R,
                                      Interval = 0.5
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Champion = "Wukong", Name = "monkeykingspintowin", Evade = false, DoT = true,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R, Interval = 1.0
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
                                      Champion = "Cassiopeia", Name = "cassiopeianoxiousblastpoison",
-                                     MenuName = "蛇女-Q", Evade = false, Cleanse = false, DoT = true,
+                                     MenuName = "Cassio Noxious Blast", Evade = false, Cleanse = false, DoT = true,
                                      EvadeTimer = 0, CleanseTimer = 0, Slot = SpellSlot.Q, Interval = 0.4
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Cassiopeia", Name = "cassiopeiamiasmapoison", MenuName = "蛇女-W",
+                                     Champion = "Cassiopeia", Name = "cassiopeiamiasmapoison", MenuName = "Cassio Miasma",
                                      Evade = false, Cleanse = false, DoT = true, EvadeTimer = 0, CleanseTimer = 0,
                                      Slot = SpellSlot.Q, Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
                                      Champion = "Cassiopeia", Name = "cassiopeiapetrifyinggazestun",
-                                     MenuName = "蛇女-R", Evade = false, DoT = false, EvadeTimer = 0,
+                                     MenuName = "Cassio Petrifying Gaze", Evade = false, DoT = false, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 100, Slot = SpellSlot.R, Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
                                      Champion = "Sejuani", Name = "sejuaniglacialprison",
-                                     MenuName = "猪女-R", Evade = false, DoT = false, EvadeTimer = 0,
+                                     MenuName = "Sejuani Glacial Prison", Evade = false, DoT = false, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 100, Slot = SpellSlot.R, Interval = 1.0
                                  },
                              /*new CleanseSpell
                                  {
-                                     Champion = "Fiora", Name = "fiorarmark", MenuName = "剑姬-R",
+                                     Champion = "Fiora", Name = "fiorarmark", MenuName = "Fiora Grand Challenge",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 100,
                                      Slot = SpellSlot.R, Interval = 1.0
                                  },*/
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Twitch", Name = "twitchdeadlyvenon", MenuName = "图奇-毒",
+                                     Champion = "Twitch", Name = "twitchdeadlyvenon", MenuName = "Twitch Deadly Venom",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.E, Interval = 0.6
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
                                      Champion = "Urgot", Name = "urgotcorrosivedebuff",
-                                     MenuName = "螃蟹-标记", Evade = false, DoT = true, EvadeTimer = 0,
+                                     MenuName = "Urgot Corrosive Charge", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E, Interval = 1.0
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
                                      Champion = "Zac", Name = "zacr", Evade = true, DoT = true, EvadeTimer = 150,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R, Interval = 1.5
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
                                      Champion = "Mordekaiser", Name = "mordekaiserchildrenofthegrave",
-                                     MenuName = "钢铁大师-R", Evade = false, DoT = true,
+                                     MenuName = "Mordekaiser Children of the Grave", Evade = false, DoT = true,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Unknown,
                                      Interval = 1.5
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Zed", Name = "zedrtargetmark", MenuName = "劫-R", Evade = true,
+                                     Champion = "Zed", Name = "zedrtargetmark", MenuName = "Zed Mark", Evade = true,
                                      DoT = false, EvadeTimer = 2600, Cleanse = true, CleanseTimer = 1000,
                                      Slot = SpellSlot.R, Interval = 1.0
-                                 },
-                             new CleanseSpell
+                                 }, */
+                             /*new CleanseSpell
                                  {
                                      Champion = "Karthus", Name = "fallenonetarget", Evade = true, DoT = false,
                                      EvadeTimer = 2600, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
                                      Champion = "Karthus", Name = "karthusfallenonetarget", Evade = true, DoT = false,
                                      EvadeTimer = 2600, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },
-                             new CleanseSpell
+                                 },*/
+                              new CleanseSpell
                                  {
-                                     Champion = "Fizz", Name = "fizzmarinerdoombomb", MenuName = "鱼人-R",
+                                     Champion = "Karthus", Name = "KarthusWallOfPain ",  MenuName = "Karthus W", Evade = true, DoT = false,
+                                     EvadeTimer = 1600, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W
+                                 },
+                             /*new CleanseSpell
+                                 {
+                                     Champion = "Fizz", Name = "fizzmarinerdoombomb", MenuName = "Fizz Shark Bait",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Morgana", Name = "SoulShackless", MenuName = "莫甘娜-R",
+                                     Champion = "Morgana", Name = "SoulShackless", MenuName = "Morgana Soul Shackles",
                                      Evade = true, DoT = false, EvadeTimer = 2600, Cleanse = true, CleanseTimer = 1100,
                                      Slot = SpellSlot.R, Interval = 3.9
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Morgana", Name = "DarkBindingMissile", MenuName = "莫甘娜 Q",
+                                     Champion = "Morgana", Name = "DarkBindingMissile", MenuName = "Morgana Q",
                                      Evade = true, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Varus", Name = "varusrsecondary", MenuName = "韦鲁斯-R",
+                                     Champion = "Varus", Name = "varusrsecondary", MenuName = "Varus Chains of Corruption",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Champion = "Caitlyn", Name = "caitlynaceinthehole",
-                                     MenuName = "凯特琳-R", Evade = true, DoT = false, EvadeTimer = 900,
+                                     MenuName = "Caitlyn Ace in the Hole", Evade = true, DoT = false, EvadeTimer = 900,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Vladimir", Name = "vladimirhemoplague", MenuName = "吸血鬼-R",
+                                     Champion = "Vladimir", Name = "vladimirhemoplague", MenuName = "Vladimir Hemoplague",
                                      Evade = true, DoT = false, EvadeTimer = 4500, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "Diana", Name = "dianamoonlight", MenuName = "皎月-月光",
+                                     Champion = "Diana", Name = "dianamoonlight", MenuName = "Diana Moonlight",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Q
-                                 },
+                                 },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Urgot", Name = "urgotswap2", MenuName = "螃蟹-R", Evade = false,
+                                     Champion = "Urgot", Name = "urgotswap2", MenuName = "Urgot Swap", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Diana", Name = "DianaArc", MenuName = "皎月-Q", Evade = true,
+                                     Champion = "Diana", Name = "DianaArc", MenuName = "Diana Q", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Skarner", Name = "skarnerimpale", MenuName = "蝎子-R",
+                                     Champion = "Skarner", Name = "skarnerimpale", MenuName = "Skarner Impale",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 500,
                                      Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Poppy", Name = "Stun", MenuName = "波比-晕眩", Evade = false,
+                                     Champion = "Poppy", Name = "Stun", MenuName = "Poppy wall stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
                                      Champion = "Poppy", Name = "poppyulttargetmark",
-                                     MenuName = "波比-R", Evade = false, DoT = false, EvadeTimer = 0,
+                                     MenuName = "Poppy Diplomatic Immunity", Evade = false, DoT = false, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },
-                             new CleanseSpell
+                                 },*/
+                             /*new CleanseSpell
                                  {
-                                     Champion = "LeeSin", Name = "blindmonkqone", MenuName = "李星-Q", Evade = false,
+                                     Champion = "LeeSin", Name = "blindmonkqone", MenuName = "Lee Sin Q", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
+                                 },*/
+                             new CleanseSpell
+                                 {
+                                     Champion = "LeeSin", Name = "knockback", MenuName = "Lee Sin R", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Leblanc", Name = "leblancsoulshackle", MenuName = "妖姬-E",
+                                     Champion = "Leblanc", Name = "leblancsoulshackle", MenuName = "Leblanc Shackle",
                                      Evade = false, DoT = false, EvadeTimer = 2000, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Leblanc", Name = "leblancsoulshacklem", MenuName = "妖姬E + (R)",
+                                     Champion = "Leblanc", Name = "leblancsoulshacklem", MenuName = "Leblanc Shackle (R)",
                                      Evade = true, DoT = false, EvadeTimer = 2000, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "twistedfate", Name = "stun", MenuName = "卡牌-黄 (W)",
+                                     Champion = "twistedfate", Name = "stun", MenuName = "Twisted Fate Gold (W)",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "amumu", Name = "bandagetoss", MenuName = "阿木木 (Q)", Evade = false,
+                                     Champion = "amumu", Name = "bandagetoss", MenuName = "bandagetoss (Q)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "amumu", Name = "curseofthesadmummy", MenuName = "阿木木 (R)",
+                                     Champion = "amumu", Name = "curseofthesadmummy", MenuName = "curseofthesadmummy (R)",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Rammus", Name = "taunt", MenuName = "龙龟-嘲讽", Evade = false,
+                                     Champion = "Rammus", Name = "taunt", MenuName = "Rammus Taunt", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "shen", Name = "taunt", MenuName = "慎-嘲讽", Evade = false,
+                                     Champion = "shen", Name = "taunt", MenuName = "Shen Taunt", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "jax", Name = "stun", MenuName = "贾科斯 (E)", Evade = false, DoT = false,
+                                     Champion = "jax", Name = "stun", MenuName = "Jax (E)", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "kennen", Name = "stun", MenuName = "凯南-晕眩", Evade = false,
+                                     Champion = "kennen", Name = "stun", MenuName = "Kennen stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "braum", Name = "braumstundebuff", MenuName = "巴隆-被动",
+                                     Champion = "braum", Name = "braumstundebuff", MenuName = "Braum Passive",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "nunu", Name = "IceBlast", MenuName = "努努-E", Evade = false, DoT = false,
+                                     Champion = "nunu", Name = "IceBlast", MenuName = "Nunu E", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "riven", Name = "stun", MenuName = "瑞文 (W)", Evade = false, DoT = false,
+                                     Champion = "riven", Name = "stun", MenuName = "Riven (W)", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "annie", Name = "stun", MenuName = "安妮-晕眩", Evade = false,
+                                     Champion = "annie", Name = "stun", MenuName = "Annie Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Warwick", Name = "suppression", MenuName = "狼人 (R)", Evade = false,
+                                     Champion = "Warwick", Name = "suppression", MenuName = "Warwick (R)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "anivia", Name = "stun", MenuName = "冰鸟-晕眩", Evade = false,
+                                     Champion = "anivia", Name = "stun", MenuName = "Anivia Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "heimerdinger", Name = "stun", MenuName = "大头-晕眩",
+                                     Champion = "heimerdinger", Name = "stun", MenuName = "Heimerdinger Stun",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.W
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "bard", Name = "bardqshackledebuff", MenuName = "巴德-晕眩", Evade = false,
+                                     Champion = "bard", Name = "bardqshackledebuff", MenuName = "Bard Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "vayne", Name = "stun", MenuName = "薇恩-E", Evade = false,
+                                     Champion = "vayne", Name = "stun", MenuName = "Vayne Condemn", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "elise", Name = "buffelisecocoon", MenuName = "蜘蛛-E", Evade = false,
+                                     Champion = "elise", Name = "buffelisecocoon", MenuName = "Elise E", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "udyr", Name = "stun", MenuName = "乌迪尔-晕眩", Evade = false, DoT = false,
+                                     Champion = "udyr", Name = "stun", MenuName = "Udyr Stun", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "irelia", Name = "stun", MenuName = "刀锋-晕眩", Evade = false,
+                                     Champion = "irelia", Name = "stun", MenuName = "Irelia Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "veigar", Name = "stun", MenuName = "小法-晕眩", Evade = false,
+                                     Champion = "veigar", Name = "stun", MenuName = "Veigar Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "gnar", Name = "stun", MenuName = "纳尔-晕眩", Evade = false, DoT = false,
+                                     Champion = "gnar", Name = "stun", MenuName = "Gnar stun", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "syndra", Name = "stun", MenuName = "辛德拉-晕眩", Evade = false,
+                                     Champion = "syndra", Name = "stun", MenuName = "Syndra stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "sona", Name = "SonaR", MenuName = "琴女 (R)", Evade = true, DoT = false,
+                                     Champion = "sona", Name = "SonaR", MenuName = "Sona (R)", Evade = true, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "xerath", Name = "stun", MenuName = "泽拉斯 (E)", Evade = false,
+                                     Champion = "xerath", Name = "stun", MenuName = "Xerath (E)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "thresh", Name = "threshq", MenuName = "锤石 (Q)", Evade = true,
+                                     Champion = "thresh", Name = "threshq", MenuName = "Thresh (Q)", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Lissandra", Name = "lissandrarenemy2", MenuName = "丽桑卓 (R)",
+                                     Champion = "Lissandra", Name = "lissandrarenemy2", MenuName = "Lissandra (R)",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 100,
                                      Slot = SpellSlot.R, Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "lissandra", Name = "lissandraw", MenuName = "丽桑卓 (W)",
+                                     Champion = "lissandra", Name = "lissandraw", MenuName = "Lissandra (W)",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.W
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "lux", Name = "luxlightbinding", MenuName = "拉克丝 (Q)", Evade = false,
+                                     Champion = "lux", Name = "luxlightbinding", MenuName = "Lux (Q)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "renekton", Name = "stun", MenuName = "鳄鱼-晕眩", Evade = false,
+                                     Champion = "renekton", Name = "stun", MenuName = "Renekton stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "tahmkench", Name = "tahmkenchqstun", MenuName = "蛤蟆-Q晕眩",
+                                     Champion = "tahmkench", Name = "tahmkenchqstun", MenuName = "Tahm Q stun",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "tahmkench", Name = "tahmkenchwhasdevouredtarget", MenuName = "蛤蟆-晕眩",
+                                     Champion = "tahmkench", Name = "tahmkenchwhasdevouredtarget", MenuName = "Tahm stun",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = false, QssIgnore = true,
                                      CleanseTimer = 0, Slot = SpellSlot.Unknown
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "nautilus", Name = "nautilusanchordragroot", MenuName = "泰坦 Q",
+                                     Champion = "nautilus", Name = "nautilusanchordragroot", MenuName = "Nautilus Q",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
-                                     Slot = SpellSlot.Q
+                                     Slot = SpellSlot.Q //The Q isn't the root here, is this just a weird entry that still happens to be tracking the passive?//
                                  },
-                             new CleanseSpell
+                             /*new CleanseSpell
                                  {
-                                     Champion = "nautilus", Name = "stun", MenuName = "泰坦 R", Evade = false,
+                                     Champion = "nautilus", Name = "stun", MenuName = "Nautilus R", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },
+                                 },*/ //Looking at the wiki it seems like nautilus has a stun on impact along with the knockup, displacement can't be cleansed, but I don't know if the stun lasts after the hit and when you're back on the ground//
                              new CleanseSpell
                                  {
-                                     Champion = "zilean", Name = "stun", MenuName = "时光-双Q", Evade = false,
+                                     Champion = "zilean", Name = "stun", MenuName = "Zilean double Q", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  }
                          };
@@ -803,12 +813,12 @@ namespace ElUtilitySuite.Summoners
 
         public void CreateMenu(Menu rootMenu)
         {
-            cleanseMenu = rootMenu.AddSubMenu("净化/水银", "CleanseV3");
+            cleanseMenu = rootMenu.AddSubMenu("Cleanse/QSS", "CleanseV3");
 
-            cleanseMenu.Add("CleanseActivated", new CheckBox("使用净化"));
+            cleanseMenu.Add("CleanseActivated", new CheckBox("Use Cleanse"));
             cleanseMenu.AddSeparator();
 
-            cleanseMenu.AddGroupLabel("净化 - 召唤师技能");
+            cleanseMenu.AddGroupLabel("Spells to QSS");
             foreach (var spell in Spells)
             {
                 cleanseMenu.Add(spell.MenuName != null ? spell.MenuName.Replace(" ", string.Empty) : spell.Name, new CheckBox(string.IsNullOrEmpty(spell.MenuName) ? spell.Name : spell.MenuName));
@@ -816,8 +826,8 @@ namespace ElUtilitySuite.Summoners
 
             cleanseMenu.AddSeparator();
 
-            cleanseMenu.AddGroupLabel("人性化延迟");
-            cleanseMenu.Add("CleanseMaxDelay", new Slider("延迟 (毫秒)", 800, 0, 1500));
+            cleanseMenu.AddGroupLabel("Humanizer Delay");
+            cleanseMenu.Add("CleanseMaxDelay", new Slider("Delay (MS)", 800, 0, 1500));
             cleanseMenu.AddSeparator();
 
         }

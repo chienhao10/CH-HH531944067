@@ -37,8 +37,6 @@ namespace PortAIO.Champion.Anivia
             W.SetSkillshot(0.6f, 1f, float.MaxValue, false, SkillshotType.SkillshotLine);
             R.SetSkillshot(2f, 400f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
-            Chat.Print("Berb : Using Common Pred w/ Medium Hitchance is the best for Anivia!");
-
             LoadMenuOKTW();
 
             Game.OnUpdate += Game_OnGameUpdate;
@@ -61,7 +59,7 @@ namespace PortAIO.Champion.Anivia
             var Target = gapcloser.Sender;
             if (Q.IsReady() && getCheckBoxItem(QMenu, "AGCQ"))
             {
-                if (Target.IsValidTarget(300))
+                if (Target.IsValidTarget(300) && Target.IsEnemy)
                 {
                     Q.Cast(Target);
                     SebbyLib.Program.debug("AGC Q");
@@ -69,7 +67,7 @@ namespace PortAIO.Champion.Anivia
             }
             else if (W.IsReady() && getCheckBoxItem(WMenu, "AGCW"))
             {
-                if (Target.IsValidTarget(W.Range))
+                if (Target.IsValidTarget(W.Range) && Target.IsEnemy)
                 {
                     W.Cast(ObjectManager.Player.Position.Extend(Target.Position, 50), true);
                 }
@@ -169,7 +167,7 @@ namespace PortAIO.Champion.Anivia
             else
                 Orbwalker.DisableAttacking = false;
 
-            if (Q.IsReady() && QMissile != null && QMissile.Position.CountEnemiesInRange(230) > 0)
+            if (Q.IsReady() && QMissile != null && QMissile.Position.CountEnemiesInRange(220) > 0)
                 Q.Cast();
 
 
@@ -218,10 +216,7 @@ namespace PortAIO.Champion.Anivia
                 }
                 if (!SebbyLib.Program.None && Player.Mana > RMANA + EMANA)
                 {
-                    foreach (
-                        var enemy in
-                            SebbyLib.Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in SebbyLib.Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy, true);
                 }
             }
@@ -321,8 +316,7 @@ namespace PortAIO.Champion.Anivia
                         R.Cast(t, false, true);
                     }
                 }
-                if (SebbyLib.Program.LaneClear && Player.ManaPercent > getSliderItem(FarmMenu, "Mana") &&
-                    getCheckBoxItem(FarmMenu, "farmR"))
+                if (SebbyLib.Program.LaneClear && Player.ManaPercent > getSliderItem(FarmMenu, "Mana") && getCheckBoxItem(FarmMenu, "farmR"))
                 {
                     var allMinions = Cache.GetMinions(Player.ServerPosition, R.Range);
                     var farmPos = R.GetCircularFarmLocation(allMinions, R.Width);
@@ -353,7 +347,7 @@ namespace PortAIO.Champion.Anivia
                     else
                         R.Cast();
                 }
-                else if ((RMissile.Position.CountEnemiesInRange(470) == 0 || Player.Mana < EMANA + QMANA))
+                else if ((RMissile.Position.CountEnemiesInRange(470) == 0 || Player.Mana < EMANA + QMANA) && RMissile != null)
                 {
                     R.Cast();
                 }

@@ -1,19 +1,13 @@
 ﻿To-Do :
-- Check Sejuani
-- Check Anivia randomly casting spells
-- Mordekaiser Crashing on Ult @ Low HP
-- Fix Karthus Orbwalker
 - Rengar jump on Vayne assemblies
-- Fix Lee Sin Crash on Combo
 - Check Poppy Crash
-- Check TF ping low enemy
 - Caitlyn on W hard CC
 - Bard Flee
-- Check loading from Valvrave to YasuoPro
 - Sentinel Kalista
 - Add auto-semi key for lantern (not sure how to do this, might not do it)
 - Add a Humanizer for w in combo
 - Check LB AOE Combo
+- https://www.reddit.com/r/summonerschool/comments/4ihcsf/ryze_combo_69/
 
 ------------------------------------------------------------------------
 
@@ -48,6 +42,7 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - DZAwareness
 - Zed is Back
 - Swiftly Teemo
-- EzEvade (full)
 - ElEasy Ryze
 - Tyler1.exe
+- Fast Trundle
+- Snitched 3.0

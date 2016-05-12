@@ -91,6 +91,7 @@ namespace FreshBooster.Champion
                 Combo.Add("Veigar_CUseE", new CheckBox("Use E"));
                 Combo.Add("Veigar_CUseR", new CheckBox("Use R"));
                 Combo.Add("Veigar_CUseR_Select", new CheckBox("When can be Kill, Only use R"));
+                //Combo.Add("buffer", new Slider("Buffer", 5, 0, 25));
                 Combo.AddLabel("1 : Out of Range");
                 Combo.AddLabel("2 : Impossible");
                 Combo.AddLabel("3 : Low");
@@ -180,6 +181,26 @@ namespace FreshBooster.Champion
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
         }
 
+        public static double getRDamage(AIHeroClient target)
+        {
+            /*
+            local lvl = myHero:GetSpellData(_R).level
+            local ap = GetAp(myHero)
+            local eap = GetAp(target)
+            local dmg = 125 + lvl*125 + ap + (eap * 0.8)
+            local dmgp = dmg * (100/(100+target.magicArmor))
+            dmgp = dmgp - (dmgp * (Veigar.adv.r.buffer/100))
+            */
+
+            var lvl = _R.Level;
+            var ap = ObjectManager.Player.TotalMagicalDamage;
+            var eap = target.TotalMagicalDamage;
+            var dmg = 125 + lvl * 125 + ap + (eap * 0.8);
+            var dmgp = dmg * (100 / (100 + target.FlatMagicReduction));
+            dmgp = dmgp - (dmgp * (getSliderItem(Combo, "buffer") / 100));
+            return dmgp;
+        }
+
         private static void OnGameUpdate(EventArgs args)
         {
             try
@@ -230,7 +251,7 @@ namespace FreshBooster.Champion
                         return;
                     }
 
-                    if (getCheckBoxItem(Combo, "Veigar_CUseR_Select") && getCheckBoxItem(Combo, "Veigar_CUseR") && _R.IsReady() && KTarget.Health < _R.GetDamage(KTarget) && KTarget.LSDistance(Player) <= _R.Range)
+                    if (getCheckBoxItem(Combo, "Veigar_CUseR_Select") && getCheckBoxItem(Combo, "Veigar_CUseR") && _R.IsReady() && KTarget.Health < Player.GetSpellDamage(KTarget, SpellSlot.R) && KTarget.LSDistance(Player) <= _R.Range)
                     {
                         _R.Cast(KTarget, true);
                         return;

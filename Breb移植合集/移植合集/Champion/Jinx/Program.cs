@@ -152,7 +152,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Player.Mana > RMANA + EMANA)
+            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Player.Mana > RMANA + EMANA && gapcloser.Sender.IsEnemy)
             {
                 var Target = gapcloser.Sender;
                 if (Target.LSIsValidTarget(E.Range))
@@ -277,17 +277,14 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(W.Range, DamageType.Physical);
             if (t.LSIsValidTarget())
             {
-                foreach (
-                    var enemy in
-                        Program.Enemies.Where(
-                            enemy => enemy.LSIsValidTarget(W.Range) && enemy.LSDistance(Player) > bonusRange()))
+                foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && enemy.LSDistance(Player) > bonusRange())) // KS check
                 {
                     var comboDmg = OktwCommon.GetKsDamage(enemy, W);
                     if (R.IsReady() && Player.Mana > RMANA + WMANA + 20)
                     {
                         comboDmg += R.GetDamage(enemy, 1);
                     }
-                    if (comboDmg > enemy.Health && OktwCommon.ValidUlt(enemy))
+                    if (comboDmg > enemy.Health && OktwCommon.ValidUlt(enemy) && W.IsInRange(enemy))
                     {
                         Program.CastSpell(W, enemy);
                         return;
@@ -295,35 +292,24 @@ namespace OneKeyToWin_AIO_Sebby
                 }
 
 
-                if (Player.CountEnemiesInRange(bonusRange()) == 0)
+                if (Player.CountEnemiesInRange(bonusRange()) == 0) // Combo Check
                 {
                     if (Program.Combo && Player.Mana > RMANA + WMANA + 10)
                     {
-                        foreach (
-                            var enemy in
-                                Program.Enemies.Where(
-                                    enemy => enemy.LSIsValidTarget(W.Range) && GetRealDistance(enemy) > bonusRange())
-                                    .OrderBy(enemy => enemy.Health))
+                        foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && GetRealDistance(enemy) > bonusRange() && W.IsInRange(enemy)).OrderBy(enemy => enemy.Health))
                             Program.CastSpell(W, enemy);
                     }
                     else if (Program.Farm && Player.Mana > RMANA + EMANA + WMANA + WMANA + 40 && OktwCommon.CanHarras())
                     {
-                        foreach (
-                            var enemy in
-                                Program.Enemies.Where(
-                                    enemy =>
-                                        enemy.LSIsValidTarget(W.Range) &&
-                                        getCheckBoxItem(wMenu, "haras" + enemy.NetworkId)))
+                        foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && getCheckBoxItem(wMenu, "haras" + enemy.NetworkId) && W.IsInRange(enemy)))
                             Program.CastSpell(W, enemy);
                     }
                 }
 
-                if (!Program.None && Player.Mana > RMANA + WMANA &&
-                    Player.CountEnemiesInRange(GetRealPowPowRange(t)) == 0)
+
+                if (!Program.None && Player.Mana > RMANA + WMANA && Player.CountEnemiesInRange(GetRealPowPowRange(t)) == 0) // Immobile Check
                 {
-                    foreach (
-                        var enemy in
-                            Program.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in EntityManager.Heroes.Enemies.Where(enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy) && W.IsInRange(enemy)))
                         W.Cast(enemy, true);
                 }
             }
@@ -610,13 +596,13 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (R.IsReady() && t.LSIsValidTarget() && R.GetDamage(t, 1) > t.Health)
                 {
-                    Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
+                    Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
                         "R可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                     drawLine(t.Position, Player.Position, 5, Color.Red);
                 }
                 else if (t.LSIsValidTarget(2000) && W.GetDamage(t) > t.Health)
                 {
-                    Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
+                    Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
                         "W可击杀: " + t.ChampionName + " have: " + t.Health + "hp");
                     drawLine(t.Position, Player.Position, 3, Color.Yellow);
                 }

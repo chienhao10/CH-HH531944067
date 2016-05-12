@@ -77,7 +77,6 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             wMenu = Config.AddSubMenu("W 设置");
             wMenu.Add("autoW", new CheckBox("自动 W"));
             wMenu.Add("harrasW", new CheckBox("骚扰 W", false));
-            wMenu.Add("WmodeCombo", new ComboBox("W 连招模式", 1, "一直", "移动 - 追逐"));
             wMenu.Add("WmodeGC", new ComboBox("防突进/接近位置", 0, "冲刺后结束为止", "我英雄位置"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
                 wMenu.Add("WGCchampion" + enemy.NetworkId, new CheckBox("W : " + enemy.ChampionName));
@@ -132,24 +131,18 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     Program.debug("Time " + timeDeadh);
                     if (timeDeadh < 4)
                     {
-                        foreach (
-                            var target in
-                                Program.Enemies.Where(target => target.IsValidTarget() && OktwCommon.ValidUlt(target)))
+                        foreach (var target in Program.Enemies.Where(target => target.IsValidTarget() && OktwCommon.ValidUlt(target)))
                         {
                             var rDamage = R.GetDamage(target);
-                            if (target.Health < 3*rDamage && target.CountAlliesInRange(800) > 0)
+                            if (target.Health < 3 * rDamage && target.CountAlliesInRange(800) > 0)
                                 R.Cast();
-                            if (target.Health < rDamage*1.5 && target.Distance(Player.Position) < 900)
+                            if (target.Health < rDamage * 1.5 && target.Distance(Player.Position) < 900)
                                 R.Cast();
-                            if (target.Health + target.HPRegenRate*5 < rDamage)
+                            if (target.Health + target.HPRegenRate * 5 < rDamage)
                                 R.Cast();
                         }
                     }
                 }
-            }
-            else
-            {
-                Orbwalker.ActiveModesFlags = Orbwalker.ActiveModes.None;
             }
 
             if (Program.LagFree(0))
@@ -163,7 +156,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 LogicE();
             if (Program.LagFree(3) && R.IsReady())
                 LogicR();
-            if (Program.LagFree(4) && W.IsReady() && getCheckBoxItem(eMenu, "autoW"))
+            if (Program.LagFree(4) && W.IsReady() && getCheckBoxItem(wMenu, "autoW"))
                 LogicW();
         }
 
@@ -178,7 +171,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     if (target.IsValidTarget() && target.CountAlliesInRange(getSliderItem(rMenu, "RenemyA")) == 0)
                     {
-                        var predictedHealth = target.Health + target.HPRegenRate*4;
+                        var predictedHealth = target.Health + target.HPRegenRate * 4;
                         var Rdmg = OktwCommon.GetKsDamage(target, R);
 
                         if (target.HealthPercent > 30)
@@ -208,7 +201,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                             var timeInvisible = Game.Time - ChampionInfoOne.LastVisableTime;
                             if (timeInvisible > 3 && timeInvisible < 10)
                             {
-                                var predictedHealth = target.Health + target.HPRegenRate*(4 + timeInvisible);
+                                var predictedHealth = target.Health + target.HPRegenRate * (4 + timeInvisible);
                                 if (R.GetDamage(target) > predictedHealth)
                                     R.Cast();
                             }
@@ -256,8 +249,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             var myRange = GetRealAutoAttackRange(target);
             return
                 Vector2.DistanceSquared(
-                    target is Obj_AI_Base ? ((Obj_AI_Base) target).ServerPosition.To2D() : target.Position.To2D(),
-                    ObjectManager.Player.ServerPosition.To2D()) <= myRange*myRange;
+                    target is Obj_AI_Base ? ((Obj_AI_Base)target).ServerPosition.To2D() : target.Position.To2D(),
+                    ObjectManager.Player.ServerPosition.To2D()) <= myRange * myRange;
         }
 
         private static void LogicQ()
@@ -282,7 +275,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (!OktwCommon.CanHarras())
                 return;
 
-            if (!Program.None && !Program.Combo && Player.Mana > RMANA + QMANA*2)
+            if (!Program.None && !Program.Combo && Player.Mana > RMANA + QMANA * 2)
             {
                 var allMinions = Cache.GetMinions(Player.ServerPosition, Q.Range);
 
@@ -297,7 +290,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         )
                     {
                         var hpPred = HealthPrediction.GetHealthPrediction(minion, 1100);
-                        if (hpPred < GetQDamage(minion)*0.9 && hpPred > minion.Health - hpPred*2)
+                        if (hpPred < GetQDamage(minion) * 0.9 && hpPred > minion.Health - hpPred * 2)
                         {
                             Q.Cast(minion);
                             return;
@@ -313,7 +306,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                             allMinions.Where(minion => minion.IsValidTarget(Q.Range) && InAutoAttackRange(minion)))
                     {
                         var hpPred = HealthPrediction.GetHealthPrediction(minion, 1100);
-                        if (hpPred < GetQDamage(minion)*0.9 && hpPred > minion.Health - hpPred*2)
+                        if (hpPred < GetQDamage(minion) * 0.9 && hpPred > minion.Health - hpPred * 2)
                         {
                             Q.Cast(minion);
                             return;
@@ -335,63 +328,42 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if ((Program.Combo || (Program.Farm && getCheckBoxItem(wMenu, "harrasW"))) && Player.Mana > RMANA + WMANA)
             {
-                if (getBoxItem(wMenu, "WmodeCombo") == 1)
+                var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
+                if (t.IsValidTarget())
                 {
-                    var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-                    if (t.IsValidTarget(W.Range) && W.GetPrediction(t).CastPosition.Distance(t.Position) > 100)
-                    {
-                        if (Player.Position.Distance(t.ServerPosition) > Player.Position.Distance(t.Position))
-                        {
-                            if (t.Position.Distance(Player.ServerPosition) < t.Position.Distance(Player.Position))
-                                Program.CastSpell(W, t);
-                        }
-                        else
-                        {
-                            if (t.Position.Distance(Player.ServerPosition) > t.Position.Distance(Player.Position))
-                                Program.CastSpell(W, t);
-                        }
-                    }
-                }
-                else
-                {
-                    var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-                    if (t.IsValidTarget())
-                    {
-                        Program.CastSpell(W, t);
-                    }
+                    Program.CastSpell(W, t);
                 }
             }
         }
 
         private static void LogicE()
         {
-            if (Program.None)
-                return;
-
-            if (Player.HasBuff("KarthusDefile"))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
-                if (Program.LaneClear)
+                if (Player.HasBuff("KarthusDefile"))
                 {
-                    if (OktwCommon.CountEnemyMinions(Player, E.Range) < getSliderItem(farmMenu, "ELCminions") ||
-                        Player.ManaPercent < getSliderItem(farmMenu, "Mana"))
-                        E.Cast();
+                    if (Program.LaneClear)
+                    {
+                        if (OktwCommon.CountEnemyMinions(Player, E.Range) < getSliderItem(farmMenu, "ELCminions") ||
+                            Player.ManaPercent < getSliderItem(farmMenu, "Mana"))
+                            E.Cast();
+                    }
+                    else if (getCheckBoxItem(eMenu, "autoE"))
+                    {
+                        if (Player.ManaPercent < getSliderItem(eMenu, "Emana") || Player.CountEnemiesInRange(E.Range) == 0)
+                            E.Cast();
+                    }
                 }
-                else if (getCheckBoxItem(eMenu, "autoE"))
+                else
                 {
-                    if (Player.ManaPercent < getSliderItem(eMenu, "Emana") || Player.CountEnemiesInRange(E.Range) == 0)
+                    if (Program.LaneClear && OktwCommon.CountEnemyMinions(Player, E.Range) >= getSliderItem(farmMenu, "ELCminions") && Player.ManaPercent > getSliderItem(farmMenu, "Mana"))
+                    {
                         E.Cast();
-                }
-            }
-            else
-            {
-                if (Program.LaneClear &&
-                    OktwCommon.CountEnemyMinions(Player, E.Range) >= getSliderItem(farmMenu, "ELCminions") &&
-                    Player.ManaPercent > getSliderItem(farmMenu, "Mana"))
-                    E.Cast();
-                else if (getCheckBoxItem(eMenu, "autoE") && Player.ManaPercent > getSliderItem(eMenu, "Emana") &&
-                         Player.CountEnemiesInRange(E.Range) > 0)
-                {
-                    E.Cast();
+                    }
+                    if (getCheckBoxItem(eMenu, "autoE") && Player.ManaPercent > getSliderItem(eMenu, "Emana") && Player.CountEnemiesInRange(E.Range) > 0)
+                    {
+                        E.Cast();
+                    }
                 }
             }
         }
@@ -433,7 +405,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             EMANA = E.Instance.SData.Mana;
 
             if (!R.IsReady())
-                RMANA = QMANA - Player.PARRegenRate*Q.Instance.Cooldown;
+                RMANA = QMANA - Player.PARRegenRate * Q.Instance.Cooldown;
             else
                 RMANA = R.Instance.SData.Mana;
         }
@@ -486,7 +458,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (t.IsValidTarget() && OktwCommon.GetKsDamage(t, R) > t.Health)
                 {
-                    Drawing.DrawText(Drawing.Width*0.1f, Drawing.Height*0.5f, Color.Red,
+                    Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
                         "R可击杀: " + t.ChampionName + " 治疗 - 伤害 =  " +
                         (t.Health - OktwCommon.GetKsDamage(t, R)) + " hp");
                 }
