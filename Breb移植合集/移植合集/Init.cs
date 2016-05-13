@@ -50,7 +50,7 @@ namespace PortAIO
         private static void Initialize(EventArgs args)
         {
 
-            Notifications.Show(new SimpleNotification("PortAIO", "Welcome to PortAIO, this is a complete AIO made for every single champion. If you experience bugs or have suggestions or just have something to report please go to the github and view the instructions to post a new issue. Enjoy using PortAIO and GLHF!"), 10000);
+            Notifications.Show(new SimpleNotification("CH汉化-移植合集", "欢迎使用移植合集, 此合集包含每个英雄。如果你有任何BUGS或者建议，请在GITHUB上回报或者私聊我也行，回帖也可。但是请讲详细了！祝你们玩的开心！QQ群：531944067"), 10000);
 
             Loader.Menu();
 
