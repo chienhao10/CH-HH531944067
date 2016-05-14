@@ -30,9 +30,9 @@ namespace Nechrito_Diana
             Config = MainMenu.AddMenu(menuName, menuName);
             
             combo = Config.AddSubMenu("连招", "Combo");
-            combo.Add("ComboR", new CheckBox("只是用R如果 Q 命中目标", false));
+            combo.Add("ComboR", new CheckBox("Q 命中目标才使用 R", false));
             combo.Add("ComboE", new CheckBox("智能 E", false));
-            combo.Add("Misaya", new CheckBox("强制 若风", false));
+            combo.Add("Misaya", new CheckBox("强制 使用若风连招", false));
             combo.Add("AutoSmite", new CheckBox("使用惩戒"));
             
             lane = Config.AddSubMenu("清线", "Lane");
@@ -41,7 +41,7 @@ namespace Nechrito_Diana
 
             jungle = Config.AddSubMenu("清野", "Jungle");
             jungle.Add("jnglQR", new CheckBox("QR 接近"));
-            jungle.Add("jnglE", new Slider("E 技能打断", 15, 0, 50));
+            jungle.Add("jnglE", new Slider("清野 E 蓝量", 15, 0, 50));
             jungle.Add("jnglW", new CheckBox("使用 W"));
 
             killsteal = Config.AddSubMenu("抢头", "Killsteal");
@@ -55,8 +55,8 @@ namespace Nechrito_Diana
             misc.Add("Interrupt", new CheckBox("技能打断"));
 
             draw = Config.AddSubMenu("线圈", "Draw");
-            draw.Add("EngageDraw", new CheckBox("进攻距离"));
-            draw.Add("EscapeSpot", new CheckBox("看可逃跑位置"));
+            draw.Add("EngageDraw", new CheckBox("显示进攻距离"));
+            draw.Add("EscapeSpot", new CheckBox("显示可逃跑位置"));
 
             flee = Config.AddSubMenu("逃跑", "Flee");
             flee.Add("FleeMouse", new KeyBind("逃跑按键", false, KeyBind.BindTypes.HoldActive, 'A'));

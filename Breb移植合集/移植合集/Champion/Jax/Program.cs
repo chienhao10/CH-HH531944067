@@ -99,7 +99,7 @@ namespace JaxQx
             // Harass
             harassMenu = Config.AddSubMenu("骚扰", "Harass");
             harassMenu.Add("UseQHarass", new CheckBox("使用 Q"));
-            harassMenu.Add("UseQHarassDontUnderTurret", new CheckBox("Don't Under Turret Q"));
+            harassMenu.Add("UseQHarassDontUnderTurret", new CheckBox("塔下不 Q"));
             harassMenu.Add("UseWHarass", new CheckBox("使用 W"));
             harassMenu.Add("UseEHarass", new CheckBox("使用 E"));
             harassMenu.Add("HarassMode", new ComboBox("骚扰 模式: ", 2, "Q+W", "Q+E", "预设"));
