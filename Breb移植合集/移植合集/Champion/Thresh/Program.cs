@@ -46,6 +46,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             qMenu.Add("GapQ", new CheckBox("OnEnemyGapcloser Q", true));
 
             wMenu = Config.AddSubMenu("W Option");
+            wMenu.Add("ThrowLantern", new KeyBind("Throw Lantern to Ally", false, KeyBind.BindTypes.HoldActive, 'T'));
             wMenu.Add("autoW", new CheckBox("Auto W", true));
             wMenu.Add("Wdmg", new Slider("W dmg % hp", 10, 0, 100));
             wMenu.Add("autoW3", new CheckBox("Auto W shield big dmg", true));
@@ -86,6 +87,16 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Obj_AI_Base.OnBuffLose += Obj_AI_Base_OnBuffRemove;
 
             EloBuddy.TacticalMap.OnPing += Game_OnPing;
+        }
+
+        private static void ThrowLantern()
+        {
+            if (W.IsReady())
+            {
+                var NearAllies = Player.GetAlliesInRange(W.Range).Where(x => !x.IsMe).Where(x => !x.IsDead).Where(x => x.Distance(Player.Position) <= W.Range + 250).FirstOrDefault();
+                if (NearAllies == null) return;
+                W.Cast(NearAllies.Position);
+            }
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -190,6 +201,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             }
             else
                 Orbwalker.DisableAttacking = false;
+
+            if (getKeyBindItem(wMenu, "ThrowLantern"))
+            {
+                ThrowLantern();
+            }
 
             if (Marked.IsValidTarget())
             {
@@ -340,7 +356,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     {
                         if (ally.IsStunned || ally.IsRooted)
                         {
-                            W.Cast(ally.Position);
+                            //W.Cast(ally.Position);
+                            LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(ally.Position); });
                         }
                     }
                 }
@@ -364,13 +381,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     nearEnemys = (nearEnemys == 0) ? 1 : nearEnemys;
 
                     if (dmg > shieldValue && getCheckBoxItem(wMenu, "autoW3"))
-                        W.Cast(W.GetPrediction(ally).CastPosition);
+                        LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(ally); });
                     else if (dmg > 100 + Player.Level * sensitivity)
-                        W.Cast(W.GetPrediction(ally).CastPosition);
+                        LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(ally); });
                     else if (ally.Health - dmg < nearEnemys * ally.Level * sensitivity)
-                        W.Cast(W.GetPrediction(ally).CastPosition);
+                        LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(ally); });
                     else if (HpPercentage >= getSliderItem(wMenu, "Wdmg"))
-                        W.Cast(W.GetPrediction(ally).CastPosition);
+                        LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(ally); });
                 }
             }
         }
@@ -378,9 +395,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void CastW(Vector3 pos)
         {
             if (Player.Distance(pos) < W.Range)
-                W.Cast(pos);
+                LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(pos); });
             else
-                W.Cast(Player.Position.Extend(pos, W.Range));
+                LeagueSharp.Common.Utility.DelayAction.Add(500, () => { Player.Position.Extend(pos, W.Range); });
         }
 
         private static void Drawing_OnDraw(EventArgs args)

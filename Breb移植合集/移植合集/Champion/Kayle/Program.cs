@@ -234,8 +234,8 @@ namespace SephKayle
                         minion.IsValidTarget() && Player.Distance(minion) >
                         Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) && Player.Distance(minion) <= Q.Range &&
                         HealthPrediction.GetHealthPrediction(minion,
-                            (int) (Player.Distance(minion)*1000/1500) + 300 + Game.Ping/2) <
-                        0.75*Player.GetSpellDamage(minion, SpellSlot.Q));
+                            (int)(Player.Distance(minion) * 1000 / 1500) + 300 + Game.Ping / 2) <
+                        0.75 * Player.GetSpellDamage(minion, SpellSlot.Q));
                 var bestminion = vminions.MaxOrDefault(x => x.MaxHealth);
                 if (bestminion != null)
                 {
@@ -260,7 +260,7 @@ namespace SephKayle
             var senderhero = sender as AIHeroClient;
             var senderturret = sender as Obj_AI_Turret;
 
-            if ((sender.IsAlly || sender.IsMe || sender.IsMinion) || (target == null) || (!target.IsAlly || !target.IsMe))
+            if (sender.IsAlly || (target == null) || !target.IsAlly)
             {
                 return;
             }
@@ -270,8 +270,7 @@ namespace SephKayle
 
             var triggered = false;
 
-            if (W.IsReady() && getCheckBoxItem(healMenu, "heal" + target.NetworkId) &&
-                (target.HealthPercent <= setvaluehealth))
+            if (W.IsReady() && getCheckBoxItem(healMenu, "heal" + target.NetworkId) && (target.HealthPercent <= setvaluehealth))
             {
                 HealUltManager(true, false, target);
                 triggered = true;
@@ -297,7 +296,7 @@ namespace SephKayle
             }
 
             var damage = sender.LSGetSpellDamage(target, args.SData.Name);
-            var afterdmg = (target.Health - damage)/target.MaxHealth*100f;
+            var afterdmg = (target.Health - damage) / target.MaxHealth * 100f;
 
             if (W.IsReady() && Player.Distance(target) <= W.Range && getCheckBoxItem(healMenu, "heal" + target.NetworkId) && (target.HealthPercent <= setvaluehealth || (getCheckBoxItem(healMenu, "hcheckdmgafter") && afterdmg <= setvaluehealth)))
             {
@@ -431,10 +430,7 @@ namespace SephKayle
                 Harass();
             }
 
-            if (!getCheckBoxItem(healMenu, "onlyhincdmg") || !getCheckBoxItem(ultMenu, "onlyuincdmg"))
-            {
-                HealUltManager();
-            }
+            HealUltManager();
 
             if (getCheckBoxItem(miscMenu, "killsteal"))
             {
@@ -472,8 +468,8 @@ namespace SephKayle
                     minion.IsValidTarget() && Player.Distance(minion) >
                     Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) && Player.Distance(minion) <= Q.Range &&
                     HealthPrediction.GetHealthPrediction(minion,
-                        (int) (Player.Distance(minion)*1000/1500) + 300 + Game.Ping/2) <
-                    0.75*Player.GetSpellDamage(minion, SpellSlot.Q));
+                        (int)(Player.Distance(minion) * 1000 / 1500) + 300 + Game.Ping / 2) <
+                    0.75 * Player.GetSpellDamage(minion, SpellSlot.Q));
 
             if (getCheckBoxItem(farmMenu, "UseQfarm") && Q.IsReady())
             {
@@ -495,8 +491,8 @@ namespace SephKayle
                             m =>
                                 m.IsValidTarget() && m.Team != Player.Team && Player.Distance(m) <= incrange &&
                                 HealthPrediction.GetHealthPrediction(m,
-                                    (int) (Player.Distance(m)*1000/1500) + 300 + Game.Ping/2) <
-                                0.75*Player.GetAutoAttackDamage(m));
+                                    (int)(Player.Distance(m) * 1000 / 1500) + 300 + Game.Ping / 2) <
+                                0.75 * Player.GetAutoAttackDamage(m));
                 if (minions.Any())
                 {
                     E.CastOnUnit(Player);
@@ -531,8 +527,8 @@ namespace SephKayle
                         minion.IsValidTarget() && Player.Distance(minion) >
                         Orbwalking.GetRealAutoAttackRange(ObjectManager.Player) && Player.Distance(minion) <= Q.Range &&
                         HealthPrediction.GetHealthPrediction(minion,
-                            (int) (Player.Distance(minion)*1000/1500) + 300 + Game.Ping/2) <
-                        0.75*Player.GetSpellDamage(minion, SpellSlot.Q));
+                            (int)(Player.Distance(minion) * 1000 / 1500) + 300 + Game.Ping / 2) <
+                        0.75 * Player.GetSpellDamage(minion, SpellSlot.Q));
 
                 var bestminion = vminions.MaxOrDefault(x => x.MaxHealth);
                 if (bestminion != null)

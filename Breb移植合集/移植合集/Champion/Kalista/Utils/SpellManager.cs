@@ -9,10 +9,11 @@ namespace iKalistaReborn.Utils
     /// </summary>
     internal class SpellManager
     {
+
         /// <summary>
         ///     The dictionary to call the Spell slot and the Spell Class
         /// </summary>
-        public static readonly Dictionary<SpellSlot, Spell> Spell = new Dictionary<SpellSlot, Spell>
+        public static Dictionary<SpellSlot, Spell> Spell = new Dictionary<SpellSlot, Spell>
         {
             {SpellSlot.Q, new Spell(SpellSlot.Q, 1130)},
             {SpellSlot.W, new Spell(SpellSlot.W, 5200)},

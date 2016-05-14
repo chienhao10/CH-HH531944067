@@ -83,8 +83,28 @@ namespace Vayne
 
         #region Events
 
+        private static AIHeroClient _rengarObj;
+
         private static void GameObject_OnCreate(GameObject sender, EventArgs args)
         {
+            if (sender.Name == "Rengar_LeapSound.troy" && sender.IsEnemy)
+            {
+                foreach (AIHeroClient enemy in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsValidTarget(1500) && hero.ChampionName == "Rengar"))
+                {
+                    _rengarObj = enemy;
+                }
+            }
+            if (_rengarObj != null && myHero.Distance(_rengarObj, true) < 1000 * 1000)
+            {
+                if (_rengarObj.ChampionName == "Rengar")
+                {
+                    if (_rengarObj.IsValidTarget(E.Range) && E.IsReady() && _rengarObj.Distance(myHero) <= E.Range)
+                    {
+                        E.Cast(_rengarObj);
+                    }
+                }
+            }
+
             if (UseEAntiGapcloserBool && E.IsReady())
             {
                 if (sender.IsEnemy && sender.Name == "Rengar_LeapSound.troy")
@@ -626,7 +646,8 @@ namespace Vayne
                 else if (EModeStringList == 15)
                 {
                     Drawing.DrawText(x, y + 75, Color.Red, "当前E逻辑 : SergixCondemn");
-                }            }
+                }
+            }
 
             if (DrawWStacksBool)
             {
@@ -753,7 +774,7 @@ namespace Vayne
             }
             if (target is AIHeroClient && UseQBool)
             {
-                if (Q.IsReady() && !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+                if (Q.IsReady() && (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit)))
                 {
                     var tg = target as AIHeroClient;
                     if (tg != null)
@@ -910,6 +931,7 @@ namespace Vayne
                         }
                         if (mode != 3 || mode != 6 || mode != 7 || mode != 8 || mode != 4 || mode != 9)
                         {
+                            Console.WriteLine("A");
                             myHero.Spellbook.CastSpell(SpellSlot.Q, tumblePosition);
                         }
                     }
@@ -942,12 +964,7 @@ namespace Vayne
                     }
                     if (useQLane && UnderAllyTurret(myHero.Position))
                     {
-                        if (
-                            EntityManager.MinionsAndMonsters.EnemyMinions.Count(
-                                m =>
-                                    m.Position.Distance(myHero.Position) < 550 &&
-                                    m.Health < myHero.GetAutoAttackDamage(m) + myHero.GetSpellDamage(m, SpellSlot.Q)) >
-                            0 && !IsDangerousPosition(Game.CursorPos))
+                        if (EntityManager.MinionsAndMonsters.EnemyMinions.Count(m => m.Position.Distance(myHero.Position) < 550 && m.Health < myHero.GetAutoAttackDamage(m) + myHero.GetSpellDamage(m, SpellSlot.Q)) > 0 && !IsDangerousPosition(Game.CursorPos))
                         {
                             myHero.Spellbook.CastSpell(SpellSlot.Q, Game.CursorPos);
                         }

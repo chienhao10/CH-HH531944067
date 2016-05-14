@@ -1,13 +1,18 @@
 ﻿To-Do :
-- Rengar jump on Vayne assemblies
-- Check Poppy Crash
-- Caitlyn on W hard CC
-- Bard Flee
-- Sentinel Kalista
-- Add auto-semi key for lantern (not sure how to do this, might not do it)
-- Add a Humanizer for w in combo
-- Check LB AOE Combo
-- https://www.reddit.com/r/summonerschool/comments/4ihcsf/ryze_combo_69/
+- Check Lee Sin Manual R to Combo Key Q
+- Vayne R in VHR doesnt automatically use in combo with x enemies around.
+- Darius Q makes him stand still in combo, also doesnt use W.
+- Nidalee Q prediction is waaaaaaay off (idk if there'll ever be a fix for that cos i havent seen a decent Q in any nid script)
+- Olaf doesnt cast W in combo and also throws Q at an enemys feet instead of behind them.
+- Aatrox doesnt work at all
+- ELTrundle casts E in front of the enemy, rather than behind them to stop them escaping.
+- Viktor E is EXTREMELY buggy in waveclear, it will stutterstep about 5x per sec until it reaches X amount of minions it can cast it on.
+- ELSinged doesnt Cast E in combo.
+- Pantheon cancels E in combo mode after using it for 0.5 seconds.
+- Maokai is just hella buggy in general, barely uses Q or W in combo, R cancels itself after enemy leaves the ult radius, doesnt auto attack in combo or wave clear modes.
+
+- Bard Flee [Don't have Bard so can't fix]
+- Tahm Kench Crash [Don't have TK]
 
 ------------------------------------------------------------------------
 
@@ -17,6 +22,7 @@ To-Check :
 ------------------------------------------------------------------------
 
 Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
+- Tyler1.exe
 - iDzEzreal
 - The Cheater
 - AIOCaster
@@ -29,7 +35,7 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - DRengar/Elise/J4
 - ExorAnivia/Ashe/Mundo/Graves/Jax/Jhin/Jax/Quinn/Sivir
 - Kurisu's Blitzcrank
-- FreshBooster Braum
+- FreshBooster Braum & LeBlanc
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
 - Kurisu Riven
 - Chewymoon Shaco
@@ -43,6 +49,6 @@ Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
 - Zed is Back
 - Swiftly Teemo
 - ElEasy Ryze
-- Tyler1.exe
 - Fast Trundle
 - Snitched 3.0
+- https://www.reddit.com/r/summonerschool/comments/4ihcsf/ryze_combo_69/

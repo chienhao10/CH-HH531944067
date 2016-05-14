@@ -127,6 +127,7 @@
     <Compile Include="Champion\Braum\Program.cs" />
     <Compile Include="Champion\Caitlyn\Program.cs" />
     <Compile Include="Champion\Cassiopeia\Program.cs" />
+    <Compile Include="Champion\Kalista\Utils\SentinelManager.cs" />
     <Compile Include="Champion\Kha%27Zix\Extensions.cs" />
     <Compile Include="Champion\Kha%27Zix\Helper.cs" />
     <Compile Include="Champion\Kha%27Zix\Khazix.cs" />

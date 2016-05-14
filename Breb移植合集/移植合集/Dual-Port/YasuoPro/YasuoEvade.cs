@@ -47,16 +47,12 @@ namespace YasuoPro
                     continue;
                 }
 
-
-                if (((Program.NoSolutionFound ||
-                      !Program.IsSafePath(Helper.Yasuo.GetWaypoints(), 250).IsSafe &&
-                      !Program.IsSafe(Helper.Yasuo.Position.LSTo2D()).IsSafe)))
+                if (((Program.NoSolutionFound || !Program.IsSafePath(Helper.Yasuo.GetWaypoints(), 250).IsSafe && !Program.IsSafe(Helper.Yasuo.Position.LSTo2D()).IsSafe)))
                 {
                     Helper.DontDash = true;
                     if (skillshot.IsAboutToHit(700, Helper.Yasuo) && skillshot.SpellData.Type != SkillShotType.SkillshotCircle && Helper.GetBool("Evade.UseW", YasuoMenu.EvadeM))
                     {
-                        if (skillshot.SpellData.CollisionObjects.Contains(CollisionObjectTypes.YasuoWall) && skillshot.Evade(SpellSlot.W)
-                             && skillshot.SpellData.DangerValue >= Helper.GetSliderInt("Evade.MinDangerLevelWW", YasuoMenu.EvadeM))
+                        if (skillshot.SpellData.CollisionObjects.Contains(CollisionObjectTypes.YasuoWall) && skillshot.Evade(SpellSlot.W) && skillshot.SpellData.DangerValue >= Helper.GetSliderInt("Evade.MinDangerLevelWW", YasuoMenu.EvadeM))
                         {
                             var castpos = Helper.Yasuo.ServerPosition.LSExtend(skillshot.MissilePosition.To3D(), Math.Min(50, 0.50f * Helper.Yasuo.LSDistance(skillshot.MissilePosition)));
                             var delay = Helper.GetSliderInt("Evade.Delay", YasuoMenu.EvadeM);
@@ -76,11 +72,10 @@ namespace YasuoPro
                             }
                         }
                     }
+
                     if (skillshot.IsAboutToHit(500, Helper.Yasuo) && skillshot.Evade(SpellSlot.E) && !skillshot.Dodged && Helper.GetBool("Evade.UseE", YasuoMenu.EvadeM) && skillshot.SpellData.DangerValue >= Helper.GetSliderInt("Evade.MinDangerLevelE", YasuoMenu.EvadeM))
                     {
-                        var evadetarget =
-                            ObjectManager
-                                .Get<Obj_AI_Base>().Where(x => x.IsDashable() && !Helper.GetDashPos(x).PointUnderEnemyTurret() && Program.IsSafe(x.ServerPosition.LSTo2D()).IsSafe && Program.IsSafePath(x.GeneratePathTo(), 0, 1200, 250).IsSafe).MinOrDefault(x => x.LSDistance(Helper.shop));
+                        var evadetarget = ObjectManager.Get<Obj_AI_Base>().Where(x => x.IsDashable() && !Helper.GetDashPos(x).PointUnderEnemyTurret() && Program.IsSafe(x.ServerPosition.LSTo2D()).IsSafe && Program.IsSafePath(x.GeneratePathTo(), 0, 1200, 250).IsSafe).MinOrDefault(x => x.LSDistance(Helper.shop));
                      
                         if (evadetarget != null)
                         {

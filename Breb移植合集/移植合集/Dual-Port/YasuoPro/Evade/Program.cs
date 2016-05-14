@@ -117,11 +117,7 @@ namespace EvadeA
         {
             PlayerChampionName = ObjectManager.Player.ChampionName;
 
-            //Add the game events.
              Game.OnUpdate += Game_OnOnGameUpdate;
-            //AIHeroClient.OnIssueOrder += ObjAiHeroOnOnIssueOrder;
-            //Spellbook.OnCastSpell += Spellbook_OnCastSpell;
-            //Set up the OnDetectSkillshot Event.
             SkillshotDetector.OnDetectSkillshot += OnDetectSkillshot;
             SkillshotDetector.OnDeleteMissile += SkillshotDetectorOnOnDeleteMissile;
 
@@ -131,17 +127,9 @@ namespace EvadeA
                 Drawing.OnDraw += Drawing_OnDraw;
             }
 
-            //Ondash event.
-            //CustomEvents.Unit.OnDash += UnitOnOnDash;
-
             DetectedSkillshots.OnAdd += DetectedSkillshots_OnAdd;
-
-            //Create the menu to allow the user to change the config.
             Config.CreateMenu();
-
             Config.AttachToMenu();
-
-            //Initialze the collision
             Collision.Init();
         }
         private static void DetectedSkillshots_OnAdd(object sender, EventArgs e)

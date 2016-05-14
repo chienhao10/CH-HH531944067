@@ -126,12 +126,9 @@ namespace TwistedFate
             //.SetValue(new Circle(true, Color.FromArgb(100, 255, 0, 255))));
             drawings.Add("Rcircle", new CheckBox("R Range"));
             //.SetValue(new Circle(true, Color.FromArgb(100, 255, 255, 255))));
-            drawings.Add("Rcircle2", new CheckBox("R Range (minimap)"));
-            //.SetValue(new Circle(true, Color.FromArgb(255, 255, 255, 255))));
 
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
-            Drawing.OnEndScene += DrawingOnOnEndScene;
             Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
             Orbwalker.OnPreAttack += OrbwalkingOnBeforeAttack;
         }
@@ -210,15 +207,6 @@ namespace TwistedFate
                 }
                 else
                     CardSelector.StartSelecting(Cards.Blue);
-            }
-        }
-
-        private static void DrawingOnOnEndScene(EventArgs args)
-        {
-            var rCircle2 = getCheckBoxItem(drawings, "Rcircle2");
-            if (rCircle2)
-            {
-                Utility.DrawCircle(ObjectManager.Player.Position, 5500, Color.FromArgb(255, 255, 255, 255), 1, 23, true);
             }
         }
 

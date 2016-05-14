@@ -138,6 +138,7 @@ namespace YasuoPro
             {
                 return;
             }
+
             if (args.SData.Name.Equals("MissFortuneBulletTime"))
             {
                 var ssdata = GetSpell(args.SData.Name);
@@ -151,10 +152,13 @@ namespace YasuoPro
                     LeagueSharp.Common.Utility.DelayAction.Add(3000, () => DetectedPolygons.Clear());
                 }
             }
-            if (!args.Target.IsMe)
+
+
+            if (!args.Target.IsAlly)
             {
                 return;
             }
+
             //Console.WriteLine(args.SData.Name + " " + sender.BaseSkinName);
             var sdata = GetSpell(args.SData.Name);
             if (sdata != null && sdata.IsEnabled)

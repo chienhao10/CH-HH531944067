@@ -51,6 +51,7 @@ namespace iKalistaReborn
         public Kalista()
         {
             CreateMenu();
+            SentinelManager.Initialize();
             LoadModules();
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
@@ -115,7 +116,7 @@ namespace iKalistaReborn
         {
             Menu = MainMenu.AddMenu("i滑板鞋:重生", "com.ikalista");
 
-            comboMenu = Menu.AddSubMenu("iKalista: Reborn - Combo", "com.ikalista.combo");
+            comboMenu = Menu.AddSubMenu("连招", "com.ikalista.combo");
             comboMenu.Add("com.ikalista.combo.useQ", new CheckBox("使用 Q"));
             comboMenu.Add("com.ikalista.combo.useE", new CheckBox("使用 E"));
             comboMenu.Add("com.ikalista.combo.stacks", new Slider("X 层叠加使用 E", 10, 1, 20));
@@ -147,14 +148,45 @@ namespace iKalistaReborn
             {
                 jungleStealMenu.Add(minion.Key, new CheckBox(minion.Value, true));
             }
-            
+
             miscMenu = Menu.AddSubMenu("杂项", "com.ikalista.Misc");
             miscMenu.Add("com.ikalista.misc.forceW", new CheckBox("集火被W发现的目标"));
+            if (Game.MapId != GameMapId.SummonersRift)
+            {
+                miscMenu.AddLabel("Sentinel Manager is only on Summoners Rift, sorry.");
+            }
+            else
+            {
+                miscMenu.AddGroupLabel("守卫控制 (HellSing) :");
+                miscMenu.Add("enabled", new CheckBox("开启"));
+                miscMenu.Add("noMode", new CheckBox("只在无模式时使用"));
+                miscMenu.Add("alert", new CheckBox("提示当守卫受到攻击"));
+                miscMenu.Add("mana", new Slider("最低蓝量使用 W ({0}%)", 40));
+                miscMenu.AddLabel("发送守卫至以下位置:");
+                miscMenu.Add("baron", new CheckBox("男爵 （卡男爵)"));
+                miscMenu.Add("dragon", new CheckBox("龙 (卡龙池)"));
+                miscMenu.Add("mid", new CheckBox("中路草"));
+                miscMenu.Add("blue", new CheckBox("蓝 Buff"));
+                miscMenu.Add("red", new CheckBox("红 buff"));
+                SentinelManager.RecalculateOpenLocations();
+
+                miscMenu["baron"].Cast<CheckBox>().OnValueChange += OnValueChange;
+                miscMenu["dragon"].Cast<CheckBox>().OnValueChange += OnValueChange;
+                miscMenu["mid"].Cast<CheckBox>().OnValueChange += OnValueChange;
+                miscMenu["blue"].Cast<CheckBox>().OnValueChange += OnValueChange;
+                miscMenu["red"].Cast<CheckBox>().OnValueChange += OnValueChange;
+            }
 
             drawingMenu = Menu.AddSubMenu("线圈", "com.ikalista.drawing");
             drawingMenu.Add("com.ikalista.drawing.spellRanges", new CheckBox("显示技能范围"));
             drawingMenu.Add("com.ikalista.drawing.eDamage", new CheckBox("显示 E 伤害"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
             drawingMenu.Add("com.ikalista.drawing.damagePercent", new CheckBox("显示伤害百分比"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
+        }
+
+
+        private static void OnValueChange(ValueBase<bool> sender, ValueBase<bool>.ValueChangeArgs args)
+        {
+            SentinelManager.RecalculateOpenLocations();
         }
 
         private void LoadModules()
@@ -190,9 +222,9 @@ namespace iKalistaReborn
             {
                 foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.Distance(x) <= 2000f && !x.IsDead && x.IsHPBarRendered))
                 {
-                    var currentPercentage = Math.Round(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield(), 1);
+                    var currentPercentage = Math.Round(Helper.GetRendDamage(source) * 100 / source.GetTotalHealth(), 1);
 
-                    Drawing.DrawText(Drawing.WorldToScreen(source.Position)[0], Drawing.WorldToScreen(source.Position)[1], currentPercentage >= 100 ? Color.DarkOliveGreen : Color.White, currentPercentage >= 100 ? "E 可击杀" : "当前伤害: " + Math.Ceiling(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield()) + "%");
+                    Drawing.DrawText(Drawing.WorldToScreen(source.Position)[0], Drawing.WorldToScreen(source.Position)[1], currentPercentage >= 100 ? Color.DarkOliveGreen : Color.White, currentPercentage >= 100 ? "Killable With E" : "Current Damage: " + Math.Ceiling(Helper.GetRendDamage(source) * 100 / source.GetTotalHealth()) + "%");
                 }
             }
         }
@@ -256,17 +288,10 @@ namespace iKalistaReborn
             //BALISTA
             if (getCheckBoxItem(comboMenu, "com.ikalista.combo.balista") && SpellManager.Spell[SpellSlot.R].IsReady())
             {
-                var soulboundhero = HeroManager.Allies.FirstOrDefault(x => x.HasBuff("kalistacoopstrikeally"));
+                var soulboundhero = HeroManager.Allies.FirstOrDefault(x => x.HasBuff("kalistacoopstrikeally") && x.IsAlly);
                 if (soulboundhero?.ChampionName == "Blitzcrank")
                 {
-                    foreach (
-                        var unit in
-                            HeroManager.Enemies
-                                .Where(
-                                    h => h.IsHPBarRendered &&
-                                         h.Distance(ObjectManager.Player.ServerPosition) > 700 &&
-                                         h.Distance(ObjectManager.Player.ServerPosition) < 1400)
-                        )
+                    foreach (var unit in HeroManager.Enemies.Where(h => h.IsHPBarRendered && h.Distance(ObjectManager.Player.ServerPosition) > 700 && h.Distance(ObjectManager.Player.ServerPosition) < 1400))
                     {
                         if (unit.HasBuff("rocketgrab2"))
                         {
@@ -289,8 +314,8 @@ namespace iKalistaReborn
                 var targets =
                     HeroManager.Enemies.Where(
                         x =>
-                            ObjectManager.Player.Distance(x) <= SpellManager.Spell[SpellSlot.E].Range*2 &&
-                            x.IsValidTarget(SpellManager.Spell[SpellSlot.E].Range*2));
+                            ObjectManager.Player.Distance(x) <= SpellManager.Spell[SpellSlot.E].Range * 2 &&
+                            x.IsValidTarget(SpellManager.Spell[SpellSlot.E].Range * 2));
 
                 if (targets.Count(x => ObjectManager.Player.Distance(x) < Orbwalking.GetRealAutoAttackRange(x)) == 0)
                 {
@@ -324,7 +349,7 @@ namespace iKalistaReborn
             if (prediction.Hitchance >= HitChance.High && target.IsValidTarget(SpellManager.Spell[SpellSlot.Q].Range) &&
                 !ObjectManager.Player.IsDashing() && !Orbwalker.IsAutoAttacking)
             {
-                SpellManager.Spell[SpellSlot.Q].Cast(prediction.CastPosition);
+                SpellManager.Spell[SpellSlot.Q].Cast(target);
             }
         }
 
@@ -337,7 +362,7 @@ namespace iKalistaReborn
                 if (prediction.Hitchance >= HitChance.High &&
                     target.IsValidTarget(SpellManager.Spell[SpellSlot.Q].Range))
                 {
-                    SpellManager.Spell[SpellSlot.Q].Cast(prediction.CastPosition);
+                    SpellManager.Spell[SpellSlot.Q].Cast(target);
                 }
             }
 

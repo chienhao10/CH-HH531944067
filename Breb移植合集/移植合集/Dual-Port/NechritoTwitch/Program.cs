@@ -63,8 +63,8 @@ namespace Nechrito_Twitch
                 }
             }
 
-            
-           
+
+
 
         }
 
@@ -86,11 +86,11 @@ namespace Nechrito_Twitch
         public static void LaneClear()
         {
             if (MenuConfig.laneW)
-             {
+            {
                 var minions = MinionManager.GetMinions(Player.Position, Spells._w.Range);
                 if (minions.Count >= 5)
                     Spells._w.Cast(minions[5].ServerPosition);
-             }
+            }
             /* Laneclear E Lasthit, Add stacks for enemies + minion lasthit
             var minion = MinionManager.GetMinions(Player.Position, Spells._e.Range);
             foreach (var m in minion)
@@ -115,8 +115,8 @@ namespace Nechrito_Twitch
                     {
                         if (m.HasBuff("twitchdeadlyvenom"))
                         {
-                           if(Spells._e.IsKillable(m)) 
-                            Spells._e.Cast();
+                            if (Spells._e.IsKillable(m))
+                                Spells._e.Cast();
                         }
                     }
                 }
@@ -147,7 +147,7 @@ namespace Nechrito_Twitch
                     if (Spells._e.IsKillable(m))
                         Spells._e.Cast();
 
-               
+
 
             }
             if (MenuConfig.KsE)
@@ -178,4 +178,4 @@ namespace Nechrito_Twitch
         }
 
     }
-    }
+}
