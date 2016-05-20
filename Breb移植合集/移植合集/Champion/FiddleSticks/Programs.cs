@@ -6,6 +6,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using Feedlesticks.Core;
+using SebbyLib;
 using LeagueSharp.Common;
 
 namespace Feedlesticks
@@ -79,10 +80,16 @@ namespace Feedlesticks
             }
         }
 
-        public static bool IsWActive
+        private static bool IsWActive
         {
-            get { return ObjectManager.Player.HasBuff("Drain"); }
+            get
+            {
+                return Player.HasBuff("fiddlebuff") ||
+                       (ObjectManager.Player.LastCastedSpellName() == "fiddlebuff" &&
+                        Utils.TickCount - ObjectManager.Player.LastCastedSpellT() < 500);
+            }
         }
+
 
         /// <summary>
         ///     Process spell cast. thats need for last w game time
@@ -115,34 +122,35 @@ namespace Feedlesticks
                 return;
             }
 
-            if (IsWActive)
+            if (IsWActive || FiddleStick.IsChannelingImportantSpell())
             {
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
-                return;
+            }
+            else
+            {
+                Orbwalker.DisableAttacking = false;
+                Orbwalker.DisableMovement = false;
             }
 
-            Orbwalker.DisableAttacking = false;
-            Orbwalker.DisableMovement = false;
-
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && !IsWActive)
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && !IsWActive)
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
                 Harass();
             }
 
             if ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) && !IsWActive)
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)))
             {
                 Jungle();
                 WaveClear();
             }
 
-            if (getCheckBoxItem(Menus.qMenu, "auto.q.immobile") && !IsWActive)
+            if (getCheckBoxItem(Menus.qMenu, "auto.q.immobile"))
             {
                 foreach (
                     var enemy in
@@ -154,7 +162,7 @@ namespace Feedlesticks
                     Spells.Q.Cast(enemy);
                 }
             }
-            if (getCheckBoxItem(Menus.qMenu, "auto.q.channeling") && !IsWActive)
+            if (getCheckBoxItem(Menus.qMenu, "auto.q.channeling"))
             {
                 foreach (
                     var enemy in
@@ -167,7 +175,7 @@ namespace Feedlesticks
                     Spells.Q.Cast(enemy);
                 }
             }
-            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.immobile") && !IsWActive)
+            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.immobile"))
             {
                 foreach (
                     var enemy in
@@ -179,7 +187,7 @@ namespace Feedlesticks
                     Spells.E.Cast(enemy);
                 }
             }
-            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.channeling") && !IsWActive)
+            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.channeling"))
             {
                 foreach (
                     var enemy in
@@ -192,6 +200,7 @@ namespace Feedlesticks
                     Spells.E.Cast(enemy);
                 }
             }
+           
         }
 
         private static void Harass()
@@ -213,7 +222,7 @@ namespace Feedlesticks
                     }
                 }
             }
-            if (Spells.E.IsReady() && getCheckBoxItem(Menus.harassMenu, "e.harass") && !IsWActive)
+            if (Spells.E.IsReady() && getCheckBoxItem(Menus.harassMenu, "e.harass"))
             {
                 foreach (
                     var enemy in
@@ -246,7 +255,7 @@ namespace Feedlesticks
                 {
                     Spells.W.CastOnUnit(mob[0]);
                 }
-                if (Spells.E.IsReady() && getCheckBoxItem(Menus.jungleMenu, "e.jungle") && !IsWActive)
+                if (Spells.E.IsReady() && getCheckBoxItem(Menus.jungleMenu, "e.jungle"))
                 {
                     Spells.E.CastOnUnit(mob[0]);
                 }
@@ -282,7 +291,7 @@ namespace Feedlesticks
                     }
                 }
             }
-            if (Spells.E.IsReady() && getCheckBoxItem(Menus.comboMenu, "e.combo") && !IsWActive)
+            if (Spells.E.IsReady() && getCheckBoxItem(Menus.comboMenu, "e.combo"))
             {
                 foreach (var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(Spells.E.Range) && !o.IsDead && !o.IsZombie))
                 {
@@ -306,7 +315,7 @@ namespace Feedlesticks
 
             var min = MinionManager.GetMinions(ObjectManager.Player.Position, Spells.Q.Range, MinionTypes.All,
                 MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
-            if (Spells.E.IsReady() && getCheckBoxItem(Menus.clearMenu, "e.clear") && !IsWActive)
+            if (Spells.E.IsReady() && getCheckBoxItem(Menus.clearMenu, "e.clear"))
             {
                 if (min.Count > getSliderItem(Menus.clearMenu, "e.minion.hit.count"))
                 {

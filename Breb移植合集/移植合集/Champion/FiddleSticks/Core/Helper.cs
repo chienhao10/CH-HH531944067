@@ -1,6 +1,7 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
 using LeagueSharp.Common;
+using SebbyLib;
 
 namespace Feedlesticks.Core
 {
@@ -53,17 +54,23 @@ namespace Feedlesticks.Core
         /// <param name="args"></param>
         public static void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
-            if (IsWActive && sender.Owner.IsMe && Spells.Wable)
+            if (IsWActive && sender.Owner.IsMe && Spells.W.IsReady())
             {
                 if (args.Slot == SpellSlot.W)
                 {
                     args.Process = false;
+                    OktwCommon.blockMove = true;
+                    OktwCommon.blockAttack = true;
+                    OktwCommon.blockSpells = true;
                     Orbwalker.DisableAttacking = true;
                     Orbwalker.DisableMovement = true;
                 }
                 else
                 {
                     args.Process = true;
+                    OktwCommon.blockMove = false;
+                    OktwCommon.blockAttack = false;
+                    OktwCommon.blockSpells = false;
                     Orbwalker.DisableAttacking = false;
                     Orbwalker.DisableMovement = false;
                 }
