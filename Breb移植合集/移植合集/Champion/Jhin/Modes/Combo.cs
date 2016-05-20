@@ -58,8 +58,8 @@ namespace Jhin___The_Virtuoso.Modes
             else
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValid && x.Distance(ObjectManager.Player) < MaxRange
-                                                                && x.Distance(ObjectManager.Player) > MinRange &&
+                    var enemy in HeroManager.Enemies.Where(x => x.IsValid && x.LSDistance(ObjectManager.Player) < MaxRange
+                                                                && x.LSDistance(ObjectManager.Player) > MinRange &&
                                                                 Spells.W.GetPrediction(x).Hitchance >=
                                                                 Menus.wMenu.HikiChance("w.hit.chance")
                                                                 && !x.IsDead && !x.IsZombie))
@@ -80,7 +80,7 @@ namespace Jhin___The_Virtuoso.Modes
                 var pred = Spells.E.GetPrediction(enemy);
                 if (pred.Hitchance >= Menus.eMenu.HikiChance("e.hit.chance"))
                 {
-                    Spells.E.Cast(pred.CastPosition);
+                    Spells.E.Cast(enemy);
                 }
             }
         }

@@ -34,36 +34,9 @@ namespace Auto_Carry_Vayne.Features.Modes
                     if (Prediction.Health.GetPrediction(minion, (int)(Variables._Player.AttackDelay * 1000)) <= dmg / 2 &&
                         (Orbwalker.LastTarget == null || Orbwalker.LastTarget.NetworkId != minion.NetworkId))
                     {
-                        var Farmtumblepos = Variables._Player.Position.Extend(minion, 300f);
-                        if (Farmtumblepos.IsSafeEx())
-                        {
-                            Player.CastSpell(SpellSlot.Q, Farmtumblepos.To3D());
-                        }
+                            Player.CastSpell(SpellSlot.Q, Game.CursorPos);
+                        
                     }
-                }
-            }
-            var LastHitE = Variables._Player;
-
-            foreach (
-                var Etarget in
-                    EntityManager.Heroes.Enemies.Where(
-                        Etarget => Etarget.IsValidTarget(Manager.SpellManager.E.Range) && Etarget.Path.Count() < 2))
-            {
-                if (Manager.MenuManager.UseEKill && Manager.SpellManager.E.IsReady() &&
-                    Variables._Player.CountEnemiesInRange(600) <= 1)
-                {
-                    var dmgE = Variables._Player.GetSpellDamage(Etarget, SpellSlot.E);
-                    if (dmgE > Etarget.Health ||
-                        (Etarget.GetBuffCount("vaynesilvereddebuff") == 2 && dmgE + Manager.DamageManager.Wdmg(Etarget) > Etarget.Health))
-                    {
-                        LastHitE = Etarget;
-
-                    }
-                }
-
-                if (LastHitE != Variables._Player)
-                {
-                    Manager.SpellManager.E.Cast(LastHitE);
                 }
             }
         }

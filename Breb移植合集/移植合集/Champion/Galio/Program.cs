@@ -53,7 +53,7 @@ namespace UnderratedAIO.Champions
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (R.IsReady() && getCheckBoxItem(miscMenu, "Interrupt") && sender.Distance(player) < R.Range)
+            if (R.IsReady() && getCheckBoxItem(miscMenu, "Interrupt") && sender.LSDistance(player) < R.Range)
             {
                 CastR();
             }
@@ -120,7 +120,7 @@ namespace UnderratedAIO.Champions
                 var best =
                     points.Where(
                         p =>
-                            !p.IsWall() && p.Distance(player.Position) > 200 && p.Distance(player.Position) < 425 &&
+                            !p.IsWall() && p.LSDistance(player.Position) > 200 && p.LSDistance(player.Position) < 425 &&
                             p.IsValid() && p.CountEnemiesInRange(R.Range) > 0 &&
                             getSliderItem(comboMenu, "Rminflash") <= p.CountEnemiesInRange(R.Range - 150))
                         .OrderByDescending(p => p.CountEnemiesInRange(R.Range - 100))
@@ -237,7 +237,7 @@ namespace UnderratedAIO.Champions
                 hitC = HitChance.VeryHigh;
             }
             if (getCheckBoxItem(comboMenu, "useq") && Q.CanCast(target) &&
-                player.Distance(target) < getSliderItem(comboMenu, "useqRange"))
+                player.LSDistance(target) < getSliderItem(comboMenu, "useqRange"))
             {
                 Q.CastIfHitchanceEquals(target, hitC, getCheckBoxItem(config, "packets"));
             }
@@ -251,7 +251,7 @@ namespace UnderratedAIO.Champions
         {
             foreach (
                 var h in
-                    HeroManager.Allies.Where(i => i.IsValid && i.Distance(player) < W.Range)
+                    HeroManager.Allies.Where(i => i.IsValid && i.LSDistance(player) < W.Range)
                         .OrderByDescending(TargetSelector.GetPriority))
             {
                 var incDamage = IncDamages.GetAllyData(h.NetworkId);
@@ -369,7 +369,7 @@ namespace UnderratedAIO.Champions
 
         private static int getDelay(Spell spell, Vector3 pos)
         {
-            return (int) (spell.Delay*1000 + player.Distance(pos)/spell.Speed);
+            return (int) (spell.Delay*1000 + player.LSDistance(pos)/spell.Speed);
         }
 
         private static void InitMenu()

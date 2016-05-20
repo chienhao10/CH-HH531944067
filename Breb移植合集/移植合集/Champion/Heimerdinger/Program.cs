@@ -187,21 +187,21 @@ namespace Two_Girls_One_Donger
         {
             PredictionOutput prediction;
 
-            if (ObjectManager.Player.Distance(target) < E1.Range)
+            if (ObjectManager.Player.LSDistance(target) < E1.Range)
             {
                 var oldrange = E1.Range;
                 E1.Range = E2.Range;
                 prediction = E1.GetPrediction(target, true);
                 E1.Range = oldrange;
             }
-            else if (ObjectManager.Player.Distance(target) < E2.Range)
+            else if (ObjectManager.Player.LSDistance(target) < E2.Range)
             {
                 var oldrange = E2.Range;
                 E2.Range = E3.Range;
                 prediction = E2.GetPrediction(target, true);
                 E2.Range = oldrange;
             }
-            else if (ObjectManager.Player.Distance(target) < E3.Range)
+            else if (ObjectManager.Player.LSDistance(target) < E3.Range)
             {
                 prediction = E3.GetPrediction(target, true);
             }
@@ -212,10 +212,10 @@ namespace Two_Girls_One_Donger
 
             if (prediction.Hitchance >= HitChance.High)
             {
-                if (ObjectManager.Player.ServerPosition.Distance(prediction.CastPosition) <= E1.Range + E1.Width)
+                if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) <= E1.Range + E1.Width)
                 {
                     Vector3 p;
-                    if (ObjectManager.Player.ServerPosition.Distance(prediction.CastPosition) > 300)
+                    if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) > 300)
                     {
                         p = prediction.CastPosition -
                             100*
@@ -229,7 +229,7 @@ namespace Two_Girls_One_Donger
                     R.Cast();
                     E1.Cast(p);
                 }
-                else if (ObjectManager.Player.ServerPosition.Distance(prediction.CastPosition) <=
+                else if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) <=
                          (E1.Range + E1.Range)/2)
                 {
                     var p = ObjectManager.Player.ServerPosition.To2D()

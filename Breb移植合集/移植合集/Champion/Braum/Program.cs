@@ -120,10 +120,10 @@ namespace PortAIO.Champion.Braum
 
             if (getCheckBoxItem(ewMenu, "AGC"))
             {
-                if (W.IsReady() && gapcloser.End.Distance(Player.Position) < gapcloser.Start.Distance(Player.Position))
+                if (W.IsReady() && gapcloser.End.LSDistance(Player.Position) < gapcloser.Start.LSDistance(Player.Position))
                 {
-                    var allyHero = SebbyLib.Program.Allies.Where(ally => ally.Distance(Player) <= W.Range && !ally.IsMe)
-                        .OrderBy(ally => ally.Distance(gapcloser.End)).FirstOrDefault();
+                    var allyHero = SebbyLib.Program.Allies.Where(ally => ally.LSDistance(Player) <= W.Range && !ally.IsMe)
+                        .OrderBy(ally => ally.LSDistance(gapcloser.End)).FirstOrDefault();
 
                     if (allyHero != null && getCheckBoxItem(ewMenu, "Eon" + allyHero.NetworkId))
                         W.Cast(allyHero);
@@ -213,7 +213,7 @@ namespace PortAIO.Champion.Braum
                 if (getCheckBoxItem(rMenu, "rCc") && !OktwCommon.CanMove(t) && t.HealthPercent > 20*t.CountAlliesInRange(500))
                 {
                     var t1 = t;
-                    LeagueSharp.Common.Utility.DelayAction.Add(800 - (int) (Player.Distance(t.Position)/2), () => CastRtime(t1));
+                    LeagueSharp.Common.Utility.DelayAction.Add(800 - (int) (Player.LSDistance(t.Position)/2), () => CastRtime(t1));
                 }
 
                 if (getCheckBoxItem(rMenu, "rCombo") && SebbyLib.Program.Combo)
@@ -249,7 +249,7 @@ namespace PortAIO.Champion.Braum
                     var ally in
                         SebbyLib.Program.Allies.Where(
                             ally =>
-                                ally.IsValid && Player.Distance(ally.ServerPosition) < W.Range &&
+                                ally.IsValid && Player.LSDistance(ally.ServerPosition) < W.Range &&
                                 getCheckBoxItem(ewMenu, "Eon" + ally.NetworkId)))
                 {
                     if (OktwCommon.CanHitSkillShot(ally, args) ||

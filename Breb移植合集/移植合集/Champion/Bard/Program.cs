@@ -15,7 +15,7 @@ namespace PortAIO.Champion.Bard
 {
     internal class Program
     {
-		public static Menu BardMenu, comboMenu, harassMenu, miscMenu;
+        public static Menu BardMenu, comboMenu, harassMenu, miscMenu;
 
         public static Dictionary<SpellSlot, Spell> spells = new Dictionary<SpellSlot, Spell>
         {
@@ -65,23 +65,21 @@ namespace PortAIO.Champion.Bard
             harassMenu.AddGroupLabel("Q 目标 (只骚扰)");
             foreach (var hero in HeroManager.Enemies)
             {
-                harassMenu.Add(string.Format("dz191.bard.qtarget.{0}", hero.ChampionName.ToLower()),
-                    new CheckBox("骚扰 : " + hero.ChampionName));
+                harassMenu.Add(string.Format("dz191.bard.qtarget.{0}", hero.NetworkId), new CheckBox("Harass : " + hero.ChampionName));
             }
             harassMenu.AddSeparator();
             harassMenu.Add("dz191.bard.mixed.useq", new CheckBox("使用 Q"));
 
-            miscMenu = BardMenu.AddSubMenu("杂项", "dz191.bard.misc");
+            miscMenu = BardMenu.AddSubMenu("Misc", "dz191.bard.misc");
             miscMenu.AddGroupLabel("W 设置");
             foreach (var hero in HeroManager.Allies)
             {
-                miscMenu.Add(string.Format("dz191.bard.wtarget.{0}", hero.ChampionName.ToLower()),
-                    new CheckBox("治疗 " + hero.ChampionName));
+                miscMenu.Add(string.Format("dz191.bard.wtarget.{0}", hero.NetworkId), new CheckBox("Heal " + hero.ChampionName));
             }
-            miscMenu.Add("dz191.bard.wtarget.healthpercent", new Slider("使用 W 治疗当生命 %", 25, 1));
+            miscMenu.Add("dz191.bard.wtarget.healthpercent", new Slider("使用 W 治疗当生命", 25, 1));
             miscMenu.AddGroupLabel("Q - 捆绑");
             miscMenu.Add("dz191.bard.misc.distance", new Slider("计算距离", 250, 100, 450));
-            miscMenu.Add("dz191.bard.misc.accuracy", new Slider("准确度", 20, 1, 50));
+            miscMenu.Add("dz191.bard.misc.accuracy", new Slider("命中率", 20, 1, 50));
             miscMenu.AddSeparator();
             miscMenu.Add("dz191.bard.misc.attackMinions", new CheckBox("辅助模式"));
             miscMenu.Add("dz191.bard.misc.attackMinionsRange",
@@ -206,7 +204,7 @@ namespace PortAIO.Champion.Bard
                 foreach (var position in BeamStartPositions)
                 {
                     var collisionableObjects = spells[SpellSlot.Q].GetCollision(position.To2D(),
-                        new List<Vector2> { position.Extend(PlayerPosition, -QPushDistance) });
+                        new List<Vector2> { position.LSExtend(PlayerPosition, -QPushDistance).LSTo2D() });
 
                     if (collisionableObjects.Any())
                     {
@@ -219,13 +217,13 @@ namespace PortAIO.Champion.Bard
 
                         for (var i = 0; i < QPushDistance; i += (int)comboTarget.BoundingRadius)
                         {
-                            CollisionPositions.Add(position.Extend(PlayerPosition, -i).To3D());
+                            CollisionPositions.Add(position.LSExtend(PlayerPosition, -i));
                         }
                     }
 
                     for (var i = 0; i < QPushDistance; i += (int)comboTarget.BoundingRadius)
                     {
-                        PositionsList.Add(position.Extend(PlayerPosition, -i).To3D());
+                        PositionsList.Add(position.LSExtend(PlayerPosition, -i));
                     }
                 }
 
@@ -262,7 +260,7 @@ namespace PortAIO.Champion.Bard
 
             if (ObjectManager.Player.HealthPercent <= getSliderItem(miscMenu, "dz191.bard.wtarget.healthpercent"))
             {
-                var castPosition = ObjectManager.Player.ServerPosition.Extend(Game.CursorPos, 65);
+                var castPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, 65);
                 spells[SpellSlot.W].Cast(castPosition);
                 return;
             }
@@ -288,7 +286,7 @@ namespace PortAIO.Champion.Bard
             double distance = Vector3.Distance(start, end);
             for (uint i = 0; i < distance; i += 10)
             {
-                var tempPosition = start.Extend(end, i);
+                var tempPosition = start.LSExtend(end, i);
                 if (tempPosition.IsWall())
                 {
                     return true;
@@ -303,10 +301,10 @@ namespace PortAIO.Champion.Bard
             double distance = Vector3.Distance(start, end);
             for (uint i = 0; i < distance; i += 10)
             {
-                var tempPosition = start.Extend(end, i);
+                var tempPosition = start.LSExtend(end, i);
                 if (tempPosition.IsWall())
                 {
-                    return tempPosition.Extend(start, -35).To3D();
+                    return tempPosition.LSExtend(start, -35);
                 }
             }
 
@@ -321,7 +319,7 @@ namespace PortAIO.Champion.Bard
 
             for (uint i = 0; i < distance; i += 10)
             {
-                var tempPosition = start.Extend(end, i).To3D();
+                var tempPosition = start.LSExtend(end, i);
                 if (tempPosition.IsWall() && firstPosition == Vector3.Zero)
                 {
                     firstPosition = tempPosition;

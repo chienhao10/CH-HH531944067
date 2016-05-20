@@ -246,7 +246,7 @@ namespace Staberina
                 var ward =
                     ObjectManager.Get<Obj_AI_Minion>()
                         .Where(o => E.IsInRange(o) && MinionManager.IsWard(o) && o.Buffs.Any(b => b.Caster.IsMe))
-                        .OrderBy(o => o.Distance(Game.CursorPos))
+                        .OrderBy(o => o.LSDistance(Game.CursorPos))
                         .ThenByDescending(o => o.DistanceToPlayer())
                         .FirstOrDefault();
 
@@ -515,7 +515,7 @@ namespace Staberina
             {
                 var closestTarget = Utility.GetClosestETarget(Game.CursorPos);
 
-                if (closestTarget != null && closestTarget.Distance(Game.CursorPos) < 400)
+                if (closestTarget != null && closestTarget.LSDistance(Game.CursorPos) < 400)
                 {
                     return E.CastOnUnit(closestTarget);
                 }
@@ -534,7 +534,7 @@ namespace Staberina
                 }
             }
 
-            if (!Player.IsDashing() && Player.GetWaypoints().Last().Distance(Game.CursorPos) > 100)
+            if (!Player.IsDashing() && Player.GetWaypoints().Last().LSDistance(Game.CursorPos) > 100)
             {
                 EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.ServerPosition.LSExtend(Game.CursorPos, 250),
                     false);

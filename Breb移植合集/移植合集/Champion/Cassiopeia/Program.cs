@@ -114,7 +114,7 @@ namespace SAutoCarry.Champions
 
         public static void CreateConfigMenu()
         {
-            rootMenu = MainMenu.AddMenu("SAC-Cassiopeia", "Cass");
+            rootMenu = MainMenu.AddMenu("SAutoCarry - Cassiopeia", "Cass");
 
             comboMenu = rootMenu.AddSubMenu("连招", "SAutoCarry.Cassiopeia.Combo");
             comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseQ", new CheckBox("使用 Q"));

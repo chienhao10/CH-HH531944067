@@ -133,7 +133,7 @@ namespace Karma
                     var enemy in
                         ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && h.HasBuff("KarmaSpiritBind")))
                 {
-                    var distance = 1 - Math.Min(Math.Max(850 - ObjectManager.Player.Distance(enemy), 0), 450)/450;
+                    var distance = 1 - Math.Min(Math.Max(850 - ObjectManager.Player.LSDistance(enemy), 0), 450)/450;
                     Render.Circle.DrawCircle(ObjectManager.Player.Position, 850,
                         Color.FromArgb((int) (50*distance), Color.MintCream), -420, true);
                     Render.Circle.DrawCircle(ObjectManager.Player.Position, 850,
@@ -166,7 +166,7 @@ namespace Karma
                                 hero =>
                                     hero.IsValidTarget(_e.Range) && hero.IsAlly &&
                                     ObjectManager.Get<AIHeroClient>()
-                                        .Count(h => h.IsValidTarget() && h.Distance(hero) < 400) > 1))
+                                        .Count(h => h.IsValidTarget() && h.LSDistance(hero) < 400) > 1))
                 {
                     _e.Cast(hero);
                 }
@@ -232,19 +232,19 @@ namespace Karma
                     var qPrediction = _q.GetPrediction(qTarget);
                     if (qPrediction.Hitchance >= HitChance.High)
                     {
-                        _q.Cast(qPrediction.CastPosition);
+                        _q.Cast(qTarget);
                     }
                     else if (qPrediction.Hitchance == HitChance.Collision)
                     {
                         var minionsHit = qPrediction.CollisionObjects;
                         var closest =
                             minionsHit.Where(m => m.NetworkId != ObjectManager.Player.NetworkId)
-                                .OrderBy(m => m.Distance(ObjectManager.Player))
+                                .OrderBy(m => m.LSDistance(ObjectManager.Player))
                                 .FirstOrDefault();
 
-                        if (closest != null && closest.Distance(qPrediction.UnitPosition) < 200)
+                        if (closest != null && closest.LSDistance(qPrediction.UnitPosition) < 200)
                         {
-                            _q.Cast(qPrediction.CastPosition);
+                            _q.Cast(qTarget);
                         }
                     }
                 }

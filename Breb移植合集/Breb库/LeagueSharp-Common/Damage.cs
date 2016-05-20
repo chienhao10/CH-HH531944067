@@ -28,6 +28,7 @@ using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
 using LeagueSharp.Common.Data;
+using static LeagueSharp.Common.Data.MasteryData;
 
 #endregion
 
@@ -3776,9 +3777,9 @@ namespace LeagueSharp.Common
                             {
                                 Slot = SpellSlot.E, DamageType = DamageType.Magical,
                                 Damage =
-                                    (source, target, level) =>
-                                    new double[] { 20, 30, 40, 50, 60 }[level]
-                                    + 0.25 * source.TotalMagicalDamage
+                                    (source, target, level) => source.HasBuff("judicatorrighteousfury") ?  new double[] { 20, 30, 40, 50, 60 }[level]
+                                    + 0.25 * source.TotalMagicalDamage : new double[] { 10, 15, 20, 25, 30 }[level]
+                                    + 0.15 * source.TotalMagicalDamage
                             },
                     });
 
@@ -3978,19 +3979,7 @@ namespace LeagueSharp.Common
                                         var count = target.GetBuffCount("kalistaexpungemarker");
                                         if (count > 0)
                                         {
-                                            return (new double[] { 20, 30, 40, 50, 60 }[level]
-                                                    + 0.6
-                                                    * (source.BaseAttackDamage
-                                                       + source.FlatPhysicalDamageMod)) +
-                                                   // Base damage of E
-                                                   ((count - 1)
-                                                    * (new double[] { 10, 14, 19, 25, 32 }[level]
-                                                       + // Base damage per spear
-                                                       new double[] { 0.2, 0.225, 0.25, 0.275, 0.3 }[
-                                                           level]
-                                                       * (source.BaseAttackDamage
-                                                          + source.FlatPhysicalDamageMod)));
-                                            // Damage multiplier per spear
+                                            return (new double[] { 20, 30, 40, 50, 60 }[level] + 0.6 * (source.BaseAttackDamage + source.FlatPhysicalDamageMod)) + ((count - 1) * (new double[] { 10, 14, 19, 25, 32 }[level] + new double[] { 0.2, 0.225, 0.25, 0.275, 0.3 }[level] * (source.BaseAttackDamage + source.FlatPhysicalDamageMod)));
                                         }
                                         return 0;
                                     }
@@ -6978,7 +6967,7 @@ namespace LeagueSharp.Common
         }
 
         /// <summary>
-        ///     Gets the automatic attack damage.
+        /// Gets the automatic attack damage.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="target">The target.</param>
@@ -7012,8 +7001,8 @@ namespace LeagueSharp.Common
                     if (
                         HeroManager.AllHeroes.Any(
                             h =>
-                                h.NetworkId != source.NetworkId && h.Team == source.Team
-                                && h.Distance(minionTarget.Position) < 1100))
+                            h.NetworkId != source.NetworkId && h.Team == source.Team
+                            && h.Distance(minionTarget.Position) < 1100))
                     {
                         var value = 0;
 
@@ -7067,21 +7056,22 @@ namespace LeagueSharp.Common
                 // Nimble Fighter
                 if (targetHero.ChampionName == "Fizz")
                 {
-                    var f = new[] { 4, 6, 8, 10, 12, 14 };
+                    var f = new int[] { 4, 6, 8, 10, 12, 14 };
                     reduction += f[(targetHero.Level - 1) / 3];
                 }
             }
 
-            //if (hero.ChampionName == "Corki")
-            //{
-            //return CalcMixedDamage(source, target, (result - reduction) * k, result * k);
-            //}
+            //TODO: need to check if there are items or spells in game that reduce magical dmg % or by amount
+            if (hero != null && hero.ChampionName == "Corki")
+            {
+                return CalcMixedDamage(source, target, (result - reduction) * k, result * k);
+            }
 
             return CalcPhysicalDamage(source, target, (result - reduction) * k + PassiveFlatMod(source, target));
         }
 
         /// <summary>
-        ///     Calculates the mixed damage.
+        /// Calculates the mixed damage.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="target">The target.</param>
@@ -7091,12 +7081,9 @@ namespace LeagueSharp.Common
         /// <param name="physical">% physical dmg</param>
         /// <param name="trueDmg">% trueDmg dmg</param>
         /// <returns></returns>
-        private static double CalcMixedDamage(Obj_AI_Base source, Obj_AI_Base target, double amountPhysical,
-            double amountMagic, int magic = 50, int physical = 50, int trueDmg = 0)
+        private static double CalcMixedDamage(Obj_AI_Base source, Obj_AI_Base target, double amountPhysical, double amountMagic, int magic = 50, int physical = 50, int trueDmg = 0)
         {
-            return CalcMagicDamage(source, target, amountMagic * magic / 100) +
-                   CalcPhysicalDamage(source, target, amountPhysical * physical / 100) + PassiveFlatMod(source, target) +
-                   amountMagic * trueDmg / 100;
+            return CalcMagicDamage(source, target, (amountMagic * magic) / 100) + CalcPhysicalDamage(source, target, (amountPhysical * physical) / 100) + PassiveFlatMod(source, target) + (amountMagic * trueDmg) / 100;
         }
 
         /// <summary>
@@ -7159,7 +7146,7 @@ namespace LeagueSharp.Common
                 return new DamageSpell
                 {
                     DamageType = DamageType.Physical,
-                    CalculatedDamage = LSGetAutoAttackDamage(source, target, true)
+                    CalculatedDamage = LSGetAutoAttackDamage(source, target, true),
                 };
             }
 
@@ -7167,7 +7154,7 @@ namespace LeagueSharp.Common
             if (hero != null)
             {
                 return (from spell in hero.Spellbook.Spells
-                        where string.Equals(spell.Name, spellName, StringComparison.InvariantCultureIgnoreCase)
+                        where String.Equals(spell.Name, spellName, StringComparison.InvariantCultureIgnoreCase)
                         select GetDamageSpell(hero, target, spell.Slot)).FirstOrDefault();
             }
 
@@ -7182,13 +7169,16 @@ namespace LeagueSharp.Common
         /// <param name="slot">The slot.</param>
         /// <param name="stage">The stage.</param>
         /// <returns></returns>
-        public static DamageSpell GetDamageSpell(this AIHeroClient source, Obj_AI_Base target, SpellSlot slot,
+        public static DamageSpell GetDamageSpell(
+            this AIHeroClient source,
+            Obj_AI_Base target,
+            SpellSlot slot,
             int stage = 0)
         {
             if (Spells.ContainsKey(source.ChampionName))
             {
-                var spell = Spells[source.ChampionName].FirstOrDefault(s => s.Slot == slot && stage == s.Stage) ??
-                            Spells[source.ChampionName].FirstOrDefault(s => s.Slot == slot);
+                var spell = Spells[source.ChampionName].FirstOrDefault(s => s.Slot == slot && stage == s.Stage)
+                            ?? Spells[source.ChampionName].FirstOrDefault(s => s.Slot == slot);
 
                 if (spell == null)
                 {
@@ -7202,8 +7192,6 @@ namespace LeagueSharp.Common
                 spell.CalculatedDamage = CalcDamage(source, target, spell.DamageType, rawDamage);
                 return spell;
             }
-
-            //Spell not found.
             return null;
         }
 
@@ -7243,8 +7231,7 @@ namespace LeagueSharp.Common
         /// <param name="damageType">Type of the damage.</param>
         /// <param name="amount">The amount.</param>
         /// <returns></returns>
-        public static double CalcDamage(this Obj_AI_Base source, Obj_AI_Base target, DamageType damageType,
-            double amount)
+        public static double CalcDamage(this Obj_AI_Base source, Obj_AI_Base target, DamageType damageType, double amount)
         {
             var damage = 0d;
             switch (damageType)
@@ -7274,22 +7261,26 @@ namespace LeagueSharp.Common
         {
             var magicResist = target.SpellBlock;
 
+            // Penetration can't reduce magic resist below 0.
             double value;
 
             if (magicResist < 0)
             {
                 value = 2 - 100 / (100 - magicResist);
             }
-            else if (magicResist * source.PercentMagicPenetrationMod - source.FlatMagicPenetrationMod < 0)
+            else if ((magicResist * source.PercentMagicPenetrationMod) - source.FlatMagicPenetrationMod < 0)
             {
                 value = 1;
             }
             else
             {
-                value = 100 / (100 + magicResist * source.PercentMagicPenetrationMod - source.FlatMagicPenetrationMod);
+                value = 100 / (100 + (magicResist * source.PercentMagicPenetrationMod) - source.FlatMagicPenetrationMod);
             }
 
-            var damage = DamageReductionMod(source, target, PassivePercentMod(source, target, value) * amount,
+            var damage = DamageReductionMod(
+                source,
+                target,
+                PassivePercentMod(source, target, value) * amount,
                 DamageType.Magical);
 
             return damage;
@@ -7325,6 +7316,7 @@ namespace LeagueSharp.Common
             }
 
 
+
             if (source is Obj_AI_Turret)
             {
                 if (target is Obj_AI_Minion)
@@ -7349,15 +7341,13 @@ namespace LeagueSharp.Common
             {
                 value = 2 - 100 / (100 - armor);
             }
-            else if (armor * armorPenetrationPercent - bonusArmor * (1 - bonusArmorPenetrationMod) - armorPenetrationFlat < 0)
+            else if ((armor * armorPenetrationPercent) - (bonusArmor * (1 - bonusArmorPenetrationMod)) - armorPenetrationFlat < 0)
             {
                 value = 1;
             }
             else
             {
-                value = 100 /
-                        (100 + armor * armorPenetrationPercent - bonusArmor * (1 - bonusArmorPenetrationMod) -
-                         armorPenetrationFlat);
+                value = 100 / (100 + (armor * armorPenetrationPercent) - (bonusArmor * (1 - bonusArmorPenetrationMod)) - armorPenetrationFlat);
             }
 
             var damage = DamageReductionMod(
@@ -7408,16 +7398,15 @@ namespace LeagueSharp.Common
             var targetHero = target as AIHeroClient;
             if (targetHero != null)
             {
+
                 //Damage Reduction Masteries
 
                 //DAMAGE REDUCTION 2 %, increasing to 8 % when near at least one allied champion
                 //IN THIS TOGETHER 8 % of the damage that the nearest allied champion would take is dealt to you instead.This can't bring you below 15% health.
-                var BondofStones = targetHero.GetMastery(MasteryData.Resolve.BondofStones);
+                Mastery BondofStones = targetHero.GetMastery(Resolve.BondofStones);
                 if (BondofStones != null && BondofStones.IsActive())
                 {
-                    var closebyenemies =
-                        HeroManager.Enemies.Any(x => x.NetworkId != target.NetworkId && x.Distance(target) <= 500);
-                    //500 is not the real value
+                    bool closebyenemies = HeroManager.Enemies.Any(x => x.NetworkId != target.NetworkId && x.Distance(target) <= 500); //500 is not the real value
                     if (closebyenemies)
                     {
                         amount *= 0.92d;
@@ -7539,12 +7528,10 @@ namespace LeagueSharp.Common
         {
             var SiegeMinionList = new List<string> { "Red_Minion_MechCannon", "Blue_Minion_MechCannon" };
             var NormalMinionList = new List<string>
-            {
-                "Red_Minion_Wizard",
-                "Blue_Minion_Wizard",
-                "Red_Minion_Basic",
-                "Blue_Minion_Basic"
-            };
+                                       {
+                                           "Red_Minion_Wizard", "Blue_Minion_Wizard", "Red_Minion_Basic",
+                                           "Blue_Minion_Basic"
+                                       };
 
             //Minions and towers passives:
             if (source is Obj_AI_Turret)
@@ -7576,7 +7563,6 @@ namespace LeagueSharp.Common
                 {
                     amount *= 1 + ((new double[] { 0.4, 0.8, 1.2, 1.6, 2.0 }[sorcery.Points]) / 100);
                 } /*
-
                 //MELEE Deal an additional 3 % damage, but receive an additional 1.5 % damage
                 //RANGED Deal an additional 2 % damage, but receive an additional 2 % damage
                 Mastery DoubleEdgedSword = hero.GetMastery(Ferocity.DoubleEdgedSword);
@@ -7584,7 +7570,6 @@ namespace LeagueSharp.Common
                 {
                     amount *= hero.IsMelee() ? 1.03 : 1.02;
                 }
-
                 /* Bounty Hunter: TAKING NAMES You gain a permanent 1 % damage increase for each unique enemy champion you kill
                 Mastery BountyHunter = hero.GetMastery(Ferocity.BountyHunter);
                 if (BountyHunter != null && BountyHunter.IsActive())
@@ -7594,7 +7579,7 @@ namespace LeagueSharp.Common
                 } */
 
                 //Opressor: KICK 'EM WHEN THEY'RE DOWN You deal 2.5% increased damage to targets with impaired movement (slows, stuns, taunts, etc)
-                var Opressor = hero.GetMastery(MasteryData.Ferocity.Oppresor);
+                Mastery Opressor = hero.GetMastery(Ferocity.Oppresor);
                 if (targetHero != null && Opressor != null && Opressor.IsActive() && targetHero.IsMovementImpaired())
                 {
                     amount *= 1.025;
@@ -7603,10 +7588,20 @@ namespace LeagueSharp.Common
                 //Merciless DAMAGE AMPLIFICATION 1 / 2 / 3 / 4 / 5 % increased damage to champions below 40 % health
                 if (targetHero != null)
                 {
-                    var Merciless = hero.GetMastery(MasteryData.Cunning.Merciless);
+                    Mastery Merciless = hero.GetMastery(Cunning.Merciless);
                     if (Merciless != null && Merciless.IsActive() && targetHero.HealthPercent < 40)
                     {
                         amount *= 1 + Merciless.Points / 100f;
+                    }
+                }
+
+                //Thunderlord's Decree: RIDE THE LIGHTNING Your 3rd ability or basic attack on an enemy champion shocks them, dealing 10 - 180(+0.2 bonus attack damage)(+0.1 ability power) magic damage in an area around them
+                if (false) // Need a good way to check if it is 3rd attack (Use OnProcessSpell/SpellBook.OnCast if have to)
+                {
+                    Mastery Thunder = hero.GetMastery(Cunning.ThunderlordsDecree);
+                    if (Thunder != null && Thunder.IsActive())
+                    {
+                        // amount += 10 * hero.Level + (0.2 * hero.FlatPhysicalDamageMod) + (0.1 * hero.TotalMagicalDamage);
                     }
                 }
             }
@@ -7618,7 +7613,7 @@ namespace LeagueSharp.Common
                 // Double edge sword:
                 //MELEE Deal an additional 3 % damage, but receive an additional 1.5 % damage
                 //RANGED Deal an additional 2 % damage, but receive an additional 2 % damage
-                var des = targetHero.GetMastery(MasteryData.Ferocity.DoubleEdgedSword);
+                var des = targetHero.GetMastery(Ferocity.DoubleEdgedSword);
                 if (des != null && des.IsActive())
                 {
                     amount *= targetHero.IsMelee() ? 1.015d : 1.02d;
@@ -7627,7 +7622,6 @@ namespace LeagueSharp.Common
 
             return amount;
         }
-
         /// <summary>
         ///     Gets the passive flat modifier.
         /// </summary>
@@ -7644,7 +7638,7 @@ namespace LeagueSharp.Common
             //Fervor of Battle: STACKTIVATE Your basic attacks and spells give you stacks of Fervor for 5 seconds, stacking 10 times. Each stack of Fervor adds 1-8 bonus physical damage to your basic attacks against champions, based on your level.
             if (targetHero != null && hero != null)
             {
-                var Fervor = hero.GetMastery(MasteryData.Ferocity.FervorofBattle);
+                Mastery Fervor = hero.GetMastery(Ferocity.FervorofBattle);
                 if (Fervor != null && Fervor.IsActive())
                 {
                     value += (0.9 + hero.Level * 0.42) * hero.GetBuffCount("MasteryOnHitDamageStacker");
@@ -7656,7 +7650,7 @@ namespace LeagueSharp.Common
             //Tough Skin DIRT OFF YOUR SHOULDERS You take 2 less damage from champion and monster basic attacks
             if (targetHero != null && (source is AIHeroClient || source is Obj_AI_Minion))
             {
-                var Toughskin = targetHero.GetMastery(MasteryData.Resolve.ToughSkin);
+                Mastery Toughskin = targetHero.GetMastery(Resolve.ToughSkin);
                 if (Toughskin != null && Toughskin.IsActive())
                 {
                     value -= 2;

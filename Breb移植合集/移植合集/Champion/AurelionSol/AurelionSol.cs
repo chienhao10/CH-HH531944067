@@ -280,7 +280,7 @@ namespace ElAurelion_Sol
                     var prediction = Q.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
                     {
-                        Q.Cast(prediction.CastPosition);
+                        Q.Cast(target);
                     }
                 }
 
@@ -293,19 +293,19 @@ namespace ElAurelion_Sol
                             return;
                         }
 
-                        if (Player.Distance(target) > W1.Range && Player.Distance(target) < W.Range)
+                        if (Player.LSDistance(target) > W1.Range && Player.LSDistance(target) < W.Range)
                         {
                             W.Cast();
                         }
                     }
                     else if (HasPassive())
                     {
-                        if (Player.Distance(target) > W1.Range && Player.Distance(target) < W.Range + 100)
+                        if (Player.LSDistance(target) > W1.Range && Player.LSDistance(target) < W.Range + 100)
                         {
                             return;
                         }
 
-                        if (Player.Distance(target) > W1.Range + 150)
+                        if (Player.LSDistance(target) > W1.Range + 150)
                         {
                             W.Cast();
                         }
@@ -318,7 +318,7 @@ namespace ElAurelion_Sol
                     var prediction = R.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
                     {
-                        R.Cast(prediction.CastPosition);
+                        R.Cast(target);
                     }
                 }
             }
@@ -341,7 +341,7 @@ namespace ElAurelion_Sol
             {
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
-                    args.Process = !(Q.IsReady() || Player.Distance(args.Target) >= 1000);
+                    args.Process = !(Q.IsReady() || Player.LSDistance(args.Target) >= 1000);
                 }
             }
         }
@@ -360,7 +360,7 @@ namespace ElAurelion_Sol
             }
 
             if (args.DangerLevel != Interrupter2.DangerLevel.High
-                || sender.Distance(Player) > Q.Range)
+                || sender.LSDistance(Player) > Q.Range)
             {
                 return;
             }
@@ -371,7 +371,7 @@ namespace ElAurelion_Sol
                 var prediction = Q.GetPrediction(sender);
                 if (prediction.Hitchance >= HitChance.High)
                 {
-                    Q.Cast(prediction.CastPosition);
+                    Q.Cast(sender);
                 }
             }
         }
@@ -386,14 +386,14 @@ namespace ElAurelion_Sol
                 return;
             }
 
-            if (Q.IsReady() && gapcloser.Sender.Distance(Player) < Q.Range)
+            if (Q.IsReady() && gapcloser.Sender.LSDistance(Player) < Q.Range)
             {
                 if (gapcloser.Sender.IsValidTarget(Q.Range) && Q.IsReady())
                 {
                     var prediction = Q.GetPrediction(gapcloser.Sender);
                     if (prediction.Hitchance >= HitChance.High)
                     {
-                        Q.Cast(prediction.CastPosition);
+                        Q.Cast(gapcloser.Sender);
                     }
                 }
             }
@@ -470,7 +470,7 @@ namespace ElAurelion_Sol
                     var prediction = Q.GetPrediction(target);
                     if (prediction.Hitchance >= HitChance.High)
                     {
-                        Q.Cast(prediction.CastPosition);
+                        Q.Cast(target);
                     }
                 }
             }
@@ -534,7 +534,7 @@ namespace ElAurelion_Sol
                         var prediction = Q.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)
                         {
-                            Q.Cast(prediction.CastPosition);
+                            Q.Cast(enemy);
                         }
                     }
 
@@ -543,7 +543,7 @@ namespace ElAurelion_Sol
                         var prediction = R.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)
                         {
-                            R.Cast(prediction.CastPosition);
+                            R.Cast(enemy);
                         }
                     }
                 }
@@ -643,7 +643,7 @@ namespace ElAurelion_Sol
                     foreach (var enemy in HeroManager.Enemies)
                     {
                         var startPos = enemy.ServerPosition;
-                        var endPos = Player.ServerPosition.LSExtend(startPos, Player.Distance(enemy) + RDistance);
+                        var endPos = Player.ServerPosition.LSExtend(startPos, Player.LSDistance(enemy) + RDistance);
                         var rectangle = new Geometry.Polygon.Rectangle(startPos, endPos, RWidth);
 
                         if (HeroManager.Enemies.Count(x => rectangle.IsInside(x)) >= minREnemies)

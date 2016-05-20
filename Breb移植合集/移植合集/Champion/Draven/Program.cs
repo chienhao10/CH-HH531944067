@@ -9,6 +9,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
 using Color = System.Drawing.Color;
+using LeagueSharp.Common;
 
 namespace RevampedDraven
 {
@@ -22,8 +23,8 @@ namespace RevampedDraven
     {
         private static readonly List<AxeDropObjectData> _axeDropObjectDataList = new List<AxeDropObjectData>();
 
-        private static Spell.Skillshot E, R;
-        private static Spell.Active Q, W;
+        private static EloBuddy.SDK.Spell.Skillshot E, R;
+        private static EloBuddy.SDK.Spell.Active Q, W;
         private static readonly GameObject _bestDropObject = null;
 
         private static Menu Menu;
@@ -96,10 +97,10 @@ namespace RevampedDraven
 
             Menu.AddSeparator();
 
-            Q = new Spell.Active(SpellSlot.Q, (uint) myHero.GetAutoAttackRange());
-            W = new Spell.Active(SpellSlot.W);
-            E = new Spell.Skillshot(SpellSlot.E, 1020, SkillShotType.Linear, 250, 1400, 120);
-            R = new Spell.Skillshot(SpellSlot.R, 2500, SkillShotType.Linear, 400, 2000, 160);
+            Q = new EloBuddy.SDK.Spell.Active(SpellSlot.Q, (uint) myHero.GetAutoAttackRange());
+            W = new EloBuddy.SDK.Spell.Active(SpellSlot.W);
+            E = new EloBuddy.SDK.Spell.Skillshot(SpellSlot.E, 1020, SkillShotType.Linear, 250, 1400, 120);
+            R = new EloBuddy.SDK.Spell.Skillshot(SpellSlot.R, 2500, SkillShotType.Linear, 400, 2000, 160);
 
             Game.OnTick += OnUpdate;
             Drawing.OnDraw += Drawing_OnDraw;
@@ -107,8 +108,8 @@ namespace RevampedDraven
             GameObject.OnCreate += GameObject_OnCreate;
             GameObject.OnDelete += GameObject_OnDelete;
             Player.OnIssueOrder += Player_OnIssueOrder;
-            Gapcloser.OnGapcloser += OnEnemyGapcloser;
-            Interrupter.OnInterruptableSpell += OnInterruptableTarget;
+            EloBuddy.SDK.Events.Gapcloser.OnGapcloser += OnEnemyGapcloser;
+            EloBuddy.SDK.Events.Interrupter.OnInterruptableSpell += OnInterruptableTarget;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
         }
 
@@ -170,16 +171,16 @@ namespace RevampedDraven
                         {
                             if (_bestDropObject.IsValid)
                             {
-                                if (_bestDropObject.Position.Distance(myHero.Position) < 120)
+                                if (_bestDropObject.Position.LSDistance(myHero.Position) < 120)
                                 {
-                                    if (_bestDropObject.Position.Distance(args.TargetPosition) >= 120)
+                                    if (_bestDropObject.Position.LSDistance(args.TargetPosition) >= 120)
                                     {
-                                        for (var i = _bestDropObject.Position.Distance(args.TargetPosition);
+                                        for (var i = _bestDropObject.Position.LSDistance(args.TargetPosition);
                                             i > 0;
                                             i = i - 1)
                                         {
-                                            var position = myHero.Position.Extend(args.TargetPosition, i);
-                                            if (_bestDropObject.Position.Distance(position) < 120)
+                                            var position = myHero.Position.LSExtend(args.TargetPosition, i);
+                                            if (_bestDropObject.Position.LSDistance(position) < 120)
                                             {
                                                 Player.IssueOrder(GameObjectOrder.MoveTo, (Vector3) position);
                                                 args.Process = false;
@@ -292,7 +293,7 @@ namespace RevampedDraven
             }
         }
 
-        private static void OnInterruptableTarget(Obj_AI_Base sender, Interrupter.InterruptableSpellEventArgs e)
+        private static void OnInterruptableTarget(Obj_AI_Base sender, EloBuddy.SDK.Events.Interrupter.InterruptableSpellEventArgs e)
         {
             if (interrupt)
             {
@@ -306,7 +307,7 @@ namespace RevampedDraven
             }
         }
 
-        private static void OnEnemyGapcloser(AIHeroClient sender, Gapcloser.GapcloserEventArgs e)
+        private static void OnEnemyGapcloser(AIHeroClient sender, EloBuddy.SDK.Events.Gapcloser.GapcloserEventArgs e)
         {
             if (sender.IsAlly || e.Sender.IsAlly)
             {
@@ -351,12 +352,12 @@ namespace RevampedDraven
                                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
                                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
                             {
-                                if (Game.CursorPos.Distance(bestObjecta.Object.Position) <= catchaxerange)
+                                if (Game.CursorPos.LSDistance(bestObjecta.Object.Position) <= catchaxerange)
                                 {
                                     if (
                                         ObjectManager.Get<GameObject>()
                                             .FirstOrDefault(x => x.Name.Equals("Draven_Base_Q_reticle_self.troy"))
-                                            .Position.Distance(myHero.ServerPosition) <= 80f)
+                                            .Position.LSDistance(myHero.ServerPosition) <= 80f)
                                     {
                                         Orbwalker.DisableMovement = true;
                                         Orbwalker.OrbwalkTo(
@@ -381,12 +382,12 @@ namespace RevampedDraven
                         }
                         else
                         {
-                            if (Game.CursorPos.Distance(bestObjecta.Object.Position) <= catchaxerange)
+                            if (Game.CursorPos.LSDistance(bestObjecta.Object.Position) <= catchaxerange)
                             {
                                 if (
                                     ObjectManager.Get<GameObject>()
                                         .FirstOrDefault(x => x.Name.Equals("Draven_Base_Q_reticle_self.troy"))
-                                        .Position.Distance(myHero.ServerPosition) <= 80f)
+                                        .Position.LSDistance(myHero.ServerPosition) <= 80f)
                                 {
                                     Orbwalker.DisableMovement = true;
                                     Orbwalker.OrbwalkTo(

@@ -217,17 +217,17 @@ namespace PortAIO.Champion.Blitzcrank
                         getSliderItem(MiscMenu, "Blitzcrank_GrabSelect" + enemy.NetworkId) == 2 && _Q.IsReady() &&
                         QTarget.ChampionName == enemy.ChampionName)
                     {
-                        if (QTarget.CanMove && QTarget.Distance(Player.Position) < _Q.Range*0.9)
+                        if (QTarget.CanMove && QTarget.LSDistance(Player.Position) < _Q.Range*0.9)
                             _Q.CastIfHitchanceEquals(QTarget, FreshCommon.Hitchance("Blitzcrank_CUseQ_Hit"), true);
                         if (!QTarget.CanMove)
                             _Q.CastIfHitchanceEquals(QTarget, FreshCommon.Hitchance("Blitzcrank_CUseQ_Hit"), true);
                     }
                 }
 
-				if (getKeyBindItem(ComboMenu, "Blitzcrank_CUse_FlashQ"))
-				{
-					flashq();
-				}
+                if (getKeyBindItem(ComboMenu, "Blitzcrank_CUse_FlashQ"))
+                {
+                    flashq();
+                }
 
                 // Combo
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
@@ -240,7 +240,7 @@ namespace PortAIO.Champion.Blitzcrank
                     if (getCheckBoxItem(ComboMenu, "Blitzcrank_CUse_W") && _W.IsReady() && WTarget != null)
                         _W.Cast(Player, true);
                     if (getCheckBoxItem(ComboMenu, "Blitzcrank_CUse_E") && _E.IsReady() &&
-                        QTarget.Distance(Player.ServerPosition) < 230)
+                        QTarget.LSDistance(Player.ServerPosition) < 230)
                         _E.Cast(Player);
                     if (getCheckBoxItem(ComboMenu, "Blitzcrank_CUse_R") && _R.IsReady() && RTarget != null)
                         _R.Cast();
@@ -258,7 +258,7 @@ namespace PortAIO.Champion.Blitzcrank
                     if (getCheckBoxItem(HarassMenu, "Blitzcrank_HUse_W") && _W.IsReady() && WTarget != null)
                         _W.Cast(Player, true);
                     if (getCheckBoxItem(HarassMenu, "Blitzcrank_HUse_E") && _E.IsReady() &&
-                        QTarget.Distance(Player.ServerPosition) < 230)
+                        QTarget.LSDistance(Player.ServerPosition) < 230)
                         _E.Cast(Player);
                 }
             }
@@ -314,17 +314,17 @@ namespace PortAIO.Champion.Blitzcrank
 
                 if (getCheckBoxItem(MiscMenu, "Blitzcrank_InterQ") && _Q.IsReady())
                 {
-                    if (sender.Distance(Player.ServerPosition, true) <= _Q.RangeSqr)
+                    if (sender.LSDistance(Player.ServerPosition, true) <= _Q.RangeSqr)
                         _Q.Cast(sender);
                 }
                 if (getCheckBoxItem(MiscMenu, "Blitzcrank_InterR") && _R.IsReady())
                 {
-                    if (sender.Distance(Player.ServerPosition, true) <= _R.RangeSqr)
+                    if (sender.LSDistance(Player.ServerPosition, true) <= _R.RangeSqr)
                         _R.Cast();
                 }
                 if (getCheckBoxItem(MiscMenu, "Blitzcrank_InterE") && _E.IsReady())
                 {
-                    if (sender.Distance(Player.ServerPosition, true) <= _E.RangeSqr)
+                    if (sender.LSDistance(Player.ServerPosition, true) <= _E.RangeSqr)
                         _E.CastOnUnit(Player);
                 }
             }

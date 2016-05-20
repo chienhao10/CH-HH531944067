@@ -48,23 +48,27 @@ namespace UnderratedAIO.Champions
             if (GarenE)
             {
                 Orbwalker.DisableMovement = true;
-                if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-                {
-                    Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                }
             }
             else
             {
                 Orbwalker.DisableMovement = false;
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+            if (GarenE && getCheckBoxItem(comboMenu, "orbwalkto"))
+            {
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+                {
+                    Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                }
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Clear();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Combo();
             }
@@ -99,12 +103,12 @@ namespace UnderratedAIO.Champions
 
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
             var ignitedmg = (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
-            if (getCheckBoxItem(comboMenu, "useIgnite") && hasIgnite && ((R.IsReady() && ignitedmg + R.GetDamage(target) > target.Health) || ignitedmg > target.Health) && (target.Distance(player) > E.Range || player.HealthPercent < 20))
+            if (getCheckBoxItem(comboMenu, "useIgnite") && hasIgnite && ((R.IsReady() && ignitedmg + R.GetDamage(target) > target.Health) || ignitedmg > target.Health) && (target.LSDistance(player) > E.Range || player.HealthPercent < 20))
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
 
-            if (getCheckBoxItem(comboMenu, "useq") && Q.IsReady() && player.Distance(target) > player.AttackRange && !GarenE && !GarenQ && player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target) && CombatHelper.IsPossibleToReachHim(target, 0.30f, new float[5] {1.5f, 2f, 2.5f, 3f, 3.5f}[Q.Level - 1]))
+            if (getCheckBoxItem(comboMenu, "useq") && Q.IsReady() && player.LSDistance(target) > player.AttackRange && !GarenE && !GarenQ && player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(target) && CombatHelper.IsPossibleToReachHim(target, 0.30f, new float[5] {1.5f, 2f, 2.5f, 3f, 3.5f}[Q.Level - 1]))
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
             }
@@ -129,9 +133,9 @@ namespace UnderratedAIO.Champions
             var rLogic = getCheckBoxItem(comboMenu, "user") && R.IsReady() && target.IsValidTarget() &&
                          (!getCheckBoxItem(miscMenu, "ult" + target.BaseSkinName) ||
                           player.CountEnemiesInRange(1500) == 1) && getRDamage(target) > targHP && targHP > 0;
-            if (rLogic && target.Distance(player) < R.Range)
+            if (rLogic && target.LSDistance(player) < R.Range)
             {
-                if (!(GarenE && target.Health < getEDamage(target, true) && target.Distance(player) < E.Range))
+                if (!(GarenE && target.Health < getEDamage(target, true) && target.LSDistance(player) < E.Range))
                 {
                     if (GarenE)
                     {
@@ -151,10 +155,10 @@ namespace UnderratedAIO.Champions
             }
             var hasFlash = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerFlash")) == SpellState.Ready;
             if (getCheckBoxItem(comboMenu, "useFlash") && hasFlash && rLogic &&
-                target.Distance(player) < R.Range + 425 && target.Distance(player) > R.Range + 250 && !Q.IsReady() &&
+                target.LSDistance(player) < R.Range + 425 && target.LSDistance(player) > R.Range + 250 && !Q.IsReady() &&
                 !CombatHelper.IsFacing(target, player.Position) && !GarenQ)
             {
-                if (target.Distance(player) < R.Range + 300 && player.MoveSpeed > target.MoveSpeed)
+                if (target.LSDistance(player) < R.Range + 300 && player.MoveSpeed > target.MoveSpeed)
                 {
                     return;
                 }
@@ -254,7 +258,7 @@ namespace UnderratedAIO.Champions
             }
             var dmg = (baseEDamage[E.Level - 1] + bonusEDamage[E.Level - 1]/100*player.TotalAttackDamage)*spins;
             var bonus = target.HasBuff("garenpassiveenemytarget") ? target.MaxHealth/100f*spins : 0;
-            if (ObjectManager.Get<Obj_AI_Base>().Count(o => o.IsValidTarget() && o.Distance(target) < 650) == 0)
+            if (ObjectManager.Get<Obj_AI_Base>().Count(o => o.IsValidTarget() && o.LSDistance(target) < 650) == 0)
             {
                 return player.CalcDamage(target, DamageType.Physical, dmg)*1.33 + bonus;
             }
@@ -329,6 +333,7 @@ namespace UnderratedAIO.Champions
             drawMenu.Add("drawrr", new CheckBox("显示 R 范围"));
             drawMenu.Add("drawrkillable", new CheckBox("显示可被R击杀目标"));
 
+
             // Combo Settings
             comboMenu = config.AddSubMenu("Combo ", "csettings");
             comboMenu.Add("useq", new CheckBox("使用 Q"));
@@ -337,7 +342,8 @@ namespace UnderratedAIO.Champions
             comboMenu.Add("user", new CheckBox("使用 R"));
             comboMenu.Add("useFlash", new CheckBox("使用 闪现"));
             comboMenu.Add("useIgnite", new CheckBox("使用 点燃"));
-
+            comboMenu.Add("orbwalkto", new CheckBox("走砍 E ?"));
+            comboMenu.AddLabel("如果屏蔽走砍E 将会走向敌人");
             // LaneClear Settings
             laneClearMenu = config.AddSubMenu("清线 ", "Lcsettings");
             laneClearMenu.Add("useeLC", new CheckBox("使用 E"));

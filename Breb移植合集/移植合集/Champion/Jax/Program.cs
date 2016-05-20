@@ -313,7 +313,7 @@ namespace JaxQx
                     case 0:
                         if (E.IsReady() && Q.IsReady() && t.IsValidTarget(Q.Range))
                         {
-                            if (Player.Distance(t) >= minQRange && t.IsValidTarget(Q.Range)) Q.CastOnUnit(t);
+                            if (Player.LSDistance(t) >= minQRange && t.IsValidTarget(Q.Range)) Q.CastOnUnit(t);
                             E.Cast();
                         }
                         break;
@@ -331,13 +331,13 @@ namespace JaxQx
                 }
             }
 
-            if (Q.IsReady() && Player.Distance(t) >= minQRange && t.IsValidTarget(Q.Range))
+            if (Q.IsReady() && Player.LSDistance(t) >= minQRange && t.IsValidTarget(Q.Range))
             {
                 Q.Cast(t);
             }
 
 
-            if (ObjectManager.Player.Distance(t) <= E.Range)
+            if (ObjectManager.Player.LSDistance(t) <= E.Range)
             {
                 CastItems();
                 //UseItems(t);
@@ -355,7 +355,7 @@ namespace JaxQx
 
             if (R.IsReady())
             {
-                if (Player.Distance(t) < Player.AttackRange)
+                if (Player.LSDistance(t) < Player.AttackRange)
                 {
                     if (
                         ObjectManager.Player.CountEnemiesInRange(
@@ -458,7 +458,7 @@ namespace JaxQx
             var vMinions = MinionManager.GetMinions(Player.ServerPosition, Q.Range, MinionTypes.All, MinionTeam.NotAlly);
             foreach (var vMinion in vMinions)
             {
-                if (useQ && Q.IsReady() && Player.Distance(vMinion) > Orbwalking.GetRealAutoAttackRange(Player))
+                if (useQ && Q.IsReady() && Player.LSDistance(vMinion) > Orbwalking.GetRealAutoAttackRange(Player))
                 {
                     if (useQDontUnderTurret)
                     {
@@ -488,7 +488,7 @@ namespace JaxQx
 
             if (mobs.Count <= 0) return;
 
-            if (Q.IsReady() && useQ && Player.Distance(mobs[0]) > Player.AttackRange) Q.Cast(mobs[0]);
+            if (Q.IsReady() && useQ && Player.LSDistance(mobs[0]) > Player.AttackRange) Q.Cast(mobs[0]);
 
             if (W.IsReady() && useW) W.Cast();
 
@@ -502,7 +502,7 @@ namespace JaxQx
             var interruptSpells = getCheckBoxItem(miscMenu, "InterruptSpells");
             if (!interruptSpells || !E.IsReady()) return;
 
-            if (Player.Distance(unit) <= E.Range)
+            if (Player.LSDistance(unit) <= E.Range)
             {
                 E.Cast();
             }

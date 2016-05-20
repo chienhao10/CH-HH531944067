@@ -15,7 +15,7 @@ namespace Auto_Carry_Vayne.Features.Modes
         {
             foreach (AIHeroClient qTarget in EntityManager.Heroes.Enemies.Where(x => x.IsValidTarget(550)))
             {
-                if (qTarget.GetBuffCount("vaynesilvereddebuff") == 1 && Game.CursorPos.IsSafe())
+                if (qTarget.GetBuffCount("vaynesilvereddebuff") == 1)
                 {
                     Player.CastSpell(SpellSlot.Q, Game.CursorPos);
                 }

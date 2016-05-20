@@ -158,15 +158,11 @@ namespace PortAIO.Champion.Aatrox
             Tiamat = ItemData.Tiamat_Melee_Only.GetItem();
             Hydra = ItemData.Ravenous_Hydra_Melee_Only.GetItem();
 
-            foreach (
-                var spell in
-                    myHero.Spellbook.Spells.Where(
-                        i =>
-                            i.Name.ToLower().Contains("smite") &&
-                            (i.Slot == SpellSlot.Summoner1 || i.Slot == SpellSlot.Summoner2)))
+            foreach (var spell in myHero.Spellbook.Spells.Where(i => i.Name.ToLower().Contains("smite") && (i.Slot == SpellSlot.Summoner1 || i.Slot == SpellSlot.Summoner2)))
             {
                 Smite = spell.Slot;
             }
+
             Ignite = myHero.GetSpellSlot("summonerdot");
 
             Game.OnTick += OnTick;
@@ -446,7 +442,7 @@ namespace PortAIO.Champion.Aatrox
                 var item = Hydra.IsReady() ? Hydra : Tiamat;
                 if (item.IsReady() &&
                     (minionObj.Count(i => item.IsInRange(i)) > 2 ||
-                     minionObj.Any(i => i.MaxHealth >= 1200 && i.Distance(myHero) < item.Range - 80)))
+                     minionObj.Any(i => i.MaxHealth >= 1200 && i.LSDistance(myHero) < item.Range - 80)))
                 {
                     item.Cast();
                 }

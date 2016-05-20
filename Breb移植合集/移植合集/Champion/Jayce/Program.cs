@@ -229,7 +229,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (Program.Combo)
                     W.Cast();
-                else if (args.Target.Position.Distance(Player.Position) < 500)
+                else if (args.Target.Position.LSDistance(Player.Position) < 500)
                     W.Cast();
             }
         }
@@ -331,10 +331,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                         foreach (var mob in mobs.Where(mob => mob.IsValidTarget(Q2.Range)))
                         {
-                            if (mob.Distance(Game.CursorPos) < best.Distance(Game.CursorPos))
+                            if (mob.LSDistance(Game.CursorPos) < best.LSDistance(Game.CursorPos))
                                 best = mob;
                         }
-                        if (best.Distance(Game.CursorPos) + 200 < Player.Distance(Game.CursorPos))
+                        if (best.LSDistance(Game.CursorPos) + 200 < Player.LSDistance(Game.CursorPos))
                             Q2.Cast(best);
                     }
                     else if (R.IsReady())
@@ -560,7 +560,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var poutput = QextCol.GetPrediction(t);
 
-                if (poutput.CollisionObjects.Any(minion => minion.IsEnemy && minion.Distance(poutput.CastPosition) > getSliderItem(qMenu, "QEsplashAdjust")))
+                if (poutput.CollisionObjects.Any(minion => minion.IsEnemy && minion.LSDistance(poutput.CastPosition) > getSliderItem(qMenu, "QEsplashAdjust")))
                 {
                     cast = false;
                 }

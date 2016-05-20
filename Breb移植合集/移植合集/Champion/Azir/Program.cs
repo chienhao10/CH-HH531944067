@@ -209,10 +209,10 @@ namespace HeavenStrikeAzir
             {
                 if (_r.IsReady())
                 {
-                    var turret = ObjectManager.Get<Obj_AI_Turret>().Where(x => x.IsAlly && !x.IsDead).OrderByDescending(x => x.Distance(Player.Position)).LastOrDefault();
+                    var turret = ObjectManager.Get<Obj_AI_Turret>().Where(x => x.IsAlly && !x.IsDead).OrderByDescending(x => x.LSDistance(Player.Position)).LastOrDefault();
                     foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget(250) && !x.IsZombie))
                     {
-                        if (Player.ServerPosition.Distance(turret.Position)+100 >= hero.Distance(turret.Position) && hero.Distance(turret.Position) <= 775 + 250)
+                        if (Player.ServerPosition.LSDistance(turret.Position)+100 >= hero.LSDistance(turret.Position) && hero.LSDistance(turret.Position) <= 775 + 250)
                         {
                             var pos = Player.Position.Extend(turret.Position, 250);
                             _r.Cast(pos);

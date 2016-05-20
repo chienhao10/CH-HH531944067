@@ -100,13 +100,13 @@ namespace GFUELElise
         /// <value>
         ///     The player state
         /// </value>
-        private static bool IsSpider
+        private static bool IsHuman
         {
             get
             {
-                return Player.Spellbook.GetSpell(SpellSlot.Q).Name == "EliseSpiderQCast"
-                       || Player.Spellbook.GetSpell(SpellSlot.W).Name == "EliseSpiderW"
-                       || Player.Spellbook.GetSpell(SpellSlot.E).Name == "EliseSpiderEInitial";
+                return Player.Spellbook.GetSpell(SpellSlot.Q).Name == "EliseHumanQ"
+                       || Player.Spellbook.GetSpell(SpellSlot.W).Name == "EliseHumanW"
+                       || Player.Spellbook.GetSpell(SpellSlot.E).Name == "EliseHumanE";
             }
         }
 
@@ -116,13 +116,13 @@ namespace GFUELElise
         /// <value>
         ///     The player state
         /// </value>
-        private static bool IsHuman
+        private static bool IsSpider
         {
             get
             {
-                return Player.Spellbook.GetSpell(SpellSlot.Q).Name == "EliseHumanQ"
-                       || Player.Spellbook.GetSpell(SpellSlot.W).Name == "EliseHumanW"
-                       || Player.Spellbook.GetSpell(SpellSlot.E).Name == "EliseHumanE";
+                return Player.Spellbook.GetSpell(SpellSlot.Q).Name == "EliseSpiderQCast"
+                       || Player.Spellbook.GetSpell(SpellSlot.W).Name == "EliseSpiderW"
+                       || Player.Spellbook.GetSpell(SpellSlot.E).Name == "EliseSpiderEInitial";
             }
         }
 
@@ -211,7 +211,7 @@ namespace GFUELElise
             {
                 if (getCheckBoxItem(miscMenu, "GFUELElise.Misc.Antigapcloser") && E.IsReady())
                 {
-                    if (gapcloser.Sender.IsValidTarget(E.Range))
+                    if (E.IsInRange(gapcloser.Sender) && gapcloser.Sender.LSIsValidTarget())
                     {
                         E.Cast(gapcloser.Sender);
                     }
@@ -225,14 +225,14 @@ namespace GFUELElise
             {
                 if (E.IsReady() && getCheckBoxItem(miscMenu, "GFUELElise.Auto.E"))
                 {
-                    foreach (var enemy in ObjectManager.Get<AIHeroClient>())
+                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(E.Range) && !x.IsDead))
                     {
-                        if (enemy.IsValidTarget(E.Range))
+                        if (E.IsInRange(enemy))
                         {
                             var pred = E.GetPrediction(enemy);
                             if (pred.Hitchance >= HitChance.Immobile)
                             {
-                                E.Cast(pred.CastPosition);
+                                E.Cast(enemy);
                             }
                         }
                     }
@@ -255,24 +255,23 @@ namespace GFUELElise
 
                 if (IsHuman)
                 {
-                    if (target.HasBuff("buffelisecocoon") && SpiderQ.IsReady() && target.IsValidTarget(SpiderQ.Range))
+                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.Q") && Q.IsReady() && target.IsValidTarget(Q.Range))
                     {
-                        R.Cast();
+                        Q.CastOnUnit(target);
                     }
 
-                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.E") && target.Distance(Player.Position) <= E.Range &&
-                        E.IsReady())
+                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.E") && E.IsInRange(target) && E.IsReady())
                     {
                         var prediction = E.GetPrediction(target);
                         if (prediction.Hitchance >= HitChance.High)
                         {
-                            E.Cast(prediction.CastPosition);
+                            E.Cast(target);
                         }
                     }
 
-                    if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.Q") && Q.IsReady() && target.IsValidTarget(Q.Range))
+                    if (target.HasBuff("buffelisecocoon") && SpiderQ.IsReady() && target.IsValidTarget(SpiderQ.Range))
                     {
-                        Q.CastOnUnit(target);
+                        R.Cast();
                     }
 
                     if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.W") && W.IsReady() && target.IsValidTarget(W.Range))
@@ -291,15 +290,12 @@ namespace GFUELElise
                             R.Cast();
                         }
 
-                        if (Player.Distance(target) <= 750 && R.IsReady()
-                            && (!Q.IsReady() && !W.IsReady() && !E.IsReady()
-                                || !Q.IsReady() && !W.IsReady() && !E.IsReady()))
+                        if (Player.LSDistance(target) <= 750 && R.IsReady() && (!Q.IsReady() && !W.IsReady() && !E.IsReady() || !Q.IsReady() && !W.IsReady() && !E.IsReady()))
                         {
                             R.Cast();
                         }
 
-                        if (SpiderQ.IsReady() && target.IsValidTarget(SpiderQ.Range)
-                            && target.IsValidTarget(SpiderQ.Range))
+                        if (SpiderQ.IsReady() && target.IsValidTarget(SpiderQ.Range) && target.IsValidTarget(SpiderQ.Range))
                         {
                             R.Cast();
                         }
@@ -316,7 +312,7 @@ namespace GFUELElise
                         }
                     }
 
-                    if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.W") && Player.Distance(target) <= 140 &&
+                    if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.W") && Player.LSDistance(target) <= 140 &&
                         SpiderW.IsReady())
                     {
                         if (target.IsValidTarget(SpiderW.Range))
@@ -325,16 +321,23 @@ namespace GFUELElise
                         }
                     }
 
-                    if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.E") &&
-                        Player.Distance(target) <= SpiderE.Range && Player.Distance(target) > SpiderQ.Range &&
-                        SpiderE.IsReady())
+                    if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.E") && Player.LSDistance(target) <= SpiderE.Range
+                        && Player.Distance(target) > SpiderQ.Range && SpiderE.IsReady())
                     {
-                        if (target.IsValidTarget(SpiderQ.Range)) return;
+                        if (target.IsValidTarget(SpiderQ.Range))
+                        {
+                            return;
+                        }
                         SpiderE.Cast(target);
                     }
 
                     if (getCheckBoxItem(comboMenu, "GFUELElise.Combo.R"))
                     {
+                        if (target.IsValidTarget(SpiderQ.Range) || (E.IsReady() && target.IsValidTarget(E.Range)))
+                        {
+                            return;
+                        }
+
                         if (Player.ManaPercent < getSliderItem(comboMenu, "GFUELElise.R.nein"))
                         {
                             return;
@@ -358,7 +361,7 @@ namespace GFUELElise
                     }
 
                     if (getCheckBoxItem(comboMenu, "GFUELElise.ComboSpider.E") &&
-                        Player.Distance(target) > SpiderQ.Range && SpiderE.IsReady())
+                        Player.LSDistance(target) > SpiderQ.Range && SpiderE.IsReady())
                     {
                         SpiderE.Cast(target);
                     }
@@ -751,13 +754,13 @@ namespace GFUELElise
                 return;
             }
 
-            if (!E.IsReady() || !target.IsValidTarget(E.Range))
+            if (!E.IsReady() || !E.IsInRange(target))
             {
                 return;
             }
 
             var prediction = E.GetPrediction(target);
-            E.Cast(prediction.CastPosition);
+            E.Cast(target);
         }
 
         #endregion

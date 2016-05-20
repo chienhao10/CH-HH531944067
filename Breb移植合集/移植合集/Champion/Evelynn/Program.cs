@@ -84,6 +84,7 @@ namespace Evelynn
             drawMenu.Add("ERange", new CheckBox("显示 E"));
             drawMenu.Add("RRange", new CheckBox("显示 R"));
 
+
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnGameUpdate;
         }

@@ -224,7 +224,7 @@ namespace UnderratedAIO.Champions
                 {
                     if (target.IsMoving)
                     {
-                        if (pred.CastPosition.Distance(target.ServerPosition) > 250f)
+                        if (pred.CastPosition.LSDistance(target.ServerPosition) > 250f)
                         {
                             Q.Cast(target.Position.Extend(pred.CastPosition, 250f));
                         }
@@ -247,8 +247,8 @@ namespace UnderratedAIO.Champions
 
             if (getCheckBoxItem(comboMenu, "UseFlashC") && !flashRblock && R.IsReady() && hasFlash &&
                 !CombatHelper.CheckCriticalBuffs(target) && player.GetSpell(SpellSlot.R).SData.Mana <= player.Mana &&
-                player.Distance(target.Position) >= 400 && player.GetSpellDamage(target, SpellSlot.R) > target.Health &&
-                !Q.IsReady() && !W.IsReady() && player.Distance(target.Position) <= RFlash.Range &&
+                player.LSDistance(target.Position) >= 400 && player.GetSpellDamage(target, SpellSlot.R) > target.Health &&
+                !Q.IsReady() && !W.IsReady() && player.LSDistance(target.Position) <= RFlash.Range &&
                 !player.Position.Extend(target.Position, 400).IsWall())
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerFlash"),

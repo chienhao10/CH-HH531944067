@@ -103,7 +103,7 @@ namespace ExorAIO.Champions.Darius
             /// <summary>
             ///     The Anti-GapCloser E Logic.
             /// </summary>
-            if (Variables.E.IsReady() && ObjectManager.Player.Distance(gapcloser.End) < Variables.E.Range &&
+            if (Variables.E.IsReady() && ObjectManager.Player.LSDistance(gapcloser.End) < Variables.E.Range &&
                 Variables.getCheckBoxItem(Variables.EMenu, "espell.gp"))
             {
                 Variables.E.Cast(gapcloser.End);

@@ -135,7 +135,7 @@ namespace GragasTheDrunkCarry
                     if (!justE)
                     {
                         justE = true;
-                        var dist = Player.Distance(args.End);
+                        var dist = Player.LSDistance(args.End);
                         LeagueSharp.Common.Utility.DelayAction.Add(
                             (int)Math.Min(((dist > E.Range ? E.Range : dist) / E.Speed * 1000f), 250),
                             () => justE = false);
@@ -193,7 +193,7 @@ namespace GragasTheDrunkCarry
                     LastMove = System.Environment.TickCount;
                 }
 
-                if (E.IsReady() && Player.Distance(vTarget) <= E.Range && getCheckBoxItem(comboMenu, "UseE") &&
+                if (E.IsReady() && Player.LSDistance(vTarget) <= E.Range && getCheckBoxItem(comboMenu, "UseE") &&
                     (System.Environment.TickCount - LastMove > 50))
                 {
                     E.Cast(vTarget, true);
@@ -222,7 +222,7 @@ namespace GragasTheDrunkCarry
                     Qcast(vTarget);
                 }
 
-                if (getCheckBoxItem(harassMenu, "UseEH") && E.IsReady() && Player.Distance(vTarget) <= E.Range)
+                if (getCheckBoxItem(harassMenu, "UseEH") && E.IsReady() && Player.LSDistance(vTarget) <= E.Range)
                 {
                     E.Cast(vTarget, true);
                 }
@@ -230,7 +230,7 @@ namespace GragasTheDrunkCarry
 
             if (getCheckBoxItem(comboMenu, "AutoB") && Bomb != null)
             {
-                foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy && hero.Distance(Bomb.Position) <= 250))
+                foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy && hero.LSDistance(Bomb.Position) <= 300))
                 {
                     Qcast(hero);
                 }
@@ -247,7 +247,7 @@ namespace GragasTheDrunkCarry
                 CastE(target);
                 if (savedQ != null)
                 {
-                    if (savedQ != null && !SimpleQ && target.Distance(Player) < R.Range - 100 && target.Position.Distance(savedQ.position) < 550 + QExplosionRange / 2)
+                    if (savedQ != null && !SimpleQ && target.LSDistance(Player) < R.Range - 100 && target.Position.LSDistance(savedQ.position) < 550 + QExplosionRange / 2)
                     {
                         HandeR(target, savedQ.position, true);
                     }
@@ -261,7 +261,7 @@ namespace GragasTheDrunkCarry
 
         public static float GetKnockBackRange(Vector3 to, Vector3 from)
         {
-            return R.Range - from.Distance(to);
+            return R.Range - from.LSDistance(to);
         }
 
         public static Vector3 GetPredictedBarellPosition(AIHeroClient target)
@@ -270,7 +270,7 @@ namespace GragasTheDrunkCarry
 
             if (target.IsValid)
             {
-                var etaR = Player.Distance(target) / R.Speed;
+                var etaR = Player.LSDistance(target) / R.Speed;
                 var pred = LeagueSharp.Common.Prediction.GetPrediction(target, etaR);
 
                 result = LeagueSharp.Common.Geometry.LSExtend(pred.UnitPosition, target.ServerPosition, GetKnockBackRange(target.ServerPosition, pred.UnitPosition));
@@ -289,7 +289,7 @@ namespace GragasTheDrunkCarry
                             buff.Type == BuffType.Snare || buff.Type == BuffType.Stun ||
                             buff.Type == BuffType.Suppression || buff.Type == BuffType.Knockup))
                 {
-                    if (pred.Hitchance >= HitChance.Medium && pred.CastPosition.Distance(Player.Position) < R.Range - 150)
+                    if (pred.Hitchance >= HitChance.Medium && pred.CastPosition.LSDistance(Player.Position) < R.Range - 150)
                     {
                         R.Cast(pred.CastPosition.Extend(Player.Position, -150));
                     }
@@ -307,13 +307,13 @@ namespace GragasTheDrunkCarry
             {
                 return;
             }
-            var pred = LeagueSharp.Common.Prediction.GetPrediction(target, target.Distance(Player.ServerPosition) / R.Speed);
+            var pred = LeagueSharp.Common.Prediction.GetPrediction(target, target.LSDistance(Player.ServerPosition) / R.Speed);
             if (pred.Hitchance >= HitChance.VeryHigh && !justE && !target.LSIsDashing())
             {
                 var cast = pred.UnitPosition.Extend(toVector3, -100);
-                if (Player.Distance(cast) < R.Range && checkBuffs(target, Player.Distance(cast)) && pred.UnitPosition.Distance(target.Position) < 15 && ((!CombatHelper.CheckWalls(target.Position, toVector3)) || (toBarrel && savedQ.position.Distance(target.Position) < QExplosionRange)))
+                if (Player.LSDistance(cast) < R.Range && checkBuffs(target, Player.LSDistance(cast)) && pred.UnitPosition.LSDistance(target.Position) < 15 && ((!CombatHelper.CheckWalls(target.Position, toVector3)) || (toBarrel && savedQ.position.LSDistance(target.Position) < QExplosionRange)))
                 {
-                    if (toBarrel && 4000 - savedQ.deltaT() > (Player.Distance(cast) + cast.Distance(savedQ.position)) / R.Speed)
+                    if (toBarrel && 4000 - savedQ.deltaT() > (Player.LSDistance(cast) + cast.LSDistance(savedQ.position)) / R.Speed)
                     {
                         R.Cast(cast);
                         return;
@@ -385,13 +385,13 @@ namespace GragasTheDrunkCarry
                 return;
             }
             if (!getCheckBoxItem(comboMenu, "UseQ")) return;
-            if (!(target.Distance(Player) <= Q.Range)) return;
+            if (!(target.LSDistance(Player) <= Q.Range)) return;
             if (Bomb == null)
             {
                 Q.Cast(target, true);
             }
 
-            if (Bomb != null && target.Distance(Bomb.Position) <= 300)
+            if (Bomb != null && target.LSDistance(Bomb.Position) <= 300)
             {
                 Q.Cast();
             }

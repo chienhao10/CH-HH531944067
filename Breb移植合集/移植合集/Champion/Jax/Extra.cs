@@ -16,9 +16,9 @@ namespace JaxQx
 
         public Extra()
         {
-            menu = menuExtra.AddSubMenu("额外", "Extra");
-            menu.Add("Extra.DrawKillableEnemy", new CheckBox("可击杀敌人提示"));
-            menu.Add("Extra.DrawMinionLastHist", new CheckBox("显示尾兵助手"));
+            menu = menuExtra.AddSubMenu("Extra", "Extra");
+            menu.Add("Extra.DrawKillableEnemy", new CheckBox("Killable Enemy Notification"));
+            menu.Add("Extra.DrawMinionLastHist", new CheckBox("Draw Minion Last Hit"));
 
             Drawing.OnDraw += Drawing_OnDraw;
         }
@@ -92,7 +92,7 @@ namespace JaxQx
                 {
                     Utils.DrawText(
                         Utils.Text,
-                        string.Format("{0}: {1} x 普攻 = 击杀", t.Item1.ChampionName, t.Item2),
+                        string.Format("{0}: {1} x AA Damage = Kill", t.Item1.ChampionName, t.Item2),
                         (int) t.Item1.HPBarPosition.X + 65,
                         (int) t.Item1.HPBarPosition.Y + 5,
                         SharpDX.Color.White);

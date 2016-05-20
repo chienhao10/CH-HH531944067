@@ -286,9 +286,9 @@ namespace Mundo
                     {
                         if (
                             HealthPrediction.GetHealthPrediction(minion,
-                                (int) (q.Delay + minion.Distance(CommonUtilities.Player.Position)/q.Speed)) <
+                                (int) (q.Delay + minion.LSDistance(CommonUtilities.Player.Position)/q.Speed)) <
                             CommonUtilities.Player.GetSpellDamage(minion, SpellSlot.Q) &&
-                            CommonUtilities.Player.Distance(minion) > CommonUtilities.Player.AttackRange*2)
+                            CommonUtilities.Player.LSDistance(minion) > CommonUtilities.Player.AttackRange*2)
                         {
                             q.Cast(minion);
                         }
@@ -297,7 +297,7 @@ namespace Mundo
                     {
                         if (
                             HealthPrediction.GetHealthPrediction(minion,
-                                (int) (q.Delay + minion.Distance(CommonUtilities.Player.Position)/q.Speed)) <
+                                (int) (q.Delay + minion.LSDistance(CommonUtilities.Player.Position)/q.Speed)) <
                             CommonUtilities.Player.GetSpellDamage(minion, SpellSlot.Q))
                         {
                             q.Cast(minion);
@@ -327,7 +327,7 @@ namespace Mundo
                     {
                         if (
                             HealthPrediction.GetHealthPrediction(minion,
-                                (int) (q.Delay + minion.Distance(CommonUtilities.Player.Position)/q.Speed)) <
+                                (int) (q.Delay + minion.LSDistance(CommonUtilities.Player.Position)/q.Speed)) <
                             CommonUtilities.Player.GetSpellDamage(minion, SpellSlot.Q))
                         {
                             q.Cast(minion);

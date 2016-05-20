@@ -65,7 +65,7 @@ namespace PortAIO.Champion.Caitlyn
         {
             if (args.Slot == SpellSlot.W)
             {
-                if (ObjectManager.Get<Obj_GeneralParticleEmitter>().Any(obj => obj.IsValid && obj.Position.Distance(args.EndPosition) < 300 && obj.Name.ToLower().Contains("yordleTrap_idle_green.troy".ToLower())))
+                if (ObjectManager.Get<Obj_GeneralParticleEmitter>().Any(obj => obj.IsValid && obj.Position.LSDistance(args.EndPosition) < 300 && obj.Name.ToLower().Contains("yordleTrap_idle_green.troy".ToLower())))
                     args.Process = false;
             }
         }
@@ -216,7 +216,7 @@ namespace PortAIO.Champion.Caitlyn
                 return;
             }
 
-            foreach (var target in EntityManager.Heroes.Enemies.Where(target => target.IsValidTarget(R.Range) && Player.Distance(target.Position) > getSliderItem(rMenu, "Rrange") && target.CountEnemiesInRange(getSliderItem(rMenu, "Rcol")) == 1 && target.CountAlliesInRange(500) == 0 && OktwCommon.ValidUlt(target)))
+            foreach (var target in EntityManager.Heroes.Enemies.Where(target => target.IsValidTarget(R.Range) && Player.LSDistance(target.Position) > getSliderItem(rMenu, "Rrange") && target.CountEnemiesInRange(getSliderItem(rMenu, "Rcol")) == 1 && target.CountAlliesInRange(500) == 0 && OktwCommon.ValidUlt(target)))
             {
                 if (target == null)
                 {
@@ -243,7 +243,7 @@ namespace PortAIO.Champion.Caitlyn
                         var pb = Player.ServerPosition + (float)b * v;
                         var length = Vector3.Distance(predictedPosition, pb);
                         if (length < getSliderItem(rMenu, "Rcol") + enemy.BoundingRadius &&
-                            Player.Distance(predictedPosition) < Player.Distance(target.ServerPosition))
+                            Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition))
                             cast = false;
                     }
                     if (cast)
@@ -378,7 +378,7 @@ namespace PortAIO.Champion.Caitlyn
 
         private static float GetRealDistance(GameObject target)
         {
-            return Player.ServerPosition.Distance(target.Position) + ObjectManager.Player.BoundingRadius +
+            return Player.ServerPosition.LSDistance(target.Position) + ObjectManager.Player.BoundingRadius +
                    target.BoundingRadius;
         }
 

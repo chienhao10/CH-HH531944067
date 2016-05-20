@@ -73,7 +73,7 @@ namespace UnderratedAIO.Champions
             if (getCheckBoxItem(miscMenu, "autoq"))
             {
                 if (Q.CanCast(target) && !target.IsDashing() &&
-                    (MarkOfStorm(target) > 1 || (MarkOfStorm(target) > 0 && player.Distance(target) < W.Range)))
+                    (MarkOfStorm(target) > 1 || (MarkOfStorm(target) > 0 && player.LSDistance(target) < W.Range)))
                 {
                     Q.Cast(target, getCheckBoxItem(config, "packets"));
                 }
@@ -81,7 +81,7 @@ namespace UnderratedAIO.Champions
             if (getCheckBoxItem(miscMenu, "autow") && W.IsReady() && MarkOfStorm(target) > 1 &&
                 !player.HasBuff("KennenShurikenStorm"))
             {
-                if (player.Distance(target) < W.Range)
+                if (player.LSDistance(target) < W.Range)
                 {
                     W.Cast(getCheckBoxItem(config, "packets"));
                 }
@@ -102,12 +102,12 @@ namespace UnderratedAIO.Champions
         {
             var targetW =
                 ObjectManager.Get<Obj_AI_Base>()
-                    .Where(m => m.IsEnemy && player.Distance(m) < W.Range && m.HasBuff("kennenmarkofstorm"));
+                    .Where(m => m.IsEnemy && player.LSDistance(m) < W.Range && m.HasBuff("kennenmarkofstorm"));
             var targetE =
                 ObjectManager.Get<Obj_AI_Base>()
                     .Where(
                         m =>
-                            m.Health > 5 && m.IsEnemy && player.Distance(m) < W.Range && Environment.Hero.countChampsAtrange(m.Position, 1000f) < 1 && !m.IsDead && !(m is Obj_AI_Turret) && !m.HasBuff("kennenmarkofstorm") && !m.UnderTurret(true)).OrderBy(m => player.Distance(m));
+                            m.Health > 5 && m.IsEnemy && player.LSDistance(m) < W.Range && Environment.Hero.countChampsAtrange(m.Position, 1000f) < 1 && !m.IsDead && !(m is Obj_AI_Turret) && !m.HasBuff("kennenmarkofstorm") && !m.UnderTurret(true)).OrderBy(m => player.LSDistance(m));
             if (getCheckBoxItem(clearMenu, "useeClear") && E.IsReady() &&
                 ((targetE.FirstOrDefault() != null && Environment.Hero.countChampsAtrange(player.Position, 1200f) < 1 &&
                   !player.HasBuff("KennenLightningRush") && targetE.Count() > 1) ||
@@ -150,7 +150,7 @@ namespace UnderratedAIO.Champions
                         m =>
                             m.Health > 5 && m.IsEnemy && m.Health < Q.GetDamage(m) && Q.CanCast(m) &&
                             HealthPrediction.GetHealthPrediction(
-                                m, (int)((player.Distance(m) / Q.Speed * 1000) + Q.Delay)) > 0);
+                                m, (int)((player.LSDistance(m) / Q.Speed * 1000) + Q.Delay)) > 0);
             if (targetQ.Any() && LastAttackedminiMinion != null)
             {
                 foreach (var target in
@@ -160,14 +160,14 @@ namespace UnderratedAIO.Champions
                             (m.NetworkId == LastAttackedminiMinion.NetworkId &&
                              Utils.GameTimeTickCount - LastAttackedminiMinionTime > 700)))
                 {
-                    if (target.Distance(player) < Orbwalking.GetRealAutoAttackRange(target) && !Orbwalker.CanAutoAttack && Orbwalker.CanMove)
+                    if (target.LSDistance(player) < Orbwalking.GetRealAutoAttackRange(target) && !Orbwalker.CanAutoAttack && Orbwalker.CanMove)
                     {
                         if (Q.Cast(target, getCheckBoxItem(config, "packets")).IsCasted())
                         {
                             return;
                         }
                     }
-                    else if (target.Distance(player) > Orbwalking.GetRealAutoAttackRange(target))
+                    else if (target.LSDistance(player) > Orbwalking.GetRealAutoAttackRange(target))
                     {
                         if (Q.Cast(target, getCheckBoxItem(config, "packets")).IsCasted())
                         {
@@ -191,7 +191,7 @@ namespace UnderratedAIO.Champions
             {
                 Q.Cast(target, getCheckBoxItem(config, "packets"));
             }
-            if (getCheckBoxItem(harassMenu, "usewLC") && W.IsReady() && W.Range < player.Distance(target) &&
+            if (getCheckBoxItem(harassMenu, "usewLC") && W.IsReady() && W.Range < player.LSDistance(target) &&
                 target.HasBuff("kennenmarkofstorm"))
             {
                 W.Cast(getCheckBoxItem(config, "packets"));
@@ -206,7 +206,7 @@ namespace UnderratedAIO.Champions
                 return;
             }
             if (getCheckBoxItem(comboMenu, "usee") && player.HasBuff("KennenLightningRush") &&
-                player.Health > target.Health && !target.UnderTurret(true) && target.Distance(Game.CursorPos) < 250f)
+                player.Health > target.Health && !target.UnderTurret(true) && target.LSDistance(Game.CursorPos) < 250f)
             {
                 Orbwalker.DisableMovement = true;
                 Player.IssueOrder(GameObjectOrder.MoveTo, target);
@@ -221,19 +221,19 @@ namespace UnderratedAIO.Champions
             {
                 if (player.HasBuff("KennenShurikenStorm"))
                 {
-                    if (HeroManager.Enemies.Count(e => e.Distance(player) < R.Range && MarkOfStorm(e) > 0) ==
+                    if (HeroManager.Enemies.Count(e => e.LSDistance(player) < R.Range && MarkOfStorm(e) > 0) ==
                         player.CountEnemiesInRange(R.Range))
                     {
                         W.Cast(getCheckBoxItem(config, "packets"));
                     }
                 }
-                else if (W.Range > player.Distance(target) && MarkOfStorm(target) > 0)
+                else if (W.Range > player.LSDistance(target) && MarkOfStorm(target) > 0)
                 {
                     W.Cast(getCheckBoxItem(config, "packets"));
                 }
             }
             if (getCheckBoxItem(comboMenu, "usee") && !target.UnderTurret(true) && E.IsReady() &&
-                (player.Distance(target) < 80 ||
+                (player.LSDistance(target) < 80 ||
                  (!player.HasBuff("KennenLightningRush") && !Q.CanCast(target) &&
                   getSliderItem(comboMenu, "useemin") < player.Health/player.MaxHealth*100 &&
                   MarkOfStorm(target) > 0 &&
@@ -248,7 +248,7 @@ namespace UnderratedAIO.Champions
                  (getCheckBoxItem(comboMenu, "usertarget") &&
                   player.CountEnemiesInRange(getSliderItem(comboMenu, "userrange")) == 1 &&
                   combodamage + player.GetAutoAttackDamage(target)*3 > target.Health && !Q.CanCast(target) &&
-                  player.Distance(target) < getSliderItem(comboMenu, "userrange"))) ||
+                  player.LSDistance(target) < getSliderItem(comboMenu, "userrange"))) ||
                 (getSliderItem(comboMenu, "userLow") <=
                  HeroManager.Enemies.Count(
                      e => e.IsValidTarget(getSliderItem(comboMenu, "userrange")) && e.HealthPercent < 75)))

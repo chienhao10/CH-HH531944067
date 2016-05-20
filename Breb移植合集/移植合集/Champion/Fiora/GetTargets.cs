@@ -148,7 +148,7 @@ namespace FioraProject
                     {
                         PreOptionalTarget = HeroManager.Enemies.Where(x => x.IsValidTarget(OptionalRange) && !x.IsZombie)
                                                        .OrderBy(x => OldOptionalTarget != null ? x.NetworkId == OldOptionalTarget.NetworkId : x.IsEnemy)
-                                                       .ThenBy(x => ObjectManager.Player.Distance(x.Position)).FirstOrDefault();
+                                                       .ThenBy(x => ObjectManager.Player.LSDistance(x.Position)).FirstOrDefault();
                         if (PreOptionalTarget != null)
                         {
                             OptionalTarget = PreOptionalTarget;
@@ -157,7 +157,7 @@ namespace FioraProject
                     }
                     PreOptionalTarget = HeroManager.Enemies.Where(x => x.IsValidTarget(OptionalRange) && !x.IsZombie && x.NetworkId != OptionalTarget.NetworkId)
                                                    .OrderBy(x => OldOptionalTarget != null ? x.NetworkId == OldOptionalTarget.NetworkId : x.IsEnemy)
-                                                   .ThenBy(x => ObjectManager.Player.Distance(x.Position)).FirstOrDefault();
+                                                   .ThenBy(x => ObjectManager.Player.LSDistance(x.Position)).FirstOrDefault();
                     if (PreOptionalTarget != null)
                     {
                         OldOptionalTarget = OptionalTarget;
@@ -173,7 +173,7 @@ namespace FioraProject
                 {
                     PreOptionalTarget = HeroManager.Enemies.Where(x => x.IsValidTarget(OptionalRange)
                                                     && x.IsValidTarget(400, true, Game.CursorPos) && !x.IsZombie)
-                                                   .OrderBy(x => Game.CursorPos.LSTo2D().Distance(x.Position.LSTo2D())).FirstOrDefault();
+                                                   .OrderBy(x => Game.CursorPos.LSTo2D().LSDistance(x.Position.LSTo2D())).FirstOrDefault();
                     if (PreOptionalTarget != null)
                     {
                         OptionalTarget = PreOptionalTarget;
@@ -182,7 +182,7 @@ namespace FioraProject
                 }
                 PreOptionalTarget = HeroManager.Enemies.Where(x => x.IsValidTarget(OptionalRange)
                                                 && x.IsValidTarget(400, true, Game.CursorPos) && !x.IsZombie)
-                                               .OrderBy(x => Game.CursorPos.LSTo2D().Distance(x.Position.LSTo2D())).FirstOrDefault();
+                                               .OrderBy(x => Game.CursorPos.LSTo2D().LSDistance(x.Position.LSTo2D())).FirstOrDefault();
                 if (PreOptionalTarget != null)
                 {
                     OldOptionalTarget = OptionalTarget;

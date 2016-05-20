@@ -415,7 +415,7 @@ namespace LeagueSharp.Common
             {
                 const float x = 6000f;
                 _vertices = new VertexBuffer(
-                    Device, Utilities.SizeOf<Vector4>()*2*6, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
+                    Device, Utilities.SizeOf<Vector4>() * 2 * 6, Usage.WriteOnly, VertexFormat.None, Pool.Managed);
 
                 _vertices.Lock(0, 0, LockFlags.None).WriteRange(
                     new[]
@@ -772,14 +772,14 @@ namespace LeagueSharp.Common
                     _effect.Begin();
                     _effect.BeginPass(0);
                     _effect.SetValue(
-                        "ProjectionMatrix", Matrix.Translation(position.SwitchYZ())*Drawing.View*Drawing.Projection);
+                        "ProjectionMatrix", Matrix.Translation(position.SwitchYZ()) * Drawing.View * Drawing.Projection);
                     _effect.SetValue(
-                        "CircleColor", new Vector4(color.R/255f, color.G/255f, color.B/255f, color.A/255f));
+                        "CircleColor", new Vector4(color.R / 255f, color.G / 255f, color.B / 255f, color.A / 255f));
                     _effect.SetValue("Radius", radius);
                     _effect.SetValue("Border", 2f + width);
                     _effect.SetValue("zEnabled", zDeep);
 
-                    Device.SetStreamSource(0, _vertices, 0, Utilities.SizeOf<Vector4>()*2);
+                    Device.SetStreamSource(0, _vertices, 0, Utilities.SizeOf<Vector4>() * 2);
                     Device.VertexDeclaration = _vertexDeclaration;
 
                     Device.DrawPrimitives(PrimitiveType.TriangleList, 0, 2);
@@ -908,7 +908,7 @@ namespace LeagueSharp.Common
                     }
 
                     _line.Begin();
-                    _line.Draw(new[] {Start, End}, Color);
+                    _line.Draw(new[] { Start, End }, Color);
                     _line.End();
                 }
                 catch (Exception e)
@@ -982,7 +982,7 @@ namespace LeagueSharp.Common
                 Width = width;
                 Height = height;
                 Color = color;
-                _line = new SharpDX.Direct3D9.Line(Device) {Width = height};
+                _line = new SharpDX.Direct3D9.Line(Device) { Width = height };
                 Game.OnUpdate += Game_OnUpdate;
             }
 
@@ -1025,8 +1025,8 @@ namespace LeagueSharp.Common
                 if (PositionUpdate != null)
                 {
                     var pos = PositionUpdate();
-                    X = (int) pos.X;
-                    Y = (int) pos.Y;
+                    X = (int)pos.X;
+                    Y = (int)pos.Y;
                 }
             }
 
@@ -1043,7 +1043,7 @@ namespace LeagueSharp.Common
                     }
 
                     _line.Begin();
-                    _line.Draw(new[] {new Vector2(X, Y + Height/2), new Vector2(X + Width, Y + Height/2)}, Color);
+                    _line.Draw(new[] { new Vector2(X, Y + Height / 2), new Vector2(X + Width, Y + Height / 2) }, Color);
                     _line.End();
                 }
                 catch (Exception e)
@@ -1244,7 +1244,7 @@ namespace LeagueSharp.Common
                 : this()
             {
                 UpdateTextureBitmap(
-                    (Bitmap) Image.FromStream(BaseTexture.ToStream(texture, ImageFileFormat.Bmp)), position);
+                    (Bitmap)Image.FromStream(BaseTexture.ToStream(texture, ImageFileFormat.Bmp)), position);
             }
 
             /// <summary>
@@ -1266,7 +1266,7 @@ namespace LeagueSharp.Common
             public Sprite(byte[] bytesArray, Vector2 position)
                 : this()
             {
-                UpdateTextureBitmap((Bitmap) Image.FromStream(new MemoryStream(bytesArray)), position);
+                UpdateTextureBitmap((Bitmap)Image.FromStream(new MemoryStream(bytesArray)), position);
             }
 
             /// <summary>
@@ -1309,7 +1309,7 @@ namespace LeagueSharp.Common
             /// <value>The width.</value>
             public int Width
             {
-                get { return (int) (Bitmap.Width*_scale.X); }
+                get { return (int)(Bitmap.Width * _scale.X); }
             }
 
             /// <summary>
@@ -1318,7 +1318,7 @@ namespace LeagueSharp.Common
             /// <value>The height.</value>
             public int Height
             {
-                get { return (int) (Bitmap.Height*_scale.Y); }
+                get { return (int)(Bitmap.Height * _scale.Y); }
             }
 
             /// <summary>
@@ -1338,8 +1338,8 @@ namespace LeagueSharp.Common
             {
                 set
                 {
-                    X = (int) value.X;
-                    Y = (int) value.Y;
+                    X = (int)value.X;
+                    Y = (int)value.Y;
                 }
 
                 get { return new Vector2(X, Y); }
@@ -1386,8 +1386,8 @@ namespace LeagueSharp.Common
                 if (PositionUpdate != null)
                 {
                     var pos = PositionUpdate();
-                    X = (int) pos.X;
-                    Y = (int) pos.Y;
+                    X = (int)pos.X;
+                    Y = (int)pos.Y;
                 }
             }
 
@@ -1411,7 +1411,7 @@ namespace LeagueSharp.Common
                 if (scale)
                 {
                     _crop = new SharpDX.Rectangle(
-                        (int) (_scale.X*x), (int) (_scale.Y*y), (int) (_scale.X*w), (int) (_scale.Y*h));
+                        (int)(_scale.X * x), (int)(_scale.Y * y), (int)(_scale.X * w), (int)(_scale.Y * h));
                 }
             }
 
@@ -1427,8 +1427,8 @@ namespace LeagueSharp.Common
                 if (scale)
                 {
                     _crop = new SharpDX.Rectangle(
-                        (int) (_scale.X*rect.X), (int) (_scale.Y*rect.Y), (int) (_scale.X*rect.Width),
-                        (int) (_scale.Y*rect.Height));
+                        (int)(_scale.X * rect.X), (int)(_scale.Y * rect.Y), (int)(_scale.X * rect.Width),
+                        (int)(_scale.Y * rect.Height));
                 }
             }
 
@@ -1454,7 +1454,7 @@ namespace LeagueSharp.Common
             public void Reset()
             {
                 UpdateTextureBitmap(
-                    (Bitmap) Image.FromStream(BaseTexture.ToStream(_originalTexture, ImageFileFormat.Bmp)));
+                    (Bitmap)Image.FromStream(BaseTexture.ToStream(_originalTexture, ImageFileFormat.Bmp)));
 
                 if (OnReset != null)
                 {
@@ -1507,15 +1507,15 @@ namespace LeagueSharp.Common
                 const float gWeight = 0.6094f;
                 const float bWeight = 0.0820f;
 
-                var a = (1.0f - saturation)*rWeight + saturation;
-                var b = (1.0f - saturation)*rWeight;
-                var c = (1.0f - saturation)*rWeight;
-                var d = (1.0f - saturation)*gWeight;
-                var e = (1.0f - saturation)*gWeight + saturation;
-                var f = (1.0f - saturation)*gWeight;
-                var g = (1.0f - saturation)*bWeight;
-                var h = (1.0f - saturation)*bWeight;
-                var i = (1.0f - saturation)*bWeight + saturation;
+                var a = (1.0f - saturation) * rWeight + saturation;
+                var b = (1.0f - saturation) * rWeight;
+                var c = (1.0f - saturation) * rWeight;
+                var d = (1.0f - saturation) * gWeight;
+                var e = (1.0f - saturation) * gWeight + saturation;
+                var f = (1.0f - saturation) * gWeight;
+                var g = (1.0f - saturation) * bWeight;
+                var h = (1.0f - saturation) * bWeight;
+                var i = (1.0f - saturation) * bWeight + saturation;
 
                 var newBitmap = new Bitmap(original.Width, original.Height);
                 var gr = Graphics.FromImage(newBitmap);
@@ -1562,7 +1562,7 @@ namespace LeagueSharp.Common
                 Bitmap = newBitmap;
 
                 _texture = Texture.FromMemory(
-                    Device, (byte[]) new ImageConverter().ConvertTo(newBitmap, typeof (byte[])), Width, Height, 0,
+                    Device, (byte[])new ImageConverter().ConvertTo(newBitmap, typeof(byte[])), Width, Height, 0,
                     Usage.None, Format.A1, Pool.Managed, Filter.Default, Filter.Default, 0);
 
                 if (_originalTexture == null)
@@ -1586,7 +1586,7 @@ namespace LeagueSharp.Common
 
                     _sprite.Begin();
                     var matrix = _sprite.Transform;
-                    var nMatrix = Matrix.Scaling(Scale.X, Scale.Y, 0)*Matrix.RotationZ(Rotation)*
+                    var nMatrix = Matrix.Scaling(Scale.X, Scale.Y, 0) * Matrix.RotationZ(Rotation) *
                                   Matrix.Translation(Position.X, Position.Y, 0);
                     _sprite.Transform = nMatrix;
                     _sprite.Draw(_texture, _color, _crop);
@@ -1767,8 +1767,8 @@ namespace LeagueSharp.Common
             public Text(string text, Vector2 position, int size, ColorBGRA color, string fontName = "Calibri")
                 : this(text, fontName, size, color)
             {
-                _x = (int) position.X;
-                _y = (int) position.Y;
+                _x = (int)position.X;
+                _y = (int)position.Y;
             }
 
             /// <summary>
@@ -1793,8 +1793,8 @@ namespace LeagueSharp.Common
 
                 var pos = unit.HPBarPosition + offset;
 
-                _x = (int) pos.X;
-                _y = (int) pos.Y;
+                _x = (int)pos.X;
+                _y = (int)pos.Y;
             }
 
             /// <summary>
@@ -1824,8 +1824,8 @@ namespace LeagueSharp.Common
             public Text(Vector2 position, string text, int size, ColorBGRA color, string fontName = "Calibri")
                 : this(text, fontName, size, color)
             {
-                _x = (int) position.X;
-                _y = (int) position.Y;
+                _x = (int)position.X;
+                _y = (int)position.Y;
             }
 
             /// <summary>
@@ -1883,7 +1883,7 @@ namespace LeagueSharp.Common
             /// <value>The x offset.</value>
             private int XOffset
             {
-                get { return Centered ? -Width/2 : 0; }
+                get { return Centered ? -Width / 2 : 0; }
             }
 
             /// <summary>
@@ -1892,7 +1892,7 @@ namespace LeagueSharp.Common
             /// <value>The y offset.</value>
             private int YOffset
             {
-                get { return Centered ? -Height/2 : 0; }
+                get { return Centered ? -Height / 2 : 0; }
             }
 
             /// <summary>
@@ -1949,8 +1949,8 @@ namespace LeagueSharp.Common
                     if (PositionUpdate != null && !string.IsNullOrEmpty(text))
                     {
                         var pos = PositionUpdate();
-                        _xCalculated = (int) pos.X + XOffset;
-                        _yCalculated = (int) pos.Y + YOffset;
+                        _xCalculated = (int)pos.X + XOffset;
+                        _yCalculated = (int)pos.Y + YOffset;
                     }
                 }
             }
@@ -1970,8 +1970,8 @@ namespace LeagueSharp.Common
                     if (Unit != null && Unit.IsValid)
                     {
                         var pos = Unit.HPBarPosition + Offset;
-                        X = (int) pos.X;
-                        Y = (int) pos.Y;
+                        X = (int)pos.X;
+                        Y = (int)pos.Y;
                     }
 
                     var xP = X;

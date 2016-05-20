@@ -304,7 +304,7 @@ namespace PortAIO.Champion.Alistar
 
                         if (W.Cast(target).IsCasted())
                         {
-                            var comboTime = Math.Max(0, Player.Distance(target) - 365)/1.2f - 25;
+                            var comboTime = Math.Max(0, Player.LSDistance(target) - 365)/1.2f - 25;
                             LeagueSharp.Common.Utility.DelayAction.Add((int) comboTime, () => Q.Cast());
                         }
                     }
@@ -336,7 +336,7 @@ namespace PortAIO.Champion.Alistar
                 return;
             }
 
-            if (args.DangerLevel != Interrupter2.DangerLevel.High || sender.Distance(Player) > W.Range)
+            if (args.DangerLevel != Interrupter2.DangerLevel.High || sender.LSDistance(Player) > W.Range)
             {
                 return;
             }
@@ -361,12 +361,12 @@ namespace PortAIO.Champion.Alistar
             }
             if (getCheckBoxItem(interrupterMenu, "ElAlistar.GapCloser"))
             {
-                if (Q.IsReady() && gapcloser.Sender.Distance(Player) < Q.Range)
+                if (Q.IsReady() && gapcloser.Sender.LSDistance(Player) < Q.Range)
                 {
                     Q.Cast();
                 }
 
-                if (W.IsReady() && gapcloser.Sender.Distance(Player) < W.Range)
+                if (W.IsReady() && gapcloser.Sender.LSDistance(Player) < W.Range)
                 {
                     W.Cast(gapcloser.Sender);
                 }
@@ -415,7 +415,7 @@ namespace PortAIO.Champion.Alistar
                                 x.IsAlly && !x.IsDead &&
                                 getCheckBoxItem(healMenu, string.Format("healon{0}", x.NetworkId)) &&
                                 ((int) (args.Damage/x.MaxHealth*100) > getSliderItem(healMenu, "Heal.Damage") ||
-                                 x.HealthPercent < getSliderItem(healMenu, "Heal.HP")) && x.Distance(Player) < E.Range &&
+                                 x.HealthPercent < getSliderItem(healMenu, "Heal.HP")) && x.LSDistance(Player) < E.Range &&
                                 x.CountEnemiesInRange(1000) >= 1))
                 {
                     E.Cast();

@@ -119,6 +119,8 @@ namespace Auto_Carry_Vayne.Manager
             Hotkeymenu.Add("insece", new KeyBind("闪现 推人!", false, KeyBind.BindTypes.HoldActive, 'Z'));
             Hotkeymenu.Add("rote", new KeyBind("传送门定墙!", false, KeyBind.BindTypes.HoldActive, 'N'));
             Hotkeymenu.Add("insecmodes", new ComboBox("推人模式", 0, "至友军", "至塔下", "至鼠标"));
+            Hotkeymenu.Add("RnoAA", new KeyBind("隐身时不普攻", false, KeyBind.BindTypes.PressToggle, 'T'));
+            Hotkeymenu.Add("RnoAAif", new Slider("当附近 X 敌人隐身时不普攻 >= enemy in range", 2, 0, 5));
         }
 
         private static void Combomenu()
@@ -204,6 +206,8 @@ namespace Auto_Carry_Vayne.Manager
             ItemMenu.AddGroupLabel("物品");
             ItemMenu.AddLabel("私聊我如果需要添加物品.");
             ItemMenu.Add("Botrk", new CheckBox("使用破败/弯刀"));
+            ItemMenu.Add("You", new CheckBox("使用 幽梦"));
+            ItemMenu.Add("YouS", new Slider("使用 幽梦如果范围 =>", 500, 0, 1000));
             ItemMenu.Add("AutoPotion", new CheckBox("自动吃药"));
             ItemMenu.Add("AutoPotionHp", new Slider("生命值低于 X", 60));
             ItemMenu.Add("AutoBiscuit", new CheckBox("自动饼干"));
@@ -214,6 +218,8 @@ namespace Auto_Carry_Vayne.Manager
             ItemMenu.Add("HealHp", new Slider("生命值低于", 20, 0, 100));
             ItemMenu.Add("HealAlly", new CheckBox("治疗友军"));
             ItemMenu.Add("HealAllyHp", new Slider("友军生命值低于", 20, 0, 100));
+            ItemMenu.Add("Barrier", new CheckBox("使用护盾"));
+            ItemMenu.Add("BarrierHp", new Slider("使用护盾如果血量 <=", 20, 0, 100));
             ItemMenu.AddGroupLabel("解控");
             ItemMenu.Add("Qss", new CheckBox("使用水银"));
             ItemMenu.Add("QssDelay", new Slider("延迟", 100, 0, 2000));
@@ -265,6 +271,14 @@ namespace Auto_Carry_Vayne.Manager
         {
             get { return (Hotkeymenu["insecmodes"].Cast<ComboBox>().CurrentValue); }
         }
+        public static bool RNoAA
+        {
+            get { return (Hotkeymenu["RnoAA"].Cast<KeyBind>().CurrentValue); }
+        }
+        public static int RNoAASlider
+        {
+            get { return (Hotkeymenu["RnoAAif"].Cast<Slider>().CurrentValue); }
+        }
         #endregion checkvalues:hotkeys
         #region checkvalues:Combo
         public static bool UseQ
@@ -285,11 +299,6 @@ namespace Auto_Carry_Vayne.Manager
         public static int UseQMode
         {
             get { return (VMenu["Combo"].Cast<CheckBox>().CurrentValue ? ComboMenu["UseQMode"].Cast<ComboBox>().CurrentValue : 1); }
-        }
-
-        public static bool UseQE
-        {
-            get { return (VMenu["Combo"].Cast<CheckBox>().CurrentValue ? ComboMenu["UseQE"].Cast<CheckBox>().CurrentValue : true); }
         }
 
         public static bool UseQStacks
@@ -321,17 +330,6 @@ namespace Auto_Carry_Vayne.Manager
         {
             get { return (VMenu["Combo"].Cast<CheckBox>().CurrentValue ? ComboMenu["UseRif"].Cast<Slider>().CurrentValue : 2); }
         }
-
-        public static bool RNoAA
-        {
-            get { return (VMenu["Combo"].Cast<CheckBox>().CurrentValue ? ComboMenu["RnoAA"].Cast<CheckBox>().CurrentValue : false); }
-        }
-
-        public static int RNoAASlider
-        {
-            get { return (VMenu["Combo"].Cast<CheckBox>().CurrentValue ? ComboMenu["RnoAAif"].Cast<Slider>().CurrentValue : 3); }
-        }
-
         //Condemn
         #endregion checkvalues:Combo
         #region checkvalues:Condemn
@@ -479,7 +477,7 @@ namespace Auto_Carry_Vayne.Manager
 
         public static bool AutobuyTrinkets
         {
-            get { return (VMenu["Misc"].Cast<CheckBox>().CurrentValue ? MiscMenu["Autobuyt"].Cast<CheckBox>().CurrentValue : false); }
+            get { return (VMenu["Misc"].Cast<CheckBox>().CurrentValue ? MiscMenu["Autobuyt"].Cast<CheckBox>().CurrentValue : true); }
         }
 
 
@@ -489,6 +487,16 @@ namespace Auto_Carry_Vayne.Manager
         public static bool Botrk
         {
             get { return (VMenu["Activator"].Cast<CheckBox>().CurrentValue ? ItemMenu["Botrk"].Cast<CheckBox>().CurrentValue : true); }
+        }
+
+        public static bool Youmus
+        {
+            get { return (VMenu["Activator"].Cast<CheckBox>().CurrentValue ? ItemMenu["You"].Cast<CheckBox>().CurrentValue : true); }
+        }
+
+        public static int YoumusSlider
+        {
+            get { return (VMenu["Activator"].Cast<CheckBox>().CurrentValue ? ItemMenu["YouS"].Cast<Slider>().CurrentValue : 500); }
         }
 
         public static bool AutoPotion
@@ -519,6 +527,16 @@ namespace Auto_Carry_Vayne.Manager
         public static int HealHp
         {
             get { return (VMenu["Activator"].Cast<CheckBox>().CurrentValue ? ItemMenu["HealHp"].Cast<Slider>().CurrentValue : 20); }
+        }
+
+        public static bool Barrier
+        {
+            get { return (VMenu["Activator"].Cast<CheckBox>().CurrentValue ? ItemMenu["Barrier"].Cast<CheckBox>().CurrentValue : true); }
+        }
+
+        public static int BarrierHp
+        {
+            get { return (VMenu["Activator"].Cast<CheckBox>().CurrentValue ? ItemMenu["BarrierHp"].Cast<Slider>().CurrentValue : 20); }
         }
 
         public static bool HealAlly

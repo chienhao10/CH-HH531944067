@@ -81,7 +81,7 @@ namespace iKalistaReborn
             {
                 if (!getCheckBoxItem(miscMenu, "com.ikalista.misc.forceW")) return;
 
-                target = HeroManager.Enemies.FirstOrDefault(x => ObjectManager.Player.Distance(x) <= 600 && x.HasBuff("kalistacoopstrikemarkally"));
+                target = HeroManager.Enemies.FirstOrDefault(x => ObjectManager.Player.LSDistance(x) <= 600 && x.HasBuff("kalistacoopstrikemarkally"));
                 if (target != null)
                 {
                     Orbwalker.ForcedTarget = target;
@@ -150,10 +150,11 @@ namespace iKalistaReborn
             }
 
             miscMenu = Menu.AddSubMenu("杂项", "com.ikalista.Misc");
+            miscMenu.Add("com.ikalista.misc.reduceE", new Slider("减少 E 伤害", 50, 0, 300));
             miscMenu.Add("com.ikalista.misc.forceW", new CheckBox("集火被W发现的目标"));
             if (Game.MapId != GameMapId.SummonersRift)
             {
-                miscMenu.AddLabel("Sentinel Manager is only on Summoners Rift, sorry.");
+                miscMenu.AddLabel("对不起，守卫控制只能用于召唤师峡谷.");
             }
             else
             {
@@ -220,11 +221,11 @@ namespace iKalistaReborn
 
             if (getCheckBoxItem(drawingMenu, "com.ikalista.drawing.damagePercent"))
             {
-                foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.Distance(x) <= 2000f && !x.IsDead && x.IsHPBarRendered))
+                foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.LSDistance(x) <= 2000f && !x.IsDead && x.IsHPBarRendered))
                 {
-                    var currentPercentage = Math.Round(Helper.GetRendDamage(source) * 100 / source.GetTotalHealth(), 1);
+                    var currentPercentage = Math.Round(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield(), 1);
 
-                    Drawing.DrawText(Drawing.WorldToScreen(source.Position)[0], Drawing.WorldToScreen(source.Position)[1], currentPercentage >= 100 ? Color.DarkOliveGreen : Color.White, currentPercentage >= 100 ? "Killable With E" : "Current Damage: " + Math.Ceiling(Helper.GetRendDamage(source) * 100 / source.GetTotalHealth()) + "%");
+                    Drawing.DrawText(Drawing.WorldToScreen(source.Position)[0], Drawing.WorldToScreen(source.Position)[1], currentPercentage >= 100 ? Color.DarkOliveGreen : Color.White, currentPercentage >= 100 ? "Killable With E" : "Current Damage: " + Math.Ceiling(Helper.GetRendDamage(source) * 100 / source.GetHealthWithShield()) + "%");
                 }
             }
         }
@@ -291,7 +292,7 @@ namespace iKalistaReborn
                 var soulboundhero = HeroManager.Allies.FirstOrDefault(x => x.HasBuff("kalistacoopstrikeally") && x.IsAlly);
                 if (soulboundhero?.ChampionName == "Blitzcrank")
                 {
-                    foreach (var unit in HeroManager.Enemies.Where(h => h.IsHPBarRendered && h.Distance(ObjectManager.Player.ServerPosition) > 700 && h.Distance(ObjectManager.Player.ServerPosition) < 1400))
+                    foreach (var unit in HeroManager.Enemies.Where(h => h.IsHPBarRendered && h.LSDistance(ObjectManager.Player.ServerPosition) > 700 && h.LSDistance(ObjectManager.Player.ServerPosition) < 1400))
                     {
                         if (unit.HasBuff("rocketgrab2"))
                         {
@@ -314,16 +315,16 @@ namespace iKalistaReborn
                 var targets =
                     HeroManager.Enemies.Where(
                         x =>
-                            ObjectManager.Player.Distance(x) <= SpellManager.Spell[SpellSlot.E].Range * 2 &&
+                            ObjectManager.Player.LSDistance(x) <= SpellManager.Spell[SpellSlot.E].Range * 2 &&
                             x.IsValidTarget(SpellManager.Spell[SpellSlot.E].Range * 2));
 
-                if (targets.Count(x => ObjectManager.Player.Distance(x) < Orbwalking.GetRealAutoAttackRange(x)) == 0)
+                if (targets.Count(x => ObjectManager.Player.LSDistance(x) < Orbwalking.GetRealAutoAttackRange(x)) == 0)
                 {
                     var minion =
                         ObjectManager.Get<Obj_AI_Minion>()
                             .Where(
                                 x =>
-                                    ObjectManager.Player.Distance(x) <= Orbwalking.GetRealAutoAttackRange(x) &&
+                                    ObjectManager.Player.LSDistance(x) <= Orbwalking.GetRealAutoAttackRange(x) &&
                                     x.IsEnemy)
                             .OrderBy(x => x.Health)
                             .FirstOrDefault();

@@ -221,6 +221,14 @@ namespace ElDiana
                 }
             }
 
+            if (drawR)
+            {
+                if (spells[Spells.R].Level > 0)
+                {
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spells[Spells.R].Range, Color.White);
+                }
+            }
+
             if (drawRMisaya)
             {
                 if (spells[Spells.R].Level > 0)
@@ -259,7 +267,7 @@ namespace ElDiana
             {
                 var eSlot = spells[Spells.E];
                 if (getCheckBoxItem(interruptMenu, "ElDiana.Interrupt.UseEInterrupt") && eSlot.IsReady() &&
-                    eSlot.Range >= Player.Distance(source))
+                    eSlot.Range >= Player.LSDistance(source))
                 {
                     eSlot.Cast();
                 }
@@ -272,7 +280,7 @@ namespace ElDiana
                     return;
                 }
                 var eSlot = spells[Spells.E];
-                var dis = Player.Distance(source);
+                var dis = Player.LSDistance(source);
                 Console.WriteLine(source.Name + @" > " + eSlot.Range + @" : " + dis);
                 if (!eventArgs.IsBlink && getCheckBoxItem(interruptMenu, "ElDiana.Interrupt.UseEDashes") &&
                     eSlot.IsReady() && eSlot.Range >= dis)
@@ -303,12 +311,12 @@ namespace ElDiana
             var useSecondRLimitation = getSliderItem(comboMenu, "ElDiana.Combo.UseSecondRLimitation");
             var minHpToDive = getSliderItem(comboMenu, "ElDiana.Combo.R.PreventUnderTower");
 
-            if (useQ && spells[Spells.Q].IsReady() && Player.Distance(target) <= spells[Spells.Q].Range)
+            if (useQ && spells[Spells.Q].IsReady() && Player.LSDistance(target) <= spells[Spells.Q].Range)
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
                 {
-                    spells[Spells.Q].Cast(pred.CastPosition);
+                    spells[Spells.Q].Cast(target);
                 }
             }
 
@@ -352,7 +360,7 @@ namespace ElDiana
                 }
             }
 
-            if (Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health && useIgnite)
+            if (Player.LSDistance(target) <= 600 && IgniteDamage(target) >= target.Health && useIgnite)
             {
                 Player.Spellbook.CastSpell(ignite, target);
             }
@@ -407,7 +415,7 @@ namespace ElDiana
                 spells[Spells.W].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && Player.Distance(target) <= spells[Spells.E].Range)
+            if (useE && spells[Spells.E].IsReady() && Player.LSDistance(target) <= spells[Spells.E].Range)
             {
                 spells[Spells.E].Cast();
             }
@@ -458,7 +466,7 @@ namespace ElDiana
             }
 
             if (useE && spells[Spells.E].IsReady()
-                && qMinions.Count(m => Player.Distance(m) < spells[Spells.W].Range) < 1 &&
+                && qMinions.Count(m => Player.LSDistance(m) < spells[Spells.W].Range) < 1 &&
                 spells[Spells.E].IsInRange(qMinion))
             {
                 spells[Spells.E].Cast();
@@ -522,7 +530,7 @@ namespace ElDiana
                 spells[Spells.W].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && Player.Distance(qMinion) < 200
+            if (useE && spells[Spells.E].IsReady() && Player.LSDistance(qMinion) < 200
                 && spells[Spells.E].GetCircularFarmLocation(minions).MinionsHit >= countE)
             {
                 spells[Spells.E].Cast();
@@ -574,7 +582,7 @@ namespace ElDiana
             var secondR = getCheckBoxItem(comboMenu, "ElDiana.Combo.Secure") &&
                           (!target.UnderTurret(true) || (minHpToDive <= Player.HealthPercent));
 
-            var distToTarget = Player.Distance(target);
+            var distToTarget = Player.LSDistance(target);
 
             var misayaMinRange = getSliderItem(comboMenu, "ElDiana.Combo.R.MisayaMinRange");
             var useSecondRLimitation = getSliderItem(comboMenu, "ElDiana.Combo.UseSecondRLimitation");
@@ -647,7 +655,7 @@ namespace ElDiana
                 }
             }
 
-            if (Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health && useIgnite)
+            if (Player.LSDistance(target) <= 600 && IgniteDamage(target) >= target.Health && useIgnite)
             {
                 Player.Spellbook.CastSpell(ignite, target);
             }

@@ -187,7 +187,7 @@ namespace OneKeyToWin_AIO_Sebby
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             if (t.IsValidTarget())
             {
-                var step = t.Distance(Player)/20;
+                var step = t.LSDistance(Player)/20;
                 for (var i = 0; i < 20; i++)
                 {
                     var p = Player.Position.Extend(t.Position, step*i);

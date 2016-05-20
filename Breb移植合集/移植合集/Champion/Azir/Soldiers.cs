@@ -87,14 +87,14 @@ namespace HeavenStrikeAzir
             enemies = new List<AIHeroClient>();
             foreach (var hero in HeroManager.Enemies.Where(x => x.IsValidTarget() && !x.IsZombie))
             {
-                if (soldier.Any(x => x.Position.Distance(hero.Position) <= 300 + hero.BoundingRadius && Player.Distance(x.Position) <= 900))
+                if (soldier.Any(x => x.Position.LSDistance(hero.Position) <= 300 + hero.BoundingRadius && Player.LSDistance(x.Position) <= 900))
                     enemies.Add(hero);
             }
             soldierattackminions = new List<Obj_AI_Minion>();
             foreach (var minion in minions)
             {
                 var Soldiers = soldier.Where
-                    (x => x.Position.Distance(minion.Position) <= 300 + minion.BoundingRadius && Player.Distance(x.Position) <= 900)
+                    (x => x.Position.LSDistance(minion.Position) <= 300 + minion.BoundingRadius && Player.LSDistance(x.Position) <= 900)
                     .ToList();
                 if (Soldiers.Any())
                 {

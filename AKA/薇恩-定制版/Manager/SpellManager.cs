@@ -12,7 +12,7 @@ namespace Auto_Carry_Vayne.Manager
         public static Spell.Targeted E;
         public static Spell.Skillshot E2;
         public static Spell.Active R;
-        public static Spell.Active Heal;
+        public static Spell.Active Heal, Barrier;
         public static Item totem, Qss, Mercurial, HPPot, Biscuit, zzrot;
 
         private static void SpellsItems()
@@ -28,10 +28,15 @@ namespace Auto_Carry_Vayne.Manager
                 250,
                 1200);
             R = new Spell.Active(SpellSlot.R);
-            var slot = Variables._Player.GetSpellSlotFromName("summonerheal");
-            if (slot != SpellSlot.Unknown)
+            var slot1 = Variables._Player.GetSpellSlotFromName("summonerheal");
+            if (slot1 != SpellSlot.Unknown)
             {
-                Heal = new Spell.Active(slot, 600);
+                Heal = new Spell.Active(slot1, 600);
+            }
+            var slot2 = Variables._Player.GetSpellSlotFromName("summonerbarrier");
+            if (slot2 != SpellSlot.Unknown)
+            {
+                Barrier = new Spell.Active(slot2);
             }
             totem = new Item((int)ItemId.Warding_Totem_Trinket);
             Qss = new Item((int)ItemId.Quicksilver_Sash);

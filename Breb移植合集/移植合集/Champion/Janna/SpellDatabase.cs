@@ -16,7 +16,7 @@ namespace LCS_Janna.Plugins
         Invulnerability = 8,
         AllyTargetted = 16, //soon tm
         EnemyTargetted = 32, //soon tm
-        None = 64
+        None = 64,
     }
 
     [Flags]
@@ -25,7 +25,7 @@ namespace LCS_Janna.Plugins
         None = 0,
         Minions = 1,
         Champions = 2,
-        YasuoWall = 4
+        YasuoWall = 4,
     }
 
     public struct ArcData
@@ -39,41 +39,41 @@ namespace LCS_Janna.Plugins
 
     public class SpellData
     {
-        public ArcData ArcData;
         public string ChampionName;
-        public Collisions Collisionable;
-        public int Delay;
-        public EvadeMethods EvadeMethods;
-        public bool IsAAEmpower;
-        public bool IsArc;
-        public bool IsDangerous;
-        public bool IsSkillshot;
-        public bool IsTargeted;
-        public int MissileSpeed;
-        public string MissileSpellName;
-        public int Radius;
-        public int Range;
-        public SpellSlot Slot;
         public string SpellName;
+        public SpellSlot Slot;
+        public bool IsArc;
+        public ArcData ArcData;
+        public bool IsSkillshot;
         public SkillshotType Type;
+        public int Delay;
+        public int Range;
+        public int Radius;
+        public int MissileSpeed;
+        public bool IsDangerous;
+        public string MissileSpellName;
+        public EvadeMethods EvadeMethods;
+        public Collisions Collisionable;
+        public bool IsTargeted;
+        public bool IsAAEmpower;
     }
 
-    public class MovementBuffSpellData : SpellData
+    public class TrundleSpellData : SpellData
     {
-        public float DecaysTo;
-        public float DecayTime;
+        public float[] Percent;
         public float[] Extra;
         public bool IsDecaying;
-        public float[] Percent;
+        public float DecaysTo;
+        public float DecayTime;
     }
 
     public class EscapeSpellData : SpellData
     {
-        public float DecaysTo;
-        public float DecayTime;
+        public float[] Percent;
         public float[] Extra;
         public bool IsDecaying;
-        public float[] Percent;
+        public float DecaysTo;
+        public float DecayTime;
     }
 
     public class SpellDatabase
@@ -81,9 +81,9 @@ namespace LCS_Janna.Plugins
         public static List<SpellData> EvadeableSpells;
         public static List<SpellData> TargetedSpells;
         public static List<SpellData> EscapeSpells;
-        public static List<MovementBuffSpellData> MovementBuffers;
+        public static List<TrundleSpellData> TrundleSpells;
 
-        private static bool blInitialized;
+        private static bool blInitialized = false;
 
         public static void InitalizeSpellDatabase()
         {
@@ -95,9 +95,7 @@ namespace LCS_Janna.Plugins
             EvadeableSpells = new List<SpellData>();
             TargetedSpells = new List<SpellData>();
             EscapeSpells = new List<SpellData>();
-
             #region Dangreous Spell Database
-
             //diana q x axis eliptic radius 315
             EvadeableSpells.Add(
                 new SpellData
@@ -133,6 +131,7 @@ namespace LCS_Janna.Plugins
                     MissileSpellName = "SadMummyBandageToss",
                     EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                     Collisionable = Collisions.Champions | Collisions.Minions | Collisions.YasuoWall
+
                 });
 
             EvadeableSpells.Add(
@@ -200,7 +199,7 @@ namespace LCS_Janna.Plugins
                     MissileSpeed = 2100,
                     IsDangerous = false,
                     MissileSpellName = "BardR",
-                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
+                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                 });
 
             EvadeableSpells.Add(
@@ -253,8 +252,8 @@ namespace LCS_Janna.Plugins
                     IsArc = true,
                     ArcData = new ArcData
                     {
-                        Pos = new Vector2(875/2f, 20),
-                        Angle = (float) Math.PI,
+                        Pos = new Vector2(875 / 2f, 20),
+                        Angle = (float)Math.PI,
                         Width = 410,
                         Height = 200,
                         Radius = 120
@@ -405,6 +404,7 @@ namespace LCS_Janna.Plugins
                     Collisionable = Collisions.Champions | Collisions.Minions,
                     EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
                 });
+
 
 
             EvadeableSpells.Add(
@@ -589,6 +589,7 @@ namespace LCS_Janna.Plugins
                 });
 
 
+
             EvadeableSpells.Add(
                 new SpellData
                 {
@@ -603,7 +604,7 @@ namespace LCS_Janna.Plugins
                     MissileSpeed = int.MaxValue,
                     IsDangerous = true,
                     MissileSpellName = "SwainShadowGrasp",
-                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
+                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                 });
 
             EvadeableSpells.Add(
@@ -637,7 +638,7 @@ namespace LCS_Janna.Plugins
                     MissileSpeed = 1601,
                     IsDangerous = false,
                     MissileSpellName = "SyndraE",
-                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
+                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                 });
 
             EvadeableSpells.Add(
@@ -709,7 +710,7 @@ namespace LCS_Janna.Plugins
                     MissileSpeed = 1500,
                     IsDangerous = false,
                     MissileSpellName = "VelkozEMissile",
-                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
+                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                 });
 
             EvadeableSpells.Add(
@@ -727,7 +728,7 @@ namespace LCS_Janna.Plugins
                     IsDangerous = true,
                     MissileSpellName = "yasuoq3w",
                     Collisionable = Collisions.YasuoWall,
-                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
+                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                 });
 
             EvadeableSpells.Add(
@@ -745,7 +746,7 @@ namespace LCS_Janna.Plugins
                     IsDangerous = true,
                     MissileSpellName = "ZyraGraspingRoots",
                     Collisionable = Collisions.YasuoWall,
-                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
+                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                 });
 
             EvadeableSpells.Add(
@@ -763,337 +764,145 @@ namespace LCS_Janna.Plugins
                     IsDangerous = true,
                     MissileSpellName = "zyrapassivedeathmanager",
                     Collisionable = Collisions.YasuoWall,
-                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash
+                    EvadeMethods = EvadeMethods.Blink | EvadeMethods.SpellShield | EvadeMethods.Dash,
                 });
-
             #endregion
-
             #region Escape Spell Data
-
             EscapeSpells.Add(
                 new SpellData
                 {
                     ChampionName = "Lucian",
                     SpellName = "LucianE",
-                    Slot = SpellSlot.E
+                    Slot = SpellSlot.E,
                 });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Graves",
-                    SpellName = "GravesMove",
-                    Slot = SpellSlot.E
-                });
+               new SpellData
+               {
+                   ChampionName = "Graves",
+                   SpellName = "GravesMove",
+                   Slot = SpellSlot.E,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Vayne",
-                    SpellName = "VayneTumble",
-                    Slot = SpellSlot.Q
-                });
+               new SpellData
+               {
+                   ChampionName = "Vayne",
+                   SpellName = "VayneTumble",
+                   Slot = SpellSlot.Q,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Corki",
-                    SpellName = "CarpetBomb",
-                    Slot = SpellSlot.W
-                });
+               new SpellData
+               {
+                   ChampionName = "Corki",
+                   SpellName = "CarpetBomb",
+                   Slot = SpellSlot.W,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Ekko",
-                    SpellName = "EkkoE",
-                    Slot = SpellSlot.E
-                });
+               new SpellData
+               {
+                   ChampionName = "Ekko",
+                   SpellName = "EkkoE",
+                   Slot = SpellSlot.E,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Caitlyn",
-                    SpellName = "CaitlynEntrapment",
-                    Slot = SpellSlot.E
-                });
+               new SpellData
+               {
+                   ChampionName = "Caitlyn",
+                   SpellName = "CaitlynEntrapment",
+                   Slot = SpellSlot.E,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Gnar",
-                    SpellName = "GnarE",
-                    Slot = SpellSlot.E
-                });
+               new SpellData
+               {
+                   ChampionName = "Gnar",
+                   SpellName = "GnarE",
+                   Slot = SpellSlot.E,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Fiora",
-                    SpellName = "FioraQ",
-                    Slot = SpellSlot.Q
-                });
+               new SpellData
+               {
+                   ChampionName = "Fiora",
+                   SpellName = "FioraQ",
+                   Slot = SpellSlot.Q,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Kassadin",
-                    SpellName = "RiftWalk",
-                    Slot = SpellSlot.R
-                });
+               new SpellData
+               {
+                   ChampionName = "Kassadin",
+                   SpellName = "RiftWalk",
+                   Slot = SpellSlot.R,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Fizz",
-                    SpellName = "FizzJump",
-                    Slot = SpellSlot.E
-                });
+               new SpellData
+               {
+                   ChampionName = "Fizz",
+                   SpellName = "FizzJump",
+                   Slot = SpellSlot.E,
+               });
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Riven",
-                    SpellName = "RivenFeint",
-                    Slot = SpellSlot.E
-                });
+               new SpellData
+               {
+                   ChampionName = "Riven",
+                   SpellName = "RivenFeint",
+                   Slot = SpellSlot.E,
+               });
 
             EscapeSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "Kindred",
-                    SpellName = "KindredQ",
-                    Slot = SpellSlot.Q
-                });
+               new SpellData
+               {
+                   ChampionName = "Kindred",
+                   SpellName = "KindredQ",
+                   Slot = SpellSlot.Q,
+               });
 
             #endregion
+            #region Trundle Tricks Data
 
-            #region Movement Buffers
-
-            /*
-                Ahri Q
-                Ekko Passive
-                Gangplank Passive
-                Hecarim E
-                Karma E
-                Karma R + E
-                Kennen E
-                Olaf R
-                Lulu W
-             */
-            MovementBuffers = new List<MovementBuffSpellData>
+            TrundleSpells = new List<TrundleSpellData>();
+            TrundleSpells.Add(new TrundleSpellData
             {
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Ahri",
-                    SpellName = "Orb of Deception",
-                    Slot = SpellSlot.Q,
-                    Extra = new float[] {215},
-                    IsDecaying = true,
-                    DecayTime = 0.5f,
-                    DecaysTo = 80
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Bard",
-                    SpellName = "bardwspeedboost",
-                    Slot = SpellSlot.W,
-                    Percent = new float[] {50},
-                    IsDecaying = true,
-                    DecayTime = 1.5f
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Blitzcrank",
-                    SpellName = "Overdrive",
-                    Slot = SpellSlot.W,
-                    Percent = new float[] {70, 75, 80, 85, 90},
-                    IsDecaying = true,
-                    DecayTime = 0.5f,
-                    DecaysTo = 10
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Ekko",
-                    SpellName = "Z-Drive Resonance",
-                    Slot = SpellSlot.Unknown,
-                    Percent = new float[] {40, 50, 60, 70, 80},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Evelynn",
-                    SpellName = "EvelynnW",
-                    Slot = SpellSlot.W,
-                    Percent = new float[] {30, 40, 50, 60, 70},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Gangplank",
-                    SpellName = "Trial by Fire",
-                    Slot = SpellSlot.Unknown,
-                    Percent = new float[] {30},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Garen",
-                    SpellName = "garenqhaste",
-                    Slot = SpellSlot.Q,
-                    Percent = new float[] {35},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Hecarim",
-                    SpellName = "Devastating Charge",
-                    Slot = SpellSlot.E,
-                    Percent = new float[] {25},
-                    IsDecaying = true,
-                    DecayTime = 4,
-                    DecaysTo = 75
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Karma",
-                    SpellName = "Inspire",
-                    Slot = SpellSlot.E,
-                    Percent = new float[] {40, 45, 50, 55, 60},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Karma",
-                    SpellName = "Defiance",
-                    Slot = SpellSlot.E,
-                    Percent = new float[] {60},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Kennen",
-                    SpellName = "Lightning Rush",
-                    Slot = SpellSlot.E,
-                    Percent = new float[] {100},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Lucian",
-                    SpellName = "lucianwbuff",
-                    Slot = SpellSlot.W,
-                    Percent = new float[] {40, 45, 50, 55, 60},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Lulu",
-                    SpellName = "Whimsy",
-                    Slot = SpellSlot.W,
-                    Percent = new float[] {30},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Nami",
-                    SpellName = "namipassivedebuff",
-                    Slot = SpellSlot.Unknown,
-                    Extra = new float[] {40}, // +10% ap
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Olaf",
-                    SpellName = "Ragnarok",
-                    Slot = SpellSlot.R,
-                    Percent = new float[] {50, 60, 70},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Poppy",
-                    SpellName = "poppyparagonspeed",
-                    Slot = SpellSlot.W,
-                    Percent = new float[] {17, 19, 21, 23, 25},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Quinn",
-                    SpellName = "quinnpassiveammo",
-                    Slot = SpellSlot.W,
-                    Percent = new float[] {20, 30, 40, 50, 60},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Sona",
-                    SpellName = "sonaehaste",
-                    Slot = SpellSlot.E,
-                    Extra = new float[] {13, 14, 15, 16, 17},
-                    //-3% for ally && (+7.5% for 100 ap 3.5% for ally) + (%2 * ultlevel)
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Viktor",
-                    SpellName = "haste",
-                    Slot = SpellSlot.Q,
-                    Percent = new float[] {30},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "Zilean",
-                    SpellName = "TimeWarp",
-                    Slot = SpellSlot.E,
-                    Percent = new float[] {40, 55, 70, 85, 99},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "ITEM_PASSIVE_RAGE_HIT",
-                    SpellName = "itemphageminispeed",
-                    Slot = SpellSlot.Unknown,
-                    Extra = new float[] {20},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "ITEM_PASSIVE_RAGE_KILL",
-                    SpellName = "itemphagespeed",
-                    Slot = SpellSlot.Unknown,
-                    Extra = new float[] {60},
-                    IsDecaying = false
-                },
-                new MovementBuffSpellData
-                {
-                    ChampionName = "ITEM_PASSIVE_FUROR",
-                    SpellName = "bootsdeathmarchspeed",
-                    Slot = SpellSlot.Unknown,
-                    Percent = new float[] {12},
-                    IsDecaying = true,
-                    DecayTime = 2
-                }
-            };
+                ChampionName = "Caitlyn",
+                SpellName = "CaitlynEntrapment",
+                Slot = SpellSlot.E,
+            });
 
+            TrundleSpells.Add(new TrundleSpellData
+            {
+                ChampionName = "KhaZix",
+                SpellName = "soontm",
+                Slot = SpellSlot.E
+            });
 
+            TrundleSpells.Add(new TrundleSpellData
+            {
+                ChampionName = "LeeSin",
+                SpellName = "BlindMonkQOne",
+                Slot = SpellSlot.Q,
+            });
 
+            TrundleSpells.Add(new TrundleSpellData
+            {
+                ChampionName = "Tristana",
+                SpellName = "RocketJump",
+                Slot = SpellSlot.W,
+            });
 
+            TrundleSpells.Add(new TrundleSpellData
+            {
+                ChampionName = "Vi",
+                SpellName = "ViQMissile",
+                Slot = SpellSlot.Q,
+            });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            TrundleSpells.Add(new TrundleSpellData
+            {
+                ChampionName = "Blitzcrank",
+                SpellName = "RocketGrab",
+                Slot = SpellSlot.Q,
+            });
 
 
             #endregion
-
             #region Targeted Spell Database
-
             TargetedSpells.Add(
                 new SpellData
                 {
@@ -1188,7 +997,7 @@ namespace LCS_Janna.Plugins
                     Slot = SpellSlot.R,
                     SpellName = "CurseoftheSadMummy",
                     Radius = 550,
-                    IsDangerous = true
+                    IsDangerous = true,
                 });
 
             TargetedSpells.Add(
@@ -1197,7 +1006,7 @@ namespace LCS_Janna.Plugins
                     ChampionName = "Annie",
                     Slot = SpellSlot.Q,
                     SpellName = "Disintegrate",
-                    IsTargeted = true
+                    IsTargeted = true,
                 });
 
             TargetedSpells.Add(
@@ -1225,17 +1034,17 @@ namespace LCS_Janna.Plugins
                     ChampionName = "KhaZix",
                     Slot = SpellSlot.Q,
                     SpellName = "KhazixQ",
-                    IsTargeted = true
+                    IsTargeted = true,
                 });
 
             TargetedSpells.Add(
-                new SpellData
-                {
-                    ChampionName = "KhaZix",
-                    Slot = SpellSlot.Q, //evolved
-                    SpellName = "khazixqlong",
-                    IsTargeted = true
-                });
+               new SpellData
+               {
+                   ChampionName = "KhaZix",
+                   Slot = SpellSlot.Q, //evolved
+                   SpellName = "khazixqlong",
+                   IsTargeted = true
+               });
 
             TargetedSpells.Add(
                 new SpellData
@@ -1291,7 +1100,7 @@ namespace LCS_Janna.Plugins
                     Slot = SpellSlot.W,
                     SpellName = "RivenMartyr",
                     Radius = 270,
-                    IsDangerous = true
+                    IsDangerous = true,
                 });
 
             TargetedSpells.Add(
@@ -1360,7 +1169,7 @@ namespace LCS_Janna.Plugins
                     Slot = SpellSlot.E,
                     SpellName = "Dazzle",
                     IsTargeted = true,
-                    IsDangerous = true
+                    IsDangerous = true,
                 });
 
             TargetedSpells.Add(
@@ -1370,7 +1179,7 @@ namespace LCS_Janna.Plugins
                     Slot = SpellSlot.Q,
                     SpellName = "GarenQAttack",
                     IsTargeted = true,
-                    IsDangerous = true
+                    IsDangerous = true,
                 });
 
             TargetedSpells.Add(
@@ -1427,7 +1236,7 @@ namespace LCS_Janna.Plugins
                     ChampionName = "Gangplank",
                     Slot = SpellSlot.Q,
                     SpellName = "GangplankQWrapper",
-                    IsTargeted = true
+                    IsTargeted = true,
                 });
 
             TargetedSpells.Add(
@@ -1467,18 +1276,17 @@ namespace LCS_Janna.Plugins
                     IsTargeted = true,
                     IsDangerous = true
                 });
-
             #endregion
         }
     }
 
     public class DetectedSpellData
     {
-        public GameObjectProcessSpellCastEventArgs Args;
-        public Vector2 EndPosition;
-        public Obj_AI_Base Sender;
         public SpellData Spell;
         public Vector2 StartPosition;
+        public Vector2 EndPosition;
+        public Obj_AI_Base Sender;
+        public GameObjectProcessSpellCastEventArgs Args;
 
         public void Set(SpellData s, Vector2 sp, Vector2 ep, Obj_AI_Base snd, GameObjectProcessSpellCastEventArgs ar)
         {

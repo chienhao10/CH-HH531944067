@@ -2,6 +2,7 @@
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace Slutty_Gnar_Reworked
 {
@@ -11,7 +12,7 @@ namespace Slutty_Gnar_Reworked
         {
             var direction = (to - from).Normalized();
 
-            for (float d = 0; d < from.Distance(to); d = d + step)
+            for (float d = 0; d < from.LSDistance(to); d = d + step)
             {
                 var testPoint = from + d*direction;
                 if (NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y).HasFlag(CollisionFlags.Wall) ||
@@ -28,7 +29,7 @@ namespace Slutty_Gnar_Reworked
         {
             var direction = (to - from).Normalized();
 
-            for (float d = 0; d < from.Distance(to); d = d + step)
+            for (float d = 0; d < from.LSDistance(to); d = d + step)
             {
                 var testPoint = from + d*direction;
                 if (NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y).HasFlag(CollisionFlags.Wall) ||

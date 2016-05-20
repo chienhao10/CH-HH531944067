@@ -19,7 +19,7 @@ namespace Jhin___The_Virtuoso.Extensions
                         var pred = Spells.R.GetPrediction(tstarget);
                         if (pred.Hitchance >= Menus.miscMenu.HikiChance("r.hit.chance"))
                         {
-                            Spells.R.Cast(pred.CastPosition);
+                            Spells.R.Cast(tstarget);
                         }
                     }
                 }
@@ -34,7 +34,7 @@ namespace Jhin___The_Virtuoso.Extensions
                         var pred = Spells.R.GetPrediction(tstarget);
                         if (pred.Hitchance >= Menus.miscMenu.HikiChance("r.hit.chance"))
                         {
-                            Spells.R.Cast(pred.CastPosition);
+                            Spells.R.Cast(tstarget);
                         }
                     }
                 }

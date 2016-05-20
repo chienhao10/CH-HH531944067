@@ -497,18 +497,18 @@ namespace FioraProject
                             {
                                 if (Utils.GameTimeTickCount - movetick < (70 + Math.Min(60, Game.Ping)))
                                     break;
-                                if (Player.Distance(Game.CursorPos) <= 1200 && Player.Position.To2D().Extend(Game.CursorPos.To2D(), i).IsWall())
+                                if (Player.LSDistance(Game.CursorPos) <= 1200 && Player.Position.To2D().Extend(Game.CursorPos.To2D(), i).IsWall())
                                 {
                                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.To2D().Extend(Game.CursorPos.To2D(), i - 20).To3D());
                                     movetick = Utils.GameTimeTickCount;
                                     break;
                                 }
                                 EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo,
-                                    Player.Distance(Game.CursorPos) <= 1200 ?
+                                    Player.LSDistance(Game.CursorPos) <= 1200 ?
                                     Player.Position.To2D().Extend(Game.CursorPos.To2D(), 200).To3D() :
                                     Game.CursorPos);
                             }
-                            if (y.IsWall() && LeagueSharp.Common.Prediction.GetPrediction(Player, 500).UnitPosition.Distance(Player.Position) <= 10 && Q.IsReady())
+                            if (y.IsWall() && LeagueSharp.Common.Prediction.GetPrediction(Player, 500).UnitPosition.LSDistance(Player.Position) <= 10 && Q.IsReady())
                             {
                                 var pos = Player.Position.To2D().Extend(Game.CursorPos.To2D(), 100);
                                 for (int i = 0; i <= 359; i++)
@@ -546,7 +546,7 @@ namespace FioraProject
         {
             var direction = (to - from).Normalized();
 
-            for (float d = 0; d < from.Distance(to); d = d + step)
+            for (float d = 0; d < from.LSDistance(to); d = d + step)
             {
                 var testPoint = from + d * direction;
                 var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
@@ -565,7 +565,7 @@ namespace FioraProject
             if (Fstwall != null)
             {
                 var firstwall = ((Vector2)Fstwall);
-                for (float d = step; d < firstwall.Distance(to) + 1000; d = d + step)
+                for (float d = step; d < firstwall.LSDistance(to) + 1000; d = d + step)
                 {
                     var testPoint = firstwall + d * direction;
                     var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
@@ -605,12 +605,12 @@ namespace FioraProject
                 if (target.IsValidTarget(OrbwalkToPassiveRange) && !target.IsZombie)
                 {
                     var status = target.GetPassiveStatus(0);
-                    if (Player.Position.To2D().Distance(target.Position.To2D()) <= OrbwalkToPassiveRange && status.HasPassive
+                    if (Player.Position.To2D().LSDistance(target.Position.To2D()) <= OrbwalkToPassiveRange && status.HasPassive
                         && ((TargetingMode == TargetMode.Selected && OrbwalkToPassiveTargeted && (OrbwalkTargetedUnderTower || !Player.UnderTurret(true)))
                         || (TargetingMode == TargetMode.Optional && OrbwalkToPassiveOptional && (OrbwalkOptionalUnderTower || !Player.UnderTurret(true)))
                         || (TargetingMode == TargetMode.Priority && OrbwalkToPassivePriority && (OrbwalkPriorityUnderTower || !Player.UnderTurret(true)))))
                     {
-                        var point = status.PassivePredictedPositions.OrderBy(x => x.Distance(Player.Position.To2D())).FirstOrDefault();
+                        var point = status.PassivePredictedPositions.OrderBy(x => x.LSDistance(Player.Position.To2D())).FirstOrDefault();
                         point = point.IsValid() ? point : Game.CursorPos.To2D();
                         Orbwalker.OrbwalkTo(point.To3D());
                     }

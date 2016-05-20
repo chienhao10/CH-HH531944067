@@ -191,7 +191,7 @@ namespace JustHecarim
                 var qtarget =
                     minions.Where(
                         x =>
-                            x.Distance(player) < Q.Range && x.Health < player.GetSpellDamage(x, SpellSlot.Q) &&
+                            x.LSDistance(player) < Q.Range && x.Health < player.GetSpellDamage(x, SpellSlot.Q) &&
                             !(x.Health < player.GetAutoAttackDamage(x)))
                         .OrderByDescending(x => x.Health)
                         .FirstOrDefault();

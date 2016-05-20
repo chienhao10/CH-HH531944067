@@ -262,7 +262,7 @@ namespace PortAIO.Champion.Akali
                 foreach (var minion in allMinions)
                 {
                     if (minion.IsValidTarget() &&
-                        HealthPrediction.GetHealthPrediction(minion, (int) (myHero.Distance(minion)*1000/1400)) <
+                        HealthPrediction.GetHealthPrediction(minion, (int) (myHero.LSDistance(minion)*1000/1400)) <
                         0.75*myHero.GetSpellDamage(minion, SpellSlot.Q))
                     {
                         Q.CastOnUnit(minion);
@@ -321,7 +321,7 @@ namespace PortAIO.Champion.Akali
             {
                 foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsValidTarget(R.Range)))
                 {
-                    if (hero.Distance(ObjectManager.Player) <= R.Range &&
+                    if (hero.LSDistance(ObjectManager.Player) <= R.Range &&
                         myHero.GetSpellDamage(hero, SpellSlot.R) >= hero.Health)
                         R.CastOnUnit(hero, true);
                 }

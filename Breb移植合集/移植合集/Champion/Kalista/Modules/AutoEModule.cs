@@ -45,12 +45,12 @@ namespace iKalistaReborn.Modules
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) ||
                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
-                var enemy = HeroManager.Enemies.Where(hero => hero.HasRendBuff() && hero.LSIsValidTarget()).MinOrDefault(hero => hero.Distance(ObjectManager.Player, true));
+                var enemy = HeroManager.Enemies.Where(hero => hero.HasRendBuff() && hero.LSIsValidTarget()).MinOrDefault(hero => hero.LSDistance(ObjectManager.Player, true));
                 if (enemy == null)
                 {
                     return;
                 }
-                if (enemy.Distance(ObjectManager.Player, true) < Math.Pow(SpellManager.Spell[SpellSlot.E].Range + 200, 2))
+                if (enemy.LSDistance(ObjectManager.Player, true) < Math.Pow(SpellManager.Spell[SpellSlot.E].Range + 200, 2))
                 {
                     if (ObjectManager.Get<Obj_AI_Minion>().Any(x => SpellManager.Spell[SpellSlot.E].IsInRange(x) && x.HasRendBuff() && x.IsRendKillable()))
                     {

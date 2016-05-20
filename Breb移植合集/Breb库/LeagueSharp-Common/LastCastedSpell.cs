@@ -1,5 +1,4 @@
 ﻿#region LICENSE
-
 /*
  Copyright 2014 - 2014 LeagueSharp
  LastCastedSpell.cs is part of LeagueSharp.Common.
@@ -17,40 +16,40 @@
  You should have received a copy of the GNU General Public License
  along with LeagueSharp.Common. If not, see <http://www.gnu.org/licenses/>.
 */
-
 #endregion
 
 #region
 
-using System.Collections.Generic;
 using EloBuddy;
+using System;
+using System.Collections.Generic;
 
 #endregion
 
 namespace LeagueSharp.Common
 {
     /// <summary>
-    ///     Represents a last casted spell.
+    /// Represents a last casted spell.
     /// </summary>
     public class LastCastedSpellEntry
     {
         /// <summary>
-        ///     The name
+        /// The name
         /// </summary>
         public string Name;
 
         /// <summary>
-        ///     The target
+        /// The target
         /// </summary>
         public Obj_AI_Base Target;
 
         /// <summary>
-        ///     The tick
+        /// The tick
         /// </summary>
         public int Tick;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LastCastedSpellEntry" /> class.
+        /// Initializes a new instance of the <see cref="LastCastedSpellEntry"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="tick">The tick.</param>
@@ -64,27 +63,27 @@ namespace LeagueSharp.Common
     }
 
     /// <summary>
-    ///     Represents the last cast packet sent.
+    /// Represents the last cast packet sent.
     /// </summary>
     public class LastCastPacketSentEntry
     {
         /// <summary>
-        ///     The slot
+        /// The slot
         /// </summary>
         public SpellSlot Slot;
 
         /// <summary>
-        ///     The target network identifier
+        /// The target network identifier
         /// </summary>
         public int TargetNetworkId;
 
         /// <summary>
-        ///     The tick
+        /// The tick
         /// </summary>
         public int Tick;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LastCastPacketSentEntry" /> class.
+        /// Initializes a new instance of the <see cref="LastCastPacketSentEntry"/> class.
         /// </summary>
         /// <param name="slot">The slot.</param>
         /// <param name="tick">The tick.</param>
@@ -98,23 +97,23 @@ namespace LeagueSharp.Common
     }
 
     /// <summary>
-    ///     Gets the last casted spell of the unit.
+    /// Gets the last casted spell of the unit.
     /// </summary>
     public static class LastCastedSpell
     {
         /// <summary>
-        ///     The casted spells
+        /// The casted spells
         /// </summary>
         internal static readonly Dictionary<int, LastCastedSpellEntry> CastedSpells =
             new Dictionary<int, LastCastedSpellEntry>();
 
         /// <summary>
-        ///     The last cast packet sent
+        /// The last cast packet sent
         /// </summary>
         public static LastCastPacketSentEntry LastCastPacketSent;
 
         /// <summary>
-        ///     Initializes static members of the <see cref="LastCastedSpell" /> class.
+        /// Initializes static members of the <see cref="LastCastedSpell"/> class. 
         /// </summary>
         static LastCastedSpell()
         {
@@ -123,24 +122,24 @@ namespace LeagueSharp.Common
         }
 
         /// <summary>
-        ///     Fired then a spell is casted.
+        /// Fired then a spell is casted.
         /// </summary>
         /// <param name="spellbook">The spellbook.</param>
-        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
-        private static void SpellbookOnCastSpell(Spellbook spellbook, SpellbookCastSpellEventArgs args)
+        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs"/> instance containing the event data.</param>
+        static void SpellbookOnCastSpell(Spellbook spellbook, SpellbookCastSpellEventArgs args)
         {
             if (spellbook.Owner.IsMe)
             {
                 LastCastPacketSent = new LastCastPacketSentEntry(
-                    args.Slot, Utils.TickCount, args.Target is Obj_AI_Base ? args.Target.NetworkId : 0);
+                        args.Slot, Utils.TickCount, (args.Target is Obj_AI_Base) ? args.Target.NetworkId : 0);
             }
         }
 
         /// <summary>
-        ///     Fired when the game processes the spell cast.
+        /// Fired when the game processes the spell cast.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
+        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs"/> instance containing the event data.</param>
         private static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender is AIHeroClient)
@@ -158,19 +157,17 @@ namespace LeagueSharp.Common
         }
 
         /// <summary>
-        ///     Gets the last casted spell tick.
+        /// Gets the last casted spell tick.
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <returns></returns>
         public static int LastCastedSpellT(this AIHeroClient unit)
         {
-            return CastedSpells.ContainsKey(unit.NetworkId)
-                ? CastedSpells[unit.NetworkId].Tick
-                : (Utils.TickCount > 0 ? 0 : int.MinValue);
+            return CastedSpells.ContainsKey(unit.NetworkId) ? CastedSpells[unit.NetworkId].Tick : (Utils.TickCount > 0 ? 0 : int.MinValue);
         }
 
         /// <summary>
-        ///     Gets the last casted spell name.
+        /// Gets the last casted spell name.
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <returns></returns>
@@ -180,7 +177,7 @@ namespace LeagueSharp.Common
         }
 
         /// <summary>
-        ///     Gets the last casted spell's target.
+        /// Gets the last casted spell's target.
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <returns></returns>
@@ -190,7 +187,7 @@ namespace LeagueSharp.Common
         }
 
         /// <summary>
-        ///     Gets the last casted spell.
+        /// Gets the last casted spell.
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <returns></returns>

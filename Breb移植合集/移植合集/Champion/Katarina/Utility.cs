@@ -36,8 +36,8 @@ namespace Staberina
         {
             return
                 GetETargets(unit.ServerPosition)
-                    .Where(o => o.NetworkId != unit.NetworkId && unit.Distance(o) < SpellManager.Q.Range)
-                    .MinOrDefault(o => o.Distance(unit));
+                    .Where(o => o.NetworkId != unit.NetworkId && unit.LSDistance(o) < SpellManager.Q.Range)
+                    .MinOrDefault(o => o.LSDistance(unit));
         }
 
         public static float DistanceToPlayer(this GameObject obj)
@@ -45,39 +45,30 @@ namespace Staberina
             var unit = obj as Obj_AI_Base;
             if (unit == null || !unit.IsValid)
             {
-                return obj.Position.Distance(Player.ServerPosition);
+                return obj.Position.LSDistance(Player.ServerPosition);
             }
 
-            return unit.ServerPosition.Distance(Player.ServerPosition);
+            return unit.ServerPosition.LSDistance(Player.ServerPosition);
         }
 
         public static float DistanceToPlayer(this Vector3 position)
         {
-            return position.Distance(Player.ServerPosition);
+            return position.LSDistance(Player.ServerPosition);
         }
 
         public static float DistanceToPlayer(this Vector2 position)
         {
-            return position.Distance(Player.ServerPosition);
+            return position.LSDistance(Player.ServerPosition);
         }
 
         public static Obj_AI_Base GetClosestETarget(Vector3 position)
         {
-            return
-                GetETargets()
-                    .OrderBy(t => t.Distance(position))
-                    .ThenByDescending(t => t.DistanceToPlayer())
-                    .FirstOrDefault();
+            return GetETargets().OrderBy(t => t.LSDistance(position)).ThenByDescending(t => t.DistanceToPlayer()).FirstOrDefault();
         }
 
         public static IEnumerable<Obj_AI_Base> GetETargets(Vector3 position = new Vector3())
         {
-            return
-                ObjectManager.Get<Obj_AI_Base>()
-                    .Where(
-                        o =>
-                            o.IsValidTarget(SpellManager.E.Range, false, position) && !o.IsMe &&
-                            SpellManager.E.IsInRange(o));
+            return ObjectManager.Get<Obj_AI_Base>().Where(o => o.LSIsValidTarget(SpellManager.E.Range, false, position) && !o.IsMe && SpellManager.E.IsInRange(o));
         }
 
         public static bool IsRReady()
@@ -103,21 +94,21 @@ namespace Staberina
 
         public static float GetGapcloseDamage(this Obj_AI_Base target, Obj_AI_Base gapclose)
         {
-            var q = SpellManager.Q.IsReady() && gapclose.Distance(target) < SpellManager.Q.Range &&
+            var q = SpellManager.Q.IsReady() && gapclose.LSDistance(target) < SpellManager.Q.Range &&
                     SpellManager.Q.IsActive(true);
-            var w = SpellManager.W.IsReady() && gapclose.Distance(target) < SpellManager.W.Range &&
+            var w = SpellManager.W.IsReady() && gapclose.LSDistance(target) < SpellManager.W.Range &&
                     SpellManager.W.IsActive(true);
-            var r = IsRReady() && gapclose.Distance(target) < SpellManager.R.Range && SpellManager.R.IsActive(true);
+            var r = IsRReady() && gapclose.LSDistance(target) < SpellManager.R.Range && SpellManager.R.IsActive(true);
             return GetComboDamage(target, q, w, false, r, true);
         }
 
         public static float GetGapcloseDamage(this Obj_AI_Base target, Vector3 position)
         {
-            var q = SpellManager.Q.IsReady() && target.Distance(position) + 15 <= SpellManager.Q.Range &&
+            var q = SpellManager.Q.IsReady() && target.LSDistance(position) + 15 <= SpellManager.Q.Range &&
                     SpellManager.Q.IsActive(true);
-            var w = SpellManager.W.IsReady() && target.Distance(position) + 15 <= SpellManager.W.Range &&
+            var w = SpellManager.W.IsReady() && target.LSDistance(position) + 15 <= SpellManager.W.Range &&
                     SpellManager.W.IsActive(true);
-            var r = IsRReady() && target.Distance(position) + 15 <= SpellManager.R.Range &&
+            var r = IsRReady() && target.LSDistance(position) + 15 <= SpellManager.R.Range &&
                     SpellManager.R.IsActive(true);
             return GetComboDamage(target, q, w, false, r, true);
         }
@@ -249,7 +240,7 @@ namespace Staberina
             var lastPoint = path.FirstOrDefault();
             foreach (var point in path)
             {
-                d += lastPoint.Distance(point);
+                d += lastPoint.LSDistance(point);
                 lastPoint = point;
             }
 

@@ -286,7 +286,7 @@ namespace ElCorki
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
                 {
-                    spells[Spells.Q].Cast(pred.CastPosition);
+                    spells[Spells.Q].Cast(target);
                 }
             }
 
@@ -313,7 +313,7 @@ namespace ElCorki
                 }
             }
 
-            if (Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health && useIgnite)
+            if (Player.LSDistance(target) <= 600 && IgniteDamage(target) >= target.Health && useIgnite)
             {
                 Player.Spellbook.CastSpell(_ignite, target);
             }

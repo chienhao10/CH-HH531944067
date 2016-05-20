@@ -160,7 +160,7 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 foreach (var ally in Program.Allies)
                 {
-                    if (!ally.IsMe && ally.IsAlly && ally.Distance(Player.Position) < 600)
+                    if (!ally.IsMe && ally.IsAlly && ally.LSDistance(Player.Position) < 600)
                         W.Cast(ally);
                 }
             }
@@ -181,7 +181,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (E.IsReady())
             {
-                if (Program.LagFree(0) && getCheckBoxItem(eMenu, "autoE") && Program.Combo)
+                if (Program.LagFree(0))
                     LogicE();
 
                 if (getKeyBindItem(eMenu, "smartE"))
@@ -252,7 +252,7 @@ namespace OneKeyToWin_AIO_Sebby
             }
             else if (Program.LagFree(2))
             {
-                if (Farm && Player.Mana > RMANA + EMANA + WMANA + QMANA*3)
+                if (Farm && Player.Mana > QMANA)
                 {
                     farmQ();
                     lag = Game.Time;
@@ -301,32 +301,33 @@ namespace OneKeyToWin_AIO_Sebby
         private static void LogicE()
         {
             var t = TargetSelector.GetTarget(1300, DamageType.Physical);
-            var dashPosition = Player.Position.Extend(Game.CursorPos, E.Range);
 
-            if (Program.Enemies.Any(target => target.IsValidTarget(300) && target.IsMelee))
+            if (getCheckBoxItem(eMenu, "EAntiMelee"))
             {
-                var dashPos = Dash.CastDash(true);
-                if (!dashPos.IsZero)
+                if (Program.Enemies.Any(target => target.IsValidTarget(1000) && target.IsMelee && Player.LSDistance(LeagueSharp.Common.Prediction.GetPrediction(target, 0.2f).CastPosition) < 250))
                 {
-                    E.Cast(dashPos);
+                    var dashPos = Dash.CastDash(true);
+                    if (!dashPos.IsZero)
+                    {
+                        E.Cast(dashPos);
+                    }
                 }
             }
 
-            if (t.IsValidTarget() && Player.HealthPercent > 40 && !Player.UnderTurret(true) &&
-                (Game.Time - OverKill > 0.3) && dashPosition.CountEnemiesInRange(900) < 3)
+            if (t.IsValidTarget() && Program.Combo && getCheckBoxItem(eMenu, "EKsCombo") && Player.HealthPercent > 40 && t.LSDistance(Game.CursorPos) + 300 < t.Position.LSDistance(Player.Position) && !SebbyLib.Orbwalking.InAutoAttackRange(t) && !Player.UnderTurret(true) && (Game.Time - OverKill > 0.3))
             {
-                if (t.Distance(Game.CursorPos) + 300 < t.Position.Distance(Player.Position) &&
-                    !Orbwalking.InAutoAttackRange(t))
+                var dashPosition = Player.Position.LSExtend(Game.CursorPos, E.Range);
+
+                if (dashPosition.CountEnemiesInRange(900) < 3)
                 {
                     var dmgCombo = 0f;
 
                     if (t.IsValidTarget(950))
                     {
-                        dmgCombo = Player.GetAutoAttackDamage(t) + E.GetDamage(t);
+                        dmgCombo = (float)Player.GetAutoAttackDamage(t) + E.GetDamage(t);
                     }
 
-                    if (Q.IsReady() && Player.Mana > QMANA + EMANA &&
-                        Q.WillHit(dashPosition.To3D(), Q.GetPrediction(t).UnitPosition))
+                    if (Q.IsReady() && Player.Mana > QMANA + EMANA && Q.WillHit(dashPosition, Q.GetPrediction(t).UnitPosition))
                         dmgCombo = Q.GetDamage(t);
 
                     if (W.IsReady() && Player.Mana > QMANA + EMANA + WMANA)
@@ -376,7 +377,7 @@ namespace OneKeyToWin_AIO_Sebby
                         Rdmg = getRdmg(target);
 
                     if (Rdmg > predictedHealth && target.CountAlliesInRange(500) == 0 &&
-                        Player.Distance(target) > getSliderItem(rMenu, "MinRangeR"))
+                        Player.LSDistance(target) > getSliderItem(rMenu, "MinRangeR"))
                     {
                         Program.CastSpell(R, target);
                         Program.debug("R normal");
@@ -396,9 +397,9 @@ namespace OneKeyToWin_AIO_Sebby
             var direction = output.CastPosition.To2D() - Player.Position.To2D();
             direction.Normalize();
             var enemies = ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.IsValidTarget()).ToList();
-            var dmg = (from enemy in enemies let prediction = R.GetPrediction(enemy) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1/(double) c2 let pb = Player.ServerPosition + (float) b*v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + enemy.BoundingRadius/2 && Player.Distance(predictedPosition) < Player.Distance(target.ServerPosition) select enemy).Count();
+            var dmg = (from enemy in enemies let prediction = R.GetPrediction(enemy) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1/(double) c2 let pb = Player.ServerPosition + (float) b*v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + enemy.BoundingRadius/2 && Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition) select enemy).Count();
             var allMinionsR = Cache.GetMinions(ObjectManager.Player.ServerPosition, R.Range);
-            dmg += (from minion in allMinionsR let prediction = R.GetPrediction(minion) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1/(double) c2 let pb = Player.ServerPosition + (float) b*v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + minion.BoundingRadius/2 && Player.Distance(predictedPosition) < Player.Distance(target.ServerPosition) select minion).Count();
+            dmg += (from minion in allMinionsR let prediction = R.GetPrediction(minion) let predictedPosition = prediction.CastPosition let v = output.CastPosition - Player.ServerPosition let w = predictedPosition - Player.ServerPosition let c1 = Vector3.Dot(w, v) let c2 = Vector3.Dot(v, v) let b = c1/(double) c2 let pb = Player.ServerPosition + (float) b*v let length = Vector3.Distance(predictedPosition, pb) where length < R.Width + 100 + minion.BoundingRadius/2 && Player.LSDistance(predictedPosition) < Player.LSDistance(target.ServerPosition) select minion).Count();
             if (dmg == 0)
                 return rDmg;
             if (dmg > 7)
@@ -496,7 +497,7 @@ namespace OneKeyToWin_AIO_Sebby
                      || (mob.BaseSkinName == "SRU_Red" && getCheckBoxItem(rMenu, "Rred"))
                      || (mob.BaseSkinName == "SRU_Blue" && getCheckBoxItem(rMenu, "Rblue")))
                     && (mob.CountAlliesInRange(1000) == 0 || getCheckBoxItem(rMenu, "Rally"))
-                    && mob.Distance(Player.Position) > 1000
+                    && mob.LSDistance(Player.Position) > 1000
                     )
                 {
                     if (DragonDmg == 0)

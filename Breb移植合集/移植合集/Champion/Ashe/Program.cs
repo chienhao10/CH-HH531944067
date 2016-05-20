@@ -194,7 +194,7 @@ namespace PortAIO.Champion.Ashe
                         target.HasBuffOfType(BuffType.Slow) && !OktwCommon.IsSpellHeroCollision(target, R))
                         SebbyLib.Program.CastSpell(R, target);
                     if (rDmg > target.Health && target.CountAlliesInRange(600) == 0 &&
-                        target.Distance(Player.Position) > 1000)
+                        target.LSDistance(Player.Position) > 1000)
                     {
                         if (!OktwCommon.IsSpellHeroCollision(target, R))
                             SebbyLib.Program.CastSpell(R, target);

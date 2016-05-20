@@ -54,7 +54,7 @@ namespace JaxQx
         {
             for (var i = 0; i <= Points.Count - 1; i++)
             {
-                if (Points[i].Distance(Jumper.Player.Position) < 1500)
+                if (Points[i].LSDistance(Jumper.Player.Position) < 1500)
                 {
                     var nextIndex = Points.Count - 1 == i ? 0 : i + 1;
                     var from = Drawing.WorldToScreen(Points[i].To3D());

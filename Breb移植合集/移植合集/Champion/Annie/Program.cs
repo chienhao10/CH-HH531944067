@@ -145,15 +145,15 @@ namespace PortAIO.Champion.Annie
                         var aoeCount = poutput.AoeTargetsHitCount;
 
                         if (Rmode == 1)
-                            R.Cast(poutput.CastPosition);
+                            R.Cast(enemy);
 
                         if (Rmode == 3 && HaveStun)
-                            R.Cast(poutput.CastPosition);
+                            R.Cast(enemy);
 
                         if (aoeCount >= getSliderItem(RMenu, "rCount") && getSliderItem(RMenu, "rCount") > 0)
-                            R.Cast(poutput.CastPosition);
+                            R.Cast(enemy);
                         else if (SebbyLib.Program.Combo && HaveStun && getCheckBoxItem(RMenu, "autoRcombo"))
-                            R.Cast(poutput.CastPosition);
+                            R.Cast(enemy);
                         else if (getCheckBoxItem(RMenu, "autoRks"))
                         {
                             var comboDmg = OktwCommon.GetKsDamage(enemy, R);
@@ -256,12 +256,12 @@ namespace PortAIO.Champion.Annie
                     {
                         var enemy =
                             SebbyLib.Program.Enemies.Where(
-                                x => x.IsValidTarget() && Tibbers.Distance(x.Position) < 1000 && !x.UnderTurret(true))
-                                .OrderBy(x => x.Distance(Tibbers))
+                                x => x.IsValidTarget() && Tibbers.LSDistance(x.Position) < 1000 && !x.UnderTurret(true))
+                                .OrderBy(x => x.LSDistance(Tibbers))
                                 .FirstOrDefault();
                         if (enemy != null)
                         {
-                            EloBuddy.Player.IssueOrder(Tibbers.Distance(enemy.Position) > 200 ? GameObjectOrder.MovePet : GameObjectOrder.AutoAttackPet, enemy);
+                            EloBuddy.Player.IssueOrder(Tibbers.LSDistance(enemy.Position) > 200 ? GameObjectOrder.MovePet : GameObjectOrder.AutoAttackPet, enemy);
                         }
                         else
                         {
@@ -269,7 +269,7 @@ namespace PortAIO.Champion.Annie
                             if (annieTarget != null)
                             {
                                 EloBuddy.Player.IssueOrder(
-                                    Tibbers.Distance(annieTarget.Position) > 200
+                                    Tibbers.LSDistance(annieTarget.Position) > 200
                                         ? GameObjectOrder.MovePet
                                         : GameObjectOrder.AutoAttackPet, annieTarget);
                             }

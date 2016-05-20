@@ -62,15 +62,9 @@ namespace LeagueSharp.SDK
                 {
                     case "YasuoWMovingWallMisL":
                         yasuoWallLeft = missile;
-                        //Game.PrintChat("1");
                         break;
                     case "YasuoWMovingWallMisR":
                         yasuoWallRight = missile;
-                        //Game.PrintChat("2");
-                        break;
-                    case "YasuoWMovingWallMisVis":
-                        yasuoWallRight = missile;
-                        //Game.PrintChat("3");
                         break;
                 }
             };
@@ -119,14 +113,14 @@ namespace LeagueSharp.SDK
                 if (input.CollisionObjects.HasFlag(CollisionableObjects.Minions))
                 {
                     result.AddRange(
-                        GameObjects.EnemyMinions.Where(i => i.IsMinion || i.Pet != null)
+                        GameObjects.EnemyMinions.Where(i => i.IsMinion)
                             .Concat(GameObjects.Jungle)
                             .Where(
                                 minion =>
                                 minion.IsValidTarget(
                                     Math.Min(input.Range + input.Radius + 100, 2000),
                                     true,
-                                    input.RangeCheckFrom) && IsHitCollision(minion, input, position, 20)));
+                                    input.RangeCheckFrom) && IsHitCollision(minion, input, position, 15)));
                 }
 
                 if (input.CollisionObjects.HasFlag(CollisionableObjects.Heroes))
@@ -190,7 +184,7 @@ namespace LeagueSharp.SDK
 
         #region Methods
 
-        private static bool IsHitCollision(Obj_AI_Base collision, PredictionInput input, Vector3 pos, float extraRadius)
+        private static bool IsHitCollision(Obj_AI_Base collision, ICloneable input, Vector3 pos, float extraRadius)
         {
             var inputSub = input.Clone() as PredictionInput;
 
@@ -200,11 +194,12 @@ namespace LeagueSharp.SDK
             }
 
             inputSub.Unit = collision;
+            var unitRadius = inputSub.Unit.BoundingRadius;
             var predPos = Movement.GetPrediction(inputSub, false, false).UnitPosition.ToVector2();
-            return predPos.Distance(input.From) < input.Radius + input.Unit.BoundingRadius / 2
-                   || predPos.Distance(pos) < input.Radius + input.Unit.BoundingRadius / 2
-                   || predPos.DistanceSquared(input.From.ToVector2(), pos.ToVector2(), true)
-                   <= Math.Pow(input.Radius + input.Unit.BoundingRadius + extraRadius, 2);
+            return predPos.Distance(inputSub.From) < inputSub.Radius + unitRadius / 2
+                   || predPos.Distance(pos) < inputSub.Radius + unitRadius / 2
+                   || predPos.DistanceSquared(inputSub.From.ToVector2(), pos.ToVector2(), true)
+                   <= Math.Pow(inputSub.Radius + unitRadius + extraRadius, 2);
         }
 
         #endregion

@@ -293,7 +293,7 @@ namespace Kassawin
 
             if (useq)
             {
-                if (Player.Distance(minions[0]) < Orbwalking.GetRealAutoAttackRange(minions[0]) && !W.IsReady())
+                if (Player.LSDistance(minions[0]) < Orbwalking.GetRealAutoAttackRange(minions[0]) && !W.IsReady())
                 {
                     Q.Cast(minions[0]);
                 }
@@ -335,7 +335,7 @@ namespace Kassawin
                 if (minions.FirstOrDefault() == null) return;
                 if (minions[0].Health >= Q.GetDamage(minions[0])) return;
 
-                if (Player.Distance(minions[0]) < Orbwalking.GetRealAutoAttackRange(minions[0]) && !W.IsReady())
+                if (Player.LSDistance(minions[0]) < Orbwalking.GetRealAutoAttackRange(minions[0]) && !W.IsReady())
                 {
                     Q.Cast(minions[0]);
                 }
@@ -358,12 +358,12 @@ namespace Kassawin
                     if (mins.Health <= Q.GetDamage(mins))
                     {
                         if (mins.Health >= Player.GetAutoAttackDamage(mins) + 50 &&
-                            mins.Distance(Player) <= Orbwalking.GetRealAutoAttackRange(mins))
+                            mins.LSDistance(Player) <= Orbwalking.GetRealAutoAttackRange(mins))
                         {
                             Q.Cast(mins);
                         }
 
-                        if (mins.Distance(Player) >= Orbwalking.GetRealAutoAttackRange(mins) + 100)
+                        if (mins.LSDistance(Player) >= Orbwalking.GetRealAutoAttackRange(mins) + 100)
                         {
                             Q.Cast(mins);
                         }
@@ -432,7 +432,7 @@ namespace Kassawin
             var rks = getCheckBoxItem(ksMenu, "rks");
             var eks = getCheckBoxItem(ksMenu, "eks");
             var rgks = getCheckBoxItem(ksMenu, "rgks");
-            if (target.Distance(Player) > Q.Range - 20 && rgks)
+            if (target.LSDistance(Player) > Q.Range - 20 && rgks)
             {
                 if ((target.Health < Q.GetDamage(target) && Q.IsReady()) ||
                     (target.Health < E.GetDamage(target) && E.IsReady()))
@@ -445,7 +445,7 @@ namespace Kassawin
                     Q.Cast(target);
             }
 
-            if (target.Health < E.GetDamage(target) && eCanCast() && target.Distance(Player) < 500)
+            if (target.Health < E.GetDamage(target) && eCanCast() && target.LSDistance(Player) < 500)
             {
                 if (eks)
                     E.Cast(target.Position);
@@ -487,7 +487,7 @@ namespace Kassawin
                 }
             }
 
-            if (E.IsReady() && eCanCast() && target.Distance(Player) < 500)
+            if (E.IsReady() && eCanCast() && target.LSDistance(Player) < 500)
             {
                 if (usee)
                     E.Cast(target);
@@ -533,19 +533,19 @@ namespace Kassawin
 
             if (Q.IsReady() && useq && target.IsValidTarget(Q.Range))
             {
-                if (Player.Distance(target) < Orbwalking.GetRealAutoAttackRange(target) && !W.IsReady())
+                if (Player.LSDistance(target) < Orbwalking.GetRealAutoAttackRange(target) && !W.IsReady())
                     Q.Cast(target);
-                else if (Player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target))
+                else if (Player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(target))
                 {
                     Q.Cast(target);
                 }
             }
 
-            if (E.IsReady() && usee && target.Distance(Player) < 500 && eCanCast())
+            if (E.IsReady() && usee && target.LSDistance(Player) < 500 && eCanCast())
             {
-                if (Player.Distance(target) < Orbwalking.GetRealAutoAttackRange(target) && !W.IsReady())
+                if (Player.LSDistance(target) < Orbwalking.GetRealAutoAttackRange(target) && !W.IsReady())
                     E.Cast(target.Position);
-                else if (Player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target))
+                else if (Player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(target))
                 {
                     Utility.DelayAction.Add(200, () => E.Cast(target.Position));
                 }

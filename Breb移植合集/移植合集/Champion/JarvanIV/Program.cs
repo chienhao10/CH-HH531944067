@@ -278,7 +278,7 @@ namespace BrianSharp.Plugin
                     if (getCheckBoxItem(mode, "E") && target != null &&
                         Flag.Where(
                             i =>
-                                Player.Distance(i) < getSliderItem(mode, "QFlagRange") &&
+                                Player.LSDistance(i) < getSliderItem(mode, "QFlagRange") &&
                                 Q2.WillHit(target, i.ServerPosition))
                             .Any(i => Q.Cast(i.ServerPosition, getCheckBoxItem(miscMenu, "Packet"))))
                     {
@@ -448,7 +448,7 @@ namespace BrianSharp.Plugin
         {
             return
                 HeroManager.Enemies.Where(
-                    i => i.IsValidTarget() && pos.Distance(Prediction.GetPrediction(i, 0.25f).UnitPosition) < RWidth)
+                    i => i.IsValidTarget() && pos.LSDistance(Prediction.GetPrediction(i, 0.25f).UnitPosition) < RWidth)
                     .ToList();
         }
     }

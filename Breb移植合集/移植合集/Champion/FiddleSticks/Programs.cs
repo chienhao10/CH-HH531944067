@@ -23,7 +23,7 @@ namespace Feedlesticks
         /// <param name="args"></param>
         public static void Game_OnGameLoad()
         {
-            Menus.Config = MainMenu.AddMenu("Feedlestick", "Feedlestick");
+            Menus.Config = MainMenu.AddMenu("稻草人", "Feedlestick");
 
             {
                 Spells.Init();
@@ -81,7 +81,7 @@ namespace Feedlesticks
 
         public static bool IsWActive
         {
-            get { return ObjectManager.Player.HasBuff("fiddlebuff"); }
+            get { return ObjectManager.Player.HasBuff("Drain"); }
         }
 
         /// <summary>
@@ -119,12 +119,11 @@ namespace Feedlesticks
             {
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
+                return;
             }
-            else
-            {
-                Orbwalker.DisableAttacking = false;
-                Orbwalker.DisableMovement = false;
-            }
+
+            Orbwalker.DisableAttacking = false;
+            Orbwalker.DisableMovement = false;
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && !IsWActive)
             {
@@ -143,7 +142,7 @@ namespace Feedlesticks
                 WaveClear();
             }
 
-            if (getCheckBoxItem(Menus.qMenu, "auto.q.immobile"))
+            if (getCheckBoxItem(Menus.qMenu, "auto.q.immobile") && !IsWActive)
             {
                 foreach (
                     var enemy in
@@ -155,7 +154,7 @@ namespace Feedlesticks
                     Spells.Q.Cast(enemy);
                 }
             }
-            if (getCheckBoxItem(Menus.qMenu, "auto.q.channeling"))
+            if (getCheckBoxItem(Menus.qMenu, "auto.q.channeling") && !IsWActive)
             {
                 foreach (
                     var enemy in
@@ -168,7 +167,7 @@ namespace Feedlesticks
                     Spells.Q.Cast(enemy);
                 }
             }
-            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.immobile"))
+            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.immobile") && !IsWActive)
             {
                 foreach (
                     var enemy in
@@ -180,7 +179,7 @@ namespace Feedlesticks
                     Spells.E.Cast(enemy);
                 }
             }
-            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.channeling"))
+            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.channeling") && !IsWActive)
             {
                 foreach (
                     var enemy in
@@ -214,7 +213,7 @@ namespace Feedlesticks
                     }
                 }
             }
-            if (Spells.E.IsReady() && getCheckBoxItem(Menus.harassMenu, "e.harass"))
+            if (Spells.E.IsReady() && getCheckBoxItem(Menus.harassMenu, "e.harass") && !IsWActive)
             {
                 foreach (
                     var enemy in
@@ -247,7 +246,7 @@ namespace Feedlesticks
                 {
                     Spells.W.CastOnUnit(mob[0]);
                 }
-                if (Spells.E.IsReady() && getCheckBoxItem(Menus.jungleMenu, "e.jungle"))
+                if (Spells.E.IsReady() && getCheckBoxItem(Menus.jungleMenu, "e.jungle") && !IsWActive)
                 {
                     Spells.E.CastOnUnit(mob[0]);
                 }
@@ -283,7 +282,7 @@ namespace Feedlesticks
                     }
                 }
             }
-            if (Spells.E.IsReady() && getCheckBoxItem(Menus.comboMenu, "e.combo"))
+            if (Spells.E.IsReady() && getCheckBoxItem(Menus.comboMenu, "e.combo") && !IsWActive)
             {
                 foreach (var enemy in HeroManager.Enemies.Where(o => o.IsValidTarget(Spells.E.Range) && !o.IsDead && !o.IsZombie))
                 {
@@ -307,7 +306,7 @@ namespace Feedlesticks
 
             var min = MinionManager.GetMinions(ObjectManager.Player.Position, Spells.Q.Range, MinionTypes.All,
                 MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
-            if (Spells.E.IsReady() && getCheckBoxItem(Menus.clearMenu, "e.clear"))
+            if (Spells.E.IsReady() && getCheckBoxItem(Menus.clearMenu, "e.clear") && !IsWActive)
             {
                 if (min.Count > getSliderItem(Menus.clearMenu, "e.minion.hit.count"))
                 {
