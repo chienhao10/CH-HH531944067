@@ -234,10 +234,9 @@ namespace MoonLux
             jungleKsMenu.Add("StealBuffMode", new ComboBox("偷野模式", 0, "只敌方的", "双方", "只友军的"));
 
             miscMenu = Menu.AddSubMenu("杂项", "MiscSettings");
-            miscMenu.Add("SpellWeaveCombo", new CheckBox("连招使用全技能"));
-            miscMenu.Add("QThroughMinions", new CheckBox("通过小兵 Q"));
+            miscMenu.Add("SpellWeaveCombo", new CheckBox("使用技能清线"));
             miscMenu.Add("QGapcloser", new CheckBox("防突进 Q"));
-
+            
             drawMenu = Menu.AddSubMenu("线圈", "DrawSettings");
             drawMenu.Add("DrawQ", new CheckBox("显示 Q"));
             drawMenu.Add("DrawW", new CheckBox("显示 W", false));

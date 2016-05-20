@@ -84,30 +84,6 @@ namespace EvadeA
             get { return ValidTargets != null; }
         }
 
-        public int DangerLevel
-        {
-            get
-            {
-                if (Config.evadeSpells["DangerLevel" + Name] != null)
-                {
-                    return Config.evadeSpells["DangerLevel" + Name].Cast<Slider>().CurrentValue;
-                }
-                return _dangerLevel;
-            }
-        }
-
-        public bool Enabled
-        {
-            get
-            {
-                if (Config.evadeSpells["Enabled" + Name] != null)
-                {
-                    return Config.evadeSpells["Enabled" + Name].Cast<CheckBox>().CurrentValue;
-                }
-                return true;
-            }
-        }
-
         public bool IsReady()
         {
             return ((CheckSpellName == "" || ObjectManager.Player.Spellbook.GetSpell(Slot).Name == CheckSpellName) &&

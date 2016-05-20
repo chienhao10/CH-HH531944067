@@ -49,7 +49,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(Obj_AI_Base anotherUnit, bool squared = false)
         {
-            return ObjectManager.Player.Distance(anotherUnit, squared);
+            return ObjectManager.Player.LSDistance(anotherUnit, squared);
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, Obj_AI_Base anotherUnit, bool squared = false)
         {
-            return unit.ServerPosition.To2D().Distance(anotherUnit.ServerPosition.To2D(), squared);
+            return unit.ServerPosition.To2D().LSDistance(anotherUnit.ServerPosition.To2D(), squared);
         }
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, AttackableUnit anotherUnit, bool squared = false)
         {
-            return unit.ServerPosition.To2D().Distance(anotherUnit.Position.To2D(), squared);
+            return unit.ServerPosition.To2D().LSDistance(anotherUnit.Position.To2D(), squared);
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, Vector3 point, bool squared = false)
         {
-            return unit.ServerPosition.To2D().Distance(point.To2D(), squared);
+            return unit.ServerPosition.To2D().LSDistance(point.To2D(), squared);
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Obj_AI_Base unit, Vector2 point, bool squared = false)
         {
-            return unit.ServerPosition.To2D().Distance(point, squared);
+            return unit.ServerPosition.To2D().LSDistance(point, squared);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Vector3 v, Vector3 other, bool squared = false)
         {
-            return v.To2D().Distance(other, squared);
+            return v.To2D().LSDistance(other, squared);
         }
 
         //Vector2 class extended methods:
@@ -220,7 +220,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Vector2 v, Vector3 to, bool squared = false)
         {
-            return v.Distance(to.To2D(), squared);
+            return v.LSDistance(to.To2D(), squared);
         }
 
         /// <summary>
@@ -232,7 +232,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static float Distance(this Vector2 v, Obj_AI_Base to, bool squared = false)
         {
-            return v.Distance(to.ServerPosition.To2D(), squared);
+            return v.LSDistance(to.ServerPosition.To2D(), squared);
         }
 
         /// <summary>
@@ -680,7 +680,7 @@ namespace ElLeeSin
             var distance = 0f;
             for (var i = 0; i < path.Count - 1; i++)
             {
-                distance += path[i].Distance(path[i + 1]);
+                distance += path[i].LSDistance(path[i + 1]);
             }
             return distance;
         }
@@ -705,7 +705,7 @@ namespace ElLeeSin
         /// <returns></returns>
         public static Vector2[] CircleCircleIntersection(Vector2 center1, Vector2 center2, float radius1, float radius2)
         {
-            var D = center1.Distance(center2);
+            var D = center1.LSDistance(center2);
             //The Circles dont intersect:
             if (D > radius1 + radius2 || (D <= Math.Abs(radius1 - radius2)))
             {
@@ -902,7 +902,7 @@ namespace ElLeeSin
             {
                 var from = self[i];
                 var to = self[i + 1];
-                var d = (int) to.Distance(from);
+                var d = (int) to.LSDistance(from);
                 if (d > distance)
                 {
                     return from + distance*(to - from).Normalized();
@@ -1247,7 +1247,7 @@ namespace ElLeeSin
                 /// </value>
                 public float Length
                 {
-                    get { return LineStart.Distance(LineEnd); }
+                    get { return LineStart.LSDistance(LineEnd); }
                     set { LineEnd = (LineEnd - LineStart).Normalized()*value + LineStart; }
                 }
 

@@ -149,7 +149,7 @@ namespace SephKhazix
                 var hitchance = HarassHitChance(Config);
                 if (target != null && W.IsReady())
                 {
-                    if (!EvolvedW && Khazix.Distance(target) <= W.Range)
+                    if (!EvolvedW && Khazix.LSDistance(target) <= W.Range)
                     {
                         PredictionOutput predw = W.GetPrediction(target);
                         if (predw.Hitchance == hitchance)
@@ -180,11 +180,11 @@ namespace SephKhazix
                         minion =>
                             minion.IsValidTarget() &&
                             HealthPrediction.GetHealthPrediction(
-                                minion, (int)(Khazix.Distance(minion) * 1000 / 1400)) <
+                                minion, (int)(Khazix.LSDistance(minion) * 1000 / 1400)) <
                             0.75 * Khazix.GetSpellDamage(minion, SpellSlot.Q)))
                 {
                     if (Vector3.Distance(minion.ServerPosition, Khazix.ServerPosition) >
-                        Orbwalking.GetRealAutoAttackRange(Khazix) && Khazix.Distance(minion) <= Q.Range)
+                        Orbwalking.GetRealAutoAttackRange(Khazix) && Khazix.LSDistance(minion) <= Q.Range)
                     {
                         Q.CastOnUnit(minion);
                         return;
@@ -196,7 +196,7 @@ namespace SephKhazix
             {
                 MinionManager.FarmLocation farmLocation = MinionManager.GetBestCircularFarmLocation(
                   MinionManager.GetMinions(Khazix.ServerPosition, W.Range).Where(minion => HealthPrediction.GetHealthPrediction(
-                                minion, (int)(Khazix.Distance(minion) * 1000 / 1400)) <
+                                minion, (int)(Khazix.LSDistance(minion) * 1000 / 1400)) <
                             0.75 * Khazix.GetSpellDamage(minion, SpellSlot.W))
                       .Select(minion => minion.ServerPosition.To2D())
                       .ToList(), W.Width, W.Range);
@@ -204,7 +204,7 @@ namespace SephKhazix
                 {
                     if (!EvolvedW)
                     {
-                        if (Khazix.Distance(farmLocation.Position) <= W.Range)
+                        if (Khazix.LSDistance(farmLocation.Position) <= W.Range)
                         {
                             W.Cast(farmLocation.Position);
                         }
@@ -212,7 +212,7 @@ namespace SephKhazix
 
                     if (EvolvedW)
                     {
-                        if (Khazix.Distance(farmLocation.Position) <= W.Range)
+                        if (Khazix.LSDistance(farmLocation.Position) <= W.Range)
                         {
                             W.Cast(farmLocation.Position);
                         }
@@ -226,14 +226,14 @@ namespace SephKhazix
                 MinionManager.FarmLocation farmLocation =
                     MinionManager.GetBestCircularFarmLocation(
                         MinionManager.GetMinions(Khazix.ServerPosition, E.Range).Where(minion => HealthPrediction.GetHealthPrediction(
-                                minion, (int)(Khazix.Distance(minion) * 1000 / 1400)) <
+                                minion, (int)(Khazix.LSDistance(minion) * 1000 / 1400)) <
                             0.75 * Khazix.GetSpellDamage(minion, SpellSlot.W))
                             .Select(minion => minion.ServerPosition.To2D())
                             .ToList(), E.Width, E.Range);
 
                 if (farmLocation.MinionsHit >= 1)
                 {
-                    if (Khazix.Distance(farmLocation.Position) <= E.Range)
+                    if (Khazix.LSDistance(farmLocation.Position) <= E.Range)
                         E.Cast(farmLocation.Position);
                 }
             }
@@ -247,11 +247,11 @@ namespace SephKhazix
                             .Select(minion => minion.ServerPosition.To2D())
                             .ToList(), Hydra.Range, Hydra.Range);
 
-                if (Hydra.IsReady() && Khazix.Distance(farmLocation.Position) <= Hydra.Range && farmLocation.MinionsHit >= 2)
+                if (Hydra.IsReady() && Khazix.LSDistance(farmLocation.Position) <= Hydra.Range && farmLocation.MinionsHit >= 2)
                 {
                     Items.UseItem(3074, Khazix);
                 }
-                if (Tiamat.IsReady() && Khazix.Distance(farmLocation.Position) <= Tiamat.Range && farmLocation.MinionsHit >= 2)
+                if (Tiamat.IsReady() && Khazix.LSDistance(farmLocation.Position) <= Tiamat.Range && farmLocation.MinionsHit >= 2)
                 {
                     Items.UseItem(3077, Khazix);
                 }
@@ -266,8 +266,8 @@ namespace SephKhazix
             {
                 var minion = Orbwalker.LastTarget as Obj_AI_Minion;
                 if (minion != null && HealthPrediction.GetHealthPrediction(
-                                minion, (int)(Khazix.Distance(minion) * 1000 / 1400)) >
-                            0.35f * Khazix.GetSpellDamage(minion, SpellSlot.Q) && Khazix.Distance(minion) <= Q.Range)
+                                minion, (int)(Khazix.LSDistance(minion) * 1000 / 1400)) >
+                            0.35f * Khazix.GetSpellDamage(minion, SpellSlot.Q) && Khazix.LSDistance(minion) <= Q.Range)
                 {
                     Q.Cast(minion);
                 }
@@ -276,8 +276,8 @@ namespace SephKhazix
                     foreach (var min in allMinions.Where(x => x.IsValidTarget(Q.Range)))
                     {
                         if (HealthPrediction.GetHealthPrediction(
-                                min, (int)(Khazix.Distance(min) * 1000 / 1400)) >
-                            3 * Khazix.GetSpellDamage(min, SpellSlot.Q) && Khazix.Distance(min) <= Q.Range)
+                                min, (int)(Khazix.LSDistance(min) * 1000 / 1400)) >
+                            3 * Khazix.GetSpellDamage(min, SpellSlot.Q) && Khazix.LSDistance(min) <= Q.Range)
                         {
                             Q.Cast(min);
                             break;
@@ -292,7 +292,7 @@ namespace SephKhazix
                 MinionManager.FarmLocation farmLocation = MinionManager.GetBestCircularFarmLocation(wmins
                       .Select(minion => minion.ServerPosition.To2D())
                       .ToList(), EvolvedW ? WE.Width : W.Width, EvolvedW ? WE.Range : W.Range);
-                var distcheck = EvolvedW ? Khazix.Distance(farmLocation.Position) <= WE.Range : Khazix.Distance(farmLocation.Position) <= W.Range;
+                var distcheck = EvolvedW ? Khazix.LSDistance(farmLocation.Position) <= WE.Range : Khazix.LSDistance(farmLocation.Position) <= W.Range;
                 if (distcheck)
                 {
                     W.Cast(farmLocation.Position);
@@ -306,7 +306,7 @@ namespace SephKhazix
                         MinionManager.GetMinions(Khazix.ServerPosition, E.Range)
                             .Select(minion => minion.ServerPosition.To2D())
                             .ToList(), E.Width, E.Range);
-                if (Khazix.Distance(farmLocation.Position) <= E.Range)
+                if (Khazix.LSDistance(farmLocation.Position) <= E.Range)
                 {
                     E.Cast(farmLocation.Position);
                 }
@@ -321,15 +321,15 @@ namespace SephKhazix
                             .Select(minion => minion.ServerPosition.To2D())
                             .ToList(), Hydra.Range, Hydra.Range);
 
-                if (Hydra.IsReady() && Khazix.Distance(farmLocation.Position) <= Hydra.Range && farmLocation.MinionsHit >= 2)
+                if (Hydra.IsReady() && Khazix.LSDistance(farmLocation.Position) <= Hydra.Range && farmLocation.MinionsHit >= 2)
                 {
                     Items.UseItem(3074, Khazix);
                 }
-                if (Tiamat.IsReady() && Khazix.Distance(farmLocation.Position) <= Tiamat.Range && farmLocation.MinionsHit >= 2)
+                if (Tiamat.IsReady() && Khazix.LSDistance(farmLocation.Position) <= Tiamat.Range && farmLocation.MinionsHit >= 2)
                 {
                     Items.UseItem(3077, Khazix);
                 }
-                if (Titanic.IsReady() && Khazix.Distance(farmLocation.Position) <= Titanic.Range && farmLocation.MinionsHit >= 2)
+                if (Titanic.IsReady() && Khazix.LSDistance(farmLocation.Position) <= Titanic.Range && farmLocation.MinionsHit >= 2)
                 {
                     Items.UseItem(3748, Khazix);
                 }
@@ -353,7 +353,7 @@ namespace SephKhazix
 
             if ((target != null))
             {
-                var dist = Khazix.Distance(target);
+                var dist = Khazix.LSDistance(target);
 
                 // Normal abilities
 
@@ -418,7 +418,7 @@ namespace SephKhazix
                     if (pred.Hitchance >= HitChance.Collision)
                     {
                         List<Obj_AI_Base> PCollision = pred.CollisionObjects;
-                        var x = PCollision.Where(PredCollisionChar => PredCollisionChar.Distance(target) <= 30).FirstOrDefault();
+                        var x = PCollision.Where(PredCollisionChar => PredCollisionChar.LSDistance(target) <= 30).FirstOrDefault();
                         if (x != null)
                         {
                             W.Cast(x.Position);
@@ -447,7 +447,7 @@ namespace SephKhazix
         void KillSteal()
         {
             AIHeroClient target = HeroList
-                .Where(x => x.IsValidTarget() && x.Distance(Khazix.Position) < 1375f && !x.IsZombie)
+                .Where(x => x.IsValidTarget() && x.LSDistance(Khazix.Position) < 1375f && !x.IsZombie)
                 .MinOrDefault(x => x.Health);
 
             if (target != null && target.IsInRange(600))
@@ -688,7 +688,7 @@ namespace SephKhazix
             }
 
 
-            if (startPoint.Distance(unitPosition) < 900)
+            if (startPoint.LSDistance(unitPosition) < 900)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -741,7 +741,7 @@ namespace SephKhazix
                     if (k == 2)
                         endPoint = startPoint + originalDirection.Rotated(-Wangle);
 
-                    if (point.Distance(startPoint, endPoint, true, true) <
+                    if (point.LSDistance(startPoint, endPoint, true, true) <
                         (W.Width + hitBoxes[i]) * (W.Width + hitBoxes[i]))
                     {
                         result++;

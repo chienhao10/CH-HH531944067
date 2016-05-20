@@ -108,7 +108,7 @@ namespace MasterSharp
         {
             if (MasterYi.selectedTarget != null && sender.NetworkId == MasterYi.selectedTarget.NetworkId &&
                 MasterYi.Q.IsReady() && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)
-                && sender.Distance(MasterYi.player) <= 600)
+                && sender.LSDistance(MasterYi.player) <= 600)
                 MasterYi.Q.Cast(sender);
         }
 
@@ -309,7 +309,7 @@ namespace MasterSharp
                 if (item.SpellData.SpellName == skillshot.SpellData.SpellName &&
                     item.Unit.NetworkId == skillshot.Unit.NetworkId &&
                     skillshot.Direction.AngleBetween(item.Direction) < 5 &&
-                    (skillshot.Start.Distance(item.Start) < 100 || skillshot.SpellData.FromObjects.Length == 0))
+                    (skillshot.Start.LSDistance(item.Start) < 100 || skillshot.SpellData.FromObjects.Length == 0))
                 {
                     alreadyAdded = true;
                 }
@@ -322,7 +322,7 @@ namespace MasterSharp
             }
 
             //Check if the skillshot is too far away.
-            if (skillshot.Start.Distance(ObjectManager.Player.ServerPosition.To2D()) >
+            if (skillshot.Start.LSDistance(ObjectManager.Player.ServerPosition.To2D()) >
                 (skillshot.SpellData.Range + skillshot.SpellData.Radius + 1000)*1.5)
             {
                 return;
@@ -362,7 +362,7 @@ namespace MasterSharp
                     if (skillshot.SpellData.Invert)
                     {
                         var newDirection = -(skillshot.End - skillshot.Start).Normalized();
-                        var end = skillshot.Start + newDirection*skillshot.Start.Distance(skillshot.End);
+                        var end = skillshot.Start + newDirection*skillshot.Start.LSDistance(skillshot.End);
                         var skillshotToAdd = new Skillshot(
                             skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, skillshot.Start, end,
                             skillshot.Unit);
@@ -393,14 +393,14 @@ namespace MasterSharp
                         {
                             var v = minion.ServerPosition.To2D() - skillshot.Unit.ServerPosition.To2D();
                             if (minion.Name == "Seed" && edge1.CrossProduct(v) > 0 && v.CrossProduct(edge2) > 0 &&
-                                minion.Distance(skillshot.Unit) < 800 &&
+                                minion.LSDistance(skillshot.Unit) < 800 &&
                                 (minion.Team != ObjectManager.Player.Team))
                             {
                                 var start = minion.ServerPosition.To2D();
                                 var end = skillshot.Unit.ServerPosition.To2D()
                                     .Extend(
                                         minion.ServerPosition.To2D(),
-                                        skillshot.Unit.Distance(minion) > 200 ? 1300 : 1000);
+                                        skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000);
 
                                 var skillshotToAdd = new Skillshot(
                                     skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
@@ -424,7 +424,7 @@ namespace MasterSharp
 
                     if (skillshot.SpellData.SpellName == "ZiggsQ")
                     {
-                        var d1 = skillshot.Start.Distance(skillshot.End);
+                        var d1 = skillshot.Start.LSDistance(skillshot.End);
                         var d2 = d1*0.4f;
                         var d3 = d2*0.69f;
 
@@ -454,7 +454,7 @@ namespace MasterSharp
                     if (skillshot.SpellData.SpellName == "ZiggsR")
                     {
                         skillshot.SpellData.Delay =
-                            (int) (1500 + 1500*skillshot.End.Distance(skillshot.Start)/skillshot.SpellData.Range);
+                            (int) (1500 + 1500*skillshot.End.LSDistance(skillshot.Start)/skillshot.SpellData.Range);
                     }
 
                     if (skillshot.SpellData.SpellName == "JarvanIVDragonStrike")

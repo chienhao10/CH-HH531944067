@@ -40,7 +40,7 @@ namespace PopBlanc
                     return false;
                 }
 
-                if (ObjectManager.Player.ServerPosition.Extend(position, i).IsWall())
+                if (ObjectManager.Player.ServerPosition.LSExtend(position, i).IsWall())
                 {
                     return true;
                 }

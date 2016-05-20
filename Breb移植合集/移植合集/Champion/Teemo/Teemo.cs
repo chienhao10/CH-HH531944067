@@ -195,7 +195,7 @@ namespace SharpShooter.Plugins
                 if (_w.IsReady())
                     _w.Cast();
 
-                if (gapcloser.End.Distance(ObjectManager.Player.Position) <= 300)
+                if (gapcloser.End.LSDistance(ObjectManager.Player.Position) <= 300)
                     if (_r.IsReady())
                         _r.Cast(ObjectManager.Player.Position);
             }

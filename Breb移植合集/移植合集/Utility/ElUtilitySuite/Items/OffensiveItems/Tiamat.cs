@@ -69,7 +69,7 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <returns></returns>
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem("Tiamatcombo") && ComboModeActive && HeroManager.Enemies.Any(x => x.Distance(ObjectManager.Player) < 400 && !x.IsDead && !x.IsZombie);
+            return getCheckBoxItem("Tiamatcombo") && ComboModeActive && HeroManager.Enemies.Any(x => x.LSDistance(ObjectManager.Player) < 400 && !x.IsDead && !x.IsZombie);
         }
 
         #endregion

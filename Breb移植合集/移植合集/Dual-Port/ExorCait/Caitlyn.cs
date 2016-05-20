@@ -107,12 +107,12 @@ namespace ExorAIO.Champions.Caitlyn
             ///     The Anti-GapCloser W Logic.
             /// </summary>
             if (Variables.W.IsReady() &&
-                ObjectManager.Player.Distance(gapcloser.End) < Variables.W.Range &&
+                ObjectManager.Player.LSDistance(gapcloser.End) < Variables.W.Range &&
                 Menus.getCheckBoxItem(Variables.WMenu, "wspell.gp"))
             {
                 if (!ObjectManager.Get<Obj_AI_Minion>().Any(
                     m =>
-                        m.Distance(gapcloser.End) < 100f &&
+                        m.LSDistance(gapcloser.End) < 100f &&
                         m.CharData.BaseSkinName.Contains("Cupcake")))
                 {
                     Variables.W.Cast(gapcloser.End);
@@ -123,7 +123,7 @@ namespace ExorAIO.Champions.Caitlyn
             ///     The Anti-GapCloser E Logic.
             /// </summary>
             if (Variables.E.IsReady() &&
-                ObjectManager.Player.Distance(gapcloser.End) < 300f &&
+                ObjectManager.Player.LSDistance(gapcloser.End) < 300f &&
                 Menus.getCheckBoxItem(Variables.EMenu, "espell.gp"))
             {
                 Variables.E.Cast(gapcloser.Sender.Position);

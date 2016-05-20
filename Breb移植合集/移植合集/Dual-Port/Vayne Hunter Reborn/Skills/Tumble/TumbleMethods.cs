@@ -100,7 +100,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
             {
                 var firstMinion = minionsInRange.OrderBy(m => m.HealthPercent).First();
                 var afterTumblePosition = PlayerHelper.GetAfterTumblePosition(Game.CursorPos);
-                if (afterTumblePosition.Distance(firstMinion.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null))
+                if (afterTumblePosition.LSDistance(firstMinion.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null))
                 {
                     DefaultQCast(Game.CursorPos, firstMinion);
                     Orbwalker.ForcedTarget = firstMinion;
@@ -119,7 +119,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
         private static void OnCastTumble(Obj_AI_Base target, Vector3 position)
         {
             var afterTumblePosition = ObjectManager.Player.ServerPosition.Extend(position, 300f);
-            var distanceToTarget = afterTumblePosition.Distance(target.ServerPosition, true);
+            var distanceToTarget = afterTumblePosition.LSDistance(target.ServerPosition, true);
             if ((distanceToTarget < Math.Pow(ObjectManager.Player.AttackRange + 65, 2) && distanceToTarget > 110*110)
                 || getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.tumble.qspam"))
             {
@@ -145,9 +145,9 @@ namespace VayneHunter_Reborn.Skills.Tumble
                             !Variables.MeleeEnemiesTowardsMe.All(m => m.HealthPercent <= 15))
                         {
                             var Closest =
-                                Variables.MeleeEnemiesTowardsMe.OrderBy(m => m.Distance(ObjectManager.Player)).First();
+                                Variables.MeleeEnemiesTowardsMe.OrderBy(m => m.LSDistance(ObjectManager.Player)).First();
                             var whereToQ = Closest.ServerPosition.LSExtend(
-                                ObjectManager.Player.ServerPosition, Closest.Distance(ObjectManager.Player) + 300f);
+                                ObjectManager.Player.ServerPosition, Closest.LSDistance(ObjectManager.Player) + 300f);
 
                             if (whereToQ.IsSafe())
                             {
@@ -171,9 +171,9 @@ namespace VayneHunter_Reborn.Skills.Tumble
                             !Variables.MeleeEnemiesTowardsMe.All(m => m.HealthPercent <= 15))
                         {
                             var Closest =
-                                Variables.MeleeEnemiesTowardsMe.OrderBy(m => m.Distance(ObjectManager.Player)).First();
+                                Variables.MeleeEnemiesTowardsMe.OrderBy(m => m.LSDistance(ObjectManager.Player)).First();
                             var whereToQ = Closest.ServerPosition.LSExtend(
-                                ObjectManager.Player.ServerPosition, Closest.Distance(ObjectManager.Player) + 300f);
+                                ObjectManager.Player.ServerPosition, Closest.LSDistance(ObjectManager.Player) + 300f);
 
                             if (whereToQ.IsSafe())
                             {
@@ -193,7 +193,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
 
                         if (path.Count() > 0)
                         {
-                            var TumblePosition = path.MinOrDefault(x => x.Distance(Game.CursorPos)).To3D();
+                            var TumblePosition = path.MinOrDefault(x => x.LSDistance(Game.CursorPos)).To3D();
                             if (!TumblePosition.IsSafe(true))
                             {
                                 CastQ(TumblePosition);
@@ -215,7 +215,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
             var EnemyPoints = TumblePositioning.GetEnemyPoints();
             if (afterTumblePosition.IsSafe(true) || (!EnemyPoints.Contains(Game.CursorPos.To2D())) || (Variables.EnemiesClose.Count() == 1))
             {
-                if (afterTumblePosition.Distance(Target.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(Target))
+                if (afterTumblePosition.LSDistance(Target.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(Target))
                 {
                     CastQ(position);
                 }
@@ -237,8 +237,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
             
             if (Variables.spells[SpellSlot.R].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString().ToLower()) && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                if (ObjectManager.Player.CountEnemiesInRange(750f) >=
-                    getSliderItem(MenuGenerator.comboMenu, "dz191.vhr.combo.r.minenemies"))
+                if (ObjectManager.Player.CountEnemiesInRange(750f) >= getSliderItem(MenuGenerator.comboMenu, "dz191.vhr.combo.r.minenemies"))
                 {
                     Variables.spells[SpellSlot.R].Cast();
                 }
@@ -250,7 +249,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
         private static Vector3? GetQBurstModePosition()
         {
             var positions =
-                GetWallQPositions(70).ToList().OrderBy(pos => pos.Distance(ObjectManager.Player.ServerPosition, true));
+                GetWallQPositions(70).ToList().OrderBy(pos => pos.LSDistance(ObjectManager.Player.ServerPosition, true));
 
             foreach (var position in positions)
             {

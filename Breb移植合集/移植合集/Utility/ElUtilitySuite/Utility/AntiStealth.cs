@@ -186,7 +186,7 @@
                     if (sender.Name.Contains("Rengar_Base_R_Alert"))
                     {
                         if (this.Player.HasBuff("rengarralertsound") && !this.rengar.IsVisible && !this.rengar.IsDead &&
-                            this.Player.Distance(sender.Position) < 1700)
+                            this.Player.LSDistance(sender.Position) < 1700)
                         {
                             var hero = (AIHeroClient)sender;
 
@@ -265,7 +265,7 @@
                     return;
                 }
 
-                if (this.Player.Distance(sender.Position) > 800)
+                if (this.Player.LSDistance(sender.Position) > 800)
                 {
                     return;
                 }

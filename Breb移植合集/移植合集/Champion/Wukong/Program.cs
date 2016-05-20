@@ -250,7 +250,7 @@ namespace Wukong
             if (IgniteSlot != SpellSlot.Unknown && Player.Spellbook.CanUseSpell(IgniteSlot) == SpellState.Ready)
             {
                 if (Player.GetSummonerSpellDamage(t, Damage.SummonerSpell.Ignite) > t.Health &&
-                    Player.Distance(t) <= 550)
+                    Player.LSDistance(t) <= 550)
                 {
                     Player.Spellbook.CastSpell(IgniteSlot, t);
                 }
@@ -381,7 +381,7 @@ namespace Wukong
             if (!interruptSpells)
                 return;
 
-            if (Player.Distance(unit) < Orbwalking.GetRealAutoAttackRange(Player) && R.IsReady())
+            if (Player.LSDistance(unit) < Orbwalking.GetRealAutoAttackRange(Player) && R.IsReady())
             {
                 R.Cast();
             }
@@ -405,7 +405,7 @@ namespace Wukong
                             enemy.Team != Player.Team && !enemy.IsDead && enemy.IsVisible &&
                             AssassinManager.assMenu["Assassin" + enemy.NetworkId] != null &&
                             AssassinManager.getCheckBoxItem("Assassin" + enemy.NetworkId) &&
-                            Player.Distance(enemy) < assassinRange);
+                            Player.LSDistance(enemy) < assassinRange);
 
             if (AssassinManager.getBoxItem("AssassinSelectOption") == 1)
             {

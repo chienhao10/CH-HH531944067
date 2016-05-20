@@ -37,7 +37,7 @@ namespace UnderratedAIO.Helpers
 
         public static List<DashData> DashDatas =
             new List<DashData>(
-                new[]
+                new DashData[]
                 {
                     new DashData("Aatrox", SpellSlot.Q), new DashData("Ahri", SpellSlot.R),
                     new DashData("Akali", SpellSlot.R), new DashData("Alistar", SpellSlot.W),
@@ -51,21 +51,21 @@ namespace UnderratedAIO.Helpers
                     new DashData("Illaoi", SpellSlot.W), new DashData("Irelia", SpellSlot.Q),
                     new DashData("JarvanIV", SpellSlot.Q), new DashData("JarvanIV", SpellSlot.E),
                     new DashData("Jax", SpellSlot.Q), new DashData("Jayce", SpellSlot.Q),
-                    new DashData("Kalista", SpellSlot.Unknown), new DashData("KhaZix", SpellSlot.E),
+                    new DashData("Kalista", SpellSlot.Unknown), new DashData("Khazix", SpellSlot.E),
                     new DashData("Kindred", SpellSlot.Q), new DashData("LeBlanc", SpellSlot.E),
                     new DashData("Jax", SpellSlot.Q), new DashData("LeeSin", SpellSlot.Q),
                     new DashData("LeeSin", SpellSlot.W), new DashData("Lucian", SpellSlot.E),
-                    new DashData("Nautilus", SpellSlot.Q), new DashData("Nidalee", SpellSlot.W),
-                    new DashData("Pantheon", SpellSlot.W), new DashData("Poppy", SpellSlot.E),
-                    new DashData("Quinn", SpellSlot.E), new DashData("Renekton", SpellSlot.E),
-                    new DashData("Rengar", SpellSlot.Unknown), new DashData("Riven", SpellSlot.Q),
-                    new DashData("Riven", SpellSlot.E), new DashData("Quinn", SpellSlot.E),
-                    new DashData("Sejuani", SpellSlot.Q), new DashData("Shyvana", SpellSlot.R),
-                    new DashData("Shen", SpellSlot.E), new DashData("Thresh", SpellSlot.Q),
-                    new DashData("Tristana", SpellSlot.W), new DashData("Tryndamere", SpellSlot.E),
-                    new DashData("Vi", SpellSlot.Q), new DashData("Wukong", SpellSlot.E),
-                    new DashData("XinZhao", SpellSlot.E), new DashData("Yasuo", SpellSlot.E),
-                    new DashData("Zac", SpellSlot.E), new DashData("Ziggs", SpellSlot.W)
+                    new DashData("MonkeyKing", SpellSlot.E), new DashData("Nautilus", SpellSlot.Q),
+                    new DashData("Nidalee", SpellSlot.W), new DashData("Pantheon", SpellSlot.W),
+                    new DashData("Poppy", SpellSlot.E), new DashData("Quinn", SpellSlot.E),
+                    new DashData("Renekton", SpellSlot.E), new DashData("Rengar", SpellSlot.Unknown),
+                    new DashData("Riven", SpellSlot.Q), new DashData("Riven", SpellSlot.E),
+                    new DashData("Quinn", SpellSlot.E), new DashData("Sejuani", SpellSlot.Q),
+                    new DashData("Shyvana", SpellSlot.R), new DashData("Shen", SpellSlot.E),
+                    new DashData("Thresh", SpellSlot.Q), new DashData("Tristana", SpellSlot.W),
+                    new DashData("Tryndamere", SpellSlot.E), new DashData("Vi", SpellSlot.Q),
+                    new DashData("Wukong", SpellSlot.E), new DashData("XinZhao", SpellSlot.E),
+                    new DashData("Yasuo", SpellSlot.E), new DashData("Zac", SpellSlot.E)
                 });
 
         public static AIHeroClient lastTarget;
@@ -129,9 +129,9 @@ namespace UnderratedAIO.Helpers
         {
             var enemies = from h in HeroManager.Enemies
                 let pred = Prediction.GetPrediction(h, delay)
-                where pred.UnitPosition.Distance(pos) < range
+                where pred.UnitPosition.LSDistance(pos) < range
                 select h;
-            return nowToo ? enemies.Count(h => h.Distance(pos) < range) : enemies.Count();
+            return nowToo ? enemies.Count(h => h.LSDistance(pos) < range) : enemies.Count();
         }
 
         #region Poppy
@@ -150,7 +150,7 @@ namespace UnderratedAIO.Helpers
                     newPos = new Vector3(target.Position.X + 65*j, target.Position.Y + 65*j, target.Position.Z);
                     var rotated = newPos.To2D().RotateAroundPoint(target.Position.To2D(), 45*i).To3D();
                     if (rotated.IsValid() && Environment.Map.CheckWalls(rotated, target.Position) &&
-                        player.Distance(rotated) < 400)
+                        player.LSDistance(rotated) < 400)
                     {
                         return rotated;
                     }
@@ -170,8 +170,8 @@ namespace UnderratedAIO.Helpers
                 PointsAroundTheTarget(target.Position, 500)
                     .Where(
                         p =>
-                            p.IsValid() && target.Distance(p) > 80 && target.Distance(p) < 485 &&
-                            player.Distance(p) < 400 && !p.IsWall() && Environment.Map.CheckWalls(p, target.Position))
+                            p.IsValid() && target.LSDistance(p) > 80 && target.LSDistance(p) < 485 &&
+                            player.LSDistance(p) < 400 && !p.IsWall() && Environment.Map.CheckWalls(p, target.Position))
                     .FirstOrDefault();
         }
 
@@ -185,10 +185,10 @@ namespace UnderratedAIO.Helpers
                 PointsAroundTheTarget(target.Position, 500)
                     .Where(
                         p =>
-                            p.Distance(player.Position) < 500 && p.IsValid() &&
-                            target.Distance(p) < player.AttackRange && !p.IsWall() &&
+                            p.LSDistance(player.Position) < 500 && p.IsValid() &&
+                            target.LSDistance(p) < player.AttackRange && !p.IsWall() &&
                             Environment.Map.CheckWalls(p, target.Position))
-                    .OrderBy(p => p.Distance(player.Position))
+                    .OrderBy(p => p.LSDistance(player.Position))
                     .FirstOrDefault();
         }
 
@@ -200,7 +200,7 @@ namespace UnderratedAIO.Helpers
         {
             return
                 ObjectManager.Get<AIHeroClient>()
-                    .Where(i => i.IsEnemy && !i.IsDead && player.Distance(i) < p)
+                    .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) < p)
                     .SelectMany(enemy => enemy.Buffs)
                     .Count(buff => buff.Name == "sejuanifrost");
         }
@@ -209,14 +209,14 @@ namespace UnderratedAIO.Helpers
         {
             return
                 ObjectManager.Get<AIHeroClient>()
-                    .Where(i => i.IsEnemy && !i.IsDead && player.Distance(i) < p)
+                    .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) < p)
                     .SelectMany(enemy => enemy.Buffs)
                     .Count(buff => buff.Name == "KennenMarkOfStorm");
         }
 
         public static int SejuaniCountFrostMinion(float p)
         {
-            return ObjectManager.Get<Obj_AI_Minion>().Where(i => !i.IsDead && player.Distance(i) < p).Sum(enemy => enemy.Buffs.Count(buff => buff.Name == "sejuanifrost"));
+            return ObjectManager.Get<Obj_AI_Minion>().Where(i => !i.IsDead && player.LSDistance(i) < p).Sum(enemy => enemy.Buffs.Count(buff => buff.Name == "sejuanifrost"));
         }
 
         #endregion
@@ -247,7 +247,7 @@ namespace UnderratedAIO.Helpers
         public static bool CheckWalls(Vector3 from, Vector3 to)
         {
             var steps = 6f;
-            var stepLength = from.Distance(to)/steps;
+            var stepLength = from.LSDistance(to)/steps;
             for (var i = 1; i < steps + 1; i++)
             {
                 if (from.Extend(to, stepLength*i).IsWall())
@@ -374,7 +374,7 @@ namespace UnderratedAIO.Helpers
                 ObjectManager.Get<AIHeroClient>()
                     .Where(
                         i =>
-                            i.Distance(player.Position) < 950 && i.IsEnemy && !i.IsAlly && !i.IsDead && !i.IsMinion &&
+                            i.LSDistance(player.Position) < 950 && i.IsEnemy && !i.IsAlly && !i.IsDead && !i.IsMinion &&
                             !i.IsMe))
             {
             }
@@ -409,7 +409,7 @@ namespace UnderratedAIO.Helpers
 
         public static Geometry.Polygon GetPolyFromVector(Vector3 from, Vector3 to, float width)
         {
-            var POS = to.Extend(from, from.Distance(to));
+            var POS = to.Extend(from, from.LSDistance(to));
             var direction = (POS - to.To2D()).Normalized();
 
             var pos1 = (to.To2D() - direction.Perpendicular()*width/2f).To3D();
@@ -667,13 +667,13 @@ namespace UnderratedAIO.Helpers
             {
                 result += enemy.GetSummonerSpellDamage(player, DamageLibrary.SummonerSpells.Ignite);
             }
-            result = ObjectManager.Get<Obj_AI_Minion>().Where(i => i.Distance(player.Position) < 750 && i.IsMinion && !i.IsAlly && !i.IsDead).Aggregate(result, (current, minions) => current + minions.GetAutoAttackDamage(player));
+            result = ObjectManager.Get<Obj_AI_Minion>().Where(i => i.LSDistance(player.Position) < 750 && i.IsMinion && !i.IsAlly && !i.IsDead).Aggregate(result, (current, minions) => current + minions.GetAutoAttackDamage(player));
             return (float) result;
         }
 
         public static bool IsPossibleToReachHim(AIHeroClient target, float moveSpeedBuff, float duration)
         {
-            var distance = player.Distance(target);
+            var distance = player.LSDistance(target);
             var diff = Math.Abs(player.MoveSpeed*(1 + moveSpeedBuff) - target.MoveSpeed);
             if (diff*duration > distance)
             {
@@ -684,7 +684,7 @@ namespace UnderratedAIO.Helpers
 
         public static bool IsPossibleToReachHim2(AIHeroClient target, float moveSpeedBuff, float duration)
         {
-            var distance = player.Distance(target);
+            var distance = player.LSDistance(target);
             if (player.MoveSpeed*(1 + moveSpeedBuff)*duration > distance)
             {
                 return true;
@@ -734,7 +734,7 @@ namespace UnderratedAIO.Helpers
             return
                 !HeroManager.Enemies.Any(
                     e =>
-                        e.Distance(pos) < range &&
+                        e.LSDistance(pos) < range &&
                         (e.HasBuff("GarenQ") || e.HasBuff("powerfist") || e.HasBuff("JaxCounterStrike") ||
                          e.HasBuff("PowerBall") || e.HasBuff("renektonpreexecute") || e.HasBuff("xenzhaocombotarget") ||
                          (e.HasBuff("UdyrBearStance") && !player.HasBuff("UdyrBearStunCheck"))));
@@ -762,7 +762,7 @@ namespace UnderratedAIO.Helpers
 
         public static bool IsInvulnerable2(AIHeroClient unit)
         {
-            return invulnerable.Any(unit.HasBuff);
+            return invulnerable.Any(s => unit.HasBuff(s)) || unit.IsInvulnerable;
         }
 
         #endregion

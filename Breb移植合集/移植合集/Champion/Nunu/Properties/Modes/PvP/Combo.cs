@@ -16,24 +16,27 @@ namespace ExorAIO.Champions.Nunu
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+            if (!Targets.Target.IsValidTarget() || Bools.HasAnyImmunity(Targets.Target))
             {
                 return;
             }
 
-            if (!Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget(Variables.AARange))
+            if (Bools.HasSheenBuff())
             {
-                /// <summary>
-                ///     The E Combo Logic.
-                /// </summary>
-                if (Variables.E.IsReady() &&
-                    Targets.Target.IsValidTarget(Variables.E.Range) &&
-                    Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+                if (Targets.Target.IsValidTarget(Variables.AARange))
                 {
-                    Variables.E.CastOnUnit(Targets.Target);
+                    return;
                 }
+            }
+
+            /// <summary>
+            ///     The E Combo Logic.
+            /// </summary>
+            if (Variables.E.IsReady() &&
+                Targets.Target.IsValidTarget(Variables.E.Range) &&
+                Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            {
+                Variables.E.CastOnUnit(Targets.Target);
             }
         }
     }

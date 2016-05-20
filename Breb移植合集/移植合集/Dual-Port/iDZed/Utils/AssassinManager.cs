@@ -137,7 +137,7 @@ namespace iDZed.Utils
             {
                 ClearAssassinList();
                 Chat.Print(
-                    "<font color='#FFFFFF'>an sha lie biao chong zhi! dian ji mu biao tian jia/yi chu.</font>");
+                    "<font color='#FFFFFF'>Reset Assassin List is Complete! Click on the enemy for Add/Remove.</font>");
             }
             if (args.Msg != (uint) WindowsMessages.WM_LBUTTONDOWN)
             {
@@ -149,10 +149,10 @@ namespace iDZed.Utils
                     where hero.IsValidTarget()
                     select hero
                     into h
-                    orderby h.Distance(Game.CursorPos) descending
+                    orderby h.LSDistance(Game.CursorPos) descending
                     select h
                     into enemy
-                    where enemy.Distance(Game.CursorPos) < 150f
+                    where enemy.LSDistance(Game.CursorPos) < 150f
                     select enemy)
                 {
                     if (objAiHero != null && objAiHero.IsVisible && !objAiHero.IsDead)
@@ -165,7 +165,7 @@ namespace iDZed.Utils
                                 assMenu["Assassin" + objAiHero.ChampionName].Cast<CheckBox>().CurrentValue = true;
                                 Chat.Print(
                                     string.Format(
-                                        "<font color='FFFFFF'>tian jia dao an sha lie biao</font> <font color='#09F000'>{0} ({1})</font>",
+                                        "<font color='FFFFFF'>Added to Assassin List</font> <font color='#09F000'>{0} ({1})</font>",
                                         objAiHero.Name, objAiHero.ChampionName));
                                 break;
                             case 1:
@@ -175,7 +175,7 @@ namespace iDZed.Utils
                                     string.Format(
                                         "<font color='{0}'>{1}</font> <font color='#09F000'>{2} ({3})</font>",
                                         !menuStatus ? "#FFFFFF" : "#FF8877",
-                                        !menuStatus ? "tian jia dao an sha lie biao:" : "qu xiao an sha mu biao:",
+                                        !menuStatus ? "Added to Assassin List:" : "Removed from Assassin List:",
                                         objAiHero.Name, objAiHero.ChampionName));
                                 break;
                         }
@@ -194,13 +194,13 @@ namespace iDZed.Utils
             {
                 var enemies = ObjectManager.Get<AIHeroClient>().Where(xEnemy => xEnemy.IsEnemy);
                 var objAiHeroes = enemies as AIHeroClient[] ?? enemies.ToArray();
-                DrawText(_textBold, "目标模式:", Drawing.Width*0.89f, Drawing.Height*0.55f, Color.White);
+                DrawText(_textBold, "Target Mode:", Drawing.Width*0.89f, Drawing.Height*0.55f, Color.White);
                 var xSelect = getBoxItem("AssassinSelectOption");
                 DrawText(
-                    _text, xSelect == 0 ? "单选" : "多选", Drawing.Width*0.94f,
+                    _text, xSelect == 0 ? "Single Target" : "Multi Targets", Drawing.Width*0.94f,
                     Drawing.Height*0.55f, Color.White);
                 DrawText(
-                    _textBold, "优先目标", Drawing.Width*0.89f, Drawing.Height*0.58f, Color.White);
+                    _textBold, "Priority Targets", Drawing.Width*0.89f, Drawing.Height*0.58f, Color.White);
                 DrawText(_textBold, "_____________", Drawing.Width*0.89f, Drawing.Height*0.58f, Color.White);
                 for (var i = 0; i < objAiHeroes.Count(); i++)
                 {
@@ -228,15 +228,15 @@ namespace iDZed.Utils
                             enemy.IsVisible && assMenu["Assassin" + enemy.ChampionName] != null && !enemy.IsDead)
                     .Where(enemy => getCheckBoxItem("Assassin" + enemy.ChampionName)))
             {
-                if (ObjectManager.Player.Distance(enemy) < drawSearchRange)
+                if (ObjectManager.Player.LSDistance(enemy) < drawSearchRange)
                 {
                     if (drawActive)
                     {
                         Render.Circle.DrawCircle(enemy.Position, 115f, System.Drawing.Color.GreenYellow, 1);
                     }
                 }
-                else if (ObjectManager.Player.Distance(enemy) > drawSearchRange &&
-                         ObjectManager.Player.Distance(enemy) < drawSearchRange + 400)
+                else if (ObjectManager.Player.LSDistance(enemy) > drawSearchRange &&
+                         ObjectManager.Player.LSDistance(enemy) < drawSearchRange + 400)
                 {
                     if (drawNearest)
                     {

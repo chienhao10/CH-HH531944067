@@ -198,6 +198,42 @@ namespace SebbyLib
                     case "Thresh":
                         Thresh.LoadOKTW();
                         break;
+                    case "Brand":
+                        Brand.LoadOKTW();
+                        break;
+                    case "Blitzcrank":
+                        Blitzcrank.LoadOKTW();
+                        break;
+                    case "Corki":
+                        Corki.LoadOKTW();
+                        break;
+                    case "Darius":
+                        Darius.LoadOKTW();
+                        break;
+                    case "Evelynn":
+                        OneKeyToWin_AIO_Sebby.Champions.Evelynn.LoadOKTW();
+                        break;
+                    case "Jhin":
+                        Jhin.LoadOKTW();
+                        break;
+                    case "Kindred":
+                        Kindred.LoadOKTW();
+                        break;
+                    case "KogMaw":
+                        OneKeyToWin_AIO_Sebby.KogMaw.LoadOKTW();
+                        break;
+                    case "Lux":
+                        Lux.LoadOKTW();
+                        break;
+                    case "Morgana":
+                        Morgana.LoadOKTW();
+                        break;
+                    case "Quinn":  
+                        Quinn.LoadOKTW();
+                        break;
+                    case "TwistedFate":
+                        OneKeyToWin_AIO_Sebby.Champions.TwistedFate.LoadOKTW();
+                        break;
                 }
             }
 
@@ -286,7 +322,7 @@ namespace SebbyLib
             if (Combo && getCheckBoxItem("comboDisableMode"))
             {
                 var t = (AIHeroClient)args.Target;
-                if (6 * Player.GetAutoAttackDamage(t) < t.Health - OktwCommon.GetIncomingDamage(t) &&
+                if (4 * Player.GetAutoAttackDamage(t) < t.Health - OktwCommon.GetIncomingDamage(t) &&
                     !t.HasBuff("luxilluminatingfraulein") && !Player.HasBuff("sheen") && !Player.HasBuff("Mastery6261"))
                     args.Process = false;
             }
@@ -318,8 +354,8 @@ namespace SebbyLib
 
                 if (QWER.Type == SkillshotType.SkillshotCircle)
                 {
-                    CoreType2 = SebbyLib.Movement.SkillshotType.SkillshotCircle;
-                    aoe2 = true;
+                    //CoreType2 = SebbyLib.Movement.SkillshotType.SkillshotCircle;
+                    //aoe2 = true;
                 }
 
                 if (QWER.Width > 80 && !QWER.Collision)
@@ -428,15 +464,21 @@ namespace SebbyLib
             {
                 if (getSliderItem("HitChance") == 0)
                 {
-                    QWER.CastIfHitchanceEquals(target, LeagueSharp.Common.HitChance.VeryHigh);
+                    var pred = QWER.GetPrediction(target);
+                    if (pred.Hitchance >= LeagueSharp.Common.HitChance.VeryHigh)
+                        QWER.Cast(pred.CastPosition);
                 }
                 else if (getSliderItem("HitChance") == 1)
                 {
-                    QWER.CastIfHitchanceEquals(target, LeagueSharp.Common.HitChance.High);
+                    var pred = QWER.GetPrediction(target);
+                    if (pred.Hitchance >= LeagueSharp.Common.HitChance.High)
+                        QWER.Cast(pred.CastPosition);
                 }
                 else if (getSliderItem("HitChance") == 2)
                 {
-                    QWER.CastIfHitchanceEquals(target, LeagueSharp.Common.HitChance.Medium);
+                    var pred = QWER.GetPrediction(target);
+                    if (pred.Hitchance >= LeagueSharp.Common.HitChance.Medium)
+                        QWER.Cast(pred.CastPosition);
                 }
             }
 

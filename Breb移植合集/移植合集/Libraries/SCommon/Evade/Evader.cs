@@ -56,7 +56,7 @@ namespace SCommon.Evade
             SpellDatabase.InitalizeSpellDatabase();
             SpecialMethod = method;
             EvadeSpell = spl;
-            evade = MainMenu.AddMenu("S躲避", "SCommon.Evade.Root");
+            evade = MainMenu.AddMenu("Evade", "SCommon.Evade.Root");
 
             foreach (var enemy in HeroManager.Enemies)
             {
@@ -71,22 +71,22 @@ namespace SCommon.Evade
             }
 
             evade.Add("EVADEMETHOD",
-                new Slider("躲避方式 Method: (0 : 解决塔 | 1 : 更少敌人 | 2 : Auti) ", 2, 0, 2));
-            evade.Add("EVADEENABLE", new CheckBox("开启"));
+                new Slider("Evade Method: (0 : Near Turret | 1 : Less Enemies | 2 : Auti) ", 2, 0, 2));
+            evade.Add("EVADEENABLE", new CheckBox("Enabled"));
 
             if (ObjectManager.Player.CharData.BaseSkinName == "Morgana")
             {
                 evade.AddSeparator();
-                evade.AddGroupLabel("友军盾牌");
+                evade.AddGroupLabel("Ally Shielding");
                 foreach (var ally in HeroManager.Allies)
                 {
                     if (!ally.IsMe)
                     {
-                        evade.Add("shield" + ally.ChampionName, new CheckBox("盾 " + ally.ChampionName, false));
+                        evade.Add("shield" + ally.ChampionName, new CheckBox("Shield " + ally.ChampionName, false));
                     }
                 }
 
-                evade.Add("SHIELDENABLED", new CheckBox("开启"));
+                evade.Add("SHIELDENABLED", new CheckBox("Enabled"));
                 evade.AddSeparator();
             }
 
@@ -257,7 +257,7 @@ namespace SCommon.Evade
                         var sender_pos = dcspell.StartPosition;
                         var end_pos = dcspell.EndPosition;
                         var direction = (end_pos - sender_pos).Normalized();
-                        if (sender_pos.Distance(end_pos) > dcspell.Spell.Range)
+                        if (sender_pos.LSDistance(end_pos) > dcspell.Spell.Range)
                             end_pos = sender_pos + direction*dcspell.Spell.Range;
 
                         var my_hitbox = ClipperWrapper.DefineRectangle(my_pos - 60, my_pos + 60, 60);
@@ -277,7 +277,7 @@ namespace SCommon.Evade
                         //spells with arc
                         if (dcspell.Spell.IsArc)
                         {
-                            var mul = end_pos.Distance(sender_pos)/(dcspell.Spell.Range - 20.0f);
+                            var mul = end_pos.LSDistance(sender_pos)/(dcspell.Spell.Range - 20.0f);
 
                             spell_hitbox = new Geometry.Polygon(
                                 ClipperWrapper.DefineArc(sender_pos - dcspell.Spell.ArcData.Pos, end_pos,
@@ -341,12 +341,12 @@ namespace SCommon.Evade
             var turret =
                 ObjectManager.Get<Obj_AI_Turret>()
                     .Where(p => p.IsAlly)
-                    .MinOrDefault(q => q.ServerPosition.Distance(ObjectManager.Player.ServerPosition));
+                    .MinOrDefault(q => q.ServerPosition.LSDistance(ObjectManager.Player.ServerPosition));
             if (turret != null)
             {
-                if (turret.ServerPosition.To2D().Distance(evade_pos) >
+                if (turret.ServerPosition.To2D().LSDistance(evade_pos) >
                     turret.ServerPosition.To2D()
-                        .Distance(ObjectManager.Player.ServerPosition.To2D() - direction*EvadeSpell.Range))
+                        .LSDistance(ObjectManager.Player.ServerPosition.To2D() - direction*EvadeSpell.Range))
                 {
                     evade_pos = ObjectManager.Player.Position.To2D() - direction*EvadeSpell.Range;
                     return true;
@@ -368,12 +368,12 @@ namespace SCommon.Evade
                 HeroManager.Enemies.Count(
                     p =>
                         p.ServerPosition.To2D()
-                            .Distance(ObjectManager.Player.ServerPosition.To2D() + direction*EvadeSpell.Range) <=
+                            .LSDistance(ObjectManager.Player.ServerPosition.To2D() + direction*EvadeSpell.Range) <=
                         ObjectManager.Player.BasicAttack.CastRange) >
                 HeroManager.Enemies.Count(
                     p =>
                         p.ServerPosition.To2D()
-                            .Distance(ObjectManager.Player.ServerPosition.To2D() - direction*EvadeSpell.Range) <=
+                            .LSDistance(ObjectManager.Player.ServerPosition.To2D() - direction*EvadeSpell.Range) <=
                         ObjectManager.Player.BasicAttack.CastRange))
             {
                 evade_pos = ObjectManager.Player.Position.To2D() - direction*EvadeSpell.Range;

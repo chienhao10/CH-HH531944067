@@ -126,7 +126,7 @@ namespace vSupport_Series.Champions
                         ObjectManager.Get<AIHeroClient>()
                             .Where(
                                 x =>
-                                    x.IsAlly && !x.IsMe && x.Distance(Player.Position) < E.Range && !x.IsDead &&
+                                    x.IsAlly && !x.IsMe && x.LSDistance(Player.Position) < E.Range && !x.IsDead &&
                                     !x.IsZombie))
                 {
                     if (getCheckBoxItem(esettings, "ewhite." + ally.NetworkId))

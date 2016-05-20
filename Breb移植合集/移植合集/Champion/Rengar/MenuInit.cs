@@ -50,7 +50,6 @@ namespace ElRengarRevamped
             comboMenu.Add("Combo.Use.E.OutOfRange", new CheckBox("Use E when out of range", false));
             comboMenu.Add("Combo.Prio", new ComboBox("Prioritize", 2, "E", "W", "Q"));
             comboMenu.Add("Combo.Switch", new KeyBind("Switch priority", false, KeyBind.BindTypes.HoldActive, 'L'));
-            comboMenu.Add("Combo.TripleQ", new KeyBind("Triple Q", false, KeyBind.BindTypes.HoldActive, 'A'));
 
             harassMenu = Menu.AddSubMenu("Harass");
             harassMenu.Add("Harass.Use.Q", new CheckBox("Use Q"));
@@ -80,12 +79,11 @@ namespace ElRengarRevamped
             ksMenu.Add("Killsteal.Use.W", new CheckBox("Use W"));
 
             betaMenu = Menu.AddSubMenu("Beta options", "BetaOptions");
-            betaMenu.Add("Beta.Cast.Q", new CheckBox("Use beta Q"));
-            betaMenu.Add("Beta.Cast.Youmuu", new CheckBox("Youmuu's required"));
-            betaMenu.Add("Beta.Cast.Q.Delay", new Slider("Cast Q delay", 500, 100, 2000));
+            betaMenu.Add("Beta.Cast.Q1", new CheckBox("Use beta Q"));
+            betaMenu.Add("Beta.Cast.Q1.Delay", new Slider("Cast Q delay", 300, 100, 2000));
             betaMenu.Add("Assassin.searchrange", new CheckBox("Assassin search range"));
-            betaMenu.Add("Beta.searchrange", new Slider("Search range", 2000, 1000, 2500));
-            betaMenu.Add("Beta.searchrange.Q", new Slider("Q cast range", 1000, 500, 1500));
+            betaMenu.Add("Beta.searchrange", new Slider("Search range", 1500, 1000, 2500));
+            betaMenu.Add("Beta.searchrange.Q", new Slider("Q cast range", 600, 500, 1500));
             betaMenu.Add("Beta.Search.Range", new CheckBox("Draw search range"));
             betaMenu.Add("Beta.Search.QCastRange", new CheckBox("Draw Q cast range"));
 

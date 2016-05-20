@@ -43,9 +43,11 @@ namespace Evade
 
         public int _dangerLevel;
 
+        public bool CanShieldAllies;
         public string CheckSpellName = "";
         public int Delay;
         public bool FixedRange;
+        public bool Invert;
 
         public bool IsBlink;
         public bool IsDash;
@@ -58,9 +60,12 @@ namespace Evade
         public float MaxRange;
         public MoveSpeedAmount MoveSpeedTotalAmount;
         public string Name;
+        public bool RequiresPreMove;
+        public bool SelfCast;
         public SpellSlot Slot;
 
         public int Speed;
+        public SpellValidTargets[] ValidTargets;
 
         public EvadeSpellData()
         {
@@ -70,6 +75,11 @@ namespace Evade
         {
             Name = name;
             _dangerLevel = dangerLevel;
+        }
+
+        public bool IsTargetted
+        {
+            get { return ValidTargets != null; }
         }
 
         public bool IsReady()

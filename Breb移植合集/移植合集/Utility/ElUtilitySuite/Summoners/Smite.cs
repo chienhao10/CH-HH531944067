@@ -379,6 +379,7 @@
             smiteMenu = rootMenu.AddSubMenu("惩戒", "Smite");
             smiteMenu.Add("ElSmite.Activated", new KeyBind("开启惩戒", false, KeyBind.BindTypes.PressToggle, 'M'));
             smiteMenu.Add("Smite.Spell", new CheckBox("连招使用惩戒"));
+            smiteMenu.Add("Smite.Ammo", new CheckBox("保留一个惩戒"));
 
             if (Game.MapId == GameMapId.SummonersRift)
             {

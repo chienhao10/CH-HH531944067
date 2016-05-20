@@ -61,7 +61,7 @@ namespace iLucian
                 return;
             }
 
-            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.Distance(ObjectManager.Player.ServerPosition) < 350))
+            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) < 350))
                 return;
 
             var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos,
@@ -77,8 +77,6 @@ namespace iLucian
         {
             if (args.SData.Name != "LucianPassiveShot" && !args.SData.Name.Contains("LucianBasicAttack"))
                 return;
-            if (Variables.HasPassive)
-                return;
 
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q].Range,
                 DamageType.Physical);
@@ -88,18 +86,18 @@ namespace iLucian
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 if (target.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range) &&
-                    getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.q"))
+                    getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.q") && !Variables.HasPassive())
                 {
                     if (Variables.Spell[Variables.Spells.Q].IsReady() &&
-                        Variables.Spell[Variables.Spells.Q].IsInRange(target))
+                        Variables.Spell[Variables.Spells.Q].IsInRange(target)
+                        && !ObjectManager.Player.LSIsDashing())
                     {
                         Variables.Spell[Variables.Spells.Q].Cast(target);
                     }
                 }
-                if (!ObjectManager.Player.LSIsDashing() &&
-                    getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.w"))
+                if (!ObjectManager.Player.LSIsDashing() && getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.w"))
                 {
-                    if (Variables.Spell[Variables.Spells.W].IsReady())
+                    if (Variables.Spell[Variables.Spells.W].IsReady() && !Variables.HasPassive())
                     {
                         if (getCheckBoxItem(MenuGenerator.miscOptions, "com.ilucian.misc.usePrediction"))
                         {
@@ -109,20 +107,26 @@ namespace iLucian
                                 Variables.Spell[Variables.Spells.W].Cast(prediction.CastPosition);
                             }
                         }
-                    }
-                    else
-                    {
-                        if (target.Distance(ObjectManager.Player) < 600)
+                        else
                         {
-                            Variables.Spell[Variables.Spells.W].Cast(target.Position);
+                            if (target.LSDistance(ObjectManager.Player) < 600)
+                            {
+                                Variables.Spell[Variables.Spells.W].Cast(target.Position);
+                            }
                         }
                     }
                 }
-                CastE(target);
+                // CastE(target);
+                if (sender.IsMe && !sender.IsDead && !Variables.HasPassive() && !Variables.Spell[Variables.Spells.Q].IsReady())
+                {
+                    CastE(target);
+                }
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
+                if (ObjectManager.Player.ManaPercent < getSliderItem(MenuGenerator.harassOptions, "com.ilucian.harass.minMana"))
+                    return;
                 if (target.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range) &&
                     getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.q"))
                 {
@@ -132,8 +136,7 @@ namespace iLucian
                         Variables.Spell[Variables.Spells.Q].Cast(target);
                     }
                 }
-                if (!ObjectManager.Player.LSIsDashing() &&
-                    getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.w"))
+                if (!ObjectManager.Player.LSIsDashing() && getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.w"))
                 {
                     if (Variables.Spell[Variables.Spells.W].IsReady())
                     {
@@ -148,7 +151,7 @@ namespace iLucian
                     }
                     else
                     {
-                        if (target.Distance(ObjectManager.Player) < 600)
+                        if (target.LSDistance(ObjectManager.Player) < 600)
                         {
                             Variables.Spell[Variables.Spells.W].Cast(target.Position);
                         }
@@ -203,18 +206,35 @@ namespace iLucian
             var dashSpeed = (int)(Variables.Spell[Variables.Spells.E].Range / (700 + ObjectManager.Player.MoveSpeed));
             var extendedPrediction = GetExtendedPrediction(target, dashSpeed);
 
-            var minions = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.IsEnemy && x.IsValid && x.Distance(extendedPrediction, true) < 900 * 900).OrderByDescending(x => x.Distance(extendedPrediction));
+            var minions = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.IsEnemy && x.IsValid && x.LSDistance(extendedPrediction, true) < 900 * 900).OrderByDescending(x => x.LSDistance(extendedPrediction));
 
-            foreach (var minion in
-                minions.Select(x => LeagueSharp.Common.Prediction.GetPrediction(x, dashSpeed)).Select(pred => MathHelper.GetCicleLineInteraction(pred.UnitPosition.To2D(), extendedPrediction.To2D(), ObjectManager.Player.ServerPosition.To2D(), Variables.Spell[Variables.Spells.E].Range)).Select(inter => inter.GetBestInter(target)))
+            foreach (var minion in minions.Select(x => LeagueSharp.Common.Prediction.GetPrediction(x, dashSpeed)).Select(pred => MathHelper.GetCicleLineInteraction(pred.UnitPosition.LSTo2D(), extendedPrediction.LSTo2D(), ObjectManager.Player.ServerPosition.LSTo2D(), Variables.Spell[Variables.Spells.E].Range)).Select(inter => inter.GetBestInter(target)))
             {
                 if (Math.Abs(minion.X) < 1)
                     return;
 
                 if (!NavMesh.GetCollisionFlags(minion.To3D()).HasFlag(CollisionFlags.Wall) && !NavMesh.GetCollisionFlags(minion.To3D()).HasFlag(CollisionFlags.Building) && minion.To3D().IsSafe(Variables.Spell[Variables.Spells.E].Range))
                 {
-                    Console.WriteLine("EQ KILLSTEAL THO");
                     Variables.Spell[Variables.Spells.E].Cast((Vector3)minion);
+                }
+            }
+
+            var champions = ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.IsValid && x.LSDistance(extendedPrediction, true) < 900 * 900).OrderByDescending(x => x.LSDistance(extendedPrediction));
+
+            if (getCheckBoxItem(MenuGenerator.miscOptions, "com.ilucian.misc.useChampions"))
+            {
+                foreach (var position in
+                    champions.Select(x => LeagueSharp.Common.Prediction.GetPrediction(x, dashSpeed)).Select(pred => MathHelper.GetCicleLineInteraction(pred.UnitPosition.LSTo2D(), extendedPrediction.LSTo2D(), ObjectManager.Player.ServerPosition.LSTo2D(), Variables.Spell[Variables.Spells.E].Range)).Select(inter => inter.GetBestInter(target)))
+                {
+                    if (Math.Abs(position.X) < 1)
+                        return;
+
+                    if (!NavMesh.GetCollisionFlags(position.To3D()).HasFlag(CollisionFlags.Wall) &&
+                        !NavMesh.GetCollisionFlags(position.To3D()).HasFlag(CollisionFlags.Building) &&
+                        position.To3D().IsSafe(Variables.Spell[Variables.Spells.E].Range))
+                    {
+                        Variables.Spell[Variables.Spells.E].Cast((Vector3)position);
+                    }
                 }
             }
         }
@@ -235,6 +255,13 @@ namespace iLucian
 
             Killsteal();
 
+            if (getKeyBindItem(MenuGenerator.comboOptions, "com.ilucian.combo.forceR"))
+            {
+                SemiUlt();
+            }
+
+            AutoHarass();
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 OnCombo();
@@ -248,6 +275,50 @@ namespace iLucian
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 OnLaneclear();
+                OnJungleclear();
+            }
+        }
+
+        public void AutoHarass()
+        {
+            if (!getKeyBindItem(MenuGenerator.harassOptions, "com.ilucian.harass.auto.autoharass"))
+                return;
+
+            var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
+
+            if (getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.auto.q") && Variables.Spell[Variables.Spells.Q].IsReady())
+            {
+                if (Variables.Spell[Variables.Spells.Q].IsReady() &&
+                    Variables.Spell[Variables.Spells.Q].IsInRange(target) && target.IsValidTarget())
+                {
+                    Variables.Spell[Variables.Spells.Q].Cast(target);
+                }
+            }
+
+            if (getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.auto.qExtended") &&
+                Variables.Spell[Variables.Spells.Q].IsReady())
+            {
+                CastExtendedQ();
+            }
+        }
+
+        public void UltimateLock()
+        {
+            var currentTarget = TargetSelector.SelectedTarget;
+            if (currentTarget.IsValidTarget())
+            {
+                var predictedPosition = Variables.Spell[Variables.Spells.R].GetPrediction(currentTarget).UnitPosition;
+                var directionVector = (currentTarget.ServerPosition - ObjectManager.Player.ServerPosition).LSNormalized();
+                const float rRangeCoefficient = 0.95f;
+                var rRangeAdjusted = Variables.Spell[Variables.Spells.R].Range * rRangeCoefficient;
+                var rEndPointXCoordinate = predictedPosition.X + directionVector.X * rRangeAdjusted;
+                var rEndPointYCoordinate = predictedPosition.Y + directionVector.Y * rRangeAdjusted;
+                var rEndPoint = new Vector2(rEndPointXCoordinate, rEndPointYCoordinate).To3D();
+
+                if (rEndPoint.LSDistance(ObjectManager.Player.ServerPosition) < Variables.Spell[Variables.Spells.R].Range)
+                {
+                    EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, rEndPoint);
+                }
             }
         }
 
@@ -255,7 +326,7 @@ namespace iLucian
         {
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
 
-            if (target == null || Variables.HasPassive)
+            if (target == null || Variables.HasPassive())
                 return;
             if (getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.qExtended"))
             {
@@ -281,7 +352,7 @@ namespace iLucian
             }
             else
             {
-                if (target.Distance(ObjectManager.Player) < 600)
+                if (target.LSDistance(ObjectManager.Player) < 600)
                 {
                     Variables.Spell[Variables.Spells.W].Cast(target.Position);
                 }
@@ -292,7 +363,9 @@ namespace iLucian
         {
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q].Range, DamageType.Physical);
 
-            if (target == null || Variables.HasPassive)
+            if (target == null || Variables.HasPassive())
+                return;
+            if (ObjectManager.Player.ManaPercent < getSliderItem(MenuGenerator.harassOptions, "com.ilucian.harass.minMana"))
                 return;
             if (getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.qExtended"))
             {
@@ -319,12 +392,45 @@ namespace iLucian
                     }
                     else
                     {
-                        if (target.Distance(ObjectManager.Player) < 600)
+                        if (target.LSDistance(ObjectManager.Player) < 600)
                         {
                             Variables.Spell[Variables.Spells.W].Cast(target.Position);
                         }
                     }
                 }
+            }
+        }
+
+        private void OnJungleclear()
+        {
+            var jungleMob = MinionManager.GetMinions(Orbwalking.GetRealAutoAttackRange(ObjectManager.Player), MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth).FirstOrDefault(x => x.IsValid);
+
+            if (jungleMob != null)
+            {
+                if (Variables.Spell[Variables.Spells.Q].IsReady() &&
+                    getCheckBoxItem(MenuGenerator.jungleclearOptions, "com.ilucian.jungleclear.q") && !Variables.HasPassive())
+                {
+                    Variables.Spell[Variables.Spells.Q].Cast(jungleMob);
+                }
+                if (Variables.Spell[Variables.Spells.W].IsReady() &&
+                    getCheckBoxItem(MenuGenerator.jungleclearOptions, "com.ilucian.jungleclear.w") && !Variables.HasPassive())
+                {
+                    Variables.Spell[Variables.Spells.W].Cast(jungleMob);
+                }
+                if (Variables.Spell[Variables.Spells.E].IsReady() &&
+                    getCheckBoxItem(MenuGenerator.jungleclearOptions, "com.ilucian.jungleclear.e") && !Variables.HasPassive())
+                {
+                    Variables.Spell[Variables.Spells.E].Cast(ObjectManager.Player.Position.LSExtend(Game.CursorPos, 475));
+                }
+            }
+        }
+
+        public void SemiUlt()
+        {
+            var target = TargetSelector.SelectedTarget != null ? TargetSelector.SelectedTarget : TargetSelector.GetTarget(Variables.Spell[Variables.Spells.R].Range, DamageType.Physical);
+            if (target.IsValid && Variables.Spell[Variables.Spells.R].IsReady() && !ObjectManager.Player.HasBuff("LucianR"))
+            {
+                Variables.Spell[Variables.Spells.R].Cast(target.Position);
             }
         }
 
@@ -337,17 +443,17 @@ namespace iLucian
 
                 if (bestLocation.MinionsHit < getSliderItem(MenuGenerator.laneclearOptions, "com.ilucian.laneclear.qMinions"))
                     return;
-                var adjacentMinions = minions.Where(m => m.Distance(bestLocation.Position) <= 45).ToList();
+                var adjacentMinions = minions.Where(m => m.LSDistance(bestLocation.Position) <= 45).ToList();
                 if (!adjacentMinions.Any())
                 {
                     return;
                 }
 
-                var firstMinion = adjacentMinions.OrderBy(m => m.Distance(bestLocation.Position)).First();
+                var firstMinion = adjacentMinions.OrderBy(m => m.LSDistance(bestLocation.Position)).First();
 
                 if (!firstMinion.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range))
                     return;
-                if (!Variables.HasPassive && Orbwalking.InAutoAttackRange(firstMinion))
+                if (!Variables.HasPassive() && Orbwalking.InAutoAttackRange(firstMinion))
                 {
                     Variables.Spell[Variables.Spells.Q].Cast(firstMinion);
                 }
@@ -356,20 +462,12 @@ namespace iLucian
 
         private void CastE(Obj_AI_Base target)
         {
-            if (!Variables.Spell[Variables.Spells.E].IsReady() || !getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.e") || target == null)
+            if (!Variables.Spell[Variables.Spells.E].IsReady() || !getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.e") || target == null || ObjectManager.Player.HasBuff("LucianR") || ObjectManager.Player.Spellbook.IsAutoAttacking)
             {
                 return;
             }
 
-            if (HeroManager.Player.HasBuff("AwesomeBuff"))
-            {
-                var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, Variables.Spell[Variables.Spells.E].Range);
-                if (extendedPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range))
-                {
-                    Variables.Spell[Variables.Spells.E].Cast(Game.CursorPos);
-                }
-                return;
-            }
+            var dashRange = getSliderItem(MenuGenerator.comboOptions, "com.ilucian.combo.eRange");
 
             switch (getBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.eMode"))
             {
@@ -379,9 +477,9 @@ namespace iLucian
                     if (ObjectManager.Player.HealthPercent <= 70 &&
                         target.HealthPercent >= ObjectManager.Player.HealthPercent)
                     {
-                        if (ObjectManager.Player.Position.Distance(ObjectManager.Player.ServerPosition) >= 35 &&
-                            target.Distance(ObjectManager.Player.ServerPosition) <
-                            target.Distance(ObjectManager.Player.Position) &&
+                        if (ObjectManager.Player.Position.LSDistance(ObjectManager.Player.ServerPosition) >= 35 &&
+                            target.LSDistance(ObjectManager.Player.ServerPosition) <
+                            target.LSDistance(ObjectManager.Player.Position) &&
                             hypotheticalPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range))
                         {
                             Variables.Spell[Variables.Spells.E].Cast(hypotheticalPosition);
@@ -389,8 +487,8 @@ namespace iLucian
                     }
 
                     if (hypotheticalPosition.IsSafe(Variables.Spell[Variables.Spells.E].Range) &&
-                        hypotheticalPosition.Distance(target.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null) &&
-                        (hypotheticalPosition.Distance(target.ServerPosition) > 400) && !Variables.HasPassive)
+                        hypotheticalPosition.LSDistance(target.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null) &&
+                        (hypotheticalPosition.LSDistance(target.ServerPosition) > 400) && !Variables.HasPassive())
                     {
                         Variables.Spell[Variables.Spells.E].Cast(hypotheticalPosition);
                     }
@@ -398,21 +496,51 @@ namespace iLucian
 
                 case 1: // side
                     Variables.Spell[Variables.Spells.E].Cast(
-                        Deviation(ObjectManager.Player.Position.To2D(), target.Position.To2D(), 65).To3D());
+                        Deviation(ObjectManager.Player.Position.LSTo2D(), target.Position.LSTo2D(), dashRange).To3D());
                     break;
 
                 case 2: //Cursor
                     if (Game.CursorPos.IsSafe(475))
                     {
-                        Variables.Spell[Variables.Spells.E].Cast(ObjectManager.Player.Position.Extend(Game.CursorPos,
-                            65f));
+                        Variables.Spell[Variables.Spells.E].Cast(ObjectManager.Player.Position.LSExtend(Game.CursorPos,
+                            dashRange));
                     }
                     break;
 
                 case 3: // Enemy
-                    Variables.Spell[Variables.Spells.E].Cast(ObjectManager.Player.Position.Extend(target.Position, 400));
+                    Variables.Spell[Variables.Spells.E].Cast(ObjectManager.Player.Position.LSExtend(target.Position, dashRange));
+                    break;
+                case 4:
+                    Variables.Spell[Variables.Spells.E].Cast(
+                        Deviation(ObjectManager.Player.Position.LSTo2D(), target.Position.LSTo2D(), 65f).To3D());
+                    break;
+                case 5: // Smart E Credits to ASUNOOO
+                    var ePosition = new EPosition();
+                    var bestPosition = ePosition.GetEPosition();
+                    if (bestPosition != Vector3.Zero
+                        && bestPosition.Distance(target.ServerPosition) < Orbwalking.GetRealAutoAttackRange(target))
+                    {
+                        Variables.Spell[Variables.Spells.E].Cast(bestPosition);
+                    }
                     break;
             }
+        }
+
+        public static float GetComboDamage(Obj_AI_Base target)
+        {
+            float damage = 0;
+            if (Variables.Spell[Variables.Spells.Q].IsReady())
+                damage = damage + Variables.Spell[Variables.Spells.Q].GetDamage(target) +
+                         (float)ObjectManager.Player.GetAutoAttackDamage(target);
+            if (Variables.Spell[Variables.Spells.W].IsReady())
+                damage = damage + Variables.Spell[Variables.Spells.W].GetDamage(target) +
+                         (float)ObjectManager.Player.GetAutoAttackDamage(target);
+            if (Variables.Spell[Variables.Spells.E].IsReady())
+                damage = damage + (float)ObjectManager.Player.GetAutoAttackDamage(target) * 2;
+
+            damage = (float)(damage + ObjectManager.Player.GetAutoAttackDamage(target));
+
+            return damage;
         }
 
         private void CastExtendedQ()
@@ -421,14 +549,40 @@ namespace iLucian
             {
                 return;
             }
-            var target = TargetSelector.SelectedTarget != null && TargetSelector.SelectedTarget.Distance(ObjectManager.Player) < 1800 ? TargetSelector.SelectedTarget : TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
-            var predictionPosition = Variables.Spell[Variables.Spells.Q2].GetPrediction(target);
-            var minions = MinionManager.GetMinions(ObjectManager.Player.Position, Variables.Spell[Variables.Spells.Q].Range);
 
-            foreach (var minion in from minion in minions let polygon = new LeagueSharp.Common.Geometry.Polygon.Rectangle(ObjectManager.Player.ServerPosition, ObjectManager.Player.ServerPosition.LSExtend(minion.ServerPosition, Variables.Spell[Variables.Spells.Q2].Range), 65f) where polygon.IsInside(predictionPosition.CastPosition) select minion)
+            var target = TargetSelector.SelectedTarget != null &&
+                         TargetSelector.SelectedTarget.LSDistance(ObjectManager.Player) < 1800
+                ? TargetSelector.SelectedTarget
+                : TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range,
+                    DamageType.Physical);
+
+            var predictionPosition = Variables.Spell[Variables.Spells.Q2].GetPrediction(target);
+
+            foreach (var unit in from unit in GetHittableTargets()
+                                 let polygon =
+                                     new LeagueSharp.Common.Geometry.Polygon.Rectangle(ObjectManager.Player.ServerPosition,
+                                         ObjectManager.Player.ServerPosition.LSExtend(unit.ServerPosition,
+                                             Variables.Spell[Variables.Spells.Q2].Range), 65f)
+                                 where polygon.IsInside(predictionPosition.CastPosition)
+                                 select unit)
             {
-                Variables.Spell[Variables.Spells.Q].Cast(minion);
+                Variables.Spell[Variables.Spells.Q].Cast(unit);
             }
+        }
+
+        public List<Obj_AI_Base> GetHittableTargets()
+        {
+            var unitList = new List<Obj_AI_Base>();
+            var minions = MinionManager.GetMinions(ObjectManager.Player.Position,
+                Variables.Spell[Variables.Spells.Q].Range);
+            var champions = HeroManager.Enemies.Where(x => ObjectManager.Player.LSDistance(x) <= Variables.Spell[Variables.Spells.Q].Range && !x.HasBuffOfType(BuffType.SpellShield));
+
+            unitList.AddRange(minions);
+            if (getCheckBoxItem(MenuGenerator.miscOptions, "com.ilucian.misc.extendChamps"))
+            {
+                unitList.AddRange(champions);
+            }
+            return unitList;
         }
 
         /// <summary>
@@ -450,5 +604,5 @@ namespace iLucian
             result = Vector2.Add(result, point1);
             return result;
         }
-    }
+    }   
 }

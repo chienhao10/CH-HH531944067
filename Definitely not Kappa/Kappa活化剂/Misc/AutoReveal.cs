@@ -110,7 +110,7 @@
             BushMenu.AddGroupLabel("插眼隐身单位");
             BushMenu.Add("enables", new CheckBox("开启", false));
             BushMenu.Add("combos", new CheckBox("连招中使用", false));
-            BushMenu.AddGroupLabel("选择英雄:");
+            BushMenu.AddGroupLabel("选择显示英雄:");
             BushMenu.Add("akali", new CheckBox("阿卡丽", false));
             BushMenu.Add("shaco", new CheckBox("小丑", false));
             BushMenu.Add("rengar", new CheckBox("狮子狗", false));

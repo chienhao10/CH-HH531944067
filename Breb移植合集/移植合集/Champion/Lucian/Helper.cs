@@ -9,7 +9,7 @@ namespace LCS_Lucian
     {
         public static void LucianAntiGapcloser(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs spell)
         {
-            if (sender.IsEnemy && spell.End.Distance(ObjectManager.Player.Position) < LucianSpells.E.Range &&
+            if (sender.IsEnemy && spell.End.LSDistance(ObjectManager.Player.Position) < LucianSpells.E.Range &&
                 !spell.SData.IsAutoAttack() && spell.Target.IsMe)
             {
                 foreach (
@@ -21,7 +21,7 @@ namespace LCS_Lucian
                 {
                     if (Program.getCheckBoxItem(Program.miscMenu, "gapclose." + ((AIHeroClient) sender).ChampionName))
                     {
-                        LucianSpells.E.Cast(ObjectManager.Player.Position.Extend(spell.End, -LucianSpells.W.Range));
+                        LucianSpells.E.Cast(ObjectManager.Player.Position.LSExtend(spell.End, -LucianSpells.W.Range));
                     }
                 }
             }

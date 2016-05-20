@@ -56,6 +56,7 @@ namespace ezEvade
         public float extraDrawHeight = 0;
         public string[] extraSpellNames;
         public string[] extraMissileNames;
+        public bool invert = false;
         public CollisionObjectType[] collisionObjects = { };
 
         public SpellData()

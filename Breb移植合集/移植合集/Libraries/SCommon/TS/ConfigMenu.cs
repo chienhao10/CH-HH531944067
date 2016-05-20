@@ -66,27 +66,27 @@ namespace SCommon.TS
 
         public static void Create(Menu menuToAttach)
         {
-            s_Config = MainMenu.AddMenu("S目标选择器", "TargetSelector.Root");
+            s_Config = MainMenu.AddMenu("目标选择器", "TargetSelector.Root");
             s_Config.Add("TargetSelector.Root.blFocusSelected", new CheckBox("集火选择的目标"));
             s_Config.Add("TargetSelector.Root.iFocusSelectedExtraRange",
-                new Slider("额外集火选择的目标范围", 0, 0, 250));
+                new Slider("额外集火选择目标范围", 0, 0, 250));
             s_Config.Add("TargetSelector.Root.blOnlyAttackSelected", new CheckBox("只攻击选择的目标", false));
-            s_Config.Add("TargetSelector.Root.SelectedTargetColor", new CheckBox("选择目标的颜色", false));
+            s_Config.Add("TargetSelector.Root.SelectedTargetColor", new CheckBox("选择的目标颜色", false));
 
-            s_Config.AddGroupLabel("英雄优先顺序");
+            s_Config.AddGroupLabel("英雄优先攻击顺序");
             foreach (var enemy in HeroManager.Enemies)
             {
                 s_Config.Add(string.Format("TargetSelector.Priority.{0}", enemy.ChampionName),
                     new Slider(enemy.ChampionName, 1, 1, 5));
             }
-            s_Config.AddLabel("0 : 自动");
-            s_Config.AddLabel("1 : 低 HP");
-            s_Config.AddLabel("2 : 最高 AD");
-            s_Config.AddLabel("3 : 最高 AP");
-            s_Config.AddLabel("4 : 最近");
-            s_Config.AddLabel("5 : 鼠标附近");
-            s_Config.AddLabel("6 : 最少攻击次数");
-            s_Config.AddLabel("7 : 最少技能释放次数");
+            s_Config.AddLabel("0 : Auto");
+            s_Config.AddLabel("1 : Low HP");
+            s_Config.AddLabel("2 : Most AD");
+            s_Config.AddLabel("3 : Most AP");
+            s_Config.AddLabel("4 : Closest");
+            s_Config.AddLabel("5 : Near Mouse");
+            s_Config.AddLabel("6 : Less Attack");
+            s_Config.AddLabel("7 : Less Cast");
             s_Config.Add("TargetSelector.Root.iTargettingMode", new Slider("目标选择模式", 0, 0, 7));
         }
 

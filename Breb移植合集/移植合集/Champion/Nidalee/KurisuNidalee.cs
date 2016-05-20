@@ -488,7 +488,7 @@ namespace KurisuNidalee
 
         internal static void Combo2()
         {
-            var target = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.Distance(Player.ServerPosition) <= 600
+            var target = ObjectManager.Get<Obj_AI_Minion>().Where(x => x.LSDistance(Player.ServerPosition) <= 600
                                                                        && x.IsEnemy && x.IsHPBarRendered
                                                                        && !MinionManager.IsWard(x))
                 .OrderByDescending(x => x.MaxHealth)
@@ -579,7 +579,7 @@ namespace KurisuNidalee
                         CM.CastSwipe(unit, "jg");
 
                         if (unit.PassiveRooted() && getKeyBindItem(jungleMenu, "jgaacount") &&
-                            Player.Distance(unit.ServerPosition) > 450)
+                            Player.LSDistance(unit.ServerPosition) > 450)
                         {
                             return;
                         }
@@ -667,9 +667,9 @@ namespace KurisuNidalee
                     var wallPositionOpposite = (Vector3) KL.GetFirstWallPoint((Vector3) wallCheck, wallPosition, 5);
 
                     if (KL.Player.GetPath(wallPositionOpposite).ToList().LSTo2D().PathLength() -
-                        KL.Player.Distance(wallPositionOpposite) > 200)
+                        KL.Player.LSDistance(wallPositionOpposite) > 200)
                     {
-                        if (KL.Player.Distance(wallPositionOpposite) <
+                        if (KL.Player.LSDistance(wallPositionOpposite) <
                             KL.Spells["Pounce"].Range - KL.Player.BoundingRadius/2)
                         {
                             KL.Spells["Pounce"].Cast(wallPositionOpposite);

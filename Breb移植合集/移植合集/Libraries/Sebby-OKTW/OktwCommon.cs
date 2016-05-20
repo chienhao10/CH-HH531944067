@@ -79,7 +79,7 @@ namespace SebbyLib
 
         public static bool CanHarras()
         {
-            if (!Player.UnderTurret(true) && !ShouldWait())
+            if (!Player.UnderTurret(true) && (!ShouldWait() || !Orbwalking.CanAttack()))
                 return true;
             return false;
         }
@@ -147,14 +147,14 @@ namespace SebbyLib
                 if (args.SData.LineWidth > 0)
                 {
                     var powCalc = Math.Pow(args.SData.LineWidth + target.BoundingRadius, 2);
-                    if (pred.To2D().Distance(args.End.To2D(), args.Start.To2D(), true, true) <= powCalc ||
-                        target.ServerPosition.To2D().Distance(args.End.To2D(), args.Start.To2D(), true, true) <= powCalc)
+                    if (pred.To2D().LSDistance(args.End.To2D(), args.Start.To2D(), true, true) <= powCalc ||
+                        target.ServerPosition.To2D().LSDistance(args.End.To2D(), args.Start.To2D(), true, true) <= powCalc)
                     {
                         return true;
                     }
                 }
-                else if (target.Distance(args.End) < 50 + target.BoundingRadius ||
-                         pred.Distance(args.End) < 50 + target.BoundingRadius)
+                else if (target.LSDistance(args.End) < 50 + target.BoundingRadius ||
+                         pred.LSDistance(args.End) < 50 + target.BoundingRadius)
                 {
                     return true;
                 }
@@ -238,12 +238,12 @@ namespace SebbyLib
 
         public static Vector3 GetTrapPos(float range)
         {
-            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValid && enemy.Distance(Player.ServerPosition) < range && enemy.HasBuff("zhonyasringshield") || enemy.HasBuff("BardRStasis")))
+            foreach (var enemy in HeroManager.Enemies.Where(enemy => enemy.IsValid && enemy.LSDistance(Player.ServerPosition) < range && enemy.HasBuff("zhonyasringshield") || enemy.HasBuff("BardRStasis")))
             {
                 return enemy.Position;
             }
 
-            foreach (var obj in ObjectManager.Get<Obj_GeneralParticleEmitter>().Where(obj => obj.IsValid && obj.Position.Distance(Player.Position) < range))
+            foreach (var obj in ObjectManager.Get<Obj_GeneralParticleEmitter>().Where(obj => obj.IsValid && obj.Position.LSDistance(Player.Position) < range))
             {
                 var name = obj.Name.ToLower();
 
@@ -393,7 +393,7 @@ namespace SebbyLib
                         ChampionList.Where(
                             champion =>
                                 !champion.IsDead && champion.IsVisible && champion.Team != sender.Team &&
-                                champion.Distance(sender) < 2000))
+                                champion.LSDistance(sender) < 2000))
                 {
                     if (CanHitSkillShot(champion, args))
                     {

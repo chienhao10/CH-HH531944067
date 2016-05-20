@@ -98,10 +98,10 @@ namespace Kindred___YinYang
 
         public static void AntiGapcloser(ActiveGapcloser gapcloser)
         {
-            if (gapcloser.End.Distance(ObjectManager.Player.ServerPosition) <= 300)
+            if (gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) <= 300)
             {
                 Program.Q.Cast(gapcloser.End.Extend(ObjectManager.Player.ServerPosition,
-                    ObjectManager.Player.Distance(gapcloser.End) + Program.Q.Range));
+                    ObjectManager.Player.LSDistance(gapcloser.End) + Program.Q.Range));
             }
         }
 
@@ -128,17 +128,17 @@ namespace Kindred___YinYang
                                                                           getCheckBoxItem(Language.miscMenu,
                                                                               "hero." + x.spellName)))
                 {
-                    if (protector.spellType == SpellType.Circular && Kindred.Distance(spell.End) <= 200 &&
+                    if (protector.spellType == SpellType.Circular && Kindred.LSDistance(spell.End) <= 200 &&
                         sender.LSGetSpellDamage(Kindred, protector.spellName) > Kindred.Health)
                     {
                         Program.R.Cast(Kindred);
                     }
-                    if (protector.spellType == SpellType.Cone && Kindred.Distance(spell.End) <= 200 &&
+                    if (protector.spellType == SpellType.Cone && Kindred.LSDistance(spell.End) <= 200 &&
                         sender.LSGetSpellDamage(Kindred, protector.spellName) > Kindred.Health)
                     {
                         Program.R.Cast(Kindred);
                     }
-                    if (protector.spellType == SpellType.Line && Kindred.Distance(spell.End) <= 200
+                    if (protector.spellType == SpellType.Line && Kindred.LSDistance(spell.End) <= 200
                         && sender.LSGetSpellDamage(Kindred, protector.spellName) > Kindred.Health)
                     {
                         Program.R.Cast(Kindred);
@@ -150,7 +150,7 @@ namespace Kindred___YinYang
         public static void ClassicUltimate()
         {
             var minHp = getSliderItem(Language.miscMenu, "min.hp.for.r");
-            foreach (var ally in HeroManager.Allies.Where(o => o.HealthPercent < minHp && !o.IsRecalling() && !o.IsDead && !o.IsZombie && Kindred.Distance(o.Position) < Program.R.Range && !o.InFountain()))
+            foreach (var ally in HeroManager.Allies.Where(o => o.HealthPercent < minHp && !o.IsRecalling() && !o.IsDead && !o.IsZombie && Kindred.LSDistance(o.Position) < Program.R.Range && !o.InFountain()))
             {
                 if (getCheckBoxItem(Language.miscMenu, "respite." + ally.CharData.BaseSkinName) && Kindred.CountEnemiesInRange(1500) >= 1 && ally.CountEnemiesInRange(1500) >= 1)
                 {
@@ -187,7 +187,7 @@ namespace Kindred___YinYang
                 spell.Cast(
                     Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.To2D(),
                         Prediction.GetPrediction(hero, 0f, hero.AttackRange).UnitPosition.To2D(), spell.Range,
-                        Orbwalking.GetRealAutoAttackRange(hero)).MinOrDefault(i => i.Distance(Game.CursorPos)));
+                        Orbwalking.GetRealAutoAttackRange(hero)).MinOrDefault(i => i.LSDistance(Game.CursorPos)));
             }
             else
             {
@@ -212,7 +212,7 @@ namespace Kindred___YinYang
                 args.Target.IsValid)
             {
                 if (Program.Q.IsReady() && getCheckBoxItem(Language.comboMenu, "q.combo") &&
-                    ObjectManager.Player.Distance(args.Target.Position) < Program.Q.Range &&
+                    ObjectManager.Player.LSDistance(args.Target.Position) < Program.Q.Range &&
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
                     AdvancedQ(Program.Q, (AIHeroClient) args.Target, 3);

@@ -63,7 +63,7 @@ namespace Mordekaiser
                         .Get<Obj_AI_Base>(
                         )
                         .FirstOrDefault(
-                            m => m.Distance(Player.Self.Position) < 15000 && !m.Name.Contains("inion") && m.IsAlly &&
+                            m => m.LSDistance(Player.Self.Position) < 15000 && !m.Name.Contains("inion") && m.IsAlly &&
                                  m.HasBuff("mordekaisercotgpetbuff2"));
             }
         }

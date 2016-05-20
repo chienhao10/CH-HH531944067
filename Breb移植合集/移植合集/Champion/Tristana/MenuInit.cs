@@ -18,9 +18,13 @@ namespace ElTristana
             comboMenu.Add("ElTristana.Combo.Q", new CheckBox("Use Q"));
             comboMenu.Add("ElTristana.Combo.E", new CheckBox("Use E"));
             comboMenu.Add("ElTristana.Combo.R", new CheckBox("Use R"));
+            comboMenu.Add("ElTristana.Combo.OnlyQ", new CheckBox("Only Q if target has E"));
             comboMenu.Add("ElTristana.Combo.Focus.E", new CheckBox("Focus E target"));
             comboMenu.Add("ElTristana.Combo.Always.RE", new CheckBox("Use E + R finisher"));
             comboMenu.Add("ElTristana.Combo.E.Mana", new Slider("Minimum mana for E", 25));
+            comboMenu.AddSeparator();
+            comboMenu.Add("ElTristana.Combo.E.KeyBind", new KeyBind("Semi-Manual E", false, KeyBind.BindTypes.HoldActive, 'E'));
+            comboMenu.AddSeparator();
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsEnemy))
                 comboMenu.Add("ElTristana.E.On" + hero.NetworkId, new CheckBox("E? : " + hero.ChampionName));
 

@@ -17,12 +17,12 @@ namespace UnderratedAIO.Helpers
         {
             public static int countMinionsInrange(Obj_AI_Minion l, float p)
             {
-                return ObjectManager.Get<Obj_AI_Minion>().Count(i => !i.IsDead && i.IsEnemy && l.Distance(i) < p);
+                return ObjectManager.Get<Obj_AI_Minion>().Count(i => !i.IsDead && i.IsEnemy && l.LSDistance(i) < p);
             }
 
             public static int countMinionsInrange(Vector3 l, float p)
             {
-                return ObjectManager.Get<Obj_AI_Base>().Count(i => !i.IsDead && i.IsEnemy && i.Distance(l) < p);
+                return ObjectManager.Get<Obj_AI_Base>().Count(i => !i.IsDead && i.IsEnemy && i.LSDistance(l) < p);
             }
 
             public static Vector3 bestVectorToAoeFarm(Vector3 center, float spellrange, float spellWidth, int hit = 0)
@@ -41,7 +41,7 @@ namespace UnderratedAIO.Helpers
                     for (var i = 1; i < 4; i++)
                     {
                         var rotated = newPos.To2D().RotateAroundPoint(newPos.To2D(), 90*i).To3D();
-                        if (countMinionsInrange(rotated, spellWidth) > hits && player.Distance(rotated) <= spellrange)
+                        if (countMinionsInrange(rotated, spellWidth) > hits && player.LSDistance(rotated) <= spellrange)
                         {
                             bestPos = newPos;
                             hits = countMinionsInrange(rotated, spellWidth);
@@ -68,12 +68,12 @@ namespace UnderratedAIO.Helpers
         {
             public static int countChampsAtrange(Vector3 l, float p)
             {
-                return ObjectManager.Get<AIHeroClient>().Count(i => !i.IsDead && i.IsEnemy && i.Distance(l) < p);
+                return ObjectManager.Get<AIHeroClient>().Count(i => !i.IsDead && i.IsEnemy && i.LSDistance(l) < p);
             }
 
             public static int countChampsAtrangeA(Vector3 l, float p)
             {
-                return ObjectManager.Get<AIHeroClient>().Count(i => !i.IsDead && i.IsAlly && i.Distance(l) < p);
+                return ObjectManager.Get<AIHeroClient>().Count(i => !i.IsDead && i.IsAlly && i.LSDistance(l) < p);
             }
 
             public static AIHeroClient mostEnemyAtFriend(AIHeroClient player,
@@ -86,7 +86,7 @@ namespace UnderratedAIO.Helpers
                         .Where(
                             i =>
                                 !i.IsDead && i.IsAlly && i.CountEnemiesInRange(spellWidth) >= min &&
-                                i.Distance(player) < spellRange)
+                                i.LSDistance(player) < spellRange)
                         .OrderBy(i => i.IsMe)
                         .ThenByDescending(i => i.CountEnemiesInRange(spellWidth))
                         .FirstOrDefault();
@@ -109,7 +109,7 @@ namespace UnderratedAIO.Helpers
                     for (var i = 1; i < 4; i++)
                     {
                         var rotated = newPos.To2D().RotateAroundPoint(newPos.To2D(), 90*i).To3D();
-                        if (countChampsAtrange(rotated, spellwidth) > hits && player.Distance(rotated) <= spellrange)
+                        if (countChampsAtrange(rotated, spellwidth) > hits && player.LSDistance(rotated) <= spellrange)
                         {
                             bestPos = newPos;
                             hits = countChampsAtrange(rotated, spellwidth);
@@ -141,7 +141,7 @@ namespace UnderratedAIO.Helpers
 
             public static int getSpellDelay(Spell spell, Vector3 pos)
             {
-                return (int) (spell.Delay*1000 + player.Distance(pos)/spell.Speed);
+                return (int) (spell.Delay*1000 + player.LSDistance(pos)/spell.Speed);
             }
 
             public static int GetPriority(string championName)
@@ -198,7 +198,7 @@ namespace UnderratedAIO.Helpers
         {
             public static int countTurretsInRange(AIHeroClient l)
             {
-                return ObjectManager.Get<Obj_AI_Turret>().Count(i => !i.IsDead && i.IsEnemy && l.Distance(i) < 750f);
+                return ObjectManager.Get<Obj_AI_Turret>().Count(i => !i.IsDead && i.IsEnemy && l.LSDistance(i) < 750f);
             }
         }
 
@@ -206,7 +206,7 @@ namespace UnderratedAIO.Helpers
         {
             public static bool CheckWalls(Vector3 player, Vector3 enemy)
             {
-                var distance = player.Distance(enemy);
+                var distance = player.LSDistance(enemy);
                 for (var i = 1; i < 6; i++)
                 {
                     if (player.Extend(enemy, distance + 55*i).IsWall())
@@ -224,7 +224,7 @@ namespace UnderratedAIO.Helpers
                 var distance = 0f;
                 foreach (var point in path.Where(point => !point.Equals(lastPoint)))
                 {
-                    distance += lastPoint.Distance(point);
+                    distance += lastPoint.LSDistance(point);
                     lastPoint = point;
                 }
                 return distance;

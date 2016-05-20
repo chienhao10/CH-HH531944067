@@ -563,11 +563,7 @@
 
         private static void Evading(Obj_AI_Base sender)
         {
-            var skillshot =
-                Evade.SkillshotAboutToHit(sender, 50)
-                    .Where(i => i.CanDodge)
-                    .OrderByDescending(i => i.DangerLevel)
-                    .ToList();
+            var skillshot = Evade.SkillshotAboutToHit(sender, 50).OrderByDescending(i => i.DangerLevel).ToList();
             if (skillshot.Count == 0)
             {
                 return;
@@ -758,7 +754,7 @@
                 if (getCheckBoxItem(drawMenu, "UseR"))
                 {
                     var pos = Drawing.WorldToScreen(Player.Position);
-                    var text = $"连招 R: {(rMenu ? "On" : "Off")}";
+                    var text = $"Use R In Combo: {(rMenu ? "On" : "Off")}";
                     Drawing.DrawText(
                         pos.X - (float)70 / 2,
                         pos.Y + 20,
@@ -780,7 +776,7 @@
                 if (target != null)
                 {
                     var pos = Drawing.WorldToScreen(Player.Position);
-                    var text = "死亡标记: " + target.ChampionName;
+                    var text = "Death Mark: " + target.ChampionName;
                     Drawing.DrawText(pos.X - (float)70 / 2, pos.Y + 40, Color.Red, text);
                 }
             }

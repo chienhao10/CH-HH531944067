@@ -90,7 +90,7 @@ namespace OneKeyToWin_AIO_Sebby
             farmMenu.Add("farmQ", new CheckBox("清线 Q"));
             farmMenu.Add("farmW", new CheckBox("清线 W"));
             farmMenu.Add("farmE", new CheckBox("清线 E", false));
-
+            
             rMenu = Config.AddSubMenu("R 设置");
             rMenu.Add("rCount", new Slider("自动 R x 敌人数量", 3, 0, 5));
             rMenu.Add("smartR", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
@@ -100,7 +100,7 @@ namespace OneKeyToWin_AIO_Sebby
             rMenu.Add("Rlifesaver", new CheckBox("自动 R 自救"));
             rMenu.Add("Rblock", new CheckBox("防空大助手"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy))
-                rMenu.Add("Ralways" + enemy.NetworkId, new CheckBox("总是 R : " + enemy.ChampionName, false));
+            rMenu.Add("Ralways" + enemy.NetworkId, new CheckBox("总是 R : " + enemy.ChampionName, false));
 
             Game.OnUpdate += Game_OnGameUpdate;
             GameObject.OnCreate += Obj_AI_Base_OnCreate;
@@ -116,7 +116,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             if (!getCheckBoxItem(rMenu, "OPTI"))
                 return;
-            if (R.IsReady() && sender.Distance(BallPos) < R.Range)
+            if (R.IsReady() && sender.LSDistance(BallPos) < R.Range)
             {
                 R.Cast();
                 Program.debug("interupt");
@@ -142,7 +142,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            //Program.debug(""+BallPos.Distance(Player.Position));
+            //Program.debug(""+BallPos.LSDistance(Player.Position));
             if (Player.HasBuff("Recall") || Player.IsDead)
                 return;
 
@@ -165,7 +165,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if (Program.LagFree(3))
                 {
-                    if (E.IsReady() && Player.Mana > RMANA + EMANA && ally.Distance(Player.Position) < E.Range)
+                    if (E.IsReady() && Player.Mana > RMANA + EMANA && ally.LSDistance(Player.Position) < E.Range)
                     {
                         var countEnemy = ally.CountEnemiesInRange(800);
                         if (ally.Health < countEnemy*ally.Level*25)
@@ -181,16 +181,16 @@ namespace OneKeyToWin_AIO_Sebby
                             E.CastOnUnit(ally);
                         }
                     }
-                    if (W.IsReady() && Player.Mana > RMANA + WMANA && BallPos.Distance(ally.ServerPosition) < 240 &&
+                    if (W.IsReady() && Player.Mana > RMANA + WMANA && BallPos.LSDistance(ally.ServerPosition) < 240 &&
                         ally.Health < ally.CountEnemiesInRange(600)*ally.Level*20)
                         W.Cast();
 
                     if ((ally.Health < best.Health || ally.CountEnemiesInRange(300) > 0) &&
-                        ally.Distance(Player.Position) < E.Range && ally.CountEnemiesInRange(700) > 0)
+                        ally.LSDistance(Player.Position) < E.Range && ally.CountEnemiesInRange(700) > 0)
                         best = ally;
                 }
                 if (Program.LagFree(1) && E.IsReady() && Player.Mana > RMANA + EMANA &&
-                    ally.Distance(Player.Position) < E.Range &&
+                    ally.LSDistance(Player.Position) < E.Range &&
                     ally.CountEnemiesInRange(R.Width) >= getSliderItem(rMenu, "rCount") &&
                     0 != getSliderItem(rMenu, "rCount"))
                 {
@@ -198,7 +198,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
             }
             /*
-            foreach (var ally in HeroManager.Allies.Where(ally => ally.IsValid && ally.Distance(Player.Position) < 1000))
+            foreach (var ally in HeroManager.Allies.Where(ally => ally.IsValid && ally.LSDistance(Player.Position) < 1000))
             {
                 foreach (var buff in ally.Buffs)
                 {
@@ -247,9 +247,9 @@ namespace OneKeyToWin_AIO_Sebby
             {
                 if (CountEnemiesInRangeDeley(BallPos, 100, 0.1f) > 0)
                     E.CastOnUnit(best);
-                var castArea = ta.Distance(best.ServerPosition)*(best.ServerPosition - ta.ServerPosition).Normalized() +
+                var castArea = ta.LSDistance(best.ServerPosition)*(best.ServerPosition - ta.ServerPosition).Normalized() +
                                ta.ServerPosition;
-                if (castArea.Distance(ta.ServerPosition) < ta.BoundingRadius/2)
+                if (castArea.LSDistance(ta.ServerPosition) < ta.BoundingRadius/2)
                     E.CastOnUnit(best);
             }
         }
@@ -261,8 +261,8 @@ namespace OneKeyToWin_AIO_Sebby
                     Program.Enemies.Where(
                         t =>
                             t.IsValidTarget() &&
-                            BallPos.Distance(Prediction.GetPrediction(t, R.Delay).CastPosition) < R.Width &&
-                            BallPos.Distance(t.ServerPosition) < R.Width))
+                            BallPos.LSDistance(Prediction.GetPrediction(t, R.Delay).CastPosition) < R.Width &&
+                            BallPos.LSDistance(t.ServerPosition) < R.Width))
             {
                 if (Program.Combo && getCheckBoxItem(rMenu, "Ralways" + t.NetworkId))
                 {
@@ -290,7 +290,7 @@ namespace OneKeyToWin_AIO_Sebby
                 }
                 if (getCheckBoxItem(rMenu, "Rlifesaver") &&
                     Player.Health < Player.CountEnemiesInRange(800)*Player.Level*20 &&
-                    Player.Distance(BallPos) > t.Distance(Player.Position))
+                    Player.LSDistance(BallPos) > t.LSDistance(Player.Position))
                 {
                     R.Cast();
                     Program.debug("ls");
@@ -305,7 +305,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void LogicW()
         {
-            if (Program.Enemies.Any(t => t.IsValidTarget() && BallPos.Distance(t.ServerPosition) < 250 && t.Health < W.GetDamage(t)))
+            if (Program.Enemies.Any(t => t.IsValidTarget() && BallPos.LSDistance(t.ServerPosition) < 250 && t.Health < W.GetDamage(t)))
             {
                 W.Cast();
                 return;
@@ -374,7 +374,7 @@ namespace OneKeyToWin_AIO_Sebby
                 var mob = mobs[0];
                 if (Q.IsReady())
                     Q.Cast(mob.Position);
-                if (W.IsReady() && BallPos.Distance(mob.Position) < W.Width)
+                if (W.IsReady() && BallPos.LSDistance(mob.Position) < W.Width)
                     W.Cast();
                 else if (E.IsReady())
                     E.CastOnUnit(best);
@@ -402,10 +402,10 @@ namespace OneKeyToWin_AIO_Sebby
 
                 foreach (var minion in allMinions)
                 {
-                    if (W.IsReady() && minion.Distance(BallPos) < W.Range && minion.Health < W.GetDamage(minion) &&
+                    if (W.IsReady() && minion.LSDistance(BallPos) < W.Range && minion.Health < W.GetDamage(minion) &&
                         getCheckBoxItem(farmMenu, "farmW"))
                         W.Cast();
-                    if (!W.IsReady() && E.IsReady() && minion.Distance(BallPos) < E.Width &&
+                    if (!W.IsReady() && E.IsReady() && minion.LSDistance(BallPos) < E.Width &&
                         getCheckBoxItem(farmMenu, "farmE"))
                         E.CastOnUnit(Player);
                 }
@@ -418,7 +418,7 @@ namespace OneKeyToWin_AIO_Sebby
 
 
             if (E.IsReady() && Player.Mana > RMANA + QMANA + WMANA + EMANA &&
-                distance > Player.Distance(target.ServerPosition) + 300)
+                distance > Player.LSDistance(target.ServerPosition) + 300)
             {
                 E.CastOnUnit(Player);
                 return;
@@ -442,7 +442,7 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if ((int) prepos5.Hitchance > 5 - Program.getSliderItem("HitChance"))
                 {
-                    if (prepos5.CastPosition.Distance(prepos5.CastPosition) < Q.Range)
+                    if (prepos5.CastPosition.LSDistance(prepos5.CastPosition) < Q.Range)
                     {
                         Q.Cast(prepos5.CastPosition);
                     }
@@ -455,9 +455,9 @@ namespace OneKeyToWin_AIO_Sebby
 
                 if ((int) prepos.Hitchance > 5 - Program.getSliderItem("HitChance"))
                 {
-                    if (prepos.CastPosition.Distance(prepos.CastPosition) < Q.Range)
+                    if (Q.IsInRange(target))
                     {
-                        Q.Cast(prepos.CastPosition);
+                        Q.Cast(target);
                     }
                 }
             }
@@ -469,13 +469,13 @@ namespace OneKeyToWin_AIO_Sebby
                 BallPos = args.End;
 
             if (!E.IsReady() || !sender.IsEnemy || !getCheckBoxItem(eMenu, "autoW") || Player.Mana < EMANA + RMANA ||
-                sender.Distance(Player.Position) > 1600)
+                sender.LSDistance(Player.Position) > 1600)
                 return;
 
             foreach (
                 var ally in
                     Program.Allies.Where(
-                        ally => ally.IsValid && !ally.IsDead && Player.Distance(ally.ServerPosition) < E.Range))
+                        ally => ally.IsValid && !ally.IsDead && Player.LSDistance(ally.ServerPosition) < E.Range))
             {
                 double dmg = 0;
                 if (args.Target != null && args.Target.NetworkId == ally.NetworkId)
@@ -484,9 +484,9 @@ namespace OneKeyToWin_AIO_Sebby
                 }
                 else
                 {
-                    var castArea = ally.Distance(args.End)*(args.End - ally.ServerPosition).Normalized() +
+                    var castArea = ally.LSDistance(args.End)*(args.End - ally.ServerPosition).Normalized() +
                                    ally.ServerPosition;
-                    if (castArea.Distance(ally.ServerPosition) < ally.BoundingRadius/2)
+                    if (castArea.LSDistance(ally.ServerPosition) < ally.BoundingRadius/2)
                         dmg = dmg + sender.LSGetSpellDamage(ally, args.SData.Name);
                     else
                         continue;
@@ -502,7 +502,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static int CountEnemiesInRangeDeley(Vector3 position, float range, float delay)
         {
-            return Program.Enemies.Where(t => t.IsValidTarget()).Select(t => Prediction.GetPrediction(t, delay).CastPosition).Count(prepos => position.Distance(prepos) < range);
+            return Program.Enemies.Where(t => t.IsValidTarget()).Select(t => Prediction.GetPrediction(t, delay).CastPosition).Count(prepos => position.LSDistance(prepos) < range);
         }
 
         private static void Obj_AI_Base_OnCreate(GameObject obj, EventArgs args)

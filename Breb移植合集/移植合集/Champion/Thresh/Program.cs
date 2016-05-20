@@ -93,7 +93,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (W.IsReady())
             {
-                var NearAllies = Player.GetAlliesInRange(W.Range).Where(x => !x.IsMe).Where(x => !x.IsDead).Where(x => x.Distance(Player.Position) <= W.Range + 250).FirstOrDefault();
+                var NearAllies = Player.GetAlliesInRange(W.Range).Where(x => !x.IsMe).Where(x => !x.IsDead).Where(x => x.LSDistance(Player.Position) <= W.Range + 250).FirstOrDefault();
                 if (NearAllies == null) return;
                 W.Cast(NearAllies.Position);
             }
@@ -170,8 +170,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (getCheckBoxItem(wMenu, "autoW6"))
             {
                 var allyHero =
-                    HeroManager.Allies.Where(ally => ally.Distance(Player) <= W.Range + 550 && !ally.IsMe)
-                        .OrderBy(ally => ally.Distance(gapcloser.End))
+                    HeroManager.Allies.Where(ally => ally.LSDistance(Player) <= W.Range + 550 && !ally.IsMe)
+                        .OrderBy(ally => ally.LSDistance(gapcloser.End))
                         .FirstOrDefault();
                 if (allyHero != null)
                 {
@@ -217,9 +217,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     if (W.IsReady() && getCheckBoxItem(wMenu, "autoW2"))
                     {
                         var allyW = Player;
-                        foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && Player.Distance(ally.ServerPosition) < W.Range + 500))
+                        foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && Player.LSDistance(ally.ServerPosition) < W.Range + 500))
                         {
-                            if (Marked.Distance(ally.ServerPosition) > 800 && Player.Distance(ally.ServerPosition) > 600)
+                            if (Marked.LSDistance(ally.ServerPosition) > 800 && Player.LSDistance(ally.ServerPosition) > 600)
                             {
                                 CastW(LeagueSharp.Common.Prediction.GetPrediction(ally, 1f).CastPosition);
                             }
@@ -250,7 +250,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (Program.Combo)
                 {
-                    if (Player.Distance(t) > getSliderItem(eMenu, "Emin"))
+                    if (Player.LSDistance(t) > getSliderItem(eMenu, "Emin"))
                         CastE(false, t);
                 }
                 else if (getCheckBoxItem(eMenu, "pushE"))
@@ -270,7 +270,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             else
             {
                 var eCastPosition = Epush.GetPrediction(target).CastPosition;
-                var distance = Player.Distance(eCastPosition);
+                var distance = Player.LSDistance(eCastPosition);
                 var ext = Player.Position.Extend(eCastPosition, -distance);
                 E.Cast(ext);
             }
@@ -285,11 +285,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(maxGrab, DamageType.Physical);
 
-                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.Distance(t.ServerPosition) > minGrab)
+                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.LSDistance(t.ServerPosition) > minGrab)
                     Program.CastSpell(Q, t);
             }
 
-            foreach (var t in Program.Enemies.Where(t => t.IsValidTarget(maxGrab) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.Distance(t.ServerPosition) > minGrab))
+            foreach (var t in Program.Enemies.Where(t => t.IsValidTarget(maxGrab) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.LSDistance(t.ServerPosition) > minGrab))
             {
                 if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield))
                 {
@@ -326,7 +326,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
                 if (t.IsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo) && R.IsInRange(t))
                 {
-                    if (Player.Distance(t.ServerPosition) > Player.Distance(t.Position))
+                    if (Player.LSDistance(t.ServerPosition) > Player.LSDistance(t.Position))
                         R.Cast();
                 }
             }
@@ -340,7 +340,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (saveAlly != null)
                 {
                     var blitz = saveAlly.GetBuff("rocketgrab2").Caster;
-                    if (Player.Distance(blitz.Position) <= W.Range + 550 && W.IsReady())
+                    if (Player.LSDistance(blitz.Position) <= W.Range + 550 && W.IsReady())
                     {
 
                         CastW(blitz.Position);
@@ -348,11 +348,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
             }
 
-            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && Player.Distance(ally) < W.Range + 400))
+            foreach (var ally in Program.Allies.Where(ally => ally.IsValid && !ally.IsDead && Player.LSDistance(ally) < W.Range + 400))
             {
                 if (getCheckBoxItem(wMenu, "autoW7") && !ally.IsMe)
                 {
-                    if (ally.Distance(Player) <= W.Range)
+                    if (ally.LSDistance(Player) <= W.Range)
                     {
                         if (ally.IsStunned || ally.IsRooted)
                         {
@@ -367,7 +367,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (nearEnemys >= getSliderItem(wMenu, "wCount") && getSliderItem(wMenu, "wCount") > 0)
                     CastW(W.GetPrediction(ally).CastPosition);
 
-                if (getCheckBoxItem(wMenu, "autoW") && Player.Distance(ally) < W.Range + 100)
+                if (getCheckBoxItem(wMenu, "autoW") && Player.LSDistance(ally) < W.Range + 100)
                 {
                     double dmg = OktwCommon.GetIncomingDamage(ally);
                     if (dmg == 0)
@@ -394,7 +394,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void CastW(Vector3 pos)
         {
-            if (Player.Distance(pos) < W.Range)
+            if (Player.LSDistance(pos) < W.Range)
                 LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(pos); });
             else
                 LeagueSharp.Common.Utility.DelayAction.Add(500, () => { Player.Position.Extend(pos, W.Range); });

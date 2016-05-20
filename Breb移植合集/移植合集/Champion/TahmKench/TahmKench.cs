@@ -50,7 +50,7 @@ namespace UnderratedAIO.Champions
         private void OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             if (getCheckBoxItem(menuM, "useqgc") && Q.IsReady() &&
-                gapcloser.End.Distance(player.Position) < 200 && !gapcloser.Sender.ChampionName.ToLower().Contains("yi"))
+                gapcloser.End.LSDistance(player.Position) < 200 && !gapcloser.Sender.ChampionName.ToLower().Contains("yi"))
             {
                 Q.Cast(gapcloser.End);
             }
@@ -129,7 +129,7 @@ namespace UnderratedAIO.Champions
         private void EatAlly()
         {
             var allies =
-                HeroManager.Allies.Where(a => a.Distance(player) < W.Range && !a.IsMe)
+                HeroManager.Allies.Where(a => a.LSDistance(player) < W.Range && !a.IsMe)
                     .OrderByDescending(a => getSliderItem(AllyDef, "Priority" + a.NetworkId))
                     .ToArray();
             if (allies.Any())
@@ -229,7 +229,7 @@ namespace UnderratedAIO.Champions
                 !justQ && !IncDamages.GetEnemyData(target.NetworkId).IncSkillShot)
             {
                 Orbwalker.DisableMovement = true;
-                if (Game.CursorPos.Distance(target.Position) < 300)
+                if (Game.CursorPos.LSDistance(target.Position) < 300)
                 {
                     Player.IssueOrder(GameObjectOrder.MoveTo, target.Position.LSExtend(player.Position, 100));
                 }
@@ -246,7 +246,7 @@ namespace UnderratedAIO.Champions
                 WSkillShot.CastIfHitchanceEquals(target, HitChance.High, getCheckBoxItem(config, "packets"));
             }
             if (W.IsReady() && !SomebodyInYou && WSkillShot.CanCast(target) &&
-                player.Distance(target) > getSliderItem(menuC, "usewminiRange"))
+                player.LSDistance(target) > getSliderItem(menuC, "usewminiRange"))
             {
                 var mini =
                     MinionManager.GetMinions(W.Range, MinionTypes.All, MinionTeam.NotAlly)
@@ -337,12 +337,12 @@ namespace UnderratedAIO.Champions
 
         private void handeQ(AIHeroClient target, HitChance hitChance)
         {
-            if (player.Distance(target) <= Orbwalking.GetRealAutoAttackRange(target) && !Orbwalker.CanAutoAttack &&
+            if (player.LSDistance(target) <= Orbwalking.GetRealAutoAttackRange(target) && !Orbwalker.CanAutoAttack &&
                 target.GetBuffCount("TahmKenchPDebuffCounter") != 2)
             {
                 Q.CastIfHitchanceEquals(target, hitChance, getCheckBoxItem(config, "packets"));
             }
-            else if (player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target))
+            else if (player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(target))
             {
                 Q.CastIfHitchanceEquals(target, hitChance, getCheckBoxItem(config, "packets"));
             }

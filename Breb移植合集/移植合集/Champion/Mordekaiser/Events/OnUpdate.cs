@@ -60,7 +60,7 @@ namespace Mordekaiser.Events
             }
 
             foreach (var ally in HeroManager.Allies.Where(
-                a => !a.IsDead && !a.IsMe && a.Position.Distance(Player.Position) < W.Range)
+                a => !a.IsDead && !a.IsMe && a.Position.LSDistance(Player.Position) < W.Range)
                 .Where(ally => ally.CountEnemiesInRange(wHitRange) > 0)
                 .Where(ally => Menu.getBoxItem(Menu.MenuW, "Selected" + ally.NetworkId) == 2)
                 )

@@ -207,7 +207,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 //900 - 100%
                 //1500 - 10 %
                 var rDmg = OktwCommon.GetKsDamage(t, R);
-                var distance = Player.Distance(t);
+                var distance = Player.LSDistance(t);
 
                 if (distance > 900 && OktwCommon.CanMove(t))
                 {
@@ -372,7 +372,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 QSplit.Collision = false;
                 var realPosition = QMissile.StartPosition.LSExtend(QMissile.EndPosition,
-                    QMissile.StartPosition.Distance(QMissile.Position) + Game.Ping/2 + 60);
+                    QMissile.StartPosition.LSDistance(QMissile.Position) + Game.Ping/2 + 60);
                 //Q.Cast();
 
                 QSplit.UpdateSourcePosition(realPosition, realPosition);
@@ -414,7 +414,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
             }
 
-            var point2 = points.OrderBy(x => x.Distance(finalPos));
+            var point2 = points.OrderBy(x => x.LSDistance(finalPos));
             points = point2.ToList();
             points.RemoveAt(0);
             points.RemoveAt(1);
@@ -424,7 +424,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void BestAim(Vector3 predictionPos)
         {
             var start = Player.Position.To2D();
-            var c1 = predictionPos.Distance(Player.Position);
+            var c1 = predictionPos.LSDistance(Player.Position);
             var playerPos2d = Player.Position.To2D();
 
             foreach (var point in pointList)
@@ -433,7 +433,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     var posExtend = Player.Position.LSExtend(point, j);
 
-                    var a1 = Player.Distance(posExtend);
+                    var a1 = Player.LSDistance(posExtend);
                     var b1 = (float) Math.Sqrt(c1*c1 - a1*a1);
 
                     if (b1 > QSplit.Range)
@@ -451,7 +451,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     var rEndPos = new Vector3(rightEndPos.X, rightEndPos.Y, ObjectManager.Player.Position.Z);
                     var lEndPos = new Vector3(leftEndPos.X, leftEndPos.Y, ObjectManager.Player.Position.Z);
 
-                    if (lEndPos.Distance(predictionPos) < QSplit.Width)
+                    if (lEndPos.LSDistance(predictionPos) < QSplit.Width)
                     {
                         var collision = Q.GetCollision(playerPos2d, new List<Vector2> {posExtend.To2D()});
                         if (collision.Count > 0)
@@ -464,7 +464,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Q.Cast(pointA);
                         return;
                     }
-                    if (rEndPos.Distance(predictionPos) < QSplit.Width)
+                    if (rEndPos.LSDistance(predictionPos) < QSplit.Width)
                     {
                         var collision = Q.GetCollision(playerPos2d, new List<Vector2> {posExtend.To2D()});
                         if (collision.Count > 0)

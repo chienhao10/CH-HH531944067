@@ -314,8 +314,9 @@ namespace PopBlanc
                      Player.HealthPercent >= getSliderItem(ksMenu, "KSHealth")))
                 {
                     var pos = Prediction.GetPrediction(target, W.Delay, W.Range + WRadius, W.Speed);
-                    if (pos.CastPosition.Distance(target.ServerPosition) < WRadius && W.Cast(pos.CastPosition))
+                    if (pos.CastPosition.LSDistance(target.ServerPosition) < WRadius)
                     {
+                        W.Cast(target);
                         Console.WriteLine("Combo: Cast W");
                         return;
                     }
@@ -340,20 +341,20 @@ namespace PopBlanc
             var unit = obj as Obj_AI_Base;
             if (unit == null || !unit.IsValid)
             {
-                return obj.Position.Distance(Player.ServerPosition);
+                return obj.Position.LSDistance(Player.ServerPosition);
             }
 
-            return unit.ServerPosition.Distance(Player.ServerPosition);
+            return unit.ServerPosition.LSDistance(Player.ServerPosition);
         }
 
         public static float DistanceToPlayer(this Vector3 position)
         {
-            return position.Distance(Player.ServerPosition);
+            return position.LSDistance(Player.ServerPosition);
         }
 
         public static float DistanceToPlayer(this Vector2 position)
         {
-            return position.Distance(Player.ServerPosition);
+            return position.LSDistance(Player.ServerPosition);
         }
 
         private static bool CastEFirst(Obj_AI_Base target)
@@ -418,12 +419,12 @@ namespace PopBlanc
 
             if (chainable != null)
             {
-                if (E.IsReady() && ObjectManager.Player.Distance(chainable) < E.Range)
+                if (E.IsReady() && ObjectManager.Player.LSDistance(chainable) < E.Range)
                 {
                     E.CastIfHitchanceEquals(chainable, HitChance.High);
                 }
 
-                else if (R.IsReady() && ObjectManager.Player.Distance(chainable) < E.Range && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Name == "LeblancSoulShackleM")
+                else if (R.IsReady() && ObjectManager.Player.LSDistance(chainable) < E.Range && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Name == "LeblancSoulShackleM")
                 {
                     ER.CastIfHitchanceEquals(chainable, HitChance.High);
                     Console.WriteLine("2Chainz: Cast R(E)");
@@ -527,7 +528,7 @@ namespace PopBlanc
                 }
             }
 
-            if (!getCheckBoxItem(fleeMenu, "FleeMove") || Player.GetWaypoints().Last().Distance(Game.CursorPos) < 100)
+            if (!getCheckBoxItem(fleeMenu, "FleeMove") || Player.GetWaypoints().Last().LSDistance(Game.CursorPos) < 100)
             {
                 return true;
             }
@@ -587,7 +588,7 @@ namespace PopBlanc
 
         public static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (!E.IsReady() || !getCheckBoxItem(eMenu, "AntiGapcloser") || gapcloser.Sender.IsMe)
+            if (!E.IsReady() || !getCheckBoxItem(eMenu, "AntiGapcloser") || gapcloser.Sender.IsMe || gapcloser.Sender.IsAlly)
             {
                 return;
             }
@@ -657,8 +658,8 @@ namespace PopBlanc
             }
 
             var wPos =
-                WBackPosition.Positions.Where(p => p.Obj.Position.Distance(Game.CursorPos) < 2000)
-                    .OrderBy(p => p.Obj.Position.Distance(Game.CursorPos));
+                WBackPosition.Positions.Where(p => p.Obj.Position.LSDistance(Game.CursorPos) < 2000)
+                    .OrderBy(p => p.Obj.Position.LSDistance(Game.CursorPos));
             if (
                 wPos.Select(w => w.IsR ? R : W)
                     .Any(

@@ -112,7 +112,7 @@ namespace UnderratedAIO.Champions
                 cmbdmg += R.GetDamage(target)*15;
             }
             var bonusDmg = Environment.Hero.GetAdOverTime(player, target, 5);
-            if ((getCheckBoxItem(menuC, "user") && player.Distance(target) < player.AttackRange + 50 &&
+            if ((getCheckBoxItem(menuC, "user") && player.LSDistance(target) < player.AttackRange + 50 &&
                  cmbdmg + bonusDmg > target.Health && target.Health > bonusDmg + 200 && player.HealthPercent < 50) ||
                 (getSliderItem(menuC, "usertf") <= player.CountEnemiesInRange(600) &&
                  player.HealthPercent < 80))
@@ -143,15 +143,15 @@ namespace UnderratedAIO.Champions
                      !getCheckBoxItem(menuC, "useeslow")))
                 {
                     var ePred = E.GetPrediction(target);
-                    if (E.Range > ePred.CastPosition.Distance(player.Position) &&
-                        target.Distance(ePred.CastPosition) < 400)
+                    if (E.Range > ePred.CastPosition.LSDistance(player.Position) &&
+                        target.LSDistance(ePred.CastPosition) < 400)
                     {
                         E.Cast(ePred.CastPosition, getCheckBoxItem(config, "packets"));
                     }
                     else
                     {
-                        if (ePred.CastPosition.Distance(player.Position) < 925 &&
-                            target.Distance(ePred.CastPosition) < 400)
+                        if (ePred.CastPosition.LSDistance(player.Position) < 925 &&
+                            target.LSDistance(ePred.CastPosition) < 400)
                         {
                             E.Cast(
                                 player.Position.Extend(target.Position, E.Range),
@@ -219,13 +219,13 @@ namespace UnderratedAIO.Champions
             if (getCheckBoxItem(menuH, "useeH") && E.IsReady())
             {
                 var ePred = E.GetPrediction(target);
-                if (E.Range > ePred.CastPosition.Distance(player.Position) && target.Distance(ePred.CastPosition) < 400)
+                if (E.Range > ePred.CastPosition.LSDistance(player.Position) && target.LSDistance(ePred.CastPosition) < 400)
                 {
                     E.Cast(ePred.CastPosition, getCheckBoxItem(config, "packets"));
                 }
                 else
                 {
-                    if (ePred.CastPosition.Distance(player.Position) < 925 && target.Distance(ePred.CastPosition) < 400)
+                    if (ePred.CastPosition.LSDistance(player.Position) < 925 && target.LSDistance(ePred.CastPosition) < 400)
                     {
                         E.Cast(
                             player.Position.Extend(target.Position, E.Range), getCheckBoxItem(config, "packets"));

@@ -1,54 +1,55 @@
 ﻿To-Do :
-- Check Lee Sin Manual R to Combo Key Q
-- Vayne R in VHR doesnt automatically use in combo with x enemies around.
-- Darius Q makes him stand still in combo, also doesnt use W.
-- Nidalee Q prediction is waaaaaaay off (idk if there'll ever be a fix for that cos i havent seen a decent Q in any nid script)
-- Olaf doesnt cast W in combo and also throws Q at an enemys feet instead of behind them.
-- Aatrox doesnt work at all
-- ELTrundle casts E in front of the enemy, rather than behind them to stop them escaping.
-- Viktor E is EXTREMELY buggy in waveclear, it will stutterstep about 5x per sec until it reaches X amount of minions it can cast it on.
-- ELSinged doesnt Cast E in combo.
-- Pantheon cancels E in combo mode after using it for 0.5 seconds.
-- Maokai is just hella buggy in general, barely uses Q or W in combo, R cancels itself after enemy leaves the ult radius, doesnt auto attack in combo or wave clear modes.
-
+- Fix the Lee Sin Crash
 - Bard Flee [Don't have Bard so can't fix]
 - Tahm Kench Crash [Don't have TK]
 
 ------------------------------------------------------------------------
 
-To-Check :
-- Make sure to port in Exory's AIO when fully ported to L# SDK.
+-Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
+
+Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
+- SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
+- J4 [https://github.com/diabaths/Mycodes]
+- STahmKench [https://github.com/Screeder/LeagueSharp/blob/master/Common/SStandalone/SChampions/STahmKench/Champions/TahmKench.cs]
+- ExorAshe/Mundo/Graves/Jax/Jhin/Jax/Quinn/Sivir/Karma [https://github.com/nabbhacker/ExoryREPO/tree/master/ExorAIO] (After porting common version, remember to update to SDK version)
+- Kurisu's Blitzcrank/Riven [https://github.com/xKurisu/KurisuSolutions]
+- FreshBooster Braum & LeBlanc & LeeSin [https://github.com/NaviFly/LeagueSharp/tree/master/FreshBooster]
+- Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
+- Zed is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Ze-D%20is%20Back]
+- iDzZed [https://github.com/HikigayaAss/JabbaRepo/tree/master/iDZed]
+- Sharpy AIO Zed [https://github.com/deop7138/Sharpy-AIO/tree/master/Sharpy%20AIO]
+- Swiftly Teemo [https://github.com/Nechrito/SDK/tree/master/Swiftly%20Teemo]
+- Teemo God [https://github.com/MasterGFv2/Teemo_The_Real_God/tree/master/Teemo_The_Real_God]
+- RAREKarthus/Zyra [https://github.com/KyonLeague/RAREScripts/tree/master]
+- Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
+- Hi_Im_Gosu BLM [https://github.com/diabaths/Mycodes/tree/master/hi%20im%20gosu]
+- NechritoRengar [https://github.com/Nechrito/Leaguesharp/tree/master/Nechrito%20Rengar]
+- SephCassio/Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
+- Hikicarry Draven (A really nice manual Draven) [https://github.com/HikigayaAss/hikiMarksman/tree/master/hikiMarksmanRework/hikiMarksmanRework]
+- Rek'Sai - Winner of Fights [https://github.com/HikigayaAss/LeagueSharp/tree/master/RekSai]
+- Underrated Renekton [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/Champions/Renekton.cs]
+- Royal Ziggs [https://github.com/princer007/LSResurrected/tree/master/RoyalZiggy]
+- Badao Draven (https://github.com/badao/Draven/)
+- Taliyah [if there is one]
+- xQx LeBlanc & Irelia [https://github.com/CPMSoft/xQx-LeagueSharp]
+
+Utility Ports [Only doing after Champions are completed] :
+- Universal Leveler [https://github.com/TheSaltyWaffle/LeagueSharp/tree/master/UniversalLeveler]
+- DZAwareness [https://github.com/DZ191/LeagueSharp/tree/master/DZAwarenessAIO]
+- Snitched 3.0 [https://github.com/ChewyMoon/LeagueSharp-Reloaded/blob/master/Snitched%203.0/]
+- AutoSharp (Kappa) [https://github.com/myo/Experimental/tree/master/AutoSharp]
+- OneKeyToBrain [https://github.com/OneKeyToWin/LeagueRepo/tree/master/OneKeyToBrain]
+- BlackFeeder 2.0 [https://github.com/blacky/LeagueSharp/tree/master/BlackFeeder%202.0]
+- Activator # [https://github.com/xKurisu/Activator/tree/master/Activator]
+- NabbActivator: Ultima [https://github.com/nabbhacker/ExoryREPO/tree/master/NabbActivator]
+- IHateSkillshots [https://github.com/Vasilyi/L-/]
+- ControlSharp [https://github.com/tr33s/LeagueSharp/blob/master/ControlSharp/Program.cs]
+- Toxic Player Reform Program [https://github.com/myo/LeagueSharp/blob/master/Toxic%20Player%20Reform%20Program/Toxic%20Player%20Reform%20Program/Program.cs]
+- AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
+- StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
+- OKTW Ward Standalone [Already in PortAIO]
+
+Library Ports [Only doing if I need it for an addon] :
+- ExorAIO Series SDK
 
 ------------------------------------------------------------------------
-
-Port [Will Port One at a time when I'm bored or there's nothing on the to-do] :
-- Tyler1.exe
-- iDzEzreal
-- The Cheater
-- AIOCaster
-- OKTW Brand/Blitzcrank/Corki/Darius/Evelynn/Jhin/Kindred/Kog'Maw/Lux/Morg/Quinn/TF
-- SkyLv Tristana/AurelionSol (These are harder because the menu is so damn large)
-- NoobJaxReloaded
-- Corki/Graves Diabath
-- BadaoKingdom Poppy/GP
-- STahmKench
-- DRengar/Elise/J4
-- ExorAnivia/Ashe/Mundo/Graves/Jax/Jhin/Jax/Quinn/Sivir
-- Kurisu's Blitzcrank
-- FreshBooster Braum & LeBlanc
-- Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
-- Kurisu Riven
-- Chewymoon Shaco
-- SimpleSion
-- ElEasy Sona
-- GosuMechanics Yasuo
-- Universal Leveler or Auto Level Up
-- Sebby Ban Wars
-- Auto Buy
-- DZAwareness
-- Zed is Back
-- Swiftly Teemo
-- ElEasy Ryze
-- Fast Trundle
-- Snitched 3.0
-- https://www.reddit.com/r/summonerschool/comments/4ihcsf/ryze_combo_69/

@@ -77,7 +77,7 @@ namespace LCS_Lucian
 
             if (path.Count() > 0)
             {
-                var epos = path.MinOrDefault(x => x.Distance(Game.CursorPos));
+                var epos = path.MinOrDefault(x => x.LSDistance(Game.CursorPos));
                 if (epos.To3D().UnderTurret(true) || epos.To3D().IsWall())
                 {
                     return;
@@ -111,7 +111,7 @@ namespace LCS_Lucian
                 {
                     if (!LucianSpells.E.IsReady() && LucianSpells.Q.IsReady() &&
                         getCheckBoxItem(comboMenu, "lucian.q.combo") &&
-                        ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.Q.Range &&
+                        ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.Q.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                         ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                     {
@@ -120,7 +120,7 @@ namespace LCS_Lucian
 
                     if (!LucianSpells.E.IsReady() && LucianSpells.W.IsReady() &&
                         getCheckBoxItem(comboMenu, "lucian.w.combo") &&
-                        ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.W.Range &&
+                        ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.W.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                         ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                     {
@@ -147,7 +147,7 @@ namespace LCS_Lucian
                         }
                     }
                     if (LucianSpells.E.IsReady() && getCheckBoxItem(comboMenu, "lucian.e.combo") &&
-                        ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.Q2.Range &&
+                        ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.Q2.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                         ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                     {
@@ -165,14 +165,14 @@ namespace LCS_Lucian
                 else
                 {
                     if (LucianSpells.Q.IsReady() && getCheckBoxItem(comboMenu, "lucian.q.combo") &&
-                        ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.Q.Range &&
+                        ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.Q.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                         ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                     {
                         LucianSpells.Q.CastOnUnit((AIHeroClient) args.Target);
                     }
                     if (LucianSpells.W.IsReady() && getCheckBoxItem(comboMenu, "lucian.w.combo") &&
-                        ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.W.Range &&
+                        ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.W.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                         ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff")
                         && LucianSpells.W.GetPrediction((AIHeroClient) args.Target).Hitchance >= HitChance.Medium)
@@ -180,7 +180,7 @@ namespace LCS_Lucian
                         LucianSpells.W.Cast(((AIHeroClient) args.Target).Position);
                     }
                     if (LucianSpells.E.IsReady() && getCheckBoxItem(comboMenu, "lucian.e.combo") &&
-                        ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.Q2.Range &&
+                        ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.Q2.Range &&
                         Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
                         ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                     {
@@ -201,14 +201,14 @@ namespace LCS_Lucian
                      && ObjectManager.Player.ManaPercent > getSliderItem(jungleMenu, "lucian.jungle.mana"))
             {
                 if (LucianSpells.Q.IsReady() && getCheckBoxItem(jungleMenu, "lucian.q.jungle") &&
-                    ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.Q.Range &&
+                    ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.Q.Range &&
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
                     ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                 {
                     LucianSpells.Q.CastOnUnit((Obj_AI_Minion) args.Target);
                 }
                 if (LucianSpells.W.IsReady() && getCheckBoxItem(jungleMenu, "lucian.w.jungle") &&
-                    ObjectManager.Player.Distance(args.Target.Position) < LucianSpells.W.Range &&
+                    ObjectManager.Player.LSDistance(args.Target.Position) < LucianSpells.W.Range &&
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
                     ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                 {
@@ -285,7 +285,7 @@ namespace LCS_Lucian
         private static readonly Func<AIHeroClient, Obj_AI_Base, bool> CheckDistance =
             (champ, minion) =>
             Math.Abs(
-                champ.Distance(ObjectManager.Player) - (minion.Distance(ObjectManager.Player) + minion.Distance(champ)))
+                champ.LSDistance(ObjectManager.Player) - (minion.LSDistance(ObjectManager.Player) + minion.LSDistance(champ)))
             <= 2;
 
         private static readonly Func<Vector3, Vector3, Vector3, bool> CheckLine = (v1, v2, v3) =>
@@ -315,7 +315,7 @@ namespace LCS_Lucian
                         Obj_AI_Base colisionMinion =
                             LucianSpells.Q2.GetCollision(ObjectManager.Player.Position.To2D(), position)
                                 .FirstOrDefault(
-                                    minion => LucianSpells.Q.CanCast(minion) && LucianSpells.Q.IsInRange(minion) && CheckLine(ObjectManager.Player.Position, minion.Position, target.ServerPosition) && CheckDistance(target, minion) && target.Distance(ObjectManager.Player) > minion.Distance(ObjectManager.Player) && ObjectManager.Player.Distance(minion) + minion.Distance(target) <= ObjectManager.Player.Distance(target) + 10f);
+                                    minion => LucianSpells.Q.CanCast(minion) && LucianSpells.Q.IsInRange(minion) && CheckLine(ObjectManager.Player.Position, minion.Position, target.ServerPosition) && CheckDistance(target, minion) && target.LSDistance(ObjectManager.Player) > minion.LSDistance(ObjectManager.Player) && ObjectManager.Player.LSDistance(minion) + minion.LSDistance(target) <= ObjectManager.Player.LSDistance(target) + 10f);
 
                         if (colisionMinion != null)
                         {
@@ -351,7 +351,7 @@ namespace LCS_Lucian
                     {
                         if (collision.Count >= getSliderItem(clearMenu, "lucian.q.minion.hit.count"))
                         {
-                            if (collision.Last().Distance(ObjectManager.Player) - collision[0].Distance(ObjectManager.Player) <= 600 && collision[0].Distance(ObjectManager.Player) <= 500)
+                            if (collision.Last().LSDistance(ObjectManager.Player) - collision[0].LSDistance(ObjectManager.Player) <= 600 && collision[0].LSDistance(ObjectManager.Player) <= 500)
                             {
                                 LucianSpells.Q.Cast(cs);
                             }

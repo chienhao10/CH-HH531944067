@@ -68,14 +68,14 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     var GapcloserMode = getSliderItem("GapcloserMode");
                     if (GapcloserMode == 0)
                     {
-                        var bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3D();
+                        var bestpoint = Player.Position.LSExtend(Game.CursorPos, DashSpell.Range);
                         if (IsGoodPosition(bestpoint))
                             DashSpell.Cast(bestpoint);
                     }
                     else if (GapcloserMode == 1)
                     {
                         var points = OktwCommon.CirclePoints(10, DashSpell.Range, Player.Position);
-                        var bestpoint = Player.Position.Extend(gapcloser.Sender.Position, -DashSpell.Range).To3D();
+                        var bestpoint = Player.Position.LSExtend(gapcloser.Sender.Position, -DashSpell.Range);
                         var enemies = bestpoint.CountEnemiesInRange(DashSpell.Range);
                         foreach (var point in points)
                         {
@@ -85,7 +85,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                                 enemies = count;
                                 bestpoint = point;
                             }
-                            else if (count == enemies && Game.CursorPos.Distance(point) < Game.CursorPos.Distance(bestpoint))
+                            else if (count == enemies && Game.CursorPos.LSDistance(point) < Game.CursorPos.LSDistance(bestpoint))
                             {
                                 enemies = count;
                                 bestpoint = point;
@@ -105,7 +105,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             var bestpoint = Vector3.Zero;
             if (DashMode == 0)
             {
-                bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3D();
+                bestpoint = Player.Position.LSExtend(Game.CursorPos, DashSpell.Range);
             }
             else if (DashMode == 1)
             {
@@ -117,31 +117,36 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     var dir = (end - start).Normalized();
                     var pDir = dir.Perpendicular();
 
-                    var rightEndPos = end + pDir * Player.Distance(orbT);
-                    var leftEndPos = end - pDir * Player.Distance(orbT);
+                    var rightEndPos = end + pDir * Player.LSDistance(orbT);
+                    var leftEndPos = end - pDir * Player.LSDistance(orbT);
 
                     var rEndPos = new Vector3(rightEndPos.X, rightEndPos.Y, Player.Position.Z);
                     var lEndPos = new Vector3(leftEndPos.X, leftEndPos.Y, Player.Position.Z);
 
-                    bestpoint = Game.CursorPos.Distance(rEndPos) < Game.CursorPos.Distance(lEndPos) ? Player.Position.Extend(rEndPos, DashSpell.Range).To3D() : Player.Position.Extend(lEndPos, DashSpell.Range).To3D();
+                    bestpoint = Game.CursorPos.LSDistance(rEndPos) < Game.CursorPos.LSDistance(lEndPos) ? Player.Position.LSExtend(rEndPos, DashSpell.Range) : Player.Position.LSExtend(lEndPos, DashSpell.Range);
                 }
             }
             else if (DashMode == 2)
             {
                 var points = OktwCommon.CirclePoints(15, DashSpell.Range, Player.Position);
-                bestpoint = Player.Position.Extend(Game.CursorPos, DashSpell.Range).To3D();
+                bestpoint = Player.Position.LSExtend(Game.CursorPos, DashSpell.Range);
                 var enemies = bestpoint.CountEnemiesInRange(350);
                 foreach (var point in points)
                 {
-                    var count = point.CountEnemiesInRange(350);
+                    int count = point.CountEnemiesInRange(350);
                     if (!InAARange(point))
                         continue;
-                    if (count < enemies)
+                    if (point.UnderAllyTurret())
+                    {
+                        bestpoint = point;
+                        enemies = count - 1;
+                    }
+                    else if (count < enemies)
                     {
                         enemies = count;
                         bestpoint = point;
                     }
-                    else if (count == enemies && Game.CursorPos.Distance(point) < Game.CursorPos.Distance(bestpoint))
+                    else if (count == enemies && Game.CursorPos.LSDistance(point) < Game.CursorPos.LSDistance(bestpoint))
                     {
                         enemies = count;
                         bestpoint = point;
@@ -171,7 +176,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                 return true;
             if (Orbwalker.LastTarget != null && Orbwalker.LastTarget.Type == GameObjectType.AIHeroClient)
             {
-                return point.Distance(Orbwalker.LastTarget.Position) < Player.AttackRange;
+                return point.LSDistance(Orbwalker.LastTarget.Position) < Player.AttackRange;
             }
             return point.CountEnemiesInRange(Player.AttackRange) > 0;
         }
@@ -183,7 +188,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                 var segment = DashSpell.Range / 5;
                 for (var i = 1; i <= 5; i++)
                 {
-                    if (Player.Position.Extend(dashPos, i * segment).LSIsWall())
+                    if (Player.Position.LSExtend(dashPos, i * segment).LSIsWall())
                         return false;
                 }
             }

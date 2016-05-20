@@ -184,8 +184,8 @@ namespace HTrackerSDK
 
         public static void OnLoad(Menu m)
         {
-            wardMenu = m.AddSubMenu("眼位计时", "Ward Tracker");
-            wardMenu.Add("enemy.ward", new CheckBox("计时敌人眼", true));
+            wardMenu = m.AddSubMenu("Ward Tracker", "Ward Tracker");
+            wardMenu.Add("enemy.ward", new CheckBox("Track Enemy Wards", true));
 
             Obj_AI_Base.OnProcessSpellCast += Game_OnProcessSpell;
             GameObject.OnCreate += Game_OnCreateObj;
@@ -475,17 +475,17 @@ namespace HTrackerSDK
                         if (ward.WardData.ObjectName == "VisionWard")
                         {
                             Drawing.DrawCircle(wardPos, 100, Color.DeepPink);
-                            Drawing.DrawText(wardScreenPos.X - 50 / 2, wardScreenPos.Y, Color.DeepPink, "真眼");
+                            Drawing.DrawText(wardScreenPos.X - 50 / 2, wardScreenPos.Y, Color.DeepPink, "Pink");
                         }
                         else if (ward.WardData.ObjectName == "BlueTrinket")
                         {
                             Drawing.DrawCircle(wardPos, 100, Color.DodgerBlue);
-                            Drawing.DrawText(wardScreenPos.X - 50 / 2, wardScreenPos.Y, Color.DodgerBlue, "蓝");
+                            Drawing.DrawText(wardScreenPos.X - 50 / 2, wardScreenPos.Y, Color.DodgerBlue, "Blue");
                         }
                         else
                         {
                             Drawing.DrawCircle(wardPos, 100, Color.LawnGreen);
-                            Drawing.DrawText(wardScreenPos.X - 50 / 2, wardScreenPos.Y, Color.White, "眼");
+                            Drawing.DrawText(wardScreenPos.X - 50 / 2, wardScreenPos.Y, Color.White, "Ward");
                             Drawing.DrawText(wardScreenPos.X - 60 / 2, wardScreenPos.Y + 30, Color.LawnGreen, "" + timeStr);
                         }
                     }

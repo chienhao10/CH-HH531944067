@@ -127,7 +127,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     continue;
 
 
-                var PPDistance = need.PredictedPos.Distance(Player.Position);
+                var PPDistance = need.PredictedPos.LSDistance(Player.Position);
 
                 if (PPDistance > 1400)
                     continue;
@@ -136,6 +136,12 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
                 if (timer > 1 && timer < 3)
                 {
+
+                    if (Program.Combo && PPDistance < 1500 && Player.ChampionName == "Quinn" && W.IsReady() && Quinn.getAutoW())
+                    {
+                        W.Cast();
+                    }
+
                     if (Program.Combo && PPDistance < 900 && Player.ChampionName == "Karthus" && Q.IsReady() && Player.CountEnemiesInRange(900) == 0)
                     {
                         Q.Cast(need.PredictedPos);
@@ -155,6 +161,10 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     if (!Orbwalker.IsAutoAttacking && PPDistance < 800 && Player.ChampionName == "Caitlyn" && W.IsReady() && Player.Mana > 200f && PortAIO.Champion.Caitlyn.Program.getBushW() && Utils.TickCount - W.LastCastAttemptT > 2000)
                     {
                         W.Cast(need.PredictedPos);
+                    }
+                    if (!Orbwalker.IsAutoAttacking && PPDistance < 760 && Player.ChampionName == "Jhin" && E.IsReady() && Player.Mana > 200f && OneKeyToWin_AIO_Sebby.Champions.Jhin.getBushE() && Utils.TickCount - E.LastCastAttemptT > 2000)
+                    {
+                        E.Cast(need.PredictedPos);
                     }
                 }
 
@@ -231,11 +241,11 @@ namespace OneKeyToWin_AIO_Sebby.Core
             if (minion != null)
             {
                 if ((sender.Name.ToLower() == "visionward" || sender.Name.ToLower() == "sightward") &&
-                    !HiddenObjList.Exists(x => x.pos.Distance(sender.Position) < 100))
+                    !HiddenObjList.Exists(x => x.pos.LSDistance(sender.Position) < 100))
                 {
                     foreach (var obj in HiddenObjList)
                     {
-                        if (obj.pos.Distance(sender.Position) < 400)
+                        if (obj.pos.LSDistance(sender.Position) < 400)
                         {
                             if (obj.type == 0)
                             {
@@ -257,7 +267,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         });
                 }
             }
-            else if (rengar && sender.Position.Distance(Player.Position) < 800)
+            else if (rengar && sender.Position.LSDistance(Player.Position) < 800)
             {
                 switch (sender.Name)
                 {
@@ -283,12 +293,12 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         HiddenObjList.Remove(obj);
                         return;
                     }
-                    if (obj.type == 3 && obj.pos.Distance(sender.Position) < 100)
+                    if (obj.type == 3 && obj.pos.LSDistance(sender.Position) < 100)
                     {
                         HiddenObjList.Remove(obj);
                         return;
                     }
-                    if (obj.pos.Distance(sender.Position) < 400)
+                    if (obj.pos.LSDistance(sender.Position) < 400)
                     {
                         if (obj.type == 2 && sender.Name.ToLower() == "visionward")
                         {
@@ -312,7 +322,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                 if (args.Target == null)
                     AddWard(args.SData.Name.ToLower(), args.End);
 
-                if ((OracleLens.IsReady() || VisionWard.IsReady() || Sweep.IsReady()) && sender.Distance(Player.Position) < 1200)
+                if ((OracleLens.IsReady() || VisionWard.IsReady() || Sweep.IsReady()) && sender.LSDistance(Player.Position) < 1200)
                 {
                     switch (args.SData.Name.ToLower())
                     {

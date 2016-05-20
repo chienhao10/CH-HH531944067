@@ -210,20 +210,20 @@ namespace D_Shyvana
             }
             if (useW && _w.IsReady())
             {
-                if (t != null && _player.Distance(t) < _e.Range)
+                if (t != null && _player.LSDistance(t) < _e.Range)
                     _w.Cast();
             }
 
             if (useE && _e.IsReady())
             {
-                if (t != null && _player.Distance(t) < _e.Range &&
+                if (t != null && _player.LSDistance(t) < _e.Range &&
                     _e.GetPrediction(t).Hitchance >= Echange())
                     _e.Cast(t);
             }
 
             if (useQ && _q.IsReady())
             {
-                if (t != null && _player.Distance(t) < _w.Range)
+                if (t != null && _player.LSDistance(t) < _w.Range)
                     _q.Cast();
             }
 
@@ -245,19 +245,19 @@ namespace D_Shyvana
             if (useQ && _q.IsReady())
             {
                 var t = TargetSelector.GetTarget(_w.Range, DamageType.Magical);
-                if (t != null && t.Distance(_player.Position) < _w.Range)
+                if (t != null && t.LSDistance(_player.Position) < _w.Range)
                     _q.Cast();
             }
             if (useW && _w.IsReady())
             {
                 var t = TargetSelector.GetTarget(_w.Range, DamageType.Magical);
-                if (t != null && _player.Distance(t) < _w.Range)
+                if (t != null && _player.LSDistance(t) < _w.Range)
                     _w.Cast();
             }
             if (useE && _e.IsReady())
             {
                 var t = TargetSelector.GetTarget(_e.Range, DamageType.Magical);
-                if (t != null && _player.Distance(t) < _e.Range && _e.GetPrediction(t).Hitchance >= Echange())
+                if (t != null && _player.LSDistance(t) < _e.Range && _e.GetPrediction(t).Hitchance >= Echange())
                     _e.Cast(t);
             }
         }
@@ -317,18 +317,18 @@ namespace D_Shyvana
             var useE = getCheckBoxItem(clearMenu, "UseELH");
             foreach (var minion in allMinions)
             {
-                if (useQ && _q.IsReady() && _player.Distance(minion) < 200 &&
+                if (useQ && _q.IsReady() && _player.LSDistance(minion) < 200 &&
                     minion.Health < 0.75*_player.GetSpellDamage(minion, SpellSlot.Q))
                 {
                     _q.Cast();
                 }
 
-                if (_w.IsReady() && useW && _player.Distance(minion) < _w.Range &&
+                if (_w.IsReady() && useW && _player.LSDistance(minion) < _w.Range &&
                     minion.Health < 0.75*_player.GetSpellDamage(minion, SpellSlot.W))
                 {
                     _w.Cast();
                 }
-                if (_e.IsReady() && useE && _player.Distance(minion) < _e.Range &&
+                if (_e.IsReady() && useE && _player.LSDistance(minion) < _e.Range &&
                     minion.Health < 0.75*_player.GetSpellDamage(minion, SpellSlot.E))
                 {
                     _e.Cast(minion);

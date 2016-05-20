@@ -38,7 +38,7 @@ namespace Mordekaiser.Events
                     ObjectManager.Get<Obj_AI_Base>()
                         .FirstOrDefault(
                             m =>
-                                m.Distance(Utils.Player.Self.Position) < 15000 && !m.Name.Contains("inion") && m.IsAlly &&
+                                m.LSDistance(Utils.Player.Self.Position) < 15000 && !m.Name.Contains("inion") && m.IsAlly &&
                                 m.HasBuff("mordekaisercotgpetbuff2"));
             }
         }
@@ -156,7 +156,7 @@ namespace Mordekaiser.Events
             }
 
             foreach (var ally in HeroManager.Allies.Where(
-                a => !a.IsDead && !a.IsMe && a.Position.Distance(Utils.Player.Self.Position) < Spells.W.Range)
+                a => !a.IsDead && !a.IsMe && a.Position.LSDistance(Utils.Player.Self.Position) < Spells.W.Range)
                 .Where(ally => ally.CountEnemiesInRange(Spells.WDamageRadius) > 0)
                 .Where(ally => Menu.getBoxItem(Menu.MenuW, "Selected" + Utils.Player.Self.ChampionName) == 1)
                 )

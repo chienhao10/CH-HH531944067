@@ -39,7 +39,7 @@ namespace TreeLib.SpellData
                 Start = start;
                 End = end;
                 HitBox = hitbox;
-                Distance = Start.Distance(End);
+                Distance = Start.LSDistance(End);
             }
 
             #endregion
@@ -352,7 +352,7 @@ namespace TreeLib.SpellData
             {
                 var from = self[i];
                 var to = self[i + 1];
-                var d = (int) to.Distance(from);
+                var d = (int) to.LSDistance(from);
                 if (d > distance)
                 {
                     return from + distance * (to - from).Normalized();

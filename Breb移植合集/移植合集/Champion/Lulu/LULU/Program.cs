@@ -39,13 +39,13 @@ namespace SKT_Series
 
         public static void InitMenu()
         {
-            _MainMenu = MainMenu.AddMenu("SKT T1_Lulu", "WawooK");
+            _MainMenu = MainMenu.AddMenu("SKT T1_露露", "WawooK");
 
-            comboMenu = _MainMenu.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("Combo_Q", new CheckBox("Use Q"));
-            comboMenu.Add("Combo_EQ", new CheckBox("Use E+Q"));
-            comboMenu.Add("Combo_E", new CheckBox("Use E"));
-            comboMenu.Add("Combo_R", new CheckBox("Use R"));
+            comboMenu = _MainMenu.AddSubMenu("连招", "Combo");
+            comboMenu.Add("Combo_Q", new CheckBox("使用 Q"));
+            comboMenu.Add("Combo_EQ", new CheckBox("使用 E+Q"));
+            comboMenu.Add("Combo_E", new CheckBox("使用 E"));
+            comboMenu.Add("Combo_R", new CheckBox("使用 R"));
 
             wMenu = _MainMenu.AddSubMenu("W", "W");
             wMenu.Add("Combo_W", new CheckBox("W"));
@@ -54,15 +54,15 @@ namespace SKT_Series
                 wMenu.Add("Combo_W" + hero.ChampionName, new CheckBox("W " + hero.ChampionName, false));
             }
 
-            autoMenu = _MainMenu.AddSubMenu("Auto Config", "Auto");
-            autoMenu.Add("W_Gap", new CheckBox("Auto_W Anti"));
-            autoMenu.Add("W_InR", new CheckBox("*W_Interrupt*"));
-            autoMenu.Add("R_InR", new CheckBox("*R_Interrupt*"));
-            autoMenu.Add("AutoE", new CheckBox("Auto E"));
+            autoMenu = _MainMenu.AddSubMenu("自动", "Auto");
+            autoMenu.Add("W_Gap", new CheckBox("自动  W 防突进"));
+            autoMenu.Add("W_InR", new CheckBox("*W_技能打断*"));
+            autoMenu.Add("R_InR", new CheckBox("*R_技能打断*"));
+            autoMenu.Add("AutoE", new CheckBox("自动 E"));
             autoMenu.AddSeparator();
-            autoMenu.AddGroupLabel("Auto R");
-            autoMenu.Add("AREnable", new CheckBox("Enable"));
-            autoMenu.Add("ARHP", new Slider("Auto_R HP %", 10));
+            autoMenu.AddGroupLabel("战斗 R");
+            autoMenu.Add("AREnable", new CheckBox("开启"));
+            autoMenu.Add("ARHP", new Slider("自动 R血量 %", 10));
         }
 
         public static void Game_OnGameLoad()
@@ -122,8 +122,8 @@ namespace SKT_Series
             if (_R.IsReady() && sender.IsValidTarget() && !sender.IsZombie && getCheckBoxItem(autoMenu, "R_InR"))
             {
                 var target = HeroManager.Allies.Where(x => x.IsValidTarget(_R.Range))
-                    .OrderByDescending(x => 1 - x.Distance(sender.Position))
-                    .Find(x => x.Distance(sender.Position) <= 350);
+                    .OrderByDescending(x => 1 - x.LSDistance(sender.Position))
+                    .Find(x => x.LSDistance(sender.Position) <= 350);
                 if (target != null)
                     _R.Cast(target);
             }
@@ -135,27 +135,27 @@ namespace SKT_Series
             try
             {
                 if (sender is AIHeroClient && sender.IsEnemy && args.Target.IsAlly && !args.Target.IsDead &&
-                    _E.IsReady() && args.Target.Position.Distance(Player.ServerPosition) <= _E.Range
+                    _E.IsReady() && args.Target.Position.LSDistance(Player.ServerPosition) <= _E.Range
                     && args.Target.Type != GameObjectType.obj_AI_Minion
                     && getCheckBoxItem(autoMenu, "AutoE"))
                 {
                     var target =
                         ObjectManager.Get<AIHeroClient>()
-                            .OrderBy(x => x.ServerPosition.Distance(args.Target.Position))
-                            .FirstOrDefault(x => x.ServerPosition.Distance(args.Target.Position) < 5);
+                            .OrderBy(x => x.ServerPosition.LSDistance(args.Target.Position))
+                            .FirstOrDefault(x => x.ServerPosition.LSDistance(args.Target.Position) < 5);
                     _E.Cast(target, true);
                 }
                 if (sender is AIHeroClient && sender.IsAlly && args.Target.IsEnemy && !args.Target.IsDead &&
                     _E.IsReady()
                     && args.Target.Type == GameObjectType.AIHeroClient
                     && getCheckBoxItem(autoMenu, "AutoE") &&
-                    sender.ServerPosition.Distance(Player.ServerPosition) <= _E.Range)
+                    sender.ServerPosition.LSDistance(Player.ServerPosition) <= _E.Range)
                 {
                     var Ally =
                         ObjectManager.Get<AIHeroClient>()
-                            .OrderBy(x => x.ServerPosition.Distance(Player.ServerPosition))
+                            .OrderBy(x => x.ServerPosition.LSDistance(Player.ServerPosition))
                             .FirstOrDefault(
-                                x => x.IsAlly && !x.IsMe && x.ServerPosition.Distance(Player.ServerPosition) < _E.Range);
+                                x => x.IsAlly && !x.IsMe && x.ServerPosition.LSDistance(Player.ServerPosition) < _E.Range);
                     if (sender.IsMe && Ally != null)
                     {
                     }
@@ -207,8 +207,8 @@ namespace SKT_Series
                         foreach (
                             var target in
                                 HeroManager.AllHeroes.Where(
-                                    x => x.IsValidTarget(_E.Range) && x.Distance(hero.Position) <= _Q.Range)
-                                    .OrderByDescending(y => 1 - y.Distance(hero.Position)))
+                                    x => x.IsValidTarget(_E.Range) && x.LSDistance(hero.Position) <= _Q.Range)
+                                    .OrderByDescending(y => 1 - y.LSDistance(hero.Position)))
                         {
                             _E.Cast(target);
                             _Q.Cast(hero);
@@ -222,8 +222,8 @@ namespace SKT_Series
                                 MinionManager.GetMinions(_E.Range, MinionTypes.All, MinionTeam.All)
                                     .Where(x => x.IsValidTarget(_E.Range)
                                                 && !x.Name.ToLower().Contains("ward") &&
-                                                x.Distance(hero.Position) <= _Q.Range)
-                                    .OrderByDescending(y => 1 - y.Distance(hero.Position)))
+                                                x.LSDistance(hero.Position) <= _Q.Range)
+                                    .OrderByDescending(y => 1 - y.LSDistance(hero.Position)))
                         {
                         }
                     }
@@ -250,7 +250,7 @@ namespace SKT_Series
                         .FirstOrDefault(
                             x =>
                                 x.HealthPercent < getSliderItem(autoMenu, "ARHP") &&
-                                x.Distance(Player.ServerPosition) < _R.Range && !x.IsDead && x.IsAlly);
+                                x.LSDistance(Player.ServerPosition) < _R.Range && !x.IsDead && x.IsAlly);
                 if (AutoR != null && _R.IsReady() && !Player.IsRecalling())
                 {
                     _R.Cast(AutoR);

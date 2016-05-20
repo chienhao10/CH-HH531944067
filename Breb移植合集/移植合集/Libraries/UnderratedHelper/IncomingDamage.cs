@@ -108,9 +108,9 @@ namespace UnderratedAIO.Helpers
                     foreach (var Hero in
                         HeroManager.AllHeroes.Where(
                             h =>
-                                h.Distance(SkillshotDetector.ActiveSkillshots[i].Caster) <
+                                h.LSDistance(SkillshotDetector.ActiveSkillshots[i].Caster) <
                                 SkillshotDetector.ActiveSkillshots[i].SkillshotData.Range)
-                            .OrderBy(h => h.Distance(SkillshotDetector.ActiveSkillshots[i].Caster)))
+                            .OrderBy(h => h.LSDistance(SkillshotDetector.ActiveSkillshots[i].Caster)))
                     {
                         SkillshotDetector.ActiveSkillshots[i].Game_OnGameUpdate();
                         if (SkillshotDetector.ActiveSkillshots[i].Caster.NetworkId != Hero.NetworkId &&
@@ -125,7 +125,7 @@ namespace UnderratedAIO.Helpers
                                 IncomingDamagesAlly.Concat(IncomingDamagesEnemy)
                                     .FirstOrDefault(h => h.Hero.NetworkId == Hero.NetworkId);
                             var missileSpeed =
-                                SkillshotDetector.ActiveSkillshots[i].GetMissilePosition(0).Distance(Hero)/
+                                SkillshotDetector.ActiveSkillshots[i].GetMissilePosition(0).LSDistance(Hero)/
                                 SkillshotDetector.ActiveSkillshots[i].SkillshotData.MissileSpeed;
                             missileSpeed = missileSpeed > 5f ? 5f : missileSpeed;
                             var newData = new Dmg(
@@ -216,7 +216,7 @@ namespace UnderratedAIO.Helpers
                                 .FirstOrDefault(i => i.Hero.NetworkId == target.NetworkId);
                         if (data != null)
                         {
-                            var missileSpeed = sender.Distance(target)/args.SData.MissileSpeed +
+                            var missileSpeed = sender.LSDistance(target)/args.SData.MissileSpeed +
                                                args.SData.SpellCastTime;
                             missileSpeed = missileSpeed > 1f ? 0.8f : missileSpeed;
                             if (Orbwalking.IsAutoAttack(args.SData.Name))

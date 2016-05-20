@@ -56,29 +56,28 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Berb.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EloBuddy\Berb.Common\bin\Debug\Berb.Common.dll</HintPath>
+    <Reference Include="Berb.Common">
+      <HintPath>..\..\..\Downloads\Berb.Common.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy">
-      <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
+      <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy.Sandbox">
-      <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.Sandbox.dll</HintPath>
+      <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.Sandbox.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy.SDK">
-      <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.SDK.dll</HintPath>
+      <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.SDK.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EloBuddy\Berb.Common\bin\Debug\SharpDX.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX.Direct3D9, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\EloBuddy\Berb.Common\bin\Debug\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.Direct3D9.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -146,9 +145,25 @@
     <Compile Include="Champion\Riven\Classes\Modes\Lane.cs" />
     <Compile Include="Champion\Riven\Classes\Spells.cs" />
     <Compile Include="Champion\Riven\Program.cs" />
+    <Compile Include="Dual-Port\AhriSharp\Ahri.cs" />
+    <Compile Include="Dual-Port\AhriSharp\Helper.cs" />
+    <Compile Include="Dual-Port\AhriSharp\Program.cs" />
     <Compile Include="Dual-Port\AJayce\Helper.cs" />
     <Compile Include="Dual-Port\AJayce\Jayce.cs" />
     <Compile Include="Dual-Port\AJayce\MenuConfig.cs" />
+    <Compile Include="Dual-Port\BadaoGP\BadaoChecker.cs" />
+    <Compile Include="Dual-Port\BadaoGP\BadaoMainVariables.cs" />
+    <Compile Include="Dual-Port\BadaoGP\BadaoMath.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppy.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyAssasinate.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyAuto.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyCombo.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyConfig.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyHarass.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyHelper.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyJungleClear.cs" />
+    <Compile Include="Dual-Port\BadaoPoppy\BadaoPoppyVariables.cs" />
+    <Compile Include="Dual-Port\BadaoRiven\Program.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\CSPlugin.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Ashe.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Kalista.cs" />
@@ -191,10 +206,39 @@
     <Compile Include="Champion\FiddleSticks\Core\Piorty.cs" />
     <Compile Include="Champion\FiddleSticks\Core\Spells.cs" />
     <Compile Include="Champion\FiddleSticks\Programs.cs" />
+    <Compile Include="Dual-Port\ChewyMoon Shaco\ChewyMoonShaco.cs" />
+    <Compile Include="Dual-Port\ChewyMoon Shaco\DangerDB.cs" />
+    <Compile Include="Dual-Port\ChewyMoon Shaco\Illuminati.cs" />
+    <Compile Include="Dual-Port\ChewyMoon Shaco\ShacoUtil.cs" />
+    <Compile Include="Dual-Port\D-Corki\Program.cs" />
+    <Compile Include="Dual-Port\D-Elise\Program.cs" />
+    <Compile Include="Dual-Port\D-Graves\Program.cs" />
+    <Compile Include="Dual-Port\D-Rengar\Program.cs" />
     <Compile Include="Dual-Port\e.MotionKatarina\Program.cs" />
+    <Compile Include="Dual-Port\ElEasy Ryze\Ryze.cs" />
+    <Compile Include="Dual-Port\ElEasy Sona\Sona.cs" />
+    <Compile Include="Dual-Port\ElEkko\DrawDamage.cs" />
+    <Compile Include="Dual-Port\ElEkko\Drawings.cs" />
+    <Compile Include="Dual-Port\ElEkko\ElEkko.cs" />
+    <Compile Include="Dual-Port\ElEkko\ElEkkoMenu.cs" />
+    <Compile Include="Dual-Port\ElEkko\Program.cs" />
+    <Compile Include="Dual-Port\ElRumble\ElRumbleMenu.cs" />
+    <Compile Include="Dual-Port\ElRumble\Rumble.cs" />
     <Compile Include="Dual-Port\ElXerath\Drawings.cs" />
     <Compile Include="Dual-Port\ElXerath\ElXerathMenu.cs" />
     <Compile Include="Dual-Port\ElXerath\Xerath.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Anivia.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Modes\Automatic.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Modes\PvM\Clear.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Modes\PvM\LastHit.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Modes\PvP\Combo.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Modes\PvP\Harass.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Modes\PvP\Killsteal.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Modes\PvP\Weaving.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Utilities\Menus.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Utilities\Methods.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Utilities\Spells.cs" />
+    <Compile Include="Dual-Port\ExorAnivia\Properties\Utilities\Targets.cs" />
     <Compile Include="Dual-Port\ExorCait\Caitlyn.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Modes\Automatic.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Modes\PvM\Clear.cs" />
@@ -207,10 +251,38 @@
     <Compile Include="Dual-Port\ExorCait\Properties\Utilities\Methods.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Utilities\Spells.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\FastTrundle\FastTrundle.cs" />
+    <Compile Include="Dual-Port\FastTrundle\FastTrundleMenu.cs" />
+    <Compile Include="Dual-Port\FreshBooster LeeSin\LeeSin.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\Collision.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\Config.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\EvadeSpellData.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\EvadeSpellDatabase.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\Geometry.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\Program.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\Skillshot.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\SkillshotDetector.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\SpellData.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\SpellDatabase.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\Utils.cs" />
+    <Compile Include="Dual-Port\GosuMechanics Yasuo\Yasuo.cs" />
+    <Compile Include="Dual-Port\HeavenStrikeReksaj\Program.cs" />
+    <Compile Include="Dual-Port\hi_im_gosu\Program.cs" />
+    <Compile Include="Dual-Port\iDzEzreal\Ezreal.cs" />
+    <Compile Include="Dual-Port\iDzEzreal\EzrealBootstrap.cs" />
+    <Compile Include="Dual-Port\iDzEzreal\MenuHelper\MenuGenerator.cs" />
+    <Compile Include="Dual-Port\iDzEzreal\Modules\AutoHarassModule.cs" />
+    <Compile Include="Dual-Port\iDzEzreal\Modules\QKSModule.cs" />
+    <Compile Include="Dual-Port\iDzEzreal\Modules\SemiRModule.cs" />
+    <Compile Include="Dual-Port\iDzEzreal\Variables.cs" />
+    <Compile Include="Dual-Port\iLucian\EPosition.cs" />
+    <Compile Include="Dual-Port\iLucian\Jungle.cs" />
     <Compile Include="Dual-Port\iLucian\Lucian.cs" />
     <Compile Include="Dual-Port\iLucian\MenuHelper\MenuGenerator.cs" />
     <Compile Include="Dual-Port\iLucian\Utils\MathHelper.cs" />
     <Compile Include="Dual-Port\iLucian\Variables.cs" />
+    <Compile Include="Dual-Port\iTwitch\Extensions.cs" />
+    <Compile Include="Dual-Port\iTwitch\Twitch.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\Dmg.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\HpBarIndicator.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\Logic.cs" />
@@ -239,6 +311,23 @@
     <Compile Include="Dual-Port\NechritoTwitch\MenuConfig.cs" />
     <Compile Include="Dual-Port\NechritoTwitch\Program.cs" />
     <Compile Include="Dual-Port\NechritoTwitch\Spells.cs" />
+    <Compile Include="Dual-Port\NoobJaxReloaded\Jax.cs" />
+    <Compile Include="Dual-Port\OKTWBlitzcrank\Blitzcrank.cs" />
+    <Compile Include="Dual-Port\OKTWBrand\Brand.cs" />
+    <Compile Include="Dual-Port\OKTWCorki\Corki.cs" />
+    <Compile Include="Dual-Port\OKTWDarius\Darius.cs" />
+    <Compile Include="Dual-Port\OKTWEvelynn\Evelynn.cs" />
+    <Compile Include="Dual-Port\OKTWJhin\Jhin.cs" />
+    <Compile Include="Dual-Port\OKTWKayle\Kayle.cs" />
+    <Compile Include="Dual-Port\OKTWKindred\Kindred.cs" />
+    <Compile Include="Dual-Port\OKTWKogMaw\KogMaw.cs" />
+    <Compile Include="Dual-Port\OKTWLux\Lux.cs" />
+    <Compile Include="Dual-Port\OKTWMorgana\Morgana.cs" />
+    <Compile Include="Dual-Port\OKTWQuinn\Quinn.cs" />
+    <Compile Include="Dual-Port\OKTWTwistedFate\TwistedFate.cs" />
+    <Compile Include="Dual-Port\SimpleSion\Sion.cs" />
+    <Compile Include="Dual-Port\Tyler1\Program.cs" />
+    <Compile Include="Dual-Port\Tyler1\Utils.cs" />
     <Compile Include="Dual-Port\UnderratedFiora\Fiora.cs" />
     <Compile Include="Champion\Fizz\Program.cs" />
     <Compile Include="Champion\Galio\Program.cs" />
@@ -589,36 +678,24 @@
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Utility\Variables.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Utility\VHRBootstrap.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\VHR.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Collision.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Config.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\EarlyEvade.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Evader.cs" />
+    <Compile Include="Dual-Port\VoliPower\HPIndicator.cs" />
+    <Compile Include="Dual-Port\VoliPower\Program.cs" />
+    <Compile Include="Dual-Port\xQx LeBlanc\Common\CommonBuffManager.cs" />
+    <Compile Include="Dual-Port\xQx LeBlanc\Common\CommonGeometry.cs" />
+    <Compile Include="Dual-Port\xQx LeBlanc\Program.cs" />
+    <Compile Include="Dual-Port\xQx LeBlanc\Slide.cs" />
+    <Compile Include="Dual-Port\xQx LeBlanc\Utils.cs" />
     <Compile Include="Dual-Port\YasuoPro\Evade\EvadeSpellData.cs" />
     <Compile Include="Dual-Port\YasuoPro\Evade\EvadeSpellDatabase.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Geometry.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Helpers.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Pathfinding\Core.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Pathfinding\Node.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Pathfinding\Path.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Pathfinding\PathFollower.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Pathfinding\PriorityQueue.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Pathfinding\Utils.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Program.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Skillshot.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\SkillshotDetector.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\SpellBlocker.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\SpellData.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\SpellDatabase.cs" />
-    <Compile Include="Dual-Port\YasuoPro\Evade\Utils.cs" />
     <Compile Include="Dual-Port\YasuoPro\Extensions.cs" />
     <Compile Include="Dual-Port\YasuoPro\Helper.cs" />
     <Compile Include="Dual-Port\YasuoPro\Init.cs" />
     <Compile Include="Dual-Port\YasuoPro\ItemManager.cs" />
-    <Compile Include="Dual-Port\YasuoPro\TargettedDanger.cs" />
     <Compile Include="Dual-Port\YasuoPro\WallJump.cs" />
     <Compile Include="Dual-Port\YasuoPro\Yasuo.cs" />
-    <Compile Include="Dual-Port\YasuoPro\YasuoEvade.cs" />
     <Compile Include="Dual-Port\YasuoPro\YasuoMenu.cs" />
+    <Compile Include="Dual-Port\Ze-D is Back\DangerDB.cs" />
+    <Compile Include="Dual-Port\Ze-D is Back\Program.cs" />
     <Compile Include="Libraries\DZLib\Core\DZAntigapcloser.cs" />
     <Compile Include="Libraries\DZLib\Core\DZInterrupter.cs" />
     <Compile Include="Libraries\DZLib\Geometry\DZGeometry.cs" />
@@ -626,6 +703,7 @@
     <Compile Include="Libraries\DZLib\Hero\HeroExtensions.cs" />
     <Compile Include="Libraries\DZLib\Positioning\PositioningHelper.cs" />
     <Compile Include="Libraries\DZLib\Positioning\SafePosition.cs" />
+    <Compile Include="Libraries\ElEasy\IPlugin.cs" />
     <Compile Include="Libraries\Sebby-OKTW\Movement.cs" />
     <Compile Include="Libraries\ValvraveSharp\Core\Common.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\Collision.cs" />
@@ -832,8 +910,14 @@
     <Compile Include="Utility\ElUtilitySuite\Summoners\Ignite.cs" />
     <Compile Include="Utility\ElUtilitySuite\Summoners\Mark.cs" />
     <Compile Include="Utility\ElUtilitySuite\Summoners\Smite.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Trackers\BuildingTracker.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Trackers\CooldownTracker.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Trackers\HealthTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Trackers\JungleTracker.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Trackers\Surrender.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\AntiStealth.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Utility\AutoLantern.cs" />
+    <Compile Include="Utility\ElUtilitySuite\Utility\BlueTrinket.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\Flash.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\UltimateLeveler.cs" />
     <Compile Include="Utility\EzEvade\Core\Evade.cs" />
@@ -906,9 +990,14 @@
     <Compile Include="Utility\NabbTracker\Utilities\WardTracker.cs" />
     <Compile Include="Utility\RandomUlt\Helpers\LastPositions.cs" />
     <Compile Include="Utility\RandomUlt\Program.cs" />
+    <Compile Include="Utility\SebbyBanWars\Program.cs" />
     <Compile Include="Utility\SkinHack\Program.cs" />
     <Compile Include="Utility\SkinSDK\MenuConfig.cs" />
     <Compile Include="Utility\SkinSDK\Program.cs" />
+    <Compile Include="Utility\TheCheater\IDetector.cs" />
+    <Compile Include="Utility\TheCheater\LeaguesharpOrbwalkDetector.cs" />
+    <Compile Include="Utility\TheCheater\SacOrbwalkerDetector.cs" />
+    <Compile Include="Utility\TheCheater\TheCheater.cs" />
     <Compile Include="Utility\UniversalGankAlerter\Program.cs" />
     <Compile Include="Utility\UniversalPingBlock\Program.cs" />
     <Compile Include="Utility\UniversalRecallTracker\Program.cs" />

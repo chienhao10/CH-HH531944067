@@ -68,17 +68,17 @@ namespace Mordekaiser
 
             if (SmiteSlot != SpellSlot.Unknown || IgniteSlot != SpellSlot.Unknown)
             {
-                menu.AddSubMenu("召唤师技能");
+                menu.AddSubMenu("Summoners");
                 if (SmiteSlot != SpellSlot.Unknown)
                 {
                     menu.Add("Spells.Smite.Enemy",
-                        new KeyBind("对英雄使用惩戒!", false, KeyBind.BindTypes.PressToggle, 'U'));
+                        new KeyBind("Use Smite for Enemy!", false, KeyBind.BindTypes.PressToggle, 'U'));
                     menu.Add("Spells.Smite.Monster",
-                        new KeyBind("对野怪使用惩戒!", false, KeyBind.BindTypes.PressToggle, 'J'));
+                        new KeyBind("Use Smite for Monsters!", false, KeyBind.BindTypes.PressToggle, 'J'));
                 }
                 if (IgniteSlot != SpellSlot.Unknown)
                 {
-                    menu.Add("Spells.Ignite", new CheckBox("使用点燃!"));
+                    menu.Add("Spells.Ignite", new CheckBox("Use Ignite!"));
                 }
             }
 
@@ -144,7 +144,7 @@ namespace Mordekaiser
             var itemCheck = SmiteBlue.Any(i => LeagueSharp.Common.Items.HasItem(i))
                             || SmiteRed.Any(i => LeagueSharp.Common.Items.HasItem(i));
             if (itemCheck && Program.Player.Spellbook.CanUseSpell(SmiteSlot) == SpellState.Ready
-                && t.Distance(Program.Player.Position) < range)
+                && t.LSDistance(Program.Player.Position) < range)
             {
                 Program.Player.Spellbook.CastSpell(SmiteSlot, t);
             }
@@ -196,7 +196,7 @@ namespace Mordekaiser
             var range = 550f;
             var use = getCheckBoxItem("Spells.Ignite");
             if (use && Program.Player.Spellbook.CanUseSpell(IgniteSlot) == SpellState.Ready
-                && t.Distance(Program.Player.Position) < range
+                && t.LSDistance(Program.Player.Position) < range
                 && Program.Player.GetSummonerSpellDamage(t, Damage.SummonerSpell.Ignite) > t.Health)
             {
                 Program.Player.Spellbook.CastSpell(IgniteSlot, t);

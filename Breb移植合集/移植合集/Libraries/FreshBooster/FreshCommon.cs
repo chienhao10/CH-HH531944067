@@ -204,14 +204,14 @@ namespace FreshBooster
         public static Obj_AI_Base GetFindObj(string name, float range, Vector3 Pos)
         {
             var CusPos = Pos;
-            if (ObjectManager.Player.Distance(CusPos) > range)
+            if (ObjectManager.Player.LSDistance(CusPos) > range)
                 CusPos = ObjectManager.Player.Position.Extend(Game.CursorPos, range).To3D();
             var GetObj =
                 ObjectManager.Get<Obj_AI_Base>()
                     .FirstOrDefault(
                         f =>
-                            f.IsAlly && !f.IsMe && f.Position.Distance(ObjectManager.Player.Position) < range &&
-                            f.Distance(CusPos) < 150);
+                            f.IsAlly && !f.IsMe && f.Position.LSDistance(ObjectManager.Player.Position) < range &&
+                            f.LSDistance(CusPos) < 150);
             return GetObj;
         }
 

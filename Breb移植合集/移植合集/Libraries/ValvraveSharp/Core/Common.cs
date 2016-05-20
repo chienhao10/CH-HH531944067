@@ -34,7 +34,7 @@ namespace Valvrave_Sharp.Core
             {
                 return false;
             }
-            return spell.GetPredPosition(unit).DistanceToPlayer() < spell.Range;
+            return spell.IsInRange(spell.GetPredPosition(unit));
         }
 
         internal static bool CanLastHit(this Spell spell, Obj_AI_Base unit, double dmg, double subDmg = 0)
@@ -97,7 +97,11 @@ namespace Valvrave_Sharp.Core
             {
                 return false;
             }
-            var obj = col.First();
+            var obj = col.FirstOrDefault();
+            if (obj == null)
+            {
+                return false;
+            }
             return obj.Health <= GetSmiteDmg && obj.DistanceToPlayer() < Program.SmiteRange && Program.Player.Spellbook.CastSpell(Program.Smite, obj);
         }
 
@@ -120,7 +124,7 @@ namespace Valvrave_Sharp.Core
         internal static Vector3 GetPredPosition(this Spell spell, Obj_AI_Base unit, bool useRange = false)
         {
             var pos = Movement.GetPrediction(unit, spell.Delay, 1, spell.Speed).UnitPosition;
-            return useRange && spell.From.Distance(pos) >= spell.Range ? unit.ServerPosition : pos;
+            return useRange && !spell.IsInRange(pos) ? unit.ServerPosition : pos;
         }
 
         internal static bool IsCasted(this CastStates state)

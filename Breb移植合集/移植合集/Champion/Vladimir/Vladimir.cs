@@ -100,7 +100,7 @@ namespace ElVladimirReborn
                 "ElVladimir.Settings.AntiGapCloser.Active");
 
             if (gapCloserActive && spells[Spells.W].IsReady()
-                && gapcloser.Sender.Distance(Player) < spells[Spells.W].Range
+                && gapcloser.Sender.LSDistance(Player) < spells[Spells.W].Range
                 && Player.CountEnemiesInRange(spells[Spells.Q].Range) >= 1)
             {
                 spells[Spells.W].Cast();
@@ -117,7 +117,7 @@ namespace ElVladimirReborn
                     return;
                 }
 
-                var hits = HeroManager.Enemies.Where(x => x.Distance(target) <= 400f).ToList();
+                var hits = HeroManager.Enemies.Where(x => x.LSDistance(target) <= 400f).ToList();
                 if (
                     hits.Any(
                         hit =>
@@ -149,12 +149,12 @@ namespace ElVladimirReborn
             if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.E") && spells[Spells.E].IsReady() && target.IsValidTarget(800))
             {
                 Orbwalker.OrbwalkTo(Game.CursorPos);
-                if (Player.Distance(target) < 800)
+                if (Player.LSDistance(target) < 800)
                 {
                     spells[Spells.E].StartCharging();
                     if (spells[Spells.E].IsCharging)
                     {
-                        if (Player.Distance(target) >= 550)
+                        if (Player.LSDistance(target) >= 550)
                         {
                             spells[Spells.E].Cast();
                         }
@@ -189,7 +189,7 @@ namespace ElVladimirReborn
                 }
             }
 
-            if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.Ignite") && Player.Distance(target) <= 600 && Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite) >= target.Health)
+            if (getCheckBoxItem(ElVladimirMenu.comboMenu, "ElVladimir.Combo.Ignite") && Player.LSDistance(target) <= 600 && Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite) >= target.Health)
             {
                 Player.Spellbook.CastSpell(ignite, target);
             }
@@ -211,7 +211,7 @@ namespace ElVladimirReborn
 
             if (getCheckBoxItem(ElVladimirMenu.harassMenu, "ElVladimir.Harass.E") && spells[Spells.E].IsReady() && target.IsValidTarget(800))
             {
-                if (Player.Distance(target) < 800)
+                if (Player.LSDistance(target) < 800)
                 {
                     spells[Spells.E].StartCharging();
                 }

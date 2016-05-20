@@ -152,16 +152,16 @@ namespace ElUtilitySuite.Summoners
                                  },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Malzahar", Name = "alzaharnethergrasp",
+                                     Champion = "Malzahar", Name = "MalzaharR",
                                      MenuName = "Malzahar Nether Grasp (R)", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R, Interval = .8
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
-                                     Champion = "Malzahar", Name = "alzaharmaleficvisions",
+                                     Champion = "Malzahar", Name = "malzaharerecent",
                                      MenuName = "Malzahar Ficvisions (E)", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E, Interval = .8
-                                 },*/
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Soraka", Name = "SorakaESnare", MenuName = "Soraka E snare",
@@ -491,7 +491,7 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "annie", Name = "stun", MenuName = "Annie Stun", Evade = false,
+                                     Champion = "annie", Name = "Stun", MenuName = "Annie Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
@@ -499,6 +499,11 @@ namespace ElUtilitySuite.Summoners
                                  {
                                      Champion = "Warwick", Name = "suppression", MenuName = "Warwick (R)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
+                                 },
+                              new CleanseSpell
+                                 {
+                                     Champion = "maokai", Name = "MaokaiUnstableGrowthRoot", MenuName = "Maokai (W)", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W
                                  },
                              new CleanseSpell
                                  {
@@ -815,10 +820,10 @@ namespace ElUtilitySuite.Summoners
         {
             cleanseMenu = rootMenu.AddSubMenu("Cleanse/QSS", "CleanseV3");
 
-            cleanseMenu.Add("CleanseActivated", new CheckBox("Use Cleanse"));
+            cleanseMenu.Add("CleanseActivated", new CheckBox("使用净化"));
             cleanseMenu.AddSeparator();
 
-            cleanseMenu.AddGroupLabel("Spells to QSS");
+            cleanseMenu.AddGroupLabel("使用水银的技能");
             foreach (var spell in Spells)
             {
                 cleanseMenu.Add(spell.MenuName != null ? spell.MenuName.Replace(" ", string.Empty) : spell.Name, new CheckBox(string.IsNullOrEmpty(spell.MenuName) ? spell.Name : spell.MenuName));
@@ -826,8 +831,8 @@ namespace ElUtilitySuite.Summoners
 
             cleanseMenu.AddSeparator();
 
-            cleanseMenu.AddGroupLabel("Humanizer Delay");
-            cleanseMenu.Add("CleanseMaxDelay", new Slider("Delay (MS)", 800, 0, 1500));
+            cleanseMenu.AddGroupLabel("人性化延迟");
+            cleanseMenu.Add("CleanseMaxDelay", new Slider("延迟 (毫秒)", 800, 0, 1500));
             cleanseMenu.AddSeparator();
 
         }

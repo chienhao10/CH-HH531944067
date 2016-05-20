@@ -50,10 +50,10 @@ namespace Warwick
                 return
                     (from ally in
                         HeroManager.Allies.Where(
-                            a => a.Distance(Player.Position) < W.Range && GetPriorityAllies(a.ChampionName))
+                            a => a.LSDistance(Player.Position) < W.Range && GetPriorityAllies(a.ChampionName))
                      from enemies in
                          HeroManager.Enemies.Where(
-                             e => e.Distance(ally) < ally.AttackRange + ally.BoundingRadius && !e.IsDead)
+                             e => e.LSDistance(ally) < ally.AttackRange + ally.BoundingRadius && !e.IsDead)
                      select ally).FirstOrDefault();
             }
         }
@@ -336,12 +336,12 @@ namespace Warwick
             return (from ally in
                 HeroManager.Allies.Where(
                     a =>
-                        !a.IsMe && !a.IsDead && !a.IsZombie && a.Distance(t) < 1200 && a.Health > t.Health / 2 &&
+                        !a.IsMe && !a.IsDead && !a.IsZombie && a.LSDistance(t) < 1200 && a.Health > t.Health / 2 &&
                         a.Health > a.Level * 40)
                     let aMov = ally.MoveSpeed
                     let aPos = ally.Position
                     let tPos = t.Position
-                    where aPos.Distance(tPos) < aMov * 1.8
+                    where aPos.LSDistance(tPos) < aMov * 1.8
                     select aMov).Any()
                 ? 1
                 : 0;
@@ -499,7 +499,7 @@ namespace Warwick
                     case 2:
                         {
                             if (Q.GetDamage(qMinions[0]) > qMinions[0].Health &&
-                                Player.Distance(qMinions[0]) > Orbwalking.GetRealAutoAttackRange(null) + 65)
+                                Player.LSDistance(qMinions[0]) > Orbwalking.GetRealAutoAttackRange(null) + 65)
                                 Q.CastOnUnit(qMinions[0]);
                             break;
                         }
@@ -633,7 +633,7 @@ namespace Warwick
                     foreach (var d in from buff in enemy.Buffs
                                       where buff.Name == "bloodscent_target"
                                       select
-                                          new Geometry.Polygon.Line(Player.Position, enemy.Position, Player.Distance(enemy.Position)))
+                                          new Geometry.Polygon.Line(Player.Position, enemy.Position, Player.LSDistance(enemy.Position)))
                     {
                         d.Draw(Color.Red, 2);
 

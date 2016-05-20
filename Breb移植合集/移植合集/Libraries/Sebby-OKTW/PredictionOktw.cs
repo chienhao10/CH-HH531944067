@@ -312,6 +312,7 @@ namespace SebbyLib.Prediction
             {
                 result = WayPointAnalysis(result, input);
                 //.debug(input.Unit.BaseSkinName + result.Hitchance);
+
             }
 
             //Check for collision
@@ -321,6 +322,26 @@ namespace SebbyLib.Prediction
                 var originalUnit = input.Unit;
                 if (Collision.GetCollision(positions, input))
                     result.Hitchance = HitChance.Collision;
+            }
+
+            if (result.Hitchance >= HitChance.VeryHigh && input.Unit is AIHeroClient && input.Radius > 1)
+            {
+
+                var lastWaypiont = input.Unit.GetWaypoints().Last().To3D();
+                var distanceUnitToWaypoint = lastWaypiont.LSDistance(input.Unit.ServerPosition);
+                var distanceFromToUnit = input.From.LSDistance(input.Unit.ServerPosition);
+                var distanceFromToWaypoint = lastWaypiont.LSDistance(input.From);
+                float speedDelay = distanceFromToUnit / input.Speed;
+
+                if (Math.Abs(input.Speed - float.MaxValue) < float.Epsilon)
+                    speedDelay = 0;
+
+                float totalDelay = speedDelay + input.Delay;
+                float moveArea = input.Unit.MoveSpeed * totalDelay;
+                float fixRange = moveArea * 0.35f;
+                float pathMinLen = 800 + moveArea;
+
+                OktwCommon.debug(input.Radius + " RES Ways: " + input.Unit.GetWaypoints().Count + " WIND: " + input.Unit.Spellbook.IsAutoAttacking + " DIS " + distanceUnitToWaypoint + " TIME " + UnitTracker.GetLastNewPathTime(input.Unit));
             }
             return result;
         }
@@ -356,10 +377,15 @@ namespace SebbyLib.Prediction
 
             result.Hitchance = HitChance.Medium;
             var lastWaypiont = input.Unit.GetWaypoints().Last().To3D();
+
             var distanceUnitToWaypoint = lastWaypiont.LSDistance(input.Unit.ServerPosition);
             var distanceFromToUnit = input.From.LSDistance(input.Unit.ServerPosition);
             var distanceFromToWaypoint = lastWaypiont.LSDistance(input.From);
-            var getAngle = GetAngle(input.From, input.Unit);
+
+            Vector2 pos1 = lastWaypiont.LSTo2D() - input.Unit.Position.LSTo2D();
+            Vector2 pos2 = input.From.LSTo2D() - input.Unit.Position.LSTo2D();
+            var getAngle = pos1.LSAngleBetween(pos2);
+
             float speedDelay = distanceFromToUnit / input.Speed;
 
             if (Math.Abs(input.Speed - float.MaxValue) < float.Epsilon)
@@ -369,8 +395,6 @@ namespace SebbyLib.Prediction
             float moveArea = input.Unit.MoveSpeed * totalDelay;
             float fixRange = moveArea * 0.35f;
             float pathMinLen = 800 + moveArea;
-
-            double angleMove = 32;
 
             if (input.Type == SkillshotType.SkillshotCircle)
             {
@@ -408,9 +432,15 @@ namespace SebbyLib.Prediction
                 }
             }
 
+            if (input.Unit.Spellbook.IsAutoAttacking)
+            {
+                result.Hitchance = HitChance.High;
+                return result;
+            }
+
             if (input.Unit.GetWaypoints().Count == 1)
             {
-                if (UnitTracker.GetLastStopMoveTime(input.Unit) < 600)
+                if (UnitTracker.GetLastStopMoveTime(input.Unit) < 800)
                 {
                     //OktwCommon.debug("PRED: STOP HIGH");
                     result.Hitchance = HitChance.High;
@@ -472,9 +502,9 @@ namespace SebbyLib.Prediction
 
             // RUN IN LANE DETECTION /////////////////////////////////////////////////////////////////////////////////// 
 
-            if (getAngle < angleMove && UnitTracker.GetLastNewPathTime(input.Unit) < 100)
+            if ((getAngle < 20 || getAngle > 160) && input.Unit.IsMoving)
             {
-                OktwCommon.debug(GetAngle(input.From, input.Unit) + " PRED: ANGLE " + angleMove + " DIS " + distanceUnitToWaypoint);
+                OktwCommon.debug("PRED: ANGLE " + getAngle);
                 result.Hitchance = HitChance.VeryHigh;
                 return result;
             }
@@ -560,25 +590,6 @@ namespace SebbyLib.Prediction
             };
         }
 
-
-
-        internal static double GetAngle(Vector3 from, Obj_AI_Base target)
-        {
-            var C = target.ServerPosition.LSTo2D();
-            var A = target.GetWaypoints().Last();
-
-            if (C == A)
-                return 60;
-
-            var B = from.LSTo2D();
-
-            var AB = Math.Pow(A.X - B.X, 2) + Math.Pow(A.Y - B.Y, 2);
-            var BC = Math.Pow(B.X - C.X, 2) + Math.Pow(B.Y - C.Y, 2);
-            var AC = Math.Pow(A.X - C.X, 2) + Math.Pow(A.Y - C.Y, 2);
-
-            return Math.Cos((AB + BC - AC) / (2 * Math.Sqrt(AB) * Math.Sqrt(BC))) * 180 / Math.PI;
-        }
-
         internal static double UnitIsImmobileUntil(Obj_AI_Base unit)
         {
             var result =
@@ -596,7 +607,7 @@ namespace SebbyLib.Prediction
         {
             speed = (Math.Abs(speed - (-1)) < float.Epsilon) ? input.Unit.MoveSpeed : speed;
 
-            if (path.Count <= 1 || (!input.Unit.CanAttack && !input.Unit.LSIsDashing()))
+            if (path.Count <= 1 || (input.Unit.Spellbook.IsAutoAttacking && !input.Unit.LSIsDashing()))
             {
                 return new PredictionOutput
                 {
@@ -1073,7 +1084,18 @@ namespace SebbyLib.Prediction
                                     int bonusRadius = 20;
                                     if (minion.IsMoving)
                                     {
-                                        minionPos = Prediction.GetPrediction(input, false, false).CastPosition;
+                                        var predInput2 = new PredictionInput
+                                        {
+                                            Collision = false,
+                                            Speed = input.Speed,
+                                            Delay = input.Delay,
+                                            Range = input.Range,
+                                            From = input.From,
+                                            Radius = input.Radius,
+                                            Unit = minion,
+                                            Type = input.Type
+                                        };
+                                        minionPos = Prediction.GetPrediction(predInput2).CastPosition;
                                         bonusRadius = 60 + (int)input.Radius;
                                     }
 
@@ -1190,7 +1212,7 @@ namespace SebbyLib.Prediction
 
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
             Obj_AI_Base.OnNewPath += AIHeroClient_OnNewPath;
-            GameObject.OnCreate += Obj_AI_Base_OnEnterLocalVisiblityClient;
+            AttackableUnit.OnCreate += Obj_AI_Base_OnEnterLocalVisiblityClient;
         }
 
         private static void Obj_AI_Base_OnEnterLocalVisiblityClient(GameObject sender, EventArgs args)

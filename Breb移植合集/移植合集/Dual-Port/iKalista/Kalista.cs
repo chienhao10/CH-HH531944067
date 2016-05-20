@@ -256,7 +256,7 @@ namespace IKalista
 
             return
                 Collision.GetCollision(new List<Vector3> { targetPosition }, input)
-                    .OrderBy(obj => obj.Distance(source))
+                    .OrderBy(obj => obj.LSDistance(source))
                     .ToList();
         }
 
@@ -277,7 +277,7 @@ namespace IKalista
             {
                 foreach (var target in
                     ObjectManager.Get<AIHeroClient>()
-                        .Where(enem => enem.IsValid && enem.IsEnemy && enem.Distance(ObjectManager.Player) <= 2450f))
+                        .Where(enem => enem.IsValid && enem.IsEnemy && enem.LSDistance(ObjectManager.Player) <= 2450f))
                 {
                     if (getCheckBoxItem(balistaMenu, "disable" + target.ChampionName) || !spells[SpellSlot.R].IsReady()
                         || !getCheckBoxItem(balistaMenu, "useBalista"))
@@ -285,7 +285,7 @@ namespace IKalista
                         return;
                     }
 
-                    if (target.Buffs != null && target.GetTotalHealth() > 200 && blitzcrank.Distance(target) > 450f)
+                    if (target.Buffs != null && target.GetTotalHealth() > 200 && blitzcrank.LSDistance(target) > 450f)
                     {
                         for (var i = 0; i < target.Buffs.Count(); i++)
                         {
@@ -313,12 +313,12 @@ namespace IKalista
             }
 
             if (getKeyBindItem(miscMenu, "sentBaron")
-                && ObjectManager.Player.Distance(baronPosition) <= spells[SpellSlot.W].Range)
+                && ObjectManager.Player.LSDistance(baronPosition) <= spells[SpellSlot.W].Range)
             {
                 spells[SpellSlot.W].Cast(baronPosition);
             }
             else if (getKeyBindItem(miscMenu, "sentDragon")
-                     && ObjectManager.Player.Distance(dragonPosition) <= spells[SpellSlot.W].Range)
+                     && ObjectManager.Player.LSDistance(dragonPosition) <= spells[SpellSlot.W].Range)
             {
                 spells[SpellSlot.W].Cast(dragonPosition);
             }
@@ -356,7 +356,7 @@ namespace IKalista
 
                     if (getCheckBoxItem(drawMenu, "drawPercentage"))
                     {
-                        foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.Distance(x) <= 2000f && !x.IsDead))
+                        foreach (var source in HeroManager.Enemies.Where(x => ObjectManager.Player.LSDistance(x) <= 2000f && !x.IsDead))
                         {
                             var currentPercentage = Extensions.GetRendDamage(source) * 100 / source.GetTotalHealth();
                             var updatedCurrentPercentage = (int)Math.Ceiling(currentPercentage);
@@ -366,15 +366,15 @@ namespace IKalista
                                 Drawing.WorldToScreen(source.Position)[1],
                                 currentPercentage >= 100 ? Color.Gold : Color.White,
                                 currentPercentage >= 100
-                                    ? "E可击杀"
-                                    : "当前伤害: " + updatedCurrentPercentage + "%");
+                                    ? "Killable With E"
+                                    : "Current Damage: " + updatedCurrentPercentage + "%");
                         }
                     }
 
                     if (getCheckBoxItem(drawMenu, "drawJunglePercentage"))
                     {
                         foreach (var jungleMobs in
-                            ObjectManager.Get<Obj_AI_Minion>().Where(x => ObjectManager.Player.Distance(x) <= spells[SpellSlot.E].Range && !x.IsDead
+                            ObjectManager.Get<Obj_AI_Minion>().Where(x => ObjectManager.Player.LSDistance(x) <= spells[SpellSlot.E].Range && !x.IsDead
                                 && x.Team == GameObjectTeam.Neutral))
                         {
                             var currentPercentage = Extensions.GetRendDamage(jungleMobs) * 100 / jungleMobs.GetTotalHealth();
@@ -458,22 +458,22 @@ namespace IKalista
                 return;
             }
 
-            balistaMenu = this.menu.AddSubMenu("机器人合体");
-            balistaMenu.AddGroupLabel("屏蔽目标");
+            balistaMenu = menu.AddSubMenu("Balista");
+            balistaMenu.AddGroupLabel("Disabled Targets");
             foreach (var hero in HeroManager.Enemies.Where(x => x.IsValid))
             {
-                balistaMenu.Add("disable" + hero.ChampionName, new CheckBox("不使用 " + hero.ChampionName, false));
+                balistaMenu.Add("disable" + hero.ChampionName, new CheckBox("Disable " + hero.ChampionName, false));
             }
 
-            balistaMenu.Add("minRange", new Slider("最低范围", 700, 100, 1450));
-            balistaMenu.Add("maxRange", new Slider("最广范围", 1500, 100, 1500));
-            balistaMenu.Add("useBalista", new CheckBox("使用机器人合体技"));
+            balistaMenu.Add("minRange", new Slider("Min Range", 700, 100, 1450));
+            balistaMenu.Add("maxRange", new Slider("Max Range", 1500, 100, 1500));
+            balistaMenu.Add("useBalista", new CheckBox("Use Balista"));
         }
 
         /// <summary>
         ///     Calling the menu wrapper
         /// </summary>
-        public Menu menu, harassMenu, laneClearMenu, balistaMenu, miscMenu, drawMenu;
+        public static Menu menu, harassMenu, laneClearMenu, balistaMenu, miscMenu, drawMenu;
         public static Menu comboMenu;
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -501,57 +501,56 @@ namespace IKalista
         /// </summary>
         private void InitMenu()
         {
-            this.menu = MainMenu.AddMenu("i滑板鞋:重做版", "Kalista");
+            menu = MainMenu.AddMenu("iKalista:Rework", "Kalista");
 
-            comboMenu = this.menu.AddSubMenu("连招");
-            comboMenu.Add("useQ", new CheckBox("使用 Q"));
-            comboMenu.Add("useQMin", new CheckBox("Q > 小兵"));
-            comboMenu.Add("useE", new CheckBox("使用 E"));
-            comboMenu.Add("eLeaving", new CheckBox("自动放E"));
-            comboMenu.Add("ePercent", new Slider("最低蓝量使用E", 50, 10, 100));
-            comboMenu.Add("minStacks", new Slider("最低 E叠加", 10, 5, 20));
-            comboMenu.Add("eDamageReduction", new Slider("伤害减少计算", 20, 0, 100));
-            comboMenu.Add("eDeath", new CheckBox("死亡前 E"));
-            comboMenu.Add("eDeathC", new Slider("E 死亡前伤害 %", 20, 10, 100));
-            comboMenu.Add("eHealth", new Slider("血量% 时死亡前E", 15, 5, 50));
-            comboMenu.Add("saveAllyR", new CheckBox("R 拯救队友"));
-            comboMenu.Add("allyPercent", new Slider("队友血量百分比", 20, 0, 100));
-            comboMenu.Add("saveManaR", new CheckBox("为大招保留蓝"));
+            comboMenu = menu.AddSubMenu("Combo Options");
+            comboMenu.Add("useQ", new CheckBox("Use Q"));
+            comboMenu.Add("useQMin", new CheckBox("Q > Minon Combo"));
+            comboMenu.Add("useE", new CheckBox("Use E"));
+            comboMenu.Add("eLeaving", new CheckBox("Auto E Leaving"));
+            comboMenu.Add("ePercent", new Slider("Min Percent to E Leaving", 50, 10, 100));
+            comboMenu.Add("minStacks", new Slider("Min Stacks E", 10, 5, 20));
+            comboMenu.Add("eDeath", new CheckBox("E Before Death"));
+            comboMenu.Add("eDeathC", new Slider("E Death Damage %", 20, 10, 100));
+            comboMenu.Add("eHealth", new Slider("Health To E Death %", 15, 5, 50));
+            comboMenu.Add("saveAllyR", new CheckBox("Save Ally with R"));
+            comboMenu.Add("allyPercent", new Slider("Save Ally Percentage", 20, 0, 100));
+            comboMenu.Add("saveManaR", new CheckBox("Save Mana For Ultimate"));
 
-            harassMenu = this.menu.AddSubMenu("骚扰");
-            harassMenu.Add("useQH", new CheckBox("使用 Q"));
-            harassMenu.Add("useEH", new CheckBox("使用 E"));
-            harassMenu.Add("harassStacks", new Slider("最低 E叠加", 6, 2, 15));
-            harassMenu.Add("useEMin", new CheckBox("使用 在小兵身上"));
+            harassMenu = menu.AddSubMenu("Harass Options");
+            harassMenu.Add("useQH", new CheckBox("Use Q"));
+            harassMenu.Add("useEH", new CheckBox("Use E"));
+            harassMenu.Add("harassStacks", new Slider("Min Stacks for E", 6, 2, 15));
+            harassMenu.Add("useEMin", new CheckBox("Use Minion Harass"));
 
-            laneClearMenu = this.menu.AddSubMenu("清线");
-            laneClearMenu.Add("useQLC", new CheckBox("使用 Q"));
-            laneClearMenu.Add("minHitQ", new Slider("Q 可击杀数量", 3, 1, 7));
-            laneClearMenu.Add("useELC", new CheckBox("使用 E"));
-            laneClearMenu.Add("minLC", new CheckBox("小兵骚扰"));
-            laneClearMenu.Add("eUnkillable", new CheckBox("E, 不可击杀小兵"));
-            laneClearMenu.Add("qKillable", new CheckBox("Q, 不可击杀小兵（如果无冷却）"));
-            laneClearMenu.Add("eHit", new Slider("最低小兵 E", 4, 2, 10));
+            laneClearMenu = menu.AddSubMenu("Laneclear Options");
+            laneClearMenu.Add("useQLC", new CheckBox("Use Q"));
+            laneClearMenu.Add("minHitQ", new Slider("Q Minions Killed", 3, 1, 7));
+            laneClearMenu.Add("useELC", new CheckBox("Use E"));
+            laneClearMenu.Add("minLC", new CheckBox("Minion Harass"));
+            laneClearMenu.Add("eUnkillable", new CheckBox("E Unkillable Minions"));
+            laneClearMenu.Add("qKillable", new CheckBox("Q Unkillable if no buff"));
+            laneClearMenu.Add("eHit", new Slider("Min Minions E", 4, 2, 10));
 
             this.InitializeBalista();
 
-            miscMenu = this.menu.AddSubMenu("杂项");
-            miscMenu.Add("fleeKey", new KeyBind("逃跑按键", false, KeyBind.BindTypes.HoldActive, 'G'));
-            miscMenu.Add("useJungleSteal", new CheckBox("开启偷野"));
-            miscMenu.Add("jungStealMode", new ComboBox("偷野模式", 0, "野怪", "炮兵 | 超级兵", "两者"));
-            miscMenu.Add("eDamageType", new ComboBox("E 计算模式", 0, "普通", "自订"));
-            miscMenu.Add("qMana", new CheckBox("为E保留蓝"));
-            miscMenu.Add("sentBaron", new KeyBind("男爵 W", false, KeyBind.BindTypes.HoldActive, 'T'));
-            miscMenu.Add("sentDragon", new KeyBind("龙 W", false, KeyBind.BindTypes.HoldActive, 'Y'));
-            miscMenu.Add("autoTrinket", new CheckBox("自动蓝眼"));
-            miscMenu.Add("exploit", new CheckBox("开启BUG ? ", false));
+            miscMenu = menu.AddSubMenu("Misc Options");
+            miscMenu.Add("reduceE", new Slider("Reduce Rend Damage", 50, 0, 300));
+            miscMenu.Add("fleeKey", new KeyBind("Flee Key", false, KeyBind.BindTypes.HoldActive, 'G'));
+            miscMenu.Add("useJungleSteal", new CheckBox("Enabled Jungle Steal"));
+            miscMenu.Add("jungStealMode", new ComboBox("Steal Mode", 0, "Jungle Mobs", "Siege Minions | Super Minions", "Both"));
+            miscMenu.Add("qMana", new CheckBox("Save Mana For E"));
+            miscMenu.Add("sentBaron", new KeyBind("Sentinel Baron", false, KeyBind.BindTypes.HoldActive, 'T'));
+            miscMenu.Add("sentDragon", new KeyBind("Sentinel Dragon", false, KeyBind.BindTypes.HoldActive, 'Y'));
+            miscMenu.Add("autoTrinket", new CheckBox("Auto Blue Trinket"));
+            miscMenu.Add("exploit", new CheckBox("Exploit ? ", false));
 
-            drawMenu = this.menu.AddSubMenu("线圈");
-            drawMenu.Add("drawSprite", new CheckBox("显示 守卫"));
-            drawMenu.Add("drawPercentage", new CheckBox("显示伤害百分比"));
-            drawMenu.Add("drawJunglePercentage", new CheckBox("显示野怪伤害百分比"));
-            drawMenu.Add("drawQ", new CheckBox("显示 Q 范围", true));
-            drawMenu.Add("drawE", new CheckBox("显示 E 范围", true));
+            drawMenu = menu.AddSubMenu("Drawing Options");
+            drawMenu.Add("drawSprite", new CheckBox("Draw Sprite for W"));
+            drawMenu.Add("drawPercentage", new CheckBox("Draw Percentage Damage"));
+            drawMenu.Add("drawJunglePercentage", new CheckBox("Draw Jungle Percentage Damage"));
+            drawMenu.Add("drawQ", new CheckBox("Draw Q Range", true));
+            drawMenu.Add("drawE", new CheckBox("Draw E Range", true));
 
             SPrediction.Prediction.Initialize();
         }
@@ -650,7 +649,7 @@ namespace IKalista
                     var stacks = enemy.GetBuffCount("kalistaexpungemarker");
                     var damage = Math.Ceiling(Extensions.GetRendDamage(enemy) * 100 / enemy.GetTotalHealth());
 
-                    if (getCheckBoxItem(comboMenu, "eLeaving") && damage >= getSliderItem(comboMenu, "ePercent") && enemy.HealthPercent > 20 && enemy.ServerPosition.Distance(ObjectManager.Player.ServerPosition, true) > Math.Pow(spells[SpellSlot.E].Range * 0.8, 2) && Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT > 500)
+                    if (getCheckBoxItem(comboMenu, "eLeaving") && damage >= getSliderItem(comboMenu, "ePercent") && enemy.HealthPercent > 20 && enemy.ServerPosition.LSDistance(ObjectManager.Player.ServerPosition, true) > Math.Pow(spells[SpellSlot.E].Range * 0.8, 2) && Environment.TickCount - spells[SpellSlot.E].LastCastAttemptT > 500)
                     {
                         spells[SpellSlot.E].Cast();
                         spells[SpellSlot.E].LastCastAttemptT = Environment.TickCount;
@@ -666,8 +665,8 @@ namespace IKalista
         {
             var bestTarget =
                 ObjectManager.Get<Obj_AI_Base>()
-                    .Where(x => x.IsEnemy && ObjectManager.Player.Distance(x) <= Orbwalking.GetRealAutoAttackRange(x))
-                    .OrderBy(x => ObjectManager.Player.Distance(x))
+                    .Where(x => x.IsEnemy && ObjectManager.Player.LSDistance(x) <= Orbwalking.GetRealAutoAttackRange(x))
+                    .OrderBy(x => ObjectManager.Player.LSDistance(x))
                     .FirstOrDefault();
 
             // ReSharper disable once ConstantNullCoalescingCondition
@@ -898,7 +897,7 @@ namespace IKalista
             this.HandleSentinels();
             this.KillstealQ();
 
-            var enemies = HeroManager.Enemies.Count(x => ObjectManager.Player.Distance(x) <= spells[SpellSlot.E].Range);
+            var enemies = HeroManager.Enemies.Count(x => ObjectManager.Player.LSDistance(x) <= spells[SpellSlot.E].Range);
 
             if (getCheckBoxItem(comboMenu, "eDeath") && enemies > 2 && ObjectManager.Player.HealthPercent <= getSliderItem(comboMenu, "eHealth") && spells[SpellSlot.E].IsReady())
             {
@@ -951,14 +950,14 @@ namespace IKalista
 
             foreach (var minion in minions.Where(x => x.IsValidTarget(spells[SpellSlot.Q].Range)))
             {
-                var difference = ObjectManager.Player.Distance(target) - ObjectManager.Player.Distance(minion);
+                var difference = ObjectManager.Player.LSDistance(target) - ObjectManager.Player.LSDistance(minion);
 
                 for (var i = 0; i < difference; i += (int)target.BoundingRadius)
                 {
                     var point =
                         minion.ServerPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(), -i).To3D();
                     var time = spells[SpellSlot.Q].Delay
-                               + (ObjectManager.Player.Distance(point) / spells[SpellSlot.Q].Speed * 1000f);
+                               + (ObjectManager.Player.LSDistance(point) / spells[SpellSlot.Q].Speed * 1000f);
 
                     var prediction = LeagueSharp.Common.Prediction.GetPrediction(target, time);
 
@@ -971,8 +970,8 @@ namespace IKalista
                         return;
                     }
 
-                    if (prediction.UnitPosition.Distance(point) <= spells[SpellSlot.Q].Width
-                        && !minions.Any(m => m.Distance(point) <= spells[SpellSlot.Q].Width))
+                    if (prediction.UnitPosition.LSDistance(point) <= spells[SpellSlot.Q].Width
+                        && !minions.Any(m => m.LSDistance(point) <= spells[SpellSlot.Q].Width))
                     {
                         spells[SpellSlot.Q].Cast(minion);
                     }

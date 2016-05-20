@@ -31,7 +31,7 @@ namespace ExorAIO.Champions.Nautilus
                             !t.IsValidTarget(Variables.AARange) &&
                             t.Health < Variables.Q.GetDamage(t)))
                 {
-                    Variables.Q.Cast(Variables.Q.GetPrediction(target).CastPosition);
+                    Variables.Q.Cast(target);
                     return;
                 }
             }

@@ -13,14 +13,14 @@ namespace VayneHunter_Reborn.Utility.MenuUtility
         public static void AddSkill(this Menu menu, Enumerations.Skills skill, string mode, bool defValue = true)
         {
             var name = string.Format("dz191.vhr.{0}.use{1}", mode.ToLower(), skill.ToString().ToLower());
-            var displayName = string.Format("使用 {0}", skill);
+            var displayName = string.Format("Use {0}", skill);
             menu.Add(name, new CheckBox(displayName, defValue));
         }
 
         public static void AddManaLimiter(this Menu menu, Enumerations.Skills skill, string mode, int defMana = 0, bool displayMode = false)
         {
             var name = string.Format("dz191.vhr.{0}.mm.{1}.mana", mode.ToLower(), skill.ToString().ToLower());
-            var displayName = displayMode ? string.Format("{0} 蓝量 {1}", skill, mode) : string.Format("{0} Mana", skill);
+            var displayName = displayMode ? string.Format("{0} Mana {1}", skill, mode) : string.Format("{0} Mana", skill);
             menu.Add(name, new Slider(displayName, defMana));
         }
 

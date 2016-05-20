@@ -66,14 +66,14 @@ namespace KogMaw
             Menu.Add("manaJG", new Slider("当蓝量高于 X 时进行清野 :", 60, 1));
             Menu.AddSeparator();
             Menu.Add("human", new KeyBind("使用 人性化设置", false, KeyBind.BindTypes.PressToggle, 'T'));
-            Menu.Add("esw", new Slider("开启 慢移动/不移动 :", 225, 0, 500));
-            Menu.Add("swatk", new Slider("小范围移动/攻击速度:", 225, 0, 500));
-            Menu.Add("swez", new Slider("小范围移动/逃跑区 :", 250, 0, 710));
-            Menu.Add("swchz", new Slider("小范围移动/追击区", 650, 0, 710));
+            Menu.Add("esw", new Slider("开启 微移动/不移动 范围 :", 225, 0, 500));
+            Menu.Add("swatk", new Slider("微移动/攻击速度:", 225, 0, 500));
+            Menu.Add("swez", new Slider("微移动/逃跑范围 :", 250, 0, 710));
+            Menu.Add("swchz", new Slider("微移动/追击范围", 650, 0, 710));
             Menu.AddSeparator();
 
             Q = new Spell.Skillshot(SpellSlot.Q, 950, SkillShotType.Linear, 250, 1650, 70);
-            W = new Spell.Active(SpellSlot.W, (uint) myHero.GetAutoAttackRange());
+            W = new Spell.Active(SpellSlot.W, (uint)myHero.GetAutoAttackRange());
             E = new Spell.Skillshot(SpellSlot.E, 650, SkillShotType.Linear, 500, 1400, 120);
             R = new Spell.Skillshot(SpellSlot.R, 1800, SkillShotType.Circular, 1200, int.MaxValue, 120);
 
@@ -86,7 +86,7 @@ namespace KogMaw
         public static bool CanMove(float extraWindup)
         {
             if (LastAATick <= Environment.TickCount)
-                return Environment.TickCount + Game.Ping/2 >= LastAATick + myHero.AttackCastDelay*1000 + extraWindup;
+                return Environment.TickCount + Game.Ping / 2 >= LastAATick + myHero.AttackCastDelay * 1000 + extraWindup;
             return false;
         }
 
@@ -143,19 +143,19 @@ namespace KogMaw
         {
             if (myHero.IsDead) return;
 
-            W = new Spell.Active(SpellSlot.W, (uint) (565 + 60 + W.Level*30 + 65));
-            R = new Spell.Skillshot(SpellSlot.R, (uint) (900 + R.Level*300), SkillShotType.Circular, 1500, int.MaxValue,
+            W = new Spell.Active(SpellSlot.W, (uint)(565 + 60 + W.Level * 30 + 65));
+            R = new Spell.Skillshot(SpellSlot.R, (uint)(900 + R.Level * 300), SkillShotType.Circular, 1500, int.MaxValue,
                 225);
 
             if (human && wActive)
             {
-                if (1/myHero.AttackDelay > Convert.ToSingle(esw)/100)
+                if (1 / myHero.AttackDelay > Convert.ToSingle(esw) / 100)
                 {
                     if (EntityManager.Heroes.Enemies.Any(x => x.IsValidTarget(130 + swez)) ||
                         !EntityManager.Heroes.Enemies.Any(x => x.IsValidTarget(130 + swchz)))
                     {
                         Orbwalker.DisableMovement = false;
-                        Orbwalker.DisableAttacking = !(Environment.TickCount + Game.Ping/2 + 25 >=LastAATick + 1.0/Convert.ToSingle(swatk)*1000*100);
+                        Orbwalker.DisableAttacking = !(Environment.TickCount + Game.Ping / 2 + 25 >= LastAATick + 1.0 / Convert.ToSingle(swatk) * 1000 * 100);
                     }
                     else
                     {
@@ -228,18 +228,27 @@ namespace KogMaw
                                 {
                                     var target = TargetSelector.GetTarget(R.Range, DamageType.Magical);
                                     if (target != null)
-                                        R.Cast(target);
+                                    {
+                                        if (onlyRHP)
+                                        {
+                                            if (target.HealthPercent < hpOfTarget)
+                                            {
+                                                R.Cast(target);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            R.Cast(target);
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    var killableTarget =
-                                        EntityManager.Heroes.Enemies.FirstOrDefault(
-                                            x =>
-                                                x.IsKillableAndValidTarget(myHero.GetSpellDamage(x, SpellSlot.R),
-                                                    DamageType.Magical, R.Range) &&
-                                                R.GetPrediction(x).HitChance >= HitChance.High);
+                                    var killableTarget = EntityManager.Heroes.Enemies.FirstOrDefault(x => x.IsKillableAndValidTarget(myHero.GetSpellDamage(x, SpellSlot.R), DamageType.Magical, R.Range) && R.GetPrediction(x).HitChance >= HitChance.High);
                                     if (killableTarget != null)
+                                    {
                                         R.Cast(killableTarget);
+                                    }
                                 }
                             }
                         }
@@ -304,7 +313,7 @@ namespace KogMaw
                                         EntityManager.MinionsAndMonsters.GetLaneMinions(
                                             EntityManager.UnitTeam.Enemy, myHero.ServerPosition, E.Range);
                                     var farmLocation = EntityManager.MinionsAndMonsters.GetLineFarmLocation(
-                                        minions, E.Width, (int) E.Range);
+                                        minions, E.Width, (int)E.Range);
                                     if (farmLocation.HitNumber >= 3)
                                         E.Cast(farmLocation.CastPosition);
                                 }
@@ -324,7 +333,7 @@ namespace KogMaw
                                                 EntityManager.UnitTeam.Enemy, myHero.ServerPosition, R.Range);
                                         var farmLocation =
                                             EntityManager.MinionsAndMonsters.GetCircularFarmLocation(minions,
-                                                R.Width, (int) R.Range);
+                                                R.Width, (int)R.Range);
                                         if (farmLocation.HitNumber >= 2)
                                         {
                                             R.Cast(farmLocation.CastPosition);
@@ -357,7 +366,7 @@ namespace KogMaw
                                         EntityManager.MinionsAndMonsters.GetJungleMonsters(myHero.ServerPosition,
                                             E.Range);
                                     var farmLocation = EntityManager.MinionsAndMonsters.GetLineFarmLocation(
-                                        minions, E.Width, (int) E.Range);
+                                        minions, E.Width, (int)E.Range);
                                     if (farmLocation.HitNumber >= 2)
                                     {
                                         E.Cast(farmLocation.CastPosition);
@@ -379,7 +388,7 @@ namespace KogMaw
                                                 myHero.ServerPosition, R.Range);
                                         var farmLocation =
                                             EntityManager.MinionsAndMonsters.GetCircularFarmLocation(minions,
-                                                R.Width, (int) R.Range);
+                                                R.Width, (int)R.Range);
                                         if (farmLocation.HitNumber >= 2)
                                         {
                                             R.Cast(farmLocation.CastPosition);
@@ -446,7 +455,7 @@ namespace KogMaw
                 if (!target.HasBuff("manabarriercooldown"))
                     if (target.Health + target.HPRegenRate +
                         (damageType == DamageType.Physical ? target.AttackShield : target.MagicShield) +
-                        target.Mana*0.6 + target.PARRegenRate < calculatedDamage)
+                        target.Mana * 0.6 + target.PARRegenRate < calculatedDamage)
                         return true;
 
             if (target.ChampionName == "Garen")
@@ -478,10 +487,10 @@ namespace KogMaw
             {
                 Orbwalker.DisableMovement = false;
             }
-            
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && dontw)
             {
-                Drawing.DrawText(Drawing.Width*0.5f, Drawing.Height*0.3f, Color.Orange, "Not moving when W is active is on.", 50);
+                Drawing.DrawText(Drawing.Width * 0.5f, Drawing.Height * 0.3f, Color.Orange, "Not moving when W is active is on.", 50);
             }
         }
 
@@ -653,6 +662,16 @@ namespace KogMaw
         public static bool dontw
         {
             get { return Menu["dontw"].Cast<KeyBind>().CurrentValue; }
+        }
+
+        public static bool onlyRHP
+        {
+            get { return Menu["onlyRHP"].Cast<CheckBox>().CurrentValue; }
+        }
+
+        public static int hpOfTarget
+        {
+            get { return Menu["hpOfTarget"].Cast<Slider>().CurrentValue; }
         }
 
         #endregion

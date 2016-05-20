@@ -71,7 +71,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                     if (item.SkillshotData.SpellName == skillshot.SkillshotData.SpellName &&
                         item.Caster.NetworkId == skillshot.Caster.NetworkId &&
                         skillshot.Direction.AngleBetween(item.Direction) < 5 &&
-                        (skillshot.StartPosition.Distance(item.StartPosition) < 100 ||
+                        (skillshot.StartPosition.LSDistance(item.StartPosition) < 100 ||
                          skillshot.SkillshotData.FromObjects.Length == 0))
                     {
                         alreadyAdded = true;
@@ -113,7 +113,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                         {
                             var newDirection = -(skillshot.EndPosition - skillshot.StartPosition).Normalized();
                             var end = skillshot.StartPosition +
-                                      newDirection*skillshot.StartPosition.Distance(skillshot.EndPosition);
+                                      newDirection*skillshot.StartPosition.LSDistance(skillshot.EndPosition);
                             var skillshotToAdd = new Skillshot(
                                 skillshot.DetectionType, skillshot.SkillshotData, skillshot.StartTick,
                                 skillshot.StartPosition, end, skillshot.Caster);
@@ -145,14 +145,14 @@ namespace UnderratedAIO.Helpers.SkillShot
                             {
                                 var v = minion.ServerPosition.To2D() - skillshot.Caster.ServerPosition.To2D();
                                 if (minion.Name == "Seed" && edge1.CrossProduct(v) > 0 && v.CrossProduct(edge2) > 0 &&
-                                    minion.Distance(skillshot.Caster) < 800 &&
+                                    minion.LSDistance(skillshot.Caster) < 800 &&
                                     (minion.Team != ObjectManager.Player.Team))
                                 {
                                     var start = minion.ServerPosition.To2D();
                                     var end = skillshot.Caster.ServerPosition.To2D()
                                         .Extend(
                                             minion.ServerPosition.To2D(),
-                                            skillshot.Caster.Distance(minion) > 200 ? 1300 : 1000);
+                                            skillshot.Caster.LSDistance(minion) > 200 ? 1300 : 1000);
 
                                     var skillshotToAdd = new Skillshot(
                                         skillshot.DetectionType, skillshot.SkillshotData, skillshot.StartTick, start,
@@ -176,7 +176,7 @@ namespace UnderratedAIO.Helpers.SkillShot
 
                         if (skillshot.SkillshotData.SpellName == "ZiggsQ")
                         {
-                            var d1 = skillshot.StartPosition.Distance(skillshot.EndPosition);
+                            var d1 = skillshot.StartPosition.LSDistance(skillshot.EndPosition);
                             var d2 = d1*0.4f;
                             var d3 = d2*0.69f;
 
@@ -210,7 +210,7 @@ namespace UnderratedAIO.Helpers.SkillShot
                             skillshot.SkillshotData.Delay =
                                 (int)
                                     (1500 +
-                                     1500*skillshot.EndPosition.Distance(skillshot.StartPosition)/
+                                     1500*skillshot.EndPosition.LSDistance(skillshot.StartPosition)/
                                      skillshot.SkillshotData.Range);
                         }
 
@@ -339,7 +339,7 @@ namespace UnderratedAIO.Helpers.SkillShot
 
             //Calculate the real end Point:
             var direction = (endPos - unitPosition).Normalized();
-            if (unitPosition.Distance(endPos) > spellData.Range || spellData.FixedRange)
+            if (unitPosition.LSDistance(endPos) > spellData.Range || spellData.FixedRange)
             {
                 endPos = unitPosition + direction*spellData.Range;
             }
@@ -347,12 +347,12 @@ namespace UnderratedAIO.Helpers.SkillShot
             if (spellData.ExtraRange != -1)
             {
                 endPos = endPos +
-                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(unitPosition))*direction;
+                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.LSDistance(unitPosition))*direction;
             }
 
             var castTime = System.Environment.TickCount - Game.Ping/2 -
                            (spellData.MissileDelayed ? 0 : spellData.Delay) -
-                           (int) (1000*missilePosition.Distance(unitPosition)/spellData.MissileSpeed);
+                           (int) (1000*missilePosition.LSDistance(unitPosition)/spellData.MissileSpeed);
 
             //Trigger the skillshot detection callbacks.
             TriggerOnDetectSkillshot(DetectionType.RecvPacket, spellData, castTime, unitPosition, endPos, unit);
@@ -469,7 +469,7 @@ namespace UnderratedAIO.Helpers.SkillShot
 
             //Calculate the real end Point:
             var direction = (endPos - startPos).Normalized();
-            if (startPos.Distance(endPos) > spellData.Range || spellData.FixedRange)
+            if (startPos.LSDistance(endPos) > spellData.Range || spellData.FixedRange)
             {
                 endPos = startPos + direction*spellData.Range;
             }
@@ -477,7 +477,7 @@ namespace UnderratedAIO.Helpers.SkillShot
             if (spellData.ExtraRange != -1)
             {
                 endPos = endPos +
-                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(startPos))*direction;
+                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.LSDistance(startPos))*direction;
             }
 
             //Trigger the skillshot detection callbacks.
@@ -533,7 +533,7 @@ namespace UnderratedAIO.Helpers.SkillShot
 
                 var castTime = System.Environment.TickCount - Game.Ping/2 - spellData.Delay -
                                (int)
-                                   (1000*missilePosition.SwitchYZ().To2D().Distance(unitPosition.SwitchYZ())/
+                                   (1000*missilePosition.SwitchYZ().To2D().LSDistance(unitPosition.SwitchYZ())/
                                     spellData.MissileSpeed);
 
                 //Trigger the skillshot detection callbacks.
@@ -568,7 +568,7 @@ namespace UnderratedAIO.Helpers.SkillShot
             {
                 Console.WriteLine(
                     "{0} Missile Created:{1} Distance:{2} Radius:{3} Speed:{4}", System.Environment.TickCount,
-                    missile.SData.Name, missile.StartPosition.Distance(missile.EndPosition),
+                    missile.SData.Name, missile.StartPosition.LSDistance(missile.EndPosition),
                     missile.SData.CastRadiusSecondary, missile.SData.MissileSpeed);
             }
         }
@@ -586,7 +586,7 @@ namespace UnderratedAIO.Helpers.SkillShot
             {
                 Console.WriteLine(
                     "{0} Missile Deleted:{1} Distance:{2}", System.Environment.TickCount, missile.SData.Name,
-                    missile.EndPosition.Distance(missile.Position));
+                    missile.EndPosition.LSDistance(missile.Position));
             }
         }
 

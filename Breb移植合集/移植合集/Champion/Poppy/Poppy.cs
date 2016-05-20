@@ -94,15 +94,15 @@ namespace UnderratedAIO.Champions
                 foreach (var dashingEnemy in
                     HeroManager.Enemies.Where(
                         e =>
-                            e.IsValidTarget() && e.Distance(player) < 1600 &&
+                            e.IsValidTarget() && e.LSDistance(player) < 1600 &&
                             getSliderItem(menuM, "useAutoW" + e.BaseSkinName) > 0)
                         .OrderByDescending(e => getSliderItem(menuM, "useAutoW" + e.BaseSkinName))
-                        .ThenBy(e => e.Distance(player)))
+                        .ThenBy(e => e.LSDistance(player)))
                 {
                     var nextpos = Prediction.GetPrediction(dashingEnemy, 0.1f).UnitPosition;
                     if (dashingEnemy.IsDashing() && !dashingEnemy.HasBuffOfType(BuffType.SpellShield) &&
-                        !dashingEnemy.HasBuff("poppyepushenemy") && dashingEnemy.Distance(player) <= W.Range &&
-                        (nextpos.Distance(player.Position) > W.Range || (player.Distance(dashingEnemy) < W.Range - 100)) &&
+                        !dashingEnemy.HasBuff("poppyepushenemy") && dashingEnemy.LSDistance(player) <= W.Range &&
+                        (nextpos.LSDistance(player.Position) > W.Range || (player.LSDistance(dashingEnemy) < W.Range - 100)) &&
                         dashingEnemy.IsTargetable && !NotDash.Contains(dashingEnemy.ChampionName))
                     {
                         W.Cast();
@@ -168,8 +168,8 @@ namespace UnderratedAIO.Champions
                     }
                 }
             }
-            if (getCheckBoxItem(menuC, "useq") && Q.IsReady() && Q.CanCast(target) && target.Distance(player) < Q.Range &&
-                (player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target) || !Orbwalker.CanAutoAttack))
+            if (getCheckBoxItem(menuC, "useq") && Q.IsReady() && Q.CanCast(target) && target.LSDistance(player) < Q.Range &&
+                (player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(target) || !Orbwalker.CanAutoAttack))
             {
                 Q.CastIfHitchanceEquals(target, HitChance.High, getCheckBoxItem(config, "packets"));
             }
@@ -178,24 +178,25 @@ namespace UnderratedAIO.Champions
                             getCheckBoxItem(menuC, "useIgnite");
             var ignitedmg = hasIgnite ? (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite) : 0f;
             if (ignitedmg > target.Health && hasIgnite && !E.CanCast(target) && !Q.CanCast(target) &&
-                (player.Distance(target) > Q.Range || player.HealthPercent < 30))
+                (player.LSDistance(target) > Q.Range || player.HealthPercent < 30))
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
-            if (getCheckBoxItem(menuC, "userindanger") && R.IsReady() && player.CountEnemiesInRange(800) >= 2 &&
-                player.CountEnemiesInRange(800) > player.CountAlliesInRange(1500) + 1 && player.HealthPercent < 60 ||
-                (player.Health < target.Health && player.HealthPercent < 40 &&
-                 player.CountAlliesInRange(1000) + 1 < player.CountEnemiesInRange(1000)))
+            if (getCheckBoxItem(menuC, "userindanger") && R.IsReady() &&
+                ((player.CountEnemiesInRange(800) >= 2 &&
+                  player.CountEnemiesInRange(800) > player.CountAlliesInRange(1500) + 1 && player.HealthPercent < 60) ||
+                 (player.Health < target.Health && player.HealthPercent < 40 &&
+                  player.CountAlliesInRange(1000) + 1 < player.CountEnemiesInRange(1000))))
             {
                 var targ =
                     HeroManager.Enemies.Where(
                         e =>
                             e.IsValidTarget() && R.CanCast(e) &&
                             (player.HealthPercent < 60 || e.CountEnemiesInRange(300) > 2) &&
-                            HeroManager.Enemies.Count(h => h.Distance(e) < 400 && e.HealthPercent < 35) == 0 &&
-                            R.GetPrediction(e).CastPosition.Distance(player.Position) < R.ChargedMaxRange)
+                            HeroManager.Enemies.Count(h => h.LSDistance(e) < 400 && e.HealthPercent < 35) == 0 &&
+                            R.GetPrediction(e).CastPosition.LSDistance(player.Position) < R.ChargedMaxRange)
                         .OrderByDescending(e => R.GetPrediction(e).CastPosition.CountEnemiesInRange(400))
-                        .ThenByDescending(e => e.Distance(target))
+                        .ThenByDescending(e => e.LSDistance(target))
                         .FirstOrDefault();
                 if (R.Range > 1300 && targ == null)
                 {
@@ -203,16 +204,16 @@ namespace UnderratedAIO.Champions
                         HeroManager.Enemies.Where(
                             e =>
                                 e.IsValidTarget() && R.CanCast(e) &&
-                                R.GetPrediction(e).CastPosition.Distance(player.Position) < R.ChargedMaxRange)
+                                R.GetPrediction(e).CastPosition.LSDistance(player.Position) < R.ChargedMaxRange)
                             .OrderByDescending(e => R.GetPrediction(e).CastPosition.CountEnemiesInRange(400))
-                            .ThenByDescending(e => e.Distance(target))
+                            .ThenByDescending(e => e.LSDistance(target))
                             .FirstOrDefault();
                 }
                 if (!R.IsCharging && targ != null)
                 {
                     R.StartCharging();
                 }
-                if (R.IsCharging && targ != null && R.CanCast(targ) && R.Range > 1000 && R.Range > targ.Distance(player))
+                if (R.IsCharging && targ != null && R.CanCast(targ) && R.Range > 1000 && R.Range > targ.LSDistance(player))
                 {
                     R.CastIfHitchanceEquals(targ, HitChance.Medium, getCheckBoxItem(config, "packets"));
                 }
@@ -221,13 +222,13 @@ namespace UnderratedAIO.Champions
                     return;
                 }
             }
-            if (getCheckBoxItem(menuC, "user") && R.IsReady() && player.Distance(target) < 1400 &&
+            if (getCheckBoxItem(menuC, "user") && R.IsReady() && player.LSDistance(target) < 1400 &&
                 !target.UnderTurret(true))
             {
                 var cond = (Rdmg(target) < target.Health && ignitedmg + Rdmg(target) > target.Health &&
-                            player.Distance(target) < 600) ||
-                           (target.Distance(player) > E.Range && Rdmg(target) > target.Health &&
-                            target.Distance(player) < 1100);
+                            player.LSDistance(target) < 600) ||
+                           (target.LSDistance(player) > E.Range && Rdmg(target) > target.Health &&
+                            target.LSDistance(player) < 1100);
                 if (!R.IsCharging && cond && !Q.IsReady() && player.HealthPercent < 40)
                 {
                     R.StartCharging();
@@ -239,7 +240,7 @@ namespace UnderratedAIO.Champions
                         }
                     }
                 }
-                if (R.IsCharging && R.CanCast(target) && R.Range > target.Distance(player) && cond)
+                if (R.IsCharging && R.CanCast(target) && R.Range > target.LSDistance(player) && cond)
                 {
                     R.CastIfHitchanceEquals(target, HitChance.High, getCheckBoxItem(config, "packets"));
                 }
@@ -275,8 +276,8 @@ namespace UnderratedAIO.Champions
                 return;
             }
             if (getCheckBoxItem(menuH, "useqH") && Q.IsReady() && Q.CanCast(target) &&
-                target.Distance(player) < Q.Range &&
-                (player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target) || !Orbwalker.CanAutoAttack))
+                target.LSDistance(player) < Q.Range &&
+                (player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(target) || !Orbwalker.CanAutoAttack))
             {
                 Q.CastIfHitchanceEquals(target, HitChance.High, getCheckBoxItem(config, "packets"));
             }
@@ -301,7 +302,7 @@ namespace UnderratedAIO.Champions
 
         public static bool CheckWalls(Obj_AI_Base player, Obj_AI_Base enemy)
         {
-            var distance = player.Position.Distance(enemy.Position);
+            var distance = player.Position.LSDistance(enemy.Position);
             for (var i = 1; i < 6; i++)
             {
                 if (player.Position.Extend(enemy.Position, distance + 60*i).IsWall())
@@ -324,7 +325,7 @@ namespace UnderratedAIO.Champions
                 damage += (float) player.LSGetSpellDamage(hero, SpellSlot.E);
             }
             if (player.Spellbook.CanUseSpell(player.GetSpellSlot("summonerdot")) == SpellState.Ready &&
-                player.Distance(hero) < 500)
+                player.LSDistance(hero) < 500)
             {
                 damage += (float) player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite);
             }

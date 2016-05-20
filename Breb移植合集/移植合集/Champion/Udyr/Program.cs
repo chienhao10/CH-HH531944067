@@ -275,7 +275,7 @@ namespace D_Udyr
 
             var target = TargetSelector.GetTarget(getSliderItem(comboMenu, "TargetRange"), DamageType.Magical);
             var delay = getSliderItem(comboMenu, "delaycombo");
-            if (target != null && _player.Distance(target) <= getSliderItem(comboMenu, "TargetRange"))
+            if (target != null && _player.LSDistance(target) <= getSliderItem(comboMenu, "TargetRange"))
             {
                 if (_e.IsReady() && !target.HasBuff("udyrbearstuncheck"))
                 {
@@ -323,7 +323,7 @@ namespace D_Udyr
                     {
                         closestEnemy = enemy;
                     }
-                    else if (_player.Distance(closestEnemy) < _player.Distance(enemy))
+                    else if (_player.LSDistance(closestEnemy) < _player.LSDistance(enemy))
                     {
                         closestEnemy = enemy;
                     }

@@ -13,7 +13,7 @@ namespace Nechrito_Gragas
         public static void ComboLogic()
         {
             var Target = TargetSelector.SelectedTarget;
-            if (Target != null && Target.IsValidTarget() && !Target.IsZombie && (Program.Player.Distance(Target.Position) <= 900) && MenuConfig.ComboR)
+            if (Target != null && Target.LSIsValidTarget() && !Target.IsZombie && (Program.Player.LSDistance(Target.Position) <= 900) && MenuConfig.ComboR)
             {
                 if (Spells._q.IsReady() && Spells._r.IsReady() && !Target.LSIsDashing())
                 {
@@ -43,17 +43,17 @@ namespace Nechrito_Gragas
                             Spells._r.Cast(pos + 35);
                         }
                     }
-                    // E
-                    else if (Spells._e.IsReady())
-                    {
-                        Spells._e.CastIfHitchanceEquals(target, HitChance.High);
-                    }
                     // Smite
                     else if (Spells.Smite != SpellSlot.Unknown && Spells._r.IsReady()
                           && Player.Spellbook.CanUseSpell(Spells.Smite) == SpellState.Ready && !Target.IsZombie)
                         Player.Spellbook.CastSpell(Spells.Smite, Target);
+                    // E
+                    if (Spells._e.IsReady())
+                    {
+                        Spells._e.CastIfHitchanceEquals(target, HitChance.High);
+                    }
                     // W
-                    else if (Spells._w.IsReady() && !Spells._e.IsReady())
+                    if (Spells._w.IsReady() && !Spells._e.IsReady())
                         Spells._w.Cast();
                 }
             }

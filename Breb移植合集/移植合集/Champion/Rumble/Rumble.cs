@@ -63,7 +63,7 @@ namespace UnderratedAIO.Champions
 
         private void OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (getCheckBoxItem(menuM, "usewgc") && gapcloser.End.Distance(player.Position) < 200)
+            if (getCheckBoxItem(menuM, "usewgc") && gapcloser.End.LSDistance(player.Position) < 200)
             {
                 W.Cast();
             }
@@ -72,7 +72,7 @@ namespace UnderratedAIO.Champions
         private void Unit_OnDash(Obj_AI_Base sender, Dash.DashItem args)
         {
             if (sender.IsEnemy && getCheckBoxItem(menuM, "useegc") && sender is AIHeroClient &&
-                args.EndPos.Distance(player.Position) < E.Range && E.CanCast(sender))
+                args.EndPos.LSDistance(player.Position) < E.Range && E.CanCast(sender))
             {
                 Utility.DelayAction.Add(args.Duration, () => { E.Cast(args.EndPos); });
             }
@@ -180,7 +180,7 @@ namespace UnderratedAIO.Champions
         private bool Qhit(Vector3 target)
         {
             return Q.IsReady() && CombatHelper.IsFacing(player, target, 80) &&
-                   target.Distance(player.Position) < Q.Range;
+                   target.LSDistance(player.Position) < Q.Range;
         }
 
         private void Clear()
@@ -219,21 +219,21 @@ namespace UnderratedAIO.Champions
                 ignitedmg > HealthPrediction.GetHealthPrediction(target, 700) && hasIgnite &&
                 !CombatHelper.CheckCriticalBuffs(target) &&
                 (!ActiveQ ||
-                 !(CombatHelper.IsFacing(player, target.Position, 30) && target.Distance(player) < Q.Range)))
+                 !(CombatHelper.IsFacing(player, target.Position, 30) && target.LSDistance(player) < Q.Range)))
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
             if (Q.CanCast(target) && getCheckBoxItem(menuC, "useq") && Qhit(target.Position) &&
                 (preventSilence(Q) ||
                  (target.Health < PassiveDmg(target)*2 || qdmg > target.Health) &&
-                 target.Distance(player) < Orbwalking.GetRealAutoAttackRange(target)))
+                 target.LSDistance(player) < Orbwalking.GetRealAutoAttackRange(target)))
             {
                 Q.Cast(target.Position);
             }
             if (getCheckBoxItem(menuC, "usee") && E.CanCast(target) &&
                 (((preventSilence(E) ||
                    (target.Health < PassiveDmg(target)*2 &&
-                    target.Distance(player) < Orbwalking.GetRealAutoAttackRange(target))) &&
+                    target.LSDistance(player) < Orbwalking.GetRealAutoAttackRange(target))) &&
                   (!ActiveE ||
                    Environment.TickCount - lastE > getSliderItem(menuC, "eDelay"))) ||
                  edmg > target.Health))
@@ -241,18 +241,18 @@ namespace UnderratedAIO.Champions
                 E.CastIfHitchanceEquals(target, HitChance.High, getCheckBoxItem(config, "packets"));
             }
             if (W.IsReady() && getCheckBoxItem(menuC, "wSpeed") && ActiveQ && preventSilence(W) &&
-                target.Distance(player) < Q.Range &&
-                Prediction.GetPrediction(target, 0.2f).UnitPosition.Distance(player.Position) > Q.Range)
+                target.LSDistance(player) < Q.Range &&
+                Prediction.GetPrediction(target, 0.2f).UnitPosition.LSDistance(player.Position) > Q.Range)
             {
                 W.Cast();
             }
-            var canR = ComboDamage(target) > target.Health && qdmg < target.Health && target.Distance(player) < Q.Range &&
+            var canR = ComboDamage(target) > target.Health && qdmg < target.Health && target.LSDistance(player) < Q.Range &&
                        !Silenced;
             if (R.IsReady() &&
                 ((target.Health <
                   getRdamage()*(target.CountAlliesInRange(600) > 0 && target.HealthPercent > 15 ? 5 : 3) &&
-                  target.Distance(player) > Q.Range) ||
-                 (target.Distance(player) < Q.Range && target.Health < getRdamage()*3 + edmg &&
+                  target.LSDistance(player) > Q.Range) ||
+                 (target.LSDistance(player) < Q.Range && target.Health < getRdamage()*3 + edmg &&
                   target.Health > qdmg) ||
                  player.CountEnemiesInRange(R.Range) >= getSliderItem(menuC, "Rmin")))
             {
@@ -268,7 +268,7 @@ namespace UnderratedAIO.Champions
                 if (target.IsMoving)
                 {
                     var pos = targE.CastPosition;
-                    if (pos.IsValid() && pos.Distance(player.Position) < R.Range + 1000 &&
+                    if (pos.IsValid() && pos.LSDistance(player.Position) < R.Range + 1000 &&
                         targE.Hitchance >= HitChance.VeryHigh)
                     {
                         R.Cast(target.Position.LSExtend(pos, -target.MoveSpeed), pos);
@@ -296,9 +296,9 @@ namespace UnderratedAIO.Champions
         {
             var otherHeroes =
                 HeroManager.Enemies.Where(
-                    e => e.IsValidTarget() && e.NetworkId != target.NetworkId && player.Distance(e) < 1000)
+                    e => e.IsValidTarget() && e.NetworkId != target.NetworkId && player.LSDistance(e) < 1000)
                     .Select(e => R.GetPrediction(e))
-                    .Where(o => o.Hitchance > HitChance.High && o.CastPosition.Distance(targE.UnitPosition) < 1000);
+                    .Where(o => o.Hitchance > HitChance.High && o.CastPosition.LSDistance(targE.UnitPosition) < 1000);
             if (otherHeroes.Any())
             {
                 var best =
@@ -361,7 +361,7 @@ namespace UnderratedAIO.Champions
             {
                 if (args.SData.Name == "RumbleGrenade")
                 {
-                    var dist = player.Distance(args.End);
+                    var dist = player.LSDistance(args.End);
                     justE = true;
                     Utility.DelayAction.Add(
                         (int) ((dist > E.Range ? E.Range : dist)/E.Speed*1000), () => justE = false);
@@ -369,7 +369,7 @@ namespace UnderratedAIO.Champions
                 }
             }
             if (getCheckBoxItem(menuM, "usew") && sender is AIHeroClient && sender.IsEnemy &&
-                player.Distance(sender) < Q.Range && IncDamages.GetAllyData(player.NetworkId).AnyCC)
+                player.LSDistance(sender) < Q.Range && IncDamages.GetAllyData(player.NetworkId).AnyCC)
             {
                 W.Cast();
             }

@@ -63,7 +63,7 @@ namespace UnderratedAIO.Champions
         private void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (R.IsReady() && getCheckBoxItem(menuM, "Interrupt") && sender.Distance(player) < R.Range)
+            if (R.IsReady() && getCheckBoxItem(menuM, "Interrupt") && sender.LSDistance(player) < R.Range)
             {
                 R.Cast(getCheckBoxItem(config, "packets"));
             }
@@ -120,7 +120,7 @@ namespace UnderratedAIO.Champions
             }
             if (getCheckBoxItem(menuH, "usewH") && W.IsReady())
             {
-                if (player.Distance(target) < W.Range)
+                if (player.LSDistance(target) < W.Range)
                 {
                     W.Cast(getCheckBoxItem(config, "packets"));
                 }
@@ -148,7 +148,7 @@ namespace UnderratedAIO.Champions
             }
             if (getCheckBoxItem(menuLC, "usewLC") && W.IsReady() && !E.IsCharging)
             {
-                if (target != null && target.Distance(player) < W.Range)
+                if (target != null && target.LSDistance(player) < W.Range)
                 {
                     W.Cast(getCheckBoxItem(config, "packets"));
                 }
@@ -168,8 +168,8 @@ namespace UnderratedAIO.Champions
                         .Where(
                             o =>
                                 !o.IsDead && o.IsValid && o.Name == "BlobDrop" && o.Team == player.Team &&
-                                o.Distance(player) < Orbwalking.GetRealAutoAttackRange(player))
-                        .OrderBy(o => o.Distance(player))
+                                o.LSDistance(player) < Orbwalking.GetRealAutoAttackRange(player))
+                        .OrderBy(o => o.LSDistance(player))
                         .FirstOrDefault();
                 if (blob != null && !Orbwalker.CanAutoAttack && !Orbwalker.IsAutoAttacking)
                 {
@@ -255,41 +255,41 @@ namespace UnderratedAIO.Champions
 
         private void CastE(Obj_AI_Base target)
         {
-            if (target.Distance(player) > eRanges[E.Level - 1])
+            if (target.LSDistance(player) > eRanges[E.Level - 1])
             {
                 return;
             }
             var eFlyPred = E.GetPrediction(target);
             var enemyPred = Prediction.GetPrediction(
-                target, eChannelTimes[E.Level - 1] + target.Distance(player)/E.Speed/1000);
+                target, eChannelTimes[E.Level - 1] + target.LSDistance(player)/E.Speed/1000);
             if (E.IsCharging)
             {
                 if (!eFlyPred.CastPosition.IsValid() || eFlyPred.CastPosition.IsWall())
                 {
                     return;
                 }
-                if (eFlyPred.CastPosition.Distance(player.Position) < E.Range)
+                if (eFlyPred.CastPosition.LSDistance(player.Position) < E.Range)
                 {
                     E.CastIfHitchanceEquals(target, HitChance.High, getCheckBoxItem(config, "packets"));
                 }
-                else if (eFlyPred.UnitPosition.Distance(player.Position) < E.Range && target.Distance(player) < 500f)
+                else if (eFlyPred.UnitPosition.LSDistance(player.Position) < E.Range && target.LSDistance(player) < 500f)
                 {
                     E.CastIfHitchanceEquals(target, HitChance.Medium, getCheckBoxItem(config, "packets"));
                 }
-                else if ((eFlyPred.CastPosition.Distance(player.Position) < E.Range &&
-                          eRanges[E.Level - 1] - eFlyPred.CastPosition.Distance(player.Position) < 200) ||
+                else if ((eFlyPred.CastPosition.LSDistance(player.Position) < E.Range &&
+                          eRanges[E.Level - 1] - eFlyPred.CastPosition.LSDistance(player.Position) < 200) ||
                          (CombatHelper.GetAngle(player, eFlyPred.CastPosition) > 35))
                 {
                     E.CastIfHitchanceEquals(target, HitChance.Medium, getCheckBoxItem(config, "packets"));
                 }
-                else if (eFlyPred.CastPosition.Distance(player.Position) < E.Range && zacETime != 0 &&
+                else if (eFlyPred.CastPosition.LSDistance(player.Position) < E.Range && zacETime != 0 &&
                          Environment.TickCount - zacETime > 2500)
                 {
                     E.CastIfHitchanceEquals(target, HitChance.Medium, getCheckBoxItem(config, "packets"));
                 }
             }
-            else if (enemyPred.UnitPosition.Distance(player.Position) < eRanges[E.Level - 1] &&
-                     getSliderItem(menuC, "Emin") < target.Distance(player.Position))
+            else if (enemyPred.UnitPosition.LSDistance(player.Position) < eRanges[E.Level - 1] &&
+                     getSliderItem(menuC, "Emin") < target.LSDistance(player.Position))
             {
                 E.SetCharged("ZacE", "ZacE", 300, eRanges[E.Level - 1], eChannelTimes[E.Level - 1]);
                 E.StartCharging(eFlyPred.UnitPosition);
@@ -298,18 +298,18 @@ namespace UnderratedAIO.Champions
 
         private void CastE(Vector3 target)
         {
-            if (target.Distance(player.Position) > eRanges[E.Level - 1])
+            if (target.LSDistance(player.Position) > eRanges[E.Level - 1])
             {
                 return;
             }
             if (E.IsCharging)
             {
-                if (target.Distance(player.Position) < E.Range)
+                if (target.LSDistance(player.Position) < E.Range)
                 {
                     E.Cast(target, getCheckBoxItem(config, "packets"));
                 }
             }
-            else if (target.Distance(player.Position) < eRanges[E.Level - 1])
+            else if (target.LSDistance(player.Position) < eRanges[E.Level - 1])
             {
                 E.SetCharged("ZacE", "ZacE", 295, eRanges[E.Level - 1], eChannelTimes[E.Level - 1]);
                 E.StartCharging(target);

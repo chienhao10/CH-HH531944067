@@ -127,7 +127,7 @@ namespace Mordekaiser.Events
 
             if (minionOutOfAutoAttackRange != null)
             {
-                if (Utils.Player.Self.Distance(minionOutOfAutoAttackRange) > Utils.Player.AutoAttackRange)
+                if (Utils.Player.Self.LSDistance(minionOutOfAutoAttackRange) > Utils.Player.AutoAttackRange)
                 {
                     Spells.E.Cast(minionOutOfAutoAttackRange);
                     return;
@@ -157,7 +157,7 @@ namespace Mordekaiser.Events
                 let iMinions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, item.Value.Item.Range)
                 where
                     iMinions.Count >= 2 && item.Value.Item.IsReady() &&
-                    iMinions[0].Distance(Utils.Player.Self.Position) < item.Value.Item.Range
+                    iMinions[0].LSDistance(Utils.Player.Self.Position) < item.Value.Item.Range
                 select item)
             {
                 item.Value.Item.Cast();

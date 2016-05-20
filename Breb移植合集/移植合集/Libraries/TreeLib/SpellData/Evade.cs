@@ -41,7 +41,7 @@ namespace TreeLib.SpellData
                 if (item.SpellData.SpellName == skillshot.SpellData.SpellName &&
                     item.Unit.NetworkId == skillshot.Unit.NetworkId &&
                     skillshot.Direction.AngleBetween(item.Direction) < 5 &&
-                    (skillshot.Start.Distance(item.Start) < 100 || skillshot.SpellData.FromObjects.Length == 0))
+                    (skillshot.Start.LSDistance(item.Start) < 100 || skillshot.SpellData.FromObjects.Length == 0))
                 {
                     alreadyAdded = true;
                 }
@@ -50,7 +50,7 @@ namespace TreeLib.SpellData
             {
                 return;
             }
-            if (skillshot.Start.Distance(PlayerPosition) >
+            if (skillshot.Start.LSDistance(PlayerPosition) >
                 (skillshot.SpellData.Range + skillshot.SpellData.Radius + 1000) * 1.5)
             {
                 return;
@@ -89,7 +89,7 @@ namespace TreeLib.SpellData
                 if (skillshot.SpellData.Invert)
                 {
                     var newDirection = -(skillshot.End - skillshot.Start).Normalized();
-                    var end = skillshot.Start + newDirection * skillshot.Start.Distance(skillshot.End);
+                    var end = skillshot.Start + newDirection * skillshot.Start.LSDistance(skillshot.End);
                     var skillshotToAdd = new Skillshot(
                         skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, skillshot.Start, end,
                         skillshot.Unit);
@@ -116,14 +116,14 @@ namespace TreeLib.SpellData
                         from minion in
                             ObjectManager.Get<Obj_AI_Minion>()
                                 .Where(x => x.IsEnemy)
-                                .Where(i => i.Name == "Seed" && i.Distance(skillshot.Unit) < 800)
+                                .Where(i => i.Name == "Seed" && i.LSDistance(skillshot.Unit) < 800)
                         let v = minion.ServerPosition.To2D() - skillshot.Unit.ServerPosition.To2D()
                         where edge1.CrossProduct(v) > 0 && v.CrossProduct(edge2) > 0
                         let start = minion.ServerPosition.To2D()
                         let end =
                             skillshot.Unit.ServerPosition.To2D()
                                 .Extend(
-                                    minion.ServerPosition.To2D(), skillshot.Unit.Distance(minion) > 200 ? 1300 : 1000)
+                                    minion.ServerPosition.To2D(), skillshot.Unit.LSDistance(minion) > 200 ? 1300 : 1000)
                         select
                             new Skillshot(
                                 skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
@@ -152,7 +152,7 @@ namespace TreeLib.SpellData
                 }
                 if (skillshot.SpellData.SpellName == "ZiggsQ")
                 {
-                    var d1 = skillshot.Start.Distance(skillshot.End);
+                    var d1 = skillshot.Start.LSDistance(skillshot.End);
                     var d2 = d1 * 0.4f;
                     var d3 = d2 * 0.69f;
                     var bounce1SpellData = SpellDatabase.GetByName("ZiggsQBounce1");
@@ -175,7 +175,7 @@ namespace TreeLib.SpellData
                 if (skillshot.SpellData.SpellName == "ZiggsR")
                 {
                     skillshot.SpellData.Delay =
-                        (int) (1500 + 1500 * skillshot.End.Distance(skillshot.Start) / skillshot.SpellData.Range);
+                        (int) (1500 + 1500 * skillshot.End.LSDistance(skillshot.Start) / skillshot.SpellData.Range);
                 }
                 if (skillshot.SpellData.SpellName == "JarvanIVDragonStrike")
                 {

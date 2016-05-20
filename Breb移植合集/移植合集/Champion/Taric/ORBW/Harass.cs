@@ -96,7 +96,7 @@
             {
                 if (UseEHarass && Player.ManaPercent > EMiniManaHarass && E.IsReady() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Harass, "Taric.UseTaricAAPassiveHarass")))
                 {
-                    if (Player.Distance(target) < E.Range)
+                    if (Player.LSDistance(target) < E.Range)
                     {
                         E.CastIfHitchanceEquals(target, HitChance.VeryHigh, PacketCast);
                         return;

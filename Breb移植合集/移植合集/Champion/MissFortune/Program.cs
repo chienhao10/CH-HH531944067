@@ -257,7 +257,7 @@ namespace OneKeyToWin_AIO_Sebby
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Physical);
             var t1 = TargetSelector.GetTarget(Q1.Range, DamageType.Physical);
-            if (t.IsValidTarget(Q.Range) && Player.Distance(t.ServerPosition) > 500)
+            if (t.IsValidTarget(Q.Range) && Player.LSDistance(t.ServerPosition) > 500)
             {
                 var qDmg = OktwCommon.GetKsDamage(t, Q);
                 if (qDmg + Player.GetAutoAttackDamage(t) > t.Health)
@@ -270,7 +270,7 @@ namespace OneKeyToWin_AIO_Sebby
                     Q.Cast(t);
             }
             else if (t1.IsValidTarget(Q1.Range) && getCheckBoxItem(qMenu, "harasQ") &&
-                     Player.Distance(t1.ServerPosition) > Q.Range + 50)
+                     Player.LSDistance(t1.ServerPosition) > Q.Range + 50)
             {
                 if (getCheckBoxItem(qMenu, "qMinionMove"))
                 {
@@ -292,8 +292,8 @@ namespace OneKeyToWin_AIO_Sebby
                 {
                     if (getCheckBoxItem(qMenu, "killQ") && Q.GetDamage(minionQ) < minionQ.Health)
                         return;
-                    var minionToT = minionQ.Distance(t1.Position);
-                    var minionToP = minionQ.Distance(poutput.CastPosition);
+                    var minionToT = minionQ.LSDistance(t1.Position);
+                    var minionToP = minionQ.LSDistance(poutput.CastPosition);
                     if (minionToP < 400 && minionToT < 420 && minionToT > 150 && minionToP > 200)
                     {
                         if (Q.GetDamage(t1) + Player.GetAutoAttackDamage(t1) > t1.Health)

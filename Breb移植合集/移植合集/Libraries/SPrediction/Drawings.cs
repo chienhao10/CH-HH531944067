@@ -100,11 +100,11 @@ namespace SPrediction
                 }
 
                 Drawing.DrawText(ConfigMenu.HitChanceDrawingX, ConfigMenu.HitChanceDrawingY, Color.Red,
-                    string.Format("施放技能次数: {0}", s_CastCount));
+                    string.Format("Casted Spell Count: {0}", s_CastCount));
                 Drawing.DrawText(ConfigMenu.HitChanceDrawingX, ConfigMenu.HitChanceDrawingY + 20, Color.Red,
-                    string.Format("命中次数: {0}", s_HitCount));
+                    string.Format("Hit Spell Count: {0}", s_HitCount));
                 Drawing.DrawText(ConfigMenu.HitChanceDrawingX, ConfigMenu.HitChanceDrawingY + 40, Color.Red,
-                    string.Format("命中率 (%): {0}%",
+                    string.Format("Hitchance (%): {0}%",
                         s_CastCount > 0 ? ((float) s_HitCount/s_CastCount*100).ToString("00.00") : "n/a"));
             }
         }

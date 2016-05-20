@@ -28,8 +28,18 @@
                     switch (trap.Name)
                     {
                         case "Cupcake Trap":
-                            Drawing.DrawText(Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30), Color.White, "陷阱", 2);
-                            Circle.Draw(SharpDX.Color.White, trap.BoundingRadius + 10, trap.Position);
+                            {
+                                if (trap.GetBuff("CaitlynYordleTrap") != null)
+                                {
+                                    var endTime = Math.Max(0, trap.GetBuff("CaitlynYordleTrap").EndTime - Game.Time);
+                                    Drawing.DrawText(
+                                        Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30),
+                                        Color.White,
+                                        "夹子: " + Convert.ToString(endTime, CultureInfo.InstalledUICulture),
+                                        2);
+                                }
+                                Circle.Draw(SharpDX.Color.White, trap.BoundingRadius + 10, trap.Position);
+                            }
                             break;
 
                         case "Noxious Trap":
@@ -77,7 +87,7 @@
                                 Drawing.DrawText(
                                     Drawing.WorldToScreen(trap.Position) - new Vector2(30, -30),
                                     Color.White,
-                                    "小丑W: " + Convert.ToString(endTime, CultureInfo.InvariantCulture),
+                                    "小丑盒: " + Convert.ToString(endTime, CultureInfo.InvariantCulture),
                                     2);
                             }
 

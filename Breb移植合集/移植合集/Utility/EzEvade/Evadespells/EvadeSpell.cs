@@ -44,7 +44,7 @@ namespace ezEvade
             if (EvadeUtils.TickCount - lastSpellEvadeCommand.timestamp < 250 && myHero.IsDashing()
                 && lastSpellEvadeCommand.evadeSpellData.evadeType == EvadeType.Dash)
             {
-                //Console.WriteLine("" + dashInfo.EndPos.Distance(lastSpellEvadeCommand.targetPosition));
+                //Console.WriteLine("" + dashInfo.EndPos.LSDistance(lastSpellEvadeCommand.targetPosition));
                 lastSpellEvadeCommand.targetPosition = Player.Instance.GetDashInfo().EndPos.To2D();
             }
         }

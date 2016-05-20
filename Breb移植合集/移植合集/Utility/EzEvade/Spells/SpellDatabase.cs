@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -218,19 +219,20 @@ namespace ezEvade
                 spellType = SpellType.Cone,
             });
 
-            //Spells.Add(
-            //new SpellData
-            //{
-            //    charName = "Annie",
-            //    dangerlevel = 4,
-            //    name = "InfernalGuardian",
-            //    radius = 290,
-            //    range = 600,
-            //    spellDelay = 250,
-            //    spellKey = SpellSlot.R,
-            //    spellName = "InfernalGuardian",
-            //    spellType = SpellType.Circular,
-            //});
+            Spells.Add(
+            new SpellData
+            {
+                charName = "Annie",
+                dangerlevel = 4,
+                name = "InfernalGuardian",
+                radius = 290,
+                range = 600,
+                spellDelay = 250,
+                spellKey = SpellSlot.R,
+                spellName = "InfernalGuardian",
+                spellType = SpellType.Circular,
+                defaultOff = true
+            });
 
             #endregion Annie
 
@@ -246,11 +248,10 @@ namespace ezEvade
                 radius = 130,
                 range = 25000,
                 spellDelay = 250,
-                fixedRange = true,
                 spellKey = SpellSlot.R,
                 spellName = "EnchantedCrystalArrow",
                 spellType = SpellType.Line,
-                collisionObjects = new[] { CollisionObjectType.EnemyChampions, },
+                //collisionObjects = new[] { CollisionObjectType.EnemyChampions, },
             });
 
             Spells.Add(
@@ -259,12 +260,12 @@ namespace ezEvade
                 angle = 5,
                 charName = "Ashe",
                 dangerlevel = 2,
+                //missileName = "VolleyAttack",
                 name = "Volley",
                 projectileSpeed = 1500,
                 radius = 20,
                 range = 1200,
                 spellDelay = 250,
-                fixedRange = true,
                 spellKey = SpellSlot.W,
                 spellName = "Volley",
                 spellType = SpellType.Line,
@@ -280,38 +281,36 @@ namespace ezEvade
             {
                 charName = "AurelionSol",
                 dangerlevel = 2,
+                missileName = "AurelionSolQMissile",
                 name = "AurelionSolQ",
                 projectileSpeed = 850,
                 radius = 180,
                 range = 1500,
-                spellDelay = 250,
                 fixedRange = true,
+                spellDelay = 250,
                 spellKey = SpellSlot.Q,
-                spellName = "AurelionSolQMissile",
+                spellName = "AurelionSolQ",
                 spellType = SpellType.Line,
-            //    collisionObjects = new[] { CollisionObjectType.EnemyChampions, },
             });
 
             Spells.Add(
             new SpellData
             {
-                
                 charName = "AurelionSol",
                 dangerlevel = 3,
+                missileName = "AurelionSolRBeamMissile",
                 name = "AurelionSolR",
-                projectileSpeed = 4500,
+                projectileSpeed = 4600,
                 radius = 120,
                 range = 1420,
-                spellDelay = 250,
                 fixedRange = true,
+                spellDelay = 300,
                 spellKey = SpellSlot.R,
-                spellName = "AurelionSolRBeamMissile",
-                spellType = SpellType.Line,
-                isSpecial = true,
-                collisionObjects = new[] { CollisionObjectType.EnemyChampions, CollisionObjectType.EnemyMinions },
+                spellName = "AurelionSolR",
+                spellType = SpellType.Line
             });
 
-            #endregion Aurelion Sol
+            #endregion
 
             #region Azir
 
@@ -401,14 +400,14 @@ namespace ezEvade
             {
                 charName = "Brand",
                 dangerlevel = 3,
-                missileName = "BrandBlazeMissile",
-                name = "BrandBlaze",
+                missileName = "BrandQissile",
+                name = "BrandQ",
                 projectileSpeed = 2000, //1600
                 radius = 60,
                 range = 1100,
                 spellDelay = 250,
                 spellKey = SpellSlot.Q,
-                spellName = "BrandBlaze",
+                spellName = "BrandQ",
                 spellType = SpellType.Line,
                 collisionObjects = new[] { CollisionObjectType.EnemyChampions, CollisionObjectType.EnemyMinions },
             });
@@ -417,13 +416,13 @@ namespace ezEvade
             new SpellData
             {
                 charName = "Brand",
-                dangerlevel = 2,
-                name = "Pillar of Flame",
+                dangerlevel = 3,
+                name = "BrandW",
                 radius = 250,
                 range = 1100,
                 spellDelay = 850,
                 spellKey = SpellSlot.W,
-                spellName = "BrandFissure",
+                spellName = "BrandW",
                 spellType = SpellType.Circular,
 
             });
@@ -511,12 +510,12 @@ namespace ezEvade
                 angle = 40,
                 charName = "Cassiopeia",
                 dangerlevel = 4,
-                name = "CassiopeiaPetrifyingGaze",
+                name = "CassiopeiaR",
                 radius = 20,
                 range = 825,
                 spellDelay = 500,
                 spellKey = SpellSlot.R,
-                spellName = "CassiopeiaPetrifyingGaze",
+                spellName = "CassiopeiaR",
                 spellType = SpellType.Cone,
 
             });
@@ -526,31 +525,31 @@ namespace ezEvade
             {
                 charName = "Cassiopeia",
                 dangerlevel = 1,
-                name = "CassiopeiaNoxiousBlast",
+                name = "CassiopeiaQ",
                 radius = 200,
                 range = 600,
                 spellDelay = 825,
                 spellKey = SpellSlot.Q,
-                spellName = "CassiopeiaNoxiousBlast",
+                spellName = "CassiopeiaQ",
                 spellType = SpellType.Circular,
 
             });
 
-            Spells.Add(
-            new SpellData
-            {
-                charName = "Cassiopeia",
-                dangerlevel = 1,
-                name = "CassiopeiaMiasma",
-                radius = 220,
-                range = 850,
-                spellDelay = 250,
-                projectileSpeed = 2500,
-                spellKey = SpellSlot.W,
-                spellName = "CassiopeiaMiasma",
-                spellType = SpellType.Circular,
+            //Spells.Add(
+            //new SpellData
+            //{
+            //    charName = "Cassiopeia",
+            //    dangerlevel = 1,
+            //    name = "CassiopeiaMiasma",
+            //    radius = 220,
+            //    range = 850,
+            //    spellDelay = 250,
+            //    projectileSpeed = 2500,
+            //    spellKey = SpellSlot.W,
+            //    spellName = "CassiopeiaMiasma",
+            //    spellType = SpellType.Circular,
 
-            });
+            //});
             #endregion Cassiopeia
 
             #region Chogath
@@ -718,8 +717,7 @@ namespace ezEvade
                 projectileSpeed = 2000,
                 radius = 160,
                 range = 25000,
-                spellDelay = 250,
-                fixedRange = true,//beta
+                spellDelay = 500,
                 spellKey = SpellSlot.R,
                 spellName = "DravenRCast",
                 spellType = SpellType.Line,
@@ -760,10 +758,9 @@ namespace ezEvade
                 spellKey = SpellSlot.Q,
                 spellName = "EkkoQ",
                 spellType = SpellType.Line,
-                extraMissileNames = new[] { "EkkoQMissileReturn" },
                 collisionObjects = new[] { CollisionObjectType.EnemyChampions },
             });
-            
+
             Spells.Add(
             new SpellData
             {
@@ -836,10 +833,10 @@ namespace ezEvade
             #region Ezreal
 
             Spells.Add(
-                new SpellData
-              {
-                  charName = "Ezreal",
-                dangerlevel = 3,
+            new SpellData
+            {
+                charName = "Ezreal",
+                dangerlevel = 2,
                 missileName = "EzrealMysticShotMissile",
                 name = "Mystic Shot",
                 projectileSpeed = 2000,
@@ -848,36 +845,17 @@ namespace ezEvade
                 spellDelay = 250,
                 spellKey = SpellSlot.Q,
                 spellName = "EzrealMysticShot",
+                extraSpellNames = new[] { "ezrealmysticshotwrapper", },
                 spellType = SpellType.Line,
-                });
+                collisionObjects = new[] { CollisionObjectType.EnemyChampions, CollisionObjectType.EnemyMinions },
 
-            /* Spells.Add(
-             new SpellData
-             {
-                 charName = "Ezreal",
-                 dangerlevel = 3,
-                 missileName = "EzrealMysticShotMissile",
-                 name = "Mystic Shot",
-                 projectileSpeed = 2000,
-                 radius = 60,
-                 range = 1200,
-                 spellDelay = 250,
-                 fixedRange = true,
-                 extraEndTime = 10,
-                 extraDistance = 10,
-                 spellKey = SpellSlot.Q,
-                 spellName = "EzrealMysticShot",
-                 extraSpellNames = new[] { "EzrealmMsticshotWrapper", },
-                 spellType = SpellType.Line,
-                 collisionObjects = new[] { CollisionObjectType.EnemyChampions, CollisionObjectType.EnemyMinions },
-
-             });*/
+            });
 
             Spells.Add(
             new SpellData
             {
                 charName = "Ezreal",
-                dangerlevel = 3,
+                dangerlevel = 2,
                 name = "Trueshot Barrage",
                 projectileSpeed = 2000,
                 radius = 160,
@@ -1511,13 +1489,14 @@ namespace ezEvade
                 charName = "Jinx",
                 dangerlevel = 3,
                 name = "JinxR",
-                projectileSpeed = 1700,
-                radius = 120,
+                projectileSpeed = 1700, //accelerates to 2600
+                radius = 140,
                 range = 25000,
                 spellDelay = 600,
                 spellKey = SpellSlot.R,
                 spellName = "JinxR",
                 spellType = SpellType.Line,
+                //collisionObjects = new[] { CollisionObjectType.EnemyChampions, },
             });
 
             Spells.Add(
@@ -2118,14 +2097,14 @@ namespace ezEvade
                 isSpecial = true,
                 isWall = true,
                 //missileName = "AlZaharCalloftheVoidMissile",
-                name = "AlZaharCalloftheVoid",
+                name = "MalzaharQ",
                 projectileSpeed = 1600,
                 radius = 85,
                 range = 900,
                 sideRadius = 400,
                 spellDelay = 1000,
                 spellKey = SpellSlot.Q,
-                spellName = "AlZaharCalloftheVoid",
+                spellName = "MalzaharQ",
                 spellType = SpellType.Line,
 
             });
@@ -2133,7 +2112,7 @@ namespace ezEvade
 
             #region MonkeyKing
 
-            /*Spells.Add(
+            Spells.Add(
             new SpellData
             {
                 charName = "MonkeyKing",
@@ -2144,9 +2123,9 @@ namespace ezEvade
                 spellDelay = 250,
                 spellKey = SpellSlot.R,
                 spellName = "MonkeyKingSpinToWin",
-                spellType = SpellType.Circular,
-                defaultOff = true,
-            });*/
+                spellType = SpellType.Circular
+            });
+
             #endregion MonkeyKing
 
             #region Morgana
@@ -2218,7 +2197,6 @@ namespace ezEvade
                 radius = 90,
                 range = 1250,
                 spellDelay = 250,
-                fixedRange = true,//beta
                 spellKey = SpellSlot.Q,
                 spellName = "NautilusAnchorDrag",
                 spellType = SpellType.Line,
@@ -2522,26 +2500,6 @@ namespace ezEvade
                 collisionObjects = new[] { CollisionObjectType.EnemyChampions, CollisionObjectType.EnemyMinions },
 
             });
-
-            Spells.Add(
-                new SpellData
-                {
-                    charName = "Rumble",
-                    dangerlevel = 4,
-                    missileName = "RumbleCarpetBombM",
-                    projectileSpeed = 1600,
-                    radius = 200,
-                    range = 1200,
-                    spellDelay = 250,
-                    spellKey = SpellSlot.R,
-                    spellName = "RumbleCarpetBombMissile",
-                    spellType = SpellType.Line,
-                    fixedRange = true,
-                    collisionObjects = new[] { CollisionObjectType.EnemyChampions, CollisionObjectType.EnemyMinions },
-
-                });
-            
-           
             #endregion Rumble
 
             #region Ryze
@@ -3207,7 +3165,7 @@ namespace ezEvade
                 dangerlevel = 2,
                 missileName = "ViktorDeathRayMissile",
                 name = "ViktorDeathRay",
-                projectileSpeed = 780,
+                projectileSpeed = 1050,
                 radius = 80,
                 range = 800,
                 spellKey = SpellSlot.E,
@@ -3273,12 +3231,12 @@ namespace ezEvade
             {
                 charName = "Vladimir",
                 dangerlevel = 3,
-                name = "VladimirHemoplague",
+                name = "VladimirR",
                 radius = 375,
                 range = 700,
-                spellDelay = 389,
+                spellDelay = 250,
                 spellKey = SpellSlot.R,
-                spellName = "VladimirHemoplague",
+                spellName = "VladimirR",
                 spellType = SpellType.Circular,
 
             });
@@ -3355,36 +3313,20 @@ namespace ezEvade
             #region Yasuo
 
             Spells.Add(
-           new SpellData
-           {
-               charName = "Yasuo",
-               dangerlevel = 3,
-               missileName = "YasuoQ3",
-               name = "Steel Tempest 3",
-               projectileSpeed = 1200,
-               radius = 90,
-               range = 1100,
-               spellDelay = 250,
-               spellKey = SpellSlot.Q,
-               spellName = "YasuoQ3W",
-               extraMissileNames = new[] { "YasuoQ3Mis" },
-               spellType = SpellType.Line,
-           });
-
-            Spells.Add(
             new SpellData
             {
                 charName = "Yasuo",
-                dangerlevel = 2,
-                name = "Steel Tempest 2",
-                projectileSpeed = float.MaxValue,
-                radius = 35,
-                range = 525,
-                fixedRange = true,
-                spellDelay = 350,
+                dangerlevel = 3,
+                missileName = "YasuoQ3",
+                name = "Steel Tempest 3",
+                projectileSpeed = 1200,
+                radius = 90,
+                range = 1100,
+                spellDelay = 250,
                 spellKey = SpellSlot.Q,
-                spellName = "YasuoQ2",
-                spellType = SpellType.Line
+                spellName = "YasuoQ3W",
+                extraMissileNames = new[] { "YasuoQ3Mis" },
+                spellType = SpellType.Line,
             });
 
             Spells.Add(
@@ -3392,15 +3334,17 @@ namespace ezEvade
             {
                 charName = "Yasuo",
                 dangerlevel = 2,
-                name = "Steel Tempest 1",
+                name = "Steel Tempest",
+                missileName = "YasuoQ2",
                 projectileSpeed = float.MaxValue,
                 radius = 35,
                 range = 525,
                 fixedRange = true,
                 spellDelay = 350,
                 spellKey = SpellSlot.Q,
-                spellName = "YasuoQ2",
-                spellType = SpellType.Line
+                spellName = "YasuoQ",
+                spellType = SpellType.Line,
+                invert = true
             });
 
             #endregion Yasuo
@@ -3554,13 +3498,14 @@ namespace ezEvade
             {
                 charName = "Zyra",
                 dangerlevel = 3,
-                name = "Grasping Roots",
+                name = "ZyraE",
+                missileName = "ZyraEMissile",
                 projectileSpeed = 1400, //1150
                 radius = 70,
                 range = 1150,
                 spellDelay = 250,
                 spellKey = SpellSlot.E,
-                spellName = "ZyraGraspingRoots",
+                spellName = "ZyraE",
                 spellType = SpellType.Line,
 
             });
@@ -3582,20 +3527,20 @@ namespace ezEvade
 
             });
 
-            Spells.Add(
-            new SpellData
-            {
-                charName = "Zyra",
-                dangerlevel = 2,
-                name = "Deadly Bloom",
-                radius = 260,
-                range = 825,
-                spellDelay = 800,
-                spellKey = SpellSlot.Q,
-                spellName = "ZyraQFissure",
-                spellType = SpellType.Circular,
+            //Spells.Add(
+            //new SpellData
+            //{
+            //    charName = "Zyra",
+            //    dangerlevel = 2,
+            //    name = "Deadly Bloom",
+            //    radius = 260,
+            //    range = 825,
+            //    spellDelay = 800,
+            //    spellKey = SpellSlot.Q,
+            //    spellName = "ZyraQFissure",
+            //    spellType = SpellType.Circular,
 
-            });
+            //});
 
             /*Spells.Add(
             new SpellData
@@ -3612,12 +3557,6 @@ namespace ezEvade
 
             });*/
             #endregion Zyra
-        }
-
-        public static SpellData GetByName(string spellName)
-        {
-            spellName = spellName.ToLower();
-            return Spells.FirstOrDefault(i => i.spellName.ToLower() == spellName || i.extraSpellNames.Contains(spellName));
         }
     }
 }

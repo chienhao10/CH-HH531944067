@@ -112,17 +112,17 @@ namespace TreeLib.SpellData
             var unitPosition = missile.StartPosition.To2D();
             var endPos = missile.EndPosition.To2D();
             var direction = (endPos - unitPosition).Normalized();
-            if (unitPosition.Distance(endPos) > spellData.Range || spellData.FixedRange)
+            if (unitPosition.LSDistance(endPos) > spellData.Range || spellData.FixedRange)
             {
                 endPos = unitPosition + direction * spellData.Range;
             }
             if (spellData.ExtraRange != -1)
             {
                 endPos = endPos +
-                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(unitPosition)) * direction;
+                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.LSDistance(unitPosition)) * direction;
             }
             var castTime = Utils.GameTimeTickCount - Game.Ping / 2 - (spellData.MissileDelayed ? 0 : spellData.Delay) -
-                           (int) (1000f * missilePosition.Distance(unitPosition) / spellData.MissileSpeed);
+                           (int) (1000f * missilePosition.LSDistance(unitPosition) / spellData.MissileSpeed);
             TriggerOnDetectSkillshot(DetectionType.RecvPacket, spellData, castTime, unitPosition, endPos, unit);
         }
 
@@ -198,14 +198,14 @@ namespace TreeLib.SpellData
                 return;
             }
             var direction = (endPos - startPos).Normalized();
-            if (startPos.Distance(endPos) > spellData.Range || spellData.FixedRange)
+            if (startPos.LSDistance(endPos) > spellData.Range || spellData.FixedRange)
             {
                 endPos = startPos + direction * spellData.Range;
             }
             if (spellData.ExtraRange != -1)
             {
                 endPos = endPos +
-                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(startPos)) * direction;
+                         Math.Min(spellData.ExtraRange, spellData.Range - endPos.LSDistance(startPos)) * direction;
             }
             TriggerOnDetectSkillshot(
                 DetectionType.ProcessSpell, spellData, Utils.GameTimeTickCount - Game.Ping / 2, startPos, endPos, sender);

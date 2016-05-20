@@ -59,23 +59,23 @@ namespace MasterSharp
                 if (MasterSharp.getCheckBoxItem(MasterSharp.comboMenu, "useSmite"))
                     useSmiteOnTarget(target);
 
-                if (target.Distance(player) < 500)
+                if (target.LSDistance(player) < 500)
                 {
                     sumItems.cast(SummonerItems.ItemIds.Ghostblade);
                 }
-                if (target.Distance(player) < 300)
+                if (target.LSDistance(player) < 300)
                 {
                     sumItems.cast(SummonerItems.ItemIds.Hydra);
                 }
-                if (target.Distance(player) < 300)
+                if (target.LSDistance(player) < 300)
                 {
                     sumItems.cast(SummonerItems.ItemIds.Tiamat);
                 }
-                if (target.Distance(player) < 300)
+                if (target.LSDistance(player) < 300)
                 {
                     sumItems.cast(SummonerItems.ItemIds.Cutlass, target);
                 }
-                if (target.Distance(player) < 500 && player.Health/player.MaxHealth*100 < 85)
+                if (target.LSDistance(player) < 500 && player.Health/player.MaxHealth*100 < 85)
                 {
                     sumItems.cast(SummonerItems.ItemIds.BotRK, target);
                 }
@@ -120,8 +120,8 @@ namespace MasterSharp
                 if (!Q.IsReady() || target.Path.Count() == 0 || !target.IsMoving)
                     return;
                 var nextEnemPath = target.Path[0].To2D();
-                var dist = player.Position.To2D().Distance(target.Position.To2D());
-                var distToNext = nextEnemPath.Distance(player.Position.To2D());
+                var dist = player.Position.To2D().LSDistance(target.Position.To2D());
+                var distToNext = nextEnemPath.LSDistance(player.Position.To2D());
                 if (distToNext <= dist)
                     return;
                 var msDif = player.MoveSpeed - target.MoveSpeed;
@@ -142,7 +142,7 @@ namespace MasterSharp
         {
             if (smite != SpellSlot.Unknown && player.Spellbook.CanUseSpell(smite) == SpellState.Ready)
             {
-                if (target.Distance(player, true) <= 700*700 &&
+                if (target.LSDistance(player, true) <= 700*700 &&
                     (yiGotItemRange(3714, 3718) || yiGotItemRange(3706, 3710)))
                 {
                     player.Spellbook.CastSpell(smite, target);
@@ -199,7 +199,7 @@ namespace MasterSharp
             return
                 ObjectManager.Get<Obj_AI_Base>()
                     .Count(ob => ob.IsEnemy && !(ob is FollowerObject) && (ob is Obj_AI_Minion || ob is AIHeroClient) &&
-                                 ob.Distance(player) < 600 && !ob.IsDead);
+                                 ob.LSDistance(player) < 600 && !ob.IsDead);
         }
 
         public static void evadeSkillShot(Skillshot sShot)
@@ -260,7 +260,7 @@ namespace MasterSharp
                 }
                 if (selectedTarget != null)
                 {
-                    if (selectedTarget.Distance(player) < 600)
+                    if (selectedTarget.LSDistance(player) < 600)
                     {
                         // Console.WriteLine("Q on targ ");
                         Q.Cast(selectedTarget, MasterSharp.getCheckBoxItem(MasterSharp.extraMenu, "packets"));
@@ -272,8 +272,8 @@ namespace MasterSharp
                             .Where(
                                 ob =>
                                     ob.IsEnemy && (ob is Obj_AI_Minion || ob is AIHeroClient) &&
-                                    ob.Distance(player) < 600 && !ob.IsDead)
-                            .OrderBy(ob => ob.Distance(selectedTarget, true)).FirstOrDefault();
+                                    ob.LSDistance(player) < 600 && !ob.IsDead)
+                            .OrderBy(ob => ob.LSDistance(selectedTarget, true)).FirstOrDefault();
                     //Console.WriteLine("do shit? " + bestOther.Name);
 
                     if (bestOther != null)
@@ -288,8 +288,8 @@ namespace MasterSharp
                             .Where(
                                 ob =>
                                     ob.IsEnemy && !(ob is FollowerObject) && (ob is Obj_AI_Minion || ob is AIHeroClient) &&
-                                    ob.Distance(player) < 600 && !ob.IsDead)
-                            .OrderBy(ob => ob.Distance(Game.CursorPos, true)).FirstOrDefault();
+                                    ob.LSDistance(player) < 600 && !ob.IsDead)
+                            .OrderBy(ob => ob.LSDistance(Game.CursorPos, true)).FirstOrDefault();
                     //Console.WriteLine("do shit? " + bestOther.Name);
 
                     if (bestOther != null)

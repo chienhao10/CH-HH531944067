@@ -175,8 +175,8 @@ namespace iDZed
                 }
 
                 if (ShadowManager.WShadow.Exists
-                    && ShadowManager.WShadow.ShadowObject.Distance(target.ServerPosition)
-                    < Player.Distance(target.ServerPosition))
+                    && ShadowManager.WShadow.ShadowObject.LSDistance(target.ServerPosition)
+                    < Player.LSDistance(target.ServerPosition))
                 {
                     _spells[SpellSlot.Q].UpdateSourcePosition(
                         ShadowManager.WShadow.Position,
@@ -186,7 +186,7 @@ namespace iDZed
                         var prediction = _spells[SpellSlot.Q].GetPrediction(target);
                         if (prediction.Hitchance >= GetHitchance())
                         {
-                            if (ShadowManager.WShadow.ShadowObject.Distance(target) <= _spells[SpellSlot.Q].Range)
+                            if (ShadowManager.WShadow.ShadowObject.LSDistance(target) <= _spells[SpellSlot.Q].Range)
                             {
                                 _spells[SpellSlot.Q].Cast(prediction.CastPosition);
                             }
@@ -194,15 +194,15 @@ namespace iDZed
                     }
                     else
                     {
-                        if (ShadowManager.WShadow.ShadowObject.Distance(target) <= _spells[SpellSlot.Q].Range)
+                        if (ShadowManager.WShadow.ShadowObject.LSDistance(target) <= _spells[SpellSlot.Q].Range)
                         {
                             _spells[SpellSlot.Q].Cast(target.ServerPosition);
                         }
                     }
                 }
                 else if (ShadowManager.RShadow.Exists
-                         && ShadowManager.RShadow.ShadowObject.Distance(target.ServerPosition)
-                         < Player.Distance(target.ServerPosition))
+                         && ShadowManager.RShadow.ShadowObject.LSDistance(target.ServerPosition)
+                         < Player.LSDistance(target.ServerPosition))
                 {
                     _spells[SpellSlot.Q].UpdateSourcePosition(
                         ShadowManager.RShadow.Position,
@@ -212,7 +212,7 @@ namespace iDZed
                         var prediction = _spells[SpellSlot.Q].GetPrediction(target);
                         if (prediction.Hitchance >= GetHitchance())
                         {
-                            if (ShadowManager.RShadow.ShadowObject.Distance(target) <= _spells[SpellSlot.Q].Range)
+                            if (ShadowManager.RShadow.ShadowObject.LSDistance(target) <= _spells[SpellSlot.Q].Range)
                             {
                                 _spells[SpellSlot.Q].Cast(prediction.CastPosition);
                             }
@@ -220,7 +220,7 @@ namespace iDZed
                     }
                     else
                     {
-                        if (ShadowManager.RShadow.ShadowObject.Distance(target) <= _spells[SpellSlot.Q].Range)
+                        if (ShadowManager.RShadow.ShadowObject.LSDistance(target) <= _spells[SpellSlot.Q].Range)
                         {
                             _spells[SpellSlot.Q].Cast(target.ServerPosition);
                         }
@@ -234,7 +234,7 @@ namespace iDZed
                         var prediction = _spells[SpellSlot.Q].GetPrediction(target);
                         if (prediction.Hitchance >= GetHitchance())
                         {
-                            if (Player.Distance(target) <= _spells[SpellSlot.Q].Range
+                            if (Player.LSDistance(target) <= _spells[SpellSlot.Q].Range
                                 && target.IsValidTarget(_spells[SpellSlot.Q].Range))
                             {
                                 _spells[SpellSlot.Q].Cast(prediction.CastPosition);
@@ -243,7 +243,7 @@ namespace iDZed
                     }
                     else
                     {
-                        if (Player.Distance(target) <= _spells[SpellSlot.Q].Range
+                        if (Player.LSDistance(target) <= _spells[SpellSlot.Q].Range
                             && target.IsValidTarget(_spells[SpellSlot.Q].Range))
                         {
                             _spells[SpellSlot.Q].Cast(target.ServerPosition);
@@ -273,7 +273,7 @@ namespace iDZed
                 {
                     var position = Player.ServerPosition.To2D()
                         .Extend(target.ServerPosition.To2D(), _spells[SpellSlot.W].Range);
-                    if (position.Distance(target) <= _spells[SpellSlot.Q].Range)
+                    if (position.LSDistance(target) <= _spells[SpellSlot.Q].Range)
                     {
                         if (IsPassWall(Player.ServerPosition, target.ServerPosition))
                         {
@@ -289,8 +289,8 @@ namespace iDZed
             if (ShadowManager.CanGoToShadow(ShadowManager.WShadow) && WShadowSpell.ToggleState == 2)
             {
                 if (getCheckBoxItem(comboMenu, "com.idz.zed.combo.swapw")
-                    && ShadowManager.WShadow.ShadowObject.Distance(target.ServerPosition)
-                    < Player.Distance(target.ServerPosition))
+                    && ShadowManager.WShadow.ShadowObject.LSDistance(target.ServerPosition)
+                    < Player.LSDistance(target.ServerPosition))
                 {
                     _spells[SpellSlot.W].Cast();
                 }
@@ -433,8 +433,8 @@ namespace iDZed
             {
                 // && !_deathmarkKilled)
                 if (getCheckBoxItem(comboMenu, "com.idz.zed.combo.swapw")
-                    && ShadowManager.WShadow.ShadowObject.Distance(target.ServerPosition)
-                    < Player.Distance(target.ServerPosition))
+                    && ShadowManager.WShadow.ShadowObject.LSDistance(target.ServerPosition)
+                    < Player.LSDistance(target.ServerPosition))
                 {
                     _spells[SpellSlot.W].Cast();
                 }
@@ -707,14 +707,14 @@ namespace iDZed
                     if (_spells[SpellSlot.W].IsReady() && ShadowManager.WShadow.IsUsable
                         && WShadowSpell.ToggleState == 0
                         && Environment.TickCount - _spells[SpellSlot.W].LastCastAttemptT > 0
-                        && Player.Distance(target) <= _spells[SpellSlot.W].Range + 300
+                        && Player.LSDistance(target) <= _spells[SpellSlot.W].Range + 300
                         && _spells[SpellSlot.Q].IsReady())
                     {
                         _spells[SpellSlot.W].Cast(target.ServerPosition);
                         _spells[SpellSlot.W].LastCastAttemptT = Environment.TickCount + 500;
                     }
                     else if ((!_spells[SpellSlot.W].IsReady() || WShadowSpell.ToggleState != 0) &&
-                             _spells[SpellSlot.Q].IsReady() && target.Distance(Player) < _spells[SpellSlot.Q].Range)
+                             _spells[SpellSlot.Q].IsReady() && target.LSDistance(Player) < _spells[SpellSlot.Q].Range)
                     {
                         if (getCheckBoxItem(harassMenu, "fast.harass"))
                         {
@@ -800,7 +800,7 @@ namespace iDZed
 
         private static void InitMenu()
         {
-            Menu = MainMenu.AddMenu("iDZ劫 - 重做", "com.idz.zed");
+            Menu = MainMenu.AddMenu("iDZ劫 - 重制", "com.idz.zed");
 
             comboMenu = Menu.AddSubMenu(":: 连招", "com.idz.zed.combo");
             comboMenu.Add("com.idz.zed.combo.useq", new CheckBox("使用 Q"));
@@ -1033,7 +1033,7 @@ namespace iDZed
             if (sender != null && sender.IsEnemy && sender.Team != Player.Team)
             {
                 if (args.SData.Name == "ZhonyasHourglass" && sender.HasBuff("zedulttargetmark")
-                    && Player.Distance(sender, true) < _spells[SpellSlot.W].Range - 20*_spells[SpellSlot.W].Range - 20)
+                    && Player.LSDistance(sender, true) < _spells[SpellSlot.W].Range - 20*_spells[SpellSlot.W].Range - 20)
                 {
                     var bestPosition = VectorHelper.GetBestPosition(
                         sender,

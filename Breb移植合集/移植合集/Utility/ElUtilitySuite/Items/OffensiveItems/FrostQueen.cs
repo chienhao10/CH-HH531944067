@@ -80,7 +80,7 @@ namespace ElUtilitySuite.Items.OffensiveItems
                    && (HeroManager.Enemies.Any(
                        x =>
                        x.HealthPercent < getSliderItem("FrostQueenEnemyHp")
-                       && x.Distance(ObjectManager.Player) < 1500)
+                       && x.LSDistance(ObjectManager.Player) < 1500)
                        || ObjectManager.Player.HealthPercent < getSliderItem("FrostQueenMyHp"));
         }
 

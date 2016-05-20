@@ -84,7 +84,7 @@ namespace ElSejuani
                 return;
             }
 
-            if (gapcloser.Sender.Distance(Player) > spells[Spells.Q].Range)
+            if (gapcloser.Sender.LSDistance(Player) > spells[Spells.Q].Range)
             {
                 return;
             }
@@ -138,7 +138,7 @@ namespace ElSejuani
                 }
 
                 if (IsFrozen(target)
-                    && target.ServerPosition.Distance(Player.ServerPosition, true) <= spells[Spells.E].Range)
+                    && target.ServerPosition.LSDistance(Player.ServerPosition, true) <= spells[Spells.E].Range)
                 {
                     spells[Spells.E].Cast();
                 }
@@ -212,7 +212,7 @@ namespace ElSejuani
                 }
 
                 if (IsFrozen(target)
-                    && target.ServerPosition.Distance(Player.ServerPosition, true)
+                    && target.ServerPosition.LSDistance(Player.ServerPosition, true)
                     < Math.Pow(spells[Spells.E].Range*0.8, 2))
                 {
                     spells[Spells.E].Cast();
@@ -224,7 +224,7 @@ namespace ElSejuani
             AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (args.DangerLevel != Interrupter2.DangerLevel.High || sender.Distance(Player) > spells[Spells.Q].Range)
+            if (args.DangerLevel != Interrupter2.DangerLevel.High || sender.LSDistance(Player) > spells[Spells.Q].Range)
             {
                 return;
             }
@@ -277,7 +277,7 @@ namespace ElSejuani
                 }
 
                 if (spells[Spells.W].IsReady() && clearW
-                    && minion.ServerPosition.Distance(Player.ServerPosition, true) <= spells[Spells.W].Range)
+                    && minion.ServerPosition.LSDistance(Player.ServerPosition, true) <= spells[Spells.W].Range)
                 {
                     spells[Spells.W].Cast();
                 }
@@ -320,7 +320,7 @@ namespace ElSejuani
                     }
                 }
 
-                if (spells[Spells.W].IsReady() && clearW && minion.ServerPosition.Distance(Player.ServerPosition, true) >= spells[Spells.W].Range)
+                if (spells[Spells.W].IsReady() && clearW && minion.ServerPosition.LSDistance(Player.ServerPosition, true) >= spells[Spells.W].Range)
                 {
                     spells[Spells.W].Cast();
                 }

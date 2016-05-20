@@ -3,8 +3,8 @@ Breb移植脚本地址源：http://bit.ly/1N8r0td
 
 
 
-国内源：http://bit.ly/26CjjSn
-国外源：http://bit.ly/1TaKt8P
+国内源：bit.ly/chosgit
+国外源：bit.ly/chgithub
 推荐远程安装使用。在国内使用第一个源，国外使用第二个。
 有任何问题请在QQ群问，或者发帖问。
 QQ：531944067

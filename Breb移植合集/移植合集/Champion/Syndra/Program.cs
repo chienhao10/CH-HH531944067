@@ -125,7 +125,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if (sender.IsMe && args.Slot == SpellSlot.Q && EQcastNow && E.IsReady())
             {
-                var customeDelay = Q.Delay - (E.Delay + Player.Distance(args.End)/E.Speed);
+                var customeDelay = Q.Delay - (E.Delay + Player.LSDistance(args.End)/E.Speed);
                 Utility.DelayAction.Add((int) (customeDelay*1000), () => E.Cast(args.End));
             }
         }
@@ -207,11 +207,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 var ePred = Eany.GetPrediction(t);
                 if (ePred.Hitchance >= HitChance.VeryHigh)
                 {
-                    var playerToCP = Player.Distance(ePred.CastPosition);
-                    foreach (var ball in BallsList.Where(ball => Player.Distance(ball.Position) < E.Range))
+                    var playerToCP = Player.LSDistance(ePred.CastPosition);
+                    foreach (var ball in BallsList.Where(ball => Player.LSDistance(ball.Position) < E.Range))
                     {
                         var ballFinalPos = Player.ServerPosition.Extend(ball.Position, playerToCP);
-                        if (ballFinalPos.Distance(ePred.CastPosition) < 50)
+                        if (ballFinalPos.LSDistance(ePred.CastPosition) < 50)
                             E.Cast(ball.Position);
                     }
                 }
@@ -223,7 +223,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (getKeyBindItem(e, "useQE"))
             {
                 var mouseTarget = Program.Enemies.Where(enemy =>
-                    enemy.IsValidTarget(Eany.Range)).OrderBy(enemy => enemy.Distance(Game.CursorPos)).FirstOrDefault();
+                    enemy.IsValidTarget(Eany.Range)).OrderBy(enemy => enemy.LSDistance(Game.CursorPos)).FirstOrDefault();
 
                 if (mouseTarget != null)
                 {
@@ -440,7 +440,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
             var castQpos = poutput2.CastPosition;
 
-            if (Player.Distance(castQpos) > Q.Range)
+            if (Player.LSDistance(castQpos) > Q.Range)
                 castQpos = Player.Position.LSExtend(castQpos, Q.Range);
 
             if (Program.getSliderItem("HitChance") == 0)
@@ -551,7 +551,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             Obj_AI_Base obj = null;
             if (BallsList.Count > 0 && !onlyMinin)
             {
-                obj = BallsList.Find(ball => ball.Distance(Player) < catchRange);
+                obj = BallsList.Find(ball => ball.LSDistance(Player) < catchRange);
             }
             if (obj == null)
             {
@@ -567,7 +567,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         MinionManager.GetMinions(Player.ServerPosition, catchRange, MinionTypes.All, MinionTeam.NotAlly,
                             MinionOrderTypes.MaxHealth))
                 {
-                    if (t.Distance(minion) < t.Distance(obj))
+                    if (t.LSDistance(minion) < t.LSDistance(obj))
                         obj = minion;
                 }
 

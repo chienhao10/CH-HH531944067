@@ -338,7 +338,7 @@ namespace SCommon.PluginBase
         {
             var ignite = ObjectManager.Player.GetSpellSlot("summonerdot");
             if (ignite != SpellSlot.Unknown && ObjectManager.Player.Spellbook.CanUseSpell(ignite) == SpellState.Ready &&
-                ObjectManager.Player.Distance(target) < 550)
+                ObjectManager.Player.LSDistance(target) < 550)
                 return ObjectManager.Player.GetSummonerSpellDamage(target,
                     LeagueSharp.Common.Damage.SummonerSpell.Ignite); //ignite
 
@@ -355,11 +355,11 @@ namespace SCommon.PluginBase
         {
             var dmg = 0.0;
 
-            if (Items.CanUseItem(3144) && ObjectManager.Player.Distance(target) < 550)
+            if (Items.CanUseItem(3144) && ObjectManager.Player.LSDistance(target) < 550)
                 dmg += ObjectManager.Player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Bilgewater);
                     //bilgewater cutlass
 
-            if (Items.CanUseItem(3153) && ObjectManager.Player.Distance(target) < 550)
+            if (Items.CanUseItem(3153) && ObjectManager.Player.LSDistance(target) < 550)
                 dmg += ObjectManager.Player.GetItemDamage(target, LeagueSharp.Common.Damage.DamageItems.Botrk); //botrk
 
             if (Items.HasItem(3057))

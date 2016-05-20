@@ -494,7 +494,7 @@ namespace KurisuNidalee
                     if (sender.IsEnemy && sender.Type == GameObjectType.AIHeroClient && SpellTimer["Javelin"].IsReady())
                     {
                         if (args.End.IsValid() &&
-                            args.End.Distance(KN.Player.ServerPosition) <= KN.Player.BoundingRadius*2)
+                            args.End.LSDistance(KN.Player.ServerPosition) <= KN.Player.BoundingRadius*2)
                         {
                             var hero = sender as AIHeroClient;
                             if (hero == null || !hero.IsValidTarget(Spells["Bushwhack"].Range))
@@ -590,7 +590,7 @@ namespace KurisuNidalee
         {
             var direction = (to - from).Normalized();
 
-            for (float d = 0; d < from.Distance(to); d = d + step)
+            for (float d = 0; d < from.LSDistance(to); d = d + step)
             {
                 var testPoint = from + d*direction;
                 var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);

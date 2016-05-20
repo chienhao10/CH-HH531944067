@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using EloBuddy;
 using EloBuddy.SDK;
+using LeagueSharp.Common;
 
 namespace WardTracker
 {
@@ -82,7 +83,7 @@ namespace WardTracker
                         var AlreadyDetected =
                             WardTrackerVariables.detectedWards.FirstOrDefault(
                                 w =>
-                                    w.Position.Distance(sender_ex.ServerPosition) < 125 &&
+                                    w.Position.LSDistance(sender_ex.ServerPosition) < 125 &&
                                     (Math.Abs(w.startTick - StartTick) < 800 || w.WardTypeW.WardType != WardType.Green ||
                                      w.WardTypeW.WardType != WardType.Trinket));
                         if (AlreadyDetected != null)
@@ -90,7 +91,7 @@ namespace WardTracker
                             AlreadyDetected.RemoveRenderObjects();
                             WardTrackerVariables.detectedWards.RemoveAll(
                                 w =>
-                                    w.Position.Distance(sender_ex.ServerPosition) < 125 &&
+                                    w.Position.LSDistance(sender_ex.ServerPosition) < 125 &&
                                     (Math.Abs(w.startTick - StartTick) < 800 || w.WardTypeW.WardType != WardType.Green ||
                                      w.WardTypeW.WardType != WardType.Trinket));
                         }
@@ -119,13 +120,13 @@ namespace WardTracker
                 foreach (
                     var s in
                         WardTrackerVariables.detectedWards.Where(
-                            s => s.Position.Distance(sender_ex.ServerPosition, true) < 10*10))
+                            s => s.Position.LSDistance(sender_ex.ServerPosition, true) < 10*10))
                 {
                     s.RemoveRenderObjects();
                 }
 
                 WardTrackerVariables.detectedWards.RemoveAll(
-                    s => s.Position.Distance(sender_ex.ServerPosition, true) < 10*10);
+                    s => s.Position.LSDistance(sender_ex.ServerPosition, true) < 10*10);
             }
         }
     }

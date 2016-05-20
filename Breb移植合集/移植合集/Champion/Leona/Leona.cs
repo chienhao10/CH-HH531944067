@@ -139,7 +139,7 @@ namespace ElEasy.Plugins
             var gapCloserActive = getCheckBoxItem(settingsMenu, "ElEasy.Leona.Interrupt.Activated");
 
             if (gapCloserActive && spells[Spells.Q].IsReady()
-                && gapcloser.Sender.Distance(Player) < spells[Spells.Q].Range)
+                && gapcloser.Sender.LSDistance(Player) < spells[Spells.Q].Range)
             {
                 spells[Spells.Q].Cast();
             }
@@ -176,7 +176,7 @@ namespace ElEasy.Plugins
             Interrupter2.InterruptableTargetEventArgs args)
         {
             if (args.DangerLevel != Interrupter2.DangerLevel.High
-                || sender.Distance(Player) > spells[Spells.R].Range)
+                || sender.LSDistance(Player) > spells[Spells.R].Range)
             {
                 return;
             }

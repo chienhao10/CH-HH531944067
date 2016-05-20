@@ -457,7 +457,7 @@ namespace SephLissandra
             {
                 return;
             }
-            if (currenttarget.IsKillableFromPoint(Player.ServerPosition) && Player.Distance(currenttarget) < Spells["R"].Range)
+            if (currenttarget.IsKillableFromPoint(Player.ServerPosition) && Player.LSDistance(currenttarget) < Spells["R"].Range)
             {
                 Spells["R"].Cast(currenttarget);
                 return;
@@ -529,7 +529,7 @@ namespace SephLissandra
             if (SpellSlot.Q.IsReady() && getCheckBoxItem(ksMenu, "Killsteal.UseQ"))
             {
                 var qtarget =
-                    objAiHeroes.Where(x => x.Distance(Player.Position) < Spells["Q"].Range)
+                    objAiHeroes.Where(x => x.LSDistance(Player.Position) < Spells["Q"].Range)
                         .MinOrDefault(x => x.Health);
                 if (qtarget != null)
                 {
@@ -547,7 +547,7 @@ namespace SephLissandra
             if (SpellSlot.W.IsReady() && getCheckBoxItem(ksMenu, "Killsteal.UseW"))
             {
                 var wtarget =
-                    objAiHeroes.Where(x => x.Distance(Player.Position) < Spells["W"].Range)
+                    objAiHeroes.Where(x => x.LSDistance(Player.Position) < Spells["W"].Range)
                         .MinOrDefault(x => x.Health);
                 if (wtarget != null)
                 {
@@ -560,7 +560,7 @@ namespace SephLissandra
             }
 
             var etarget =
-                objAiHeroes.Where(x => x.Distance(Player.Position) < Spells["E"].Range).MinOrDefault(x => x.Health);
+                objAiHeroes.Where(x => x.LSDistance(Player.Position) < Spells["E"].Range).MinOrDefault(x => x.Health);
             if (SpellSlot.E.IsReady() && LissEMissile == null && !LissUtils.CanSecondE() &&
                 getCheckBoxItem(ksMenu, "Killsteal.UseE"))
             {
@@ -596,7 +596,7 @@ namespace SephLissandra
             if (Spells["Ignite"].IsReady() && getCheckBoxItem(ksMenu, "Killsteal.UseIgnite"))
             {
                 var igntarget =
-                    objAiHeroes.Where(x => x.Distance(Player.Position) < Spells["Ignite"].Range)
+                    objAiHeroes.Where(x => x.LSDistance(Player.Position) < Spells["Ignite"].Range)
                         .MinOrDefault(x => x.Health);
                 if (igntarget != null)
                 {

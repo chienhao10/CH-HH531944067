@@ -130,7 +130,7 @@ namespace UnderratedAIO.Champions
             {
                 if (
                     ObjectManager.Get<AIHeroClient>()
-                        .FirstOrDefault(h => h.IsEnemy && player.Distance(h) < 2000 && player.IsFacing(h)) != null)
+                        .FirstOrDefault(h => h.IsEnemy && player.LSDistance(h) < 2000 && player.IsFacing(h)) != null)
                 {
                     msBonus += MsBuff[Q.Level - 1];
                 }
@@ -155,8 +155,8 @@ namespace UnderratedAIO.Champions
                 Orbwalker.ForcedTarget = target;
             }
             if (getCheckBoxItem(menuC, "useq") && Q.IsReady() && !QEnabled &&
-                player.Distance(target) >= getSliderItem(menuC, "useqmin") &&
-                player.Distance(target) < player.MoveSpeed*MsBonus(target)*3.0f)
+                player.LSDistance(target) >= getSliderItem(menuC, "useqmin") &&
+                player.LSDistance(target) < player.MoveSpeed*MsBonus(target)*3.0f)
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
             }
@@ -175,7 +175,7 @@ namespace UnderratedAIO.Champions
                 E.Cast(getCheckBoxItem(config, "packets"));
             }
             if (R.IsReady() && player.HealthPercent > 20 &&
-                ((getCheckBoxItem(menuC, "user") && player.Distance(target) < 200 &&
+                ((getCheckBoxItem(menuC, "user") && player.LSDistance(target) < 200 &&
                   ComboDamage(target) + R.GetDamage(target)*10 > target.Health && ComboDamage(target) < target.Health) ||
                  (getSliderItem(menuC, "usertf") <= player.CountEnemiesInRange(300))))
             {
@@ -197,7 +197,7 @@ namespace UnderratedAIO.Champions
             {
                 if (
                     ObjectManager.Get<AIHeroClient>()
-                        .FirstOrDefault(h => h.IsEnemy && player.Distance(h) < 2000 && player.IsFacing(h)) != null)
+                        .FirstOrDefault(h => h.IsEnemy && player.LSDistance(h) < 2000 && player.IsFacing(h)) != null)
                 {
                     msBonus += MsBuff[Q.Level - 1];
                 }

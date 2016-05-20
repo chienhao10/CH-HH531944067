@@ -12,6 +12,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EzEvade;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -77,8 +78,8 @@ namespace ezEvade
 
         private void Game_OnDraw(EventArgs args)
         {
-            Render.Circle.DrawCircle(myHero.Position, 10, Color.Red, 5);
-            Render.Circle.DrawCircle(myHero.ServerPosition, 10, Color.Red, 5);
+            LeagueSharp.Common.Render.Circle.DrawCircle(myHero.Position, 10, Color.Red, 5);
+            LeagueSharp.Common.Render.Circle.DrawCircle(myHero.ServerPosition, 10, Color.Red, 5);
         }
 
         private void Game_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
@@ -117,7 +118,7 @@ namespace ezEvade
                     //Draw.RenderObjects.Add(new Draw.RenderPosition(lastSpellCastServerPos, 1000, System.Drawing.Color.Red, 10));
                     Draw.RenderObjects.Add(new Draw.RenderCircle(missile.StartPosition.To2D(), 1000, System.Drawing.Color.Red, 10));
 
-                    var distance = lastSpellCastServerPos.Distance(missile.StartPosition.To2D());
+                    var distance = lastSpellCastServerPos.LSDistance(missile.StartPosition.To2D());
                     float moveTime = 1000 * distance / myHero.MoveSpeed;
                     Console.WriteLine("Extra Delay: " + moveTime);
                 }
@@ -146,7 +147,7 @@ namespace ezEvade
         {
             checkPing = false;
 
-            var distance = myHero.Position.To2D().Distance(myHero.ServerPosition.To2D());
+            var distance = myHero.Position.To2D().LSDistance(myHero.ServerPosition.To2D());
             float moveTime = 1000 * distance / myHero.MoveSpeed;
             //Console.WriteLine("Extra Delay: " + moveTime);
 
@@ -194,7 +195,7 @@ namespace ezEvade
                 if (checkPing
                     && lastIssueOrderArgs.Process == true
                     && lastIssueOrderArgs.Order == GameObjectOrder.MoveTo
-                    && lastIssueOrderArgs.TargetPosition.To2D().Distance(movePos) < 3
+                    && lastIssueOrderArgs.TargetPosition.To2D().LSDistance(movePos) < 3
                     && myHero.Path.Count() == 1
                     && args.Path.Count() == 2
                     && myHero.IsMoving)
@@ -206,7 +207,7 @@ namespace ezEvade
 
                     //Draw.RenderObjects.Add(new Draw.RenderCircle(lastMoveToServerPos, 1000, System.Drawing.Color.Red, 10));
 
-                    var distanceTillEnd = myHero.Path.Last().To2D().Distance(myHero.Position.To2D());
+                    var distanceTillEnd = myHero.Path.Last().To2D().LSDistance(myHero.Position.To2D());
                     float moveTimeTillEnd = 1000 * distanceTillEnd / myHero.MoveSpeed;
 
                     if (moveTimeTillEnd < 500)
@@ -232,8 +233,8 @@ namespace ezEvade
                         {
                             Draw.RenderObjects.Add(new Draw.RenderCircle(intersection, 1000, System.Drawing.Color.Red, 10));
 
-                            var distance = //args.Path.First().To2D().Distance(intersection);
-                                lastMoveToServerPos.Distance(intersection);
+                            var distance = //args.Path.First().To2D().LSDistance(intersection);
+                                lastMoveToServerPos.LSDistance(intersection);
                             float moveTime = 1000 * distance / myHero.MoveSpeed;
 
                             //Console.WriteLine("waa: " + distance);

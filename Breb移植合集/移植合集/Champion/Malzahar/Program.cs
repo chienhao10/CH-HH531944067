@@ -93,6 +93,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
             {
                 args.Process = false;
+                OktwCommon.blockMove = true;
+                OktwCommon.blockAttack = true;
+                OktwCommon.blockSpells = true;
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
                 return;
@@ -152,6 +155,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
             {
+                OktwCommon.blockMove = true;
+                OktwCommon.blockAttack = true;
+                OktwCommon.blockSpells = true;
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
                 return;
@@ -174,6 +180,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
             {
+                OktwCommon.blockMove = true;
+                OktwCommon.blockAttack = true;
+                OktwCommon.blockSpells = true;
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
                 return;
@@ -192,14 +201,22 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         {
             if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
             {
+                OktwCommon.blockMove = true;
+                OktwCommon.blockAttack = true;
+                OktwCommon.blockSpells = true;
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
                 Program.debug("cast R");
                 return;
             }
-
-            Orbwalker.DisableAttacking = false;
-            Orbwalker.DisableMovement = false;
+            else
+            {
+                OktwCommon.blockSpells = false;
+                OktwCommon.blockMove = false;
+                OktwCommon.blockAttack = false;
+                Orbwalker.DisableAttacking = false;
+                Orbwalker.DisableMovement = false;
+            }
 
             if (R.IsReady() && getKeyBindItem(rMenu, "useR"))
             {
@@ -248,14 +265,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (Player.Mana > RMANA + QMANA)
                 {
-                    foreach (
-                        var enemy in
-                            Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy);
                 }
             }
-            else if (Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") &&
-                     getCheckBoxItem(farmMenu, "farmQ"))
+            else if (Program.LaneClear && Player.ManaPercent > getSliderItem(farmMenu, "Mana") && getCheckBoxItem(farmMenu, "farmQ"))
             {
                 var allMinions = Cache.GetMinions(Player.ServerPosition, Q.Range);
                 var farmPos = Q.GetCircularFarmLocation(allMinions, 150);
@@ -280,7 +294,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 else if (Program.Combo && Player.Mana > RMANA + WMANA)
                     W.Cast(Player.Position.LSExtend(t.Position, 450));
                 else if (Program.Farm && getCheckBoxItem(wMenu, "harrasW") && !Player.UnderTurret(true) &&
-                         (Player.Mana > Player.MaxMana*0.8 || W.Level > Q.Level) &&
+                         (Player.Mana > Player.MaxMana * 0.8 || W.Level > Q.Level) &&
                          Player.Mana > RMANA + WMANA + EMANA + QMANA + WMANA && OktwCommon.CanHarras())
                     W.Cast(Player.Position.LSExtend(t.Position, 450));
             }
@@ -342,7 +356,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                             allMinions.Where(
                                 minion =>
                                     minion.IsValidTarget(E.Range) && minion.Health < E.GetDamage(minion) &&
-                                    te.Distance(minion.Position) < 500 &&
+                                    te.LSDistance(minion.Position) < 500 &&
                                     !minion.HasBuff("AlZaharMaleficVisions")))
                     {
                         E.CastOnUnit(minion);
@@ -365,7 +379,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 if (W.IsReady() && Player.Mana > RMANA + WMANA)
                 {
-                    totalComboDamage += W.GetDamage(t)*5;
+                    totalComboDamage += W.GetDamage(t) * 5;
                 }
 
                 if (Player.Mana > RMANA + QMANA)
@@ -408,7 +422,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static float BonusDmg(AIHeroClient target)
         {
-            return (float) Player.CalcDamage(target, DamageType.Magical, target.MaxHealth*0.08 - target.HPRegenRate*5);
+            return (float)Player.CalcDamage(target, DamageType.Magical, target.MaxHealth * 0.08 - target.HPRegenRate * 5);
         }
 
         private static void SetMana()
@@ -427,7 +441,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             EMANA = E.Instance.SData.Mana;
 
             if (!R.IsReady())
-                RMANA = WMANA - Player.PARRegenRate*W.Instance.Cooldown;
+                RMANA = WMANA - Player.PARRegenRate * W.Instance.Cooldown;
             else
                 RMANA = R.Instance.SData.Mana;
         }

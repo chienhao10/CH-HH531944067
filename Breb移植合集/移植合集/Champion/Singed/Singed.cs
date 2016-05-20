@@ -132,9 +132,9 @@ namespace ElSinged
 
             var comboCount = getSliderItem(cMenu, "ElSinged.Combo.R.Count");
 
-            var qTarget = HeroManager.Enemies.FirstOrDefault( enemy => enemy.IsValidTarget() && enemy.Distance(Player) < 200 && Player.IsMoving && enemy.IsMoving);
+            var qTarget = HeroManager.Enemies.FirstOrDefault( enemy => enemy.IsValidTarget() && enemy.LSDistance(Player) < 200 && Player.IsMoving && enemy.IsMoving);
 
-            if (getCheckBoxItem(cMenu, "ElSinged.Combo.Q") && spells[Spells.Q].IsReady() && (qTarget != null || target.HasBuff("poisontrailtarget") || Player.Distance(target) <= 500))
+            if (getCheckBoxItem(cMenu, "ElSinged.Combo.Q") && spells[Spells.Q].IsReady() && (qTarget != null || target.HasBuff("poisontrailtarget") || Player.LSDistance(target) <= 500))
             {
                 CastQ();
             }
@@ -143,7 +143,7 @@ namespace ElSinged
                 && spells[Spells.W].IsReady())
             {
                 var pred = spells[Spells.W].GetPrediction(target);
-                if (spells[Spells.W].Range - 80 > pred.CastPosition.Distance(Player.Position)
+                if (spells[Spells.W].Range - 80 > pred.CastPosition.LSDistance(Player.Position)
                     && pred.Hitchance >= HitChance.High)
                 {
                     spells[Spells.W].Cast(pred.CastPosition);
@@ -161,7 +161,7 @@ namespace ElSinged
                 spells[Spells.R].Cast();
             }
 
-            if (getCheckBoxItem(cMenu, "ElSinged.Combo.Ignite") && Player.Distance(target) <= 600 &&
+            if (getCheckBoxItem(cMenu, "ElSinged.Combo.Ignite") && Player.LSDistance(target) <= 600 &&
                 IgniteDamage(target) >= target.Health)
             {
                 Player.Spellbook.CastSpell(ignite, target);
@@ -182,10 +182,10 @@ namespace ElSinged
 
             var qTarget =
                 HeroManager.Enemies.FirstOrDefault(
-                    enemy => enemy.IsValidTarget() && enemy.Distance(Player) < 200 && Player.IsMoving && enemy.IsMoving);
+                    enemy => enemy.IsValidTarget() && enemy.LSDistance(Player) < 200 && Player.IsMoving && enemy.IsMoving);
 
             if (getCheckBoxItem(hMenu, "ElSinged.Harass.Q") && spells[Spells.Q].IsReady()
-                && (qTarget != null || target.HasBuff("poisontrailtarget") || Player.Distance(target) <= 500))
+                && (qTarget != null || target.HasBuff("poisontrailtarget") || Player.LSDistance(target) <= 500))
             {
                 CastQ();
             }
@@ -195,7 +195,7 @@ namespace ElSinged
                 && spells[Spells.W].IsReady())
             {
                 var pred = spells[Spells.W].GetPrediction(target);
-                if (spells[Spells.W].Range - 80 > pred.CastPosition.Distance(Player.Position)
+                if (spells[Spells.W].Range - 80 > pred.CastPosition.LSDistance(Player.Position)
                     && pred.Hitchance >= HitChance.High)
                 {
                     spells[Spells.W].Cast(pred.CastPosition);
@@ -210,7 +210,7 @@ namespace ElSinged
             if (getCheckBoxItem(hMenu, "ElSinged.Harass.W"))
             {
                 var pred = spells[Spells.W].GetPrediction(target);
-                if (spells[Spells.W].Range - 80 > pred.CastPosition.Distance(Player.Position)
+                if (spells[Spells.W].Range - 80 > pred.CastPosition.LSDistance(Player.Position)
                     && pred.Hitchance >= HitChance.High)
                 {
                     spells[Spells.W].Cast(pred.CastPosition);

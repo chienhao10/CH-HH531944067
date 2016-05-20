@@ -80,7 +80,7 @@ namespace UnderratedAIO.Champions
 
         private void OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (getCheckBoxItem(menuM, "usewgc") && gapcloser.End.Distance(player.Position) < 200)
+            if (getCheckBoxItem(menuM, "usewgc") && gapcloser.End.LSDistance(player.Position) < 200)
             {
                 W.Cast(getCheckBoxItem(config, "packets"));
             }
@@ -196,7 +196,7 @@ namespace UnderratedAIO.Champions
                     var A = points[i];
                     var B = points[i == points.Count - 1 ? 0 : i + 1];
 
-                    if (qTarget.ServerPosition.To2D().Distance(A, B, true, true) < 50 * 50)
+                    if (qTarget.ServerPosition.To2D().LSDistance(A, B, true, true) < 50 * 50)
                     {
                         Q.Cast(qTarget, true);
                     }
@@ -277,9 +277,9 @@ namespace UnderratedAIO.Champions
                 if (rTarget == null) return;
                 if (!activatedR && !Orbwalker.IsAutoAttacking)
                 {
-                    if (rTarget != null && !rTarget.IsInvulnerable && !rTarget.MagicImmune &&  rTarget.Distance(Game.CursorPos) < 300)
+                    if (rTarget != null && !rTarget.IsInvulnerable && !rTarget.MagicImmune &&  rTarget.LSDistance(Game.CursorPos) < 300)
                     {
-                        if (player.Distance(rTarget) + 100 > Environment.Map.GetPath(player, rTarget.Position) && ComboDamage(rTarget) > rTarget.Health && !CombatHelper.IsCollidingWith( player, rTarget.Position.LSExtend(player.Position, player.BoundingRadius + 15), player.BoundingRadius, new[] {CollisionableObjects.Heroes, CollisionableObjects.Walls}) && (ComboDamage(rTarget) - R.GetDamage(rTarget) < rTarget.Health || rTarget.Distance(player) > 400 || player.HealthPercent < 25) && rTarget.CountAlliesInRange(2500) + 1 >= rTarget.CountEnemiesInRange(2500))
+                        if (player.LSDistance(rTarget) + 100 > Environment.Map.GetPath(player, rTarget.Position) && ComboDamage(rTarget) > rTarget.Health && !CombatHelper.IsCollidingWith( player, rTarget.Position.LSExtend(player.Position, player.BoundingRadius + 15), player.BoundingRadius, new[] {CollisionableObjects.Heroes, CollisionableObjects.Walls}) && (ComboDamage(rTarget) - R.GetDamage(rTarget) < rTarget.Health || rTarget.LSDistance(player) > 400 || player.HealthPercent < 25) && rTarget.CountAlliesInRange(2500) + 1 >= rTarget.CountEnemiesInRange(2500))
                         {
                             R.Cast(rTarget.Position);
                         }
@@ -297,13 +297,13 @@ namespace UnderratedAIO.Champions
             {
                 if (data.DamageTaken > player.Health ||
                     (data.DamageTaken > getWShield()/100*getSliderItem(menuC, "shieldDmg")) ||
-                    (target.Distance(player) < W.Range && getCheckBoxItem(menuC, "usewir")))
+                    (target.LSDistance(player) < W.Range && getCheckBoxItem(menuC, "usewir")))
                 {
                     W.Cast(getCheckBoxItem(config, "packets"));
                 }
             }
             if (activatedW && getCheckBoxItem(menuC, "usew") && W.IsReady() &&
-                player.Distance(target) < W.Range &&
+                player.LSDistance(target) < W.Range &&
                 (target.Health < W.GetDamage(target) ||
                  (W.IsInRange(target) && !W.IsInRange(Prediction.GetPrediction(target, 0.2f).UnitPosition))))
             {
@@ -320,7 +320,7 @@ namespace UnderratedAIO.Champions
             }
             if (activatedP)
             {
-                if (Q.IsReady() && player.Distance(target) > Orbwalking.GetRealAutoAttackRange(target))
+                if (Q.IsReady() && player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(target))
                 {
                     Q.Cast(getCheckBoxItem(config, "packets"));
                 }
@@ -352,7 +352,7 @@ namespace UnderratedAIO.Champions
                     var A = points[i];
                     var B = points[i == points.Count - 1 ? 0 : i + 1];
 
-                    if (qTarget.ServerPosition.To2D().Distance(A, B, true, true) < 50 * 50)
+                    if (qTarget.ServerPosition.To2D().LSDistance(A, B, true, true) < 50 * 50)
                     {
                         Q.Cast(qTarget, true);
                     }
@@ -378,8 +378,8 @@ namespace UnderratedAIO.Champions
                 W.Cast(getCheckBoxItem(config, "packets"));
             }
 
-            if (getCheckBoxItem(menuC, "userCC") && player.Distance(target) < Q.Range &&
-                HeroManager.Enemies.FirstOrDefault(e => e.Distance(Game.CursorPos) < 300) != null && data.AnyCC)
+            if (getCheckBoxItem(menuC, "userCC") && player.LSDistance(target) < Q.Range &&
+                HeroManager.Enemies.FirstOrDefault(e => e.LSDistance(Game.CursorPos) < 300) != null && data.AnyCC)
             {
                 R.Cast(Game.CursorPos, getCheckBoxItem(config, "packets"));
             }
@@ -387,7 +387,7 @@ namespace UnderratedAIO.Champions
 
         private void checkCastedQ(Obj_AI_Base target)
         {
-            if ((justQ && target.Distance(player) > Q.Range) || !target.IsValidTarget() || target == null)
+            if ((justQ && target.LSDistance(player) > Q.Range) || !target.IsValidTarget() || target == null)
             {
                 return;
             }
@@ -439,13 +439,13 @@ namespace UnderratedAIO.Champions
                 return;
             }
             var pred = Prediction.GetPrediction(
-                target, player.ServerPosition.Distance(target.ServerPosition)/E.Speed*1000);
-            if (pred.UnitPosition.Distance(player.Position) > 1400 || pred.Hitchance < HitChance.High)
+                target, player.ServerPosition.LSDistance(target.ServerPosition)/E.Speed*1000);
+            if (pred.UnitPosition.LSDistance(player.Position) > 1400 || pred.Hitchance < HitChance.High)
             {
                 return;
             }
             var collision = E.GetCollision(player.Position.To2D(), new List<Vector2> {pred.CastPosition.To2D()});
-            if (collision.Any(c => c.Distance(player) < E.Range) &&
+            if (collision.Any(c => c.LSDistance(player) < E.Range) &&
                 !CombatHelper.IsCollidingWith(
                     player, pred.CastPosition.LSExtend(player.Position, W.Width + 15), E.Width,
                     new[] {CollisionableObjects.Heroes, CollisionableObjects.Walls}))
@@ -482,7 +482,7 @@ namespace UnderratedAIO.Champions
             }
             if (R.IsReady())
             {
-                damage += player.LSGetSpellDamage(hero, SpellSlot.R)*hero.Distance(player) > 1000 ? 2f : 1.3f;
+                damage += player.LSGetSpellDamage(hero, SpellSlot.R)*hero.LSDistance(player) > 1000 ? 2f : 1.3f;
             }
             //damage += ItemHandler.GetItemsDamage(target);
             var ignitedmg = player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite);

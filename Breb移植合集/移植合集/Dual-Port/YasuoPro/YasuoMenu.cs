@@ -2,12 +2,15 @@
 using System.Linq;
 using LeagueSharp.Common;
 using EloBuddy.SDK.Menu;
+using EloBuddy.SDK;
+using Valvrave_Sharp.Core;
+using Valvrave_Sharp.Evade;
 
 namespace YasuoPro
 {
     internal static class YasuoMenu
     {
-        internal static Menu Config, ComboM, HarassM, EvadeM, KillstealM, FarmingM, WaveclearM, MiscM, DrawingsM;
+        internal static Menu Config, ComboM, HarassM, KillstealM, FarmingM, WaveclearM, MiscM, DrawingsM;
         internal static Yasuo Yas;
 
         public static void Init(Yasuo yas)
@@ -21,9 +24,6 @@ namespace YasuoPro
 
             HarassM = Config.AddSubMenu("骚扰");
             YasuoMenu.Harass.Attach(HarassM);
-
-            EvadeM = Config.AddSubMenu("躲避");
-            YasuoMenu.Evade.Attach(EvadeM);
 
             KillstealM = Config.AddSubMenu("抢头");
             YasuoMenu.Killsteal.Attach(KillstealM);
@@ -149,41 +149,6 @@ namespace YasuoPro
                 menu.AddBool("Killsteal.UseItems", "使用 物品");
             }
         }
-
-
-        struct Evade
-        {
-            internal static void Attach(Menu menu)
-            {
-                menu.AddGroupLabel("目标技能");
-
-                foreach (var spell in TargettedDanger.spellList.Where(x => HeroManager.Enemies.Any(e => e.CharData.BaseSkinName == x.championName)))
-                {
-                    menu.AddBool("enabled." + spell.spellName, spell.spellName + " (" + spell.championName + ")", true);
-                    menu.AddSlider("enabled." + spell.spellName + ".delay", spell.spellName + " 延迟", 0, 0, 1000);
-                    menu.AddSeparator();
-                }
-
-                menu.AddGroupLabel("测试技能");
-                foreach (var spell in TargettedDanger.spellList.Where(x => HeroManager.Enemies.Any(e => x.championName == "Baron")))
-                {
-                    menu.AddBool("enabled." + spell.spellName, spell.spellName + " (" + spell.championName + ")", true);
-                }
-                menu.AddSeparator();
-                menu.AddBool("Evade.Enabled", "躲避已开启");
-                menu.AddBool("Evade.OnlyDangerous", "只躲避危险的", false);
-                menu.AddBool("Evade.FOW", "躲避来自战争迷雾的技能");
-                menu.AddBool("Evade.WTS", "对目标技能使用风墙");
-                menu.AddBool("Evade.WSS", "对技能使用风墙");
-                menu.AddBool("Evade.UseW", "使用风墙躲避");
-                menu.AddBool("Evade.UseE", "使用 E 躲避");
-                menu.AddSeparator();
-                menu.AddSlider("Evade.MinDangerLevelWW", "最低危险等级使用风墙", 1, 1, 5);
-                menu.AddSlider("Evade.MinDangerLevelE", "最低危险等级使用 E", 1, 1, 5);
-                menu.AddSlider("Evade.Delay", "风墙延迟", 0, 0, 1000);
-            }
-        }
-
 
         struct Misc
         {

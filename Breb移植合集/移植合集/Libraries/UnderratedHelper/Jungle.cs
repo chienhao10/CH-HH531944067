@@ -3,6 +3,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
 using Spell = LeagueSharp.Common.Spell;
+using LeagueSharp.Common;
 
 namespace UnderratedAIO.Helpers
 {
@@ -26,7 +27,7 @@ namespace UnderratedAIO.Helpers
                 ObjectManager.Get<Obj_AI_Minion>()
                     .FirstOrDefault(
                         minion =>
-                            minion.IsValidTarget() && minion.IsValid && minion.Distance(pos) < range &&
+                            minion.IsValidTarget() && minion.IsValid && minion.LSDistance(pos) < range &&
                             jungleMonsters.Any(name => minion.Name.StartsWith(name)) && !minion.Name.Contains("Mini") &&
                             !minion.Name.Contains("Spawn"));
         }

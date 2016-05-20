@@ -61,7 +61,7 @@ namespace VayneHunter_Reborn.External.Evade
             {
                 var segmentStart = self[i];
                 var segmentEnd = self[i + 1];
-                var distance1 = (int) segmentEnd.Distance(segmentStart);
+                var distance1 = (int) segmentEnd.LSDistance(segmentStart);
                 if (distance1 > distance)
                 {
                     return segmentStart + distance * (segmentEnd - segmentStart).Normalized();

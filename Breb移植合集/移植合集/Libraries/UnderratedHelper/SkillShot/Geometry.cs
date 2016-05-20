@@ -6,6 +6,7 @@ using System.Linq;
 using ClipperLib;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 #endregion
 
@@ -28,7 +29,7 @@ namespace UnderratedAIO.Helpers.SkillShot
             {
                 var from = self[i];
                 var to = self[i + 1];
-                var d = (int) to.Distance(from);
+                var d = (int) to.LSDistance(from);
                 if (d > distance)
                 {
                     return from + distance*(to - from).Normalized();

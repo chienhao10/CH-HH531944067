@@ -76,7 +76,7 @@ namespace TreeLib.SpellData
 
         public static FastPredResult FastPrediction(Vector2 from, Obj_AI_Base unit, int delay, int speed)
         {
-            var tDelay = delay / 1000f + unit.Distance(@from) / speed;
+            var tDelay = delay / 1000f + unit.LSDistance(@from) / speed;
             var d = tDelay * unit.MoveSpeed;
             var path = unit.GetWaypoints();
             if (path.PathLength() > d)
@@ -130,7 +130,7 @@ namespace TreeLib.SpellData
                             let pos = pred.PredictedPos
                             let w =
                                 skillshot.SpellData.RawRadius + (!pred.IsMoving ? minion.BoundingRadius - 15 : 0) -
-                                pos.Distance(@from, skillshot.End, true)
+                                pos.LSDistance(@from, skillshot.End, true)
                             where w > 0
                             select
                                 new DetectedCollision
@@ -140,7 +140,7 @@ namespace TreeLib.SpellData
                                         skillshot.Direction * 30,
                                     Unit = minion,
                                     Type = CollisionObjectTypes.Minion,
-                                    Distance = pos.Distance(@from),
+                                    Distance = pos.LSDistance(@from),
                                     Diff = w
                                 });
                         break;
@@ -154,7 +154,7 @@ namespace TreeLib.SpellData
                                         0, skillshot.SpellData.Delay - (Utils.GameTimeTickCount - skillshot.StartTick)),
                                     skillshot.SpellData.MissileSpeed)
                             let pos = pred.PredictedPos
-                            let w = skillshot.SpellData.RawRadius + 30 - pos.Distance(@from, skillshot.End, true)
+                            let w = skillshot.SpellData.RawRadius + 30 - pos.LSDistance(@from, skillshot.End, true)
                             where w > 0
                             select
                                 new DetectedCollision
@@ -164,7 +164,7 @@ namespace TreeLib.SpellData
                                         skillshot.Direction * 30,
                                     Unit = hero,
                                     Type = CollisionObjectTypes.Minion,
-                                    Distance = pos.Distance(@from),
+                                    Distance = pos.LSDistance(@from),
                                     Diff = w
                                 });
                         break;
@@ -209,13 +209,13 @@ namespace TreeLib.SpellData
                         }
                         if (intersections.Count > 0)
                         {
-                            var intersection = intersections.OrderBy(item => item.Distance(@from)).ToList()[0];
+                            var intersection = intersections.OrderBy(item => item.LSDistance(@from)).ToList()[0];
                             var collisionT = Utils.GameTimeTickCount +
                                              Math.Max(
                                                  0,
                                                  skillshot.SpellData.Delay -
                                                  (Utils.GameTimeTickCount - skillshot.StartTick)) + 100 +
-                                             1000 * intersection.Distance(@from) / skillshot.SpellData.MissileSpeed;
+                                             1000 * intersection.LSDistance(@from) / skillshot.SpellData.MissileSpeed;
                             if (collisionT - wallCastT < 4000)
                             {
                                 if (skillshot.SpellData.Type != SkillShotType.SkillshotMissileLine)

@@ -104,7 +104,7 @@ namespace Jayce
                 var spellbook = Player.Spellbook.GetSpell(SpellSlot.W);
                 if (spellbook.State == SpellState.Surpressed && W.Level != 0)
                 {
-                    if (target.Distance(Player) <= Orbwalking.GetRealAutoAttackRange(target) - 10)
+                    if (target.LSDistance(Player) <= Orbwalking.GetRealAutoAttackRange(target) - 10)
                     {
                         if (args.Order == GameObjectOrder.MoveTo)
                         {
@@ -119,7 +119,7 @@ namespace Jayce
         {
             if (!getCheckBoxItem(MenuConfig.misc, "autoeint")) return;
             if (sender.IsMe || sender.IsAlly) return;
-            if (sender.Distance(Player) <= Em.Range)
+            if (sender.LSDistance(Player) <= Em.Range)
             {
                 if (!Ismelee())
                 {
@@ -142,7 +142,7 @@ namespace Jayce
             {
                 R.Cast();
             }
-            if (gapcloser.End.Distance(Player.Position) < Em.Range && Ismelee())
+            if (gapcloser.End.LSDistance(Player.Position) < Em.Range && Ismelee())
             {
                 Em.Cast(gapcloser.Sender);
             }
@@ -275,7 +275,7 @@ namespace Jayce
             if (!Ismelee()) return;
             var min =
                 ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(x => x.Distance(Player) < 300 && !x.IsDead && x.IsEnemy).ToList();
+                    .Where(x => x.LSDistance(Player) < 300 && !x.IsDead && x.IsEnemy).ToList();
 
             if (min.FirstOrDefault() == null)
             {
@@ -314,7 +314,7 @@ namespace Jayce
             if (getSliderItem(MenuConfig.laneclear, "minmana") > Player.ManaPercent) return;
             var min =
                 ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(x => x.Distance(Player) < Q.Range - 200 && !x.IsDead && x.IsEnemy && x.IsTargetable);
+                    .Where(x => x.LSDistance(Player) < Q.Range - 200 && !x.IsDead && x.IsEnemy && x.IsTargetable);
 
 
             var objAiMinions = min as IList<Obj_AI_Minion> ?? min.ToList();
@@ -357,17 +357,17 @@ namespace Jayce
             if (Ismelee())
             {
                 var aarange = Orbwalking.GetRealAutoAttackRange(target);
-                if (SpellTimer["Qm"] > 1.1f && SpellTimer["Em"] > 0.4f && (Player.Distance(target) > aarange + 50 || SpellTimer["W"] < 0.8f))
+                if (SpellTimer["Qm"] > 1.1f && SpellTimer["Em"] > 0.4f && (Player.LSDistance(target) > aarange + 50 || SpellTimer["W"] < 0.8f))
                 {
                     R.Cast();
                 }
 
-                if (target.Distance(Player) > Qm.Range + 30)
+                if (target.LSDistance(Player) > Qm.Range + 30)
                 {
                     R.Cast();
                 }
 
-                if (Player.Mana < Q.ManaCost && Player.Distance(target) > aarange)
+                if (Player.Mana < Q.ManaCost && Player.LSDistance(target) > aarange)
                 {
                     R.Cast();
                 }
@@ -397,13 +397,13 @@ namespace Jayce
                         R.Cast();
                     }
 
-                    if (target.Health <= QMeleeDamage() && Ready("Qm") && target.Distance(Player) < Qm.Range)
+                    if (target.Health <= QMeleeDamage() && Ready("Qm") && target.LSDistance(Player) < Qm.Range)
                     {
                         R.Cast();
                     }
 
                     if (target.Health < QMeleeDamage() + EMeleeDamage(target) && Ready("Qm") && Ready("Em") &&
-                        target.Distance(Player) < Qm.Range)
+                        target.LSDistance(Player) < Qm.Range)
                     {
                         R.Cast();
                     }
@@ -435,7 +435,7 @@ namespace Jayce
                 (int)
                     (expires -
                      (Game.Time - 1));
-            if (Player.Distance(target) < Orbwalking.GetRealAutoAttackRange(target))
+            if (Player.LSDistance(target) < Orbwalking.GetRealAutoAttackRange(target))
             {
                 if (Wm.IsReady())
                     Wm.Cast();
@@ -449,7 +449,7 @@ namespace Jayce
                 }
             }
 
-            if (Player.Distance(target) <= Em.Range - 80)
+            if (Player.LSDistance(target) <= Em.Range - 80)
             {
                 if (Qm.IsReady() && !Em.IsReady() && getCheckBoxItem(MenuConfig.combo, "useqcm"))
                 {
@@ -465,7 +465,7 @@ namespace Jayce
                 {
                     var aarange = Orbwalking.GetRealAutoAttackRange(target);
                     if (SpellTimer["Qm"] < 2.2 &&
-                        (Player.Distance(target) < aarange + 100 || (SpellTimer["Q"] < 1.2 && CD < 1.5)))
+                        (Player.LSDistance(target) < aarange + 100 || (SpellTimer["Q"] < 1.2 && CD < 1.5)))
                     {
                         Em.Cast(target);
                     }
@@ -542,7 +542,7 @@ namespace Jayce
             if ((Q.IsReady() && !E.IsReady()) || (Q.IsReady() && E.IsReady() && Player.Mana <
                 Player.Spellbook.GetSpell(SpellSlot.E).SData.Mana + Player.Spellbook.GetSpell(SpellSlot.Q).SData.Mana))
             {
-                if (Player.Distance(target) < Q.Range && getCheckBoxItem(MenuConfig.combo, "useqcr"))
+                if (Player.LSDistance(target) < Q.Range && getCheckBoxItem(MenuConfig.combo, "useqcr"))
                 {
                     Q.Cast(qpred1.From);
                 }

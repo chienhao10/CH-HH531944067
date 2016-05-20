@@ -220,15 +220,15 @@ namespace Challenger_Series.Plugins
         private int ScoutMode;
         public void InitMenu()
         {
-            ComboMenu = MainMenu.AddSubMenu("连招设置: ", "Combo Settings: ");
-            ComboMenu.Add("asheqcombo", new CheckBox("使用 Q", true));
-            ComboMenu.Add("ashewcombo", new CheckBox("使用 W", true));
-            ComboMenu.Add("ashercombo", new CheckBox("使用 R", true));
-            MainMenu.Add("ashewharass", new CheckBox("使用 W 骚扰", true));
-            MainMenu.Add("asherantigapclose", new CheckBox("使用 R 防突进", false));
-            MainMenu.Add("asherinterrupt", new CheckBox("使用 R 技能打断", true));
-            MainMenu.Add("ashedraww", new CheckBox("显示 W 范围?", false));
-            MainMenu.Add("ashescoutmode", new ComboBox("哨兵 (E) 模式: ", 0, "最近敌人野区", "最远敌人野区", "龙-男爵", "自定义", "不使用"));
+            ComboMenu = MainMenu.AddSubMenu("Combo Settings: ", "Combo Settings: ");
+            ComboMenu.Add("asheqcombo", new CheckBox("Use Q", true));
+            ComboMenu.Add("ashewcombo", new CheckBox("Use W", true));
+            ComboMenu.Add("ashercombo", new CheckBox("Use R", true));
+            MainMenu.Add("ashewharass", new CheckBox("Use W Harass", true));
+            MainMenu.Add("asherantigapclose", new CheckBox("Use R AntiGapclose", false));
+            MainMenu.Add("asherinterrupt", new CheckBox("Use R Interrupt", true));
+            MainMenu.Add("ashedraww", new CheckBox("Draw W Range?", false));
+            MainMenu.Add("ashescoutmode", new ComboBox("Scout (E) Mode: ", 0, "EnemyJungleClosest", "EnemyJungleFarthest", "DragonBaron", "Custom", "Disabled"));
 
             UseQCombo = getCheckBoxItem(ComboMenu, "asheqcombo");
             UseWCombo = getCheckBoxItem(ComboMenu, "ashewcombo");

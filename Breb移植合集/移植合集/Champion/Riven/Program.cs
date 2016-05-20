@@ -330,7 +330,7 @@ namespace NechritoRiven
                 var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range + Spells._e.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
-                    if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.Distance(target.Position) <= 1870) && (Player.Distance(target.Position) >= 1600))
+                    if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= 1870) && (Player.LSDistance(target.Position) >= 1600))
                     {
                         Spells._e.Cast(target);
                         LeagueSharp.Common.Utility.DelayAction.Add(90, () => Spells._r.Cast(target));
@@ -380,7 +380,7 @@ namespace NechritoRiven
 
             if (IsWallDash && MenuConfig.FleeSpot)
             {
-                if (WallPoint.Distance(Player.ServerPosition) <= 600)
+                if (WallPoint.LSDistance(Player.ServerPosition) <= 600)
                 {
                     Render.Circle.DrawCircle(WallPoint, 60, System.Drawing.Color.White);
                     Render.Circle.DrawCircle(end, 60, System.Drawing.Color.Green);
@@ -508,7 +508,7 @@ namespace NechritoRiven
                 var epos = Player.ServerPosition +
                            (Player.ServerPosition - sender.ServerPosition).Normalized() * 300;
 
-                if (Player.Distance(sender.ServerPosition) <= args.SData.CastRange)
+                if (Player.LSDistance(sender.ServerPosition) <= args.SData.CastRange)
                 {
                     switch (args.SData.TargettingType)
                     {
@@ -565,7 +565,7 @@ namespace NechritoRiven
                     {
                         if (args.Target.NetworkId == Player.NetworkId)
                         {
-                            if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10)));
+                            if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.LSDistance(Game.CursorPos) + 10)));
                         }
                     }
 
@@ -608,7 +608,7 @@ namespace NechritoRiven
                     {
                         if (args.Target.NetworkId == Player.NetworkId)
                         {
-                            if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10)));
+                            if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.LSDistance(Game.CursorPos) + 10)));
                         }
                     }
                     if (args.SData.Name.Contains("HungeringStrike"))
@@ -630,7 +630,7 @@ namespace NechritoRiven
                         if (args.Target.NetworkId == Player.NetworkId)
                         {
                             if (Spells._w.IsReady() && Logic.InWRange(sender)) Spells._w.Cast();
-                            else if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10)));
+                            else if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.LSDistance(Game.CursorPos) + 10)));
                         }
                     }
                     if (args.SData.Name.Contains("KatarinaE"))
@@ -651,7 +651,7 @@ namespace NechritoRiven
                     {
                         if (args.Target.NetworkId == Player.NetworkId)
                         {
-                            if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.Distance(Game.CursorPos) + 10)));
+                            if (Spells._e.IsReady()) Spells._e.Cast(EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Player.Position.LSExtend(Game.CursorPos, Player.LSDistance(Game.CursorPos) + 10)));
                             else if (Spells._w.IsReady()) Spells._w.Cast();
                         }
                     }

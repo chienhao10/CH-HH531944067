@@ -10,6 +10,7 @@ using ExorAIO.Champions.Ryze;
 using ExorAIO.Champions.Tryndamere;
 using ExorAIO.Champions.Caitlyn;
 using ExorAIO.Utilities;
+using ExorAIO.Champions.Anivia;
 
 namespace ExorAIO.Core
 {
@@ -62,6 +63,9 @@ namespace ExorAIO.Core
                     break;
                 case "Caitlyn":
                     Caitlyn.OnLoad();
+                    break;
+                case "Anivia":
+                    Anivia.OnLoad();
                     break;
                 default:
                     Variables.IsLoaded = false;

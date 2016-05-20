@@ -93,7 +93,7 @@ namespace ExorAIO.Champions.Ryze
         {
             if (Variables.W.IsReady() &&
                 !Bools.IsSpellShielded(gapcloser.Sender) &&
-                ObjectManager.Player.Distance(gapcloser.End) < Variables.W.Range &&
+                ObjectManager.Player.LSDistance(gapcloser.End) < Variables.W.Range &&
                 Variables.getCheckBoxItem(Variables.WMenu, "wspell.gp"))
             {
                 Variables.W.CastOnUnit(gapcloser.Sender);

@@ -44,7 +44,7 @@ namespace TheBrand
             if (target == null) return;
 
             var dmgPerBounce = ObjectManager.Player.GetSpellDamage(target, Slot) + BrandCombo.GetPassiveDamage(target);
-            if (dmgPerBounce > target.Health && target.Distance(ObjectManager.Player) > 750)
+            if (dmgPerBounce > target.Health && target.LSDistance(ObjectManager.Player) > 750)
             {
                 TryBridgeUlt(target);
             }
@@ -56,12 +56,12 @@ namespace TheBrand
                     /*&& !skill.IsSafeCasting(1)*/) ||
                  ObjectManager.Player.GetSpellDamage(target, SpellSlot.Q) + dmgPerBounce +
                  ObjectManager.Player.GetAutoAttackDamage(target) > target.Health && !target.HasBuff("brandablaze") &&
-                 target.Distance(ObjectManager.Player) < 750))
+                 target.LSDistance(ObjectManager.Player) < 750))
             {
                 if (ObjectManager.Player.HealthPercent - target.HealthPercent < Program.getRMenuSL("healthDifference") ||
                     !Program.getRMenuCB("DontRwith") ||
                     Program.getRMenuCB("Ignorewhenfleeing") &&
-                    target.Distance(ObjectManager.Player) > ObjectManager.Player.AttackRange)
+                    target.LSDistance(ObjectManager.Player) > ObjectManager.Player.AttackRange)
                 {
                     Cast(target);
                 }
@@ -72,14 +72,14 @@ namespace TheBrand
             }
 
 
-            // if (target.Distance(ObjectManager.Player) > 750) return;
+            // if (target.LSDistance(ObjectManager.Player) > 750) return;
             var inBounce = new bool[HeroManager.Enemies.Count];
             var canBounce = BounceCheck(target, inBounce);
             if (canBounce)
             {
                 var inBounceEnemies =
                     HeroManager.Enemies.Where(enemy => inBounce[HeroManager.Enemies.IndexOf(enemy)]).ToArray();
-                var distance = target.Distance(ObjectManager.Player);
+                var distance = target.LSDistance(ObjectManager.Player);
 
                 var bounceCount = inBounce.Count(item => item);
                 if (bounceCount <= 1) return;
@@ -111,7 +111,7 @@ namespace TheBrand
         {
             if (distance > 750)
             {
-                var alternateTarget = alternate.FirstOrDefault(enemy => enemy.Distance(ObjectManager.Player) < 750);
+                var alternateTarget = alternate.FirstOrDefault(enemy => enemy.LSDistance(ObjectManager.Player) < 750);
                 if (alternateTarget == null && bridgeUlt)
                 {
                     TryBridgeUlt(target);
@@ -131,7 +131,7 @@ namespace TheBrand
 
             #region bridge ult
 
-            if (target.Distance(ObjectManager.Player) > 750 &&
+            if (target.LSDistance(ObjectManager.Player) > 750 &&
                 (_brandE.Instance.State == SpellState.Ready || _brandQ.Instance.State == SpellState.Ready))
             {
                 var bridgeSpellSlot = _brandE.Instance.State == SpellState.Ready ? _brandE.Slot : _brandQ.Slot;
@@ -142,21 +142,21 @@ namespace TheBrand
                 if (minions != null && minions.Count > 0)
                 {
                     var unit = GetMinimumDistanceUnit(target, minions, bridgeSpellSlot);
-                    if (unit != null && unit.Distance(target) < 500)
+                    if (unit != null && unit.LSDistance(target) < 500)
                     {
                         bridgeUnit = unit;
-                        bridgeUnitDistance = unit.Distance(ObjectManager.Player);
+                        bridgeUnitDistance = unit.LSDistance(ObjectManager.Player);
                     }
                 }
                 if (bridgeUnit == null)
                 {
                     var unit = GetMinimumDistanceUnit(target,
-                        HeroManager.Enemies.Where(enemy => enemy.Distance(ObjectManager.Player) < bridgeSpellRange),
+                        HeroManager.Enemies.Where(enemy => enemy.LSDistance(ObjectManager.Player) < bridgeSpellRange),
                         bridgeSpellSlot);
-                    if (unit != null && unit.Distance(target) < 500)
+                    if (unit != null && unit.LSDistance(target) < 500)
                     {
                         bridgeUnit = unit;
-                        bridgeUnitDistance = unit.Distance(ObjectManager.Player);
+                        bridgeUnitDistance = unit.LSDistance(ObjectManager.Player);
                     }
                 }
 
@@ -187,7 +187,7 @@ namespace TheBrand
                         else
                         {
                             var collidingObj = prediction.CollisionObjects.First();
-                            if (collidingObj.Distance(target) < 500)
+                            if (collidingObj.LSDistance(target) < 500)
                             {
                                 _brandQ.Cast(prediction.CastPosition);
                                 QueueCast(() =>
@@ -209,7 +209,7 @@ namespace TheBrand
         {
             for (var i = 0; i < HeroManager.Enemies.Count; i++)
             {
-                if (!inBounce[i] && HeroManager.Enemies[i].Distance(target) < 500 &&
+                if (!inBounce[i] && HeroManager.Enemies[i].LSDistance(target) < 500 &&
                     HeroManager.Enemies[i].IsValidTarget())
                 {
                     if (!HeroManager.Enemies[i].HasBuff("brandablaze"))
@@ -233,7 +233,7 @@ namespace TheBrand
             Obj_AI_Base minUnit = null;
             foreach (var objAiBase in units)
             {
-                var distance = objAiBase.Distance(target);
+                var distance = objAiBase.LSDistance(target);
                 if (
                     !(distance < minDistance &&
                       ObjectManager.Player.GetSpellDamage(objAiBase, bridge) < objAiBase.Health)) continue;

@@ -65,7 +65,7 @@ namespace Nechrito_Diana
                 var StealDmg = Player.Spellbook.GetSpell(Smite).State == SpellState.Ready
                     ? (float)Player.GetSummonerSpellDamage(minion, LeagueSharp.Common.Damage.SummonerSpell.Smite)
                     : 0;
-                if (minion.Distance(Player.ServerPosition) <= 550)
+                if (minion.LSDistance(Player.ServerPosition) <= 550)
                 {
                     if ((minion.CharData.BaseSkinName.Contains("Dragon") || minion.CharData.BaseSkinName.Contains("Baron")))
                     {
@@ -73,7 +73,7 @@ namespace Nechrito_Diana
                             Player.Spellbook.CastSpell(Smite, minion);
                     }
                 }
-                else if (minion.Distance(Player.ServerPosition) <= 850)
+                else if (minion.LSDistance(Player.ServerPosition) <= 850)
                     {
                         if ((minion.CharData.BaseSkinName.Contains("Dragon") || minion.CharData.BaseSkinName.Contains("Baron")))
                         {

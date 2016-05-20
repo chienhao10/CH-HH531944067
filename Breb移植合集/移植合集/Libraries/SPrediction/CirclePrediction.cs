@@ -106,7 +106,7 @@ namespace SPrediction
                 HeroManager.Enemies.Where(
                     p =>
                         p.IsValidTarget() &&
-                        Prediction.GetFastUnitPosition(p, delay, 0, from).Distance(rangeCheckFrom) < range);
+                        Prediction.GetFastUnitPosition(p, delay, 0, from).LSDistance(rangeCheckFrom) < range);
 
             if (enemies.Count() > 0)
             {
@@ -116,7 +116,7 @@ namespace SPrediction
                 var center = posSummary/enemies.Count();
                 float flyTime = 0;
                 if (missileSpeed != 0)
-                    flyTime = from.Distance(center)/missileSpeed;
+                    flyTime = from.LSDistance(center)/missileSpeed;
 
                 posSummary = Vector2.Zero;
                 var predictionResults = new List<Tuple<Prediction.Result, float>>();

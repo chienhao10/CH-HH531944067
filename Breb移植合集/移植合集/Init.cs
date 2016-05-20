@@ -50,7 +50,7 @@ namespace PortAIO
         private static void Initialize(EventArgs args)
         {
 
-            Notifications.Show(new SimpleNotification("PortAIO", "Welcome to PortAIO, this is a complete AIO made for every single champion. If you experience bugs or have suggestions or just have something to report please go to the github and view the instructions to post a new issue. Enjoy using PortAIO and GLHF!"), 10000);
+            Notifications.Show(new SimpleNotification("CH汉化移植合集", "欢迎使用移植合集,此合集每一个英雄都有各自的脚本可选择使用。如果在使用上有任何的BUG，请在我的GITHUB回报或者私聊我。祝你玩的开心，杀的超神！QQ交流群：531944067 请附上你的EB ID！否则不给进!"), 10000);
 
             Loader.Menu();
 
@@ -76,7 +76,6 @@ namespace PortAIO
 
                 if (Loader.useSkin)
                 {
-                    //SkinsSharp.Program.GameLoad();
                     SDK_SkinChanger.Program.Load();
                 }
 
@@ -106,12 +105,22 @@ namespace PortAIO
                     UniversalGankAlerter.Program.Main();
                 }
 
-                /*
                 if (Loader.evade)
                 {
                     new ezEvade.Evade();
                 }
 
+                if (Loader.cheat)
+                {
+                    new TheCheater.TheCheater().Load();
+                }
+
+                if (Loader.banwards)
+                {
+                    Sebby_Ban_War.Program.Game_OnGameLoad();
+                }
+
+                /*
                 if (Loader.stream)
                 {
                     StreamBuddy.Program.Main();
@@ -175,6 +184,9 @@ namespace PortAIO
                             case 1:
                                 Nechrito_Twitch.Program.OnGameLoad();
                                 break;
+                            case 2:
+                                iTwitch.Twitch.OnGameLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
@@ -222,13 +234,81 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "anivia": // OKTW - Sebby - All Seeby champs go down here
-                    case "thresh":
+                    case "ezreal":
+                        switch (Loader.ezreal)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                iDZEzreal.EzrealBootstrap.OnGameLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
+                    case "ekko": // OKTW & ElEkko
+                        switch (Loader.ekko)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                ElEkko.ElEkko.OnLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
+                    case "graves": // OKTW Graves & D-Graves
+                        switch (Loader.graves)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                D_Graves.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
+                    case "ahri":
+                        switch (Loader.ahri)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                AhriSharp.Ahri.Ahri_Load();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
+
+                    case "anivia":
+                        switch (Loader.anivia)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
+                    case "thresh": // OKTW - Sebby - All Seeby champs go down here
                     case "annie":
                     case "braum":
-                    case "ekko":
-                    case "ezreal":
-                    case "graves":
                     case "jinx":
                     case "karthus":
                     case "missfortune":
@@ -239,21 +319,41 @@ namespace PortAIO
                     case "velkoz":
                     case "swain":
                     case "urgot":
-                    case "ahri":
                         SebbyLib.Program.GameOnOnGameLoad();
                         break;
                     case "azir": // Synx Auto Carry
-                        //Champion = new SAutoCarry.Champions.Azir();
                         HeavenStrikeAzir.Program.Game_OnGameLoad();
                         break;
                     case "bard": // Dreamless Wanderer
                         PortAIO.Champion.Bard.Program.OnLoad();
                         break;
-                    case "blitzcrank": // Fresh Booster
-                        PortAIO.Champion.Blitzcrank.Program.OnLoad();
+                    case "blitzcrank": // Fresh Booster & OKTW
+                        switch (Loader.blitzcrank)
+                        {
+                            case 0:
+                                PortAIO.Champion.Blitzcrank.Program.OnLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                PortAIO.Champion.Blitzcrank.Program.OnLoad();
+                                break;
+                        }
                         break;
                     case "brand": // TheBrand (or OKTWBrand)
-                        PortAIO.Champion.Brand.Program.Load();
+                        switch (Loader.brand)
+                        {
+                            case 0:
+                                PortAIO.Champion.Brand.Program.Load();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                PortAIO.Champion.Brand.Program.Load();
+                                break;
+                        }
                         break;
                     case "cassiopeia": // Synx Auto Carry
                         Champion = new SAutoCarry.Champions.Cassiopeia();
@@ -261,19 +361,64 @@ namespace PortAIO
                     case "chogath": // Underrated Cho'Gath
                         UnderratedAIO.Champions.Chogath.Load();
                         break;
-                    case "corki": // ElCorki
-                        ElCorki.Corki.Game_OnGameLoad();
+                    case "corki": // ElCorki & OKTW
+                        switch (Loader.corki)
+                        {
+                            case 0:
+                                ElCorki.Corki.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 2:
+                                D_Corki.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                ElCorki.Corki.Game_OnGameLoad();
+                                break;
+                        }
                         break;
-                    case "darius": // Exory
+                    case "darius": // Exory & OKTW
+                        switch (Loader.darius)
+                        {
+                            case 0:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                        }
+                        break;
                     case "nautilus":
                     case "nunu":
                     case "olaf":
                     case "pantheon":
                     case "renekton":
                     case "tryndamere":
-                    case "ryze":
                         ExorAIO.Core.Bootstrap.BuildMenu();
                         ExorAIO.Core.Bootstrap.LoadChampion();
+                        break;
+                    case "ryze":
+                        switch (Loader.ryze)
+                        {
+                            case 0:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                            case 1:
+                                ElEasy.Plugins.Ryze f = new ElEasy.Plugins.Ryze();
+                                f.Load();
+                                break;
+                            default:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                        }
                         break;
                     case "diana":
                         switch (Loader.diana)
@@ -293,13 +438,46 @@ namespace PortAIO
                         Mundo.Mundo.OnLoad();
                         break;
                     case "draven": // UltimaDraven
-                        RevampedDraven.Program.OnLoad();
+                        switch (Loader.draven)
+                        {
+                            case 0:
+                                RevampedDraven.Program.OnLoad();
+                                break;
+                            case 1:
+                                Tyler1.Program.Load();
+                                break;
+                            default:
+                                RevampedDraven.Program.OnLoad();
+                                break;
+                        }
                         break;
-                    case "elise": // G-FUEL Elise
-                        GFUELElise.Elise.OnGameLoad();
+                    case "elise":
+                        switch (Loader.elise)
+                        {
+                            case 0:
+                                GFUELElise.Elise.OnGameLoad();
+                                break;
+                            case 1:
+                                D_Elise.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                GFUELElise.Elise.OnGameLoad();
+                                break;
+                        }
                         break;
                     case "evelynn": // Evelynn#
-                        Evelynn.Program.Game_OnGameLoad();
+                        switch (Loader.evelynn)
+                        {
+                            case 0:
+                                Evelynn.Program.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                Evelynn.Program.Game_OnGameLoad();
+                                break;
+                        }
                         break;
                     case "fiddlesticks": // Feedlesticks
                         Feedlesticks.Program.Game_OnGameLoad();
@@ -313,8 +491,16 @@ namespace PortAIO
                     case "galio": // Underrated AIO
                         UnderratedAIO.Champions.Galio.OnLoad();
                         break;
-                    case "gangplank": // Underrated AIO
-                        UnderratedAIO.Champions.Gangplank.OnLoad();
+                    case "gangplank": // Underrated AIO & BadaoKingdom
+                        switch (Loader.gangplank)
+                        {
+                            case 0:
+                                UnderratedAIO.Champions.Gangplank.OnLoad();
+                                break;
+                            default:
+                                UnderratedAIO.Champions.Gangplank.OnLoad();
+                                break;
+                        }
                         break;
                     case "garen": // Underrated AIO
                         UnderratedAIO.Champions.Garen.OnLoad();
@@ -355,10 +541,32 @@ namespace PortAIO
                         BrianSharp.Plugin.JarvanIV.OnLoad();
                         break;
                     case "jax": // xqx
-                        JaxQx.Program.Game_OnGameLoad();
+                        switch (Loader.jax)
+                        {
+                            case 0:
+                                JaxQx.Program.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                NoobJaxReloaded.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                JaxQx.Program.Game_OnGameLoad();
+                                break;
+                        }
                         break;
-                    case "jhin": // Jhin The Virtuoso
-                        Jhin___The_Virtuoso.Jhin.JhinOnLoad();
+                    case "jhin": // Jhin The Virtuoso & OKTW
+                        switch (Loader.jhin)
+                        {
+                            case 0:
+                                Jhin___The_Virtuoso.Jhin.JhinOnLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                Jhin___The_Virtuoso.Jhin.JhinOnLoad();
+                                break;
+                        }
                         break;
                     case "kalista": // iKalista
                         switch (Loader.kalista)
@@ -398,7 +606,18 @@ namespace PortAIO
                         }
                         break;
                     case "kayle": // SephKayle
-                        SephKayle.Program.OnGameLoad();
+                        switch (Loader.kayle)
+                        {
+                            case 0:
+                                SephKayle.Program.OnGameLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                SephKayle.Program.OnGameLoad();
+                                break;
+                        }
                         break;
                     case "aurelionsol": // El Aurelion Sol
                         ElAurelion_Sol.AurelionSol.OnGameLoad();
@@ -409,8 +628,19 @@ namespace PortAIO
                     case "khazix": // SephKhaZix
                         new SephKhazix.Khazix();
                         break;
-                    case "kindred": // Yin Yang Kindred
-                        Kindred___YinYang.Program.Game_OnGameLoad();
+                    case "kindred": // Yin Yang Kindred & OKTW
+                        switch (Loader.kindred)
+                        {
+                            case 0:
+                                Kindred___YinYang.Program.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                Kindred___YinYang.Program.Game_OnGameLoad();
+                                break;
+                        }
                         break;
                     case "kogmaw":
                         switch (Loader.kogmaw)
@@ -421,13 +651,27 @@ namespace PortAIO
                             case 1:
                                 Challenger_Series.Program.Main();
                                 break;
+                            case 2:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
                             default:
                                 Challenger_Series.Program.Main();
                                 break;
                         }
                         break;
                     case "leblanc": // PopBlanc
-                        PopBlanc.Program.OnLoad();
+                        switch (Loader.leblanc)
+                        {
+                            case 0:
+                                PopBlanc.Program.OnLoad();
+                                break;
+                            case 1:
+                                Leblanc.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                PopBlanc.Program.OnLoad();
+                                break;
+                        }
                         break;
                     case "leesin": // El Lee Sin
                         switch (Loader.leesin)
@@ -437,6 +681,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 ElLeeSin.Program.Game_OnGameLoad();
+                                break;
+                            case 2:
+                                new FreshBooster.Champion.LeeSin();
                                 break;
                             default:
                                 Valvrave_Sharp.Program.MainA();
@@ -471,7 +718,18 @@ namespace PortAIO
                         new LuluLicious.Lulu();
                         break;
                     case "lux": // MoonLux
-                        MoonLux.Program.GameOnOnGameLoad();
+                        switch (Loader.lux)
+                        {
+                            case 0:
+                                MoonLux.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                MoonLux.Program.GameOnOnGameLoad();
+                                break;
+                        }
                         break;
                     case "malphite": // eleasy
                         new ElEasy.Plugins.Malphite();
@@ -485,26 +743,64 @@ namespace PortAIO
                             case 1:
                                 VayneHunter_Reborn.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                hi_im_gosu.Vayne.Game_OnGameLoad();
+                                break;
                             default:
                                 Vayne.Program.OnLoad();
                                 break;
                         }
                         break;
-                    case "quinn": // GFuel Quinn
-                        GFUELQuinn.Quinn.OnGameLoad();
+                    case "quinn": // GFuel Quinn & OKTW
+                        switch (Loader.quinn)
+                        {
+                            case 0:
+                                GFUELQuinn.Quinn.OnGameLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                GFUELQuinn.Quinn.OnGameLoad();
+                                break;
+                        }
                         break;
                     case "tristana": // ElTristana
                         ElTristana.Tristana.OnLoad();
                         break;
-                    case "riven": // Nechrito Riven
-                        NechritoRiven.Program.OnGameLoad();
+                    case "riven": // Nechrito Riven & Badao Riven
+                        switch (Loader.riven)
+                        {
+                            case 0:
+                                NechritoRiven.Program.OnGameLoad();
+                                break;
+                            case 1:
+                                HeavenStrikeRiven.Program.OnStart();
+                                break;
+                            default:
+                                NechritoRiven.Program.OnGameLoad();
+                                break;
+                        }
                         break;
                     case "talon": // GFuel Talon
                         GFUELTalon.Talon.OnGameLoad();
                         break;
                     case "zed": // iZed
-                        //iDZed.Zed.OnLoad();
-                        Valvrave_Sharp.Program.MainA();
+                        switch (Loader.zed)
+                        {
+                            case 0:
+                                Valvrave_Sharp.Program.MainA();
+                                break;
+                            case 1:
+                                Zed.Program.Game_OnGameLoad();
+                                break;
+                            case 2:
+                                iDZed.Zed.OnLoad();
+                                break;
+                            default:
+                                Valvrave_Sharp.Program.MainA();
+                                break;
+                        }
                         break;
                     case "udyr": // D_Udyr
                         D_Udyr.Program.Game_OnGameLoad();
@@ -518,8 +814,19 @@ namespace PortAIO
                     case "mordekaiser": // How to Train your dragon
                         Mordekaiser.Program.Game_OnGameLoad();
                         break;
-                    case "morgana": // Kurisi Morg
-                        new KurisuMorgana.KurisuMorgana();
+                    case "morgana": // Kurisu Morg & OKTW
+                        switch (Loader.morgana)
+                        {
+                            case 0:
+                                new KurisuMorgana.KurisuMorgana();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                new KurisuMorgana.KurisuMorgana();
+                                break;
+                        }
                         break;
                     case "nami": // vSupport Series
                         new vSupport_Series.Champions.Nami();
@@ -550,6 +857,9 @@ namespace PortAIO
                             case 1:
                                 YasuoPro.Initalization.Main();
                                 break;
+                            case 2:
+                                GosuMechanicsYasuo.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 Valvrave_Sharp.Program.MainA();
                                 break;
@@ -559,13 +869,35 @@ namespace PortAIO
                         new UnderratedAIO.Champions.Nocturne();
                         break;
                     case "poppy": // Underrated AIO
-                        new UnderratedAIO.Champions.Poppy();
+                        switch (Loader.poppy)
+                        {
+                            case 0:
+                                new UnderratedAIO.Champions.Poppy();
+                                break;
+                            case 1:
+                                BadaoKingdom.BadaoChampion.BadaoPoppy.BadaoPoppy.BadaoActivate();
+                                break;
+                            default:
+                                new UnderratedAIO.Champions.Poppy();
+                                break;
+                        }
                         break;
                     case "rammus": // BrianSharp
                         new BrianSharp.Plugin.Rammus();
                         break;
-                    case "rengar": // ElRengar
-                        ElRengarRevamped.Rengar.OnLoad();
+                    case "rengar": // ElRengar && D-Rengar
+                        switch (Loader.rengar)
+                        {
+                            case 0:
+                                ElRengarRevamped.Rengar.OnLoad();
+                                break;
+                            case 1:
+                                D_Rengar.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                ElRengarRevamped.Rengar.OnLoad();
+                                break;
+                        }
                         break;
                     case "soraka": // Sophie's Soraka
                         switch (Loader.soraka)
@@ -581,8 +913,19 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "twistedfate": // Twisted Fate by Kortatu
-                        TwistedFate.Program.Game_OnGameLoad();
+                    case "twistedfate": // Twisted Fate by Kortatu & OKTW
+                        switch (Loader.twistedfate)
+                        {
+                            case 0:
+                                TwistedFate.Program.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            default:
+                                TwistedFate.Program.Game_OnGameLoad();
+                                break;
+                        }
                         break;
                     case "varus": // ElVarus
                         Elvarus.Varus.Game_OnGameLoad();
@@ -590,17 +933,50 @@ namespace PortAIO
                     case "veigar": // FreshBooster
                         new FreshBooster.Champion.Veigar();
                         break;
-                    case "reksai": // D-Reksai
-                        D_RekSai.Program.Game_OnGameLoad();
+                    case "reksai": // D-Reksai && HeavenStrikeReksaj
+                        switch (Loader.reksai)
+                        {
+                            case 0:
+                                D_RekSai.Program.Game_OnGameLoad();
+                                break;
+                            case 1:
+                                HeavenStrikeReksaj.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                D_RekSai.Program.Game_OnGameLoad();
+                                break;
+                        }
                         break;
-                    case "rumble": // Underrated AIO
-                        new UnderratedAIO.Champions.Rumble();
+                    case "rumble": // Underrated AIO & ElRumble
+                        switch (Loader.rumble)
+                        {
+                            case 0:
+                                new UnderratedAIO.Champions.Rumble();
+                                break;
+                            case 1:
+                                ElRumble.Rumble.OnLoad();
+                                break;
+                            default:
+                                ElRumble.Rumble.OnLoad();
+                                break;
+                        }
                         break;
                     case "sejuani": // ElSejuani
                         ElSejuani.Sejuani.OnLoad();
                         break;
-                    case "shaco": // Underrated AIO
-                        new UnderratedAIO.Champions.Shaco();
+                    case "shaco": // Underrated AIO & ChewyMoon's Shaco
+                        switch (Loader.shaco)
+                        {
+                            case 0:
+                                new UnderratedAIO.Champions.Shaco();
+                                break;
+                            case 1:
+                                ChewyMoonsShaco.ChewyMoonShaco.OnGameLoad();
+                                break;
+                            default:
+                                new UnderratedAIO.Champions.Shaco();
+                                break;
+                        }
                         break;
                     case "shen": // Underrated AIO
                         new UnderratedAIO.Champions.Shen();
@@ -608,8 +984,20 @@ namespace PortAIO
                     case "skarner": // Underrated AIO
                         new UnderratedAIO.Champions.Skarner();
                         break;
-                    case "sona": // vSeries Support
-                        new vSupport_Series.Champions.Sona();
+                    case "sona": // vSeries Support & ElEasy Sona
+                        switch (Loader.sona)
+                        {
+                            case 0:
+                                new vSupport_Series.Champions.Sona();
+                                break;
+                            case 1:
+                                ElEasy.Plugins.Sona f = new ElEasy.Plugins.Sona();
+                                f.Load();
+                                break;
+                            default:
+                                new vSupport_Series.Champions.Sona();
+                                break;
+                        }
                         break;
                     case "teemo": // Sharpshooter
                         new SharpShooter.Plugins.Teemo();
@@ -650,20 +1038,53 @@ namespace PortAIO
                     case "zac": // Underrated AIO
                         new UnderratedAIO.Champions.Zac();
                         break;
-                    case "volibear": // Underrated AIO
-                        new UnderratedAIO.Champions.Volibear();
-                        break;
                     case "tahmkench": // Underrated AIO
                         new UnderratedAIO.Champions.TahmKench();
                         break;
                     case "sion": // Underrated AIO
-                        new UnderratedAIO.Champions.Sion();
+                        switch (Loader.sion)
+                        {
+                            case 0:
+                                new UnderratedAIO.Champions.Sion();
+                                break;
+                            case 1:
+                                Sion.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                new UnderratedAIO.Champions.Sion();
+                                break;
+                        }
                         break;
                     case "vi": //ElVi
                         ElVi.Vi.OnLoad();
                         break;
+                    case "volibear": // Underrated AIO && VoliPower
+                        switch (Loader.volibear)
+                        {
+                            case 0:
+                                new UnderratedAIO.Champions.Volibear();
+                                break;
+                            case 1:
+                                VoliPower.Program.Game_OnLoad();
+                                break;
+                            default:
+                                new UnderratedAIO.Champions.Volibear();
+                                break;
+                        }
+                        break;
                     case "trundle": // ElTrundle
-                        ElTrundle.Trundle.OnLoad();
+                        switch (Loader.trundle)
+                        {
+                            case 0:
+                                ElTrundle.Trundle.OnLoad();
+                                break;
+                            case 1:
+                                FastTrundle.Trundle.Game_OnGameLoad();
+                                break;
+                            default:
+                                ElTrundle.Trundle.OnLoad();
+                                break;
+                        }
                         break;
                     case "taric": // SkyLv_Taric
                         new SkyLv_Taric.SkyLv_Taric();

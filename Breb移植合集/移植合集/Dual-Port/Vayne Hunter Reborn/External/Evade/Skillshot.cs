@@ -191,7 +191,7 @@ namespace VayneHunter_Reborn.External.Evade
 
             return Environment.TickCount <=
                    StartTick + SpellData.Delay + SpellData.ExtraDuration +
-                   1000 * (Start.Distance(End) / SpellData.MissileSpeed);
+                   1000 * (Start.LSDistance(End) / SpellData.MissileSpeed);
         }
 
         public void Game_OnGameUpdate()
@@ -274,7 +274,7 @@ namespace VayneHunter_Reborn.External.Evade
         {
             var t = Math.Max(0, Environment.TickCount + time - StartTick - SpellData.Delay);
             var fraction = t * SpellData.MissileSpeed / 0x3e8; // 0x3e8 = 1000
-            t = (int) Math.Max(0, Math.Min(End.Distance(Start), fraction));
+            t = (int) Math.Max(0, Math.Min(End.LSDistance(Start), fraction));
             return Start + Direction * t;
         }
 
@@ -315,7 +315,7 @@ namespace VayneHunter_Reborn.External.Evade
                 }
             }
 
-            t = (int) Math.Max(0, Math.Min(CollisionEnd.Distance(Start), x));
+            t = (int) Math.Max(0, Math.Min(CollisionEnd.LSDistance(Start), x));
             return Start + Direction * t;
         }
 
@@ -337,7 +337,7 @@ namespace VayneHunter_Reborn.External.Evade
                 var missilePositionAfterBlink = GetMissilePosition(delay + timeOffset);
                 var myPositionProjection = ObjectManager.Player.ServerPosition.To2D().ProjectOn(Start, End);
 
-                if (missilePositionAfterBlink.Distance(End) < myPositionProjection.SegmentPoint.Distance(End))
+                if (missilePositionAfterBlink.LSDistance(End) < myPositionProjection.SegmentPoint.LSDistance(End))
                 {
                     return false;
                 }
@@ -347,7 +347,7 @@ namespace VayneHunter_Reborn.External.Evade
 
             //skillshots without missile
             var timeToExplode = SpellData.ExtraDuration + SpellData.Delay +
-                                (int) (1000 * Start.Distance(End) / SpellData.MissileSpeed) -
+                                (int) (1000 * Start.LSDistance(End) / SpellData.MissileSpeed) -
                                 (Environment.TickCount - StartTick);
 
             return timeToExplode > timeOffset + delay;
@@ -381,8 +381,8 @@ namespace VayneHunter_Reborn.External.Evade
                     {
                         segmentIntersections.Add(
                             new FoundIntersection(
-                                distance + intersection.Point.Distance(from),
-                                (int) ((distance + intersection.Point.Distance(from)) * 1000 / speed),
+                                distance + intersection.Point.LSDistance(from),
+                                (int) ((distance + intersection.Point.LSDistance(from)) * 1000 / speed),
                                 intersection.Point, from));
                     }
                 }
@@ -390,7 +390,7 @@ namespace VayneHunter_Reborn.External.Evade
                 var sortedList = segmentIntersections.OrderBy(o => o.Distance).ToList();
                 allIntersections.AddRange(sortedList);
 
-                distance += from.Distance(to);
+                distance += from.LSDistance(to);
             }
 
             //Skillshot with missile.
@@ -418,8 +418,8 @@ namespace VayneHunter_Reborn.External.Evade
                             var missilePositionOnIntersection = GetMissilePosition(enterIntersection.Time - timeOffset);
                             return
                                 new SafePathResult(
-                                    (End.Distance(missilePositionOnIntersection) + 50 <=
-                                     End.Distance(enterIntersectionProjection)) &&
+                                    (End.LSDistance(missilePositionOnIntersection) + 50 <=
+                                     End.LSDistance(enterIntersectionProjection)) &&
                                     ObjectManager.Player.MoveSpeed < SpellData.MissileSpeed, allIntersections[0]);
                         }
 
@@ -432,9 +432,9 @@ namespace VayneHunter_Reborn.External.Evade
                         var missilePosOnExit = GetMissilePosition(exitIntersection.Time + timeOffset);
 
                         //Missile didnt pass.
-                        if (missilePosOnEnter.Distance(End) + 50 > enterIntersectionProjection.Distance(End))
+                        if (missilePosOnEnter.LSDistance(End) + 50 > enterIntersectionProjection.LSDistance(End))
                         {
-                            if (missilePosOnExit.Distance(End) <= exitIntersectionProjection.Distance(End))
+                            if (missilePosOnExit.LSDistance(End) <= exitIntersectionProjection.LSDistance(End))
                             {
                                 return new SafePathResult(false, allIntersections[0]);
                             }
@@ -456,7 +456,7 @@ namespace VayneHunter_Reborn.External.Evade
                     Vector2 exitIntersectionProjection = exitIntersection.PointVector2.ProjectOn(Start, End).SegmentPoint;
 
                     Vector2 missilePosOnExit = GetMissilePosition(exitIntersection.Time + timeOffset);
-                    if (missilePosOnExit.Distance(End) <= exitIntersectionProjection.Distance(End))
+                    if (missilePosOnExit.LSDistance(End) <= exitIntersectionProjection.LSDistance(End))
                     {
                         return new SafePathResult(false, allIntersections[0]);
                     }
@@ -485,7 +485,7 @@ namespace VayneHunter_Reborn.External.Evade
             }
 
             var timeToExplode = (SpellData.DontAddExtraDuration ? 0 : SpellData.ExtraDuration) + SpellData.Delay +
-                                (int) (1000 * Start.Distance(End) / SpellData.MissileSpeed) -
+                                (int) (1000 * Start.LSDistance(End) / SpellData.MissileSpeed) -
                                 (Environment.TickCount - StartTick);
 
 
@@ -521,7 +521,7 @@ namespace VayneHunter_Reborn.External.Evade
                 LeagueSharp.Common.Geometry.ProjectionInfo projection = unit.ServerPosition.LSTo2D().LSProjectOn(missilePos, missilePosAfterT);
 
                 return projection.IsOnSegment &&
-                       projection.SegmentPoint.Distance(unit.ServerPosition) < SpellData.Radius;
+                       projection.SegmentPoint.LSDistance(unit.ServerPosition) < SpellData.Radius;
             }
 
             if (IsSafe(unit.ServerPosition.To2D()))
@@ -530,7 +530,7 @@ namespace VayneHunter_Reborn.External.Evade
             }
 
             var timeToExplode = SpellData.ExtraDuration + SpellData.Delay +
-                                (int) ((1000 * Start.Distance(End)) / SpellData.MissileSpeed) -
+                                (int) ((1000 * Start.LSDistance(End)) / SpellData.MissileSpeed) -
                                 (Environment.TickCount - StartTick);
             return timeToExplode <= time;
         }
@@ -544,7 +544,7 @@ namespace VayneHunter_Reborn.External.Evade
                 LeagueSharp.Common.Geometry.ProjectionInfo projection = position.LSTo2D().LSProjectOn(missilePos, missilePosAfterT);
 
                 return projection.IsOnSegment &&
-                       projection.SegmentPoint.Distance(position) < SpellData.Radius;
+                       projection.SegmentPoint.LSDistance(position) < SpellData.Radius;
             }
 
             if (IsSafe(position.To2D()))
@@ -553,7 +553,7 @@ namespace VayneHunter_Reborn.External.Evade
             }
 
             var timeToExplode = SpellData.ExtraDuration + SpellData.Delay +
-                                (int)((1000 * Start.Distance(End)) / SpellData.MissileSpeed) -
+                                (int)((1000 * Start.LSDistance(End)) / SpellData.MissileSpeed) -
                                 (Environment.TickCount - StartTick);
             return timeToExplode <= time;
         }

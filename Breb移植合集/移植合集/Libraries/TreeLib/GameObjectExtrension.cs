@@ -1,5 +1,6 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK;
+using LeagueSharp.Common;
 using SharpDX;
 
 namespace TreeLib.Extensions
@@ -16,20 +17,20 @@ namespace TreeLib.Extensions
             var unit = obj as Obj_AI_Base;
             if (unit == null || !unit.IsValid)
             {
-                return obj.Position.Distance(Player.ServerPosition);
+                return obj.Position.LSDistance(Player.ServerPosition);
             }
 
-            return unit.ServerPosition.Distance(Player.ServerPosition);
+            return unit.ServerPosition.LSDistance(Player.ServerPosition);
         }
 
         public static float DistanceToPlayer(this Vector3 position)
         {
-            return position.Distance(Player.ServerPosition);
+            return position.LSDistance(Player.ServerPosition);
         }
 
         public static float DistanceToPlayer(this Vector2 position)
         {
-            return position.Distance(Player.ServerPosition);
+            return position.LSDistance(Player.ServerPosition);
         }
     }
 }

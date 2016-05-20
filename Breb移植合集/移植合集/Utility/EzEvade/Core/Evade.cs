@@ -11,6 +11,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EzEvade;
 using SharpDX;
+using LeagueSharp.Common;
 
 // Credits to Rexy for porting this, I didn't use this much but some of the methods helped a lot.
 
@@ -107,23 +108,23 @@ namespace ezEvade
             SpellDetector.OnProcessDetectedSpells += SpellDetector_OnProcessDetectedSpells;
             Orbwalker.OnPreAttack += Orbwalking_BeforeAttack;
 
-            menu = MainMenu.AddMenu("ezEvade", "ezEvade");
-            ObjectCache.menuCache.AddMenuToCache(menu);
+                menu = MainMenu.AddMenu("CH汉化-EZ躲避", "ezEvade");
+                ObjectCache.menuCache.AddMenuToCache(menu);
 
-            Menu mainMenu = menu.AddSubMenuEx("Main", "Main");
-            mainMenu.Add("DodgeSkillShots", new KeyBind("Dodge SkillShots", true, KeyBind.BindTypes.PressToggle, 'K'));
-            mainMenu.Add("ActivateEvadeSpells", new KeyBind("Use Evade Spells", true, KeyBind.BindTypes.PressToggle, 'K'));
-            mainMenu.AddSeparator();
-            mainMenu.Add("DodgeDangerous", new CheckBox("Dodge Only Dangerous", false));
-            mainMenu.Add("ChaseModeMinHP", new CheckBox("Check Ignored HP %(ChaseMode)"));
-            mainMenu.Add("DodgeFOWSpells", new CheckBox("Dodge FOW SkillShots"));
-            mainMenu.Add("DodgeCircularSpells", new CheckBox("Dodge Circular SkillShots"));
-            mainMenu.AddSeparator();
-            mainMenu.Add("DodgeDangerousKeyEnabled", new CheckBox("Enable Dodge Only Dangerous Keys", false));
-            mainMenu.Add("DodgeDangerousKey", new KeyBind("Dodge Only Dangerous Key", false, KeyBind.BindTypes.HoldActive, 32));
-            mainMenu.Add("DodgeDangerousKey2", new KeyBind("Dodge Only Dangerous Key 2", false, KeyBind.BindTypes.HoldActive, 'V'));
-            mainMenu.AddSeparator();
-            mainMenu.AddGroupLabel("Evade Mode");
+                Menu mainMenu = menu.AddSubMenuEx("核心", "Main");
+                mainMenu.Add("DodgeSkillShots",new KeyBind("开启躲避", true, KeyBind.BindTypes.PressToggle, 'K'));
+                mainMenu.Add("ActivateEvadeSpells",new KeyBind("使用技能躲避", true, KeyBind.BindTypes.PressToggle, 'K'));
+                mainMenu.AddSeparator();
+                mainMenu.Add("DodgeDangerous", new CheckBox("只躲避危险技能", false));
+                mainMenu.Add("ChaseModeMinHP", new CheckBox("血量% 不躲避(追击模式)"));
+                mainMenu.Add("DodgeFOWSpells", new CheckBox("探测战争迷雾的指向性技能", true));
+                mainMenu.Add("DodgeCircularSpells", new CheckBox("躲避圈形指向性技能", true));
+                mainMenu.AddSeparator();
+                mainMenu.Add("DodgeDangerousKeyEnabled", new CheckBox("开启只躲避危险 按键", false));
+                mainMenu.Add("DodgeDangerousKey",new KeyBind("只躲避危险的", false, KeyBind.BindTypes.HoldActive, 32));
+                mainMenu.Add("DodgeDangerousKey2",new KeyBind("只躲避危险的 2", false, KeyBind.BindTypes.HoldActive, 'V'));
+                mainMenu.AddSeparator();
+            mainMenu.AddGroupLabel("躲避模式");
             var sliderEvadeMode = mainMenu.Add("EvadeMode", new Slider("Smooth", 0, 0, 2));
             var modeArray = new[] { "Smooth", "Fastest", "Very Smooth" };
             sliderEvadeMode.DisplayName = modeArray[sliderEvadeMode.CurrentValue];
@@ -137,37 +138,37 @@ namespace ezEvade
             spellDetector = new SpellDetector(menu);
             evadeSpell = new EvadeSpell(menu);
 
-            Menu miscMenu = menu.AddSubMenuEx("Misc Settings", "MiscSettings");
-            miscMenu.Add("HigherPrecision", new CheckBox("Enhanced Dodge Precision", false));
-            miscMenu.Add("RecalculatePosition", new CheckBox("Recalculate Path"));
-            miscMenu.Add("ContinueMovement", new CheckBox("Continue Last Movement", false));
-            miscMenu.Add("CalculateWindupDelay", new CheckBox("Calculate Windup Delay"));
-            miscMenu.Add("CheckSpellCollision", new CheckBox("Check Spell Collision", false));
-            miscMenu.Add("PreventDodgingUnderTower", new CheckBox("Prevent Dodging Under Tower", false));
-            miscMenu.Add("PreventDodgingNearEnemy", new CheckBox("Prevent Dodging Near Enemies", false));
-            miscMenu.Add("AdvancedSpellDetection", new CheckBox("Advanced Spell Detection", false));
+                Menu miscMenu = menu.AddSubMenuEx("杂项设置", "MiscSettings");
+                miscMenu.Add("HigherPrecision", new CheckBox("增强躲避精密度", false));
+                miscMenu.Add("RecalculatePosition", new CheckBox("重新计算路径", true));
+                miscMenu.Add("ContinueMovement", new CheckBox("继续躲避前的移动", false));
+                miscMenu.Add("CalculateWindupDelay", new CheckBox("计算延迟", true));
+                miscMenu.Add("CheckSpellCollision", new CheckBox("检查技能弹道阻挡", false));
+                miscMenu.Add("PreventDodgingUnderTower", new CheckBox("防止塔下躲避", false));
+                miscMenu.Add("PreventDodgingNearEnemy", new CheckBox("防止在敌人附近躲避", false));
+                miscMenu.Add("AdvancedSpellDetection", new CheckBox("进阶技能探测", false));
+  
+                Menu limiterMenu = menu.AddSubMenuEx("人性化", "Limiter");
+                limiterMenu.Add("ClickOnlyOnce", new CheckBox("只点击一次", false));
+                limiterMenu.Add("EnableEvadeDistance", new CheckBox("延长躲避", false));
+                limiterMenu.Add("TickLimiter", new Slider("点击限制", 0, 0, 500));
+                limiterMenu.Add("SpellDetectionTime", new Slider("技能探测时间", 0, 0, 1000));
+                limiterMenu.Add("ReactionTime", new Slider("反应时间", 0, 0, 500));
+                limiterMenu.Add("DodgeInterval", new Slider("躲避间隔时间", 0, 0, 2000));
 
-            Menu limiterMenu = menu.AddSubMenuEx("Humanizer", "Limiter");
-            limiterMenu.Add("ClickOnlyOnce", new CheckBox("Click Only Once", false));
-            limiterMenu.Add("EnableEvadeDistance", new CheckBox("Extended Evade", false));
-            limiterMenu.Add("TickLimiter", new Slider("Tick Limiter", 0, 0, 500));
-            limiterMenu.Add("SpellDetectionTime", new Slider("Spell Detection Time", 0, 0, 1000));
-            limiterMenu.Add("ReactionTime", new Slider("Reaction Time", 0, 0, 500));
-            limiterMenu.Add("DodgeInterval", new Slider("Dodge Interval", 0, 0, 2000));
+                Menu fastEvadeMenu = menu.AddSubMenuEx("快速躲避", "FastEvade");
+                fastEvadeMenu.Add("FastMovementBlock", new CheckBox("阻挡快速移动", false));
+                fastEvadeMenu.Add("FastEvadeActivationTime", new Slider("快速移动激活时间", 65, 0, 500));
+                fastEvadeMenu.Add("SpellActivationTime", new Slider("技能激活时间", 200, 0, 1000));
+                fastEvadeMenu.Add("RejectMinDistance", new Slider("碰撞缓冲距离", 10, 0, 100));
 
-            Menu fastEvadeMenu = menu.AddSubMenuEx("Fast Evade", "FastEvade");
-            fastEvadeMenu.Add("FastMovementBlock", new CheckBox("Fast Movement Block", false));
-            fastEvadeMenu.Add("FastEvadeActivationTime", new Slider("FastEvade Activation Time", 65, 0, 500));
-            fastEvadeMenu.Add("SpellActivationTime", new Slider("Spell Activation Time", 200, 0, 1000));
-            fastEvadeMenu.Add("RejectMinDistance", new Slider("Collision Distance Buffer", 10));
-
-            Menu bufferMenu = menu.AddSubMenuEx("Extra Buffers", "ExtraBuffers");
-            bufferMenu.Add("ExtraPingBuffer", new Slider("Extra Ping Buffer", 65, 0, 200));
-            bufferMenu.Add("ExtraCPADistance", new Slider("Extra Collision Distance", 10, 0, 150));
-            bufferMenu.Add("ExtraSpellRadius", new Slider("Extra Spell Radius"));
-            bufferMenu.Add("ExtraEvadeDistance", new Slider("Extra Evade Distance", 0, 0, 300));
-            bufferMenu.Add("ExtraAvoidDistance", new Slider("Extra Avoid Distance", 50, 0, 300));
-            bufferMenu.Add("MinComfortZone", new Slider("Min Distance to Champion", 1000, 0, 1000));
+                Menu bufferMenu = menu.AddSubMenuEx("高级人性化", "ExtraBuffers");
+                bufferMenu.Add("ExtraPingBuffer", new Slider("额外网络延迟缓冲", 65, 0, 200));
+                bufferMenu.Add("ExtraCPADistance", new Slider("额外体积碰撞距离", 10, 0, 150));
+                bufferMenu.Add("ExtraSpellRadius", new Slider("额外技能半径", 0, 0, 100));
+                bufferMenu.Add("ExtraEvadeDistance", new Slider("额外躲避距离", 0, 0, 300));
+                bufferMenu.Add("ExtraAvoidDistance", new Slider("额外防止距离", 50, 0, 300));
+                bufferMenu.Add("MinComfortZone", new Slider("最低英雄安全范围", 1000, 0, 1000));
 
             spellDrawer = new SpellDrawer(menu);
 
@@ -355,7 +356,7 @@ namespace ezEvade
                         args.Process = false; //Block the command
 
                         if (EvadeUtils.TickCount - lastMovementBlockTime < 500 &&
-                            lastMovementBlockPos.Distance(args.TargetPosition) < 100)
+                            lastMovementBlockPos.LSDistance(args.TargetPosition) < 100)
                         {
                             return;
                         }
@@ -390,7 +391,7 @@ namespace ezEvade
                         if (target != null && target.GetType() == typeof(Obj_AI_Base) && ((Obj_AI_Base)target).IsValid())
                         {
                             var baseTarget = target as Obj_AI_Base;
-                            if (ObjectCache.myHeroCache.serverPos2D.Distance(baseTarget.ServerPosition.To2D()) >
+                            if (ObjectCache.myHeroCache.serverPos2D.LSDistance(baseTarget.ServerPosition.To2D()) >
                                 myHero.AttackRange + ObjectCache.myHeroCache.boundingRadius + baseTarget.BoundingRadius)
                             {
                                 var movePos = args.TargetPosition.To2D();
@@ -442,7 +443,7 @@ namespace ezEvade
 
             /*if (args.SData.Name.Contains("Recall"))
             {
-                var distance = lastStopPosition.Distance(args.Start.To2D());
+                var distance = lastStopPosition.LSDistance(args.Start.To2D());
                 float moveTime = 1000 * distance / myHero.MoveSpeed;
 
                 Console.WriteLine("Extra dist: " + distance + " Extra Delay: " + moveTime);
@@ -477,7 +478,7 @@ namespace ezEvade
             ObjectCache.myHeroCache.UpdateInfo();
             CheckHeroInDanger();
 
-            if (isChanneling && channelPosition.Distance(ObjectCache.myHeroCache.serverPos2D) > 50
+            if (isChanneling && channelPosition.LSDistance(ObjectCache.myHeroCache.serverPos2D) > 50
                 ) //TODO: !myHero.IsChannelingImportantSpell()
             {
                 isChanneling = false;
@@ -509,7 +510,7 @@ namespace ezEvade
                     {
                         var movePos = path.Last().To2D();
 
-                        if (movePos.Distance(lastPosInfo.position) < 5) //more strict checking
+                        if (movePos.LSDistance(lastPosInfo.position) < 5) //more strict checking
                         {
                             var posInfo = EvadeHelper.CanHeroWalkToPos(movePos, ObjectCache.myHeroCache.moveSpeed, 0, 0,
                                 false);
@@ -630,7 +631,7 @@ namespace ezEvade
                     Vector2 lastBestPosition = lastPosInfo.position;
 
                     if (ObjectCache.menuCache.cache["ClickOnlyOnce"].Cast<CheckBox>().CurrentValue == false
-                        || !(myHero.Path.Count() > 0 && lastPosInfo.position.Distance(myHero.Path.Last().To2D()) < 5))
+                        || !(myHero.Path.Count() > 0 && lastPosInfo.position.LSDistance(myHero.Path.Last().To2D()) < 5))
                     //|| lastPosInfo.timestamp > lastEvadeOrderTime)
                     {
                         EvadeCommand.MoveTo(lastBestPosition);
@@ -769,7 +770,7 @@ namespace ezEvade
                     {
                         lastPosInfo = posInfo.CompareLastMovePos();
 
-                        var travelTime = ObjectCache.myHeroCache.serverPos2DPing.Distance(lastPosInfo.position) /
+                        var travelTime = ObjectCache.myHeroCache.serverPos2DPing.LSDistance(lastPosInfo.position) /
                                          myHero.MoveSpeed;
 
                         lastPosInfo.endTime = EvadeUtils.TickCount + travelTime * 1000 - 100;

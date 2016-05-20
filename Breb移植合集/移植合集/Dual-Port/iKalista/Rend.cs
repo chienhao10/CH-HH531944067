@@ -4,6 +4,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using IKalista;
+using LeagueSharp.Common;
 
 namespace IKalista
 {
@@ -61,7 +62,7 @@ namespace IKalista
             if (target == null)
                 return false;
 
-            var baseDamage = Kalista.spells[SpellSlot.E].GetDamage(target) - 10;
+            var baseDamage = Kalista.spells[SpellSlot.E].GetDamage(target);
 
             if (target is AIHeroClient)
             {
@@ -73,18 +74,26 @@ namespace IKalista
                     baseDamage *= (0.5f - 0.05f * target.Spellbook.GetSpell(SpellSlot.W).Level);
                 }
             }
+
             if (target is Obj_AI_Minion)
             {
                 if (target.Name.Contains("Baron") && ObjectManager.Player.HasBuff("barontarget"))
                 {
                     baseDamage *= 0.5f;
                 }
+                //if (target.Name.Contains("Dragon") && ObjectManager.Player.HasBuff("s5test_dragonslayerbuff"))
+                //{
+                //    baseDamage *= (1f - (0.07f*ObjectManager.Player.GetBuffCount("s5test_dragonslayerbuff")));
+                //} HM???
             }
+
             if (ObjectManager.Player.HasBuff("SummonerExhaustSlow"))
             {
                 baseDamage *= 0.55f;
             }
-            return baseDamage > target.GetHealthWithShield();
+
+
+            return (baseDamage - Kalista.getSliderItem(Kalista.miscMenu, "reduceE")) > target.GetHealthWithShield();
         }
 
         public static float GetHealthWithShield(this Obj_AI_Base target)
@@ -95,22 +104,27 @@ namespace IKalista
             return GetRendDamage(target, -1);
         }
 
-        public static float GetRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
+        public static float GetRendDamage(Obj_AI_Base target, int customStacks = -1)
         {
             // Calculate the damage and return
-            return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, GetRawRendDamage(target, customStacks, rendBuff)) *
-                   (Player.Instance.HasBuff("SummonerExhaustSlow") ? 0.6f : 1); // Take into account Exhaust, migh just add that to the SDK
+            return (float)ObjectManager.Player.CalcDamage(target, DamageType.Physical, GetRawRendDamage(target, customStacks));
         }
 
-        public static float GetRawRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
+        public static float GetRawRendDamage(Obj_AI_Base target, int customStacks = -1)
         {
-            rendBuff = rendBuff ?? target.GetRendBuff();
-            var stacks = (customStacks > -1 ? customStacks : rendBuff != null ? rendBuff.Count : 0) - 1;
-            if (stacks > -1)
-            {
-                var index = Player.Instance.Spellbook.GetSpell(SpellSlot.E).Level - 1;
-                return RawRendDamage[index] + stacks * RawRendDamagePerSpear[index] + Player.Instance.TotalAttackDamage * (RawRendDamageMultiplier[index] + stacks * RawRendDamagePerSpearMultiplier[index]);
-            }
+            // Get buff
+            var buff = target?.GetRendBuff();
+
+            if (buff == null && customStacks <= -1) return 0;
+
+            if (buff != null)
+                return RawRendDamage[Player.Instance.Spellbook.GetSpell(SpellSlot.E).Level - 1]
+                       + RawRendDamageMultiplier[Player.Instance.Spellbook.GetSpell(SpellSlot.E).Level - 1]
+                       * ObjectManager.Player.TotalAttackDamage + // Base damage
+                       ((customStacks < 0 ? buff.Count : customStacks) - 1) * // Spear count
+                       (RawRendDamagePerSpear[Player.Instance.Spellbook.GetSpell(SpellSlot.E).Level - 1]
+                        + RawRendDamagePerSpearMultiplier[Player.Instance.Spellbook.GetSpell(SpellSlot.E).Level - 1]
+                        * ObjectManager.Player.TotalAttackDamage); // Damage per spear
 
             return 0;
         }

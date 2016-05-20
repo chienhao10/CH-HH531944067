@@ -37,18 +37,18 @@ namespace Nechrito_Nidalee.Handlers
             var Hunted = Player.HasBuff("NidaleePassiveHunted") || Player.HasBuff("exposeweaknessdebuff") || Target.HasBuff("NidaleePassiveHunted") || Target.HasBuff("exposeweaknessdebuff");
 
             // The full 1v1 rotation
-            if ((Player.Distance(Target.Position) <= 1500) && Target != null && Target.IsValidTarget())
+            if ((Player.LSDistance(Target.Position) <= 1500) && Target != null && Target.IsValidTarget())
             {
                 if (CatForm() && Champion.Aspect.IsReady() && !Hunted)
                 {
                     Champion.Aspect.Cast();
                 }
-                if (CatForm() && Champion.Pounce.IsReady() && !Target.UnderTurret() && Target.Distance(Player) <= 750 && Hunted)
+                if (CatForm() && Champion.Pounce.IsReady() && !Target.UnderTurret() && Target.LSDistance(Player) <= 750 && Hunted)
                 {
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Target);
                     Champion.Pounce.Cast(Target);
                 }
-                if (!CatForm() && Champion.Bushwack.IsReady() && Player.ManaPercent >= 30 && (Player.Distance(Target.Position) <= Champion.Bushwack.Range))
+                if (!CatForm() && Champion.Bushwack.IsReady() && Player.ManaPercent >= 30 && (Player.LSDistance(Target.Position) <= Champion.Bushwack.Range))
                 {
                     Champion.Bushwack.Cast(Target.ServerPosition - 75);
                 }
@@ -60,16 +60,16 @@ namespace Nechrito_Nidalee.Handlers
                 {
                     Champion.Primalsurge.Cast(Player);
                 }
-                if (!CatForm() && Champion.Aspect.IsReady() && !Champion.Javelin.IsReady() && (Player.Distance(Target.Position) <= 325) || Hunted)
+                if (!CatForm() && Champion.Aspect.IsReady() && !Champion.Javelin.IsReady() && (Player.LSDistance(Target.Position) <= 325) || Hunted)
                 {
                     Champion.Aspect.Cast();
                 }
-                if (CatForm() && Target.Distance(Player) <= 300 && Champion.Swipe.IsReady())
+                if (CatForm() && Target.LSDistance(Player) <= 300 && Champion.Swipe.IsReady())
                 {
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Target);
                     Champion.Swipe.Cast(SwipePred.CastPosition);
                 }
-                if (CatForm() && Champion.Pounce.IsReady() && !Target.UnderTurret() && Target.Distance(Player) <= 370 && !Hunted)
+                if (CatForm() && Champion.Pounce.IsReady() && !Target.UnderTurret() && Target.LSDistance(Player) <= 370 && !Hunted)
                 {
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Target);
                     Champion.Pounce.Cast(PouncePred.CastPosition);
@@ -97,7 +97,7 @@ namespace Nechrito_Nidalee.Handlers
             var minions = MinionManager.GetMinions(600f).FirstOrDefault();
             if (minions == null)
                 return;
-            if(!CatForm() && minions.Distance(Player) <= 325)
+            if(!CatForm() && minions.LSDistance(Player) <= 325)
             { Champion.Aspect.Cast(); }
             if(CatForm())
             {
@@ -126,7 +126,7 @@ namespace Nechrito_Nidalee.Handlers
 
             foreach (var m in mobs)
             {
-                if(CatForm() && m.Health < (float)Program.Player.GetAutoAttackDamage(m) && m.Distance(Player) > 300)
+                if(CatForm() && m.Health < (float)Program.Player.GetAutoAttackDamage(m) && m.LSDistance(Player) > 300)
                 {
                     Champion.Aspect.Cast();
                 }
@@ -143,7 +143,7 @@ namespace Nechrito_Nidalee.Handlers
                 {
                     Champion.Aspect.Cast();
                 }
-                if (CatForm() && Champion.Swipe.IsReady() && m.Distance(Player) < 200)
+                if (CatForm() && Champion.Swipe.IsReady() && m.LSDistance(Player) < 200)
                 {
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, m);
                     Champion.Swipe.Cast(m.ServerPosition);
@@ -181,12 +181,12 @@ namespace Nechrito_Nidalee.Handlers
             {
                 EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, WallPoint);
             }
-            if (IsWallDash && Champion.Pounce.IsReady() && WallPoint.Distance(Player.ServerPosition) <= 800)
+            if (IsWallDash && Champion.Pounce.IsReady() && WallPoint.LSDistance(Player.ServerPosition) <= 800)
             {
-                if (WallPoint.Distance(Player.ServerPosition) <= 600)
+                if (WallPoint.LSDistance(Player.ServerPosition) <= 600)
                 {
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, WallPoint);
-                    if (WallPoint.Distance(Player.ServerPosition) < 50 && Champion.Pounce.IsReady())
+                    if (WallPoint.LSDistance(Player.ServerPosition) < 50 && Champion.Pounce.IsReady())
                     {
                         if (!CatForm())
                         {

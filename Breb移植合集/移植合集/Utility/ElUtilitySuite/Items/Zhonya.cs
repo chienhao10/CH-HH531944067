@@ -572,7 +572,7 @@ namespace ElUtilitySuite.Items
 
         public void CreateMenu(Menu rootMenu)
         {
-            zhonyaMenu = rootMenu.AddSubMenu("中亚s", "zhonya");
+            zhonyaMenu = rootMenu.AddSubMenu("中亚", "zhonya");
             zhonyaMenu.AddGroupLabel("技能");
 
             foreach (var spell in Spells.Where(x => ObjectManager.Get<AIHeroClient>().Where(y => y.IsEnemy).Any(y => y.ChampionName.ToLower() == x.ChampionName)))
@@ -639,13 +639,13 @@ namespace ElUtilitySuite.Items
             {
                 var projection =
                     heroPos.ProjectOn(missile.StartPosition.To2D(), missile.EndPosition.To2D()).SegmentPoint;
-                evadeTime = 1000 * (missile.SData.LineWidth - heroPos.Distance(projection) + hero.BoundingRadius)
+                evadeTime = 1000 * (missile.SData.LineWidth - heroPos.LSDistance(projection) + hero.BoundingRadius)
                             / hero.MoveSpeed;
                 spellHitTime = GetSpellHitTime(missile, projection);
             }
             else if (missile.SData.TargettingType == SpellDataTargetType.LocationAoe)
             {
-                evadeTime = 1000 * (missile.SData.CastRadius - heroPos.Distance(missile.EndPosition)) / hero.MoveSpeed;
+                evadeTime = 1000 * (missile.SData.CastRadius - heroPos.LSDistance(missile.EndPosition)) / hero.MoveSpeed;
                 spellHitTime = GetSpellHitTime(missile, heroPos);
             }
 
@@ -681,12 +681,12 @@ namespace ElUtilitySuite.Items
             // Correct the end position
             var endPosition = missile.EndPosition;
 
-            if (missile.StartPosition.Distance(endPosition) > sdata.CastRange)
+            if (missile.StartPosition.LSDistance(endPosition) > sdata.CastRange)
             {
                 endPosition = missile.StartPosition + Vector3.Normalize(endPosition - missile.StartPosition) * sdata.CastRange;
             }
 
-            if (missile.SData.LineWidth + Player.BoundingRadius > Player.ServerPosition.To2D().Distance(Player.ServerPosition.To2D().ProjectOn(missile.StartPosition.To2D(), endPosition.To2D()).SegmentPoint))
+            if (missile.SData.LineWidth + Player.BoundingRadius > Player.ServerPosition.To2D().LSDistance(Player.ServerPosition.To2D().ProjectOn(missile.StartPosition.To2D(), endPosition.To2D()).SegmentPoint))
             {
                 zhonyaItem.Cast();
             }
@@ -707,7 +707,7 @@ namespace ElUtilitySuite.Items
                            ? Math.Max(
                                0,
                                missile.SData.CastFrame / 30 * 1000
-                               + missile.StartPosition.Distance(missile.EndPosition) / missile.SData.MissileSpeed * 1000
+                               + missile.StartPosition.LSDistance(missile.EndPosition) / missile.SData.MissileSpeed * 1000
                                - Environment.TickCount - Game.Ping)
                            : float.MaxValue;
             }
@@ -719,12 +719,12 @@ namespace ElUtilitySuite.Items
                 return Math.Max(
                     0,
                     missile.SData.CastFrame / 30 * 1000
-                    + missile.StartPosition.Distance(missile.EndPosition) / missile.SData.MissileSpeed * 1000
+                    + missile.StartPosition.LSDistance(missile.EndPosition) / missile.SData.MissileSpeed * 1000
                     - Environment.TickCount - Game.Ping);
             }
 
             var spellPos = missile.Position.To2D();
-            return 1000 * spellPos.Distance(pos) / missile.SData.MissileAccel;
+            return 1000 * spellPos.LSDistance(pos) / missile.SData.MissileAccel;
         }
 
         /// <summary>
@@ -753,13 +753,13 @@ namespace ElUtilitySuite.Items
                 return;
             }
 
-            if (Player.Distance(args.Start) > spellData.CastRange)
+            if (Player.LSDistance(args.Start) > spellData.CastRange)
             {
                 return;
             }
 
             // Targetted spells
-            if (args.SData.TargettingType == SpellDataTargetType.Unit && args.Target.IsMe || args.SData.TargettingType == SpellDataTargetType.SelfAndUnit && args.Target.IsMe || args.SData.TargettingType == SpellDataTargetType.Self || args.SData.TargettingType == SpellDataTargetType.SelfAoe && Player.Distance(sender) < spellData.CastRange)
+            if (args.SData.TargettingType == SpellDataTargetType.Unit && args.Target.IsMe || args.SData.TargettingType == SpellDataTargetType.SelfAndUnit && args.Target.IsMe || args.SData.TargettingType == SpellDataTargetType.Self || args.SData.TargettingType == SpellDataTargetType.SelfAoe && Player.LSDistance(sender) < spellData.CastRange)
             {
                 LeagueSharp.Common.Utility.DelayAction.Add((int)spellData.Delay, () => zhonyaItem.Cast());
                 return;
@@ -775,7 +775,7 @@ namespace ElUtilitySuite.Items
             // Correct the end position
             var endPosition = args.End;
 
-            if (args.Start.Distance(endPosition) > spellData.CastRange)
+            if (args.Start.LSDistance(endPosition) > spellData.CastRange)
             {
                 endPosition = args.Start + Vector3.Normalize(endPosition - args.Start) * spellData.CastRange;
             }
@@ -786,7 +786,7 @@ namespace ElUtilitySuite.Items
                             ? args.SData.LineWidth
                             : (args.SData.CastRadius < 1 ? args.SData.CastRadiusSecondary : args.SData.CastRadius);
 
-            if ((isLinear && width + Player.BoundingRadius > Player.ServerPosition.To2D().Distance(Player.ServerPosition.To2D().ProjectOn(args.Start.To2D(), endPosition.To2D()).SegmentPoint)) || (!isLinear && Player.Distance(endPosition) <= width + Player.BoundingRadius))
+            if ((isLinear && width + Player.BoundingRadius > Player.ServerPosition.To2D().LSDistance(Player.ServerPosition.To2D().ProjectOn(args.Start.To2D(), endPosition.To2D()).SegmentPoint)) || (!isLinear && Player.LSDistance(endPosition) <= width + Player.BoundingRadius))
             {
 
                 zhonyaItem.Cast();

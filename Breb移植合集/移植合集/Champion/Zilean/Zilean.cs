@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
@@ -154,14 +154,22 @@ namespace ElZilean
 
             var zileanQEnemyBomb =
                 HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(spells[Spells.Q].Range));
-
             if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range))
+            && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove)
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)
                 {
                     spells[Spells.Q].Cast(target);
+                }
+            }
+            else if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && spells[Spells.Q].IsReady()
+                && target.IsValidTarget(spells[Spells.Q].Range))
+            {
+                var pred = spells[Spells.Q].GetPrediction(target);
+                if (pred.Hitchance >= HitChance.High)
+                {
+                    spells[Spells.Q].Cast(pred.CastPosition);
                 }
             }
 
@@ -199,14 +207,22 @@ namespace ElZilean
             {
                 return;
             }
-
             if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range))
+                && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove)
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.High)
                 {
                     spells[Spells.Q].Cast(target);
+                }
+            }
+            else if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q") && spells[Spells.Q].IsReady()
+                && target.IsValidTarget(spells[Spells.Q].Range))
+            {
+                var pred = spells[Spells.Q].GetPrediction(target);
+                if (pred.Hitchance >= HitChance.High)
+                {
+                    spells[Spells.Q].Cast(pred.CastPosition);
                 }
             }
 
@@ -318,7 +334,7 @@ namespace ElZilean
             {
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
-                    args.Process = !(spells[Spells.Q].IsReady() || Player.Distance(args.Target) >= 1000);
+                    args.Process = !(spells[Spells.Q].IsReady() || Player.LSDistance(args.Target) >= 1000);
                 }
             }
 
@@ -361,7 +377,7 @@ namespace ElZilean
                     && (hero.Health / hero.MaxHealth * 100
                         <= getSliderItem(castUltMenu, "ElZilean.Ally.HP"))
                     && spells[Spells.R].IsReady() && Player.CountEnemiesInRange(1000) > 0
-                    && (hero.Distance(Player.ServerPosition) <= spells[Spells.R].Range))
+                    && (hero.LSDistance(Player.ServerPosition) <= spells[Spells.R].Range))
                 {
                     if (castUltMenu["ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName] != null &&
                         getCheckBoxItem(castUltMenu, "ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName))

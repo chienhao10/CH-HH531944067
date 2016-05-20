@@ -28,8 +28,8 @@ namespace ExorAIO.Champions.Olaf
             /// </summary>
             if (Variables.Q.IsReady() && Targets.Target.IsValidTarget(Variables.Q.Range) && ObjectManager.Player.ManaPercent > ManaManager.NeededQMana && Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
             {
-                var castPosition = Targets.Target.Position.Extend(ObjectManager.Player.Position, -100);
-                var castPosition2 = Targets.Target.Position.Extend(ObjectManager.Player.Position, -70);
+                var castPosition = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -120);
+                var castPosition2 = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -90);
 
                 if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 300)
                 {

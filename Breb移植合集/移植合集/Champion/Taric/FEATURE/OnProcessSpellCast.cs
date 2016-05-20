@@ -83,11 +83,11 @@
                                 {
                                     if (W.IsReady() && Player.Mana >= W.ManaCost)
                                     {
-                                        foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.Distance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")))
+                                        foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.LSDistance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")))
                                         {
                                             foreach (var SendingUnit in HeroManager.Enemies.Where(x => x.NetworkId == sender.NetworkId))
                                             {
-                                                if (ally.Distance(args.End) <= ally.BoundingRadius && SendingUnit.LSGetSpellDamage(ally, args.SData.Name.ToString()) > 0)
+                                                if (ally.LSDistance(args.End) <= ally.BoundingRadius && SendingUnit.LSGetSpellDamage(ally, args.SData.Name.ToString()) > 0)
                                                 {
                                                     W.CastOnUnit(ally, PacketCast);
                                                 }
@@ -102,11 +102,11 @@
                             {
                                 if (W.IsReady() && Player.Mana >= W.ManaCost)
                                 {
-                                    foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.Distance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")))
+                                    foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(W.Range, false) && !x.IsMe && Player.LSDistance(x) <= W.Range && getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") && x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")))
                                     {
                                         foreach (var SendingUnit in HeroManager.Enemies.Where(x => x.NetworkId == sender.NetworkId))
                                         {
-                                            if (ally.Distance(args.End) <= ally.BoundingRadius)
+                                            if (ally.LSDistance(args.End) <= ally.BoundingRadius)
                                             {
                                                 W.CastOnUnit(ally, PacketCast);
                                             }

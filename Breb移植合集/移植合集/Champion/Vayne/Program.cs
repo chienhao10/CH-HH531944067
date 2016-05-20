@@ -7,7 +7,7 @@ using EloBuddy.SDK.Enumerations;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using EvadeB;
+using Evade;
 using SAutoCarry.Champions.Helpers;
 using SharpDX;
 using SOLOVayne;
@@ -15,6 +15,7 @@ using SOLOVayne.Utility.General;
 using Color = System.Drawing.Color;
 using LS = LeagueSharp.Common;
 using SV = SoloVayne.Skills.Tumble;
+using EvadeA;
 
 namespace Vayne
 {

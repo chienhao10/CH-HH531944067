@@ -181,7 +181,7 @@ namespace ElEasy.Plugins
             }
 
             if (args.DangerLevel != Interrupter2.DangerLevel.High
-                || sender.Distance(Player) > spells[Spells.R].Range)
+                || sender.LSDistance(Player) > spells[Spells.R].Range)
             {
                 return;
             }
@@ -265,7 +265,7 @@ namespace ElEasy.Plugins
                             var pred = spells[Spells.R].GetPrediction(target);
                             if (pred.Hitchance >= HitChance.High)
                             {
-                                spells[Spells.R].Cast(pred.CastPosition);
+                                spells[Spells.R].Cast(target);
                             }
                         }
                     }
@@ -277,10 +277,10 @@ namespace ElEasy.Plugins
                         var pred = spells[Spells.R].GetPrediction(target);
                         if (pred.Hitchance >= HitChance.High)
                         {
-                            var hits = HeroManager.Enemies.Where(x => x.Distance(target) <= 300f).ToList();
+                            var hits = HeroManager.Enemies.Where(x => x.LSDistance(target) <= 300f).ToList();
                             if (hits.Any(hit => hits.Count >= countEnemies))
                             {
-                                spells[Spells.R].Cast(pred.CastPosition);
+                                spells[Spells.R].Cast(target);
                             }
                         }
                     }
@@ -292,7 +292,7 @@ namespace ElEasy.Plugins
                 var getthabitch =
                     HeroManager.Enemies.FirstOrDefault(
                         x =>
-                            x.Distance(target) <= 300f && spells[Spells.R].GetDamage(x) > x.Health
+                            x.LSDistance(target) <= 300f && spells[Spells.R].GetDamage(x) > x.Health
                             && Player.CountEnemiesInRange(1000) == 1);
 
                 var pred = spells[Spells.R].GetPrediction(getthabitch);
@@ -326,7 +326,7 @@ namespace ElEasy.Plugins
                 var target = TargetSelector.GetTarget(spells[Spells.R].Range, DamageType.Magical);
                 if (target == null) return;
 
-                var hits = HeroManager.Enemies.Where(x => x.Distance(target) <= 300f).ToList();
+                var hits = HeroManager.Enemies.Where(x => x.LSDistance(target) <= 300f).ToList();
                 if (hits.Any(hit => hits.Count >= getSliderItem(rMenu, "ElEasy.Malphite.Combo.Count.R")))
                 {
                     var pred = spells[Spells.R].GetPrediction(target);

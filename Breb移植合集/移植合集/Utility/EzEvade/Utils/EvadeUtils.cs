@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -87,7 +88,7 @@ namespace ezEvade
 
             for (var i = 0; i < path.Count - 1; i++)
             {
-                var dist = path[i].Distance(path[i + 1]);
+                var dist = path[i].LSDistance(path[i + 1]);
                 if (dist > Distance)
                 {
                     result.Add(path[i] + Distance * (path[i + 1] - path[i]).Normalized());
@@ -109,7 +110,7 @@ namespace ezEvade
 
             for (var i = 0; i < path.Count - 1; i++)
             {
-                var dist = path[i].Distance(path[i + 1]);
+                var dist = path[i].LSDistance(path[i + 1]);
                 if (dist > Distance)
                 {
                     result.Add(path[i] + Distance * (path[i + 1] - path[i]).Normalized());

@@ -30,9 +30,10 @@
             {
                 spell = new DashData("Yasuo E", SpellSlot.E, 475, true, 10, 1000, 2)
                 {
-                                ValidTargets = new[] { SpellValidTargets.EnemyChampions, SpellValidTargets.EnemyMinions },
-                                CheckBuffName = "YasuoDashWrapper", UnderTower = true
-                            };
+                    ValidTargets = new[] { SpellValidTargets.EnemyChampions, SpellValidTargets.EnemyMinions },
+                    CheckBuffName = "YasuoDashWrapper",
+                    UnderTower = true
+                };
                 Spells.Add(spell);
             }
 
@@ -47,13 +48,13 @@
             if (Program.Player.ChampionName == "Zed")
             {
                 spell = new BlinkData("Zed W2", SpellSlot.W, 20000, 50, 3)
-                            { CheckSpellName = "zedw2", SelfCast = true, UnderTower = true };
+                { CheckSpellName = "zedw2", SelfCast = true, UnderTower = true };
                 Spells.Add(spell);
                 spell = new BlinkData("Zed R1", SpellSlot.R, 625, 50, 4)
-                            { CheckSpellName = "zedr", ValidTargets = new[] { SpellValidTargets.EnemyChampions } };
+                { CheckSpellName = "zedr", ValidTargets = new[] { SpellValidTargets.EnemyChampions } };
                 Spells.Add(spell);
                 spell = new BlinkData("Zed R2", SpellSlot.R, 20000, 50, 4)
-                            { CheckSpellName = "zedr2", SelfCast = true, UnderTower = true };
+                { CheckSpellName = "zedr2", SelfCast = true, UnderTower = true };
                 Spells.Add(spell);
             }
 

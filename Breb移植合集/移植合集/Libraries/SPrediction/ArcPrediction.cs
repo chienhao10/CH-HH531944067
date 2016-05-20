@@ -89,7 +89,7 @@ namespace SPrediction
 
             if (arconly)
             {
-                if (target.Distance(from) < width || target.Distance(from) > range*0.75f)
+                if (target.LSDistance(from) < width || target.LSDistance(from) > range*0.75f)
                     return CirclePrediction.GetPrediction(target, width, delay, missileSpeed, range, collisionable, path,
                         avgt, movt, avgp, anglediff, from, rangeCheckFrom);
 
@@ -98,9 +98,9 @@ namespace SPrediction
                 if (pred.HitChance >= HitChance.Low)
                 {
                     pred.CastPosition = @from + (pred.CastPosition - @from).Normalized()*range
-                        /*.RotateAroundPoint(from, (1 - pred.UnitPosition.Distance(ObjectManager.Player.ServerPosition.To2D()) / 820f) * (float)Math.PI / 2f)*/;
-                    var cos = (float) Math.Cos((1 - pred.UnitPosition.Distance(from)/820f)*Math.PI/2);
-                    var sin = (float) Math.Sin((1 - pred.UnitPosition.Distance(from)/820f)*Math.PI/2);
+                        /*.RotateAroundPoint(from, (1 - pred.UnitPosition.LSDistance(ObjectManager.Player.ServerPosition.To2D()) / 820f) * (float)Math.PI / 2f)*/;
+                    var cos = (float) Math.Cos((1 - pred.UnitPosition.LSDistance(from)/820f)*Math.PI/2);
+                    var sin = (float) Math.Sin((1 - pred.UnitPosition.LSDistance(from)/820f)*Math.PI/2);
                     var x = cos*(pred.CastPosition.X - from.X) - sin*(pred.CastPosition.Y - from.Y) + from.X;
                     var y = sin*(pred.CastPosition.X - from.X) + cos*(pred.CastPosition.Y - from.Y) + from.Y;
                     pred.CastPosition = new Vector2(x, y);
@@ -134,7 +134,7 @@ namespace SPrediction
                 return Prediction.GetDashingPrediction(target, width, delay, missileSpeed, range, collisionable,
                     SkillshotType.SkillshotCircle, @from, rangeCheckFrom);
 
-            var targetDistance = rangeCheckFrom.Distance(target.ServerPosition);
+            var targetDistance = rangeCheckFrom.LSDistance(target.ServerPosition);
             var flyTime = 0f;
 
             if (missileSpeed != 0)
@@ -162,7 +162,7 @@ namespace SPrediction
                     var senderPos = rangeCheckFrom;
                     var testPos = path[i];
 
-                    var multp = testPos.Distance(senderPos)/875.0f;
+                    var multp = testPos.LSDistance(senderPos)/875.0f;
 
                     var dianaArc = new Geometry.Polygon(
                         ClipperWrapper.DefineArc(senderPos - new Vector2(875/2f, 20), testPos, (float) Math.PI*multp,
@@ -204,7 +204,7 @@ namespace SPrediction
                 HeroManager.Enemies.Where(
                     p =>
                         p.LSIsValidTarget() &&
-                        Prediction.GetFastUnitPosition(p, delay, 0, from).Distance(rangeCheckFrom) < range);
+                        Prediction.GetFastUnitPosition(p, delay, 0, from).LSDistance(rangeCheckFrom) < range);
 
             foreach (var enemy in enemies)
             {
@@ -213,7 +213,7 @@ namespace SPrediction
                     from, rangeCheckFrom);
                 if (prediction.HitChance > HitChance.Medium)
                 {
-                    var multp = result.CastPosition.Distance(@from)/875.0f;
+                    var multp = result.CastPosition.LSDistance(@from)/875.0f;
 
                     var spellHitBox = new Geometry.Polygon(
                         ClipperWrapper.DefineArc(from - new Vector2(875/2f, 20), result.CastPosition,

@@ -188,16 +188,16 @@ namespace Viktor
             var target = TargetSelector.GetTarget(EMaxRange, DamageType.Magical);
             if (target != null && target.IsEnemy && target.IsVisible)
             {
-                if (player.ServerPosition.Distance(target.ServerPosition) < EELO.Range)
+                if (player.ServerPosition.LSDistance(target.ServerPosition) < EELO.Range)
                 {
                     EELO.SourcePosition = target.ServerPosition;
                     var prediction = EELO.GetPrediction(target);
-                    if (prediction.HitChance>= EloBuddy.SDK.Enumerations.HitChance.High)
+                    if (prediction.HitChance >= EloBuddy.SDK.Enumerations.HitChance.High)
                     {
                         Player.CastSpell(SpellSlot.E, prediction.UnitPosition, target.ServerPosition);
                     }
                 }
-                else if (player.ServerPosition.Distance(target.ServerPosition) < EMaxRange)
+                else if (player.ServerPosition.LSDistance(target.ServerPosition) < EMaxRange)
                 {
                     startPos = player.ServerPosition.To2D().Extend(target.ServerPosition, E.Range).To3D();
                     var prediction = EELO.GetPrediction(target);
@@ -327,7 +327,17 @@ namespace Viktor
             }
 
             if (useE)
-                PredictCastMinionE(getSliderItem(waveClear, "waveNumE"));
+            {
+                var minions = EntityManager.MinionsAndMonsters.Get(EntityManager.MinionsAndMonsters.EntityType.Minion, EntityManager.UnitTeam.Enemy, player.Position, EMaxRange, false);
+                foreach (var minion in minions)
+                {
+                    if (minions.Count() >= getSliderItem(waveClear, "waveNumE"))
+                    {
+                        var loc = EntityManager.MinionsAndMonsters.GetLineFarmLocation(minions, E.Width, EMaxRange);
+                        Player.CastSpell(SpellSlot.E, loc.CastPosition, minion.ServerPosition);
+                    }
+                }
+            }
         }
 
         private static void OnJungleClear()
@@ -348,7 +358,17 @@ namespace Viktor
             }
 
             if (useE)
-                PredictCastMinionEJungle();
+            {
+                var minions = EntityManager.MinionsAndMonsters.Get(EntityManager.MinionsAndMonsters.EntityType.Monster, EntityManager.UnitTeam.Both, player.Position, EMaxRange, false);
+                foreach (var minion in minions)
+                {
+                    if (minions.Count() >= getSliderItem(waveClear, "waveNumE"))
+                    {
+                        var loc = EntityManager.MinionsAndMonsters.GetLineFarmLocation(minions, E.Width, EMaxRange);
+                        Player.CastSpell(SpellSlot.E, loc.CastPosition, minion.ServerPosition);
+                    }
+                }
+            }
         }
 
 
@@ -414,12 +434,12 @@ namespace Viktor
 
             foreach (var pos in minionPositions)
             {
-                if (pos.Distance(startPos, true) <= range * range)
+                if (pos.LSDistance(startPos, true) <= range * range)
                 {
                     var endPos = startPos + range * (pos - startPos).Normalized();
 
                     var count =
-                        minionPositions.Count(pos2 => pos2.Distance(startPos, endPos, true, true) <= width * width);
+                        minionPositions.Count(pos2 => pos2.LSDistance(startPos, endPos, true, true) <= width * width);
 
                     if (count >= minionCount)
                     {
@@ -483,7 +503,7 @@ namespace Viktor
             {
                 if (enemy.HasBuff("rocketgrab2"))
                 {
-                    var t = HeroManager.Allies.Find(h => h.BaseSkinName.ToLower() == "blitzcrank" && h.Distance((AttackableUnit)player) < W.Range);
+                    var t = HeroManager.Allies.Find(h => h.BaseSkinName.ToLower() == "blitzcrank" && h.LSDistance((AttackableUnit)player) < W.Range);
                     if (t != null)
                     {
                         if (W.Cast(t) == LeagueSharp.Common.Spell.CastStates.SuccessfullyCasted)

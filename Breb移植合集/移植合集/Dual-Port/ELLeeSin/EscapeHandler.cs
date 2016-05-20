@@ -109,7 +109,7 @@ namespace ElLeeSin
             {
                 if (rect != null)
                 {
-                    if (pos.Distance(Player.Position) < 2000)
+                    if (pos.LSDistance(Player.Position) < 2000)
                     {
                         Render.Circle.DrawCircle(
                             pos,
@@ -119,7 +119,7 @@ namespace ElLeeSin
                 }
                 else
                 {
-                    if (pos.Distance(Player.Position) < 2000)
+                    if (pos.LSDistance(Player.Position) < 2000)
                     {
                         Render.Circle.DrawCircle(pos, 100, Color.White);
                     }
@@ -140,7 +140,7 @@ namespace ElLeeSin
             {
                 foreach (var point in JunglePos)
                 {
-                    if (Player.Distance(point) < 100 || Program.LastQ2 + 2000 < Environment.TickCount)
+                    if (Player.LSDistance(point) < 100 || Program.LastQ2 + 2000 < Environment.TickCount)
                     {
                         InitQ = false;
                     }

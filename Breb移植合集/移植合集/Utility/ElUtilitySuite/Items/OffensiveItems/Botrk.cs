@@ -74,7 +74,7 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <returns></returns>
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem("UseBotrkCombo") && ComboModeActive && (HeroManager.Enemies.Any(x => x.HealthPercent < getSliderItem("BotrkEnemyHp") && x.Distance(Player) < 500));
+            return getCheckBoxItem("UseBotrkCombo") && ComboModeActive && (HeroManager.Enemies.Any(x => x.HealthPercent < getSliderItem("BotrkEnemyHp") && x.LSDistance(Player) < 500));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// </summary>
         public override void UseItem()
         {
-            LeagueSharp.Common.Items.UseItem((int)Id, HeroManager.Enemies.First(x => x.HealthPercent < getSliderItem("BotrkEnemyHp") && x.Distance(ObjectManager.Player) < 550));
+            LeagueSharp.Common.Items.UseItem((int)Id, HeroManager.Enemies.First(x => x.HealthPercent < getSliderItem("BotrkEnemyHp") && x.LSDistance(ObjectManager.Player) < 550));
         }
 
         #endregion

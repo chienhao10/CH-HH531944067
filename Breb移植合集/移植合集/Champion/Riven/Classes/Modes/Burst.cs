@@ -18,7 +18,7 @@ namespace NechritoRiven
                 // Flash
                 if (target.Health < Dmg.Totaldame(target) || MenuConfig.AlwaysF)
                 {
-                    if ((Program.Player.Distance(target.Position) <= 700) && (Program.Player.Distance(target.Position) >= 600) && Program.Player.Spellbook.GetSpell(Spells.Flash).IsReady() && Spells._r.IsReady() && Spells._e.IsReady() && Spells._w.IsReady())
+                    if ((Program.Player.LSDistance(target.Position) <= 700) && (Program.Player.LSDistance(target.Position) >= 600) && Program.Player.Spellbook.GetSpell(Spells.Flash).IsReady() && Spells._r.IsReady() && Spells._e.IsReady() && Spells._w.IsReady())
                     {
                         Logic.CastYoumoo();
                         if (Spells._e.IsReady() && Spells._r.IsReady() && Spells._r.Instance.Name == Program.IsFirstR)
@@ -45,7 +45,7 @@ namespace NechritoRiven
                     }
                 }
                 // Burst
-                if ((Program.Player.Distance(target.Position) <= Spells._e.Range + Program.Player.AttackRange + Program.Player.BoundingRadius - 20))
+                if ((Program.Player.LSDistance(target.Position) <= Spells._e.Range + Program.Player.AttackRange + Program.Player.BoundingRadius - 20))
                 {
                     if (Spells._e.IsReady())
                     { Spells._e.Cast(target.Position); }

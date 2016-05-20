@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace SOLOVayne
 {
@@ -71,10 +72,10 @@ namespace SOLOVayne
             var wallStart = wall.Position.To2D() + wallWidth/2f*wallDirection;
             var wallEnd = wallStart - wallWidth*wallDirection;
 
-            for (var i = 0; i < start.Distance(end); i += 30)
+            for (var i = 0; i < start.LSDistance(end); i += 30)
             {
-                var currentPosition = start.Extend(end, i);
-                if (wallStart.Intersection(wallEnd, currentPosition, start.To2D()).Intersects)
+                var currentPosition = start.LSExtend(end, i);
+                if (wallStart.Intersection(wallEnd, currentPosition.LSTo2D(), start.To2D()).Intersects)
                 {
                     return true;
                 }

@@ -79,7 +79,7 @@ namespace SAutoCarry.Champions.Helpers
 
             if (checkTarget)
             {
-                if (target.ServerPosition.To2D().Distance(vec) <= target.AttackRange)
+                if (target.ServerPosition.To2D().LSDistance(vec) <= target.AttackRange)
                 {
                     if (vec.CountEnemiesInRange(1000) > 1)
                         return Vector3.Zero;
@@ -92,7 +92,7 @@ namespace SAutoCarry.Champions.Helpers
                 if (((Program.DontQIntoEnemies || target.IsMelee) &&
                      HeroManager.Enemies.Any(
                          p =>
-                             p.ServerPosition.To2D().Distance(vec) <=
+                             p.ServerPosition.To2D().LSDistance(vec) <=
                              p.AttackRange + ObjectManager.Player.BoundingRadius + (p.IsMelee ? 100 : 0))) ||
                     Utility.UnderTurret(vec, true))
                     return Vector3.Zero;
@@ -101,7 +101,7 @@ namespace SAutoCarry.Champions.Helpers
                 HeroManager.Enemies.Any(
                     p =>
                         p.NetworkId != target.NetworkId &&
-                        p.ServerPosition.To2D().Distance(vec) <= p.AttackRange + (p.IsMelee ? 50 : 0)) ||
+                        p.ServerPosition.To2D().LSDistance(vec) <= p.AttackRange + (p.IsMelee ? 50 : 0)) ||
                 Utility.UnderTurret(vec, true))
                 return Vector3.Zero;
 

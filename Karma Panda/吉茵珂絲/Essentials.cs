@@ -270,13 +270,25 @@ namespace Jinx
             private static float RDamage(Obj_AI_Base target)
             {
                 var distance = Player.Instance.Distance(target);
-                var increment = distance/100f;
-                var extraPercent = ((10f + (increment*6f))/100f);
-                var damage = new[] {0f, 25f, 35f, 45f}[Program.R.Level]*(1f + extraPercent) +
-                             (new[] {0, 0.25f, 0.3f, 0.35f}[Program.R.Level]*(target.MaxHealth - target.Health)/100f) +
-                             (0.1f + Player.Instance.FlatPhysicalDamageMod);
+                var increment = Math.Floor(distance/100f);
 
-                return damage;
+                if (increment > 15)
+                {
+                    increment = 15;
+                }
+
+                var extraPercent = Math.Floor((10f + (increment*6f)))/10f;
+
+                if (extraPercent > 10)
+                {
+                    extraPercent = 10;
+                }
+
+                var damage = (new[] {0f, 25f, 35f, 45f}[Program.R.Level]*(extraPercent)) +
+                             ((extraPercent/100f)*Player.Instance.FlatPhysicalDamageMod) +
+                             ((new[] {0f, 0.25f, 0.3f, 0.35f}[Program.R.Level]*(target.MaxHealth - target.Health)));
+
+                return Player.Instance.CalculateDamageOnUnit(target, DamageType.Physical, (float) damage);
             }
         }
     }

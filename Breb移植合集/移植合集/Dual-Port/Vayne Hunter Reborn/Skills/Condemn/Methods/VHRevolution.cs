@@ -114,9 +114,9 @@ namespace VayneHunter_Reborn.Skills.Condemn.Methods
         private static bool IsBothNearWall(Obj_AI_Base target)
         {
             var positions =
-                GetWallQPositions(target, 110).ToList().OrderBy(pos => pos.Distance(target.ServerPosition, true));
+                GetWallQPositions(target, 110).ToList().OrderBy(pos => pos.LSDistance(target.ServerPosition, true));
             var positions_ex =
-            GetWallQPositions(ObjectManager.Player, 110).ToList().OrderBy(pos => pos.Distance(ObjectManager.Player.ServerPosition, true));
+            GetWallQPositions(ObjectManager.Player, 110).ToList().OrderBy(pos => pos.LSDistance(ObjectManager.Player.ServerPosition, true));
 
             if (positions.Any(p => p.IsWall()) && positions_ex.Any(p => p.IsWall()))
             {

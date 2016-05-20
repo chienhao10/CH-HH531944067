@@ -83,37 +83,36 @@ namespace UnderratedAIO.Champions
             {
                 return;
             }
-            var dist = player.Distance(target);
+
+            var dist = player.LSDistance(target);
             if (getCheckBoxItem(menuC, "useq") && player.CountEnemiesInRange(Q.Range) > 0)
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
             }
-            if (getCheckBoxItem(menuC, "usew") || player.Distance(target) < 600)
+
+            if (getCheckBoxItem(menuC, "usew") || player.LSDistance(target) < 600)
             {
                 W.Cast(getCheckBoxItem(config, "packets"));
             }
+
             var ignitedmg = (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
-            if (getCheckBoxItem(menuC, "useIgnite") && ignitedmg > target.Health && hasIgnite &&
-                !E.CanCast(target) &&
-                (target.Distance(player) >= Q.Range || (target.Distance(player) <= Q.Range && player.HealthPercent < 30)))
+            if (getCheckBoxItem(menuC, "useIgnite") && ignitedmg > target.Health && hasIgnite && !E.CanCast(target) && (target.LSDistance(player) >= Q.Range || (target.LSDistance(player) <= Q.Range && player.HealthPercent < 30)))
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
+
             if (SkarnerR)
             {
                 return;
             }
-            if (getCheckBoxItem(menuC, "usee") && E.CanCast(target) &&
-                ((dist < getSliderItem(menuC, "useeMaxRange") &&
-                  dist > getSliderItem(menuC, "useeMinRange")) || target.Health < ComboDamage(target)))
+
+            if (getCheckBoxItem(menuC, "usee") && E.CanCast(target) && ((dist < getSliderItem(menuC, "useeMaxRange") && dist > getSliderItem(menuC, "useeMinRange")) || target.Health < ComboDamage(target)))
             {
                 E.Cast(target, getCheckBoxItem(config, "packets"));
             }
-            if (getCheckBoxItem(menuC, "user") && R.CanCast(target) &&
-                (!getCheckBoxItem(menuC, "ult" + target.BaseSkinName) || player.CountEnemiesInRange(1500) == 1) &&
-                !target.HasBuffOfType(BuffType.Stun) && !target.HasBuffOfType(BuffType.Snare) && !E.IsReady() &&
-                ((player.HealthPercent < 50 && target.HealthPercent < 50) || player.CountAlliesInRange(1000) > 1))
+
+            if (getCheckBoxItem(menuC, "user") && R.CanCast(target) && (!getCheckBoxItem(menuC, "ult" + target.BaseSkinName) || player.CountEnemiesInRange(1500) == 1) && !target.HasBuffOfType(BuffType.Stun) && !target.HasBuffOfType(BuffType.Snare) && !E.IsReady() && ((player.HealthPercent < 50 && target.HealthPercent < 50) || player.CountAlliesInRange(1000) > 1))
             {
                 R.Cast(target, getCheckBoxItem(config, "packets"));
             }

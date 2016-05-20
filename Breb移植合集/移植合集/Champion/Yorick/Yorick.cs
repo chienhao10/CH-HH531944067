@@ -107,15 +107,15 @@ namespace UnderratedAIO.Champions
                 case 1:
                     Gtarget =
                         ObjectManager.Get<AIHeroClient>()
-                            .Where(i => i.IsEnemy && !i.IsDead && player.Distance(i) <= R.Range)
+                            .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) <= R.Range)
                             .OrderBy(i => i.Health)
                             .FirstOrDefault();
                     break;
                 case 2:
                     Gtarget =
                         ObjectManager.Get<AIHeroClient>()
-                            .Where(i => i.IsEnemy && !i.IsDead && player.Distance(i) <= R.Range)
-                            .OrderBy(i => player.Distance(i))
+                            .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) <= R.Range)
+                            .OrderBy(i => player.LSDistance(i))
                             .FirstOrDefault();
                     break;
                 default:
@@ -150,7 +150,7 @@ namespace UnderratedAIO.Champions
                             CombatHelper.PointsAroundTheTargetOuterRing(pred.UnitPosition, Gtarget.AttackRange/2)
                                 .Where(p => !p.IsWall())
                                 .OrderBy(p => p.CountEnemiesInRange(500))
-                                .ThenBy(p => p.Distance(player.Position))
+                                .ThenBy(p => p.LSDistance(player.Position))
                                 .FirstOrDefault();
 
                         if (point.IsValid())
@@ -170,7 +170,7 @@ namespace UnderratedAIO.Champions
                 ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(menuC, "useq") &&
                   target is AIHeroClient) ||
                  (getCheckBoxItem(menuLC, "useqLC") &&
-                  Jungle.GetNearest(player.Position).Distance(player.Position) < player.AttackRange + 30)))
+                  Jungle.GetNearest(player.Position).LSDistance(player.Position) < player.AttackRange + 30)))
             {
                 Q.Cast(getCheckBoxItem(config, "packets"));
                 Orbwalker.ResetAutoAttack();
@@ -220,7 +220,7 @@ namespace UnderratedAIO.Champions
                         i =>
                             !i.IsDead &&
                             i.Health*100/i.MaxHealth <= getSliderItem(menuC, "atpercenty") &&
-                            i.IsAlly && player.Distance(i) < R.Range &&
+                            i.IsAlly && player.LSDistance(i) < R.Range &&
                             !getCheckBoxItem(menuM, "ulty" + i.BaseSkinName))
                     .OrderByDescending(i => Environment.Hero.GetAdOverTime(player, i, 5))
                     .FirstOrDefault();
@@ -269,12 +269,12 @@ namespace UnderratedAIO.Champions
             }
             var target =
                 ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(i => i.Distance(player) < E.Range && !i.IsAlly && i.Health < E.GetDamage(i))
-                    .OrderByDescending(i => i.Distance(player))
+                    .Where(i => i.LSDistance(player) < E.Range && !i.IsAlly && i.Health < E.GetDamage(i))
+                    .OrderByDescending(i => i.LSDistance(player))
                     .FirstOrDefault();
             var targetJ =
                 ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(i => i.Distance(player) < E.Range && !i.IsAlly && i.Health > 500f)
+                    .Where(i => i.LSDistance(player) < E.Range && !i.IsAlly && i.Health > 500f)
                     .OrderByDescending(i => i.Health)
                     .FirstOrDefault();
             if (target == null)
@@ -291,7 +291,7 @@ namespace UnderratedAIO.Champions
                     ObjectManager.Get<Obj_AI_Minion>()
                         .Where(
                             i =>
-                                i.Distance(player) < Q.Range && i.Health < player.LSGetSpellDamage(i, SpellSlot.Q) &&
+                                i.LSDistance(player) < Q.Range && i.Health < player.LSGetSpellDamage(i, SpellSlot.Q) &&
                                 !(i.Health < player.GetAutoAttackDamage(i)))
                         .OrderByDescending(i => i.Health)
                         .FirstOrDefault();

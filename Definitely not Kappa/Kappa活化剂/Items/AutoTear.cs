@@ -7,6 +7,8 @@
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
 
+    using Common;
+
     internal class AutoTear
     {
         protected static bool loaded = false;
@@ -34,22 +36,22 @@
             TearMenu = Load.UtliMenu.AddSubMenu("自动叠加女神");
             TearMenu.AddGroupLabel("叠加设置");
             TearMenu.Add(Player.Instance.ChampionName + "enable", new KeyBind("开关按键", false, KeyBind.BindTypes.PressToggle, 'M'));
-            TearMenu.Add(Player.Instance.ChampionName + "shop", new CheckBox("商店范围内叠加", false));
-            TearMenu.Add(Player.Instance.ChampionName + "enemy", new CheckBox("附近有敌人停止叠加"));
+            TearMenu.Checkbox("shop", "商店范围内叠加");
+            TearMenu.Checkbox("enemy", "附近有敌人停止叠加");
             TearMenu.AddSeparator();
             TearMenu.AddGroupLabel("蓝量控制器");
-            TearMenu.Add(Player.Instance.ChampionName + "manasave", new Slider("保存蓝量 %", 85));
+            TearMenu.Slider("manasave", "保存蓝量%", 85);
             TearMenu.AddSeparator();
             TearMenu.AddGroupLabel("物品设置");
-            TearMenu.Add(Player.Instance.ChampionName + "tear", new CheckBox("叠加女神"));
-            TearMenu.Add(Player.Instance.ChampionName + "arch", new CheckBox("叠加大天使"));
-            TearMenu.Add(Player.Instance.ChampionName + "mana", new CheckBox("叠加魔神利刃"));
+            TearMenu.Checkbox("tear", "叠加女神");
+            TearMenu.Checkbox("arch", "叠加大天使");
+            TearMenu.Checkbox("mana", "叠加魔神利刃");
             TearMenu.AddSeparator();
             TearMenu.AddGroupLabel("使用技能叠加");
-            TearMenu.Add(Player.Instance.ChampionName + "Q", new CheckBox("使用 Q", false));
-            TearMenu.Add(Player.Instance.ChampionName + "W", new CheckBox("使用 W", false));
-            TearMenu.Add(Player.Instance.ChampionName + "E", new CheckBox("使用 E", false));
-            TearMenu.Add(Player.Instance.ChampionName + "R", new CheckBox("使用 R", false));
+            TearMenu.Checkbox(Player.Instance.ChampionName + "Q", "使用 Q");
+            TearMenu.Checkbox(Player.Instance.ChampionName + "W", "使用 W");
+            TearMenu.Checkbox(Player.Instance.ChampionName + "E", "使用 E");
+            TearMenu.Checkbox(Player.Instance.ChampionName + "R", "使用 R");
             loaded = true;
         }
 
@@ -62,25 +64,21 @@
 
             if (TearMenu[Player.Instance.ChampionName + "enable"].Cast<KeyBind>().CurrentValue)
             {
-                var items = ((Tearcs.IsOwned() || Tear.IsOwned()) && TearMenu[Player.Instance.ChampionName + "tear"].Cast<CheckBox>().CurrentValue)
-                            || ((Arch.IsOwned() || Archcs.IsOwned()) && TearMenu[Player.Instance.ChampionName + "arch"].Cast<CheckBox>().CurrentValue)
-                            || ((Manacs.IsOwned() || Mana.IsOwned()) && TearMenu[Player.Instance.ChampionName + "mana"].Cast<CheckBox>().CurrentValue);
+                var items = ((Tearcs.IsOwned(Player.Instance) || Tear.IsOwned(Player.Instance)) && TearMenu.GetCheckbox("tear"))
+                            || ((Arch.IsOwned() || Archcs.IsOwned()) && TearMenu.GetCheckbox("arch"))
+                            || ((Manacs.IsOwned() || Mana.IsOwned()) && TearMenu.GetCheckbox("mana"));
                 var items2 = Sera.IsOwned() || Mura.IsOwned();
                 var minions = EntityManager.MinionsAndMonsters.EnemyMinions;
 
                 foreach (var minion in
-                    minions.Where(
-                        minion =>
-                        items && !items2
-                        && Player.Instance.ManaPercent > TearMenu[Player.Instance.ChampionName + "manasave"].Cast<Slider>().CurrentValue))
+                    minions.Where(minion => items && !items2 && Player.Instance.ManaPercent > TearMenu.GetSlider("manasave")))
                 {
-                    if (TearMenu[Player.Instance.ChampionName + "enemy"].Cast<CheckBox>().CurrentValue
-                        && Player.Instance.CountEnemiesInRange(1250) >= 1)
+                    if (TearMenu.GetCheckbox("enemy") && Helpers.CountEnemies(1250) >= 1)
                     {
                         return;
                     }
 
-                    if (TearMenu[Player.Instance.ChampionName + "shop"].Cast<CheckBox>().CurrentValue && !Player.Instance.IsInShopRange())
+                    if (TearMenu.GetCheckbox("shop") && !Player.Instance.IsInShopRange())
                     {
                         return;
                     }
@@ -97,13 +95,13 @@
 
         internal static void Cast(Obj_AI_Base target)
         {
-            var useQ = Player.GetSpell(SpellSlot.Q).IsReady && TearMenu[Player.Instance.ChampionName + "Q"].Cast<CheckBox>().CurrentValue;
+            var useQ = Player.GetSpell(SpellSlot.Q).IsReady && TearMenu.GetCheckbox(Player.Instance.ChampionName + "Q");
 
-            var useW = Player.GetSpell(SpellSlot.W).IsReady && TearMenu[Player.Instance.ChampionName + "W"].Cast<CheckBox>().CurrentValue;
+            var useW = Player.GetSpell(SpellSlot.W).IsReady && TearMenu.GetCheckbox(Player.Instance.ChampionName + "W");
 
-            var useE = Player.GetSpell(SpellSlot.E).IsReady && TearMenu[Player.Instance.ChampionName + "E"].Cast<CheckBox>().CurrentValue;
+            var useE = Player.GetSpell(SpellSlot.E).IsReady && TearMenu.GetCheckbox(Player.Instance.ChampionName + "E");
 
-            var useR = Player.GetSpell(SpellSlot.R).IsReady && TearMenu[Player.Instance.ChampionName + "R"].Cast<CheckBox>().CurrentValue;
+            var useR = Player.GetSpell(SpellSlot.R).IsReady && TearMenu.GetCheckbox(Player.Instance.ChampionName + "R");
             if (useQ)
             {
                 Player.CastSpell(SpellSlot.Q, Game.CursorPos);

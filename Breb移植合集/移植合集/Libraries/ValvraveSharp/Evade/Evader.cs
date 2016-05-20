@@ -184,7 +184,7 @@ namespace Valvrave_Sharp.Evade
                 var pos = spellData.FixedRange
                               ? Evade.PlayerPosition.Extend(target.ServerPosition, spellData.Range)
                               : target.ServerPosition.ToVector2();
-                if (!dontCheckForSafety && !Evade.IsSafePoint(pos).IsSafe)
+                if (!dontCheckForSafety && !Evade.IsSafePoint(pos))
                 {
                     continue;
                 }

@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Common\DamageHandler.cs" />
     <Compile Include="Common\Helpers.cs" />
+    <Compile Include="Common\SimpleMenu.cs" />
     <Compile Include="Items\Defensive.cs" />
     <Compile Include="Items\Offensive.cs" />
     <Compile Include="Items\Potions.cs" />

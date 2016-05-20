@@ -26,12 +26,13 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     The Q LaneClear Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Targets.Minions.Any() &&
-                (ObjectManager.Player.ManaPercent > ManaManager.NeededQMana ||
-                 ObjectManager.Player.Buffs.Any(b => b.Name.Equals("visionary"))) &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.lc"))
+            if (Variables.Q.IsReady() && Targets.Minions.Any() && Variables.getCheckBoxItem(Variables.QMenu, "qspell.lc"))
             {
+                if (GameObjects.Player.ManaPercent < ManaManager.NeededQMana && !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
+                {
+                    return;
+                }
+
                 Variables.Q.CastOnUnit(Targets.Minions.FirstOrDefault(m => m.Health < Variables.Q.GetDamage(m)));
             }
 
@@ -39,17 +40,17 @@ namespace ExorAIO.Champions.Nunu
             ///     The E Clear Logics.
             /// </summary>
             if (Variables.E.IsReady() &&
-                (ObjectManager.Player.ManaPercent > ManaManager.NeededEMana ||
-                 ObjectManager.Player.Buffs.Any(b => b.Name.Equals("visionary"))) &&
                 Variables.getCheckBoxItem(Variables.EMenu, "espell.farm"))
             {
+                if (GameObjects.Player.ManaPercent < ManaManager.NeededQMana && !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
+                {
+                    return;
+                }
+
                 /// <summary>
                 ///     The E LaneClear Logic.
                 /// </summary>
-                foreach (Obj_AI_Minion minion in Targets.Minions.Where(
-                    m =>
-                        m.IsValidTarget(Variables.E.Range) &&
-                        m.Health < Variables.E.GetDamage(m)))
+                foreach (var minion in Targets.Minions.Where(m => m.IsValidTarget(Variables.E.Range) && m.Health < Variables.E.GetDamage(m)))
                 {
                     Variables.E.CastOnUnit(minion);
                 }

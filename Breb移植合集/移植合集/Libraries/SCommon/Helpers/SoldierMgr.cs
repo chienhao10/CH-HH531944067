@@ -58,7 +58,7 @@ namespace SAutoCarry.Champions.Helpers
                     ObjectManager.Player.CalcDamage(target, DamageType.Magical,
                         new[] {50, 55, 60, 65, 70, 75, 80, 85, 90, 100, 110, 120, 130, 140, 150, 160, 170, 180}[
                             ObjectManager.Player.Level - 1] + 0.6f * ObjectManager.Player.TotalMagicalDamage);
-            dmg += dmg*0.25f*(ActiveSoldiers.Count(p => p.Position.Distance(target.Position) < SoldierAttackRange) - 1);
+            dmg += dmg*0.25f*(ActiveSoldiers.Count(p => p.Position.LSDistance(target.Position) < SoldierAttackRange) - 1);
             return dmg;
         }
 

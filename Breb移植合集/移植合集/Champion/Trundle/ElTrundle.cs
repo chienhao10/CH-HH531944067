@@ -120,7 +120,7 @@ namespace ElTrundle
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (gapcloser.Sender.Distance(Player) > spells[Spells.E].Range ||
+            if (gapcloser.Sender.LSDistance(Player) > spells[Spells.E].Range ||
                 !getCheckBoxItem(miscMenu, "ElTrundle.Antigapcloser"))
             {
                 return;
@@ -139,7 +139,7 @@ namespace ElTrundle
         {
             pillarPosition = Player.Position;
 
-            return V2E(pillarPosition, target.Position, target.Distance(pillarPosition) + 230).To3D();
+            return V2E(pillarPosition, target.Position, target.LSDistance(pillarPosition) + 208).To3D();
         }
 
         private static float IgniteDamage(AIHeroClient target)
@@ -160,7 +160,7 @@ namespace ElTrundle
                 return;
             }
 
-            if (args.DangerLevel != Interrupter2.DangerLevel.High || sender.Distance(Player) > spells[Spells.E].Range)
+            if (args.DangerLevel != Interrupter2.DangerLevel.High || sender.LSDistance(Player) > spells[Spells.E].Range)
             {
                 return;
             }
@@ -284,7 +284,7 @@ namespace ElTrundle
                 }
             }
 
-            if (Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health
+            if (Player.LSDistance(target) <= 600 && IgniteDamage(target) >= target.Health
                 && getCheckBoxItem(comboMenu, "ElTrundle.Combo.Ignite"))
             {
                 Player.Spellbook.CastSpell(ignite, target);
@@ -301,7 +301,7 @@ namespace ElTrundle
             var drawR = getCheckBoxItem(miscMenu, "ElTrundle.Draw.R");
 
             if (newTarget != null && newTarget.IsVisible && newTarget.IsValidTarget() && !newTarget.IsDead
-                && Player.Distance(newTarget) < 3000)
+                && Player.LSDistance(newTarget) < 3000)
             {
                 Drawing.DrawCircle(GetPillarPosition(newTarget), 188, Color.DeepPink);
             }

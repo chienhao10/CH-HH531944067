@@ -38,7 +38,7 @@ namespace KurisuMorgana
             _e = new Spell(SpellSlot.E, 750f);
             _r = new Spell(SpellSlot.R, 600f);
 
-            _menu = MainMenu.AddMenu("Kurisu甘娜", "morgana");
+            _menu = MainMenu.AddMenu("Kurisu魔甘娜", "morgana");
 
             menuQ = _menu.AddSubMenu("[Q]", "asdfasdf");
             menuQ.Add("hitchanceq", new Slider("命中率", 3, 1, 4));
@@ -217,7 +217,7 @@ namespace KurisuMorgana
                     var poutput = _q.GetPrediction(qtarget);
                     if (poutput.Hitchance >= (HitChance) getSliderItem(menuQ, "hitchanceq") + 2)
                     {
-                        _q.Cast(poutput.CastPosition);
+                        _q.Cast(qtarget);
                     }
                 }
             }
@@ -232,7 +232,7 @@ namespace KurisuMorgana
                         var poutput = _w.GetPrediction(wtarget);
                         if (poutput.Hitchance >= (HitChance) getSliderItem(menuW, "hitchancew") + 2)
                         {
-                            _w.Cast(poutput.CastPosition);
+                            _w.Cast(wtarget);
                         }
                     }
                 }
@@ -277,7 +277,7 @@ namespace KurisuMorgana
                         var poutput = _q.GetPrediction(qtarget);
                         if (poutput.Hitchance >= (HitChance) getSliderItem(menuQ, "hitchanceq") + 2)
                         {
-                            _q.Cast(poutput.CastPosition);
+                            _q.Cast(qtarget);
                         }
                     }
                 }
@@ -295,7 +295,7 @@ namespace KurisuMorgana
                             var poutput = _w.GetPrediction(wtarget);
                             if (poutput.Hitchance >= (HitChance) getSliderItem(menuW, "hitchancew") + 2)
                             {
-                                _w.Cast(poutput.CastPosition);
+                                _w.Cast(wtarget);
                             }
                         }
                     }
@@ -315,7 +315,7 @@ namespace KurisuMorgana
                     if (immobile)
                         _q.CastIfHitchanceEquals(itarget, HitChance.Immobile);
 
-                    if (dashing && itarget.Distance(Me.ServerPosition) <= 400f)
+                    if (dashing && itarget.LSDistance(Me.ServerPosition) <= 400f)
                         _q.CastIfHitchanceEquals(itarget, HitChance.Dashing);
                 }
             }
@@ -375,7 +375,7 @@ namespace KurisuMorgana
         {
             if (sender.IsEnemy && sender.Type == GameObjectType.AIHeroClient && _q.IsReady())
             {
-                if (args.End.IsValid() && args.End.Distance(Me.ServerPosition) <= 200 + Me.BoundingRadius)
+                if (args.End.IsValid() && args.End.LSDistance(Me.ServerPosition) <= 200 + Me.BoundingRadius)
                 {
                     var hero = sender as AIHeroClient;
                     if (!hero.IsValid<AIHeroClient>() || !hero.IsValidTarget(_q.Range - 50))
@@ -397,8 +397,8 @@ namespace KurisuMorgana
             foreach (var ally in HeroManager.Allies.Where(x => x.IsValidTarget(_e.Range)))
             {
                 var detectRange = ally.ServerPosition +
-                                  (args.End - ally.ServerPosition).Normalized()*ally.Distance(args.End);
-                if (detectRange.Distance(ally.ServerPosition) > ally.AttackRange - ally.BoundingRadius)
+                                  (args.End - ally.ServerPosition).Normalized()*ally.LSDistance(args.End);
+                if (detectRange.LSDistance(ally.ServerPosition) > ally.AttackRange - ally.BoundingRadius)
                     continue;
 
                 foreach (
@@ -414,7 +414,7 @@ namespace KurisuMorgana
                         return;
 
                     if (getCheckBoxItem(shieldMenu, lib.SDataName + "on") &&
-                        getCheckBoxItem(shieldMenu, "useon" + ally.ChampionName))
+                        getCheckBoxItem(shieldMenu, "useon" + ally.NetworkId))
                     {
                         Utility.DelayAction.Add(lib.Slot != SpellSlot.R ? 100 : 0, () => _e.CastOnUnit(ally));
                     }

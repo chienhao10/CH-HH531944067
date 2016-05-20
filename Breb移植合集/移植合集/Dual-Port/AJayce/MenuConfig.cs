@@ -30,54 +30,54 @@ namespace Jayce
         {
             Config = MainMenu.AddMenu(Menuname, Menuname);
 
-            AddKeyBind(Config, "手动 E->Q按键", "manualeq", 'A', KeyBind.BindTypes.HoldActive);
-            AddKeyBind(Config, "R 循环逃跑", "flee", 'T', KeyBind.BindTypes.PressToggle);
-            AddBool(Config, "屏蔽走砍", "disorb", false);
+            AddKeyBind(Config, "Manual E->Q", "manualeq", 'A', KeyBind.BindTypes.HoldActive);
+            AddKeyBind(Config, "R Spam", "flee", 'T', KeyBind.BindTypes.PressToggle);
+            AddBool(Config, "Disable Orbwalker", "disorb", false);
 
-            combo = Config.AddSubMenu("连招", "Combo Settings");
-            combo.AddGroupLabel("近程模式");
-            AddBool(combo, "使用 [Q]", "useqcm");
-            AddBool(combo, "使用 [W]", "usewcm");
-            AddBool(combo, "使用 [E]", "useecm");
-            AddBool(combo, "智能 [E]", "useecme");
+            combo = Config.AddSubMenu("Combo Settings", "Combo Settings");
+            combo.AddGroupLabel("Melee Settings");
+            AddBool(combo, "Use [Q]", "useqcm");
+            AddBool(combo, "Use [W]", "usewcm");
+            AddBool(combo, "Use [E]", "useecm");
+            AddBool(combo, "Smart [E]", "useecme");
             combo.AddSeparator();
-            combo.AddGroupLabel("远程模式");
-            AddBool(combo, "使用 [Q]", "useqcr");
-            AddBool(combo, "使用 [W]", "usewcr");
-            AddBool(combo, "使用 [E]", "useecr");
+            combo.AddGroupLabel("Ranged Settings");
+            AddBool(combo, "Use [Q]", "useqcr");
+            AddBool(combo, "Use [W]", "usewcr");
+            AddBool(combo, "Use [E]", "useecr");
             combo.AddSeparator();
-            AddBool(combo, "自动切换模式 ([R])", "usercf");
+            AddBool(combo, "Auto Change Forms ([R])", "usercf");
 
-            harass = Config.AddSubMenu("骚扰", "harass Settings");
-            harass.AddGroupLabel("M近程模式");
-            AddBool(harass, "使用 [Q]", "useqhm");
+            harass = Config.AddSubMenu("Harass Settings", "harass Settings");
+            harass.AddGroupLabel("Melee Settings");
+            AddBool(harass, "Use [Q]", "useqhm");
             harass.AddSeparator();
-            harass.AddGroupLabel("远程模式");
-            AddBool(harass, "使用 [Q]", "useqhr");
-            AddBool(harass, "使用 [W]", "usewhr");
+            harass.AddGroupLabel("Ranged Settings");
+            AddBool(harass, "Use [Q]", "useqhr");
+            AddBool(harass, "Use [W]", "usewhr");
 
             laneclear = Config.AddSubMenu("Lane Clear Settings", "Lane Clear Settings");
             AddValue(laneclear, "Minimum minions hit For W/Q", "minhitwq", 2, 0, 10);
             AddValue(laneclear, "Minimum Mana", "minmana", 30);
             laneclear.AddSeparator();
-            laneclear.AddGroupLabel("近程模式");
-            AddBool(laneclear, "使用 [Q]", "useqlm");
-            AddBool(laneclear, "使用 [W]", "usewlm");
-            AddBool(laneclear, "使用 [E]", "useelm");
+            laneclear.AddGroupLabel("Melee Settings");
+            AddBool(laneclear, "Use [Q]", "useqlm");
+            AddBool(laneclear, "Use [W]", "usewlm");
+            AddBool(laneclear, "Use [E]", "useelm");
             laneclear.AddSeparator();
-            laneclear.AddGroupLabel("远程模式");
-            AddBool(laneclear, "使用 [Q]", "useqlr");
-            AddBool(laneclear, "使用 [W]", "usewlr");
+            laneclear.AddGroupLabel("Ranged Settings");
+            AddBool(laneclear, "Use [Q]", "useqlr");
+            AddBool(laneclear, "Use [W]", "usewlr");
 
-            drawings = Config.AddSubMenu("线圈", "Drawings");
-            AddBool(drawings, "显示 [Q]", "drawq");
-            AddBool(drawings, "显示 [E]", "drawe");
-            AddBool(drawings, "显示 计时", "drawtimers");
+            drawings = Config.AddSubMenu("Drawings", "Drawings");
+            AddBool(drawings, "Draw [Q]", "drawq");
+            AddBool(drawings, "Draw [E]", "drawe");
+            AddBool(drawings, "Draw Timers", "drawtimers");
 
-            misc = Config.AddSubMenu("杂项", "Misc Settings");
-            AddBool(misc, "自动 E 打断技能", "autoeint");
-            AddBool(misc, "自动 E 冲刺敌人", "autoedash");
-            AddBool(misc, "自动 E 防突进", "autoegap");
+            misc = Config.AddSubMenu("Misc Settings", "Misc Settings");
+            AddBool(misc, "Auto E On Interruptable", "autoeint");
+            AddBool(misc, "Auto E On Dash", "autoedash");
+            AddBool(misc, "Auto E On Gap Closers", "autoegap");
         }
     }
 }

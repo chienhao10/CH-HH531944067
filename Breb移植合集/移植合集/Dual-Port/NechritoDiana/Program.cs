@@ -63,7 +63,7 @@ namespace Nechrito_Diana
                 var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._q.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
-                    if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.Distance(target.Position) <= Spells._q.Range))
+                    if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= Spells._q.Range))
                     {
                         Spells._q.Cast(target);
                     }
@@ -74,7 +74,7 @@ namespace Nechrito_Diana
                 var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
-                    if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.Distance(target.Position) <= Spells._q.Range))
+                    if (target.Health < Spells._r.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= Spells._q.Range))
                     {
                         Spells._r.Cast(target);
                     }
@@ -85,7 +85,7 @@ namespace Nechrito_Diana
                 var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Spells._r.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
-                    if (target.Health < Spells._r.GetDamage(target) + Spells._q.GetDamage(target) && !target.IsInvulnerable && (Player.Distance(target.Position) <= Spells._q.Range))
+                    if (target.Health < Spells._r.GetDamage(target) + Spells._q.GetDamage(target) && !target.IsInvulnerable && (Player.LSDistance(target.Position) <= Spells._q.Range))
                     {
                         Spells._q.Cast(target);
                         Spells._r.Cast(target);
@@ -148,13 +148,13 @@ namespace Nechrito_Diana
             if (MenuConfig.EscapeSpot)
             {
                 foreach (var pos in JunglePos)
-                    if (pos.Distance(Player.Position) < 1200)
+                    if (pos.LSDistance(Player.Position) < 1200)
                     {
                         Render.Circle.DrawCircle(pos, 85, Spells._r.IsReady() ? System.Drawing.Color.GreenYellow : System.Drawing.Color.Gray);
                     }
                 foreach (var pos in JumpPos)
                 {
-                    if (pos.Value.Distance(Player.Position) < 12000)
+                    if (pos.Value.LSDistance(Player.Position) < 12000)
                     {
                         Render.Circle.DrawCircle(pos.Value, 40, System.Drawing.Color.White);
                     }

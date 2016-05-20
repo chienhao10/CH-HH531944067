@@ -207,10 +207,10 @@ namespace Ziggs
                         var prediction = W.GetPrediction(target);
                         if (prediction.Hitchance >= HitChance.High)
                         {
-                            if (ObjectManager.Player.ServerPosition.Distance(prediction.UnitPosition) < W.Range &&
-                                ObjectManager.Player.ServerPosition.Distance(prediction.UnitPosition) > W.Range - 250 &&
-                                prediction.UnitPosition.Distance(ObjectManager.Player.ServerPosition) >
-                                target.Distance(ObjectManager.Player))
+                            if (ObjectManager.Player.ServerPosition.LSDistance(prediction.UnitPosition) < W.Range &&
+                                ObjectManager.Player.ServerPosition.LSDistance(prediction.UnitPosition) > W.Range - 250 &&
+                                prediction.UnitPosition.LSDistance(ObjectManager.Player.ServerPosition) >
+                                target.LSDistance(ObjectManager.Player))
                             {
                                 var cp =
                                     ObjectManager.Player.ServerPosition.To2D()
@@ -236,9 +236,9 @@ namespace Ziggs
                          ObjectManager.Player.GetSpellDamage(target, SpellSlot.W) +
                          ObjectManager.Player.GetSpellDamage(target, SpellSlot.E) +
                          ObjectManager.Player.GetSpellDamage(target, SpellSlot.R) > target.Health) &&
-                        ObjectManager.Player.Distance(target) <= Q2.Range)
+                        ObjectManager.Player.LSDistance(target) <= Q2.Range)
                     {
-                        R.Delay = 2000 + 1500*target.Distance(ObjectManager.Player)/5300;
+                        R.Delay = 2000 + 1500*target.LSDistance(ObjectManager.Player)/5300;
                         R.Cast(target, true, true);
                     }
 
@@ -250,7 +250,7 @@ namespace Ziggs
                         foreach (var ally in ObjectManager.Get<AIHeroClient>())
                         {
                             if (ally.IsAlly && !ally.IsMe && ally.IsValidTarget(float.MaxValue) &&
-                                ally.Distance(target) < 700)
+                                ally.LSDistance(target) < 700)
                             {
                                 alliesarround++;
                                 if (Utils.TickCount - ally.LastCastedSpellT() < 1500)
@@ -283,7 +283,7 @@ namespace Ziggs
                     if (comboActive && useR && R.IsReady() &&
                         ObjectManager.Player.GetSpellDamage(target, SpellSlot.R) > target.Health)
                     {
-                        R.Delay = 2000 + 1500*target.Distance(ObjectManager.Player)/5300;
+                        R.Delay = 2000 + 1500*target.LSDistance(ObjectManager.Player)/5300;
                         R.Cast(target, true, true);
                     }
                 }
@@ -322,13 +322,13 @@ namespace Ziggs
                 foreach (var pos in from enemy in ObjectManager.Get<AIHeroClient>()
                     where
                         enemy.IsValidTarget() &&
-                        enemy.Distance(ObjectManager.Player) <=
+                        enemy.LSDistance(ObjectManager.Player) <=
                         enemy.BoundingRadius + enemy.AttackRange + ObjectManager.Player.BoundingRadius &&
                         enemy.IsMelee()
                     let direction =
                         (enemy.ServerPosition.To2D() - ObjectManager.Player.ServerPosition.To2D()).Normalized()
                     let pos = ObjectManager.Player.ServerPosition.To2D()
-                    select pos + Math.Min(200, Math.Max(50, enemy.Distance(ObjectManager.Player)/2))*direction)
+                    select pos + Math.Min(200, Math.Max(50, enemy.LSDistance(ObjectManager.Player)/2))*direction)
                 {
                     W.Cast(pos.To3D(), true);
                     UseSecondWT = Utils.TickCount;
@@ -340,21 +340,21 @@ namespace Ziggs
         {
             PredictionOutput prediction;
 
-            if (ObjectManager.Player.Distance(target) < Q1.Range)
+            if (ObjectManager.Player.LSDistance(target) < Q1.Range)
             {
                 var oldrange = Q1.Range;
                 Q1.Range = Q2.Range;
                 prediction = Q1.GetPrediction(target, true);
                 Q1.Range = oldrange;
             }
-            else if (ObjectManager.Player.Distance(target) < Q2.Range)
+            else if (ObjectManager.Player.LSDistance(target) < Q2.Range)
             {
                 var oldrange = Q2.Range;
                 Q2.Range = Q3.Range;
                 prediction = Q2.GetPrediction(target, true);
                 Q2.Range = oldrange;
             }
-            else if (ObjectManager.Player.Distance(target) < Q3.Range)
+            else if (ObjectManager.Player.LSDistance(target) < Q3.Range)
             {
                 prediction = Q3.GetPrediction(target, true);
             }
@@ -365,10 +365,10 @@ namespace Ziggs
 
             if (prediction.Hitchance >= HitChance.High)
             {
-                if (ObjectManager.Player.ServerPosition.Distance(prediction.CastPosition) <= Q1.Range + Q1.Width)
+                if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) <= Q1.Range + Q1.Width)
                 {
                     Vector3 p;
-                    if (ObjectManager.Player.ServerPosition.Distance(prediction.CastPosition) > 300)
+                    if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) > 300)
                     {
                         p = prediction.CastPosition -
                             100*
@@ -382,7 +382,7 @@ namespace Ziggs
 
                     Q1.Cast(p);
                 }
-                else if (ObjectManager.Player.ServerPosition.Distance(prediction.CastPosition) <=
+                else if (ObjectManager.Player.ServerPosition.LSDistance(prediction.CastPosition) <=
                          (Q1.Range + Q2.Range)/2)
                 {
                     var p = ObjectManager.Player.ServerPosition.To2D()
@@ -414,27 +414,27 @@ namespace Ziggs
             var firstBouncePosition = castPosition.To2D();
             var secondBouncePosition = firstBouncePosition +
                                        direction*0.4f*
-                                       ObjectManager.Player.ServerPosition.To2D().Distance(firstBouncePosition);
+                                       ObjectManager.Player.ServerPosition.To2D().LSDistance(firstBouncePosition);
             var thirdBouncePosition = secondBouncePosition +
-                                      direction*0.6f*firstBouncePosition.Distance(secondBouncePosition);
+                                      direction*0.6f*firstBouncePosition.LSDistance(secondBouncePosition);
 
             //TODO: Check for wall collision.
 
-            if (thirdBouncePosition.Distance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
+            if (thirdBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
             {
                 //Check the second one.
-                if ((from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.IsValidTarget(3000) let predictedPos = Q2.GetPrediction(minion) where predictedPos.UnitPosition.To2D().Distance(secondBouncePosition) <
+                if ((from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.IsValidTarget(3000) let predictedPos = Q2.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(secondBouncePosition) <
                                                                                                                                                           Q2.Width + minion.BoundingRadius select minion).Any())
                 {
                     return true;
                 }
             }
 
-            if (secondBouncePosition.Distance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius ||
-                thirdBouncePosition.Distance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
+            if (secondBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius ||
+                thirdBouncePosition.LSDistance(targetPosition.To2D()) < Q1.Width + target.BoundingRadius)
             {
                 //Check the first one
-                return (from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.IsValidTarget(3000) let predictedPos = Q1.GetPrediction(minion) where predictedPos.UnitPosition.To2D().Distance(firstBouncePosition) < Q1.Width + minion.BoundingRadius select minion).Any();
+                return (from minion in ObjectManager.Get<Obj_AI_Minion>() where minion.IsValidTarget(3000) let predictedPos = Q1.GetPrediction(minion) where predictedPos.UnitPosition.To2D().LSDistance(firstBouncePosition) < Q1.Width + minion.BoundingRadius select minion).Any();
             }
 
             return true;
@@ -476,7 +476,7 @@ namespace Ziggs
             {
                 var dmgpct = new[] { 25, 27.5, 30, 32.5, 35 }[W.Level - 1];
 
-                var killableTurret = ObjectManager.Get<Obj_AI_Turret>().Find(x => x.IsEnemy && ObjectManager.Player.Distance(x.Position) <= W.Range && x.HealthPercent < dmgpct);
+                var killableTurret = ObjectManager.Get<Obj_AI_Turret>().Find(x => x.IsEnemy && ObjectManager.Player.LSDistance(x.Position) <= W.Range && x.HealthPercent < dmgpct);
                 if (killableTurret != null)
                 {
                     W.Cast(killableTurret.Position);

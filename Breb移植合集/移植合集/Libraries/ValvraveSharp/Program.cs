@@ -60,11 +60,7 @@
 
         private static void InitSummonerSpell()
         {
-            var smiteName =
-                Player.Spellbook.Spells.Where(
-                    i =>
-                    (i.Slot == SpellSlot.Summoner1 || i.Slot == SpellSlot.Summoner2)
-                    && i.Name.ToLower().Contains("smite")).Select(i => i.Name).FirstOrDefault();
+            var smiteName = Player.Spellbook.Spells.Where(i => (i.Slot == SpellSlot.Summoner1 || i.Slot == SpellSlot.Summoner2) && i.Name.ToLower().Contains("smite")).Select(i => i.Name).FirstOrDefault();
             if (!string.IsNullOrEmpty(smiteName))
             {
                 Smite = Player.GetSpellSlot(smiteName);

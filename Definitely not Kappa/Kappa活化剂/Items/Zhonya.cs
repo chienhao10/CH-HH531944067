@@ -4,7 +4,8 @@
 
     using EloBuddy;
     using EloBuddy.SDK;
-    using EloBuddy.SDK.Menu.Values;
+
+    using Common;
 
     internal class Zhonya
     {
@@ -31,15 +32,16 @@
             var caster = sender;
             var target = (AIHeroClient)args.Target;
 
-            if (!Defensive.Zhonyas.IsOwned() || !Defensive.Zhonyas.IsReady() || (!(caster is AIHeroClient) || target == null || !target.IsMe))
+            if (!Defensive.Zhonyas.IsOwned(Player.Instance) || !Defensive.Zhonyas.IsReady()
+                || (!(caster is AIHeroClient) || target == null || !target.IsMe))
             {
                 return;
             }
 
-            if (Defensive.DefMenu["ZhonyasD"].Cast<CheckBox>().CurrentValue)
+            if (Defensive.DefMenu.GetCheckbox("ZhonyasD"))
             {
-                foreach (var spell in
-                    DangerSpells.Where(spell => args.SData.Name == spell && caster.IsEnemy).Where(spell => spell != null && args.SData.Name == spell))
+                var Dangerspell = DangerSpells.FirstOrDefault(spell => args.SData.Name == spell && caster.IsEnemy);
+                if (Dangerspell != null)
                 {
                     Core.DelayAction(() => Defensive.Zhonyas.Cast(), (int)sender.Spellbook.GetSpell(SpellSlot.R).SData.SpellCastTime * 2);
                 }

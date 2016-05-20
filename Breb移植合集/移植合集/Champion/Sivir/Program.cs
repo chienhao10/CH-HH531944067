@@ -133,7 +133,7 @@ namespace OneKeyToWin_AIO_Sebby
                 else
                 {
                     var t = TargetSelector.GetTarget(900, DamageType.Physical);
-                    if (t.IsValidTarget() && getCheckBoxItem(wMenu, "harasW") && getCheckBoxItem(wMenu, "haras" + t.NetworkId) && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t.Distance(target.Position) < 500)
+                    if (t.IsValidTarget() && getCheckBoxItem(wMenu, "harasW") && getCheckBoxItem(wMenu, "haras" + t.NetworkId) && !Player.UnderTurret(true) && Player.Mana > RMANA + WMANA + QMANA && t.LSDistance(target.Position) < 500)
                     {
                         W.Cast();
                     }

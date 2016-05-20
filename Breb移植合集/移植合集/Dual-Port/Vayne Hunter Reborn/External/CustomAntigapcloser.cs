@@ -680,7 +680,7 @@ namespace VayneHunter_Reborn.External
                             gapcloser =>
                                 gapcloser.SkillType == GapcloserType.Targeted ||
                                 (gapcloser.SkillType == GapcloserType.Skillshot &&
-                                 ObjectManager.Player.Distance(gapcloser.Sender, true) < 250000))) // 500 * 500
+                                 ObjectManager.Player.LSDistance(gapcloser.Sender, true) < 250000))) // 500 * 500
             {
                 OnEnemyGapcloser(gapcloser);
             }

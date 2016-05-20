@@ -31,12 +31,12 @@ namespace SCommon.Damage
         /// <returns>true if last hitable</returns>
         public static bool IsLastHitable(Obj_AI_Base unit, float extraWindup = 0)
         {
-            //float health = unit.Health - GetPrediction(unit, (Math.Max(0, unit.ServerPosition.To2D().Distance(ObjectManager.Player.ServerPosition.To2D()) - ObjectManager.Player.BoundingRadius) / Orbwalking.Utility.GetProjectileSpeed() + ObjectManager.Player.AttackCastDelay) * 1000f);
+            //float health = unit.Health - GetPrediction(unit, (Math.Max(0, unit.ServerPosition.To2D().LSDistance(ObjectManager.Player.ServerPosition.To2D()) - ObjectManager.Player.BoundingRadius) / Orbwalking.Utility.GetProjectileSpeed() + ObjectManager.Player.AttackCastDelay) * 1000f);
             var t = (int) (ObjectManager.Player.AttackCastDelay*1000) - 100 + Game.Ping/2 +
                     1000*
                     (int)
                         Math.Max(0,
-                            ObjectManager.Player.Distance(unit.ServerPosition) - ObjectManager.Player.BoundingRadius)/
+                            ObjectManager.Player.LSDistance(unit.ServerPosition) - ObjectManager.Player.BoundingRadius)/
                     (int) Utility.GetProjectileSpeed();
 
             var health = HealthPrediction.GetHealthPrediction(unit, t, 30);
@@ -61,7 +61,7 @@ namespace SCommon.Damage
                 {
                     if (attack.Target.NetworkId == unit.NetworkId)
                     {
-                        float d = attack.Target.Distance(attack.Source.ServerPosition) - attack.Source.BoundingRadius;
+                        float d = attack.Target.LSDistance(attack.Source.ServerPosition) - attack.Source.BoundingRadius;
                         float maxTravelTime = (Math.Max(0, d) / attack.ProjectileSpeed) * 1000f;
                         if (!attack.Damaged)
                         {

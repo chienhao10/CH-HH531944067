@@ -48,14 +48,14 @@ namespace TheBrand
 
         public override void Execute(AIHeroClient target)
         {
-            var distance = target.Distance(ObjectManager.Player);
+            var distance = target.LSDistance(ObjectManager.Player);
                 //Todo: make him use fireminions even in range, just for showoff and potential AOE. Check if hes on fire too though
             if (distance < 950 && distance > 650 && Program.getMiscMenuCB("eMinion"))
             {
                 var fireMinion =
                     MinionManager.GetMinions(650, MinionTypes.All, MinionTeam.NotAlly, MinionOrderTypes.None)
-                        .Where(minion => minion.HasBuff("brandablaze") && minion.Distance(target) < 300)
-                        .MinOrDefault(minion => minion.Distance(target));
+                        .Where(minion => minion.HasBuff("brandablaze") && minion.LSDistance(target) < 300)
+                        .MinOrDefault(minion => minion.LSDistance(target));
                 if (fireMinion != null)
                 {
                     if (Cast(fireMinion) == CastStates.SuccessfullyCasted && !target.HasSpellShield())
@@ -81,7 +81,7 @@ namespace TheBrand
             var neighbours = -1;
             foreach (var minion in minions)
             {
-                var currentNeighbours = minions.Count(neighbour => neighbour.Distance(minion) < 300);
+                var currentNeighbours = minions.Count(neighbour => neighbour.LSDistance(minion) < 300);
                 if (currentNeighbours <= neighbours) continue;
                 bestMinion = minion;
                 neighbours = currentNeighbours;
@@ -93,7 +93,7 @@ namespace TheBrand
         {
             if (!Program.getMiscMenuCB("eFarmAssist")) return;
             if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
-                target.Position.Distance(ObjectManager.Player.Position) < 650 &&
+                target.Position.LSDistance(ObjectManager.Player.Position) < 650 &&
                 (_recentFarmTarget == null || target.NetworkId != _recentFarmTarget.NetworkId))
             {
                 Cast(target);

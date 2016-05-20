@@ -80,7 +80,7 @@ namespace UnderratedAIO.Champions
             }
             var eTarget = TargetSelector.GetTarget(E.Range, DamageType.Physical);
             var cmbdmg = ComboDamage(target);
-            var dist = player.Distance(target);
+            var dist = player.LSDistance(target);
             if (lastR > 4000f)
             {
                 lastR = 0f;
@@ -121,7 +121,7 @@ namespace UnderratedAIO.Champions
                   target.HealthPercent < 60)))
             {
                 var time = System.Environment.TickCount - lastR;
-                if (time > 3500f || player.Distance(target) > E.Range || cmbdmg > target.Health ||
+                if (time > 3500f || player.LSDistance(target) > E.Range || cmbdmg > target.Health ||
                     (player.HealthPercent < 40 && target.HealthPercent < 40))
                 {
                     R.Cast(target, getCheckBoxItem(config, "packets"));

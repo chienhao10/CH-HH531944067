@@ -92,7 +92,7 @@
                         EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, target);
                     }
 
-                    if (UseEJungleKS && E.GetDamage(target) > target.Health && Player.Distance(target) <= E.Range && Player.Mana >= E.ManaCost)
+                    if (UseEJungleKS && E.GetDamage(target) > target.Health && Player.LSDistance(target) <= E.Range && Player.Mana >= E.ManaCost)
                     {
                         E.CastIfHitchanceEquals(target, HitChance.VeryHigh, PacketCast);
                     }

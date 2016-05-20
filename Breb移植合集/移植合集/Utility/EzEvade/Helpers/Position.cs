@@ -8,6 +8,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -38,22 +39,22 @@ namespace ezEvade
 
                 var projection = position.ProjectOn(spellPos, spellEndPos);
 
-                /*if (projection.SegmentPoint.Distance(spellEndPos) < 100) //Check Skillshot endpoints
+                /*if (projection.SegmentPoint.LSDistance(spellEndPos) < 100) //Check Skillshot endpoints
                 {
                     //unfinished
                 }*/
 
-                return projection.IsOnSegment && projection.SegmentPoint.Distance(position) <= spell.radius + radius;
+                return projection.IsOnSegment && projection.SegmentPoint.LSDistance(position) <= spell.radius + radius;
             }
             else if (spell.spellType == SpellType.Circular)
             {
                 if (spell.info.spellName == "VeigarEventHorizon")
                 {
-                    return position.Distance(spell.endPos) <= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius
-                        && position.Distance(spell.endPos) >= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius - 125;
+                    return position.LSDistance(spell.endPos) <= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius
+                        && position.LSDistance(spell.endPos) >= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius - 125;
                 }
 
-                return position.Distance(spell.endPos) <= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius;
+                return position.LSDistance(spell.endPos) <= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius;
             }
             else if (spell.spellType == SpellType.Arc)
             {
@@ -62,10 +63,10 @@ namespace ezEvade
                     return false;
                 }
 
-                var spellRange = spell.startPos.Distance(spell.endPos);
+                var spellRange = spell.startPos.LSDistance(spell.endPos);
                 var midPoint = spell.startPos + spell.direction * (spellRange/2);
 
-                return position.Distance(midPoint) <= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius;
+                return position.LSDistance(midPoint) <= spell.radius + radius - ObjectCache.myHeroCache.boundingRadius;
             }
             else if (spell.spellType == SpellType.Cone)
             {
@@ -97,7 +98,7 @@ namespace ezEvade
                     continue;
                 }
 
-                var distToTurret = pos.Distance(turret.Position.To2D());
+                var distToTurret = pos.LSDistance(turret.Position.To2D());
 
                 minDist = Math.Min(minDist, distToTurret);
             }
@@ -107,7 +108,7 @@ namespace ezEvade
 
         public static float GetDistanceToChampions(this Vector2 pos)
         {
-            return (from hero in EntityManager.Heroes.Enemies where hero != null && hero.IsValid && !hero.IsDead && hero.IsVisible select hero.ServerPosition.To2D() into heroPos select heroPos.Distance(pos)).Concat(new[] {float.MaxValue}).Min();
+            return (from hero in EntityManager.Heroes.Enemies where hero != null && hero.IsValid && !hero.IsDead && hero.IsVisible select hero.ServerPosition.To2D() into heroPos select heroPos.LSDistance(pos)).Concat(new[] {float.MaxValue}).Min();
         }
 
         public static bool HasExtraAvoidDistance(this Vector2 pos, float extraBuffer)
@@ -117,7 +118,7 @@ namespace ezEvade
 
         public static float GetPositionValue(this Vector2 pos)
         {
-            float posValue = pos.Distance(Game.CursorPos.To2D());
+            float posValue = pos.LSDistance(Game.CursorPos.To2D());
 
             if (ObjectCache.menuCache.cache["PreventDodgingNearEnemy"].Cast<CheckBox>().CurrentValue)
             {

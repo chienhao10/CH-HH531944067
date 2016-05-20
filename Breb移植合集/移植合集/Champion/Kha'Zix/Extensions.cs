@@ -25,7 +25,7 @@ namespace SephKhazix
 
         internal static bool IsValidAlly(this Obj_AI_Base unit, float range = 50000)
         {
-            if (unit == null || unit.Distance(Player) > range || unit.Team != Player.Team || !unit.IsValid || unit.IsDead || !unit.IsVisible || unit.IsTargetable)
+            if (unit == null || unit.LSDistance(Player) > range || unit.Team != Player.Team || !unit.IsValid || unit.IsDead || !unit.IsVisible || unit.IsTargetable)
             {
                 return false;
             }
@@ -34,7 +34,7 @@ namespace SephKhazix
 
         internal static bool IsValidEnemy(this Obj_AI_Base unit, float range = 50000)
         {
-            if (unit == null || !unit.IsHPBarRendered || unit.IsZombie || unit.Distance(Player) > range || unit.Team == Player.Team || !unit.IsValid || unit.IsDead || !unit.IsVisible || !unit.IsTargetable)
+            if (unit == null || !unit.IsHPBarRendered || unit.IsZombie || unit.LSDistance(Player) > range || unit.Team == Player.Team || !unit.IsValid || unit.IsDead || !unit.IsVisible || !unit.IsTargetable)
             {
                 return false;
             }
@@ -76,8 +76,8 @@ namespace SephKhazix
             var wpc = wp.Count();
             var midwpnum = wpc / 2;
             var midwp = wp[midwpnum];
-            var plength = wp[0].Distance(lastwp);
-            return (point.Distance(target.ServerPosition, true) <= Player.Distance(target.ServerPosition, true)) || ((plength <= Player.Distance(target.ServerPosition) * 1.2f && point.Distance(lastwp.To3D()) < Player.Distance(lastwp.To3D()) || point.Distance(midwp.To3D()) < Player.Distance(midwp)));
+            var plength = wp[0].LSDistance(lastwp);
+            return (point.LSDistance(target.ServerPosition, true) <= Player.LSDistance(target.ServerPosition, true)) || ((plength <= Player.LSDistance(target.ServerPosition) * 1.2f && point.LSDistance(lastwp.To3D()) < Player.LSDistance(lastwp.To3D()) || point.LSDistance(midwp.To3D()) < Player.LSDistance(midwp)));
         }
 
 
@@ -125,7 +125,7 @@ namespace SephKhazix
             var dmg = Player.GetSpellDamage(minion, SpellSlot.W) / 1.3
                             >= HealthPrediction.GetHealthPrediction(
                                 minion,
-                                (int)(Player.Distance(minion) / Helper.W.Speed) * 1000,
+                                (int)(Player.LSDistance(minion) / Helper.W.Speed) * 1000,
                                 (int)Helper.W.Delay * 1000);
             return dmg;
         }
@@ -133,19 +133,19 @@ namespace SephKhazix
 
         internal static int MinionsInRange(this Obj_AI_Base unit, float range)
         {
-            var minions = ObjectManager.Get<Obj_AI_Minion>().Count(x => x.Distance(unit) <= range && x.NetworkId != unit.NetworkId && x.Team == unit.Team);
+            var minions = ObjectManager.Get<Obj_AI_Minion>().Count(x => x.LSDistance(unit) <= range && x.NetworkId != unit.NetworkId && x.Team == unit.Team);
             return minions;
         }
 
         internal static int MinionsInRange(this Vector2 pos, float range)
         {
-            var minions = ObjectManager.Get<Obj_AI_Minion>().Count(x => x.Distance(pos) <= range && (x.IsEnemy || x.Team == GameObjectTeam.Neutral));
+            var minions = ObjectManager.Get<Obj_AI_Minion>().Count(x => x.LSDistance(pos) <= range && (x.IsEnemy || x.Team == GameObjectTeam.Neutral));
             return minions;
         }
 
         internal static int MinionsInRange(this Vector3 pos, float range)
         {
-            var minions = ObjectManager.Get<Obj_AI_Minion>().Count(x => x.Distance(pos) <= range && (x.IsEnemy || x.Team == GameObjectTeam.Neutral));
+            var minions = ObjectManager.Get<Obj_AI_Minion>().Count(x => x.LSDistance(pos) <= range && (x.IsEnemy || x.Team == GameObjectTeam.Neutral));
             return minions;
         }
     }

@@ -26,8 +26,8 @@ namespace ExorAIO.Champions.Olaf
             {
                 foreach (var target in HeroManager.Enemies.Where(t => !Bools.IsSpellShielded(t) && t.IsValidTarget(Variables.Q.Range) && !t.IsValidTarget(Variables.AARange) && t.Health < Variables.Q.GetDamage(t)))
                 {
-                    var castPosition = Targets.Target.Position.Extend(ObjectManager.Player.Position, -100);
-                    var castPosition2 = Targets.Target.Position.Extend(ObjectManager.Player.Position, -70);
+                    var castPosition = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -120);
+                    var castPosition2 = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -90);
 
                     if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 300)
                     {

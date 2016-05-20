@@ -27,9 +27,7 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     The Combo W Logic.
             /// </summary>
-            if (Variables.W.IsReady() &&
-                ObjectManager.Player.CountEnemiesInRange(Variables.AARange) > 0 &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
+            if (Variables.W.IsReady() && ObjectManager.Player.CountEnemiesInRange(Variables.AARange + 125) > 0 && Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
             {
                 Variables.W.Cast();
             }
@@ -39,8 +37,8 @@ namespace ExorAIO.Champions.Olaf
             /// </summary>
             if (Variables.Q.IsReady() && !Targets.Target.HasBuffOfType(BuffType.Slow) && Targets.Target.IsValidTarget(Variables.Q.Range) && Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
             {
-                var castPosition = Targets.Target.Position.Extend(ObjectManager.Player.Position, -100);
-                var castPosition2 = Targets.Target.Position.Extend(ObjectManager.Player.Position, -70);
+                var castPosition = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -120);
+                var castPosition2 = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -90);
 
                 if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 300)
                 {

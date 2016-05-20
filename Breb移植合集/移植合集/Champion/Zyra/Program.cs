@@ -193,7 +193,7 @@ namespace D_Zyra
         // princer007  Code
         private static int Getallies(float range)
         {
-            return ObjectManager.Get<AIHeroClient>().Count(hero => hero.IsAlly && !hero.IsMe && _player.Distance(hero) <= range);
+            return ObjectManager.Get<AIHeroClient>().Count(hero => hero.IsAlly && !hero.IsMe && _player.LSDistance(hero) <= range);
         }
 
         private static void Orbwalking_BeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)

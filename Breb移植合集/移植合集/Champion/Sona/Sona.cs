@@ -174,7 +174,7 @@ namespace vSupport_Series.Champions
                 var shield in
                     ObjectManager.Get<AIHeroClient>()
                         .Where(
-                            x => x.IsAlly && !x.IsMe && !x.IsDead && x.Distance(ObjectManager.Player.Position) < W.Range)
+                            x => x.IsAlly && !x.IsMe && !x.IsDead && x.LSDistance(ObjectManager.Player.Position) < W.Range)
                 )
             {
                 if (shield == null)

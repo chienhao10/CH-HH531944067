@@ -211,7 +211,7 @@ namespace XinZhao
                             ObjectManager.Get<AIHeroClient>()
                                 .Where(
                                     enemy =>
-                                        !enemy.IsDead && enemy.IsEnemy && Player.Distance(enemy) < R.Range &&
+                                        !enemy.IsDead && enemy.IsEnemy && Player.LSDistance(enemy) < R.Range &&
                                         R.IsReady())
                         from buff in enemy.Buffs.Where(buff => !buff.Name.Contains("xenzhaointimidate"))
                         select enemy)
@@ -233,7 +233,7 @@ namespace XinZhao
             if (t.IsValidTarget(E.Range) && E.IsReady() && getCheckBoxItem(comboMenu, "useECombo"))
             {
                 var eMinRange = getSliderItem(comboMenu, "EMinRange");
-                if (ObjectManager.Player.Distance(t) >= eMinRange)
+                if (ObjectManager.Player.LSDistance(t) >= eMinRange)
                 {
                     E.CastOnUnit(t);
                 }
@@ -277,7 +277,7 @@ namespace XinZhao
             if (useE && E.IsReady())
             {
                 var locE = E.GetCircularFarmLocation(allMinions);
-                if (allMinions.Count == allMinions.Count(m => Player.Distance(m) < E.Range) && locE.MinionsHit >= 2
+                if (allMinions.Count == allMinions.Count(m => Player.LSDistance(m) < E.Range) && locE.MinionsHit >= 2
                     && locE.Position.IsValid()) E.Cast(locE.Position);
             }
         }

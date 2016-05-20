@@ -47,7 +47,7 @@
         {
             levelMenu = rootMenu.AddSubMenu("自动加点", "UltLeveler");
             levelMenu.Add("AutoLevelR", new CheckBox("自动加点大招"));
-
+            
             random = new Random(Environment.TickCount);
         }
 

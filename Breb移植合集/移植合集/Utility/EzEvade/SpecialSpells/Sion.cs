@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade.SpecialSpells
 {
@@ -32,7 +33,7 @@ namespace ezEvade.SpecialSpells
             {
                 var objList = ObjectManager.Get<Obj_AI_Minion>().Where(obj => obj != null && obj.IsValid && !obj.IsDead && obj.IsAlly).ToList();
 
-                objList.OrderBy(o => o.Distance(hero.ServerPosition));
+                objList.OrderBy(o => o.LSDistance(hero.ServerPosition));
 
                 var spellStart = args.Start.To2D();
                 var dir = (args.End.To2D() - spellStart).Normalized();
@@ -42,7 +43,7 @@ namespace ezEvade.SpecialSpells
                 {
                     var objProjection = obj.ServerPosition.To2D().ProjectOn(spellStart, spellEnd);
 
-                    if (objProjection.IsOnSegment && objProjection.SegmentPoint.Distance(obj.ServerPosition.To2D()) < obj.BoundingRadius + spellData.radius)
+                    if (objProjection.IsOnSegment && objProjection.SegmentPoint.LSDistance(obj.ServerPosition.To2D()) < obj.BoundingRadius + spellData.radius)
                     {
                         //sth happens
                     }

@@ -43,7 +43,7 @@ namespace ExorAIO.Champions.Nautilus
             {
                 if (Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Count < 0)
                 {
-                    Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).CastPosition);
+                    Variables.Q.Cast(Targets.Target);
                     return;
                 }
             }

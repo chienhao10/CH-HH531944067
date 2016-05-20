@@ -34,7 +34,7 @@ namespace Mordekaiser.Logics
             if (myMovementSpeed <= targetMovementSpeed)
             {
                 if (!t.IsFacing(Utils.Player.Self) && t.Path.Count() >= 1 &&
-                    t.Distance(Utils.Player.Self) > Spells.WDamageRadius - 20)
+                    t.LSDistance(Utils.Player.Self) > Spells.WDamageRadius - 20)
                 {
                     Spells.W.Cast();
                 }

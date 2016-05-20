@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade.SpecialSpells
 {
@@ -79,7 +80,7 @@ namespace ezEvade.SpecialSpells
 
                             var objPosition = info.usePosition ? info.position.To2D() : info.obj.Position.To2D();
 
-                            if (args.End.To2D().Distance(objPosition) < 300)
+                            if (args.End.To2D().LSDistance(objPosition) < 300)
                             {
                                 var dir = (objPosition - args.Start.To2D()).Normalized();
                                 var endPosition = objPosition + dir * 110;

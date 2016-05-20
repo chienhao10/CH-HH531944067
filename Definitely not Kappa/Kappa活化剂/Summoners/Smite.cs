@@ -14,8 +14,8 @@
         public static void Smiteopepi()
         {
             if (Smite != null
-                && (SummMenu[Player.Instance.ChampionName + "EnableactiveSmite"].Cast<KeyBind>().CurrentValue
-                    || SummMenu[Player.Instance.ChampionName + "EnableSmite"].Cast<KeyBind>().CurrentValue))
+                && (SummMenu["EnableactiveSmite"].Cast<KeyBind>().CurrentValue
+                    || SummMenu["EnableSmite"].Cast<KeyBind>().CurrentValue))
             {
                 var smitemob = SummMenu["smitemob"].Cast<CheckBox>().CurrentValue && Smite.IsReady();
                 var smitecombo = SummMenu["smitecombo"].Cast<CheckBox>().CurrentValue && Smite.IsReady()
@@ -27,7 +27,12 @@
                     {
                         return;
                     }
-                    var jmobs = EntityManager.MinionsAndMonsters.GetJungleMonsters().Where(j => (SRJunglemobs.Contains(j.BaseSkinName) || TTJunglemobs.Contains(j.BaseSkinName)) && j.IsKillable() && j.IsValidTarget(Smite.Range));
+                    var jmobs =
+                        EntityManager.MinionsAndMonsters.GetJungleMonsters()
+                            .Where(
+                                j =>
+                                (SRJunglemobs.Contains(j.BaseSkinName) || TTJunglemobs.Contains(j.BaseSkinName)) && j.IsKillable()
+                                && j.IsValidTarget(Smite.Range));
                     foreach (var jmob in jmobs)
                     {
                         if (jmob != null && SummMenu[jmob.BaseSkinName].Cast<CheckBox>().CurrentValue)

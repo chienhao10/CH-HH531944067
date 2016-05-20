@@ -523,7 +523,7 @@ namespace LuluLicious
                 return true;
             }
 
-            if (!getCheckBoxItem(fleeMenu, "FleeMove") || Player.GetWaypoints().Last().Distance(Game.CursorPos) < 100)
+            if (!getCheckBoxItem(fleeMenu, "FleeMove") || Player.GetWaypoints().Last().LSDistance(Game.CursorPos) < 100)
             {
                 return true;
             }
@@ -667,8 +667,8 @@ namespace LuluLicious
             }
 
             if (
-                Allies.OrderBy(h => h.Distance(sender))
-                    .Any(h => h.IsValidTarget(R.Range, false) && h.Distance(sender) < RRadius && R.CastOnUnit(h))) {}
+                Allies.OrderBy(h => h.LSDistance(sender))
+                    .Any(h => h.IsValidTarget(R.Range, false) && h.LSDistance(sender) < RRadius && R.CastOnUnit(h))) {}
         }
 
         private static void CustomAntiGapcloser_OnEnemyGapcloser(TreeLib.Core.ActiveGapcloser gapcloser)

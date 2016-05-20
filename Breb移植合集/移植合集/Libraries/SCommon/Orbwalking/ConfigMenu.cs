@@ -10,37 +10,37 @@ namespace SCommon.Orbwalking
 
         public ConfigMenu(Menu menuToAttach)
         {
-            m_Menu = MainMenu.AddMenu("Orbwalking", "Orbwalking.Root");
-            m_Menu.Add("Orbwalking.Root.iExtraWindup", new Slider("Extra Windup Time"));
-            m_Menu.Add("Orbwalking.Root.iMovementDelay", new Slider("Movement Delay", 0, 0, 1000));
-            m_Menu.Add("Orbwalking.Root.iHoldPosition", new Slider("Hold Area Radius", 0, 0, 250));
+            m_Menu = MainMenu.AddMenu("走砍菜单", "Orbwalking.Root");
+            m_Menu.Add("Orbwalking.Root.iExtraWindup", new Slider("额外前摇时间"));
+            m_Menu.Add("Orbwalking.Root.iMovementDelay", new Slider("移动延迟", 0, 0, 1000));
+            m_Menu.Add("Orbwalking.Root.iHoldPosition", new Slider("停止半径", 0, 0, 250));
 
-            m_Menu.Add("Orbwalking.Root.blLastHit", new KeyBind("Last Hit", false, KeyBind.BindTypes.HoldActive, 'X'));
-            m_Menu.Add("Orbwalking.Root.blHarass", new KeyBind("Harass", false, KeyBind.BindTypes.HoldActive, 'C'));
+            m_Menu.Add("Orbwalking.Root.blLastHit", new KeyBind("尾兵", false, KeyBind.BindTypes.HoldActive, 'X'));
+            m_Menu.Add("Orbwalking.Root.blHarass", new KeyBind("骚扰", false, KeyBind.BindTypes.HoldActive, 'C'));
             m_Menu.Add("Orbwalking.Root.blLaneClear",
-                new KeyBind("Lane Clear", false, KeyBind.BindTypes.HoldActive, 'V'));
-            m_Menu.Add("Orbwalking.Root.blCombo", new KeyBind("Combo", false, KeyBind.BindTypes.HoldActive, 32));
+                new KeyBind("清线", false, KeyBind.BindTypes.HoldActive, 'V'));
+            m_Menu.Add("Orbwalking.Root.blCombo", new KeyBind("连招", false, KeyBind.BindTypes.HoldActive, 32));
 
-            m_Menu.AddGroupLabel("Misc");
-            m_Menu.Add("Orbwalking.Misc.blAttackStructures", new CheckBox("Attack Structures"));
-            m_Menu.Add("Orbwalking.Misc.blFocusNormalWhileTurret", new CheckBox("Focus mins. not focused by turret"));
-            m_Menu.Add("Orbwalking.Misc.blSupportMode", new CheckBox("Support Mode", false));
+            m_Menu.AddGroupLabel("杂项");
+            m_Menu.Add("Orbwalking.Misc.blAttackStructures", new CheckBox("攻击建筑"));
+            m_Menu.Add("Orbwalking.Misc.blFocusNormalWhileTurret", new CheckBox("未被塔攻击时集火塔"));
+            m_Menu.Add("Orbwalking.Misc.blSupportMode", new CheckBox("辅助模式", false));
             m_Menu.Add("Orbwalking.Misc.blDontAttackChampWhileLaneClear",
-                new CheckBox("Dont attack champions while Lane Clear", false));
-            m_Menu.Add("Orbwalking.Misc.blDisableAA", new CheckBox("Disable AutoAttack", false));
-            m_Menu.Add("Orbwalking.Misc.blDontMoveMouseOver", new CheckBox("Mouse over hero to stop move", false));
-            m_Menu.Add("Orbwalking.Misc.blMagnetMelee", new CheckBox("Magnet Target (Only Melee)"));
-            m_Menu.Add("Orbwalking.Misc.iStickRange", new Slider("Stick Range", 390, 0, 600));
-            m_Menu.Add("Orbwalking.Misc.blDontMoveInRange", new CheckBox("Dont move if enemy in AA range", false));
-            m_Menu.Add("Orbwalking.Misc.blLegitMode", new CheckBox("Legit Mode", false));
-            m_Menu.Add("Orbwalking.Misc.iLegitPercent", new Slider("Make Me Legit %", 20));
+                new CheckBox("清线不攻击敌方英雄", false));
+            m_Menu.Add("Orbwalking.Misc.blDisableAA", new CheckBox("屏蔽普攻", false));
+            m_Menu.Add("Orbwalking.Misc.blDontMoveMouseOver", new CheckBox("鼠标移动在英雄身上停止移动", false));
+            m_Menu.Add("Orbwalking.Misc.blMagnetMelee", new CheckBox("黏住目标 (近程英雄)"));
+            m_Menu.Add("Orbwalking.Misc.iStickRange", new Slider("黏住范围", 390, 0, 600));
+            m_Menu.Add("Orbwalking.Misc.blDontMoveInRange", new CheckBox("敌方在普攻范围则不移动", false));
+            m_Menu.Add("Orbwalking.Misc.blLegitMode", new CheckBox("安全模式（看起来不像外挂）", false));
+            m_Menu.Add("Orbwalking.Misc.iLegitPercent", new Slider("安全模式%", 20));
 
-            m_Menu.AddGroupLabel("Drawings");
-            m_Menu.Add("Orbwalking.Drawings.SelfAACircle", new CheckBox("Self AA Circle"));
-            m_Menu.Add("Orbwalking.Drawings.EnemyAACircle", new CheckBox("Enemy AA Circle", false));
-            m_Menu.Add("Orbwalking.Drawings.LastHitMinion", new CheckBox("Last Hitable Minion", false));
-            m_Menu.Add("Orbwalking.Drawings.HoldZone", new CheckBox("Hold Zone", false));
-            m_Menu.Add("Orbwalking.Drawings.iLineWidth", new Slider("Line Width", 2, 1, 6));
+            m_Menu.AddGroupLabel("线圈");
+            m_Menu.Add("Orbwalking.Drawings.SelfAACircle", new CheckBox("自身普攻范围"));
+            m_Menu.Add("Orbwalking.Drawings.EnemyAACircle", new CheckBox("敌方普攻范围", false));
+            m_Menu.Add("Orbwalking.Drawings.LastHitMinion", new CheckBox("可击杀的小兵", false));
+            m_Menu.Add("Orbwalking.Drawings.HoldZone", new CheckBox("停止移动范围", false));
+            m_Menu.Add("Orbwalking.Drawings.iLineWidth", new Slider("线宽", 2, 1, 6));
         }
 
         /// <summary>

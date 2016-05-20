@@ -59,7 +59,7 @@ namespace UnderratedAIO.Helpers.SkillShot
 
         public static FastPredResult FastPrediction(Vector2 from, Obj_AI_Base unit, int delay, int speed)
         {
-            var tDelay = delay/1000f + @from.Distance(unit)/speed;
+            var tDelay = delay/1000f + @from.LSDistance(unit)/speed;
             var d = tDelay*unit.MoveSpeed;
             var path = unit.GetWaypoints();
 
@@ -103,11 +103,11 @@ namespace UnderratedAIO.Helpers.SkillShot
                         collisions.AddRange(from minion in MinionManager.GetMinions(@from.To3D(), 1200, MinionTypes.All, skillshot.Caster.Team == ObjectManager.Player.Team ? MinionTeam.NotAlly : MinionTeam.NotAllyForEnemy)
                             let pred = FastPrediction(@from, minion, Math.Max(0, skillshot.SkillshotData.Delay - (System.Environment.TickCount - skillshot.StartTick)), skillshot.SkillshotData.MissileSpeed)
                             let pos = pred.PredictedPos
-                            let w = skillshot.SkillshotData.RawRadius + (!pred.IsMoving ? minion.BoundingRadius - 15 : 0) - pos.Distance(@from, skillshot.EndPosition, true)
+                            let w = skillshot.SkillshotData.RawRadius + (!pred.IsMoving ? minion.BoundingRadius - 15 : 0) - pos.LSDistance(@from, skillshot.EndPosition, true)
                             where w > 0
                             select new DetectedCollision
                             {
-                                Position = pos.ProjectOn(skillshot.EndPosition, skillshot.StartPosition).LinePoint + skillshot.Direction*30, Unit = minion, Type = CollisionObjectTypes.Minion, Distance = pos.Distance(@from), Diff = w
+                                Position = pos.ProjectOn(skillshot.EndPosition, skillshot.StartPosition).LinePoint + skillshot.Direction*30, Unit = minion, Type = CollisionObjectTypes.Minion, Distance = pos.LSDistance(@from), Diff = w
                             });
 
                         break;
@@ -116,11 +116,11 @@ namespace UnderratedAIO.Helpers.SkillShot
                         collisions.AddRange(from hero in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget(1200) && h.Team == ObjectManager.Player.Team && !h.IsMe || h.Team != ObjectManager.Player.Team)
                             let pred = FastPrediction(@from, hero, Math.Max(0, skillshot.SkillshotData.Delay - (System.Environment.TickCount - skillshot.StartTick)), skillshot.SkillshotData.MissileSpeed)
                             let pos = pred.PredictedPos
-                            let w = skillshot.SkillshotData.RawRadius + 30 - pos.Distance(@from, skillshot.EndPosition, true)
+                            let w = skillshot.SkillshotData.RawRadius + 30 - pos.LSDistance(@from, skillshot.EndPosition, true)
                             where w > 0
                             select new DetectedCollision
                             {
-                                Position = pos.ProjectOn(skillshot.EndPosition, skillshot.StartPosition).LinePoint + skillshot.Direction*30, Unit = hero, Type = CollisionObjectTypes.Minion, Distance = pos.Distance(@from), Diff = w
+                                Position = pos.ProjectOn(skillshot.EndPosition, skillshot.StartPosition).LinePoint + skillshot.Direction*30, Unit = hero, Type = CollisionObjectTypes.Minion, Distance = pos.LSDistance(@from), Diff = w
                             });
                         break;
 
@@ -172,13 +172,13 @@ namespace UnderratedAIO.Helpers.SkillShot
 
                         if (intersections.Count > 0)
                         {
-                            intersection = intersections.OrderBy(item => item.Distance(from)).ToList()[0];
+                            intersection = intersections.OrderBy(item => item.LSDistance(from)).ToList()[0];
                             var collisionT = System.Environment.TickCount +
                                              Math.Max(
                                                  0,
                                                  skillshot.SkillshotData.Delay -
                                                  (System.Environment.TickCount - skillshot.StartTick)) + 100 +
-                                             1000*intersection.Distance(@from)/skillshot.SkillshotData.MissileSpeed;
+                                             1000*intersection.LSDistance(@from)/skillshot.SkillshotData.MissileSpeed;
                             if (collisionT - _wallCastT < 4000)
                             {
                                 if (skillshot.SkillshotData.Type != SkillShotType.SkillshotMissileLine)

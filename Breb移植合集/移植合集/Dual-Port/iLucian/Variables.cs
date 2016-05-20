@@ -24,7 +24,10 @@ namespace iLucian
 
         public static Menu Menu { get; set; }
 
-        public static bool HasPassive => ObjectManager.Player.HasBuff("LucianPassiveBuff");
+        public static bool HasPassive()
+        {
+            return ObjectManager.Player.HasBuff("LucianPassiveBuff");
+        }
 
         internal enum Spells
         {

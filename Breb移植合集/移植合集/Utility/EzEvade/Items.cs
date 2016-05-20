@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace EzEvade
 {
@@ -165,7 +166,7 @@ namespace EzEvade
 
             public bool IsInRange(Vector3 target)
             {
-                return ObjectManager.Player.ServerPosition.Distance(target, true) < RangeSqr;
+                return ObjectManager.Player.ServerPosition.LSDistance(target, true) < RangeSqr;
             }
 
             public bool IsOwned(AIHeroClient target = null)

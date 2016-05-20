@@ -75,7 +75,7 @@ namespace KurisuNidalee
                                                 i =>
                                                     i.Health <=
                                                     KL.Player.GetSummonerSpellDamage(i, Damage.SummonerSpell.Smite) &&
-                                                    KL.Player.Distance(i) < 500 &&
+                                                    KL.Player.LSDistance(i) < 500 &&
                                                     KL.Player.Spellbook.CastSpell(KL.Smite, obj.First())))
                                             {
                                                 KL.Spells["Javelin"].Cast(qoutput.CastPosition);
@@ -206,13 +206,13 @@ namespace KurisuNidalee
             if (target.IsHunted())
             {
                 // get hitbox
-                var radius = KL.Player.AttackRange + KL.Player.Distance(KL.Player.BBox.Minimum) + 1;
+                var radius = KL.Player.AttackRange + KL.Player.LSDistance(KL.Player.BBox.Minimum) + 1;
 
                 // force pounce if menu item enabled
                 if (target.IsHunted() && getCheckBoxItem(wCMenu, "ndcwhunt") ||
 
                     // or of target is greater than my attack range
-                    target.Distance(KL.Player.ServerPosition) > radius ||
+                    target.LSDistance(KL.Player.ServerPosition) > radius ||
 
                     // or is jungling or waveclearing (without farm distance check)
                     mode == "jg" || mode == "wc" && !getCheckBoxItem(wCMenu, "ndcwdistwc") ||
@@ -221,7 +221,7 @@ namespace KurisuNidalee
                     !target.IsHunted() && mode == "co" && !getCheckBoxItem(wCMenu, "ndcwdistco"))
                 {
                     if (getCheckBoxItem(jungleMenu, "kitejg") && mode == "jg" &&
-                        target.Distance(Game.CursorPos) > 600 && target.Distance(KL.Player.ServerPosition) <= 300)
+                        target.LSDistance(Game.CursorPos) > 600 && target.LSDistance(KL.Player.ServerPosition) <= 300)
                     {
                         KL.Spells["Pounce"].Cast(Game.CursorPos);
                         return;
@@ -235,14 +235,14 @@ namespace KurisuNidalee
             else
             {
                 // check if in the original pounce range
-                if (target.Distance(KL.Player.ServerPosition) > KL.Spells["Pounce"].Range)
+                if (target.LSDistance(KL.Player.ServerPosition) > KL.Spells["Pounce"].Range)
                     return;
 
                 // get hitbox
-                var radius = KL.Player.AttackRange + KL.Player.Distance(KL.Player.BBox.Minimum) + 1;
+                var radius = KL.Player.AttackRange + KL.Player.LSDistance(KL.Player.BBox.Minimum) + 1;
 
                 // check minimum distance before pouncing
-                if (target.Distance(KL.Player.ServerPosition) > radius ||
+                if (target.LSDistance(KL.Player.ServerPosition) > radius ||
 
                     // or is jungling or waveclearing (without distance checking)
                     mode == "jg" || mode == "wc" && !getCheckBoxItem(wCMenu, "ndcwdistwc") ||
@@ -334,11 +334,11 @@ namespace KurisuNidalee
                     return;
 
                 // get hitbox
-                var radius = KL.Player.AttackRange + KL.Player.Distance(KL.Player.BBox.Minimum) + 1;
+                var radius = KL.Player.AttackRange + KL.Player.LSDistance(KL.Player.BBox.Minimum) + 1;
 
                 // dont switch if have Q buff and near target
                 if (KL.CanUse(KL.Spells["Takedown"], true, mode) && KL.Player.HasBuff("Takedown") &&
-                    target.Distance(KL.Player.ServerPosition) <= KL.Spells["Takedown"].Range + 65f)
+                    target.LSDistance(KL.Player.ServerPosition) <= KL.Spells["Takedown"].Range + 65f)
                 {
                     return;
                 }
@@ -358,9 +358,9 @@ namespace KurisuNidalee
                 else
                 {
                     // change to human if out of pounce range and can die
-                    if (!KL.SpellTimer["Pounce"].IsReady(3) && target.Distance(KL.Player.ServerPosition) <= 525)
+                    if (!KL.SpellTimer["Pounce"].IsReady(3) && target.LSDistance(KL.Player.ServerPosition) <= 525)
                     {
-                        if (target.Distance(KL.Player.ServerPosition) > radius)
+                        if (target.LSDistance(KL.Player.ServerPosition) > radius)
                         {
                             if (KL.Player.GetAutoAttackDamage(target, true)*3 >= target.Health)
                                 KL.Spells["Aspect"].Cast();
@@ -377,7 +377,7 @@ namespace KurisuNidalee
                         if ((!KL.SpellTimer["Pounce"].IsReady(2) || !KL.CanUse(KL.Spells["Pounce"], false, mode)) &&
                             (!KL.SpellTimer["Swipe"].IsReady() || !KL.CanUse(KL.Spells["Swipe"], false, mode)) &&
                             (!KL.SpellTimer["Takedown"].IsReady() || !KL.CanUse(KL.Spells["Takedown"], false, mode)) ||
-                            !(KL.Player.Distance(target.ServerPosition) <= 355) ||
+                            !(KL.Player.LSDistance(target.ServerPosition) <= 355) ||
                             !getKeyBindItem(jungleMenu, "jgaacount"))
                         {
                             if (KL.Spells["Javelin"].Cast(target) != Spell.CastStates.Collision &&
@@ -432,7 +432,7 @@ namespace KurisuNidalee
                         return;
                     }
 
-                    if (target.Distance(KL.Player) > KL.Spells["Takedown"].Range + 50 &&
+                    if (target.LSDistance(KL.Player) > KL.Spells["Takedown"].Range + 50 &&
                         !KL.CanUse(KL.Spells["Pounce"], false, mode))
                         return;
 
@@ -502,7 +502,7 @@ namespace KurisuNidalee
                         if (KL.SpellTimer["Javelin"].IsReady())
                         {
                             // check if in pounce range.
-                            if (target.Distance(KL.Player.ServerPosition) <= KL.Spells["Pounce"].Range + 100f)
+                            if (target.LSDistance(KL.Player.ServerPosition) <= KL.Spells["Pounce"].Range + 100f)
                             {
                                 // if we dont meet hitchance on Q target pounce nearest target
                                 var poutput = KL.Spells["Javelin"].GetPrediction(KN.Target);
@@ -515,9 +515,9 @@ namespace KurisuNidalee
                         }
 
                         if (KN.Target.IsHunted() &&
-                            KN.Target.Distance(KL.Player.ServerPosition) > KL.Spells["ExPounce"].Range + 100)
+                            KN.Target.LSDistance(KL.Player.ServerPosition) > KL.Spells["ExPounce"].Range + 100)
                         {
-                            if (target.Distance(KL.Player.ServerPosition) <= KL.Spells["Pounce"].Range + 25)
+                            if (target.LSDistance(KL.Player.ServerPosition) <= KL.Spells["Pounce"].Range + 25)
                             {
                                 if (KL.Spells["Aspect"].IsReady())
                                     KL.Spells["Aspect"].Cast();
@@ -526,7 +526,7 @@ namespace KurisuNidalee
 
                         if (!KL.SpellTimer["Javelin"].IsReady())
                         {
-                            if (target.Distance(KL.Player.ServerPosition) <= KL.Spells["Pounce"].Range + 125)
+                            if (target.LSDistance(KL.Player.ServerPosition) <= KL.Spells["Pounce"].Range + 125)
                             {
                                 KL.Spells["Aspect"].Cast();
                             }

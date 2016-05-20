@@ -92,9 +92,9 @@
 
                 if (target.IsValidTarget(E.Range))
                 {
-                    if (useE && E.IsReady() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Combo, "Taric.UseTaricAAPassiveCombo") || Player.Distance(target) > Orbwalking.GetRealAutoAttackRange(Player)))
+                    if (useE && E.IsReady() && (!CustomLib.HavePassiveAA() || !getCheckBoxItem(SkyLv_Taric.Combo, "Taric.UseTaricAAPassiveCombo") || Player.LSDistance(target) > Orbwalking.GetRealAutoAttackRange(Player)))
                     {
-                        if (Player.Distance(target) < E.Range)
+                        if (Player.LSDistance(target) < E.Range)
                         {
                             E.CastIfHitchanceEquals(target, HitChance.VeryHigh, PacketCast);
                             return;
@@ -120,9 +120,9 @@
                 #region Ally E
                 if (getCheckBoxItem(SkyLv_Taric.Combo, "Taric.UseEFromAlly") && E.IsReady() && Player.Mana >= E.ManaCost)
                 {
-                    foreach (var AllyHeroE in ObjectManager.Get<AIHeroClient>().Where(a => !a.IsMe && !a.IsDead && a.Team == ObjectManager.Player.Team && Player.Distance(a) < 1600 && (a.HasBuff("TaricWAllyBuff") || a.HasBuff("TaricW"))))
+                    foreach (var AllyHeroE in ObjectManager.Get<AIHeroClient>().Where(a => !a.IsMe && !a.IsDead && a.Team == ObjectManager.Player.Team && Player.LSDistance(a) < 1600 && (a.HasBuff("TaricWAllyBuff") || a.HasBuff("TaricW"))))
                     {
-                        var Allytarget = ObjectManager.Get<AIHeroClient>().Where(t => !t.IsDead && t.Team != ObjectManager.Player.Team && AllyHeroE.Distance(t) < E.Range).FirstOrDefault();
+                        var Allytarget = ObjectManager.Get<AIHeroClient>().Where(t => !t.IsDead && t.Team != ObjectManager.Player.Team && AllyHeroE.LSDistance(t) < E.Range).FirstOrDefault();
 
                         if (Allytarget.IsValidTarget())
                         {
@@ -153,7 +153,7 @@
                 {
                     if (Q.IsReady() && Player.Mana >= Q.ManaCost)
                     {
-                        foreach (var AllyHeroQ in HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.Distance(x) < Q.Range &&
+                        foreach (var AllyHeroQ in HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.LSDistance(x) < Q.Range &&
                         Q.Instance.Ammo >= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumStacksQAlly") &&
                         x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpQAlly")))
                         {
@@ -172,7 +172,7 @@
                 {
                     if (W.IsReady() && Player.Mana >= W.ManaCost)
                     {
-                        var AllyHeroW = HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.Distance(x) <= W.Range &&
+                        var AllyHeroW = HeroManager.Allies.Where(x => !x.IsMe && !x.IsDead && Player.LSDistance(x) <= W.Range &&
                         !getCheckBoxItem(SkyLv_Taric.Combo, x.NetworkId + "IncomingDamageWAlly") &&
                         x.HealthPercent <= getSliderItem(SkyLv_Taric.Combo, x.NetworkId + "MinimumHpWAlly")).MinOrDefault(t => t.HealthPercent);
 

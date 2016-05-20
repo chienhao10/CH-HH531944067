@@ -204,7 +204,7 @@ namespace ElTristana
                 return;
             }
 
-            if (sender.Distance(Player) <= spells[Spells.R].Range)
+            if (sender.LSDistance(Player) <= spells[Spells.R].Range)
             {
                 spells[Spells.R].Cast(sender);
             }
@@ -231,8 +231,7 @@ namespace ElTristana
                 Orbwalker.ForcedTarget = passiveTarget ?? null;
             }
 
-            if (spells[Spells.E].IsReady() && getCheckBoxItem(comboMenu, "ElTristana.Combo.E")
-                && Player.ManaPercent > getSliderItem(comboMenu, "ElTristana.Combo.E.Mana"))
+            if (spells[Spells.E].IsReady() && getCheckBoxItem(comboMenu, "ElTristana.Combo.E") && Player.ManaPercent > getSliderItem(comboMenu, "ElTristana.Combo.E.Mana"))
             {
                 foreach (var hero in HeroManager.Enemies.OrderBy(x => x.Health))
                 {
@@ -272,10 +271,19 @@ namespace ElTristana
                 }
             }
 
-            if (spells[Spells.Q].IsReady() && getCheckBoxItem(comboMenu, "ElTristana.Combo.Q")
-                && target.IsValidTarget(spells[Spells.E].Range))
+            if (spells[Spells.Q].IsReady() && getCheckBoxItem(comboMenu, "ElTristana.Combo.Q") && target.IsValidTarget(spells[Spells.E].Range))
             {
-                spells[Spells.Q].Cast();
+                if (getCheckBoxItem(comboMenu, "ElTristana.Combo.OnlyQ"))
+                {
+                    if (target.HasEBuff())
+                    {
+                        spells[Spells.Q].Cast();
+                    }
+                }
+                else
+                {
+                    spells[Spells.Q].Cast();
+                }
             }
         }
 
@@ -476,7 +484,7 @@ namespace ElTristana
             {
                 foreach (var tower in ObjectManager.Get<Obj_AI_Turret>())
                 {
-                    if (!tower.IsDead && tower.Health > 100 && tower.IsEnemy && tower.IsValidTarget() && Player.ServerPosition.Distance(tower.ServerPosition) < Orbwalking.GetRealAutoAttackRange(Player))
+                    if (!tower.IsDead && tower.Health > 100 && tower.IsEnemy && tower.IsValidTarget() && Player.ServerPosition.LSDistance(tower.ServerPosition) < Orbwalking.GetRealAutoAttackRange(Player))
                     {
                         spells[Spells.E].Cast(tower);
                     }
@@ -515,6 +523,92 @@ namespace ElTristana
             }
         }
 
+        public static bool ECanKill(this Obj_AI_Base target)
+        {
+            if (target.HasBuff("TristanaECharge"))
+            {
+                if (target.isKillableAndValidTarget(LeagueSharp.Common.Damage.LSGetSpellDamage(ObjectManager.Player, target, SpellSlot.E) * (target.GetBuffCount("TristanaECharge") * 0.30) + LeagueSharp.Common.Damage.LSGetSpellDamage(ObjectManager.Player, target, SpellSlot.E), DamageType.Physical))
+                {
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+
+        public static bool isKillableAndValidTarget(this Obj_AI_Base Target, double CalculatedDamage, DamageType damageType, float distance = float.MaxValue)
+        {
+            if (Target == null || !Target.IsValidTarget(distance) || Target.IsDead || Target.CharData.BaseSkinName == "GangPlankBarrel")
+            {
+                return false;
+            }
+
+            if (Target.HasBuff("KindredRNoDeathBuff") && Target.Health <= Target.MaxHealth * 0.10f)
+            {
+                return false;
+            }
+
+            if (Target.HasBuff("Undying Rage") && Target.Health <= Target.MaxHealth * 0.05f)
+            {
+                return false;
+            }
+
+            if (Target.HasBuff("JudicatorIntervention"))
+            {
+                return false;
+            }
+
+            if (Target.HasBuff("BansheesVeil"))
+            {
+                return false;
+            }
+
+            if (Target.HasBuff("SivirShield"))
+            {
+                return false;
+            }
+
+            if (Target.HasBuff("ShroudofDarkness"))
+            {
+                return false;
+            }
+
+            if (ObjectManager.Player.HasBuff("SummonerExhaust"))
+            {
+                CalculatedDamage *= 0.6;
+            }
+
+            if (Target.CharData.BaseSkinName == "Blitzcrank")
+                if (!Target.HasBuff("ManaBarrierCoolDown"))
+                    if (Target.Health + Target.HPRegenRate + (damageType == DamageType.Physical ? Target.AttackShield : Target.MagicShield) + (Target.Mana * 0.6) + Target.PARRegenRate < CalculatedDamage)
+                        return true;
+
+            if (Target.CharData.BaseSkinName == "Garen")
+                if (Target.HasBuff("GarenW"))
+                    CalculatedDamage *= 0.7;
+
+
+            if (Target.HasBuff("FerociousHowl"))
+                CalculatedDamage *= 0.3;
+
+            BuffInstance dragonSlayerBuff = ObjectManager.Player.GetBuff("s5test_dragonslayerbuff");
+
+            if (dragonSlayerBuff != null)
+                if (Target.IsMinion)
+                {
+                    if (dragonSlayerBuff.Count >= 4)
+                        CalculatedDamage += dragonSlayerBuff.Count == 5 ? CalculatedDamage * 0.30 : CalculatedDamage * 0.15;
+
+                    if (Target.CharData.BaseSkinName.ToLowerInvariant().Contains("dragon"))
+                        CalculatedDamage *= 1 - (dragonSlayerBuff.Count * 0.07);
+                }
+
+            if (Target.CharData.BaseSkinName.ToLowerInvariant().Contains("baron") && ObjectManager.Player.HasBuff("barontarget"))
+                CalculatedDamage *= 0.5;
+
+            return Target.Health + Target.HPRegenRate + (damageType == DamageType.Physical ? Target.AttackShield : Target.MagicShield) < CalculatedDamage - 2;
+        }
+
         private static void OnUpdate(EventArgs args)
         {
             if (Player.IsDead)
@@ -524,6 +618,45 @@ namespace ElTristana
 
             try
             {
+
+                if (getKeyBindItem(comboMenu, "ElTristana.Combo.E.KeyBind") && spells[Spells.E].IsReady())
+                {
+                    var target = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
+                    if (target != null && target.IsValidTarget())
+                    {
+                        if (target.ECanKill())
+                            spells[Spells.E].CastOnUnit(target);
+
+                        if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                        {
+                            if (Player.CountEnemiesInRange(1200) == 1)
+                            {
+                                if (Player.HealthPercent >= target.HealthPercent && Player.Level + 1 >= target.Level)
+                                {
+                                    spells[Spells.E].CastOnUnit(target);
+
+                                    if (getCheckBoxItem(comboMenu, "ElTristana.Combo.OnlyQ") && spells[Spells.Q].IsReady() && !spells[Spells.E].IsReady() && target.HasEBuff())
+                                        spells[Spells.Q].Cast();
+                                }
+                                else if (Player.HealthPercent + 20 >= target.HealthPercent && Player.HealthPercent >= 40 && Player.Level + 2 >= target.Level)
+                                {
+                                    spells[Spells.E].CastOnUnit(target);
+
+                                    if (getCheckBoxItem(comboMenu, "ElTristana.Combo.OnlyQ") && spells[Spells.Q].IsReady() && !spells[Spells.E].IsReady() && target.HasEBuff())
+                                        spells[Spells.Q].Cast();
+                                }
+                            }
+
+                            if (spells[Spells.E].IsInRange(target) && getCheckBoxItem(comboMenu, "ElTristana.E.On" + target.NetworkId))
+                            {
+                                spells[Spells.E].CastOnUnit(target);
+                                if (getCheckBoxItem(comboMenu, "ElTristana.Combo.OnlyQ") && spells[Spells.Q].IsReady() && !spells[Spells.E].IsReady() && target.HasEBuff())
+                                    spells[Spells.Q].Cast();
+                            }
+                        }
+                    }
+                }
+
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
                     OnCombo();

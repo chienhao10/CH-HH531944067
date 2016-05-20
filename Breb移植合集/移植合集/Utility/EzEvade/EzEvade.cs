@@ -8,7 +8,7 @@ namespace EzEvade
 {
     public static class EzEvade
     {
-        public static SpellSlot GetSpellSlot(this AIHeroClient unit, string name)
+        public static SpellSlot LSGetSpellSlot(this AIHeroClient unit, string name)
         {
             foreach (var spell in
                 unit.Spellbook.Spells.Where(

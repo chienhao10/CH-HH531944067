@@ -121,7 +121,7 @@ namespace UnderratedAIO.Champions
                         E.Cast(ksTarget);
                     }
                     if (Q.IsReady() && getCheckBoxItem(menuM, "ks") &&
-                        ksTarget.Distance(player) < Q.Range + E.Range && ksTarget.Distance(player) > E.Range &&
+                        ksTarget.LSDistance(player) < Q.Range + E.Range && ksTarget.LSDistance(player) > E.Range &&
                         !player.Position.Extend(ksTarget.Position, Q.Range).IsWall() &&
                         player.Mana > Q.Instance.SData.Mana + E.Instance.SData.Mana)
                     {
@@ -134,8 +134,8 @@ namespace UnderratedAIO.Champions
             {
                 var box =
                     ObjectManager.Get<Obj_AI_Minion>()
-                        .Where(m => m.Distance(player) < W.Range && m.Name == "Jack In The Box" && !m.IsDead)
-                        .OrderBy(m => m.Distance(Game.CursorPos))
+                        .Where(m => m.LSDistance(player) < W.Range && m.Name == "Jack In The Box" && !m.IsDead)
+                        .OrderBy(m => m.LSDistance(Game.CursorPos))
                         .FirstOrDefault();
 
                 if (box != null)
@@ -144,7 +144,7 @@ namespace UnderratedAIO.Champions
                 }
                 else
                 {
-                    if (player.Distance(Game.CursorPos) < W.Range)
+                    if (player.LSDistance(Game.CursorPos) < W.Range)
                     {
                         W.Cast(Game.CursorPos);
                     }
@@ -160,7 +160,7 @@ namespace UnderratedAIO.Champions
                 moveClone();
             }
             var data = IncDamages.GetAllyData(player.NetworkId);
-            if (getCheckBoxItem(menuC, "userCC") && R.IsReady() && target != null && player.Distance(target) < Q.Range &&
+            if (getCheckBoxItem(menuC, "userCC") && R.IsReady() && target != null && player.LSDistance(target) < Q.Range &&
                 data.AnyCC)
             {
                 R.Cast();
@@ -185,11 +185,11 @@ namespace UnderratedAIO.Champions
                 return;
             }
             if (getCheckBoxItem(menuC, "useq") && Q.IsReady() &&
-                Game.CursorPos.Distance(target.Position) < 250 && target.Distance(player) < dist &&
-                (target.Distance(player) >= getSliderItem(menuC, "useqMin") ||
+                Game.CursorPos.LSDistance(target.Position) < 250 && target.LSDistance(player) < dist &&
+                (target.LSDistance(player) >= getSliderItem(menuC, "useqMin") ||
                  (cmbDmg > target.Health && player.CountEnemiesInRange(2000) == 1)))
             {
-                if (target.Distance(player) < Q.Range)
+                if (target.LSDistance(player) < Q.Range)
                 {
                     Q.Cast(Prediction.GetPrediction(target, 0.5f).UnitPosition, getCheckBoxItem(config, "packets"));
                 }
@@ -204,7 +204,7 @@ namespace UnderratedAIO.Champions
             }
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
             if (getCheckBoxItem(menuC, "usew") && W.IsReady() && !target.UnderTurret(true) &&
-                target.Health > cmbDmg && player.Distance(target) < W.Range)
+                target.Health > cmbDmg && player.LSDistance(target) < W.Range)
             {
                 HandleW(target);
             }
@@ -235,15 +235,15 @@ namespace UnderratedAIO.Champions
                 case 1:
                     Gtarget =
                         ObjectManager.Get<AIHeroClient>()
-                            .Where(i => i.IsEnemy && !i.IsDead && player.Distance(i) <= GhostRange)
+                            .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) <= GhostRange)
                             .OrderBy(i => i.Health)
                             .FirstOrDefault();
                     break;
                 case 2:
                     Gtarget =
                         ObjectManager.Get<AIHeroClient>()
-                            .Where(i => i.IsEnemy && !i.IsDead && player.Distance(i) <= GhostRange)
-                            .OrderBy(i => player.Distance(i))
+                            .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) <= GhostRange)
+                            .OrderBy(i => player.LSDistance(i))
                             .FirstOrDefault();
                     break;
                 default:
@@ -270,7 +270,7 @@ namespace UnderratedAIO.Champions
 
         private bool CheckWalls(AIHeroClient target)
         {
-            var step = player.Distance(target)/15;
+            var step = player.LSDistance(target)/15;
             for (var i = 1; i < 16; i++)
             {
                 if (player.Position.Extend(target.Position, step*i).IsWall())
@@ -285,8 +285,8 @@ namespace UnderratedAIO.Champions
         {
             var turret =
                 ObjectManager.Get<Obj_AI_Turret>()
-                    .OrderByDescending(t => t.Distance(target))
-                    .FirstOrDefault(t => t.IsEnemy && t.Distance(target) < 3000 && !t.IsDead);
+                    .OrderByDescending(t => t.LSDistance(target))
+                    .FirstOrDefault(t => t.IsEnemy && t.LSDistance(target) < 3000 && !t.IsDead);
             if (turret != null)
             {
                 CastW(target, target.Position, turret.Position);
@@ -303,7 +303,7 @@ namespace UnderratedAIO.Champions
                 }
                 else
                 {
-                    W.Cast(player.Position.Extend(target.Position, W.Range - player.Distance(target)));
+                    W.Cast(player.Position.Extend(target.Position, W.Range - player.LSDistance(target)));
                 }
             }
         }
@@ -327,9 +327,9 @@ namespace UnderratedAIO.Champions
                 positions.Add(from.LSExtend(to, 42*i));
             }
             var best =
-                positions.OrderByDescending(p => p.Distance(target.Position))
+                positions.OrderByDescending(p => p.LSDistance(target.Position))
                     .FirstOrDefault(
-                        p => !p.IsWall() && p.Distance(player.Position) < W.Range && p.Distance(target.Position) > 350);
+                        p => !p.IsWall() && p.LSDistance(player.Position) < W.Range && p.LSDistance(target.Position) > 350);
             if (best != null && best.IsValid())
             {
                 W.Cast(best, getCheckBoxItem(config, "packets"));

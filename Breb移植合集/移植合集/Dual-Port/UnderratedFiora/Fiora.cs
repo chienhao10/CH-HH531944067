@@ -44,8 +44,8 @@ namespace UnderratedAIO.Champions
             if (passiveType != PassiveType.NULL)
             {
                 var enemy =
-                    HeroManager.Enemies.Where(e => e.IsValidTarget() && e.Distance(sender.Position) < 50)
-                        .OrderBy(e => sender.Position.Distance(e.Position))
+                    HeroManager.Enemies.Where(e => e.IsValidTarget() && e.LSDistance(sender.Position) < 50)
+                        .OrderBy(e => sender.Position.LSDistance(e.Position))
                         .FirstOrDefault();
                 if (enemy == null)
                 {
@@ -73,7 +73,7 @@ namespace UnderratedAIO.Champions
             var passiveType = GetPassive(sender.Name);
             if (passiveType != PassiveType.NULL)
             {
-                var enemy = HeroManager.Enemies.OrderBy(e => sender.Position.Distance(e.Position)).FirstOrDefault();
+                var enemy = HeroManager.Enemies.OrderBy(e => sender.Position.LSDistance(e.Position)).FirstOrDefault();
                 if (enemy == null)
                 {
                     return;
@@ -193,7 +193,7 @@ namespace UnderratedAIO.Champions
                 ComboDamage(target) + player.GetAutoAttackDamage(target)*5 > target.Health &&
                 ((getSliderItem(comboMenu, "userally") <=
                   HeroManager.Allies.Count(
-                      a => a.IsValid && !a.IsDead && a.Distance(target) < 600 && a.HealthPercent < 90) &&
+                      a => a.IsValid && !a.IsDead && a.LSDistance(target) < 600 && a.HealthPercent < 90) &&
                   getCheckBoxItem(comboMenu, "usertf")) ||
                  (player.HealthPercent < 75 && getCheckBoxItem(comboMenu, "user"))))
             {
@@ -203,9 +203,9 @@ namespace UnderratedAIO.Champions
 
         private static bool CheckQusage(Vector3 pos, AIHeroClient target)
         {
-            return pos.IsValid() && pos.Distance(player.Position) < Q.Range &&
+            return pos.IsValid() && pos.LSDistance(player.Position) < Q.Range &&
                    (target.HasBuff("fiorapassivemanager") || target.HasBuff("fiorarmark")) && !pos.IsWall() &&
-                   Qradius > pos.Distance(target.Position);
+                   Qradius > pos.LSDistance(target.Position);
         }
 
         private static List<Vector3> GetPassivePositions(AttackableUnit target)
@@ -222,7 +222,7 @@ namespace UnderratedAIO.Champions
         private static Vector3 GetClosestPassivePosition(AttackableUnit target)
         {
             var temp = GetPassivePositions(target);
-            return temp.OrderBy(p => p.Distance(player.Position)).FirstOrDefault();
+            return temp.OrderBy(p => p.LSDistance(player.Position)).FirstOrDefault();
         }
 
         private static void Combo()
@@ -243,7 +243,7 @@ namespace UnderratedAIO.Champions
 
             var closestPassive = GetClosestPassivePosition(target);
             if (closestPassive.IsValid() && getCheckBoxItem(comboMenu, "MoveToVitals") && !Orbwalker.CanAutoAttack &&
-                !Orbwalker.IsAutoAttacking && Game.CursorPos.Distance(target.Position) < 350)
+                !Orbwalker.IsAutoAttacking && Game.CursorPos.LSDistance(target.Position) < 350)
             {
                 //orbwalker.SetMovement(false);
                 Orbwalker.DisableMovement = true;
@@ -254,7 +254,7 @@ namespace UnderratedAIO.Champions
 
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
             if (getCheckBoxItem(comboMenu, "useq") && Q.IsReady() &&
-                getSliderItem(comboMenu, "useqMin") <= player.Distance(target) &&
+                getSliderItem(comboMenu, "useqMin") <= player.LSDistance(target) &&
                 (closestPassive.IsValid() || (target.HealthPercent < 30)) && !Orbwalker.IsAutoAttacking)
             {
                 var pos = GetQpoint(target, closestPassive);
@@ -267,18 +267,18 @@ namespace UnderratedAIO.Champions
                     if (
                         CheckQusage(
                             target.Position.LSExtend(
-                                Prediction.GetPrediction(target, player.Distance(target)/1600).UnitPosition, Qradius),
+                                Prediction.GetPrediction(target, player.LSDistance(target)/1600).UnitPosition, Qradius),
                             target))
                     {
                         Q.Cast(
                             target.Position.Extend(
-                                Prediction.GetPrediction(target, player.Distance(target)/1600).UnitPosition, Qradius),
+                                Prediction.GetPrediction(target, player.LSDistance(target)/1600).UnitPosition, Qradius),
                             getCheckBoxItem(config, "packets"));
                     }
                 }
             }
 
-            if (getCheckBoxItem(comboMenu, "usew") && W.IsReady() && target.Distance(player) > 350f &&
+            if (getCheckBoxItem(comboMenu, "usew") && W.IsReady() && target.LSDistance(player) > 350f &&
                 W.GetDamage(target) > target.Health)
             {
                 W.CastIfHitchanceEquals(target, HitChance.High, getCheckBoxItem(config, "packets"));
@@ -286,7 +286,7 @@ namespace UnderratedAIO.Champions
 
             if (getCheckBoxItem(comboMenu, "useIgnite") && hasIgnite && ComboDamage(target) > target.Health &&
                 !Q.IsReady() &&
-                (target.Distance(player) > Orbwalking.GetRealAutoAttackRange(target) || player.HealthPercent < 15))
+                (target.LSDistance(player) > Orbwalking.GetRealAutoAttackRange(target) || player.HealthPercent < 15))
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
@@ -421,7 +421,7 @@ namespace UnderratedAIO.Champions
         public static Vector3 GetQpoint(AIHeroClient target, Vector3 passive)
         {
             var ponts = new List<Vector3>();
-            var predEnemy = Prediction.GetPrediction(target, ObjectManager.Player.Distance(target)/1600).UnitPosition;
+            var predEnemy = Prediction.GetPrediction(target, ObjectManager.Player.LSDistance(target)/1600).UnitPosition;
             for (var i = 2; i < 8; i++)
             {
                 ponts.Add(predEnemy.To2D().Extend(passive.To2D(), i*25).To3D());
@@ -429,7 +429,7 @@ namespace UnderratedAIO.Champions
 
             return
                 ponts.Where(p => CheckQusage(p, target))
-                    .OrderByDescending(p => p.Distance(target.Position))
+                    .OrderByDescending(p => p.LSDistance(target.Position))
                     .FirstOrDefault();
         }
 
@@ -508,7 +508,7 @@ namespace UnderratedAIO.Champions
         public List<Vector3> getPositions()
         {
             var list = new List<Vector3>();
-            var predEnemy = Prediction.GetPrediction(Enemy, ObjectManager.Player.Distance(Enemy)/1600).UnitPosition;
+            var predEnemy = Prediction.GetPrediction(Enemy, ObjectManager.Player.LSDistance(Enemy)/1600).UnitPosition;
             foreach (var passive in passives)
             {
                 switch (passive.Type)

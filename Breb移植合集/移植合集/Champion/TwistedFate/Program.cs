@@ -246,7 +246,7 @@ namespace TwistedFate
                     if (k == 1) endPoint = startPoint + originalDirection.Rotated(Qangle);
                     if (k == 2) endPoint = startPoint + originalDirection.Rotated(-Qangle);
 
-                    if (point.Distance(startPoint, endPoint, true, true) <
+                    if (point.LSDistance(startPoint, endPoint, true, true) <
                         (Q.Width + hitBoxes[i]) * (Q.Width + hitBoxes[i]))
                     {
                         result++;
@@ -289,7 +289,7 @@ namespace TwistedFate
             }
 
 
-            if (startPoint.Distance(unitPosition) < 900)
+            if (startPoint.LSDistance(unitPosition) < 900)
             {
                 for (var i = 0; i < 3; i++)
                 {
@@ -421,7 +421,7 @@ namespace TwistedFate
             if (botrk)
             {
                 if (target != null && target.Type == ObjectManager.Player.Type &&
-                    target.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 450)
+                    target.ServerPosition.LSDistance(ObjectManager.Player.ServerPosition) < 450)
                 {
                     var hasCutGlass = Items.HasItem(3144);
                     var hasBotrk = Items.HasItem(3153);

@@ -9,6 +9,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu.Values;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -70,7 +71,7 @@ namespace ezEvade
                     continue;
                 }
 
-                var distToTurret = pos.Distance(turret.Position.To2D());
+                var distToTurret = pos.LSDistance(turret.Position.To2D());
                 if (distToTurret <= turretRange)
                 {
                     return true;

@@ -1,13 +1,11 @@
-﻿using System.ComponentModel;
-using System.Media;
-using System.Net;
-using EloBuddy.Sandbox;
-
-namespace Jinx
+﻿namespace Jinx
 {
     using System;
     using System.IO;
     using System.Linq;
+    using System.ComponentModel;
+    using System.Media;
+    using System.Net;
 
     using EloBuddy;
     using EloBuddy.SDK;
@@ -15,6 +13,7 @@ namespace Jinx
     using EloBuddy.SDK.Events;
     using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK.Rendering;
+    using EloBuddy.Sandbox;
 
     using SharpDX;
 
@@ -39,10 +38,13 @@ namespace Jinx
         public const string ChampionName = "Jinx";
 
         /// <summary>
-        /// Stores Damage Indicator
+        /// Damage Indicator
         /// </summary>
         public static DamageIndicator.DamageIndicator Indicator;
         
+        /// <summary>
+        /// Allah Akbar
+        /// </summary>
         //public static SoundPlayer AllahAkbar;
 
         /// <summary>
@@ -70,14 +72,15 @@ namespace Jinx
                 AllowedCollisionCount = 0
             };
             E = new Spell.Skillshot(SpellSlot.E, 900, SkillShotType.Circular, 250, 1750, 315);
-            R = new Spell.Skillshot(SpellSlot.R, 3000, SkillShotType.Linear, 500, 1500, 140);
+            R = new Spell.Skillshot(SpellSlot.R, 3000, SkillShotType.Linear, 500, 1500, 140)
+            {
+                AllowedCollisionCount = -1
+            };
 
             Config.Initialize();
             Indicator = new DamageIndicator.DamageIndicator();
 
             Chat.Print("Jin-XXX: Loaded", System.Drawing.Color.AliceBlue);
-            //Chat.Print("Jin-XXX: Check out the Menu and adjust to your preference.", System.Drawing.Color.Aqua);
-            //Chat.Print("Jin-XXX: Please be sure to upvote if you enjoy!", System.Drawing.Color.OrangeRed);
 
             Game.OnUpdate += Game_OnUpdate;
             Game.OnUpdate += ActiveStates.Game_OnUpdate;

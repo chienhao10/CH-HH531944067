@@ -112,7 +112,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             for (var i = 1; i < 7; i++)
             {
                 if (ObjectManager.Get<Obj_GeneralParticleEmitter>()
-                .Any(e => e.Position.Distance(obj.ServerPosition) <= 55 &&
+                .Any(e => e.Position.LSDistance(obj.ServerPosition) <= 55 &&
                 e.Name == "twitch_poison_counter_0" + i + ".troy"))
                 {
                     twitchECount = i;
@@ -168,7 +168,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 LogicE();
             if (Program.LagFree(2) && Q.IsReady() && !Orbwalker.IsAutoAttacking)
                 LogicQ();
-            if (Program.LagFree(3) && W.IsReady() && !Orbwalker.IsAutoAttacking)
+            if (Program.LagFree(3) && getCheckBoxItem(wMenu, "autoW") && W.IsReady() && !Orbwalker.IsAutoAttacking)
                 LogicW();
             if (Program.LagFree(4) && R.IsReady() && Program.Combo)
                 LogicR();
@@ -186,9 +186,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
                 else
                 {
-                    var castArea = Player.Distance(args.End)*(args.End - Player.ServerPosition).Normalized() +
+                    var castArea = Player.LSDistance(args.End)*(args.End - Player.ServerPosition).Normalized() +
                                    Player.ServerPosition;
-                    if (castArea.Distance(Player.ServerPosition) < Player.BoundingRadius/2)
+                    if (castArea.LSDistance(Player.ServerPosition) < Player.BoundingRadius/2)
                     {
                         dmg = dmg + sender.LSGetSpellDamage(Player, args.SData.Name);
                     }
@@ -242,10 +242,25 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if (getSliderItem(qMenu, "countQ") == 0 || Player.Mana < RMANA + QMANA)
                 return;
 
-            var count = Program.Enemies.Where(enemy => enemy.IsValidTarget(3000)).Select(enemy => enemy.GetWaypoints()).Count(waypoints => Player.Distance(waypoints.Last().To3D()) < 600);
+            var count = Program.Enemies.Where(enemy => enemy.IsValidTarget(3000)).Select(enemy => enemy.GetWaypoints()).Count(waypoints => Player.LSDistance(waypoints.Last().To3D()) < 600);
 
             if (count >= getSliderItem(qMenu, "countQ"))
                 Q.Cast();
+        }
+
+        private static int getEBuffCount(Obj_AI_Base obj)
+        {
+            var twitchECount = 0;
+            for (var i = 1; i < 7; i++)
+            {
+                if (ObjectManager.Get<Obj_GeneralParticleEmitter>()
+                    .Any(e => e.Position.LSDistance(obj.ServerPosition) <= 175 &&
+                              e.Name == "twitch_poison_counter_0" + i + ".troy"))
+                {
+                    twitchECount = i;
+                }
+            }
+            return twitchECount;
         }
 
         private static void LogicE()
@@ -259,19 +274,18 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     Program.debug("DUPAAA1");
                     E.Cast();
                 }
+
                 if (Player.Mana > RMANA + EMANA)
                 {
-                    var buffsNum = OktwCommon.GetBuffCount(enemy, "TwitchDeadlyVenom");
-                    if (getCheckBoxItem(eMenu, "5e") && buffsNum == 6)
+                    var buffNum = getEBuffCount(enemy);
+                    if (getCheckBoxItem(eMenu, "5e") && buffNum == 6)
                     {
                         Program.debug("DUPAAA2");
                         E.Cast();
                     }
-                    var buffTime = OktwCommon.GetPassiveTime(enemy, "TwitchDeadlyVenom");
 
-                    if (!Orbwalking.InAutoAttackRange(enemy) &&
-                        (Player.ServerPosition.Distance(enemy.ServerPosition) > 950 || buffTime < 1) &&
-                        0 < getSliderItem(eMenu, "countE") && buffsNum >= getSliderItem(eMenu, "countE"))
+                    var buffTime = OktwCommon.GetPassiveTime(enemy, "twitchdeadlyvenom");
+                    if (!Orbwalking.InAutoAttackRange(enemy) && (Player.ServerPosition.LSDistance(enemy.ServerPosition) > 950 || buffTime < 1) && 0 < getSliderItem(eMenu, "countE") && buffNum >= getSliderItem(eMenu, "countE"))
                     {
                         Program.debug("DUPAAA3 " + buffTime);
                         E.Cast();

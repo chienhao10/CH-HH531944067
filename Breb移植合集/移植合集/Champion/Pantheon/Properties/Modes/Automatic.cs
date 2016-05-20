@@ -20,8 +20,8 @@ namespace ExorAIO.Champions.Pantheon
                 return;
             }
 
-            Orbwalker.DisableAttacking = ObjectManager.Player.HasBuff("pantheonesound");
-            Orbwalker.DisableMovement = ObjectManager.Player.HasBuff("pantheonesound");
+            Orbwalker.DisableAttacking = ObjectManager.Player.HasBuff("PantheonESound");
+            Orbwalker.DisableMovement = ObjectManager.Player.HasBuff("PantheonESound");
         }
     }
 }

@@ -299,7 +299,7 @@ namespace e.Motion_Katarina
                 AIHeroClient target = TargetSelector.GetTarget(1000, DamageType.Magical);
                 if (target != null)
                 {
-                    Chat.Print("Distance to Target:" + Player.Distance(target));
+                    Chat.Print("Distance to Target:" + Player.LSDistance(target));
                 }
             }
         }
@@ -319,7 +319,7 @@ namespace e.Motion_Katarina
             AIHeroClient target = TargetSelector.GetTarget(!startWithQ || dynamic ? E.Range : Q.Range, DamageType.Magical);
             if (target != null && !target.IsZombie)
             {
-                if (useq && (startWithQ || !usee || dynamic) && target.Distance(Player) < Q.Range)
+                if (useq && (startWithQ || !usee || dynamic) && target.LSDistance(Player) < Q.Range)
                 {
                     Q.Cast(target);
                     qTarget = target;
@@ -343,12 +343,12 @@ namespace e.Motion_Katarina
                         target = enemies.ElementAt(0);
                     }
                 }
-                if (target.Distance(Player) < 390 && usew && (user || qTarget != target || !smartcombo))
+                if (target.LSDistance(Player) < 390 && usew && (user || qTarget != target || !smartcombo))
                 {
                     W.Cast();
                     return;
                 }
-                if (target.Distance(Player) < R.Range - 200 && user)
+                if (target.LSDistance(Player) < R.Range - 200 && user)
                 {
                     R.Cast();
                 }
@@ -425,7 +425,7 @@ namespace e.Motion_Katarina
                 Obj_AI_Turret turret = ObjectManager.GetUnitByNetworkId<Obj_AI_Turret>((uint)NetID);
                 if (turret != null && !turret.IsDead)
                 {
-                    float distance = Player.Position.Distance(turret.Position);
+                    float distance = Player.Position.LSDistance(turret.Position);
                     if (mindistance >= distance)
                     {
                         mindistance = distance;
@@ -434,16 +434,16 @@ namespace e.Motion_Katarina
 
                 }
             }
-            if (turretToJump != null && !TurretHasAggro[turretToJump.NetworkId] && Player.Position.Distance(turretToJump.Position) < 1500)
+            if (turretToJump != null && !TurretHasAggro[turretToJump.NetworkId] && Player.Position.LSDistance(turretToJump.Position) < 1500)
             {
                 int i = 0;
 
                 do
                 {
                     Vector3 extPos = Player.Position.LSExtend(turretToJump.Position, 685 - i);
-                    float dist = objectPosition.Distance(extPos + extrarange);
+                    float dist = objectPosition.LSDistance(extPos + extrarange);
                     Vector3 predictedPosition = objectPosition.LSExtend(extPos, dist);
-                    if (predictedPosition.Distance(turretToJump.Position) <= 890 && !predictedPosition.IsWall())
+                    if (predictedPosition.LSDistance(turretToJump.Position) <= 890 && !predictedPosition.IsWall())
                     {
                         WardJump(Player.Position.LSExtend(turretToJump.Position, 650 - i), false);
                         JumpPosition = Player.Position.LSExtend(turretToJump.Position, 650 - i);
@@ -479,10 +479,10 @@ namespace e.Motion_Katarina
             Vector3 wardJumpPosition = Player.Position.LSDistance(where) < 600 ? where : Player.Position.LSExtend(where, 600);
             var lstGameObjects = ObjectManager.Get<Obj_AI_Base>().ToArray();
             Obj_AI_Base entityToWardJump = lstGameObjects.FirstOrDefault(obj =>
-                obj.Position.Distance(wardJumpPosition) < 150
+                obj.Position.LSDistance(wardJumpPosition) < 150
                 && (obj is Obj_AI_Minion || obj is AIHeroClient)
                 && !obj.IsMe && !obj.IsDead
-                && obj.Position.Distance(Player.Position) < E.Range);
+                && obj.Position.LSDistance(Player.Position) < E.Range);
 
             if (entityToWardJump != null)
             {
@@ -692,7 +692,7 @@ namespace e.Motion_Katarina
                         minion =>
                             !minion.IsDead && Orbwalker.LastTarget != minion && (qMinion == null || minion != qMinion) &&
                             E.GetDamage(minion) >= minion.Health &&
-                            (!W.IsReady() || !getCheckBoxItem(lasthit, "motion.katarina.lasthit.usew") || Player.Position.Distance(minion.Position) > 390)
+                            (!W.IsReady() || !getCheckBoxItem(lasthit, "motion.katarina.lasthit.usew") || Player.Position.LSDistance(minion.Position) > 390)
                             &&
                             HealthPrediction.GetHealthPrediction(minion,
                                 (Player.CanAttack

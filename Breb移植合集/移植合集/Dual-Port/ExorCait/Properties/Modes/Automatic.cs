@@ -28,11 +28,11 @@ namespace ExorAIO.Champions.Caitlyn
             /// </summary>
             if (Variables.Q.IsReady() && Menus.getCheckBoxItem(Variables.QMenu, "qspell.auto"))
             {
-                foreach (var target in EntityManager.Heroes.Enemies.Where(t => !Bools.HasAnyImmunity(t) && t.LSIsValidTarget(Variables.Q.Range)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(t => !Bools.IsSpellShielded(t) && t.IsValidTarget(Variables.Q.Range)))
                 {
                     if (target.HasBuff("caitlynyordletrapdebuff") || target.HasBuff("caitlynyordletrapinternal"))
                     {
-                        Variables.Q.Cast(Variables.Q.GetPrediction(target).UnitPosition);
+                        Variables.Q.Cast(target);
                     }
                 }
             }
@@ -44,7 +44,7 @@ namespace ExorAIO.Champions.Caitlyn
             {
                 foreach (AIHeroClient target in HeroManager.Enemies.Where(t => Bools.IsImmobile(t) && !Bools.IsSpellShielded(t) && t.LSIsValidTarget(Variables.W.Range) && t.IsEnemy))
                 {
-                    if (!ObjectManager.Get<Obj_AI_Minion>().Any(m => m.LSDistance(target.Position) < 200f && m.CharData.BaseSkinName.Contains("Cupcake")))
+                    if (!ObjectManager.Get<Obj_AI_Minion>().Any(m => m.LSDistance(target.Position) < 100f && m.CharData.BaseSkinName.Contains("Cupcake")))
                     {
                         Variables.W.Cast(target.Position);
                     }

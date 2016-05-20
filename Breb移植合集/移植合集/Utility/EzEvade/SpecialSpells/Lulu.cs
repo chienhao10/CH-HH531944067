@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade.SpecialSpells
 {
@@ -66,7 +67,7 @@ namespace ezEvade.SpecialSpells
                         }
                         else
                         {
-                            Vector3 endPos2 = info.obj.Position.Extend(args.End, spellData.range).To3DWorld();
+                            Vector3 endPos2 = info.obj.Position.LSExtend(args.End, spellData.range);
                             SpellDetector.CreateSpellData(hero, info.obj.Position, endPos2, spellData, null, 0, false);
                         }
                     }

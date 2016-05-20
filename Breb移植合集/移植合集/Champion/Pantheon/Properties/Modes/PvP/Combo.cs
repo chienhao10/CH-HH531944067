@@ -58,12 +58,9 @@ namespace ExorAIO.Champions.Pantheon
                 /// <summary>
                 ///     The Combo E Logic.
                 /// </summary>
-                if (Variables.E.IsReady() &&
-                    !ObjectManager.Player.HasBuff("pantheonpassiveshield") &&
-                    ObjectManager.Player.CountEnemiesInRange(Variables.E.Range) > 0 &&
-                    Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+                if (Variables.E.IsReady() && !ObjectManager.Player.HasBuff("pantheonpassiveshield") && ObjectManager.Player.CountEnemiesInRange(Variables.E.Range) > 0 && Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
                 {
-                    Variables.E.Cast(Targets.Target.Position);
+                    Variables.E.StartCharging(Targets.Target.Position);
                 }
             }
         }

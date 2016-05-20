@@ -202,7 +202,7 @@ namespace GFUELQuinn
             }
             else
             {
-                if (getCheckBoxItem(comboMenu, "GFUELQuinn.Combo.E") && target.Distance(Player.Position) < E.Range && E.IsReady())
+                if (getCheckBoxItem(comboMenu, "GFUELQuinn.Combo.E") && target.LSDistance(Player.Position) < E.Range && E.IsReady())
                 {
                     E.CastOnUnit(target);
                 }
@@ -230,7 +230,7 @@ namespace GFUELQuinn
                 var passiveTarget = HeroManager.Enemies.Find(x => x.HasBuff("quinnw") && x.IsValidTarget(Q.Range));
                 Orbwalker.ForcedTarget = passiveTarget ?? null;
 
-                if (getCheckBoxItem(harassMenu, "GFUELQuinn.Harass.Q") && target.Distance(Player.Position) < Q.Range &&
+                if (getCheckBoxItem(harassMenu, "GFUELQuinn.Harass.Q") && target.LSDistance(Player.Position) < Q.Range &&
                     Q.IsReady())
                 {
                     var prediction = Q.GetPrediction(target);
@@ -416,7 +416,7 @@ namespace GFUELQuinn
 
             return centerlocation.MinionsHit >= getSliderItem(laneclearMenu, "GFUELQuinn.laneclear.count")
                 ? MinionManager.GetMinions(1000)
-                    .OrderBy(x => x.Distance(centerlocation.Position))
+                    .OrderBy(x => x.LSDistance(centerlocation.Position))
                     .FirstOrDefault()
                 : null;
         }

@@ -187,7 +187,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (Player.Distance(gapcloser.Sender.ServerPosition) < E.Range)
+            if (Player.LSDistance(gapcloser.Sender.ServerPosition) < E.Range)
             {
                 E.Cast(gapcloser.Sender);
             }
@@ -196,7 +196,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (Player.Distance(sender.ServerPosition) < E.Range)
+            if (Player.LSDistance(sender.ServerPosition) < E.Range)
             {
                 E.Cast(sender);
             }
@@ -337,7 +337,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Q.IsCharging)
                 {
                     Program.CastSpell(Q, t);
-                    if (OktwCommon.GetPassiveTime(Player, "XerathArcanopulseChargeUp") < 1 || (Player.CountEnemiesInRange(800) > 0) || Player.Distance(t) > 1450)
+                    if (OktwCommon.GetPassiveTime(Player, "XerathArcanopulseChargeUp") < 1 || (Player.CountEnemiesInRange(800) > 0) || Player.LSDistance(t) > 1450)
                         Q.Cast(t);
                     else if (OktwCommon.GetPassiveTime(Player, "XerathArcanopulseChargeUp") < 2 || (Player.CountEnemiesInRange(1000) > 0))
                         Q.CastIfHitchanceEquals(t, HitChance.VeryHigh);

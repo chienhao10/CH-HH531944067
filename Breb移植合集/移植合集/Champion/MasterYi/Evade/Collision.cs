@@ -75,7 +75,7 @@ namespace MasterSharp
 
         public static FastPredResult FastPrediction(Vector2 from, Obj_AI_Base unit, int delay, int speed)
         {
-            var tDelay = delay/1000f + @from.Distance(unit)/speed;
+            var tDelay = delay/1000f + @from.LSDistance(unit)/speed;
             var d = tDelay*unit.MoveSpeed;
             var path = unit.GetWaypoints();
 
@@ -119,11 +119,11 @@ namespace MasterSharp
                         collisions.AddRange(from minion in MinionManager.GetMinions(@from.To3D(), 1200, MinionTypes.All, skillshot.Unit.Team == ObjectManager.Player.Team ? MinionTeam.NotAlly : MinionTeam.NotAllyForEnemy)
                             let pred = FastPrediction(@from, minion, Math.Max(0, skillshot.SpellData.Delay - (Environment.TickCount - skillshot.StartTick)), skillshot.SpellData.MissileSpeed)
                             let pos = pred.PredictedPos
-                            let w = skillshot.SpellData.RawRadius + (!pred.IsMoving ? minion.BoundingRadius - 15 : 0) - pos.Distance(@from, skillshot.End, true)
+                            let w = skillshot.SpellData.RawRadius + (!pred.IsMoving ? minion.BoundingRadius - 15 : 0) - pos.LSDistance(@from, skillshot.End, true)
                             where w > 0
                             select new DetectedCollision
                             {
-                                Position = pos.ProjectOn(skillshot.End, skillshot.Start).LinePoint + skillshot.Direction*30, Unit = minion, Type = CollisionObjectTypes.Minion, Distance = pos.Distance(@from), Diff = w
+                                Position = pos.ProjectOn(skillshot.End, skillshot.Start).LinePoint + skillshot.Direction*30, Unit = minion, Type = CollisionObjectTypes.Minion, Distance = pos.LSDistance(@from), Diff = w
                             });
 
                         break;
@@ -132,11 +132,11 @@ namespace MasterSharp
                         collisions.AddRange(from hero in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget(1200) && h.Team == ObjectManager.Player.Team && !h.IsMe || h.Team != ObjectManager.Player.Team)
                             let pred = FastPrediction(@from, hero, Math.Max(0, skillshot.SpellData.Delay - (Environment.TickCount - skillshot.StartTick)), skillshot.SpellData.MissileSpeed)
                             let pos = pred.PredictedPos
-                            let w = skillshot.SpellData.RawRadius + 30 - pos.Distance(@from, skillshot.End, true)
+                            let w = skillshot.SpellData.RawRadius + 30 - pos.LSDistance(@from, skillshot.End, true)
                             where w > 0
                             select new DetectedCollision
                             {
-                                Position = pos.ProjectOn(skillshot.End, skillshot.Start).LinePoint + skillshot.Direction*30, Unit = hero, Type = CollisionObjectTypes.Minion, Distance = pos.Distance(@from), Diff = w
+                                Position = pos.ProjectOn(skillshot.End, skillshot.Start).LinePoint + skillshot.Direction*30, Unit = hero, Type = CollisionObjectTypes.Minion, Distance = pos.LSDistance(@from), Diff = w
                             });
                         break;
 
@@ -190,13 +190,13 @@ namespace MasterSharp
 
                         if (intersections.Count > 0)
                         {
-                            intersection = intersections.OrderBy(item => item.Distance(from)).ToList()[0];
+                            intersection = intersections.OrderBy(item => item.LSDistance(from)).ToList()[0];
                             var collisionT = Environment.TickCount +
                                              Math.Max(
                                                  0,
                                                  skillshot.SpellData.Delay -
                                                  (Environment.TickCount - skillshot.StartTick)) + 100 +
-                                             1000*intersection.Distance(@from)/skillshot.SpellData.MissileSpeed;
+                                             1000*intersection.LSDistance(@from)/skillshot.SpellData.MissileSpeed;
                             if (collisionT - WallCastT < 4000)
                             {
                                 if (skillshot.SpellData.Type != SkillShotType.SkillshotMissileLine)

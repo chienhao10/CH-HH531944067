@@ -62,7 +62,7 @@ namespace VayneHunter_Reborn.Skills.Tumble.VHRQ
                 var avgDist = GetAvgDistance(position);
                 if (avgDist > -1)
                 {
-                    var closestDist = ObjectManager.Player.ServerPosition.Distance(enemy.ServerPosition);
+                    var closestDist = ObjectManager.Player.ServerPosition.LSDistance(enemy.ServerPosition);
                     var weightedAvg = closestDist * ClosestDistanceWeight + avgDist * AverageDistanceWeight;
                     if (weightedAvg > bestWeightedAvg && position.IsSafe())
                     {
@@ -94,8 +94,8 @@ namespace VayneHunter_Reborn.Skills.Tumble.VHRQ
         public static bool IsSafeEx(Vector3 position)
         {
             var closeEnemies =
-                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f) && !(en.Distance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
-                    .OrderBy(en => en.Distance(position));
+                    HeroManager.Enemies.FindAll(en => en.IsValidTarget(1500f) && !(en.LSDistance(ObjectManager.Player.ServerPosition) < en.AttackRange + 65f))
+                    .OrderBy(en => en.LSDistance(position));
 
             return closeEnemies.All(
                                 enemy =>
@@ -121,8 +121,8 @@ namespace VayneHunter_Reborn.Skills.Tumble.VHRQ
                 var totalDistance = 0f;
 
                 totalDistance = (LHEnemies > 1 && enemiesEx.Count() > 2) ? 
-                    enemiesEx.Sum(en => en.Distance(ObjectManager.Player.ServerPosition)) : 
-                    enemies.Sum(en => en.Distance(ObjectManager.Player.ServerPosition));
+                    enemiesEx.Sum(en => en.LSDistance(ObjectManager.Player.ServerPosition)) : 
+                    enemies.Sum(en => en.LSDistance(ObjectManager.Player.ServerPosition));
 
                 return totalDistance / numberOfEnemies;
             }
