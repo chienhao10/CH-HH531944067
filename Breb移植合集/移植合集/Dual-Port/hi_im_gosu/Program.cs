@@ -274,7 +274,7 @@ namespace hi_im_gosu
             if (!E.IsReady()) return;
             if ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(emenu, "UseEC")) || (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && getCheckBoxItem(emenu, "he")) || getKeyBindItem(emenu, "UseET"))
             {
-                foreach (var hero in from hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.LSIsValidTarget(550f)) let prediction = E.GetPrediction(hero) where NavMesh.GetCollisionFlags(prediction.UnitPosition.LSTo2D().LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -getSliderItem(emenu, "PushDistance")).To3D()).HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(prediction.UnitPosition.LSTo2D().LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -(getSliderItem(emenu, "PushDistance"))).To3D()).HasFlag(CollisionFlags.Wall) select hero)
+                foreach (var hero in from hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.LSIsValidTarget(550f) && hero.IsEnemy) let prediction = E.GetPrediction(hero) where NavMesh.GetCollisionFlags(prediction.UnitPosition.LSTo2D().LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -getSliderItem(emenu, "PushDistance")).To3D()).HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(prediction.UnitPosition.LSTo2D().LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -(getSliderItem(emenu, "PushDistance"))).To3D()).HasFlag(CollisionFlags.Wall) select hero)
                 {
                     E.Cast(hero);
                 }

@@ -252,15 +252,20 @@ namespace UnderratedAIO.Champions
             var clone = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(m => m.Name == player.Name && !m.IsMe);
             if (clone != null && Gtarget != null && Gtarget.IsValid)
             {
-                if (CanCloneAttack(clone))
+                if (clone.CanMove)
                 {
-                    //R.CastOnUnit(Gtarget, getCheckBoxItem(config, "packets"));
+                    Player.IssueOrder(GameObjectOrder.MovePet, Gtarget);
+                }
+
+                if (clone.LSDistance(Gtarget) < 130 && (CanCloneAttack(clone) || clone.CanAttack))
+                {
                     Player.IssueOrder(GameObjectOrder.AutoAttackPet, Gtarget);
                 }
-                else if (player.HealthPercent > 25)
+
+                if (player.HealthPercent > 25)
                 {
                     var prediction = Prediction.GetPrediction(Gtarget, 2);
-                    R.Cast(Gtarget.Position.Extend(prediction.UnitPosition, Orbwalking.GetRealAutoAttackRange(Gtarget)), getCheckBoxItem(config, "packets"));
+                    R.Cast(Gtarget.Position.LSExtend(prediction.UnitPosition, Orbwalking.GetRealAutoAttackRange(Gtarget)), getCheckBoxItem(config, "packets"));
                 }
 
                 GhostDelay = true;
