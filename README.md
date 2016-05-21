@@ -1,16 +1,17 @@
-Breb移植脚本地址源：http://bit.ly/1N8r0td
+
 因为论坛规定不能发布，所以新开Repo
 =======
-##国内源:
+##[国内源:](http://bit.ly/chosgit)
 http://bit.ly/chosgit
-##国外源：
+##[国外源:](http://bit.ly/chgithub)
 http://bit.ly/chgithub
-##最强国外源：
+##[最强国外源:](http://bit.ly/zuiqiang)
 http://bit.ly/zuiqiang 
-##最强国内源:
+##[最强国内源:](http://bit.ly/oszuiqiang)
 http://bit.ly/oszuiqiang
-
-##CH主页：
+##[Breb移植脚本地址源:](http://bit.ly/1N8r0td)
+http://bit.ly/1N8r0td
+##[CH主页:](chienhao.strikingly.com)
 chienhao.strikingly.com
 
 推荐远程安装使用。在国内使用第一个源，国外使用第二个。
