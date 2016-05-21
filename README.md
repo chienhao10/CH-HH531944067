@@ -1,25 +1,32 @@
 Breb移植脚本地址源：http://bit.ly/1N8r0td
 因为论坛规定不能发布，所以新开Repo
 =======
-国内源：http://bit.ly/chosgit
-国外源：http://bit.ly/chgithub
-最强国外源：http://bit.ly/zuiqiang 
-最强国内源http://bit.ly/oszuiqiang
+##国内源:
+http://bit.ly/chosgit
+##国外源：
+http://bit.ly/chgithub
+##最强国外源：
+http://bit.ly/zuiqiang 
+##最强国内源:
+http://bit.ly/oszuiqiang
+
+##CH主页：
+chienhao.strikingly.com
 
 推荐远程安装使用。在国内使用第一个源，国外使用第二个。
 有任何问题请在QQ群问，或者发帖问。
 QQ：531944067
 
-EB汉化脚本，由chienhao汉化
+##EB汉化脚本，由chienhao汉化
 脚本有问题，使用BUG，新增哪些英雄脚本请上EB论坛留言。本人有空会汉化，会汉化的可以论坛私信我一起汉化和测试脚本。其他小事请勿打扰
 卖脚本死全家 卖脚本死全家 某兜无敌，伊喃某别再去骗小白了有没有羞耻心，你要骗别把事情弄到我这里来，骗好自己的人别乱放
 漏洞滑板鞋在Definitely not Kappa文件夹下，具体使用和注意事项去帖子看
 基地大招也去帖子看
 
-CH主页：chienhao.strikingly.com
 
 
 
+##汉化列表
 作者：AKA
 AKA 薇恩               （AKA Vayne)
 薇恩-定制版             (Auto Carry Vayne)
