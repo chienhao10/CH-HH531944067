@@ -5,22 +5,25 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Veigar The Troll")]
+
+[assembly: AssemblyTitle("Olaf")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Elobuddy")]
-[assembly: AssemblyProduct("Veigar The Troll")]
-[assembly: AssemblyCopyright("Copyright © elobuddy 2016")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Olaf")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
+
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c0ac77b8-8f9d-4ed9-9fe9-6ff4e4b9e517")]
+
+[assembly: Guid("f3963b1d-a6a1-4408-89c1-4cb9f4162e58")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -32,5 +35,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.7")]
-[assembly: AssemblyFileVersion("1.7")]
+
+[assembly: AssemblyVersion("0.0.1.0")]
+[assembly: AssemblyFileVersion("0.0.1.0")]

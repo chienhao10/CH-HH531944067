@@ -12,7 +12,7 @@ namespace Feedlesticks.Core
         /// </summary>
         public static bool IsWActive
         {
-            get { return ObjectManager.Player.HasBuff("fiddlebuff"); }
+            get { return ObjectManager.Player.HasBuff("Drain"); }
         }
 
         /// <summary>
@@ -59,20 +59,8 @@ namespace Feedlesticks.Core
                 if (args.Slot == SpellSlot.W)
                 {
                     args.Process = false;
-                    OktwCommon.blockMove = true;
-                    OktwCommon.blockAttack = true;
-                    OktwCommon.blockSpells = true;
                     Orbwalker.DisableAttacking = true;
                     Orbwalker.DisableMovement = true;
-                }
-                else
-                {
-                    args.Process = true;
-                    OktwCommon.blockMove = false;
-                    OktwCommon.blockAttack = false;
-                    OktwCommon.blockSpells = false;
-                    Orbwalker.DisableAttacking = false;
-                    Orbwalker.DisableMovement = false;
                 }
             }
         }

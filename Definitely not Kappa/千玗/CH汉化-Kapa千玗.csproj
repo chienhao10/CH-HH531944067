@@ -1,19 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4D62B312-8828-4CF0-805D-E2D88B90F22F}</ProjectGuid>
+    <ProjectGuid>{6908865A-A96D-48F4-9F2C-B39F45DF97C5}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KappaBrand</RootNamespace>
-    <AssemblyName>KappaBrand</AssemblyName>
+    <RootNamespace>KappaKindred</RootNamespace>
+    <AssemblyName>KappaKindred</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <PreBuildEvent />
-    <PostBuildEvent />
-    <OutputPath>bin\Release</OutputPath>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -21,56 +19,54 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EloBuddy">
-      <HintPath>..\..\..\New folder\EloBuddy\System\EloBuddy.dll</HintPath>
-    </Reference>
-    <Reference Include="EloBuddy.Sandbox">
-      <HintPath>..\..\..\New folder\EloBuddy\System\EloBuddy.Sandbox.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Desktop\New folder\EloBuddy\System\EloBuddy.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy.SDK">
-      <HintPath>..\..\..\New folder\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\New folder\EloBuddy\System\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Desktop\New folder\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
     </Reference>
     <Reference Include="SharpDX">
-      <HintPath>..\..\..\New folder\EloBuddy\System\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>..\..\..\New folder\EloBuddy\System\SharpDX.Direct3D9.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\Desktop\New folder\EloBuddy\System\SharpDX.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Brand.cs" />
-    <Compile Include="Colors.cs" />
-    <Compile Include="Common.cs" />
-    <Compile Include="Damagelib.cs" />
-    <Compile Include="KappaSelector.cs" />
+    <Compile Include="Evade\SpellData.cs" />
+    <Compile Include="Evade\SpellDatabase.cs" />
+    <Compile Include="Evade\SpellType.cs" />
+    <Compile Include="Events\OnBasicAttack.cs" />
+    <Compile Include="Events\OnDamage.cs" />
+    <Compile Include="Events\OnDraw.cs" />
+    <Compile Include="Events\OnGapcloser.cs" />
+    <Compile Include="Events\OnPostAttack.cs" />
+    <Compile Include="Events\OnProcessSpellCast.cs" />
+    <Compile Include="Events\OnUpdate.cs" />
+    <Compile Include="Load\Menu.cs" />
+    <Compile Include="Load\Spells.cs" />
+    <Compile Include="main.cs" />
+    <Compile Include="Modes\Clear.cs" />
+    <Compile Include="Modes\Combo.cs" />
+    <Compile Include="Modes\Flee.cs" />
+    <Compile Include="Modes\Harass.cs" />
+    <Compile Include="Modes\Jungle.cs" />
+    <Compile Include="Load.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
