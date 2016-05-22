@@ -336,6 +336,9 @@ namespace PortAIO
                             case 1:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
+                            case 2:
+                                KurisuBlitzcrank.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 PortAIO.Champion.Blitzcrank.Program.OnLoad();
                                 break;

@@ -7,6 +7,7 @@ using VayneHunter_Reborn.Utility.MenuUtility;
 using EloBuddy;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
+using DZLib.Core;
 
 namespace VayneHunter_Reborn.Skills.Condemn
 {
@@ -15,7 +16,8 @@ namespace VayneHunter_Reborn.Skills.Condemn
         public static void OnLoad()
         {
             Interrupter2.OnInterruptableTarget += OnInterruptableTarget;
-            CustomAntigapcloser.OnEnemyGapcloser += CustomAntigapcloser_OnEnemyGapcloser;
+            //   CustomAntigapcloser.OnEnemyGapcloser += CustomAntigapcloser_OnEnemyGapcloser;
+            DZAntigapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
             Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast;
             GameObject.OnCreate += GameObject_OnCreate;
         }
@@ -40,17 +42,17 @@ namespace VayneHunter_Reborn.Skills.Condemn
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
-        private static void CustomAntigapcloser_OnEnemyGapcloser(External.ActiveGapcloser gapcloser)
+
+        private static void OnEnemyGapcloser(DZLib.Core.ActiveGapcloser gapcloser)
         {
             if (getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.general.antigp") && Variables.spells[SpellSlot.E].IsReady())
             {
                 LeagueSharp.Common.Utility.DelayAction.Add(getSliderItem(MenuGenerator.miscMenu, "dz191.vhr.misc.general.antigpdelay"),
                     () =>
                     {
-                        if (gapcloser.Sender.LSIsValidTarget(Variables.spells[SpellSlot.E].Range)
-                            && gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) <= 400f
-                            && getCheckBoxItem(CustomAntigapcloser.GPMenu, string.Format("dz191.vhr.agplist.{0}.{1}", gapcloser.Sender.ChampionName.ToLowerInvariant(), gapcloser.SpellName))
-                            )
+                        if (gapcloser.Sender.LSIsValidTarget(Variables.spells[SpellSlot.E].Range) &&
+                            getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.general.antigp")
+                            && Variables.spells[SpellSlot.E].IsReady())
                         {
                             Variables.spells[SpellSlot.E].CastOnUnit(gapcloser.Sender);
                         }

@@ -231,7 +231,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[19]))
                 {
-                    Miscc.Add("blitzcrank", new ComboBox("切换 机器人脚本 : ", 0, "FreshBooster", "OKTW"));
+                    Miscc.Add("blitzcrank", new ComboBox("切换 机器人脚本 : ", 0, "FreshBooster", "OKTW", "KurisuBlitz"));
                 }
                 if (Player.ChampionName.Equals(Champion[20]))
                 {

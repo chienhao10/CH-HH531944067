@@ -151,8 +151,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && gapcloser.Sender.IsValidTarget(E.Range) &&
-                getCheckBoxItem(EMenu, "Egapcloser" + gapcloser.Sender.NetworkId))
+            if (gapcloser.Sender.IsAlly || EMenu["Egapcloser" + gapcloser.Sender.NetworkId] == null)
+            {
+                return;
+            }
+            if (E.IsReady() && gapcloser.Sender.IsValidTarget(E.Range) && getCheckBoxItem(EMenu, "Egapcloser" + gapcloser.Sender.NetworkId))
             {
                 E.Cast(gapcloser.Sender);
             }

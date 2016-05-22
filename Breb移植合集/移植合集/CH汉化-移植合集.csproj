@@ -283,6 +283,7 @@
     <Compile Include="Dual-Port\iLucian\Variables.cs" />
     <Compile Include="Dual-Port\iTwitch\Extensions.cs" />
     <Compile Include="Dual-Port\iTwitch\Twitch.cs" />
+    <Compile Include="Dual-Port\KurisuBlitz\Program.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\Dmg.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\HpBarIndicator.cs" />
     <Compile Include="Dual-Port\NechritoDiana\Classes\Logic.cs" />
@@ -638,6 +639,7 @@
     <Compile Include="Dual-Port\Vayne Hunter Reborn\External\Evade\SkillshotDetector.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\External\Evade\SpellData.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\External\Evade\SpellDatabase.cs" />
+    <Compile Include="Dual-Port\Vayne Hunter Reborn\External\Evade\WindWall.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\IModule.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleHelpers\ModuleEnums.cs" />
     <Compile Include="Dual-Port\Vayne Hunter Reborn\Modules\ModuleList\Condemn\AutoE.cs" />

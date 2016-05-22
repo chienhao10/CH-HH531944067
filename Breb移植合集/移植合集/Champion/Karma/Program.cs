@@ -129,26 +129,24 @@ namespace Karma
             var menuItem = getCheckBoxItem(drawMenu, "WRootRange");
             if (menuItem)
             {
-                foreach (
-                    var enemy in
-                        ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && h.HasBuff("KarmaSpiritBind")))
+                foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget() && h.HasBuff("KarmaSpiritBind")))
                 {
                     var distance = 1 - Math.Min(Math.Max(850 - ObjectManager.Player.LSDistance(enemy), 0), 450)/450;
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, 850,
-                        Color.FromArgb((int) (50*distance), Color.MintCream), -420, true);
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, 850,
-                        Color.FromArgb((int) (255*distance), Color.MintCream), 10);
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, 850, Color.FromArgb((int) (50*distance), Color.MintCream), -420, true);
+                    Render.Circle.DrawCircle(ObjectManager.Player.Position, 850, Color.FromArgb((int) (255*distance), Color.MintCream), 10);
                     break;
                 }
             }
 
             foreach (var spell in SpellList)
             {
-                menuItem = getCheckBoxItem(drawMenu, spell.Slot + "Range");
-                if (menuItem)
+                if (drawMenu[spell.Slot + "Range"] != null)
                 {
-                    Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range,
-                        Color.FromArgb(255, 255, 255, 255));
+                    menuItem = getCheckBoxItem(drawMenu, spell.Slot + "Range");
+                    if (menuItem)
+                    {
+                        Render.Circle.DrawCircle(ObjectManager.Player.Position, spell.Range, Color.FromArgb(255, 255, 255, 255));
+                    }
                 }
             }
         }

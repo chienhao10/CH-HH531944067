@@ -32,6 +32,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Badao Draven (https://github.com/badao/Draven/)
 - Taliyah [if there is one]
 - xQx LeBlanc & Irelia [https://github.com/CPMSoft/xQx-LeagueSharp]
+- SoloVayne
 
 Utility Ports [Only doing after Champions are completed] :
 - Universal Leveler [https://github.com/TheSaltyWaffle/LeagueSharp/tree/master/UniversalLeveler]

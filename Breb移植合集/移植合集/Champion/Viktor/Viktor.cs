@@ -83,7 +83,7 @@ namespace Viktor
 
         private static void Gapcloser_OnGapcloser(AIHeroClient sender, EloBuddy.SDK.Events.Gapcloser.GapcloserEventArgs e)
         {
-            if (getCheckBoxItem(misc, "miscGapcloser") && W.IsInRange(e.End))
+            if (getCheckBoxItem(misc, "miscGapcloser") && W.IsInRange(e.End) && sender.IsEnemy)
             {
                 GapCloserPos = e.End;
                 if (LeagueSharp.Common.Geometry.LSDistance(e.Start, e.End) > e.Sender.Spellbook.GetSpell(e.Slot).SData.CastRangeDisplayOverride && e.Sender.Spellbook.GetSpell(e.Slot).SData.CastRangeDisplayOverride > 100)

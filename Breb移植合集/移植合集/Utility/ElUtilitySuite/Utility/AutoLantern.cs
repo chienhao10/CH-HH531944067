@@ -64,7 +64,7 @@
         /// <returns></returns>
         public void CreateMenu(Menu rootMenu)
         {
-            if (EntityManager.Heroes.Allies.Where(x => x.ChampionName == Champion.Thresh.ToString()).FirstOrDefault() == null)
+            if (EntityManager.Heroes.Allies.Where(x => x.ChampionName == Champion.Thresh.ToString()).FirstOrDefault() == null || Player.ChampionName.Equals("Thresh"))
             {
                 return;
             }
@@ -84,7 +84,7 @@
         /// </summary>
         public void Load()
         {
-            if (EntityManager.Heroes.Allies.Where(x => x.ChampionName == Champion.Thresh.ToString()).FirstOrDefault() == null)
+            if (EntityManager.Heroes.Allies.Where(x => x.ChampionName == Champion.Thresh.ToString()).FirstOrDefault() == null || Player.ChampionName.Equals("Thresh"))
             {
                 return;
             }
