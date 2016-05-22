@@ -124,7 +124,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     Orbwalker.ActiveModesFlags = Player.CountEnemiesInRange(Q.Range) > 0 ? Orbwalker.ActiveModes.Combo : Orbwalker.ActiveModes.LaneClear;
                 }
-                if (R.IsReady() && getCheckBoxItem(miscMenu, "autoRzombie"))
+                if (R.IsReady() && getCheckBoxItem(rMenu, "autoRzombie"))
                 {
                     float timeDeadh = 8;
                     timeDeadh = OktwCommon.GetPassiveTime(Player, "KarthusDeathDefiedBuff");

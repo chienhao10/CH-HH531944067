@@ -51,7 +51,11 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VladimirTheTroll.cs" />
+    <Compile Include="MyMenu.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Utilitty\DamageIndicator.cs" />
+    <Compile Include="Utilitty\MyActivator.cs" />
+    <Compile Include="Utilitty\SpellDamage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
