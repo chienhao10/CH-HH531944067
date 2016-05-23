@@ -473,7 +473,7 @@ namespace Evade
                 new SpellData
                 {
                     ChampionName = "Brand",
-                    SpellName = "BrandBlaze",
+                    SpellName = "BrandQ",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotMissileLine,
                     Delay = 250,
@@ -484,7 +484,7 @@ namespace Evade
                     AddHitbox = true,
                     DangerValue = 3,
                     IsDangerous = true,
-                    MissileSpellName = "BrandBlazeMissile",
+                    MissileSpellName = "BrandQMissile",
                     EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
                     CanBeRemoved = true,
                     CollisionObjects =
@@ -496,7 +496,7 @@ namespace Evade
                 new SpellData
                 {
                     ChampionName = "Brand",
-                    SpellName = "BrandFissure",
+                    SpellName = "BrandW",
                     Slot = SpellSlot.W,
                     Type = SkillShotType.SkillshotCircle,
                     Delay = 850,
@@ -2473,10 +2473,10 @@ namespace Evade
                 new SpellData
                 {
                     ChampionName = "Malzahar",
-                    SpellName = "AlZaharCalloftheVoid",
+                    SpellName = "MalzaharQ",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotLine,
-                    Delay = 1000,
+                    Delay = 750,
                     Range = 900,
                     Radius = 85,
                     MissileSpeed = int.MaxValue,
@@ -2485,7 +2485,7 @@ namespace Evade
                     DangerValue = 2,
                     IsDangerous = false,
                     DontCross = true,
-                    MissileSpellName = "AlZaharCalloftheVoid",
+                    MissileSpellName = "MalzaharQ",
                 });
 
             #endregion Malzahar
@@ -3922,7 +3922,7 @@ namespace Evade
                     Type = SkillShotType.SkillshotLine,
                     Delay = 600,
                     Range = 1600,
-                    Radius = 100,
+                    Radius = 95,
                     MissileSpeed = int.MaxValue,
                     FixedRange = true,
                     AddHitbox = true,
@@ -3981,7 +3981,7 @@ namespace Evade
                     Type = SkillShotType.SkillshotCircle,
                     Delay = 700,
                     Range = 5600,
-                    Radius = 120,
+                    Radius = 130,
                     MissileSpeed = int.MaxValue,
                     FixedRange = false,
                     AddHitbox = true,
@@ -4256,7 +4256,7 @@ namespace Evade
                 new SpellData
                 {
                     ChampionName = "Zyra",
-                    SpellName = "ZyraQFissure",
+                    SpellName = "ZyraQ",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotCircle,
                     Delay = 850,
@@ -4274,7 +4274,7 @@ namespace Evade
                 new SpellData
                 {
                     ChampionName = "Zyra",
-                    SpellName = "ZyraGraspingRoots",
+                    SpellName = "ZyraE",
                     Slot = SpellSlot.E,
                     Type = SkillShotType.SkillshotMissileLine,
                     Delay = 250,
@@ -4285,7 +4285,7 @@ namespace Evade
                     AddHitbox = true,
                     DangerValue = 3,
                     IsDangerous = true,
-                    MissileSpellName = "ZyraGraspingRoots",
+                    MissileSpellName = "ZyraE",
                     EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
                     CollisionObjects = new[] {CollisionObjectTypes.YasuoWall},
                 });

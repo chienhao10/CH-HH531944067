@@ -53,8 +53,8 @@ namespace PortAIO.Champion.Annie
 
             Q.SetTargetted(0.25f, 1400f);
             W.SetSkillshot(0.3f, 80f, float.MaxValue, false, SkillshotType.SkillshotLine);
-            R.SetSkillshot(0.22f, 220f, float.MaxValue, false, SkillshotType.SkillshotCircle);
-            FR.SetSkillshot(0.22f, 220f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            R.SetSkillshot(0.25f, 180f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            FR.SetSkillshot(0.25f, 180f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
             flash = Player.GetSpellSlot("summonerflash");
 

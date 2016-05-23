@@ -266,18 +266,7 @@ namespace Evade
                         DetectedSkillshots.Add(skillshotToAdd);
                         return;
                     }
-
-                    if (skillshot.SpellData.Centered)
-                    {
-                        var start = skillshot.Start - skillshot.Direction * skillshot.SpellData.Range;
-                        var end = skillshot.Start + skillshot.Direction * skillshot.SpellData.Range;
-                        var skillshotToAdd = new Skillshot(
-                            skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
-                            skillshot.Unit);
-                        DetectedSkillshots.Add(skillshotToAdd);
-                        return;
-                    }
-
+                    
                     if (skillshot.SpellData.SpellName == "SyndraE" || skillshot.SpellData.SpellName == "syndrae5")
                     {
                         var angle = 60;
@@ -308,7 +297,7 @@ namespace Evade
                         return;
                     }
 
-                    if (skillshot.SpellData.SpellName == "AlZaharCalloftheVoid")
+                    if (skillshot.SpellData.SpellName == "MalzaharQ")
                     {
                         var start = skillshot.End - skillshot.Direction.Perpendicular() * 400;
                         var end = skillshot.End + skillshot.Direction.Perpendicular() * 400;
@@ -318,6 +307,17 @@ namespace Evade
                         DetectedSkillshots.Add(skillshotToAdd);
                         return;
                     }
+                    
+                    if (skillshot.SpellData.SpellName == "ZyraQ")
+                     {
+                         var start = skillshot.End - skillshot.Direction.Perpendicular() * 450;
+                         var end = skillshot.End + skillshot.Direction.Perpendicular() * 450;
+                         var skillshotToAdd = new Skillshot(
+                             skillshot.DetectionType, skillshot.SpellData, skillshot.StartTick, start, end,
+                             skillshot.Unit);
+                         DetectedSkillshots.Add(skillshotToAdd);
+                         return;
+                     }
 
                     if (skillshot.SpellData.SpellName == "DianaArc")
                     {
@@ -1373,7 +1373,7 @@ namespace Evade
                 var heropos = Drawing.WorldToScreen(ObjectManager.Player.Position);
                 if (Config.Menu["Enabled"].Cast<KeyBind>().CurrentValue)
                 {
-                    Drawing.DrawText(heropos.X, heropos.Y, Color.Red, "躲避: 开启");
+                    Drawing.DrawText(heropos.X, heropos.Y, Color.Red, "Evade: ON");
                 }
             }
 
