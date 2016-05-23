@@ -1,0 +1,420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{467A437B-0871-44B5-9952-BC635C2FFD4B}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Taliyah</RootNamespace>
+    <AssemblyName>Taliyah</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EloBuddy">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.dll</HintPath>
+    </Reference>
+    <Reference Include="EloBuddy.SDK">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\EloBuddy.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\EloBuddy\System\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Data.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\ChampionDatabase.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\ChampionPriorityData.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\DamageDatabase.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\FlashJukeData.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\GapcloserData.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\InterruptableSpellData.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\ItemDatabase.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\MapData.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\SpellDatabase.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\DataTypes\TrapLocationData.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\CastType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\CollisionableObjects.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\DamageScalingTarget.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\DamageScalingType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\DamageStage.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\DangerLevel.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\GapcloserType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\SpellEffectType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\SpellTags.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Enumerations\SpellType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Utility\IFilter.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Utility\JsonFactory.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Utility\Resources\ResourceFactory.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Utility\Resources\ResourceImportAttribute.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-Data\Utility\Resources\ResourceLoader.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Bootstrap.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Constants.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\CastStates.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\CastTypes.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\CenteredFlags.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\CollisionableObjects.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\DangerLevel.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\DrawType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\GapcloserType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\HealthPredictionType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\HitChance.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\JungleType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\KeyBindType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\LogLevel.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\MinionTypes.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\NotificationIconType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\OrbwalkingMode.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\OrbwalkingType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\PerformanceType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\SkillshotDetectionType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\SkillshotType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\SpellTags.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\SpellType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\TeleportStatus.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\TeleportType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\TurretType.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Enumerations\WindowsMessages.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\Dash.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\Events.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\Gapcloser.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\InterruptableSpell.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\Load.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\Stealth.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\Teleport.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Events\Turret.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Extensions\Enumerable.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Extensions\Extensions.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Extensions\SharpDX\Generic.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Extensions\SharpDX\Vector2Extensions.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Extensions\SharpDX\Vector3Extensions.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Extensions\Unit.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\GameObjects.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Collision.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\ConvexHull.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Geometry.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Polygons\ArcPoly.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Polygons\CirclePoly.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Polygons\LinePoly.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Polygons\Polygon.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Polygons\RectanglePoly.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Polygons\RingPoly.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Polygons\SectorPoly.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Prediction\Cluster.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Prediction\GamePath.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Prediction\Health.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Math\Prediction\Movement.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Signals\Signal.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Signals\SignalManager.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Abstracts\AMenuComponent.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\ColorSpectrum.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Customizer\MenuCustomizer.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Menu.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\MenuItem.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\MenuManager.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\MenuValueChangedEventArgs.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\RadioMenu.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\ADrawable.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\ADrawableAdapter.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueBool2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueButton2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueColorPicker2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueKeyBind2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueList2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueMenu2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueMenuSettings2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueSeparator2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueSlider2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueSliderButton2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueTextures2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueTheme2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue2\BlueUtilities2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueBool.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueColorPicker.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueKeyBind.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueList.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueMenu.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueMenuSettings.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueSeparator.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueSlider.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueSliderButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueTextures.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueTheme.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Blue\BlueUtilities.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredBool.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredColorPicker.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredKeyBind.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredList.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredMenu.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredMenuSettings.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredSeparator.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredSlider.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredSliderButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredTextures.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredTheme.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Colored\ColoredUtilities.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultBool.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultColorPicker.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultKeyBind.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultList.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultMenu.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultSeparator.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultSlider.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultSliderButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultTextures.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultTheme.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Default\DefaultUtilities.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\ITheme.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightBool2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightButton2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightColorPicker2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightKeyBind2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightList2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightMenu2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightMenuSettings2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightSeparator2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightSlider2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightSliderButton2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightTextures2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightTheme2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light2\LightUtilities2.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightBool.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightColorPicker.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightKeyBind.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightList.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightMenu.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightMenuSettings.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightSeparator.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightSlider.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightSliderButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightTextures.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightTheme.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Light\LightUtilities.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\MenuSettings.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechBool.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechColorPicker.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechKeyBind.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechList.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechMenu.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechMenuSettings.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechSeparator.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechSlider.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechSliderButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechTextures.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechTheme.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\Tech\TechUtilities.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Skins\ThemeManager.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuBool.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuColor.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuKeyBind.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuList.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuSeparator.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuSlider.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\IMenu\Values\MenuSliderButton.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\Notifications\ANotification.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\Notifications\Notification.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\Notifications\NotificationIcons.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\Notifications\Notifications.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\UI\Utils.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\ActionQueue.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\AutoAttack.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\BinarySerializer.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Cache.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\CallbackPerformance.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Cursor.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\DelayAction.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\DynamicInitializer.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\IFilter.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Invulnerable.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\JsonFactory.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Jungle.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Logging.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\MathUtils.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Minion.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Performance.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Render.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\ResourceFactory.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\ResourceImportAttribute.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\ResourceLoader.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\Storage.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\TickOperation.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\WeightedRandom.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Utils\WindowsKeys.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Variables.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Damages\Damage.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Damages\DamageLibrary.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Damages\DamageMastery.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Damages\DamagePassives.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Items.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Map.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Orbwalking\Orbwalker.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Orbwalking\OrbwalkerBase.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Orbwalking\OrbwalkerSelector.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\Database\SpellDatabase.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\Database\SpellDatabaseEntry.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\LastCast.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\LastCastedSpellEntry.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\LastCastPacketSentEntry.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\Spell.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\BaseSpell.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\Skillshot.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotCircle.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotCone.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotLine.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissile.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileArc.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileCircle.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileCone.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotMissileLine.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\SkillshotRing.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\Targeted.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\SpellTypes\TargetedMissile.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\Tracker\Detector.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\Tracker\Skillshots\_ZiggsR.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\Spells\Tracker\Tracker.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\HeroVisibleEntry.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\ITargetSelectorMode.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Closest.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\IWeightItem.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\LeastHealth.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\LessAttacksToKill.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\LessCastsToKill.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\MostAbilityPower.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\MostAttackDamage.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\NearMouse.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Priority.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\PriorityCategory.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weight.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\WeightItemWrapper.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\AbilityPower.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\Aggro.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\AttackDamage.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\CrowdControl.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\FocusMe.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\Gold.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\Killable.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\LowHealth.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\LowResists.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\ShortDistanceCursor.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\ShortDistancePlayer.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\Modes\Weights\TeamFocus.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelector.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelectorHumanizer.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelectorMode.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Core\Wrappers\TargetSelector\TargetSelectorSelected.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\GlobalSuppressions.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\clipper\clipper.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Acquire.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\AssertCount.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Batch.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Concat.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Consume.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\DistinctBy.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\EquiZip.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\ExceptBy.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Fold.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\ForEach.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Generate.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\GenerateByIndex.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\GroupAdjacent.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Index.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\MaxBy.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\MinBy.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\MoreEnumerable.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\OrderedMerge.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Pad.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Pairwise.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Pipe.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Prepend.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\PreScan.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Scan.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\SequenceException.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\SingleOrFallback.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\SkipUntil.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Split.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\TakeEvery.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\TakeLast.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\TakeUntil.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\ToDataTable.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\ToDelimitedString.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\ToHashSet.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Trace.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\Zip.cs" />
+    <Compile Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\ZipLongest.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Taliyah.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\clipper\License.txt" />
+    <Content Include="Library\Berb.Common\LeagueSharp-SDK\Third_Party\MoreLinq\License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
