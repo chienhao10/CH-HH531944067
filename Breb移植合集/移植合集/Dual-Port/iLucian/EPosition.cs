@@ -32,7 +32,7 @@ namespace iLucian.Utils
         {
             #region The Required Variables
 
-            var positions = DashHelper.GetRotatedQPositions();
+            var positions = DashHelper.GetRotatedEPositions();
             var enemyPositions = DashHelper.GetEnemyPoints();
             var safePositions = positions.Where(pos => !enemyPositions.Contains(pos.LSTo2D())).ToList();
             var bestPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos, 450f);
@@ -58,7 +58,7 @@ namespace iLucian.Utils
             {
                 // Logic for 1 enemy near
                 var backwardsPosition =
-                    (ObjectManager.Player.ServerPosition.LSTo2D() + 450f * ObjectManager.Player.Direction.LSTo2D()).To3D();
+                    (ObjectManager.Player.ServerPosition.LSTo2D() - 450f * ObjectManager.Player.Direction.LSTo2D()).To3D();
 
                 if (!backwardsPosition.UnderTurret(true))
                 {
@@ -76,17 +76,17 @@ namespace iLucian.Utils
                     enemiesNear.Any(
                         t =>
                         t.Health + 15
-                        < ObjectManager.Player.LSGetAutoAttackDamage(t) + Variables.Spell[Variables.Spells.Q].GetDamage(t)
+                        < ObjectManager.Player.LSGetAutoAttackDamage(t) * 2 + Variables.Spell[Variables.Spells.Q].GetDamage(t)
                         && t.LSDistance(ObjectManager.Player) < Orbwalking.GetRealAutoAttackRange(t) + 80f))
                 {
-                    var QPosition =
+                    var ePosition =
                         ObjectManager.Player.ServerPosition.LSExtend(
                             highHealthEnemiesNear.OrderBy(t => t.Health).First().ServerPosition,
                             450f);
 
-                    if (!QPosition.UnderTurret(true))
+                    if (!ePosition.UnderTurret(true))
                     {
-                        return QPosition;
+                        return ePosition;
                     }
                 }
             }
@@ -100,12 +100,12 @@ namespace iLucian.Utils
                 // Logic for 2 enemies Near and alone
 
                 // If there is a killable enemy among those. 
-                var backwardsPosition =
+                var forwardPosition =
                     (ObjectManager.Player.ServerPosition.LSTo2D() + 450f * ObjectManager.Player.Direction.LSTo2D()).To3D();
 
-                if (!backwardsPosition.UnderTurret(true))
+                if (!forwardPosition.UnderTurret(true))
                 {
-                    return backwardsPosition;
+                    return forwardPosition;
                 }
             }
 
@@ -208,10 +208,10 @@ namespace iLucian.Utils
     class DashHelper
     {
         /// <summary>
-        /// Gets the rotated q positions.
+        /// Gets the rotated e positions.
         /// </summary>
         /// <returns></returns>
-        public static List<Vector3> GetRotatedQPositions()
+        public static List<Vector3> GetRotatedEPositions()
         {
             const int CurrentStep = 30;
 

@@ -66,7 +66,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             Sub.Add("autoBuy", new CheckBox("9级后自动换眼", false));
             Sub.Add("AutoWardBlue", new CheckBox("自动买蓝眼"));
             Sub.Add("AutoWardCombo", new CheckBox("只在连招模式使用"));
-            Sub.Add("AutoWardPink", new CheckBox("自动放眼, 扫隐形"));
+            Sub.Add("AutoWardPink", new CheckBox("自动真眼, 扫隐形"));
 
             foreach (var hero in ObjectManager.Get<AIHeroClient>())
             {

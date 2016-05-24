@@ -109,7 +109,7 @@ namespace PortAIO.Champion.Annie
         {
             if (obj.IsValid && obj.IsAlly && obj is Obj_AI_Minion && obj.Name.ToLower() == "tibbers")
             {
-                Tibbers = (Obj_AI_Base) obj;
+                Tibbers = (Obj_AI_Base)obj;
             }
         }
 
@@ -368,11 +368,11 @@ namespace PortAIO.Champion.Annie
                 if (getCheckBoxItem(drawMenu, "onlyRdy"))
                 {
                     if (R.IsReady())
-                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, R.Range + R.Width/2,
+                        LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, R.Range + R.Width / 2,
                             Color.Gray, 1, 1);
                 }
                 else
-                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, R.Range + R.Width/2, Color.Gray,
+                    LeagueSharp.Common.Utility.DrawCircle(ObjectManager.Player.Position, R.Range + R.Width / 2, Color.Gray,
                         1, 1);
             }
         }

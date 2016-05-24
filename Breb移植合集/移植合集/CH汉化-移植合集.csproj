@@ -327,6 +327,7 @@
     <Compile Include="Dual-Port\OKTWQuinn\Quinn.cs" />
     <Compile Include="Dual-Port\OKTWTwistedFate\TwistedFate.cs" />
     <Compile Include="Dual-Port\SimpleSion\Sion.cs" />
+    <Compile Include="Champion\Taliyah\Program.cs" />
     <Compile Include="Dual-Port\Tyler1\Program.cs" />
     <Compile Include="Dual-Port\Tyler1\Utils.cs" />
     <Compile Include="Dual-Port\UnderratedFiora\Fiora.cs" />

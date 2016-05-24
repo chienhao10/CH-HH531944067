@@ -1,5 +1,16 @@
 ﻿To-Do :
-- Fix the Lee Sin Crash
+- Fix Valvrave
+- Fix Nechrito Riven
+- Check out Nocturne
+- hi im gosu Null Ref [http://i.hizliresim.com/4lZjZL.png]
+- Check out UnderratedShaco
+- Fix Karthus LaneClear
+- Gosu Yas - Doesn't E on C - Fix GapClose on minions
+- Check Liss
+- Check out ElVarus
+- Shen Q Clearing
+- Akali Q Last Hit
+
 - Bard Flee [Don't have Bard so can't fix]
 - Tahm Kench Crash [Don't have TK]
 
@@ -12,25 +23,22 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - J4 [https://github.com/diabaths/Mycodes]
 - STahmKench [https://github.com/Screeder/LeagueSharp/blob/master/Common/SStandalone/SChampions/STahmKench/Champions/TahmKench.cs]
 - ExorAshe/Mundo/Graves/Jax/Jhin/Jax/Quinn/Sivir/Karma [https://github.com/nabbhacker/ExoryREPO/tree/master/ExorAIO] (After porting common version, remember to update to SDK version)
-- Kurisu's Blitzcrank/Riven [https://github.com/xKurisu/KurisuSolutions]
-- FreshBooster Braum & LeBlanc & LeeSin [https://github.com/NaviFly/LeagueSharp/tree/master/FreshBooster]
+- Kurisu's Riven [https://github.com/xKurisu/KurisuSolutions]
+- FreshBooster Braum & LeBlanc & Janna [https://github.com/NaviFly/LeagueSharp/tree/master/FreshBooster]
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
-- Zed is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Ze-D%20is%20Back]
-- iDzZed [https://github.com/HikigayaAss/JabbaRepo/tree/master/iDZed]
 - Sharpy AIO Zed [https://github.com/deop7138/Sharpy-AIO/tree/master/Sharpy%20AIO]
 - Swiftly Teemo [https://github.com/Nechrito/SDK/tree/master/Swiftly%20Teemo]
 - Teemo God [https://github.com/MasterGFv2/Teemo_The_Real_God/tree/master/Teemo_The_Real_God]
 - RAREKarthus/Zyra [https://github.com/KyonLeague/RAREScripts/tree/master]
 - Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
-- Hi_Im_Gosu BLM [https://github.com/diabaths/Mycodes/tree/master/hi%20im%20gosu]
 - NechritoRengar [https://github.com/Nechrito/Leaguesharp/tree/master/Nechrito%20Rengar]
 - SephCassio/Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
 - Hikicarry Draven (A really nice manual Draven) [https://github.com/HikigayaAss/hikiMarksman/tree/master/hikiMarksmanRework/hikiMarksmanRework]
 - Rek'Sai - Winner of Fights [https://github.com/HikigayaAss/LeagueSharp/tree/master/RekSai]
-- Underrated Renekton [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/Champions/Renekton.cs]
+- Underrated Renekton/Singed [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/]
 - Royal Ziggs [https://github.com/princer007/LSResurrected/tree/master/RoyalZiggy]
 - Badao Draven (https://github.com/badao/Draven/)
-- Taliyah [if there is one]
+- Taliyah [https://www.joduska.me/forum/topic/207404-toph-taliyah-assembly-combo-lane-clear-drawings-etc/]
 - xQx LeBlanc & Irelia [https://github.com/CPMSoft/xQx-LeagueSharp]
 - SoloVayne
 
@@ -49,6 +57,7 @@ Utility Ports [Only doing after Champions are completed] :
 - AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
 - StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
 - OKTW Ward Standalone [Already in PortAIO]
+- Trap Tracker
 
 Library Ports [Only doing if I need it for an addon] :
 - ExorAIO Series SDK

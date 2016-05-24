@@ -116,8 +116,12 @@ using SebbyLib;
 
             if (getCheckBoxItem(comboOptions, "com.itwitch.combo.useW") && Spells[SpellSlot.W].IsReady())
             {
+                if (getCheckBoxItem(miscOptions, "com.itwitch.misc.saveManaE") && ObjectManager.Player.Mana <= Spells[SpellSlot.E].ManaCost + Spells[SpellSlot.W].ManaCost)
+                {
+                    return;
+                }
                 var wTarget = TargetSelector.GetTarget(Spells[SpellSlot.W].Range, DamageType.Physical);
-                if (wTarget.IsValidTarget(Spells[SpellSlot.W].Range))
+                if (wTarget.IsValidTarget(Spells[SpellSlot.W].Range) && !ObjectManager.Player.HasBuff("TwitchHideInShadows"))
                 {
                     var prediction = Spells[SpellSlot.W].GetPrediction(wTarget);
                     if (prediction.Hitchance >= HitChance.High)

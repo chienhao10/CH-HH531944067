@@ -7,6 +7,7 @@ using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EzEvade;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -45,7 +46,7 @@ namespace ezEvade
                 && lastSpellEvadeCommand.evadeSpellData.evadeType == EvadeType.Dash)
             {
                 //Console.WriteLine("" + dashInfo.EndPos.LSDistance(lastSpellEvadeCommand.targetPosition));
-                lastSpellEvadeCommand.targetPosition = Player.Instance.GetDashInfo().EndPos.To2D();
+                lastSpellEvadeCommand.targetPosition = Player.Instance.GetDashInfo().EndPos.LSTo2D();
             }
         }
 
@@ -53,7 +54,7 @@ namespace ezEvade
         {
             foreach (var spell in itemSpells)
             {
-                var hasItem = Items.HasItem((int)spell.itemID);
+                var hasItem = LeagueSharp.Common.Items.HasItem((int)spell.itemID);
 
                 if (hasItem && !evadeSpells.Exists(s => s.spellName == spell.spellName))
                 {
@@ -157,7 +158,7 @@ namespace ezEvade
                 if (ObjectCache.menuCache.cache[evadeSpell.name + "UseEvadeSpell"].Cast<CheckBox>().CurrentValue == false
                     || GetSpellDangerLevel(evadeSpell) > spell.GetSpellDangerLevel()
                     || (evadeSpell.isItem == false && !(myHero.Spellbook.CanUseSpell(evadeSpell.spellKey) == SpellState.Ready))
-                    || (evadeSpell.isItem == true && !(Items.CanUseItem((int)evadeSpell.itemID)))
+                    || (evadeSpell.isItem == true && !(LeagueSharp.Common.Items.CanUseItem((int)evadeSpell.itemID)))
                     || (evadeSpell.checkSpellName == true && myHero.Spellbook.GetSpell(evadeSpell.spellKey).Name != evadeSpell.spellName))
 
                 {
@@ -195,7 +196,7 @@ namespace ezEvade
                         var path = myHero.Path;
                         if (path.Length > 0)
                         {
-                            var movePos = path[path.Length - 1].To2D();
+                            var movePos = path[path.Length - 1].LSTo2D();
                             var posInfo = EvadeHelper.CanHeroWalkToPos(movePos, ObjectCache.myHeroCache.moveSpeed, 0, 0);
 
                             if (GetSpellDangerLevel(evadeSpell) > posInfo.posDangerLevel)
@@ -261,8 +262,8 @@ namespace ezEvade
                         {
                             if (evadeSpell.isReversed)
                             {
-                                var dir = (posInfo.position - ObjectCache.myHeroCache.serverPos2D).Normalized();
-                                var range = ObjectCache.myHeroCache.serverPos2D.Distance(posInfo.position);
+                                var dir = (posInfo.position - ObjectCache.myHeroCache.serverPos2D).LSNormalized();
+                                var range = ObjectCache.myHeroCache.serverPos2D.LSDistance(posInfo.position);
                                 var pos = ObjectCache.myHeroCache.serverPos2D - dir * range;
 
                                 posInfo.position = pos;
@@ -288,7 +289,7 @@ namespace ezEvade
                 {
                     if (spell.hasProjectile() || evadeSpell.spellName == "FioraW") //temp fix, don't have fiora :'(
                     {
-                        var dir = (spell.startPos - ObjectCache.myHeroCache.serverPos2D).Normalized();
+                        var dir = (spell.startPos - ObjectCache.myHeroCache.serverPos2D).LSNormalized();
                         var pos = ObjectCache.myHeroCache.serverPos2D + dir * 100;
 
                         CastEvadeSpell(() => EvadeCommand.CastSpell(evadeSpell, pos), processSpell);
@@ -299,7 +300,7 @@ namespace ezEvade
                 {
                     if (evadeSpell.isItem)
                     {
-                        CastEvadeSpell(() => Items.UseItem((int)evadeSpell.itemID), processSpell);
+                        CastEvadeSpell(() => LeagueSharp.Common.Items.UseItem((int)evadeSpell.itemID), processSpell);
                         return true;
                     }
                     else

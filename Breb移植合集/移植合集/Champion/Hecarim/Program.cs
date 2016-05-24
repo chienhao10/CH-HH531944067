@@ -127,7 +127,7 @@ namespace JustHecarim
                         .FirstOrDefault(
                             enemy =>
                                 enemy.IsValidTarget(Q.Range) && enemy.Health < player.GetSpellDamage(enemy, SpellSlot.Q));
-                if (target.IsValidTarget(Q.Range))
+                if (target.IsValidTarget(Q.Range) && target.IsEnemy)
                 {
                     Q.Cast();
                 }
@@ -140,7 +140,7 @@ namespace JustHecarim
                         .FirstOrDefault(
                             enemy =>
                                 enemy.IsValidTarget(R.Range) && enemy.Health < player.GetSpellDamage(enemy, SpellSlot.R));
-                if (target.IsValidTarget(R.Range))
+                if (target.IsValidTarget(R.Range) && target.IsEnemy)
                 {
                     R.CastIfHitchanceEquals(target, HitChance.High);
                 }

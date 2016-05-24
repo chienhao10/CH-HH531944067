@@ -62,7 +62,7 @@ namespace ezEvade
                 var turret = entry.Value;
                 if (turret == null || !turret.IsValid || turret.IsDead)
                 {
-                    Core.DelayAction(() => ObjectCache.turrets.Remove(entry.Key), 1000);
+                    LeagueSharp.Common.Utility.DelayAction.Add(1, () => ObjectCache.turrets.Remove(entry.Key));
                     continue;
                 }
 
@@ -71,7 +71,7 @@ namespace ezEvade
                     continue;
                 }
 
-                var distToTurret = pos.LSDistance(turret.Position.To2D());
+                var distToTurret = pos.LSDistance(turret.Position.LSTo2D());
                 if (distToTurret <= turretRange)
                 {
                     return true;

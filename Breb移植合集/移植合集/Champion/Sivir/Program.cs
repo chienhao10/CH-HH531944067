@@ -171,7 +171,7 @@ namespace OneKeyToWin_AIO_Sebby
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
             var Target = gapcloser.Sender;
-            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Target.IsValidTarget(5000))
+            if (getCheckBoxItem(eMenu, "AGC") && E.IsReady() && Target.IsValidTarget(5000) && Target.IsEnemy)
                 E.Cast();
         }
 

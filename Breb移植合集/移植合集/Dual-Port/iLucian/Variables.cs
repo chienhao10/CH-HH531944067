@@ -23,6 +23,7 @@ namespace iLucian
         };
 
         public static Menu Menu { get; set; }
+        public static int LastECast = 0;
 
         public static bool HasPassive()
         {

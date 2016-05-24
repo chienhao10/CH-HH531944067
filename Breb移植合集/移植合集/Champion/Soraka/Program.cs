@@ -151,12 +151,12 @@ namespace Sophies_Soraka
         {
             var unit = gapcloser.Sender;
 
-            if (getCheckBoxItem(miscMenu, "useQGapcloser") && unit.IsValidTarget(Q.Range) && Q.IsReady())
+            if (getCheckBoxItem(miscMenu, "useQGapcloser") && unit.IsValidTarget(Q.Range) && Q.IsReady() && unit.IsEnemy)
             {
                 Q.Cast(unit, Packets);
             }
 
-            if (getCheckBoxItem(miscMenu, "useEGapcloser") && unit.IsValidTarget(E.Range) && E.IsReady())
+            if (getCheckBoxItem(miscMenu, "useEGapcloser") && unit.IsValidTarget(E.Range) && E.IsReady() && unit.IsEnemy)
             {
                 E.Cast(unit, Packets);
             }

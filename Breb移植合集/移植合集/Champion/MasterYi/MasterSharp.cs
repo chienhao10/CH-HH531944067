@@ -51,7 +51,7 @@ namespace MasterSharp
             {
                 TargetedSkills.setUpSkills();
 
-                Config = MainMenu.AddMenu("易大师 Sharp", "MasterYi");
+                Config = MainMenu.AddMenu("MasterYi - Sharp", "MasterYi");
 
                 //Combo
                 comboMenu = Config.AddSubMenu("连招", "combo");
@@ -134,7 +134,7 @@ namespace MasterSharp
 
         public static void getSkilshotMenuQ()
         {
-            evadeMenu.AddGroupLabel("Q 躲避 : ");
+            evadeMenu.AddGroupLabel("Q Dodge : ");
             foreach (var hero in ObjectManager.Get<AIHeroClient>())
             {
                 if (hero.Team != ObjectManager.Player.Team)
@@ -145,9 +145,9 @@ namespace MasterSharp
                         {
                             evadeMenu.AddLabel(spell.MenuItemName + " :");
                             evadeMenu.Add("qEvadeAll" + spell.MenuItemName,
-                                new CheckBox("一直使用 Q 躲避", spell.IsDangerous));
+                                new CheckBox("Evade with Q always", spell.IsDangerous));
                             evadeMenu.Add("qEvade" + spell.MenuItemName,
-                                new CheckBox("连招 Q 躲避", spell.IsDangerous));
+                                new CheckBox("Evade with Q Combo", spell.IsDangerous));
                             evadeMenu.AddSeparator();
                         }
                     }
@@ -223,6 +223,7 @@ namespace MasterSharp
                     //Console.WriteLine(buf.Name);
                 }
             }
+
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 var target = TargetSelector.GetTarget(800, DamageType.Physical);
@@ -230,6 +231,10 @@ namespace MasterSharp
                 if (target != null)
                     MasterYi.selectedTarget = target;
                 MasterYi.slayMaderDuker(target);
+            }
+            else
+            {
+                Orbwalker.ForcedTarget = null;
             }
 
             DetectedSkillshots.RemoveAll(skillshot => !skillshot.IsActive());

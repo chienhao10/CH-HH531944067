@@ -37,7 +37,7 @@ namespace ezEvade
                     return false;
                 }*/
 
-                var projection = position.ProjectOn(spellPos, spellEndPos);
+                var projection = position.LSProjectOn(spellPos, spellEndPos);
 
                 /*if (projection.SegmentPoint.LSDistance(spellEndPos) < 100) //Check Skillshot endpoints
                 {
@@ -89,7 +89,7 @@ namespace ezEvade
                 var turret = entry.Value;
                 if (turret == null || !turret.IsValid || turret.IsDead)
                 {
-                    Core.DelayAction(() => ObjectCache.turrets.Remove(entry.Key), 1);
+                    LeagueSharp.Common.Utility.DelayAction.Add(1, () => ObjectCache.turrets.Remove(entry.Key));
                     continue;
                 }
 
@@ -98,7 +98,7 @@ namespace ezEvade
                     continue;
                 }
 
-                var distToTurret = pos.LSDistance(turret.Position.To2D());
+                var distToTurret = pos.LSDistance(turret.Position.LSTo2D());
 
                 minDist = Math.Min(minDist, distToTurret);
             }
@@ -118,7 +118,7 @@ namespace ezEvade
 
         public static float GetPositionValue(this Vector2 pos)
         {
-            float posValue = pos.LSDistance(Game.CursorPos.To2D());
+            float posValue = pos.LSDistance(Game.CursorPos.LSTo2D());
 
             if (ObjectCache.menuCache.cache["PreventDodgingNearEnemy"].Cast<CheckBox>().CurrentValue)
             {
@@ -158,7 +158,7 @@ namespace ezEvade
             int radiusIndex = 0;
 
             Vector2 heroPoint = ObjectCache.myHeroCache.serverPos2D;
-            Vector2 lastMovePos = Game.CursorPos.To2D();
+            Vector2 lastMovePos = Game.CursorPos.LSTo2D();
 
             List<PositionInfo> posTable = new List<PositionInfo>();
 

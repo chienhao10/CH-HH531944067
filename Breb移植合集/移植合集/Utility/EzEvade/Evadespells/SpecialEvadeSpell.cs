@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -45,7 +46,7 @@ namespace ezEvade
 
         public static bool UseEkkoR(EvadeSpellData evadeSpell, bool process = true)
         {
-            if ((from obj in ObjectManager.Get<Obj_AI_Minion>() where obj != null && obj.IsValid && !obj.IsDead && obj.Name == "Ekko" && obj.IsAlly select obj.ServerPosition.To2D()).Any(blinkPos => !blinkPos.CheckDangerousPos(10)))
+            if ((from obj in ObjectManager.Get<Obj_AI_Minion>() where obj != null && obj.IsValid && !obj.IsDead && obj.Name == "Ekko" && obj.IsAlly select obj.ServerPosition.LSTo2D()).Any(blinkPos => !blinkPos.CheckDangerousPos(10)))
             {
                 EvadeSpell.CastEvadeSpell(() => EvadeCommand.CastSpell(evadeSpell), process);
                 //DelayAction.Add(50, () => myHero.IssueOrder(GameObjectOrder.MoveTo, posInfo.position.To3D()));

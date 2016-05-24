@@ -25,9 +25,9 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public MissileReturn(string missile, string missileReturnName, Spell qwer)
         {
-            Sub = Config.AddSubMenu("弹道设置");
-            Sub.Add("aim", new CheckBox("自动对准回程弹道 (" + qwer.Slot + ")"));
-            Sub.Add("drawHelper", new CheckBox("显示 " + qwer.Slot + " 助手"));
+            Sub = Config.AddSubMenu("Missile Settings");
+            Sub.Add("aim", new CheckBox("Auto aim returned missile (" + qwer.Slot + ")"));
+            Sub.Add("drawHelper", new CheckBox("Show " + qwer.Slot + " helper"));
 
             MissileName = missile;
             MissileReturnName = missileReturnName;
@@ -53,29 +53,26 @@ namespace OneKeyToWin_AIO_Sebby.Core
         private void Drawing_OnDraw(EventArgs args)
         {
             if (Missile != null && Missile.IsValid && getCheckBoxItem("drawHelper"))
-                OktwCommon.DrawLineRectangle(Missile.Position, Player.Position, (int) QWER.Width, 1, Color.White);
+                OktwCommon.DrawLineRectangle(Missile.Position, Player.Position, (int)QWER.Width, 1, Color.White);
         }
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            if (Missile != null)
+            if (getCheckBoxItem("aim"))
             {
-                if (getCheckBoxItem("aim"))
+                var posPred = CalculateReturnPos();
+                if (posPred != Vector3.Zero)
                 {
-                    var posPred = CalculateReturnPos();
-                    if (posPred != Vector3.Zero)
+                    if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
                     {
-                        if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-                        {
-                            Orbwalker.OrbwalkTo(posPred);
-                        }
+                        Orbwalker.OrbwalkTo(posPred);
                     }
-                    else
+                }
+                else
+                {
+                    if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
                     {
-                        if (!Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None))
-                        {
-                            Orbwalker.OrbwalkTo(Game.CursorPos);
-                        }
+                        Orbwalker.OrbwalkTo(Game.CursorPos);
                     }
                 }
             }
@@ -94,7 +91,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             if (sender.IsEnemy || sender.Type != GameObjectType.MissileClient || !sender.IsValid<MissileClient>())
                 return;
 
-            var missile = (MissileClient) sender;
+            var missile = (MissileClient)sender;
 
             if (missile.SData.Name != null)
             {
@@ -111,7 +108,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
             if (sender.IsEnemy || sender.Type != GameObjectType.MissileClient || !sender.IsValid<MissileClient>())
                 return;
 
-            var missile = (MissileClient) sender;
+            var missile = (MissileClient)sender;
 
             if (missile.SData.Name != null)
             {
@@ -124,7 +121,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public Vector3 CalculateReturnPos()
         {
-            if (Missile != null && Missile.IsValidMissile() && Target.IsValidTarget())
+            if (Missile != null && Missile.IsValidMissile() && Target.IsValidTarget() && Missile.IsValid)
             {
                 var finishPosition = Missile.Position;
                 if (Missile.SData.Name.ToLower() == MissileName.ToLower())
@@ -132,23 +129,23 @@ namespace OneKeyToWin_AIO_Sebby.Core
                     finishPosition = MissileEndPos;
                 }
 
-                var misToPlayer = Player.Distance(finishPosition);
-                var tarToPlayer = Player.Distance(Target);
+                var misToPlayer = Player.LSDistance(finishPosition);
+                var tarToPlayer = Player.LSDistance(Target);
 
                 if (misToPlayer > tarToPlayer)
                 {
-                    var misToTarget = Target.Distance(finishPosition);
+                    var misToTarget = Target.LSDistance(finishPosition);
 
                     if (misToTarget < QWER.Range && misToTarget > 50)
                     {
-                        var cursorToTarget = Target.Distance(Player.Position.Extend(Game.CursorPos, 100));
-                        var ext = finishPosition.Extend(Target.ServerPosition, cursorToTarget + misToTarget);
+                        var cursorToTarget = Target.LSDistance(Player.Position.LSExtend(Game.CursorPos, 100));
+                        var ext = finishPosition.LSExtend(Target.ServerPosition, cursorToTarget + misToTarget);
 
-                        if (ext.Distance(Player.Position) < 800 && ext.CountEnemiesInRange(400) < 2)
+                        if (ext.LSDistance(Player.Position) < 800 && ext.CountEnemiesInRange(400) < 2)
                         {
                             if (getCheckBoxItem("drawHelper"))
-                                Utility.DrawCircle(ext.To3D(), 100, Color.White, 1, 1);
-                            return ext.To3D();
+                                Utility.DrawCircle(ext, 100, System.Drawing.Color.White, 1, 1);
+                            return ext;
                         }
                     }
                 }

@@ -23,8 +23,9 @@ namespace iLucian.MenuHelper
             comboOptions.Add("com.ilucian.combo.qExtended", new CheckBox("使用 延长Q", true));
             comboOptions.Add("com.ilucian.combo.w", new CheckBox("使用 W", true));
             comboOptions.Add("com.ilucian.combo.e", new CheckBox("使用 E", true));
+            comboOptions.Add("com.ilucian.combo.startE", new CheckBox("连招 E 起手", true));
             comboOptions.Add("com.ilucian.combo.eRange", new Slider("E 冲刺距离", 65, 50, 475));
-            comboOptions.Add("com.ilucian.combo.eMode", new ComboBox("E 模式", 0, "风筝", "边上", "鼠标", "敌人"));
+            comboOptions.Add("com.ilucian.combo.eMode", new ComboBox("E 模式", 5, "风筝", "边上", "鼠标", "敌人", "快速模式", "智能 E", "URF（阿福快打）"));
             comboOptions.Add("com.ilucian.combo.forceR", new KeyBind("半自动R按键", false, KeyBind.BindTypes.PressToggle, 'T'));
 
             harassOptions = Variables.Menu.AddSubMenu(":: I卢锡安 - 骚扰", "com.ilucian.harass");
@@ -48,6 +49,7 @@ namespace iLucian.MenuHelper
             jungleclearOptions.Add("com.ilucian.jungleclear.e", new CheckBox("使用 E", true));
 
             miscOptions = Variables.Menu.AddSubMenu(":: I卢锡安 - 杂项", "com.ilucian.misc");
+            miscOptions.Add("com.ilucian.misc.antiVayne", new CheckBox("防薇恩定墙", true));
             miscOptions.Add("com.ilucian.misc.usePrediction", new CheckBox("使用 W 预判", true));
             miscOptions.Add("com.ilucian.misc.gapcloser", new CheckBox("使用 E 接近/防突进", true));
             miscOptions.Add("com.ilucian.misc.eqKs", new CheckBox("EQ - 抢头", true));

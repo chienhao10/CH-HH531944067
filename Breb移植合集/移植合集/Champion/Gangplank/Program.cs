@@ -28,8 +28,8 @@ namespace UnderratedAIO.Champions
         public static Vector3 ePos;
         public static List<Barrel> savedBarrels = new List<Barrel>();
         public static IncomingDamage IncDamages = new IncomingDamage();
-        public static double[] Rwave = {50, 70, 90};
-        public static double[] EDamage = {60, 90, 120, 150, 180};
+        public static double[] Rwave = { 50, 70, 90 };
+        public static double[] EDamage = { 60, 90, 120, 150, 180 };
 
         public static void OnLoad()
         {
@@ -88,8 +88,8 @@ namespace UnderratedAIO.Champions
             var barrel = savedBarrels.FirstOrDefault(b => b.barrel.NetworkId == targetB.NetworkId);
             if (barrel != null)
             {
-                var time = targetB.Health*getEActivationDelay()*1000;
-                if (Environment.TickCount - barrel.time + (melee ? sender.AttackDelay : missileTravelTime)*1000 >
+                var time = targetB.Health * getEActivationDelay() * 1000;
+                if (Environment.TickCount - barrel.time + (melee ? sender.AttackDelay : missileTravelTime) * 1000 >
                     time)
                 {
                     return true;
@@ -100,7 +100,7 @@ namespace UnderratedAIO.Champions
 
         private static float GetQTime(Obj_AI_Base targetB)
         {
-            return player.LSDistance(targetB)/2800f + Q.Delay;
+            return player.LSDistance(targetB) / 2800f + Q.Delay;
         }
 
         private static void InitGangPlank()
@@ -150,10 +150,10 @@ namespace UnderratedAIO.Champions
                         HeroManager.Enemies.Where(
                             e =>
                                 ((e.UnderTurret(true) &&
-                                  e.MaxHealth/100*getSliderItem(miscMenu, "Rhealt")*0.75f >
+                                  e.MaxHealth / 100 * getSliderItem(miscMenu, "Rhealt") * 0.75f >
                                   e.Health - IncDamages.GetEnemyData(e.NetworkId).DamageTaken) ||
                                  (!e.UnderTurret(true) &&
-                                  e.MaxHealth/100*getSliderItem(miscMenu, "Rhealt") >
+                                  e.MaxHealth / 100 * getSliderItem(miscMenu, "Rhealt") >
                                   e.Health - IncDamages.GetEnemyData(e.NetworkId).DamageTaken)) &&
                                 e.HealthPercent > getSliderItem(miscMenu, "RhealtMin") && e.IsValidTarget() &&
                                 e.LSDistance(player) > 1500))
@@ -297,7 +297,7 @@ namespace UnderratedAIO.Champions
                         !p.IsWall() && p.LSDistance(barrel.Position) < BarrelConnectionRange &&
                         p.LSDistance(barrel.Position) > BarrelExplosionRange &&
                         p.LSDistance(cursorPos) < BarrelConnectionRange && p.LSDistance(cursorPos) > BarrelExplosionRange &&
-                        p.LSDistance(barrel.Position) + p.LSDistance(cursorPos) > BarrelExplosionRange*2 - 100)
+                        p.LSDistance(barrel.Position) + p.LSDistance(cursorPos) > BarrelExplosionRange * 2 - 100)
                     .OrderByDescending(p => p.CountEnemiesInRange(BarrelExplosionRange))
                     .ThenByDescending(p => p.LSDistance(barrel.Position))
                     .FirstOrDefault();
@@ -325,8 +325,8 @@ namespace UnderratedAIO.Champions
 
         private static void Harass()
         {
-            var perc = getSliderItem(harassMenu, "minmanaH")/100f;
-            if (player.Mana < player.MaxMana*perc)
+            var perc = getSliderItem(harassMenu, "minmanaH") / 100f;
+            if (player.Mana < player.MaxMana * perc)
             {
                 return;
             }
@@ -386,8 +386,8 @@ namespace UnderratedAIO.Champions
 
         private static void Clear()
         {
-            var perc = getSliderItem(laneClearMenu, "minmana")/100f;
-            if (player.Mana < player.MaxMana*perc)
+            var perc = getSliderItem(laneClearMenu, "minmana") / 100f;
+            if (player.Mana < player.MaxMana * perc)
             {
                 return;
             }
@@ -436,7 +436,7 @@ namespace UnderratedAIO.Champions
             {
                 return;
             }
-            var ignitedmg = (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
+            var ignitedmg = (float)player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
             if (getCheckBoxItem(comboMenu, "useIgnite") &&
                 ignitedmg > target.Health - IncDamages.GetEnemyData(target.NetworkId).DamageTaken && hasIgnite &&
@@ -735,18 +735,43 @@ namespace UnderratedAIO.Champions
             {
                 if (W.IsReady() && player.HealthPercent < 100)
                 {
-                    var Heal = new[] {50, 75, 100, 125, 150}[W.Level - 1] +
-                               (player.MaxHealth - player.Health)*0.15f + player.FlatMagicDamageMod*0.9f;
-                    var mod = Math.Max(100f, player.Health + Heal)/player.MaxHealth;
-                    var xPos = (float) ((double) player.HPBarPosition.X + 36 + 103.0*mod);
+                    var Heal = new[] { 50, 75, 100, 125, 150 }[W.Level - 1] +
+                               (player.MaxHealth - player.Health) * 0.15f + player.FlatMagicDamageMod * 0.9f;
+                    var mod = Math.Max(100f, player.Health + Heal) / player.MaxHealth;
+                    var xPos = (float)((double)player.HPBarPosition.X + 36 + 103.0 * mod);
                     Drawing.DrawLine(
-                        xPos, player.HPBarPosition.Y + 8, xPos, (float) ((double) player.HPBarPosition.Y + 17), 2f,
+                        xPos, player.HPBarPosition.Y + 8, xPos, (float)((double)player.HPBarPosition.Y + 17), 2f,
                         Color.Coral);
                 }
+
+                var tokens = player.GetBuff("gangplankbilgewatertoken");
+                if (player.InFountain() && getCheckBoxItem(drawMenu, "drawQpass") && tokens != null &&
+                    tokens.Count > 500)
+                {
+                    var second = DateTime.Now.Second.ToString();
+                    var time = int.Parse(second[second.Length - 1].ToString());
+                    var color = Color.DeepSkyBlue;
+                    if (time >= 3 && time < 6)
+                    {
+                        color = Color.GreenYellow;
+                    }
+                    if (time >= 6 && time < 8)
+                    {
+                        color = Color.Yellow;
+                    }
+                    if (time >= 8)
+                    {
+                        color = Color.Orange;
+                    }
+                    Drawing.DrawText(
+                        Drawing.WorldToScreen(Game.CursorPos).X - 150, Drawing.WorldToScreen(Game.CursorPos).Y - 50, color,
+                        "Spend your Silver Serpents, landlubber!");
+                }
+
             }
             if (getBoxItem(drawMenu, "drawKillableSL") != 0 && R.IsReady())
             {
-                var text = (from enemy in HeroManager.Enemies.Where(e => e.IsValidTarget()) where getRDamage(enemy) > enemy.Health select enemy.ChampionName + "(" + Math.Ceiling(enemy.Health/Rwave[R.Level - 1]) + " wave)").ToList();
+                var text = (from enemy in HeroManager.Enemies.Where(e => e.IsValidTarget()) where getRDamage(enemy) > enemy.Health select enemy.ChampionName + "(" + Math.Ceiling(enemy.Health / Rwave[R.Level - 1]) + " wave)").ToList();
                 if (text.Count > 0)
                 {
                     var result = string.Join(", ", text);
@@ -819,11 +844,11 @@ namespace UnderratedAIO.Champions
                     var time =
                         Math.Min(
                             Environment.TickCount - barrelData.time -
-                            barrelData.barrel.Health*getEActivationDelay()*1000f, 0)/1000f;
+                            barrelData.barrel.Health * getEActivationDelay() * 1000f, 0) / 1000f;
                     if (time < 0)
                     {
                         Drawing.DrawText(
-                            barrelData.barrel.HPBarPosition.X - time.ToString().Length*5 + 40,
+                            barrelData.barrel.HPBarPosition.X - time.ToString().Length * 5 + 40,
                             barrelData.barrel.HPBarPosition.Y - 20, Color.DarkOrange,
                             string.Format("{0:0.00}", time).Replace("-", ""));
                     }
@@ -857,13 +882,13 @@ namespace UnderratedAIO.Champions
             if (mode == 1)
             {
                 Drawing.DrawText(
-                    Drawing.Width/2 - (baseText + result).Length*5, Drawing.Height*0.75f, Color.Red,
+                    Drawing.Width / 2 - (baseText + result).Length * 5, Drawing.Height * 0.75f, Color.Red,
                     baseText + result);
             }
             else
             {
                 Drawing.DrawText(
-                    player.HPBarPosition.X - (baseText + result).Length*5 + 110, player.HPBarPosition.Y + 250,
+                    player.HPBarPosition.X - (baseText + result).Length * 5 + 110, player.HPBarPosition.Y + 250,
                     Color.Red, baseText + result);
             }
         }
@@ -873,7 +898,7 @@ namespace UnderratedAIO.Champions
             return
                 (float)
                     player.CalcDamage(enemy, DamageType.Magical,
-                        (Rwave[R.Level - 1] + 0.1*player.FlatMagicDamageMod)*waveLength());
+                        (Rwave[R.Level - 1] + 0.1 * player.FlatMagicDamageMod) * waveLength());
         }
 
         public static int waveLength()
@@ -914,8 +939,8 @@ namespace UnderratedAIO.Champions
                         b =>
                             b.barrel.NetworkId == args.Target.NetworkId &&
                             KillableBarrel(
-                                b.barrel, sender.IsMelee, (AIHeroClient) sender,
-                                sender.LSDistance(b.barrel)/args.SData.MissileSpeed));
+                                b.barrel, sender.IsMelee, (AIHeroClient)sender,
+                                sender.LSDistance(b.barrel) / args.SData.MissileSpeed));
                 foreach (var barrelData in targetBarrels)
                 {
                     savedBarrels.Remove(barrelData);
@@ -976,8 +1001,8 @@ namespace UnderratedAIO.Champions
             drawMenu.Add("drawWcd", new CheckBox("显示 E 倒数"));
             drawMenu.Add("drawEmini", new CheckBox("显示 E 附近可击杀小兵"));
             drawMenu.Add("drawEQ", new CheckBox("显示 EQ 至鼠标"));
-            drawMenu.Add("drawKillableSL",
-                new ComboBox("显示 R 可击杀目标", 1, "关闭", "界面上方", "船长下方"));
+            drawMenu.Add("drawKillableSL", new ComboBox("显示 R 可击杀目标", 1, "关闭", "界面上方", "船长下方"));
+            drawMenu.Add("drawQpass", new CheckBox("显示关于银币的提示"));
 
             // Combo Settings
             comboMenu = config.AddSubMenu("连招 ", "csettings");

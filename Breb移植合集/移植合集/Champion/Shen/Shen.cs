@@ -68,7 +68,7 @@ namespace UnderratedAIO.Champions
             {
                 return;
             }
-            if (unit.IsValidTarget(E.Range) && E.IsReady())
+            if (unit.LSIsValidTarget(E.Range) && E.IsReady())
             {
                 E.Cast(unit, getCheckBoxItem(config, "packets"));
             }
@@ -215,7 +215,7 @@ namespace UnderratedAIO.Champions
             {
                 return;
             }
-            if (gapcloser.Sender.IsValidTarget(E.Range) && E.IsReady() &&
+            if (gapcloser.Sender.LSIsValidTarget(E.Range) && E.IsReady() &&
                 player.LSDistance(gapcloser.Sender.Position) < 400)
             {
                 E.Cast(gapcloser.End, getCheckBoxItem(config, "packets"));
@@ -224,7 +224,7 @@ namespace UnderratedAIO.Champions
 
         private static void Clear()
         {
-            var minionsHP = ObjectManager.Get<Obj_AI_Minion>().Where(m => m.IsValidTarget(400)).Sum(m => m.Health);
+            var minionsHP = ObjectManager.Get<Obj_AI_Minion>().Where(m => m.LSIsValidTarget(400)).Sum(m => m.Health);
 
             if (getCheckBoxItem(menuLC, "useqLC") && minionsHP > 300 && CheckQDef())
             {
@@ -247,12 +247,12 @@ namespace UnderratedAIO.Champions
                             (((IncDamages.GetAllyData(i.NetworkId).DamageTaken > i.Health ||
                                (i.Health - IncDamages.GetAllyData(i.NetworkId).DamageTaken)*100f/
                                i.MaxHealth <= getSliderItem(menuU, "atpercent")) &&
-                              i.CountEnemiesInRange(700) > 0) ||
+                              i.LSCountEnemiesInRange(700) > 0) ||
                              IncDamages.GetAllyData(i.NetworkId).SkillShotDamage > i.Health)))
             {
                 if (getCheckBoxItem(menuU, "user") &&
                     !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && R.IsReady() &&
-                    player.CountEnemiesInRange(EFlash.Range + 50) < 1 &&
+                    player.LSCountEnemiesInRange(EFlash.Range + 50) < 1 &&
                     !getCheckBoxItem(menuU, "ult" + allyObj.BaseSkinName))
                 {
                     R.Cast(allyObj);
@@ -293,7 +293,7 @@ namespace UnderratedAIO.Champions
                     CastEmin(target, minHit);
                 }
                 else if ((player.LSDistance(target.Position) > Orbwalking.GetRealAutoAttackRange(target) ||
-                          player.HealthPercent < 45 || player.CountEnemiesInRange(1000) == 1) &&
+                          player.HealthPercent < 45 || player.LSCountEnemiesInRange(1000) == 1) &&
                          E.GetPrediction(target).Hitchance >= HitChance.High)
                 {
                     CastETarget(target);
@@ -330,7 +330,7 @@ namespace UnderratedAIO.Champions
             var enemiesBehind =
                 HeroManager.Enemies.Count(
                     e =>
-                        e.NetworkId != target.NetworkId && e.IsValidTarget(E.Range) &&
+                        e.NetworkId != target.NetworkId && e.LSIsValidTarget(E.Range) &&
                         (poly.IsInside(E.GetPrediction(e).UnitPosition) || poly.IsInside(e.Position)) &&
                         e.Position.LSDistance(player.Position) > player.LSDistance(pred.UnitPosition));
             if (pred.Hitchance >= HitChance.High)
@@ -338,7 +338,7 @@ namespace UnderratedAIO.Champions
                 if (enemiesBehind > 0)
                 {
                     E.Cast(
-                        player.ServerPosition.Extend(pred.CastPosition, E.Range),
+                        player.ServerPosition.LSExtend(pred.CastPosition, E.Range),
                         getCheckBoxItem(config, "packets"));
                 }
                 else
@@ -346,7 +346,7 @@ namespace UnderratedAIO.Champions
                     if (poly.IsInside(pred.UnitPosition) && poly.IsInside(target.Position))
                     {
                         E.Cast(
-                            player.ServerPosition.Extend(
+                            player.ServerPosition.LSExtend(
                                 pred.CastPosition,
                                 player.LSDistance(pred.CastPosition) + Orbwalking.GetRealAutoAttackRange(target)),
                             getCheckBoxItem(config, "packets"));
@@ -354,7 +354,7 @@ namespace UnderratedAIO.Champions
                     else
                     {
                         E.Cast(
-                            player.ServerPosition.Extend(
+                            player.ServerPosition.LSExtend(
                                 pred.CastPosition,
                                 player.LSDistance(pred.CastPosition) + Orbwalking.GetRealAutoAttackRange(target)),
                             getCheckBoxItem(config, "packets"));
@@ -388,7 +388,7 @@ namespace UnderratedAIO.Champions
 
         public static void CastEmin(AIHeroClient target, int min)
         {
-            var MaxEnemy = player.CountEnemiesInRange(1580);
+            var MaxEnemy = player.LSCountEnemiesInRange(1580);
             if (MaxEnemy == 1)
             {
                 CastETarget(target);
@@ -398,7 +398,7 @@ namespace UnderratedAIO.Champions
                 var MinEnemy = Math.Min(min, MaxEnemy);
                 foreach (var enemy in
                     ObjectManager.Get<AIHeroClient>()
-                        .Where(i => i.LSDistance(player) < E.Range && i.IsEnemy && !i.IsDead && i.IsValidTarget()))
+                        .Where(i => i.LSDistance(player) < E.Range && i.IsEnemy && !i.IsDead && i.LSIsValidTarget()))
                 {
                     for (var i = MaxEnemy; i > MinEnemy - 1; i--)
                     {
@@ -423,7 +423,7 @@ namespace UnderratedAIO.Champions
                 var enemiesBehind =
                     HeroManager.Enemies.Count(
                         e =>
-                            e.NetworkId != target.NetworkId && e.IsValidTarget(E.Range) &&
+                            e.NetworkId != target.NetworkId && e.LSIsValidTarget(E.Range) &&
                             (poly.IsInside(E.GetPrediction(e).UnitPosition) || poly.IsInside(e.Position)) &&
                             e.Position.LSDistance(player.Position) > player.LSDistance(pred.UnitPosition));
                 if (pred.Hitchance >= HitChance.High)
@@ -434,13 +434,13 @@ namespace UnderratedAIO.Champions
                             if (enemiesBehind > 0)
                             {
                                 E.Cast(
-                                    player.ServerPosition.Extend(pred.CastPosition, E.Range),
+                                    player.ServerPosition.LSExtend(pred.CastPosition, E.Range),
                                     getCheckBoxItem(config, "packets"));
                             }
                             else
                             {
                                 E.Cast(
-                                    player.ServerPosition.Extend(
+                                    player.ServerPosition.LSExtend(
                                         pred.CastPosition,
                                         player.LSDistance(pred.CastPosition) + Orbwalking.GetRealAutoAttackRange(target)),
                                     getCheckBoxItem(config, "packets"));

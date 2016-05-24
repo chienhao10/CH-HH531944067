@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -66,7 +67,7 @@ namespace ezEvade
 
         public static PositionInfo SetAllDodgeable()
         {
-            return SetAllDodgeable(myHero.Position.To2D());
+            return SetAllDodgeable(myHero.Position.LSTo2D());
         }
 
         public static PositionInfo SetAllDodgeable(Vector2 position)
@@ -105,7 +106,7 @@ namespace ezEvade
             }
 
             return new PositionInfo(
-                myHero.Position.To2D(),
+                myHero.Position.LSTo2D(),
                 posDangerLevel,
                 posDangerCount,
                 true,
@@ -140,7 +141,7 @@ namespace ezEvade
             var path = myHero.Path;
             if (path.Length > 0)
             {
-                var movePos = path[path.Length - 1].To2D();
+                var movePos = path[path.Length - 1].LSTo2D();
                 posInfo = EvadeHelper.CanHeroWalkToPos(movePos, ObjectCache.myHeroCache.moveSpeed, 0, 0, false);
             }
             else
@@ -162,7 +163,7 @@ namespace ezEvade
             var path = myHero.Path;
             if (path.Length > 0)
             {
-                var movePos = path[path.Length - 1].To2D();
+                var movePos = path[path.Length - 1].LSTo2D();
                 posInfo = EvadeHelper.CanHeroWalkToPos(movePos, ObjectCache.myHeroCache.moveSpeed, 0, 0, false);
             }
             else
