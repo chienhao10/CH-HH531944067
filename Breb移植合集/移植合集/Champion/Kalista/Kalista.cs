@@ -55,6 +55,7 @@ namespace iKalistaReborn
             LoadModules();
             Game.OnUpdate += OnUpdate;
             Drawing.OnDraw += OnDraw;
+            CustomDamageIndicator.DamageToUnit = Helper.GetRendDamage;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
             Spellbook.OnCastSpell += (sender, args) =>
             {
@@ -148,6 +149,9 @@ namespace iKalistaReborn
             {
                 jungleStealMenu.Add(minion.Key, new CheckBox(minion.Value, true));
             }
+            jungleStealMenu.Add("com.ikalista.jungleSteal.small", new CheckBox("杀死小型兵", true));
+            jungleStealMenu.Add("com.ikalista.jungleSteal.large", new CheckBox("杀死大型兵", true));
+            jungleStealMenu.Add("com.ikalista.jungleSteal.legendary", new CheckBox("杀死远古怪", true));
 
             miscMenu = Menu.AddSubMenu("杂项", "com.ikalista.Misc");
             miscMenu.Add("com.ikalista.misc.reduceE", new Slider("减少 E 伤害", 50, 0, 300));
@@ -181,6 +185,7 @@ namespace iKalistaReborn
             drawingMenu = Menu.AddSubMenu("线圈", "com.ikalista.drawing");
             drawingMenu.Add("com.ikalista.drawing.spellRanges", new CheckBox("显示技能范围"));
             drawingMenu.Add("com.ikalista.drawing.eDamage", new CheckBox("显示 E 伤害"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
+            drawingMenu.Add("com.ikalista.drawing.eDamageJ", new CheckBox("显示 E 伤害 （野怪）"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
             drawingMenu.Add("com.ikalista.drawing.damagePercent", new CheckBox("显示伤害百分比"));//.SetValue(new Circle(true, Color.DarkOliveGreen)));
         }
 
@@ -414,7 +419,7 @@ namespace iKalistaReborn
                 if (minions.Count < 0)
                     return;
 
-                var siegeMinion = minions.FirstOrDefault(x => x.Name.Contains("siege") && x.IsRendKillable());
+                var siegeMinion = minions.FirstOrDefault(x => x.CharData.BaseSkinName == "MinionSiege" && x.IsRendKillable());
 
                 if (getCheckBoxItem(laneclearMenu, "com.ikalista.laneclear.eSiege") && siegeMinion != null)
                 {

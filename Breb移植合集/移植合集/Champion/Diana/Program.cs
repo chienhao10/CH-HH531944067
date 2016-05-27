@@ -281,7 +281,6 @@ namespace ElDiana
                 }
                 var eSlot = spells[Spells.E];
                 var dis = Player.LSDistance(source);
-                Console.WriteLine(source.Name + @" > " + eSlot.Range + @" : " + dis);
                 if (!eventArgs.IsBlink && getCheckBoxItem(interruptMenu, "ElDiana.Interrupt.UseEDashes") &&
                     eSlot.IsReady() && eSlot.Range >= dis)
                 {
@@ -297,7 +296,7 @@ namespace ElDiana
         private static void Combo()
         {
             var target = TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Magical);
-            if (target == null || !target.IsValid)
+            if (target == null)
             {
                 return;
             }
@@ -311,7 +310,7 @@ namespace ElDiana
             var useSecondRLimitation = getSliderItem(comboMenu, "ElDiana.Combo.UseSecondRLimitation");
             var minHpToDive = getSliderItem(comboMenu, "ElDiana.Combo.R.PreventUnderTower");
 
-            if (useQ && spells[Spells.Q].IsReady() && Player.LSDistance(target) <= spells[Spells.Q].Range)
+            if (useQ && spells[Spells.Q].IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
                 if (pred.Hitchance >= HitChance.VeryHigh)
@@ -320,19 +319,19 @@ namespace ElDiana
                 }
             }
 
-            if (useR && spells[Spells.R].IsReady() && target.IsValidTarget(spells[Spells.R].Range)
+            if (useR && spells[Spells.R].IsReady() && target.LSIsValidTarget(spells[Spells.R].Range)
                 && target.HasBuff("dianamoonlight")
                 && (!target.UnderTurret(true) || (minHpToDive <= Player.HealthPercent)))
             {
                 spells[Spells.R].Cast(target);
             }
 
-            if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(spells[Spells.W].Range))
+            if (useW && spells[Spells.W].IsReady() && target.IsValidTarget(Orbwalking.GetRealAutoAttackRange(ObjectManager.Player)))
             {
                 spells[Spells.W].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(400f))
+            if (useE && spells[Spells.E].IsReady() && target.LSIsValidTarget(400f))
             {
                 spells[Spells.E].Cast();
             }
@@ -386,7 +385,7 @@ namespace ElDiana
         private static void Harass()
         {
             var target = TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Physical);
-            if (target == null || !target.IsValid)
+            if (target == null)
             {
                 return;
             }
@@ -444,7 +443,7 @@ namespace ElDiana
             var useE = getCheckBoxItem(jungleClearMenu, "ElDiana.JungleClear.E");
             var useR = getCheckBoxItem(jungleClearMenu, "ElDiana.JungleClear.R");
 
-            var qMinions = minions.FindAll(minion => minion.IsValidTarget(spells[Spells.Q].Range));
+            var qMinions = minions.FindAll(minion => minion.LSIsValidTarget(spells[Spells.Q].Range));
             var qMinion = qMinions.FirstOrDefault();
 
             if (qMinion == null)
@@ -454,7 +453,7 @@ namespace ElDiana
 
             if (useQ && spells[Spells.Q].IsReady())
             {
-                if (qMinion.IsValidTarget())
+                if (qMinion.LSIsValidTarget())
                 {
                     spells[Spells.Q].Cast(qMinion);
                 }
@@ -483,7 +482,7 @@ namespace ElDiana
                     var canBeKilled = moonlightMob.Find(minion => minion.Health < spells[Spells.R].GetDamage(minion));
 
                     //cast R on mob that can be killed
-                    if (canBeKilled.IsValidTarget())
+                    if (canBeKilled.LSIsValidTarget())
                     {
                         spells[Spells.R].Cast(canBeKilled);
                     }
@@ -515,8 +514,8 @@ namespace ElDiana
                 MinionTypes.All,
                 MinionTeam.NotAlly);
 
-            var qMinions = minions.FindAll(minionQ => minion.IsValidTarget(spells[Spells.Q].Range));
-            var qMinion = qMinions.Find(minionQ => minionQ.IsValidTarget());
+            var qMinions = minions.FindAll(minionQ => minion.LSIsValidTarget(spells[Spells.Q].Range));
+            var qMinion = qMinions.Find(minionQ => minionQ.LSIsValidTarget());
 
             if (useQ && spells[Spells.Q].IsReady()
                 && spells[Spells.Q].GetCircularFarmLocation(minions).MinionsHit >= countQ)
@@ -553,7 +552,7 @@ namespace ElDiana
                     var canBeKilled = moonlightMob.Find(x => minion.Health < spells[Spells.R].GetDamage(minion));
 
                     //cast R on mob that can be killed
-                    if (canBeKilled.IsValidTarget())
+                    if (canBeKilled.LSIsValidTarget())
                     {
                         spells[Spells.R].Cast(canBeKilled);
                     }
@@ -607,13 +606,13 @@ namespace ElDiana
             if (useQ && spells[Spells.Q].IsReady() && spells[Spells.Q].IsInRange(target))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
-                if (pred.Hitchance >= CustomHitChance)
+                if (pred.Hitchance >= HitChance.VeryHigh)
                 {
-                    spells[Spells.Q].Cast(target);
+                    spells[Spells.Q].Cast(pred.CastPosition);
                 }
             }
 
-            if (useR && spells[Spells.R].IsReady() && spells[Spells.R].IsInRange(target)
+            if (useR && spells[Spells.R].IsReady() && target.LSIsValidTarget(spells[Spells.R].Range)
                 && target.HasBuff("dianamoonlight"))
             {
                 spells[Spells.R].Cast(target);
@@ -624,15 +623,11 @@ namespace ElDiana
                 spells[Spells.W].Cast();
             }
 
-            if (useE && spells[Spells.E].IsReady() && spells[Spells.E].IsInRange(target))
+            if (useE && spells[Spells.E].IsReady() && target.IsValidTarget(400f))
             {
-                var pred = spells[Spells.E].GetPrediction(target);
-                if (pred.Hitchance >= CustomHitChance)
-                {
-                    spells[Spells.E].Cast();
-                }
+                 spells[Spells.E].Cast();
             }
-
+           
             if (secondR)
             {
                 var closeEnemies = Player.GetEnemiesInRange(spells[Spells.R].Range*2).Count;

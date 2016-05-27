@@ -74,7 +74,6 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void Orbwalker_OnPostAttack(AttackableUnit target, EventArgs args)
         {
-            Jungle();
             if (E.IsReady() && getCheckBoxItem(eMenu, "autoE"))
                 LogicE();
         }
@@ -116,7 +115,7 @@ namespace OneKeyToWin_AIO_Sebby
             farmMenu.Add("jungleW", new CheckBox("清野 W"));
 
             miscMenu = Config.AddSubMenu("杂项", "Misc");
-            miscMenu.Add("QWlogic", new CheckBox("装弹过程中，才，使用Q，W"));
+            miscMenu.Add("QWlogic", new CheckBox("装弹过程中，才使用Q，W"));
         }
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
@@ -147,6 +146,7 @@ namespace OneKeyToWin_AIO_Sebby
             if (Program.LagFree(0))
             {
                 SetMana();
+                Jungle();
             }
 
             if (!getCheckBoxItem(miscMenu, "QWlogic") || !Player.HasBuff("gravesbasicattackammo1"))

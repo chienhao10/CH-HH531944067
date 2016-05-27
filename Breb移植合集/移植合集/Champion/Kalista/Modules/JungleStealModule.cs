@@ -7,6 +7,7 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using iKalistaReborn.Utils;
 using LeagueSharp.Common;
+using LeagueSharp.SDK;
 
 namespace iKalistaReborn.Modules
 {
@@ -43,17 +44,23 @@ namespace iKalistaReborn.Modules
 
         public void OnExecute()
         {
-            var attackableMinion =
-                MinionManager.GetMinions(ObjectManager.Player.ServerPosition, SpellManager.Spell[SpellSlot.E].Range,
-                    MinionTypes.All, MinionTeam.Neutral,
-                    MinionOrderTypes.MaxHealth).FirstOrDefault(x => !x.Name.Contains("Mini"));
 
-            if (attackableMinion == null || !attackableMinion.HasRendBuff() || !attackableMinion.IsMobKillable() ||
-                !getCheckBoxItem(jungleStealMenu, attackableMinion.CharData.BaseSkinName))
-                return;
+            var small =
+                GameObjects.JungleSmall.Any(
+                    x => SpellManager.Spell[SpellSlot.E].CanCast(x) && x.IsMobKillable() && x.IsValid);
+            var large =
+                GameObjects.JungleLarge.Any(
+                    x => SpellManager.Spell[SpellSlot.E].CanCast(x) && x.IsMobKillable() && x.IsValid);
+            var legendary =
+                GameObjects.JungleLegendary.Any(
+                    x => SpellManager.Spell[SpellSlot.E].CanCast(x) && x.IsMobKillable() && x.IsValid);
 
-            Console.WriteLine("Minion Killable: " + attackableMinion.CharData.BaseSkinName);
-            SpellManager.Spell[SpellSlot.E].Cast();
+            if ((small && getCheckBoxItem(jungleStealMenu, "com.ikalista.jungleSteal.small"))
+                || (large && getCheckBoxItem(jungleStealMenu, "com.ikalista.jungleSteal.large"))
+                || (legendary && getCheckBoxItem(jungleStealMenu, "com.ikalista.jungleSteal.legendary")))
+            {
+                SpellManager.Spell[SpellSlot.E].Cast();
+            }
         }
 
         public static bool getCheckBoxItem(Menu m, string item)

@@ -48,7 +48,7 @@ namespace Kindred___YinYang
                         ObjectManager.Get<AIHeroClient>()
                             .Where(x => x.IsValidTarget(1000) && x.ChampionName == "Rengar"))
                 {
-                    Program.R.Cast(Kindred);
+                    Program.R.Cast();
                 }
             }
         }
@@ -65,7 +65,7 @@ namespace Kindred___YinYang
                                 x.ChampionName == "Katarina" && x.IsValidTarget(Program.R.Range) &&
                                 x.HasBuff("katarinarsound") && !Kindred.IsDead && !x.IsDead && !x.IsZombie))
                 {
-                    Program.R.Cast(Kindred);
+                    Program.R.Cast();
                 }
             }
             if (getCheckBoxItem(Language.miscMenu, "lucian.r") && Program.R.IsReady() &&
@@ -78,7 +78,7 @@ namespace Kindred___YinYang
                                 x.ChampionName == "Lucian" && x.IsValidTarget(Program.R.Range) && x.HasBuff("lucianr") &&
                                 !Kindred.IsDead && !x.IsDead && !x.IsZombie))
                 {
-                    Program.R.Cast(Kindred);
+                    Program.R.Cast();
                 }
             }
             if (getCheckBoxItem(Language.miscMenu, "missfortune.r") && Program.R.IsReady() &&
@@ -91,7 +91,7 @@ namespace Kindred___YinYang
                                 x.ChampionName == "MissFortune" && x.IsValidTarget(Program.R.Range) &&
                                 x.HasBuff("missfortunebulletsound") && !Kindred.IsDead && !x.IsDead && !x.IsZombie))
                 {
-                    Program.R.Cast(Kindred);
+                    Program.R.Cast();
                 }
             }
         }
@@ -131,17 +131,17 @@ namespace Kindred___YinYang
                     if (protector.spellType == SpellType.Circular && Kindred.LSDistance(spell.End) <= 200 &&
                         sender.LSGetSpellDamage(Kindred, protector.spellName) > Kindred.Health)
                     {
-                        Program.R.Cast(Kindred);
+                        Program.R.Cast();
                     }
                     if (protector.spellType == SpellType.Cone && Kindred.LSDistance(spell.End) <= 200 &&
                         sender.LSGetSpellDamage(Kindred, protector.spellName) > Kindred.Health)
                     {
-                        Program.R.Cast(Kindred);
+                        Program.R.Cast();
                     }
                     if (protector.spellType == SpellType.Line && Kindred.LSDistance(spell.End) <= 200
                         && sender.LSGetSpellDamage(Kindred, protector.spellName) > Kindred.Health)
                     {
-                        Program.R.Cast(Kindred);
+                        Program.R.Cast();
                     }
                 }
             }
@@ -154,7 +154,7 @@ namespace Kindred___YinYang
             {
                 if (getCheckBoxItem(Language.miscMenu, "respite." + ally.CharData.BaseSkinName) && Kindred.CountEnemiesInRange(1500) >= 1 && ally.CountEnemiesInRange(1500) >= 1)
                 {
-                    Program.R.Cast(ally);
+                    Program.R.Cast();
                 }
             }
         }
