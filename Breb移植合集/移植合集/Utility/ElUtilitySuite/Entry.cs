@@ -4,7 +4,10 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
-    using EloBuddy;
+    using System.Security.Permissions;
+    using ElUtilitySuite.Vendor.SFX;
+    using LeagueSharp;
+    using LeagueSharp.Common;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
     internal class Entry
@@ -32,20 +35,6 @@
         public static Menu Menu { get; set; }
 
         /// <summary>
-        ///     Gets the player.
-        /// </summary>
-        /// <value>
-        ///     The player.
-        /// </value>
-        public static AIHeroClient Player
-        {
-            get
-            {
-                return ObjectManager.Player;
-            }
-        }
-
-        /// <summary>
         ///     Gets script version
         /// </summary>
         /// <value>
@@ -62,6 +51,7 @@
         #endregion
 
         #region Public Methods and Operators
+
         public static ObjectActivator<T> GetActivator<T>(ConstructorInfo ctor)
         {
             var paramsInfo = ctor.GetParameters();
@@ -77,15 +67,9 @@
                 argsExp[i] = paramCastExp;
             }
 
-            return (ObjectActivator<T>) Expression.Lambda(typeof(ObjectActivator<T>), Expression.New(ctor, argsExp), param).Compile();
+            return (ObjectActivator<T>)Expression.Lambda(typeof(ObjectActivator<T>), Expression.New(ctor, argsExp), param).Compile();
         }
 
-        public static Menu menu;
-
-        public static bool getComboMenu()
-        {
-            return menu["usecombo"].Cast<KeyBind>().CurrentValue;
-        }
 
         public static void OnLoad()
         {
@@ -93,11 +77,7 @@
             {
                 var plugins = Assembly.GetExecutingAssembly().GetTypes().Where(x => typeof(IPlugin).IsAssignableFrom(x) && !x.IsInterface).Select(x => GetActivator<IPlugin>(x.GetConstructors().First())(null));
 
-                menu = MainMenu.AddMenu("EL活化剂", "ElUtilitySuite");
-
-                menu.AddSeparator();
-                menu.Add("usecombo", new KeyBind("连招 (开启)", false, KeyBind.BindTypes.HoldActive, 32));
-                menu.AddSeparator();
+                var menu = MainMenu.AddMenu("EL活化剂", "ElUtilitySuite");
 
                 foreach (var plugin in plugins)
                 {
@@ -105,12 +85,27 @@
                     plugin.Load();
                 }
 
+                foreach (var ally in HeroManager.Allies)
+                {
+                    IncomingDamageManager.AddChampion(ally);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(@"[ELUTILITYSUITE] loaded champions: {0}", ally.ChampionName);
+                }
+                Console.ForegroundColor = ConsoleColor.White;
+
+                menu.Add("usecombo", new KeyBind("连招 (开启)", false, KeyBind.BindTypes.HoldActive, 32));
+
                 Menu = menu;
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occurred: '{0}'", e);
+                Console.WriteLine(@"An error occurred: '{0}'", e);
             }
+        }
+
+        public static bool getCombo()
+        {
+            return Menu["usecombo"].Cast<KeyBind>().CurrentValue;
         }
 
         #endregion

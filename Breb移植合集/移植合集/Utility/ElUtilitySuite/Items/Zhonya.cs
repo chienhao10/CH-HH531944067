@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
-using LeagueSharp.Common;
-using SharpDX;
-
-namespace ElUtilitySuite.Items
+﻿namespace ElUtilitySuite.Items
 {
-    /// <summary>
-    ///     Casts Zhonya on dangerous spells.
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+
+    using SharpDX;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy;
+    using EloBuddy.SDK.Menu.Values;/// <summary>
+                                   ///     Casts Zhonya on dangerous spells.
+                                   /// </summary>
     public class Zhonya : IPlugin
     {
         #region Static Fields
@@ -20,7 +20,7 @@ namespace ElUtilitySuite.Items
         /// <summary>
         ///     The zhyonya item
         /// </summary>
-        private static LeagueSharp.Common.Items.Item zhonyaItem;
+        private static Items.Item zhonyaItem;
 
         #endregion
 
@@ -340,6 +340,12 @@ namespace ElUtilitySuite.Items
                                  },
                              new ZhonyaSpell
                                  {
+                                     ChampionName = "shyvana", SDataName = "shyvanatransformcast",
+                                     MissileName = "shyvanatransformcast", Delay = 100, MissileSpeed = 1100,
+                                     CastRange = 1000f
+                                 },
+                             new ZhonyaSpell
+                                 {
                                      ChampionName = "skarner", SDataName = "skarnerimpale", MissileName = "", Delay = 350,
                                      MissileSpeed = int.MaxValue, CastRange = 350f
                                  },
@@ -524,7 +530,7 @@ namespace ElUtilitySuite.Items
         {
             get
             {
-                return getSliderItem("ZhonyaHPSlider");
+                return getSliderItem(this.Menu, "ZhonyaHPSlider");
             }
         }
 
@@ -538,7 +544,7 @@ namespace ElUtilitySuite.Items
         {
             get
             {
-                return getCheckBoxItem("ZhonyaHP");
+                return getCheckBoxItem(this.Menu, "ZhonyaHP");
             }
         }
 
@@ -546,48 +552,70 @@ namespace ElUtilitySuite.Items
 
         #region Public Methods and Operators
 
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
         /// <summary>
         ///     Creates the menu.
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
         /// <returns></returns>
-        /// 
-        public static Menu rootMenu = Entry.menu;
-        public static Menu zhonyaMenu;
-
-        public static bool getCheckBoxItem(string item)
-        {
-            return zhonyaMenu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(string item)
-        {
-            return zhonyaMenu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(string item)
-        {
-            return zhonyaMenu[item].Cast<KeyBind>().CurrentValue;
-        }
-
         public void CreateMenu(Menu rootMenu)
         {
-            zhonyaMenu = rootMenu.AddSubMenu("中亚", "zhonya");
-            zhonyaMenu.AddGroupLabel("技能");
-
-            foreach (var spell in Spells.Where(x => ObjectManager.Get<AIHeroClient>().Where(y => y.IsEnemy).Any(y => y.ChampionName.ToLower() == x.ChampionName)))
+            var zhonyaMenu = rootMenu.AddSubMenu("Zhonya's Hourglass", "zhonya");
             {
-                var objAiHero = ObjectManager.Get<AIHeroClient>().FirstOrDefault(x => x.ChampionName.ToLower() == spell.ChampionName);
-                if (objAiHero == null) { continue; }
-                var firstOrDefault = objAiHero.Spellbook.Spells.FirstOrDefault(x => x.SData.Name.ToLower() == spell.SDataName);
-                if (firstOrDefault != null)
+                zhonyaMenu.AddGroupLabel("Spells");
                 {
-                    zhonyaMenu.Add(string.Format("Zhonya{0}", spell.SDataName), new CheckBox(string.Format("{0} ({1}) - {2}", char.ToUpper(spell.ChampionName[0]) + spell.ChampionName.Substring(1), firstOrDefault.Slot, spell.SDataName)));
-                }
-            }
+                    foreach (var spell in
+                        Spells.Where(
+                            x =>
+                            ObjectManager.Get<AIHeroClient>()
+                                .Where(y => y.IsEnemy)
+                                .Any(y => y.ChampionName.ToLower() == x.ChampionName)))
+                    {
+                        var objAiHero =
+                            ObjectManager.Get<AIHeroClient>()
+                                .FirstOrDefault(x => x.ChampionName.ToLower() == spell.ChampionName);
 
-            zhonyaMenu.Add("ZhonyaDangerous", new CheckBox("使用中亚"));
-            zhonyaMenu.Add("ZhonyaHP", new CheckBox("低血量时使用"));
+                        if (objAiHero == null)
+                        {
+                            continue;
+                        }
+
+                        var firstOrDefault =
+                            objAiHero.Spellbook.Spells.FirstOrDefault(x => x.SData.Name.ToLower() == spell.SDataName);
+
+                        if (firstOrDefault != null)
+                        {
+                            zhonyaMenu.Add(string.Format("Zhonya{0}", spell.SDataName), new CheckBox(string.Format("{0} ({1}) - {2}", char.ToUpper(spell.ChampionName[0]) + spell.ChampionName.Substring(1), firstOrDefault.Slot, spell.SDataName)));
+                        }
+                    }
+                }
+
+                zhonyaMenu.Add("ZhonyaDangerous", new CheckBox("使用中亚"));
+                zhonyaMenu.Add("ZhonyaHP", new CheckBox("低血量时使用"));
+                zhonyaMenu.Add("ZhonyaHPSlider", new Slider("血量%", 10, 1, 50));
+                zhonyaMenu.Add("NoZhonyaEvade", new CheckBox("不使用中亚如果技能可被躲避 （测试)", false));
+
+                this.Menu = zhonyaMenu;
+            }
         }
 
         /// <summary>
@@ -595,27 +623,11 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public void Load()
         {
-            zhonyaItem = new LeagueSharp.Common.Items.Item(Game.MapId == GameMapId.SummonersRift ? 3157 : 3090);
+            zhonyaItem = new Items.Item(Game.MapId == GameMapId.SummonersRift ? 3157 : 3090);
 
-            Game.OnUpdate += Game_OnUpdate;
-            GameObject.OnCreate += GameObjectOnCreate;
-            Obj_AI_Base.OnProcessSpellCast += ObjAiBaseOnProcessSpellCast;
-        }
-
-        private void Game_OnUpdate(EventArgs args)
-        {
-            if (!getCheckBoxItem("ZhonyaHP"))
-            {
-                return;
-            }
-            if (EloBuddy.SDK.Item.CanUseItem(ItemId.Zhonyas_Hourglass))
-            {
-                if (HealthPrediction.GetHealthPrediction(ObjectManager.Player, (int)(250 + Game.Ping / 2f)) <= ObjectManager.Player.MaxHealth / 4)
-                {
-                    EloBuddy.SDK.Item.UseItem(ItemId.Zhonyas_Hourglass);
-                    return;
-                }
-            }
+            GameObject.OnCreate += this.GameObjectOnCreate;
+            Obj_AI_Base.OnProcessSpellCast += this.ObjAiBaseOnProcessSpellCast;
+            AttackableUnit.OnDamage += this.ObjAiBaseOnOnDamage;
         }
 
         #endregion
@@ -630,7 +642,7 @@ namespace ElUtilitySuite.Items
         /// <returns></returns>
         private bool CanEvadeMissile(MissileClient missile, Obj_AI_Base hero)
         {
-            var heroPos = hero.ServerPosition.To2D();
+            var heroPos = hero.ServerPosition.LSTo2D();
             float evadeTime = 0;
             float spellHitTime = 0;
 
@@ -638,15 +650,15 @@ namespace ElUtilitySuite.Items
                 && !missile.SData.TargettingType.ToString().Contains("Aoe"))
             {
                 var projection =
-                    heroPos.ProjectOn(missile.StartPosition.To2D(), missile.EndPosition.To2D()).SegmentPoint;
+                    heroPos.LSProjectOn(missile.StartPosition.LSTo2D(), missile.EndPosition.LSTo2D()).SegmentPoint;
                 evadeTime = 1000 * (missile.SData.LineWidth - heroPos.LSDistance(projection) + hero.BoundingRadius)
                             / hero.MoveSpeed;
-                spellHitTime = GetSpellHitTime(missile, projection);
+                spellHitTime = this.GetSpellHitTime(missile, projection);
             }
             else if (missile.SData.TargettingType == SpellDataTargetType.LocationAoe)
             {
                 evadeTime = 1000 * (missile.SData.CastRadius - heroPos.LSDistance(missile.EndPosition)) / hero.MoveSpeed;
-                spellHitTime = GetSpellHitTime(missile, heroPos);
+                spellHitTime = this.GetSpellHitTime(missile, heroPos);
             }
 
             return spellHitTime > evadeTime;
@@ -659,13 +671,18 @@ namespace ElUtilitySuite.Items
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void GameObjectOnCreate(GameObject sender, EventArgs args)
         {
-            if (!sender.IsValid<MissileClient>() || sender.IsAlly || !zhonyaItem.IsReady() || !getCheckBoxItem("ZhonyaDangerous"))
+            if (!sender.IsValid<MissileClient>() || sender.IsAlly || !zhonyaItem.IsReady()
+                || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;
             }
 
             var missile = (MissileClient)sender;
-            var sdata = Spells.FirstOrDefault(x => missile.SData.Name.ToLower().Equals(x.MissileName) || missile.SData.Name.ToLower().Equals(x.SDataName));
+            var sdata =
+                Spells.FirstOrDefault(
+                    x =>
+                    missile.SData.Name.ToLower().Equals(x.MissileName)
+                    || missile.SData.Name.ToLower().Equals(x.SDataName));
 
             // Not in database
             if (sdata == null)
@@ -673,7 +690,7 @@ namespace ElUtilitySuite.Items
                 return;
             }
 
-            if (!getCheckBoxItem(string.Format("Zhonya{0}", sdata.SDataName)) || !getCheckBoxItem("ZhonyaDangerous"))
+            if (!getCheckBoxItem(this.Menu, string.Format("Zhonya{0}", sdata.SDataName)) || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;
             }
@@ -683,12 +700,21 @@ namespace ElUtilitySuite.Items
 
             if (missile.StartPosition.LSDistance(endPosition) > sdata.CastRange)
             {
-                endPosition = missile.StartPosition + Vector3.Normalize(endPosition - missile.StartPosition) * sdata.CastRange;
+                endPosition = missile.StartPosition
+                              + Vector3.Normalize(endPosition - missile.StartPosition) * sdata.CastRange;
             }
 
-            if (missile.SData.LineWidth + Player.BoundingRadius > Player.ServerPosition.To2D().LSDistance(Player.ServerPosition.To2D().ProjectOn(missile.StartPosition.To2D(), endPosition.To2D()).SegmentPoint))
+            if (missile.SData.LineWidth + Player.BoundingRadius
+                > Player.ServerPosition.LSTo2D()
+                      .LSDistance(
+                          Player.ServerPosition.LSTo2D()
+                      .LSProjectOn(missile.StartPosition.LSTo2D(), endPosition.LSTo2D())
+                      .SegmentPoint))
             {
-                zhonyaItem.Cast();
+                if (!(getCheckBoxItem(this.Menu, "NoZhonyaEvade") && this.CanEvadeMissile(missile, Player)))
+                {
+                    zhonyaItem.Cast();
+                }
             }
         }
 
@@ -723,8 +749,29 @@ namespace ElUtilitySuite.Items
                     - Environment.TickCount - Game.Ping);
             }
 
-            var spellPos = missile.Position.To2D();
+            var spellPos = missile.Position.LSTo2D();
             return 1000 * spellPos.LSDistance(pos) / missile.SData.MissileAccel;
+        }
+
+        /// <summary>
+        ///     Called when an Obj_AI_Base takes damage.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="AttackableUnitDamageEventArgs" /> instance containing the event data.</param>
+        private void ObjAiBaseOnOnDamage(AttackableUnit sender, AttackableUnitDamageEventArgs args)
+        {
+            if (args.Target.NetworkId != Player.NetworkId
+                || !ObjectManager.GetUnitByNetworkId<GameObject>((uint)args.Target.NetworkId).IsMe || !this.ZhonyaLowHp
+                || !zhonyaItem.IsReady())
+            {
+                return;
+            }
+
+            if (Player.HealthPercent < this.ZhonyaBelowHp
+                || (Player.Health - args.Damage) / Player.MaxHealth * 100 < this.ZhonyaBelowHp)
+            {
+                zhonyaItem.Cast();
+            }
         }
 
         /// <summary>
@@ -734,7 +781,7 @@ namespace ElUtilitySuite.Items
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private void ObjAiBaseOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsAlly || !zhonyaItem.IsReady() || !getCheckBoxItem("ZhonyaDangerous"))
+            if (sender.IsAlly || !zhonyaItem.IsReady() || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;
             }
@@ -748,7 +795,8 @@ namespace ElUtilitySuite.Items
                 return;
             }
 
-            if (!getCheckBoxItem(string.Format("Zhonya{0}", spellData.SDataName)) || !getCheckBoxItem("ZhonyaDangerous"))
+            if (!getCheckBoxItem(this.Menu, string.Format("Zhonya{0}", spellData.SDataName))
+                || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;
             }
@@ -759,7 +807,11 @@ namespace ElUtilitySuite.Items
             }
 
             // Targetted spells
-            if (args.SData.TargettingType == SpellDataTargetType.Unit && args.Target.IsMe || args.SData.TargettingType == SpellDataTargetType.SelfAndUnit && args.Target.IsMe || args.SData.TargettingType == SpellDataTargetType.Self || args.SData.TargettingType == SpellDataTargetType.SelfAoe && Player.LSDistance(sender) < spellData.CastRange)
+            if (args.SData.TargettingType == SpellDataTargetType.Unit && args.Target.IsMe
+                || args.SData.TargettingType == SpellDataTargetType.SelfAndUnit && args.Target.IsMe
+                || args.SData.TargettingType == SpellDataTargetType.Self
+                || args.SData.TargettingType == SpellDataTargetType.SelfAoe
+                && Player.LSDistance(sender) < spellData.CastRange)
             {
                 LeagueSharp.Common.Utility.DelayAction.Add((int)spellData.Delay, () => zhonyaItem.Cast());
                 return;
@@ -786,8 +838,18 @@ namespace ElUtilitySuite.Items
                             ? args.SData.LineWidth
                             : (args.SData.CastRadius < 1 ? args.SData.CastRadiusSecondary : args.SData.CastRadius);
 
-            if ((isLinear && width + Player.BoundingRadius > Player.ServerPosition.To2D().LSDistance(Player.ServerPosition.To2D().ProjectOn(args.Start.To2D(), endPosition.To2D()).SegmentPoint)) || (!isLinear && Player.LSDistance(endPosition) <= width + Player.BoundingRadius))
+            if ((isLinear
+                 && width + Player.BoundingRadius
+                 > Player.ServerPosition.LSTo2D()
+                       .LSDistance(
+                           Player.ServerPosition.LSTo2D().LSProjectOn(args.Start.LSTo2D(), endPosition.LSTo2D()).SegmentPoint))
+                || (!isLinear && Player.LSDistance(endPosition) <= width + Player.BoundingRadius))
             {
+                // Let missile client event handle it
+                if (getCheckBoxItem(this.Menu, "NoZhonyaEvade") && spellData.MissileName != null)
+                {
+                    return;
+                }
 
                 zhonyaItem.Cast();
             }

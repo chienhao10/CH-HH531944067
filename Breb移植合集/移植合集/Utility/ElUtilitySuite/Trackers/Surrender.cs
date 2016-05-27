@@ -10,6 +10,7 @@
     using LeagueSharp.Common;
     using SharpDX.Direct3D9;
 
+    // Creds on KappaUtility
 
     internal class Surrender : IPlugin
     {
@@ -25,14 +26,14 @@
 
         #endregion
 
-        public static bool getCheckBoxItem(string item)
+        public bool getCheckBoxItem(string item)
         {
-            return surrenderMenu[item].Cast<CheckBox>().CurrentValue;
+            return Menu[item].Cast<CheckBox>().CurrentValue;
         }
 
-        public static int getSliderItem(string item)
+        public int getSliderItem(string item)
         {
-            return surrenderMenu[item].Cast<Slider>().CurrentValue;
+            return Menu[item].Cast<Slider>().CurrentValue;
         }
 
         #region Properties
@@ -54,13 +55,14 @@
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
         /// <returns></returns>
-        public static Menu surrenderMenu;
 
         public void CreateMenu(Menu rootMenu)
         {
-            surrenderMenu = rootMenu.AddSubMenu("投降记录器", "surrender");
+            var surrenderMenu = rootMenu.AddSubMenu("投降记录器", "surrender");
             surrenderMenu.Add("Trackally", new CheckBox("友军"));
             surrenderMenu.Add("Trackenemy", new CheckBox("敌方"));
+
+            this.Menu = surrenderMenu;
         }
 
         /// <summary>
@@ -75,9 +77,9 @@
 
         #region Methods
 
-        private static void Obj_AI_Base_OnSurrender(Obj_AI_Base sender, Obj_AI_BaseSurrenderVoteEventArgs args)
+        private void Obj_AI_Base_OnSurrender(Obj_AI_Base sender, Obj_AI_BaseSurrenderVoteEventArgs args)
         {
-            if (sender == null || args == null)
+            if (sender == null)
             {
                 return;
             }

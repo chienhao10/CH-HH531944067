@@ -3,16 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+
+    using SharpDX;
+    using SharpDX.Direct3D9;
     using EloBuddy;
     using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK.Menu.Values;
-    using SharpDX;
-    using LeagueSharp.Common;
-    using SharpDX.Direct3D9;
-
-    /// <summary>
-    ///     Tracks jungle camps.
-    /// </summary>
+    using EloBuddy.SDK.Menu.Values;/// <summary>
+                                   ///     Tracks jungle camps.
+                                   /// </summary>
     internal class JungleTracker : IPlugin
     {
         #region Constructors and Destructors
@@ -126,7 +127,7 @@
                                       180000,
                                       new Vector3(10647.7f, 5144.68f, -62.81f),
                                       new[] { "SRU_Crab15.1.1" },
-                                      LeagueSharp.Common.Utility.Map.MapType.SummonersRift,
+                                     LeagueSharp.Common.Utility.Map.MapType.SummonersRift,
                                       GameObjectTeam.Neutral),
                                   new JungleCamp(
                                       75000,
@@ -155,7 +156,11 @@
                                   new JungleCamp(
                                       360000,
                                       new Vector3(9813.83f, 4360.19f, -71.24f),
-                                      new[] { "SRU_Dragon6.1.1" },
+                                      new[]
+                                          {
+                                              "SRU_Dragon_Elder6.5.1", "SRU_Dragon_Air6.1.1", "SRU_Dragon_Fire6.2.1",
+                                              "SRU_Dragon_Water6.3.1", "SRU_Dragon_Elder6.5.1"
+                                          },
                                       LeagueSharp.Common.Utility.Map.MapType.SummonersRift,
                                       GameObjectTeam.Neutral),
                                   new JungleCamp(
@@ -205,19 +210,14 @@
         public static List<JungleCamp> JungleCamps { get; set; }
 
         /// <summary>
-        /// Gets or sets the menu.
+        ///     Gets or sets the menu.
         /// </summary>
         /// <value>
-        /// The menu.
+        ///     The menu.
         /// </value>
         public Menu Menu { get; set; }
 
         #endregion
-
-        public static bool getCheckBoxItem(string item)
-        {
-            return jngTimerMenu[item].Cast<CheckBox>().CurrentValue;
-        }
 
         #region Properties
 
@@ -238,12 +238,14 @@
         /// </summary>
         /// <param name="rootMenu">The root Menu.</param>
         /// <returns></returns>
-        public static Menu rootMenu = ElUtilitySuite.Entry.menu;
-        public static Menu jngTimerMenu;
         public void CreateMenu(Menu rootMenu)
         {
-            jngTimerMenu = rootMenu.AddSubMenu("野区计时", "JngTimer");
-            jngTimerMenu.Add("DrawTimers", new CheckBox("显示野区计时"));
+            var jngTimerMenu = rootMenu.AddSubMenu("野区计时", "Jungle");
+            {
+                jngTimerMenu.Add("DrawTimers", new CheckBox("显示野区刷新时间"));
+            }
+
+            this.Menu = jngTimerMenu;
         }
 
         public void Load()
@@ -334,13 +336,33 @@
             camp.NextRespawnTime = Environment.TickCount + camp.RespawnTime - 3000;
         }
 
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
         /// <summary>
         ///     Fired when the scene is completely rendered.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void Drawing_OnEndScene(EventArgs args)
         {
-            if (!getCheckBoxItem("DrawTimers"))
+            if (!getCheckBoxItem(this.Menu, "DrawTimers"))
             {
                 return;
             }

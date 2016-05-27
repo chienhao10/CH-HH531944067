@@ -250,7 +250,7 @@
                         Circle.Draw(Heal.IsReady() ? Color.LightBlue : Color.Red, Heal.Range, pos);
                     }
 
-                    if (SummMenu["drawIgniteStat"].Cast<CheckBox>().CurrentValue)
+                    if (SummMenu["drawHealStat"].Cast<CheckBox>().CurrentValue)
                     {
                         Drawing.DrawText(posx, posy, c(Heal), "Heal" + ready(Heal), 2);
                     }

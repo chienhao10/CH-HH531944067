@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu.Values;
-using LeagueSharp.Common;
-
-namespace ElUtilitySuite.Items.OffensiveItems
+﻿namespace ElUtilitySuite.Items.OffensiveItems
 {
+    using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+    using EloBuddy;
     internal class Youmuu : Item
     {
         #region Public Properties
@@ -46,32 +45,11 @@ namespace ElUtilitySuite.Items.OffensiveItems
         ///     Shoulds the use item.
         /// </summary>
         /// <returns></returns>
-        /// 
-
-        public bool getCheckBoxItem(string item)
-        {
-            return Menu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public int getSliderItem(string item)
-        {
-            return Menu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public bool getKeyBindItem(string item)
-        {
-            return Menu[item].Cast<KeyBind>().CurrentValue;
-        }
-
-        public override void CreateMenu()
-        {
-            Menu.AddGroupLabel("幽梦");
-            Menu.Add("Youmuucombo", new CheckBox("连招使用"));
-        }
-
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem("Youmuucombo") && ComboModeActive && HeroManager.Enemies.Any(x => x.Distance(ObjectManager.Player) < Orbwalking.GetRealAutoAttackRange(ObjectManager.Player));
+            return getCheckBoxItem(this.Menu, "连招使用幽梦") && this.ComboModeActive
+                   && HeroManager.Enemies.Any(
+                       x => x.LSDistance(this.Player) < Orbwalking.GetRealAutoAttackRange(this.Player));
         }
 
         #endregion

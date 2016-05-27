@@ -23,8 +23,8 @@
             return flashM[item].Cast<CheckBox>().CurrentValue;
         }
 
-        public static Menu rootMenu = ElUtilitySuite.Entry.menu;
         public static Menu flashM;
+
         public void CreateMenu(Menu rootMenu)
         {
             flashM = rootMenu.AddSubMenu("闪现检查", "Flash");
@@ -39,7 +39,7 @@
         /// </summary>
         public void Load()
         {
-            Spellbook.OnCastSpell += Spellbook_OnCastSpell; ;
+            Spellbook.OnCastSpell += Spellbook_OnCastSpell;
         }
 
         private void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)

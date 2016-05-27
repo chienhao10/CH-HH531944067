@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu.Values;
-using LeagueSharp.Common;
-
-namespace ElUtilitySuite.Items.OffensiveItems
+﻿namespace ElUtilitySuite.Items.OffensiveItems
 {
+    using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+    using EloBuddy;
+    using EloBuddy.SDK.Menu.Values;
     internal class Hextech : Item
     {
         #region Public Properties
@@ -45,28 +45,12 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <summary>
         ///     Creates the menu.
         /// </summary>
-        /// 
-
-        public bool getCheckBoxItem(string item)
-        {
-            return Menu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public int getSliderItem(string item)
-        {
-            return Menu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public bool getKeyBindItem(string item)
-        {
-            return Menu[item].Cast<KeyBind>().CurrentValue;
-        }
-
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("科技枪");
-            Menu.Add("UseHextechCombo", new CheckBox("连招使用"));
-            Menu.Add("HextechEnemyHp", new Slider("敌人血量 %", 70, 1));
+            this.Menu.AddGroupLabel(Name);
+            this.Menu.Add("UseHextechCombo", new CheckBox("连招使用"));
+            this.Menu.Add("HextechEnemyHp", new Slider("敌人血量 %", 70));
+            this.Menu.AddSeparator();
         }
 
         /// <summary>
@@ -75,11 +59,11 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <returns></returns>
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem("UseHextechCombo") && ComboModeActive
+            return getCheckBoxItem(this.Menu, "UseHextechCombo") && this.ComboModeActive
                    && HeroManager.Enemies.Any(
                        x =>
-                       x.HealthPercent < getSliderItem("HextechEnemyHp")
-                       && x.Distance(ObjectManager.Player) < 700 && !x.IsDead && !x.IsZombie);
+                       x.HealthPercent < getSliderItem(this.Menu, "HextechEnemyHp")
+                       && x.LSDistance(this.Player) < 700 && !x.IsDead && !x.IsZombie);
         }
 
         /// <summary>
@@ -87,7 +71,12 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// </summary>
         public override void UseItem()
         {
-            LeagueSharp.Common.Items.UseItem((int)Id, HeroManager.Enemies.FirstOrDefault(x => x.HealthPercent < getSliderItem("HextechEnemyHp") && x.Distance(ObjectManager.Player) < 700 && !x.IsDead && !x.IsZombie));
+            Items.UseItem(
+                (int)this.Id,
+                HeroManager.Enemies.FirstOrDefault(
+                    x =>
+                    x.HealthPercent < getSliderItem(this.Menu, "HextechEnemyHp")
+                    && x.LSDistance(this.Player) < 700 && !x.IsDead && !x.IsZombie));
         }
 
         #endregion

@@ -6,83 +6,66 @@
     using EloBuddy.SDK;
     using EloBuddy.SDK.Enumerations;
 
-    using Mario_s_Lib;
+    using Utility;
 
-    using SharpDX;
-    using static Menus;
-    using static SpellsManager;
-
-    /// <summary>
-    /// This mode will run when the key of the orbwalker is pressed
-    /// </summary>
-    internal class Harass : ModeManager
+    internal class Harass
     {
-        /// <summary>
-        /// Put in here what you want to do when the mode is running
-        /// </summary>
         public static void Execute()
         {
-            var target = TargetSelector.GetTarget(1250, DamageType.Magical);
-            if (target == null)
+            var menu = Menus.HarassMenu;
+            var Qmana = Player.Instance.ManaPercent > menu.slider("Qmana");
+            var Wmana = Player.Instance.ManaPercent > menu.slider("Wmana");
+            var Emana = Player.Instance.ManaPercent > menu.slider("Emana");
+            var QS = Orbwalker.ValidAzirSoldiers.Count(s => s.IsAlly) >= menu.slider("QS");
+            var Q = QS && Qmana && menu.checkbox("Q") && Azir.Q.IsReady();
+            var W = Wmana && menu.checkbox("W") && Azir.W.IsReady();
+            var E = Emana && menu.checkbox("E") && Azir.E.IsReady();
+            var Wsave = menu.checkbox("Wsave") && Azir.W.Handle.Ammo > 1;
+            var Wlimit = menu.slider("WS") >= Orbwalker.ValidAzirSoldiers.Count(s => s.IsAlly);
+            var target = TargetSelector.GetTarget(Azir.Q.Range + 25, DamageType.Magical);
+
+            if (target == null || !target.IsKillable())
             {
                 return;
             }
 
-            if (W.IsReady() && HarassMenu.GetCheckBoxValue("wUse"))
+            if (W && Wsave && Wlimit)
             {
-                if (W.Handle.Ammo == 1 && HarassMenu.GetCheckBoxValue("wSave"))
+                if (target.IsValidTarget(Azir.W.Range))
                 {
-                    return;
+                    var pred = Azir.W.GetPrediction(target);
+                    Azir.W.Cast(pred.CastPosition);
                 }
-
-                if (Orbwalker.AzirSoldiers.Any(x => !x.IsInRange(target, Orbwalker.AzirSoldierAutoAttackRange)))
+                if (menu.checkbox("Q") && !target.IsValidTarget(Azir.W.Range) && Azir.Q.IsReady()
+                    && Player.Instance.Mana > Azir.Q.Mana() + Azir.W.Mana() && target.IsValidTarget(Azir.Q.Range - 25) && menu.checkbox("WQ"))
                 {
-                    W.Cast(W.GetPrediction(target).CastPosition);
-                }
-
-                if (Orbwalker.AzirSoldiers.Count == 0)
-                {
-                    W.Cast(W.GetPrediction(target).CastPosition);
-                }
-
-                if (target.IsValidTarget(Q.Range - 25) && Q.IsReady() && Q.Handle.SData.Mana + W.Handle.SData.Mana < Azir.Mana)
-                {
-                    var p = Azir.Distance(target, true) > W.RangeSquared
-                                ? Azir.Position.To2D().Extend(target.Position.To2D(), W.Range)
-                                : target.Position.To2D();
-                    W.Cast((Vector3)p);
+                    var p = Player.Instance.Position.Extend(target.Position, Azir.W.Range);
+                    Azir.W.Cast(p.To3D());
                 }
             }
 
-            if (Q.IsReady() && HarassMenu.GetCheckBoxValue("qUse"))
+            if (Orbwalker.AzirSoldiers.Count(s => s.IsAlly) == 0)
             {
-                if (Orbwalker.AzirSoldiers.Any(x => x.IsInRange(target, Orbwalker.AzirSoldierAutoAttackRange)))
-                {
-                    return;
-                }
+                return;
+            }
 
-                Q.RangeCheckSource = Azir.ServerPosition;
-                Q.SourcePosition = Orbwalker.AzirSoldiers.FirstOrDefault(s => s.IsAlly)?.ServerPosition;
-
-                var pred = Q.GetPrediction(target);
-                if (pred.HitChance >= hitchance)
+            if (Q)
+            {
+                if (Azir.Q.GetPrediction(target).HitChance >= HitChance.High || target.IsCC())
                 {
-                    Q.Cast(pred.CastPosition);
-                }
-                if (target.GetDamage(SpellSlot.Q) >= target.TotalShieldHealth())
-                {
-                    Q.Cast(target.ServerPosition);
+                    Azir.Q.Cast(target);
                 }
             }
 
-            if (Ehit(target) && E.IsReady() && HarassMenu.GetCheckBoxValue("eUse"))
+            if (E && target.Ehit())
             {
-                if (target.IsUnderHisturret() && !HarassMenu.GetCheckBoxValue("eDive")
-                    || (target.CountEnemiesInRange(750) >= HarassMenu.GetSliderValue("eSave")))
+                if ((target.CountEnemeis(750) >= menu.slider("Esafe")) || (menu.slider("EHP") >= Player.Instance.HealthPercent)
+                    || (!menu.checkbox("Edive") && target.IsUnderHisturret()))
                 {
                     return;
                 }
-                E.TryToCast(target, HarassMenu);
+
+                Azir.E.Cast(target);
             }
         }
     }

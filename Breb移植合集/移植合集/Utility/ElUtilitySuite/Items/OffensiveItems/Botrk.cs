@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu.Values;
-using LeagueSharp.Common;
-
-namespace ElUtilitySuite.Items.OffensiveItems
+﻿namespace ElUtilitySuite.Items.OffensiveItems
 {
+    using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+    using EloBuddy;
+    using EloBuddy.SDK.Menu.Values;
     internal class Botrk : Item
     {
         #region Public Properties
@@ -45,27 +45,13 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <summary>
         ///     Creates the menu.
         /// </summary>
-        /// 
-        public bool getCheckBoxItem(string item)
-        {
-            return Menu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public int getSliderItem(string item)
-        {
-            return Menu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public bool getKeyBindItem(string item)
-        {
-            return Menu[item].Cast<KeyBind>().CurrentValue;
-        }
-
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("破败");
-            Menu.Add("UseBotrkCombo", new CheckBox("连招使用"));
-            Menu.Add("BotrkEnemyHp", new Slider("敌人血量 %", 100, 1));
+            this.Menu.AddGroupLabel(Name);
+            this.Menu.Add("UseBotrkCombo", new CheckBox("连招使用"));
+            this.Menu.Add("BotrkEnemyHp", new Slider("敌人血量 %", 100));
+            this.Menu.Add("BotrkMyHp", new Slider("自身血量 %", 100));
+            this.Menu.AddSeparator();
         }
 
         /// <summary>
@@ -74,7 +60,12 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <returns></returns>
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem("UseBotrkCombo") && ComboModeActive && (HeroManager.Enemies.Any(x => x.HealthPercent < getSliderItem("BotrkEnemyHp") && x.LSDistance(Player) < 500));
+            return getCheckBoxItem(this.Menu, "UseBotrkCombo") && this.ComboModeActive
+                   && (HeroManager.Enemies.Any(
+                       x =>
+                       x.HealthPercent < getSliderItem(this.Menu, "BotrkEnemyHp")
+                       && x.LSDistance(this.Player) < 550)
+                       || this.Player.HealthPercent < getSliderItem(this.Menu, "BotrkMyHp"));
         }
 
         /// <summary>
@@ -82,7 +73,12 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// </summary>
         public override void UseItem()
         {
-            LeagueSharp.Common.Items.UseItem((int)Id, HeroManager.Enemies.First(x => x.HealthPercent < getSliderItem("BotrkEnemyHp") && x.LSDistance(ObjectManager.Player) < 550));
+            Items.UseItem(
+                (int)this.Id,
+                HeroManager.Enemies.FirstOrDefault(
+                    x =>
+                    x.HealthPercent < getSliderItem(this.Menu, "BotrkEnemyHp")
+                    && x.LSDistance(this.Player) < 550));
         }
 
         #endregion

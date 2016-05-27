@@ -2,12 +2,13 @@
 {
     using System;
     using System.Linq;
-    using EloBuddy;
-    using EloBuddy.SDK;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK.Menu.Values;
-    using LeagueSharp.Common;
 
+    using LeagueSharp;
+    using LeagueSharp.Common;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy;
+    using EloBuddy.SDK.Menu.Values;
+    using EloBuddy.SDK;
     public class Mark : IPlugin
     {
         #region Public Properties
@@ -46,6 +47,26 @@
             }
         }
 
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
         /// <summary>
         ///     Gets a value indicating whether the combo mode is active.
         /// </summary>
@@ -56,7 +77,7 @@
         {
             get
             {
-                return Entry.getComboMenu() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
+                return Entry.getCombo() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
             }
         }
 
@@ -64,19 +85,11 @@
 
         #region Public Methods and Operators
 
-        public static bool getCheckBoxItem(string item)
-        {
-            return snowballMenu[item].Cast<CheckBox>().CurrentValue;
-        }
-
         /// <summary>
         ///     Creates the menu.
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
         /// <returns></returns>
-        /// 
-        public static Menu rootMenu = ElUtilitySuite.Entry.menu;
-        public static Menu snowballMenu;
         public void CreateMenu(Menu rootMenu)
         {
             if (this.Player.GetSpellSlot("summonersnowball") == SpellSlot.Unknown)
@@ -84,12 +97,18 @@
                 return;
             }
 
-            snowballMenu = rootMenu.AddSubMenu("大乱斗雪球", "Snowball");
-            snowballMenu.Add("Snowball.Activated", new CheckBox("开启雪球"));
-            foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy))
+
+            var snowballMenu = rootMenu.AddSubMenu("大乱斗雪球", "Snowball");
             {
-                snowballMenu.Add("snowballon" + x.ChampionName, new CheckBox("使用在 " + x.ChampionName));
+                snowballMenu.Add("Snowball.Activated", new CheckBox("开启丢雪球"));
+                snowballMenu.Add("SnowballHotkey", new KeyBind("丢雪球按键", false, KeyBind.BindTypes.HoldActive, 'Z'));
+                foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy))
+                {
+                    snowballMenu.Add("snowballon" + x.ChampionName, new CheckBox("为以下使用 " + x.ChampionName));
+                }
             }
+
+            this.Menu = snowballMenu;
         }
 
         /// <summary>
@@ -124,16 +143,16 @@
         /// <param name="args">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void GameOnUpdate(EventArgs args)
         {
-            if (!getCheckBoxItem("Snowball.Activated"))
+            if (!getCheckBoxItem(this.Menu, "Snowball.Activated") || !getKeyBindItem(this.Menu, "SnowballHotkey"))
             {
                 return;
             }
 
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.IsValidTarget(1500f)))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy && x.LSIsValidTarget(1500f)))
             {
-                if (getCheckBoxItem(string.Format("snowballon{0}", enemy.ChampionName)) && this.ComboModeActive)
+                if (getCheckBoxItem(this.Menu, string.Format("snowballon{0}", enemy.ChampionName)))
                 {
-                    this.MarkSpell.CastIfHitchanceEquals(enemy, LeagueSharp.Common.HitChance.High);
+                    this.MarkSpell.CastIfHitchanceEquals(enemy, HitChance.High);
                 }
             }
         }

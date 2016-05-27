@@ -2,13 +2,14 @@
 {
     using System;
     using System.Linq;
-    using EloBuddy;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
-
-    /// <summary>
-    /// Automatically levels R.
-    /// </summary>
+    using EloBuddy;/// <summary>
+                   /// Automatically levels R.
+                   /// </summary>
     internal class UltimateLeveler : IPlugin
     {
         #region Static Fields
@@ -27,27 +28,47 @@
 
         #region Properties
 
+        /// <summary>
+        ///     Gets or sets the menu.
+        /// </summary>
+        /// <value>
+        ///     The menu.
+        /// </value>
+        private Menu Menu { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
+
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
 
         /// <summary>
         ///     Creates the menu.
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
-        /// 
-        public static bool getCheckBoxItem(string item)
-        {
-            return levelMenu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static Menu rootMenu = ElUtilitySuite.Entry.menu;
-        public static Menu levelMenu;
         public void CreateMenu(Menu rootMenu)
         {
-            levelMenu = rootMenu.AddSubMenu("自动加点", "UltLeveler");
-            levelMenu.Add("AutoLevelR", new CheckBox("自动加点大招"));
-            
+            this.Menu = rootMenu.AddSubMenu("自动加点", "UltLeveler");
+            this.Menu.Add("AutoLevelR", new CheckBox("自动加点大招"));
+
             random = new Random(Environment.TickCount);
         }
 
@@ -80,7 +101,7 @@
                 return;
             }
 
-            if (getCheckBoxItem("AutoLevelR"))
+            if (getCheckBoxItem(this.Menu, "AutoLevelR"))
             {
                 LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => sender.Spellbook.LevelSpell(SpellSlot.R));
             }

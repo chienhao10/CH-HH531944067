@@ -619,6 +619,12 @@ namespace SebbyLib.Prediction
 
         internal static PredictionOutput GetPositionOnPath(PredictionInput input, List<Vector2> path, float speed = -1)
         {
+            if (input.Unit.LSDistance(input.From, true) < 250 * 250)
+            {
+                //input.Delay /= 2;
+                speed /= 1.5f;
+            }
+
             speed = (Math.Abs(speed - (-1)) < float.Epsilon) ? input.Unit.MoveSpeed : speed;
 
             if (path.Count <= 1 || (input.Unit.Spellbook.IsAutoAttacking && !input.Unit.LSIsDashing()))

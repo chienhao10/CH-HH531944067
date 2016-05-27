@@ -2,30 +2,12 @@
 {
     using System;
     using System.Linq;
-    using EloBuddy;
-    using EloBuddy.SDK;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK.Menu.Values;
+
+    using LeagueSharp;
     using LeagueSharp.Common;
-
-    public static class IgniteExtensions
-    {
-        #region Public Methods and Operators
-
-        public static bool IgniteCheck(this Obj_AI_Base hero)
-        {
-            if (Ignite.getCheckBoxItem("Ignite.shieldCheck"))
-            {
-                return !hero.HasBuff("summonerdot") || !hero.HasBuff("summonerbarrier") || !hero.HasBuff("BlackShield") || !hero.HasBuff("SivirShield") || !hero.HasBuff("BansheesVeil") || !hero.HasBuff("ShroudofDarkness");
-            }
-
-            return true;
-        }
-
-        #endregion
-    }
-
-    // ReSharper disable once ClassNeverInstantiated.Global
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;    // ReSharper disable once ClassNeverInstantiated.Global
+    using EloBuddy;
     public class Ignite : IPlugin
     {
         #region Public Properties
@@ -56,22 +38,13 @@
         /// <value>
         ///     The Smitespell
         /// </value>
-        public LeagueSharp.Common.Spell IgniteSpell { get; set; }
+        public Spell IgniteSpell { get; set; }
 
         /// <summary>
         ///     Creates the menu.
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
         /// <returns></returns>
-        /// 
-
-        public static bool getCheckBoxItem(string item)
-        {
-            return igniteMenu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static Menu rootMenu = ElUtilitySuite.Entry.menu;
-        public static Menu igniteMenu;
         public void CreateMenu(Menu rootMenu)
         {
             if (this.Player.GetSpellSlot("summonerdot") == SpellSlot.Unknown)
@@ -79,11 +52,17 @@
                 return;
             }
 
-            igniteMenu = rootMenu.AddSubMenu("点燃", "Ignite");
-            igniteMenu.Add("Ignite.Activated", new CheckBox("开启点燃"));
-            igniteMenu.Add("Ignite.shieldCheck", new CheckBox("护盾检查"));
+            var igniteMenu = rootMenu.AddSubMenu("点燃", "Ignite");
+            {
+                igniteMenu.Add("Ignite.Activated", new CheckBox("开启点燃"));
+            }
+
+            Menu = igniteMenu;
         }
 
+        /// <summary>
+        /// Loads this instance
+        /// </summary>
         public void Load()
         {
             try
@@ -95,7 +74,7 @@
                     return;
                 }
 
-                this.IgniteSpell = new LeagueSharp.Common.Spell(igniteSlot);
+                this.IgniteSpell = new Spell(igniteSlot);
 
                 Game.OnUpdate += this.OnUpdate;
             }
@@ -109,11 +88,31 @@
 
         #region Methods
 
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
         private void IgniteKs()
         {
             try
             {
-                if (!getCheckBoxItem("Ignite.Activated"))
+                if (!getCheckBoxItem(Menu, "Ignite.Activated"))
                 {
                     return;
                 }
@@ -121,8 +120,8 @@
                 var kSableEnemy =
                     HeroManager.Enemies.FirstOrDefault(
                         hero =>
-                        hero.IsValidTarget(550) && hero.IgniteCheck() && !hero.IsZombie
-                        && this.Player.GetSummonerSpellDamage(hero, LeagueSharp.Common.Damage.SummonerSpell.Ignite) >= hero.Health);
+                        hero.LSIsValidTarget(600) && !hero.IsZombie
+                        && this.Player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite) > hero.Health);
 
                 if (kSableEnemy != null)
                 {
@@ -135,6 +134,10 @@
             }
         }
 
+        /// <summary>
+        ///     Fired when the game is updated.
+        /// </summary>
+        /// <param name="args">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void OnUpdate(EventArgs args)
         {
             try

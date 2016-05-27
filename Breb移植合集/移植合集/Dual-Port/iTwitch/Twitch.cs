@@ -27,7 +27,7 @@ using SebbyLib;
                                                                          {
                                                                              { SpellSlot.Q, new Spell(SpellSlot.Q) },
                                                                              { SpellSlot.W, new Spell(SpellSlot.W, 950f) },
-                                                                             { SpellSlot.E, new Spell(SpellSlot.E, 1200f) },
+                                                                             { SpellSlot.E, new Spell(SpellSlot.E, 1150f) },
                                                                              { SpellSlot.R, new Spell(SpellSlot.R) },
                                                                          };
 
@@ -47,24 +47,24 @@ using SebbyLib;
         {
             Menu = MainMenu.AddMenu("iTwitch 2.0", "com.itwitch");
 
-            comboOptions = Menu.AddSubMenu(":: iTwith 2.0 - Combo", "com.itwitch.combo");
+            comboOptions = Menu.AddSubMenu("iTwitch 2.0 - Combo", "com.itwitch.combo");
             comboOptions.Add("com.itwitch.combo.useW", new CheckBox("Use W", true));
             comboOptions.Add("com.itwitch.combo.useEKillable", new CheckBox("Use E Killable", true));
 
 
 
-            harassOptions = Menu.AddSubMenu(":: iTwith 2.0 - Harass", "com.itwitch.harass");
+            harassOptions = Menu.AddSubMenu("iTwitch 2.0 - Harass", "com.itwitch.harass");
             harassOptions.Add("com.itwitch.harass.useW", new CheckBox("Use W", true));
             harassOptions.Add("com.itwitch.harass.useEKillable", new CheckBox("Use E", true));
 
 
-            miscOptions = Menu.AddSubMenu(":: iTwitch 2.0 - Misc", "com.itwitch.misc");
-            miscOptions.Add("com.itwitch.misc.autoYo", new CheckBox("Yomuus with R", true));
+            miscOptions = Menu.AddSubMenu("iTwitch 2.0 - Misc", "com.itwitch.misc");
+            miscOptions.Add("com.itwitch.misc.autoYo", new CheckBox("Youmuus with R", true));
             miscOptions.Add("com.itwitch.misc.saveManaE", new CheckBox("Save Mana for E", true));
             miscOptions.Add("com.itwitch.misc.recall", new KeyBind("Stealth Recall", false, KeyBind.BindTypes.HoldActive, 'T'));
 
 
-            drawOptions = Menu.AddSubMenu(":: iTwith 2.0 - Drawing", "com.itwitch.drawing");
+            drawOptions = Menu.AddSubMenu("iTwitch 2.0 - Drawing", "com.itwitch.drawing");
             drawOptions.Add("com.itwitch.drawing.drawQTime", new CheckBox("Draw Q Time", true));
             drawOptions.Add("com.itwitch.drawing.drawEStacks", new CheckBox("Draw E Stacks", true));
             drawOptions.Add("com.itwitch.drawing.drawEStackT", new CheckBox("Draw E Stack Time", true));
@@ -101,18 +101,6 @@ using SebbyLib;
 
         public static void OnCombo()
         {
-            if (getCheckBoxItem(comboOptions, "com.itwitch.combo.useEKillable") && Spells[SpellSlot.E].IsReady())
-            {
-                var killableTarget =
-                    HeroManager.Enemies.FirstOrDefault(
-                        x =>
-                        x.IsValidTarget(Spells[SpellSlot.E].Range) && Spells[SpellSlot.E].IsInRange(x)
-                        && x.IsPoisonKillable());
-                if (killableTarget != null)
-                {
-                    Spells[SpellSlot.E].Cast();
-                }
-            }
 
             if (getCheckBoxItem(comboOptions, "com.itwitch.combo.useW") && Spells[SpellSlot.W].IsReady())
             {
@@ -177,19 +165,6 @@ using SebbyLib;
 
         public static void OnHarass()
         {
-            if (getCheckBoxItem(harassOptions, "com.itwitch.harass.useEKillable") && Spells[SpellSlot.E].IsReady())
-            {
-                var target =
-                    HeroManager.Enemies.FirstOrDefault(
-                        x =>
-                        x.IsValidTarget(Spells[SpellSlot.E].Range) && Spells[SpellSlot.E].IsInRange(x)
-                        && x.IsPoisonKillable());
-                if (target != null)
-                {
-                    Spells[SpellSlot.E].Cast();
-                }
-            }
-
             if (getCheckBoxItem(harassOptions, "com.itwitch.harass.useW") && Spells[SpellSlot.W].IsReady())
             {
                 var wTarget = TargetSelector.GetTarget(Spells[SpellSlot.W].Range, DamageType.Physical);
@@ -259,6 +234,18 @@ using SebbyLib;
             {
                 Spells[SpellSlot.Q].Cast();
                 ObjectManager.Player.Spellbook.CastSpell(SpellSlot.Recall);
+            }
+
+
+            if (getKeyBindItem(comboOptions, "com.itwitch.combo.useEKillable") && Spells[SpellSlot.E].IsReady())
+            {
+                if (HeroManager.Enemies.Any(
+                    x =>
+                        x.IsPoisonKillable() &&
+                        x.IsValidTarget(Spells[SpellSlot.E].Range)))
+                {
+                    Spells[SpellSlot.E].Cast();
+                }
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))

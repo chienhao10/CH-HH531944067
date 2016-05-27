@@ -5,93 +5,53 @@
     using EloBuddy;
     using EloBuddy.SDK;
 
-    using Mario_s_Lib;
+    using KappAzir.Utility;
 
     using SharpDX;
-    using static Menus;
-    using static SpellsManager;
 
-    internal class Jumper : ModeManager
+    public static class Jumper
     {
-        public static int delay = delay = FleeMenu.GetSliderValue("delay");
+        public static int delay = Menus.JumperMenu.slider("delay");
 
-        public static int range = delay = FleeMenu.GetSliderValue("range");
+        public static int range = Menus.JumperMenu.slider("range");
 
-        private static float et = 0;
-
-        public static Vector3 castpos;
-
-        public static void jump(Vector3 qpos, Vector3 pos)
+        public static void Jump(Vector3 pos)
         {
-            castpos = qpos;
-            if (Orbwalker.AzirSoldiers.Count(s => s.Distance(Azir) < range) < 1)
+            var qpos = Player.Instance.ServerPosition.Extend(pos, Azir.Q.Range - 100).To3D();
+            var wpos = Player.Instance.ServerPosition.Extend(pos, Azir.W.Range).To3D();
+            var epos = Player.Instance.ServerPosition.Extend(pos, Azir.E.Range).To3D();
+            var ready = Azir.E.IsReady() && Azir.Q.IsReady() && Player.Instance.Mana > Azir.Q.Mana() + Azir.E.Mana() + Azir.W.Mana();
+
+            if (ready && Orbwalker.AzirSoldiers.Count(s => s.IsAlly && s.IsInRange(Player.Instance, range)) < 1)
             {
-                if (E.IsReady() && Q.IsReady())
+                if (LastCastedSpell.Spell == SpellSlot.E)
                 {
-                    if (W.Cast(Azir.ServerPosition.Extend(pos, W.Range).To3D()))
-                    {
-                        Core.DelayAction(
-                            () =>
-                                {
-                                    if (E.Cast(Azir.ServerPosition.Extend(pos, E.Range).To3D()))
-                                    {
-                                        et = Game.Time;
-                                        if (Game.Time - et < 1 && Game.Time - et > 0.2f)
-                                        {
-                                            Core.DelayAction(() => Q.Cast(Azir.ServerPosition.Extend(qpos, Q.Range).To3D()), delay);
-                                        }
-                                    }
-                                },
-                            150);
-                    }
+                    return;
                 }
+                Azir.W.Cast(wpos);
             }
             else
             {
-                if (E.IsReady() && Q.IsReady())
+                if (ready)
                 {
                     Core.DelayAction(
                         () =>
                             {
-                                if (E.Cast(Azir.ServerPosition.Extend(pos, E.Range).To3D()))
+                                if (Azir.E.Cast(epos))
                                 {
-                                    if (Game.Time - et < 1 && Game.Time - et > 0.2f)
-                                    {
-                                        Core.DelayAction(() => Q.Cast(Azir.ServerPosition.Extend(qpos, Q.Range).To3D()), delay);
-                                    }
+                                    Core.DelayAction(() => Azir.Q.Cast(qpos), delay);
                                 }
                             },
-                        150);
-
-                    Core.DelayAction(
-                        () =>
-                            {
-                                if (Q.Cast(Azir.ServerPosition.Extend(qpos, Q.Range).To3D()))
-                                {
-                                    Core.DelayAction(() => E.Cast(Azir.ServerPosition.Extend(pos, E.Range).To3D()), delay);
-                                }
-                            },
-                        250);
+                        100);
                 }
             }
-        }
 
-        internal static void OnLoad()
-        {
-            Obj_AI_Base.OnProcessSpellCast += Obj_AI_Base_OnProcessSpellCast1;
-        }
-
-        private static void Obj_AI_Base_OnProcessSpellCast1(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
-        {
-            if (sender.IsMe && (FleeMenu.GetKeyBindValue("flee") || FleeMenu.GetKeyBindValue("insect") || FleeMenu.GetKeyBindValue("insected")))
+            if (LastCastedSpell.Spell == SpellSlot.E)
             {
-                if (args.SData.Name == "AzirE" && Q.IsReady())
+                var timer = (Game.Time - LastCastedSpell.Time) * 100;
+                if (timer - delay < 0.1f && Azir.Q.IsReady())
                 {
-                    Core.DelayAction(() => Q.Cast(Azir.ServerPosition.Extend(castpos, Q.Range).To3D()), delay);
-                }
-                if (args.SData.Name == "AzirQ" && E.IsReady())
-                {
-                    Core.DelayAction(() => E.Cast(Azir.ServerPosition.Extend(castpos, E.Range).To3D()), delay);
+                    Azir.Q.Cast(qpos);
                 }
             }
         }

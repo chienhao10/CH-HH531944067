@@ -2,55 +2,43 @@
 {
     using System.Linq;
 
-    using EloBuddy;
     using EloBuddy.SDK;
 
-    using Mario_s_Lib;
+    using KappAzir.Utility;
 
-    using SharpDX;
-    using static Menus;
-    using static SpellsManager;
-
-    internal class KillSteal : ModeManager
+    internal class Killsteal
     {
         public static void Execute()
         {
-            if (kstarget(Q.Range) == null)
+            var menu = Menus.KillstealMenu;
+            var enemies = EntityManager.Heroes.Enemies.Where(e => e.IsKillable());
+
+            foreach (var enemy in enemies)
             {
-                return;
-            }
-            if (W.IsReady() && KillStealMenu.GetCheckBoxValue("wUse"))
-            {
-                if (Q.IsReady() && Q.Handle.SData.Mana + W.Handle.SData.Mana < Azir.Mana
-                    && Azir.GetSpellDamage(kstarget(Q.Range), SpellSlot.Q) >= kstarget(Q.Range).TotalShieldHealth())
+                if (enemy != null)
                 {
-                    var p = Azir.Distance(kstarget(Q.Range), true) > W.RangeSquared
-                                ? Azir.Position.To2D().Extend(kstarget(Q.Range).Position.To2D(), W.Range)
-                                : kstarget(Q.Range).Position.To2D();
-                    W.Cast((Vector3)p);
+                    var Q = menu.checkbox("Q") && Azir.Q.IsReady() && Orbwalker.AzirSoldiers.Count(s => s.IsAlly) > 0
+                            && enemy.IsValidTarget(Azir.Q.Range)
+                            && Azir.Q.GetDamage(enemy) >= Prediction.Health.GetPrediction(enemy, Azir.Q.CastDelay);
+                    var E = menu.checkbox("E") && Azir.E.IsReady() && enemy.Ehit() && enemy.IsValidTarget(Azir.E.Range)
+                            && Azir.E.GetDamage(enemy) >= Prediction.Health.GetPrediction(enemy, Azir.E.CastDelay);
+                    var R = menu.checkbox("R") && Azir.R.IsReady() && enemy.IsValidTarget(Azir.R.Range)
+                            && Azir.R.GetDamage(enemy) >= Prediction.Health.GetPrediction(enemy, Azir.R.CastDelay);
+
+                    if (Q)
+                    {
+                        Azir.Q.Cast(enemy);
+                    }
+                    if (E)
+                    {
+                        Azir.E.Cast(enemy);
+                    }
+                    if (R && !Q && !E)
+                    {
+                        Azir.R.Cast(enemy);
+                    }
                 }
             }
-
-            if (Azir.GetSpellDamage(kstarget(Q.Range), SpellSlot.Q) >= kstarget(Q.Range).TotalShieldHealth())
-            {
-                if (Orbwalker.AzirSoldiers.Any(s => s.IsAlly))
-                {
-                    Q.TryToCast(Q.GetPrediction(kstarget(Q.Range)).CastPosition, KillStealMenu);
-                }
-            }
-
-            if (Azir.GetSpellDamage(kstarget(E.Range), SpellSlot.E) >= kstarget(E.Range).TotalShieldHealth())
-            {
-                if (Ehit(kstarget(E.Range)))
-                {
-                    E.TryToCast(kstarget(E.Range).Position, KillStealMenu);
-                }
-            }
-        }
-
-        private static AIHeroClient kstarget(uint range)
-        {
-            return EntityManager.Heroes.Enemies.FirstOrDefault(x => x.IsValidTarget(range) && x != null);
         }
     }
 }

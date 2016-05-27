@@ -137,6 +137,22 @@ namespace Valvrave_Sharp.Core
             return minion.GetMinionType().HasFlag(MinionTypes.Ward) && minion.CharData.BaseSkinName != "BlueTrinket";
         }
 
+        internal static List<Obj_AI_Base> ListEnemies(bool includeClones = false)
+        {
+            var list = new List<Obj_AI_Base>();
+            list.AddRange(GameObjects.EnemyHeroes);
+            list.AddRange(ListMinions(includeClones));
+            return list;
+        }
+
+        internal static List<Obj_AI_Minion> ListMinions(bool includeClones = false)
+        {
+            var list = new List<Obj_AI_Minion>();
+            list.AddRange(GameObjects.Jungle);
+            list.AddRange(GameObjects.EnemyMinions.Where(i => i.IsMinion() || i.IsPet(includeClones)));
+            return list;
+        }
+
         #endregion
     }
 }

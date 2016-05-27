@@ -7,8 +7,8 @@
     using LeagueSharp.Common;
 
     using ItemData = LeagueSharp.Common.Data.ItemData;
-    using EloBuddy;
     using EloBuddy.SDK.Menu;
+    using EloBuddy;
     using EloBuddy.SDK.Menu.Values;
     internal class BlueTrinket : IPlugin
     {
@@ -17,7 +17,7 @@
         /// <summary>
         ///     A collection of champions that should not buy the blue trinket
         /// </summary>
-        public static string[] BlacklistedChampions = { "Elise", "Nidalee", "Udyr", "LeeSin", "Monkeyking", "Hecarim", "Nautilus", "Thresh", "Bard", "Soraka", "Nami", "Rengar", "Zilean", "Fiddlesticks", "Blitzcrank", "Braum", "Katarina", "Alistar", "Maokai", "MasterYi", "Rammus", "Pantheon", "Evelynn", "Warwick", "Ryze", "Zed", "Fizz", "Taric", "Malphite", "JarvanIV" };
+        public static string[] BlacklistedChampions = { "Elise", "Nidalee", "Udyr", "LeeSin", "Monkeyking", "Hecarim", "Nautilus", "Thresh", "Bard", "Soraka", "Nami", "Rengar", "Zilean", "Fiddlesticks", "Blitzcrank", "Braum", "Katarina", "Alistar", "Maokai", "MasterYi", "Rammus", "Pantheon", "Evelynn", "Warwick", "Ryze", "Zed", "Fizz", "Taric", "Malphite", "JarvanIV"};
 
         /// <summary>
         ///     The Check Interval
@@ -73,6 +73,26 @@
 
         #region Public Methods and Operators
 
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
         /// <summary>
         ///     Creates the menu.
         /// </summary>
@@ -81,7 +101,9 @@
         public void CreateMenu(Menu rootMenu)
         {
             var autoTrinketMenu = rootMenu.AddSubMenu("自动蓝眼", "bluetrinket");
-            autoTrinketMenu.Add("AutoTrinket", new CheckBox("自动购买蓝眼", false));
+            {
+                autoTrinketMenu.Add("AutoTrinket", new CheckBox("自动购买蓝眼", false));
+            }
 
             this.Menu = autoTrinketMenu;
             random = new Random(Environment.TickCount);
@@ -119,11 +141,11 @@
         {
             try
             {
-                if (!this.Menu["AutoTrinket"].Cast<CheckBox>().CurrentValue)
+                if (!getCheckBoxItem(this.Menu, "AutoTrinket"))
                 {
                     return;
                 }
-
+                        
                 if (this.lastCheck + CheckInterval > Environment.TickCount)
                 {
                     return;
@@ -139,6 +161,7 @@
                         {
                             return;
                         }
+
                         LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => Shop.BuyItem(ItemId.Farsight_Alteration));
                     }
                 }

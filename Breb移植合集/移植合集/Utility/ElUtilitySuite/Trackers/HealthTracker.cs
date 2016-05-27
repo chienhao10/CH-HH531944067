@@ -1,18 +1,20 @@
 ﻿namespace ElUtilitySuite.Trackers
 {
     using System;
-    using System.Collections.Generic;
+    using System.Drawing;
     using System.Linq;
-    using EloBuddy;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK.Menu.Values;
-    using SharpDX;
+
+    using LeagueSharp;
     using LeagueSharp.Common;
+
+    using SharpDX;
     using SharpDX.Direct3D9;
 
     using Color = System.Drawing.Color;
     using Font = SharpDX.Direct3D9.Font;
-
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;
+    using EloBuddy;
     internal class HealthTracker : IPlugin
     {
         #region Fields
@@ -36,16 +38,6 @@
 
         #endregion
 
-        public static bool getCheckBoxItem(string item)
-        {
-            return enemySidebarMenu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(string item)
-        {
-            return enemySidebarMenu[item].Cast<Slider>().CurrentValue;
-        }
-
         #region Properties
 
         /// <summary>
@@ -58,11 +50,34 @@
 
         #endregion
 
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
+        /// <summary>
+        ///     Gets the spacing between HUD elements
+        /// </summary>
         private int HudSpacing
         {
             get
             {
-                return getSliderItem("HealthTracker.Spacing");
+                return getSliderItem(this.Menu, "HealthTracker.Spacing");
             }
         }
 
@@ -73,7 +88,7 @@
         {
             get
             {
-                return getSliderItem("HealthTracker.OffsetRight");
+                return getSliderItem(this.Menu, "HealthTracker.OffsetRight");
             }
         }
 
@@ -84,9 +99,23 @@
         {
             get
             {
-                return getSliderItem("HealthTracker.OffsetTop");
+                return getSliderItem(this.Menu, "HealthTracker.OffsetTop");
             }
         }
+
+        /// <summary>
+        ///     Gets the right offset between text and healthbar
+        /// </summary>
+        private int HudOffsetText
+        {
+            get
+            {
+                return getSliderItem(this.Menu, "HealthTracker.OffsetText");
+            }
+        }
+
+
+        
 
         #region Public Methods and Operators
 
@@ -95,18 +124,20 @@
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
         /// <returns></returns>
-        /// 
-        public static Menu rootMenu = ElUtilitySuite.Entry.menu;
-        public static Menu enemySidebarMenu;
         public void CreateMenu(Menu rootMenu)
         {
-            enemySidebarMenu = rootMenu.AddSubMenu("敌方血量记录", "healthenemies");
-            enemySidebarMenu.Add("DrawHealth_", new CheckBox("启用"));
-            enemySidebarMenu.Add("HealthTracker.OffsetTop", new Slider("上移动", 75, 0, 500));
-            enemySidebarMenu.Add("HealthTracker.OffsetRight", new Slider("右移动", 170, 0, 500));
-            enemySidebarMenu.Add("HealthTracker.Spacing", new Slider("间隔", 10, 0, 30));
-            enemySidebarMenu.Add("FontSize", new Slider("字体大小", 15, 13, 30));
+            var enemySidebarMenu = rootMenu.AddSubMenu("敌方血量记录", "healthenemies");
+            {
+                enemySidebarMenu.Add("DrawHealth_", new CheckBox("启用"));
+                enemySidebarMenu.Add("DrawHealth_percent", new CheckBox("英雄血量 %"));
+                enemySidebarMenu.Add("HealthTracker.OffsetText", new Slider("移动文字", 30, 0, 100));
+                enemySidebarMenu.Add("HealthTracker.OffsetTop", new Slider("上移动", 75, 0, 1500));
+                enemySidebarMenu.Add("HealthTracker.OffsetRight", new Slider("右移动", 170, 0, 1500));
+                enemySidebarMenu.Add( "HealthTracker.Spacing", new Slider("间隔", 10, 0, 30));
+                enemySidebarMenu.Add("FontSize", new Slider("字体大小", 15, 13, 30));
+            }
 
+            this.Menu = enemySidebarMenu;
         }
 
         /// <summary>
@@ -117,12 +148,10 @@
             Font = new Font(
                 Drawing.Direct3DDevice,
                 new FontDescription
-                {
-                    FaceName = "Tahoma",
-                    Height = getSliderItem("FontSize"),
-                    OutputPrecision = FontPrecision.Default,
-                    Quality = FontQuality.Antialiased
-                });
+                    {
+                        FaceName = "Tahoma", Height = getSliderItem(this.Menu, "FontSize"),
+                        OutputPrecision = FontPrecision.Default, Quality = FontQuality.Antialiased
+                    });
 
             Drawing.OnEndScene += this.Drawing_OnEndScene;
             Drawing.OnPreReset += args => { Font.OnLostDevice(); };
@@ -139,14 +168,14 @@
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void Drawing_OnEndScene(EventArgs args)
         {
-            if (!getCheckBoxItem("DrawHealth_"))
+            if (!getCheckBoxItem(this.Menu, "DrawHealth_"))
             {
                 return;
             }
 
             float i = 0;
 
-            foreach (var hero in HeroManager.Enemies)
+            foreach (var hero in HeroManager.Enemies.Where(x => !x.IsDead))
             {
                 var champion = hero.ChampionName;
                 if (champion.Length > 12)
@@ -154,28 +183,33 @@
                     champion = champion.Remove(7) + "...";
                 }
 
+
+                var championInfo = getCheckBoxItem(this.Menu, "DrawHealth_percent")
+                    ? champion + " (" + (int)hero.HealthPercent + "%)"
+                    : champion;
+
+                // Draws the championnames
                 Font.DrawText(
                     null,
-                    champion,
+                    championInfo,
                     (int)
-                    ((float)(Drawing.Width - HudOffsetRight) - 60f
-                     - Font.MeasureText(null, champion, FontDrawFlags.Right).Width / 2f),
-                    (int)
-                    (HudOffsetTop + i + 4
-                     - Font.MeasureText(null, champion, FontDrawFlags.Right).Height / 2f),
+                    ((Drawing.Width - this.HudOffsetRight - this.HudOffsetText - Font.MeasureText(null, championInfo, FontDrawFlags.Left).Width)),
+                    (int)(this.HudOffsetTop + i + 4 - Font.MeasureText(null, championInfo, FontDrawFlags.Left).Height / 2f),
                     hero.HealthPercent > 0 ? new ColorBGRA(255, 255, 255, 255) : new ColorBGRA(244, 8, 8, 255));
 
+                // Draws the rectangle
                 this.DrawRect(
-                    Drawing.Width - HudOffsetRight,
-                    HudOffsetTop + i,
+                    Drawing.Width - this.HudOffsetRight,
+                    this.HudOffsetTop + i,
                     100,
                     this.BarHeight,
                     1,
                     Color.FromArgb(255, 51, 55, 51));
 
+                // Fils the rectangle
                 this.DrawRect(
-                    Drawing.Width - HudOffsetRight,
-                    HudOffsetTop + i,
+                    Drawing.Width - this.HudOffsetRight,
+                    this.HudOffsetTop + i,
                     hero.HealthPercent <= 0 ? 100 : (int)(hero.HealthPercent),
                     this.BarHeight,
                     1,

@@ -238,10 +238,13 @@ namespace iLucian
                 SkillshotType.SkillshotLine);
             Variables.Spell[Variables.Spells.W].SetSkillshot(0.30f, 70f, 1600f, true, SkillshotType.SkillshotLine);
             Variables.Spell[Variables.Spells.R].SetSkillshot(0.2f, 110f, 2500, true, SkillshotType.SkillshotLine);
+            Variables.Spell[Variables.Spells.Q3].SetSkillshot(0.25f, 70, 3000, false, SkillshotType.SkillshotLine);
         }
 
         public void Killsteal()
         {
+            var ch = HeroManager.Enemies.Where(hero => hero.IsValidTarget(1150)).Where(hero => hero.Distance(ObjectManager.Player) > 675).FirstOrDefault();
+
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.E].Range + Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
 
             if (!getCheckBoxItem(MenuGenerator.miscOptions, "com.ilucian.misc.eqKs") || !Variables.Spell[Variables.Spells.Q].IsReady() || !target.IsValidTarget(Variables.Spell[Variables.Spells.E].Range + Variables.Spell[Variables.Spells.Q2].Range))
@@ -258,7 +261,7 @@ namespace iLucian
 
                 if (target.IsValidTarget(Variables.Spell[Variables.Spells.Q2].Range) && !target.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range))
                 {
-                    CastExtendedQ();
+                    CastExtendedQ(ch);
                 }
                 else if (Variables.Spell[Variables.Spells.E].IsReady() && Variables.Spell[Variables.Spells.Q].IsReady())
                 {
@@ -355,6 +358,8 @@ namespace iLucian
             if (!getKeyBindItem(MenuGenerator.harassOptions, "com.ilucian.harass.auto.autoharass"))
                 return;
 
+            var ch = HeroManager.Enemies.Where(hero => hero.IsValidTarget(1150)).Where(hero => hero.Distance(ObjectManager.Player) > 675).FirstOrDefault();
+
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
 
             if (getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.auto.q") && Variables.Spell[Variables.Spells.Q].IsReady())
@@ -369,7 +374,7 @@ namespace iLucian
             if (getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.auto.qExtended") &&
                 Variables.Spell[Variables.Spells.Q].IsReady())
             {
-                CastExtendedQ();
+                CastExtendedQ(ch);
             }
         }
 
@@ -395,13 +400,15 @@ namespace iLucian
 
         private void OnCombo()
         {
+            var ch = HeroManager.Enemies.Where(hero => hero.IsValidTarget(1150)).Where(hero => hero.Distance(ObjectManager.Player) > 675).FirstOrDefault();
+
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range, DamageType.Physical);
 
             if (target == null || Variables.HasPassive())
                 return;
             if (getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.qExtended"))
             {
-                CastExtendedQ();
+                CastExtendedQ(ch);
             }
             if (target.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range) && getCheckBoxItem(MenuGenerator.comboOptions, "com.ilucian.combo.q"))
             {
@@ -432,12 +439,14 @@ namespace iLucian
 
         private void OnHarass()
         {
+            var ch = HeroManager.Enemies.Where(hero => hero.IsValidTarget(1150)).Where(hero => hero.Distance(ObjectManager.Player) > 675).FirstOrDefault();
+
             var target = TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q].Range, DamageType.Physical);
 
             if (target == null || Variables.HasPassive()) return;
             if (getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.qExtended"))
             {
-                CastExtendedQ();
+                CastExtendedQ(ch);
             }
             if (target.IsValidTarget(Variables.Spell[Variables.Spells.Q].Range) && getCheckBoxItem(MenuGenerator.harassOptions, "com.ilucian.harass.q"))
             {
@@ -614,30 +623,17 @@ namespace iLucian
             return damage;
         }
 
-        private void CastExtendedQ()
+        private void CastExtendedQ(AIHeroClient unit)
         {
-            if (!Variables.Spell[Variables.Spells.Q].IsReady())
             {
-                return;
-            }
-
-            var target = TargetSelector.SelectedTarget != null &&
-                         TargetSelector.SelectedTarget.LSDistance(ObjectManager.Player) < 1800
-                ? TargetSelector.SelectedTarget
-                : TargetSelector.GetTarget(Variables.Spell[Variables.Spells.Q2].Range,
-                    DamageType.Physical);
-
-            var predictionPosition = Variables.Spell[Variables.Spells.Q2].GetPrediction(target);
-
-            foreach (var unit in from unit in GetHittableTargets()
-                                 let polygon =
-                                     new LeagueSharp.Common.Geometry.Polygon.Rectangle(ObjectManager.Player.ServerPosition,
-                                         ObjectManager.Player.ServerPosition.LSExtend(unit.ServerPosition,
-                                             Variables.Spell[Variables.Spells.Q2].Range), 65f)
-                                 where polygon.IsInside(predictionPosition.CastPosition)
-                                 select unit)
-            {
-                Variables.Spell[Variables.Spells.Q].Cast(unit);
+                var minions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, 675, MinionTypes.All, MinionTeam.NotAlly);
+                foreach (var minion in minions)
+                {
+                    if (Variables.Spell[Variables.Spells.Q3].WillHit(unit, ObjectManager.Player.ServerPosition.LSExtend(minion.ServerPosition, 1150), 0, HitChance.VeryHigh))
+                    {
+                        Variables.Spell[Variables.Spells.Q3].CastOnUnit(minion);
+                    }
+                }
             }
         }
 

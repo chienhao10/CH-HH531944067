@@ -1,5 +1,6 @@
 ﻿namespace ElUtilitySuite
 {
+    using EloBuddy.SDK.Menu;
     using LeagueSharp.Common;
 
     /// <summary>
@@ -10,12 +11,17 @@
         #region Public Methods and Operators
 
         /// <summary>
+        ///     Creates the menu.
+        /// </summary>
+        /// <param name="rootMenu">The root menu.</param>
+        /// <returns></returns>
+        void CreateMenu(Menu rootMenu);
+
+        /// <summary>
         ///     Loads this instance.
         /// </summary>
         void Load();
 
         #endregion
-
-        void CreateMenu(EloBuddy.SDK.Menu.Menu menu);
     }
 }

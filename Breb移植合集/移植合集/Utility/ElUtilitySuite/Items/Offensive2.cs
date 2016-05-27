@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using EloBuddy;
-using EloBuddy.SDK.Menu;
-
-namespace ElUtilitySuite.Items
+﻿    namespace ElUtilitySuite.Items
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Permissions;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy;
     internal class Offensive2 : IPlugin
     {
         #region Fields
@@ -19,7 +22,7 @@ namespace ElUtilitySuite.Items
 
         public Offensive2()
         {
-            offensiveItems =
+            this.offensiveItems =
                 Assembly.GetExecutingAssembly()
                     .GetTypes()
                     .Where(
@@ -67,7 +70,7 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public void Load()
         {
-            Game.OnUpdate += Game_OnUpdate;
+            Game.OnUpdate += this.Game_OnUpdate;
         }
 
         #endregion
@@ -76,7 +79,7 @@ namespace ElUtilitySuite.Items
 
         private void Game_OnUpdate(EventArgs args)
         {
-            foreach (var item in offensiveItems.Where(x => x.ShouldUseItem() && LeagueSharp.Common.Items.CanUseItem((int)x.Id)))
+            foreach (var item in this.offensiveItems.Where(x => x.ShouldUseItem() && Items.CanUseItem((int)x.Id)))
             {
                 item.UseItem();
             }

@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu.Values;
-using LeagueSharp.Common;
-
-namespace ElUtilitySuite.Items.OffensiveItems
+﻿namespace ElUtilitySuite.Items.OffensiveItems
 {
+    using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+    using EloBuddy.SDK.Menu.Values;
+    using EloBuddy;
     class FrostQueen : Item
     {
         #region Public Properties
@@ -45,29 +45,13 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <summary>
         ///     Creates the menu.
         /// </summary>
-        /// 
-
-        public bool getCheckBoxItem(string item)
-        {
-            return Menu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public int getSliderItem(string item)
-        {
-            return Menu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public bool getKeyBindItem(string item)
-        {
-            return Menu[item].Cast<KeyBind>().CurrentValue;
-        }
-
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("冰雪女皇的指令");
-            Menu.Add("UseFrostQueenCombo", new CheckBox("连招使用"));
-            Menu.Add("FrostQueenEnemyHp", new Slider("当敌人血量 % 时使用", 70, 1));
-            Menu.Add("FrostQueenMyHp", new Slider("我血量 % 时使用", 100, 1));
+            this.Menu.AddGroupLabel(Name);
+            this.Menu.Add("UseFrostQueenCombo", new CheckBox("连招使用"));
+            this.Menu.Add("FrostQueenEnemyHp", new Slider("当敌人血量 % 时使用", 70));
+            this.Menu.Add("FrostQueenMyHp", new Slider("我血量 % 时使用", 100));
+            this.Menu.AddSeparator();
         }
 
         /// <summary>
@@ -76,12 +60,12 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// <returns></returns>
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem("UseFrostQueenCombo") && ComboModeActive
+            return getCheckBoxItem(this.Menu, "UseFrostQueenCombo") && this.ComboModeActive
                    && (HeroManager.Enemies.Any(
                        x =>
-                       x.HealthPercent < getSliderItem("FrostQueenEnemyHp")
-                       && x.LSDistance(ObjectManager.Player) < 1500)
-                       || ObjectManager.Player.HealthPercent < getSliderItem("FrostQueenMyHp"));
+                       x.HealthPercent < getSliderItem(this.Menu, "FrostQueenEnemyHp")
+                       && x.LSDistance(this.Player) < 1500)
+                       || this.Player.HealthPercent < getSliderItem(this.Menu, "FrostQueenMyHp"));
         }
 
         /// <summary>
@@ -89,7 +73,7 @@ namespace ElUtilitySuite.Items.OffensiveItems
         /// </summary>
         public override void UseItem()
         {
-            LeagueSharp.Common.Items.UseItem((int)Id);
+            Items.UseItem((int)this.Id);
         }
 
         #endregion

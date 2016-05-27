@@ -22,8 +22,8 @@ namespace EvadePlus
                         SpellName = "summonersnowball",
                         Slot = SpellSlot.Summoner1,
                         Delay = 0,
-                        Range = 1600,
-                        Radius = 60,
+                        Range = 650,
+                        Radius = 350,
                         MissileSpeed = 1300,
                         DangerValue = 1,
                         IsDangerous = true,
@@ -2863,7 +2863,7 @@ namespace EvadePlus
                         SpellName = "ThreshQ",
                         Slot = SpellSlot.Q,
                         Delay = 500,
-                        Range = 1200,
+                        Range = 1100,
                         Radius = 70,
                         MissileSpeed = 1900,
                         DangerValue = 3,
@@ -3481,7 +3481,7 @@ namespace EvadePlus
                         MissileSpellName = "zyrapassivedeathmanager"
                     }
                 },
-                new CircularMissileSkillshot
+                new LinearMissileSkillshot
                 {
                     SpellData = new SpellData
                     {

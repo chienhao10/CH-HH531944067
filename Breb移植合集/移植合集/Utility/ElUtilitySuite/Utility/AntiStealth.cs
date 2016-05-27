@@ -11,7 +11,6 @@
     using EloBuddy;
     using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;
-    using EloBuddy.SDK;
     internal class AntiStealth : IPlugin
     {
         #region Static Fields
@@ -30,12 +29,19 @@
         /// </summary>
         private AIHeroClient rengar;
 
+
+        /// <summary>
+        ///     Vayne
+        /// </summary>
+        private AIHeroClient vayne;
+
         #endregion
 
         #region Constructors and Destructors
 
         static AntiStealth()
         {
+            // add akali health here
             Spells = new List<AntiStealthSpell>
                          {
                              new AntiStealthSpell { ChampionName = "Akali", SDataName = "akalismokebomb" },
@@ -63,6 +69,19 @@
         #region Public Properties
 
         /// <summary>
+        ///     A delegate that returns a <see cref="SpellSlot" />
+        /// </summary>
+        /// <returns>
+        ///     <see cref="SpellSlot" />
+        /// </returns>
+        public delegate SpellSlot GetSlotDelegate();
+
+        /// <summary>
+        ///     The Vayne buff stealth end time
+        /// </summary>
+        public float VayneBuffEndTime = 0;
+
+        /// <summary>
         ///     Gets or sets the spells.
         /// </summary>
         /// <value>
@@ -70,6 +89,9 @@
         /// </value>
         public static List<AntiStealthSpell> Spells { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the menu
+        /// </summary>
         public Menu Menu { get; set; }
 
         #endregion
@@ -118,17 +140,59 @@
             random = new Random(Environment.TickCount);
         }
 
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
         /// <summary>
         ///     Loads this instance.
         /// </summary>
         public void Load()
         {
+            if (Game.MapId != GameMapId.SummonersRift)
+            {
+                return;
+            }
+
             this.Items = new List<AntiStealthRevealItem>
                              {
-                                 new AntiStealthRevealItem { GetItem = () => ItemData.Vision_Ward.GetItem() },
                                  new AntiStealthRevealItem
-                                     { GetItem = () => ItemData.Greater_Vision_Totem_Trinket.GetItem() }
+                                     {
+                                     Slot = () =>
+                                        {
+                                            var slots = ItemData.Vision_Ward.GetItem().Slots;
+                                            return slots.Count == 0 ? SpellSlot.Unknown : slots[0];
+                                        },
+                                         Priority = 0
+                                     },
+                                 new AntiStealthRevealItem
+                                     {
+                                     Slot = () =>
+                                        {
+                                            var slots = ItemData.Greater_Vision_Totem_Trinket.GetItem().Slots;
+                                            return slots.Count == 0 ? SpellSlot.Unknown : slots[0];
+                                        },
+                                         Priority = 1
+                                     }
                              };
+
+            this.Items = this.Items.OrderBy(x => x.Priority).ToList();
 
             this.rengar = HeroManager.Enemies.Find(x => x.ChampionName.ToLower() == "rengar");
 
@@ -136,6 +200,10 @@
             Obj_AI_Base.OnProcessSpellCast += this.OnProcessSpellCast;
             Game.OnUpdate += this.OnUpdate;
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         ///     Fired when the game is updated.
@@ -150,7 +218,7 @@
                 {
                     return;
                 }
-
+                    
                 foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy &&
                     x.ChampionName.ToLower().Contains("vayne") &&
                     x.Buffs.Any(y => y.Name == "VayneInquisition")))
@@ -164,11 +232,27 @@
             }
         }
 
-        #endregion
+        /// <summary>
+        ///     Gets the best ward item.
+        /// </summary>
+        /// <returns></returns>
+        private Spell GetBestWardItem()
+        {
+            foreach (var item in this.Items.OrderBy(x => x.Priority))
+            {
+                if (!item.Spell.IsReady() || item.Spell.Slot == SpellSlot.Unknown)
+                {
+                    continue;
+                }
 
-        #region Methods
+                return item.Spell;
+            }
+
+            return null;
+        }
 
         /// <summary>
+        ///     Fired when a game object is created
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
@@ -176,7 +260,7 @@
         {
             try
             {
-                if (!sender.IsEnemy || !this.Menu["AntiStealthActive"].Cast<CheckBox>().CurrentValue || ObjectManager.Player.InFountain(LeagueSharp.Common.Utility.FountainType.OwnFountain))
+                if (!sender.IsEnemy || !getCheckBoxItem(this.Menu, "AntiStealthActive"))
                 {
                     return;
                 }
@@ -185,7 +269,7 @@
                 {
                     if (sender.Name.Contains("Rengar_Base_R_Alert"))
                     {
-                        if (this.Player.HasBuff("rengarralertsound") && !this.rengar.IsVisible && !this.rengar.IsDead &&
+                        if (this.Player.HasBuff("rengarralertsound") && !this.rengar.IsVisible && !this.rengar.IsDead && 
                             this.Player.LSDistance(sender.Position) < 1700)
                         {
                             var hero = (AIHeroClient)sender;
@@ -195,11 +279,13 @@
                                 return;
                             }
 
-                            var item =
-                                this.Items.Select(x => x.Item).FirstOrDefault(x => x.IsInRange(hero) && x.IsReady());
+                            var item = this.GetBestWardItem();
                             if (item != null)
                             {
-                                LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => item.Cast(this.Player.Position));
+                                LeagueSharp.Common.Utility.DelayAction.Add(
+                                   random.Next(100, 1000),
+                                   () =>
+                                   this.Player.Spellbook.CastSpell(item.Slot, this.Player.Position));
                             }
                         }
                     }
@@ -211,56 +297,17 @@
             }
         }
 
-        public static Item Pink = new Item(ItemId.Vision_Ward, 550f);
-        public static Item Sweep = new Item(ItemId.Sweeping_Lens_Trinket, getLevelSWEEP());
-        public static Item Oracle = new Item(ItemId.Oracle_Alteration, 550f);
-
-        public static float getLevelSWEEP()
-        {
-            var f = 0.0f;
-            if (ObjectManager.Player.Level >= 1 && ObjectManager.Player.Level < 4)
-            {
-                f = 500f;
-            }
-            if (ObjectManager.Player.Level >= 4 && ObjectManager.Player.Level < 7)
-            {
-                f = 800f;
-            }
-            if (ObjectManager.Player.Level >= 7 && ObjectManager.Player.Level < 10)
-            {
-                f = 1100f;
-            }
-            if (ObjectManager.Player.Level >= 10 && ObjectManager.Player.Level < 13)
-            {
-                f = 1400f;
-            }
-            if (ObjectManager.Player.Level >= 13 && ObjectManager.Player.Level < 16)
-            {
-                f = 1700f;
-            }
-            if (ObjectManager.Player.Level >= 16)
-            {
-                f = 2000f;
-            }
-            return f;
-        }
-
         /// <summary>
-        ///     Vayne
+        ///     Fired when the game processes a spell cast.
         /// </summary>
-        private AIHeroClient vayne;
-        public float VayneBuffEndTime = 0;
-
-        /// <summary>
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             try
             {
                 var hero = sender as AIHeroClient;
-                if (!sender.IsEnemy || hero == null || !this.Menu["AntiStealthActive"].Cast<CheckBox>().CurrentValue || ObjectManager.Player.InFountain(LeagueSharp.Common.Utility.FountainType.OwnFountain))
+                if (!sender.IsEnemy || hero == null || !getCheckBoxItem(this.Menu, "AntiStealthActive"))
                 {
                     return;
                 }
@@ -274,23 +321,19 @@
                 {
                     return;
                 }
-
-                var stealthChampion = Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
+                   
+                var stealthChampion =
+                Spells.FirstOrDefault(x => x.SDataName.Equals(args.SData.Name, StringComparison.OrdinalIgnoreCase));
 
                 if (stealthChampion != null)
-                {
-                    var spellCastPosition = this.Player.LSDistance(args.End) > 600 ? this.Player.Position : args.End;
-                    if (Pink.IsReady() && Pink.IsOwned())
+                { 
+                    var item = this.GetBestWardItem();
+                    if (item != null)
                     {
-                        LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => Pink.Cast(spellCastPosition));
-                    }
-                    if (Sweep.IsReady() && Sweep.IsOwned())
-                    {
-                        LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => Sweep.Cast(spellCastPosition));
-                    }
-                    if (Oracle.IsReady() && Oracle.IsOwned())
-                    {
-                        LeagueSharp.Common.Utility.DelayAction.Add(random.Next(100, 1000), () => Oracle.Cast());
+                        var spellCastPosition = this.Player.LSDistance(args.End) > 600 ? this.Player.Position : args.End;
+                        LeagueSharp.Common.Utility.DelayAction.Add(
+                            random.Next(100, 1000),
+                            () => this.Player.Spellbook.CastSpell(item.Slot, spellCastPosition));
                     }
                 }
             }
@@ -344,18 +387,35 @@
             public GetAntiStealthItemDelegate GetItem { get; set; }
 
             /// <summary>
-            ///     Gets the item.
+            ///     Gets or sets the priority.
             /// </summary>
             /// <value>
-            ///     The item.
+            ///     The priority.
             /// </value>
-            public Items.Item Item
+            public int Priority { get; set; }
+
+            /// <summary>
+            ///     Gets or sets the spell.
+            /// </summary>
+            /// <value>
+            ///     The spell.
+            /// </value>
+            public Spell Spell
             {
                 get
                 {
-                    return this.GetItem();
+                    return new Spell(this.Slot());
                 }
             }
+
+            /// <summary>
+            ///     Gets or sets the slot delegate.
+            /// </summary>
+            /// <value>
+            ///     The slot delegate.
+            /// </value>
+            public GetSlotDelegate Slot { get; set; }
+
 
             #endregion
         }

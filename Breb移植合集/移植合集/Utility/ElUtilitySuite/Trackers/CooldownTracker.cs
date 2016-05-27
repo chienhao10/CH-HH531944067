@@ -31,9 +31,9 @@ namespace ElUtilitySuite.Trackers
 
     using SharpDX;
     using SharpDX.Direct3D9;
-    using EloBuddy;
-    using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;
+    using EloBuddy;
     internal class CoolDownTimers : IPlugin
     {
         #region Fields
@@ -443,6 +443,13 @@ namespace ElUtilitySuite.Trackers
                                                                                   "Guardian Angel",
                                                                                   4f)
                                                                               }
+                                                                             /* {
+                                                                                  "taliyah_base_e_mines",
+                                                                                  new AbilityItem(
+                                                                                  "Taliyah",
+                                                                                  "Tard champ",
+                                                                                  4f)
+                                                                              }*/
                                                                           };
 
         private readonly List<AbilityDraw> _drawings = new List<AbilityDraw>();
@@ -468,10 +475,6 @@ namespace ElUtilitySuite.Trackers
         /// </value>
         private static Font Font { get; set; }
 
-        #endregion
-
-        #region Public Methods and Operators
-
         public static bool getCheckBoxItem(Menu m, string item)
         {
             return m[item].Cast<CheckBox>().CurrentValue;
@@ -481,6 +484,20 @@ namespace ElUtilitySuite.Trackers
         {
             return m[item].Cast<Slider>().CurrentValue;
         }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
 
         /// <summary>
         ///     Creates the menu.
@@ -497,6 +514,7 @@ namespace ElUtilitySuite.Trackers
                 drawingMenu.Add("Self", new CheckBox("自身", false));
                 drawingMenu.Add("Enemy", new CheckBox("敌人", false));
                 drawingMenu.Add("Ally", new CheckBox("友军", false));
+                
                 drawingMenu.Add("Enabled", new CheckBox("开启"));
             }
             this.Menu = drawingMenu;
@@ -510,12 +528,10 @@ namespace ElUtilitySuite.Trackers
             Font = new Font(
                 Drawing.Direct3DDevice,
                 new FontDescription
-                {
-                    FaceName = "Tahoma",
-                    Height = 30,
-                    OutputPrecision = FontPrecision.Default,
-                    Quality = FontQuality.Default
-                });
+                    {
+                        FaceName = "Tahoma", Height = 30, OutputPrecision = FontPrecision.Default,
+                        Quality = FontQuality.Default
+                    });
 
             GameObject.OnCreate += this.OnGameObjectCreate;
             GameObject.OnDelete += this.OnGameObjectDelete;
@@ -606,6 +622,23 @@ namespace ElUtilitySuite.Trackers
                     return;
                 }
 
+                /*foreach (var ability2 in this._abilities)
+                {
+                    var abilities = sender.Name.ToLower();
+
+                    Console.WriteLine(abilities);
+
+                    AbilityItem ability;
+                    if (this._abilities.TryGetValue(abilities, out ability))
+                    {
+                        if (abilities.IndexOf(ability2.Key.ToLower(), StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            this._drawings.Add(
+                               new AbilityDraw { Object = sender, End = Game.Time + ability.Time });
+                        }
+                    }
+                }*/
+                //if (sender.Name.ToLower().Contains(ability.Key.ToLower()))
                 foreach (var ability in this._abilities)
                 {
                     if (sender.Name.ToLower().Contains(ability.Key.ToLower()))

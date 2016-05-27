@@ -32,6 +32,8 @@ namespace NabbTracker
             {
                 HTrackerSDK.WardTracker.OnLoad(Variables.Menu);
             }
+
+            ExpTracker.Initialize();
         }
     }
 }

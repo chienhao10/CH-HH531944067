@@ -19,8 +19,12 @@ namespace iLucian
             {Spells.Q2, new Spell(SpellSlot.Q, 1200)},
             {Spells.W, new Spell(SpellSlot.W, 1000)},
             {Spells.E, new Spell(SpellSlot.E, 475)},
-            {Spells.R, new Spell(SpellSlot.R, 3000f)}
+            {Spells.R, new Spell(SpellSlot.R, 3000f)},
+            {Spells.Q3, new Spell(SpellSlot.Q)}
+
+
         };
+
 
         public static Menu Menu { get; set; }
         public static int LastECast = 0;
@@ -34,6 +38,7 @@ namespace iLucian
         {
             Q,
             Q2,
+            Q3,
             W,
             E,
             R

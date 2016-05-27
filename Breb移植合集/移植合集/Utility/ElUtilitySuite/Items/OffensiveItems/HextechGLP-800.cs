@@ -4,8 +4,8 @@
 
     using LeagueSharp;
     using LeagueSharp.Common;
-    using EloBuddy.SDK.Menu.Values;
     using EloBuddy;
+    using EloBuddy.SDK.Menu.Values;
     class HextechGLP_800 : Item
     {
         #region Public Properties
@@ -42,29 +42,15 @@
 
         #region Public Methods and Operators
 
-        public bool getCheckBoxItem(string item)
-        {
-            return Menu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public int getSliderItem(string item)
-        {
-            return Menu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public bool getKeyBindItem(string item)
-        {
-            return Menu[item].Cast<KeyBind>().CurrentValue;
-        }
-
         /// <summary>
         ///     Creates the menu.
         /// </summary>
         public override void CreateMenu()
         {
-            Menu.AddGroupLabel("海克斯科技GLP-800");
-            Menu.Add("UseHextech800Combo", new CheckBox("连招使用"));
-            Menu.Add("Hextech800EnemyHp", new Slider("敌人血量 % 时使用", 70));
+            this.Menu.AddGroupLabel(Name);
+            this.Menu.Add("UseHextech800Combo", new CheckBox("连招使用"));
+            this.Menu.Add("Hextech800EnemyHp", new Slider("敌人血量 % 时使用", 70));
+            this.Menu.AddSeparator();
         }
 
         /// <summary>
@@ -73,7 +59,11 @@
         /// <returns></returns>
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem("UseHextech800Combo") && this.ComboModeActive && HeroManager.Enemies.Any(x => x.HealthPercent < getSliderItem("Hextech800EnemyHp") && x.LSDistance(this.Player) < 700 && !x.IsDead && !x.IsZombie);
+            return getCheckBoxItem(this.Menu, "UseHextech800Combo") && this.ComboModeActive
+                   && HeroManager.Enemies.Any(
+                       x =>
+                       x.HealthPercent < getSliderItem(this.Menu, "Hextech800EnemyHp")
+                       && x.LSDistance(this.Player) < 700 && !x.IsDead && !x.IsZombie);
         }
 
         /// <summary>
@@ -82,8 +72,8 @@
         public override void UseItem()
         {
             var objAiHero = HeroManager.Enemies.FirstOrDefault(
-                x =>
-                x.HealthPercent < getSliderItem("Hextech800EnemyHp") && x.LSDistance(this.Player) < 500 && !x.IsDead && !x.IsZombie);
+                x => x.HealthPercent < getSliderItem(this.Menu, "Hextech800EnemyHp")
+                && x.LSDistance(this.Player) < 500 && !x.IsDead && !x.IsZombie);
 
             if (objAiHero != null)
             {

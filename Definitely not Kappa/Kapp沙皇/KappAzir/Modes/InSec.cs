@@ -5,203 +5,119 @@
     using EloBuddy;
     using EloBuddy.SDK;
 
-    using Mario_s_Lib;
-
     using SharpDX;
-    using static Menus;
-    using static SpellsManager;
 
-    internal class InSec : ModeManager
+    using Utility;
+
+    internal class Insec
     {
-        public static float LastQTime;
+        public static bool NormalInsec;
 
-        public static AIHeroClient target;
+        public static bool NewInsec;
 
-        public static Vector3 qpos;
+        public static float qtime;
 
-        public static Vector3 rpos;
+        public static void Normal(Obj_AI_Base target, bool Combo = false)
+        {
+            Orbwalker.OrbwalkTo(Game.CursorPos);
+            if (target == null || insectpos(target) == null || Common.Mana() > Player.Instance.Mana || !Azir.R.IsReady())
+            {
+                return;
+            }
 
-        internal static Vector3 insecLoc;
+            var insecpos = target.ServerPosition.Extend(insectpos(target), -200).To3D();
+            var rpos = Player.Instance.ServerPosition.Extend(insectpos(target), Azir.R.Range).To3D();
 
-        internal static Vector3 soldposition;
+            if (target.IsValidTarget(Azir.R.Range))
+            {
+                if (Menus.JumperMenu.checkbox("flash") && Azir.Flash != null)
+                {
+                    var flashrange = Azir.Flash.Range + 250;
+                    var enemies = EntityManager.Heroes.Enemies.Where(e => e.IsValidTarget(flashrange) && e.IsKillable());
+                    var pred = Prediction.Position.PredictCircularMissileAoe(
+                        enemies.Cast<Obj_AI_Base>().ToArray(),
+                        flashrange,
+                        Azir.R.Width + 25,
+                        Azir.R.CastDelay,
+                        Azir.R.Speed);
+                    var castpos =
+                        pred.OrderByDescending(p => p.GetCollisionObjects<AIHeroClient>().Length)
+                            .FirstOrDefault(p => p.CollisionObjects.Contains(target));
+                    if (castpos?.GetCollisionObjects<AIHeroClient>().Length > Player.Instance.CountEnemeis(Azir.R.Range))
+                    {
+                        Azir.Flash.Cast(castpos.CastPosition);
+                    }
+                }
+                Azir.R.Cast(rpos);
+            }
+            else
+            {
+                if (Azir.Q.IsInRange(insecpos))
+                {
+                    Jumper.Jump(insecpos);
+                }
+            }
+
+            Orbwalker.OrbwalkTo(insecpos);
+        }
 
         public static void New()
         {
-            target = TargetSelector.SelectedTarget;
-            if (target != null)
+            Orbwalker.OrbwalkTo(Game.CursorPos);
+            var target = TargetSelector.SelectedTarget;
+            if (target == null || insectpos(target) == null || !Azir.R.IsReady() || Player.Instance.Mana < Common.Mana() || !target.IsValidTarget()
+                || NormalInsec)
             {
-                if (target.IsValidTarget(925))
-                {
-                    if (Q.IsReady())
-                    {
-                        if (R.IsReady())
-                        {
-                            switch (FleeMenu.GetComboBoxValue("qpos"))
-                            {
-                                case 0:
-                                    {
-                                        qpos = Game.CursorPos;
-                                    }
-                                    break;
-
-                                case 1:
-                                    {
-                                        qpos = Azir.ServerPosition;
-                                    }
-                                    break;
-
-                                case 2:
-                                    {
-                                        qpos = tower?.ServerPosition ?? Game.CursorPos;
-                                    }
-                                    break;
-
-                                case 3:
-                                    {
-                                        qpos = ally?.ServerPosition ?? Game.CursorPos;
-                                    }
-                                    break;
-                            }
-
-                            switch (FleeMenu.GetComboBoxValue("rpos"))
-                            {
-                                case 0:
-                                    {
-                                        rpos = Game.CursorPos;
-                                    }
-                                    break;
-
-                                case 1:
-                                    {
-                                        rpos = Azir.ServerPosition;
-                                    }
-                                    break;
-
-                                case 2:
-                                    {
-                                        rpos = tower?.ServerPosition ?? Game.CursorPos;
-                                    }
-                                    break;
-
-                                case 3:
-                                    {
-                                        rpos = ally?.ServerPosition ?? Game.CursorPos;
-                                    }
-                                    break;
-                            }
-
-                            var allready = Q.IsReady() && E.IsReady() && W.IsReady();
-
-                            if (Orbwalker.AzirSoldiers.Count(s => s.IsAlly) > 0 && allready && ManaCheck(Azir) < Azir.Mana
-                                && target.Distance(Azir) > 420)
-                            {
-                                soldposition = Orbwalker.AzirSoldiers.OrderBy(s => s.Distance(target)).FirstOrDefault(s => s != null).ServerPosition;
-                                if (soldposition.IsInRange(target.ServerPosition, R.Width) && !Ehit(target))
-                                {
-                                    if (E.Cast())
-                                    {
-                                        Core.DelayAction(
-                                            () =>
-                                                {
-                                                    if (Q.Cast(Azir.Position.Extend(qpos, Q.Range - FleeMenu.GetSliderValue("dis")).To3D()))
-                                                    {
-                                                        LastQTime = Game.Time;
-                                                    }
-                                                },
-                                            FleeMenu.GetSliderValue("delay") + Game.Ping);
-                                    }
-                                }
-                                else
-                                {
-                                    Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                                }
-                            }
-                            else
-                            {
-                                Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                            }
-                        }
-                        else
-                        {
-                            Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                        }
-                    }
-                    else
-                    {
-                        Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                    }
-                }
-                else
-                {
-                    Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                }
+                return;
             }
-            else
+
+            var insecpos = target.ServerPosition.Extend(insectpos(target), -200).To3D();
+            var qpos = Player.Instance.ServerPosition.Extend(insectpos(target), Azir.Q.Range - 200).To3D();
+            var soldier = Orbwalker.AzirSoldiers.FirstOrDefault(s => s.IsAlly && s.IsInRange(target, 200));
+            var ready = Azir.E.IsReady() && Azir.Q.IsReady() && Player.Instance.Mana > Azir.Q.Mana() + Azir.E.Mana();
+
+            if (ready && soldier != null)
             {
-                Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                Core.DelayAction(
+                    () =>
+                        {
+                            if (Azir.E.Cast(target))
+                            {
+                                Core.DelayAction(() => Azir.Q.Cast(qpos), Jumper.delay);
+                                qtime = Game.Time;
+                            }
+                        },
+                    100);
             }
+
+            Orbwalker.OrbwalkTo(insecpos);
         }
 
-        public static void Normal()
+        public static Vector3 insectpos(Obj_AI_Base target)
         {
-            target = TargetSelector.SelectedTarget;
-            if (target != null)
+            Common.tower = EntityManager.Turrets.Allies.FirstOrDefault(t => !t.IsDead && t.IsInRange(target, 1250));
+            Common.ally =
+                EntityManager.Heroes.Allies.OrderByDescending(a => a.CountAllies(Azir.R.Range))
+                    .FirstOrDefault(a => !a.IsMe && a.IsKillable() && a.IsInRange(target, 1000));
+            if (Common.tower != null)
             {
-                if (target.IsValidTarget(R.Width) && R.IsReady())
-                {
-                    if (tower != null && FleeMenu.GetCheckBoxValue("Tower"))
-                    {
-                        R.Cast(Azir.Position.Extend(tower.ServerPosition, R.Range).To3D());
-                    }
-                    else if (ally != null && FleeMenu.GetCheckBoxValue("Ally"))
-                    {
-                        R.Cast(Azir.Position.Extend(ally.ServerPosition, R.Range).To3D());
-                    }
-                    else
-                    {
-                        R.Cast(Azir.Position.Extend(insecLoc, R.Range).To3D());
-                    }
-                }
-                else
-                {
-                    Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                }
-                if (target.IsValidTarget(1100))
-                {
-                    if (Q.IsReady())
-                    {
-                        if (R.IsReady())
-                        {
-                            insecLoc = Vector3.Zero;
-                            var direction = (TargetSelector.SelectedTarget.ServerPosition - ObjectManager.Player.ServerPosition).To2D().Normalized();
-                            var insecPos = TargetSelector.SelectedTarget.ServerPosition.To2D() + (direction * 175f);
-                            if (Orbwalker.AzirSoldiers.OrderBy(s => s.Distance(insecPos)).FirstOrDefault() != null)
-                            {
-                                soldposition = Orbwalker.AzirSoldiers.OrderBy(s => s.Distance(insecPos)).FirstOrDefault().ServerPosition;
-                            }
-                            insecLoc = Azir.ServerPosition;
+                return Common.tower.ServerPosition;
+            }
 
-                            Jumper.jump(insecPos.To3D(), insecPos.To3D());
-                        }
-                        else
-                        {
-                            Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                        }
-                    }
-                    else
-                    {
-                        Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                    }
-                }
-                else
-                {
-                    Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
-                }
-            }
-            else
+            return Common.ally != null ? Common.ally.ServerPosition : Player.Instance.ServerPosition;
+        }
+
+        public static Vector3 insectpos()
+        {
+            Common.tower = EntityManager.Turrets.Allies.FirstOrDefault(t => t.IsValidTarget(1250));
+            Common.ally =
+                EntityManager.Heroes.Allies.OrderByDescending(a => a.CountEnemeis(Azir.R.Range)).FirstOrDefault(a => !a.IsMe && a.IsValidTarget(1000));
+            if (Common.tower != null)
             {
-                Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+                return Common.tower.ServerPosition;
             }
+
+            return Common.ally != null ? Common.ally.ServerPosition : Player.Instance.ServerPosition;
         }
     }
 }

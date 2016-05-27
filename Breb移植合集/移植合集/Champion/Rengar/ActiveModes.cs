@@ -30,6 +30,8 @@ namespace ElRengarRevamped
                     return;
                 }
 
+                Orbwalker.ForcedTarget = target;
+
                 #region RengarR
 
                 if (Ferocity <= 4)

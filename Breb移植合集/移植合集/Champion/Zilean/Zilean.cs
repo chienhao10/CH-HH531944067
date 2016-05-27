@@ -84,7 +84,7 @@ namespace ElZilean
                 return;
             }
 
-            spells[Spells.Q].SetSkillshot(0.3f, 210f, 2000f, false, SkillshotType.SkillshotCircle);
+            spells[Spells.Q].SetSkillshot(0.3f, 100f, 2000f, false, SkillshotType.SkillshotCircle);
             ignite = Player.GetSpellSlot("summonerdot");
 
             ZileanMenu.Initialize();
@@ -155,10 +155,10 @@ namespace ElZilean
             var zileanQEnemyBomb =
                 HeroManager.Enemies.Find(x => x.HasBuff("ZileanQEnemyBomb") && x.IsValidTarget(spells[Spells.Q].Range));
             if (getCheckBoxItem(comboMenu, "ElZilean.Combo.Q") && spells[Spells.Q].IsReady()
-            && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove)
+            && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove && !SebbyLib.OktwCommon.CanMove(target))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
-                if (pred.Hitchance >= HitChance.High)
+                if (pred.Hitchance >= HitChance.VeryHigh)
                 {
                     spells[Spells.Q].Cast(target);
                 }
@@ -167,9 +167,9 @@ namespace ElZilean
                 && target.IsValidTarget(spells[Spells.Q].Range))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
-                if (pred.Hitchance >= HitChance.High)
+                if (pred.Hitchance >= HitChance.VeryHigh)
                 {
-                    spells[Spells.Q].Cast(pred.CastPosition);
+                    CastSpell(spells[Spells.Q], target);
                 }
             }
 
@@ -208,10 +208,10 @@ namespace ElZilean
                 return;
             }
             if (getCheckBoxItem(harassMenu, "ElZilean.Harass.Q") && spells[Spells.Q].IsReady()
-                && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove)
+                && target.IsValidTarget(spells[Spells.Q].Range) && !target.CanMove && !SebbyLib.OktwCommon.CanMove(target))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
-                if (pred.Hitchance >= HitChance.High)
+                if (pred.Hitchance >= HitChance.VeryHigh)
                 {
                     spells[Spells.Q].Cast(target);
                 }
@@ -220,9 +220,9 @@ namespace ElZilean
                 && target.IsValidTarget(spells[Spells.Q].Range))
             {
                 var pred = spells[Spells.Q].GetPrediction(target);
-                if (pred.Hitchance >= HitChance.High)
+                if (pred.Hitchance >= HitChance.VeryHigh)
                 {
-                    spells[Spells.Q].Cast(pred.CastPosition);
+                    CastSpell(spells[Spells.Q], target);
                 }
             }
 
@@ -284,7 +284,10 @@ namespace ElZilean
             {
                 Harass();
             }
-
+            if (!spells[Spells.Q].IsReady() && spells[Spells.W].IsReady() && Player.Mana >= 35 + spells[Spells.Q].ManaCost + spells[Spells.R].ManaCost && !Player.LSIsRecalling())
+            {
+                spells[Spells.W].Cast();
+            }
             UltAlly();
             SelfUlt();
 
@@ -357,13 +360,34 @@ namespace ElZilean
             }
 
             var useSelftHp = getSliderItem(castUltMenu, "ElZilean.HP");
+            var enemys = Player.CountEnemiesInRange(800);
+            enemys = (enemys == 0) ? 1 : enemys;
+            if (enemys == 0)
+                return;
             if (getCheckBoxItem(castUltMenu, "ElZilean.R") && Player.Health / Player.MaxHealth * 100 <= useSelftHp
-                && spells[Spells.R].IsReady() && Player.CountEnemiesInRange(650) > 0)
+                && spells[Spells.R].IsReady() && Player.CountEnemiesInRange(650) > 0 && (SebbyLib.OktwCommon.GetIncomingDamage(Player, 0.5f, true) >= SebbyLib.HealthPrediction.GetHealthPrediction(Player, 5) || SebbyLib.HealthPrediction.GetHealthPrediction(Player, 5) <= 0 || SebbyLib.HealthPrediction.GetHealthPrediction(Player, 5) - SebbyLib.OktwCommon.GetIncomingDamage(Player, 0.5f) < enemys * Player.Level * 20))
             {
                 spells[Spells.R].Cast(Player);
             }
         }
-
+        private static void CastSpell(LeagueSharp.Common.Spell qwer, Obj_AI_Base target)
+        {
+            var predInput2 = new SebbyLib.Prediction.PredictionInput
+            {
+                Speed = qwer.Speed,
+                Delay = qwer.Delay,
+                Range = qwer.Range,
+                From = Player.ServerPosition,
+                Radius = qwer.Width,
+                Unit = target,
+                Type = SebbyLib.Prediction.SkillshotType.SkillshotCircle
+            };
+            var poutput2 = SebbyLib.Prediction.Prediction.GetPrediction(predInput2);
+            if (poutput2.Hitchance >= SebbyLib.Prediction.HitChance.VeryHigh)
+            {
+                qwer.Cast(poutput2.CastPosition);
+            }
+        }
         private static void UltAlly()
         {
             if (Player.IsRecalling() || Player.InFountain())
@@ -373,23 +397,27 @@ namespace ElZilean
 
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && !x.IsMe))
             {
-                if (getCheckBoxItem(castUltMenu, "ElZilean.useult")
-                    && (hero.Health / hero.MaxHealth * 100
-                        <= getSliderItem(castUltMenu, "ElZilean.Ally.HP"))
-                    && spells[Spells.R].IsReady() && Player.CountEnemiesInRange(1000) > 0
-                    && (hero.LSDistance(Player.ServerPosition) <= spells[Spells.R].Range))
+                var enemys = hero.CountEnemiesInRange(800);
+                enemys = (enemys == 0) ? 1 : enemys;
+                if (enemys == 0 || !hero.IsAlly)
+                    continue;
+                if (!getCheckBoxItem(castUltMenu, "ElZilean.useult") || (!(hero.Health/hero.MaxHealth*100
+                                                                           <=
+                                                                           getSliderItem(castUltMenu, "ElZilean.Ally.HP"))) ||
+                    !spells[Spells.R].IsReady() || (!(hero.LSDistance(Player.ServerPosition) <= spells[Spells.R].Range)) ||
+                    (!(SebbyLib.OktwCommon.GetIncomingDamage(hero, 0.5f, true) >=
+                       SebbyLib.HealthPrediction.GetHealthPrediction(hero, 5)) &&
+                     !(SebbyLib.HealthPrediction.GetHealthPrediction(hero, 5) <= 0) &&
+                     !(SebbyLib.HealthPrediction.GetHealthPrediction(hero, 5) -
+                       SebbyLib.OktwCommon.GetIncomingDamage(hero, 0.5f) < enemys*hero.Level*20))) continue;
+                if (castUltMenu["ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName] == null ||
+                    !getCheckBoxItem(castUltMenu, "ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName)) continue;
+                if (hero.IsInvulnerable || hero.HasBuffOfType(BuffType.SpellImmunity) ||
+                    hero.HasBuffOfType(BuffType.Invulnerability))
                 {
-                    if (castUltMenu["ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName] != null &&
-                        getCheckBoxItem(castUltMenu, "ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName))
-                    {
-                        if (hero.IsInvulnerable || hero.HasBuffOfType(BuffType.SpellImmunity) ||
-                            hero.HasBuffOfType(BuffType.Invulnerability))
-                        {
-                            return;
-                        }
-                        spells[Spells.R].Cast(hero);
-                    }
+                    return;
                 }
+                spells[Spells.R].Cast(hero);
             }
         }
 

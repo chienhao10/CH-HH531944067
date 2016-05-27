@@ -120,6 +120,11 @@ namespace PortAIO
                     Sebby_Ban_War.Program.Game_OnGameLoad();
                 }
 
+                if (Loader.antialistar)
+                {
+                    AntiAlistar.AntiAlistar.OnLoad();
+                }
+
                 /*
                 if (Loader.stream)
                 {
@@ -321,7 +326,7 @@ namespace PortAIO
                     case "urgot":
                         SebbyLib.Program.GameOnOnGameLoad();
                         break;
-                    case "azir": // Synx Auto Carry
+                    case "azir": // HeavenStrike
                         HeavenStrikeAzir.Program.Game_OnGameLoad();
                         break;
                     case "bard": // Dreamless Wanderer
@@ -485,7 +490,7 @@ namespace PortAIO
                     case "fiddlesticks": // Feedlesticks
                         Feedlesticks.Program.Game_OnGameLoad();
                         break;
-                    case "fiora": // Underrated AIO
+                    case "fiora": // Project Fiora
                         FioraProject.Program.Game_OnGameLoad();
                         break;
                     case "fizz": // Math Fizz
@@ -494,7 +499,7 @@ namespace PortAIO
                     case "galio": // Underrated AIO
                         UnderratedAIO.Champions.Galio.OnLoad();
                         break;
-                    case "gangplank": // Underrated AIO & BadaoKingdom
+                    case "gangplank": // Underrated AIO
                         switch (Loader.gangplank)
                         {
                             case 0:
@@ -534,11 +539,33 @@ namespace PortAIO
                     case "illaoi": // Tentacle Kitty
                         Illaoi___Tentacle_Kitty.Program.Game_OnGameLoad();
                         break;
-                    case "irelia": // Challenger Series Irelia
-                        Challenger_Series.Irelia.OnLoad();
+                    case "irelia": // Challenger Series Irelia & IreliaGod
+                        switch (Loader.irelia)
+                        {
+                            case 0:
+                                Challenger_Series.Irelia.OnLoad();
+                                break;
+                            case 1:
+                                IreliaGod.Program.OnGameLoad();
+                                break;
+                            default:
+                                Challenger_Series.Irelia.OnLoad();
+                                break;
+                        }
                         break;
-                    case "janna": // LCS Janna
-                        LCS_Janna.Program.OnGameLoad();
+                    case "janna": // LCS Janna & FreshBooster
+                        switch (Loader.janna)
+                        {
+                            case 0:
+                                LCS_Janna.Program.OnGameLoad();
+                                break;
+                            case 1:
+                               new FreshBooster.Champion.Janna();
+                                break;
+                            default:
+                                LCS_Janna.Program.OnGameLoad();
+                                break;
+                        }
                         break;
                     case "jarvaniv": // BrianSharp
                         BrianSharp.Plugin.JarvanIV.OnLoad();
@@ -771,8 +798,19 @@ namespace PortAIO
                     case "tristana": // ElTristana
                         ElTristana.Tristana.OnLoad();
                         break;
-                    case "taliyah": // taliyah
-                        Taliyah.Program.OnLoad();
+                    case "taliyah": // taliyah && tophsharp
+                        switch (Loader.taliyah)
+                        {
+                            case 0:
+                                Taliyah.Program.OnLoad();
+                                break;
+                            case 1:
+                                TophSharp.Taliyah.OnLoad();
+                                break;
+                            default:
+                                Taliyah.Program.OnLoad();
+                                break;
+                        }
                         break;
                     case "riven": // Nechrito Riven & Badao Riven
                         switch (Loader.riven)
@@ -782,6 +820,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 HeavenStrikeRiven.Program.OnStart();
+                                break;
+                            case 2:
+                                KurisuRiven.Program.Game_OnGameLoad();
                                 break;
                             default:
                                 NechritoRiven.Program.OnGameLoad();
@@ -814,8 +855,19 @@ namespace PortAIO
                     case "maokai": // Underrated AIO
                         new UnderratedAIO.Champions.Maokai();
                         break;
-                    case "masteryi": // MasterSharp
-                        MasterSharp.MasterSharp.OnLoad();
+                    case "masteryi": // MasterSharp & Hoola Yi
+                        switch (Loader.masteryi)
+                        {
+                            case 0:
+                                MasterSharp.MasterSharp.OnLoad();
+                                break;
+                            case 1:
+                                HoolaMasterYi.Program.OnGameLoad();
+                                break;
+                            default:
+                                MasterSharp.MasterSharp.OnLoad();
+                                break;
+                        }
                         break;
                     case "mordekaiser": // How to Train your dragon
                         Mordekaiser.Program.Game_OnGameLoad();

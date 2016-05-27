@@ -41,6 +41,46 @@ namespace NabbTracker
         }
 
         /// <summary>
+        ///     The Exp Healthbars X coordinate.
+        /// </summary>
+        public static int ExpX { internal get; set; }
+
+        /// <summary>
+        ///     The Exp Healthbars Y coordinate.
+        /// </summary>
+        public static int ExpY { internal get; set; }
+
+        public static readonly List<string> SpecialChampions = new List<string> { "Annie", "Jhin" };
+
+        /// <summary>
+        ///     The Exp Healthbars X coordinate adjustment.
+        /// </summary>
+        public static int ExpXAdjustment(AIHeroClient target)
+        {
+            if (SpecialChampions.Contains(target.ChampionName))
+            {
+                return 77;
+            }
+
+            return 85;
+        }
+
+        /// <summary>
+        ///     The Spells Healthbars Y coordinate adjustment.
+        /// </summary>
+        public static int ExpYAdjustment(AIHeroClient target)
+        {
+            if (SpecialChampions.Contains(target.ChampionName))
+            {
+                return -38;
+            }
+
+            return target.IsMe
+                ? -30
+                : -22;
+        }
+
+        /// <summary>
         /// The Menu.
         /// </summary>
         public static Menu Menu { get; set; }

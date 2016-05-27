@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
-using LeagueSharp.Common;
-using ItemData = LeagueSharp.Common.Data.ItemData;
-
-namespace ElUtilitySuite.Items
+﻿namespace ElUtilitySuite.Items
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+
+    using ItemData = LeagueSharp.Common.Data.ItemData;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy;
+    using EloBuddy.SDK.Menu.Values;
     internal class Potions : IPlugin
     {
         #region Delegates
@@ -17,7 +19,7 @@ namespace ElUtilitySuite.Items
         ///     Gets an health item
         /// </summary>
         /// <returns></returns>
-        private delegate LeagueSharp.Common.Items.Item GetHealthItemDelegate();
+        private delegate Items.Item GetHealthItemDelegate();
 
         #endregion
 
@@ -61,48 +63,54 @@ namespace ElUtilitySuite.Items
         {
             get
             {
-                return getSliderItem("Potions.Player.Health");
+                return getSliderItem(this.Menu, "Potions.Player.Health");
             }
+        }
+
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
         }
 
         #endregion
 
         #region Public Methods and Operators
 
-        public static bool getCheckBoxItem(string item)
-        {
-            return potionsMenu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(string item)
-        {
-            return potionsMenu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(string item)
-        {
-            return potionsMenu[item].Cast<KeyBind>().CurrentValue;
-        }
-
         /// <summary>
         ///     Creates the menu.
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
         /// <returns></returns>
-        public static Menu rootMenu = Entry.menu;
-        public static Menu potionsMenu;
         public void CreateMenu(Menu rootMenu)
         {
-            potionsMenu = rootMenu.AddSubMenu("药水", "Potions");
+            var potionsMenu = rootMenu.AddSubMenu("药水", "Potions");
+            {
             potionsMenu.Add("Potions.Activated", new CheckBox("使用药水"));
             potionsMenu.Add("Potions.Health", new CheckBox("红药"));
             potionsMenu.Add("Potions.Biscuit", new CheckBox("饼干"));
             potionsMenu.Add("Potions.RefillablePotion", new CheckBox("可充药水"));
             potionsMenu.Add("Potions.HuntersPotion", new CheckBox("猎人药水"));
             potionsMenu.Add("Potions.CorruptingPotion", new CheckBox("腐蚀药水"));
-            potionsMenu.AddSeparator();
             potionsMenu.Add("Potions.Player.Health", new Slider("血量百分比", 20));
 
+            }
+
+            this.Menu = potionsMenu;
         }
 
         /// <summary>
@@ -110,7 +118,7 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public void Load()
         {
-            Items = new List<HealthItem>
+            this.Items = new List<HealthItem>
                              {
                                  new HealthItem { GetItem = () => ItemData.Health_Potion.GetItem(), BuffName = "RegenerationPotion" },
                                  new HealthItem { GetItem = () => ItemData.Total_Biscuit_of_Rejuvenation2.GetItem(), BuffName = "ItemMiniRegenPotion"},
@@ -119,7 +127,7 @@ namespace ElUtilitySuite.Items
                                  new HealthItem { GetItem = () => ItemData.Corrupting_Potion.GetItem(), BuffName = "ItemDarkCrystalFlask"}
                              };
 
-            Game.OnUpdate += OnUpdate;
+            Game.OnUpdate += this.OnUpdate;
         }
 
         #endregion
@@ -134,26 +142,30 @@ namespace ElUtilitySuite.Items
         /// </value>
         private bool IsBuffActive()
         {
-            return Items.Any(potion => Player.Buffs.Any(b => b.Name.Equals(potion.BuffName, StringComparison.OrdinalIgnoreCase)));
+            return
+                this.Items.Any(
+                    potion => this.Player.Buffs.Any(
+                        b => b.Name.Equals(potion.BuffName, StringComparison.OrdinalIgnoreCase)));
         }
 
         private void OnUpdate(EventArgs args)
         {
             try
             {
-                if (!getCheckBoxItem("Potions.Activated") || Player.IsDead || Player.InFountain() || Player.Buffs.Any(b => b.Name.ToLower().Contains("Recall") || b.Name.ToLower().Contains("Teleport")))
+                if (!getCheckBoxItem(this.Menu, "Potions.Activated") || this.Player.IsDead || this.Player.InFountain() || this.Player.Buffs.Any(
+                        b => b.Name.ToLower().Contains("Recall") || b.Name.ToLower().Contains("Teleport")))
                 {
                     return;
                 }
 
-                if (Player.HealthPercent < PlayerHp)
+                if (this.Player.HealthPercent < this.PlayerHp)
                 {
-                    if (IsBuffActive())
+                    if (this.IsBuffActive())
                     {
                         return;
                     }
 
-                    var item = Items.Select(x => x.Item).FirstOrDefault(x => x.IsReady() && x.IsOwned());
+                    var item = this.Items.Select(x => x.Item).FirstOrDefault(x => x.IsReady() && x.IsOwned());
 
                     if (item != null)
                     {
@@ -182,8 +194,14 @@ namespace ElUtilitySuite.Items
             /// <value>
             ///     The get item.
             /// </value>
-            public GetHealthItemDelegate GetItem { private get; set; }
+            public GetHealthItemDelegate GetItem { get; set; }
 
+            /// <summary>
+            ///     Gets the buffname
+            /// </summary>
+            /// <value>
+            ///     The buffname
+            /// </value>
             public String BuffName { get; set; }
 
             /// <summary>
@@ -192,11 +210,11 @@ namespace ElUtilitySuite.Items
             /// <value>
             ///     The item.
             /// </value>
-            public LeagueSharp.Common.Items.Item Item
+            public Items.Item Item
             {
                 get
                 {
-                    return GetItem();
+                    return this.GetItem();
                 }
             }
 

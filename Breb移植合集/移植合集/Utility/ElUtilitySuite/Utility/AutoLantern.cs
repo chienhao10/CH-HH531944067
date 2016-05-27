@@ -6,9 +6,8 @@
     using LeagueSharp;
     using LeagueSharp.Common;
     using EloBuddy;
-    using EloBuddy.SDK.Menu.Values;
     using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK;
+    using EloBuddy.SDK.Menu.Values;
     internal class AutoLantern : IPlugin
     {
         #region Fields
@@ -35,8 +34,28 @@
         {
             get
             {
-                return this.Menu["ThreshLanternHPSlider"].Cast<Slider>().CurrentValue;
+                return getSliderItem(this.Menu, "ThreshLanternHPSlider");
             }
+        }
+
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
         }
 
         /// <summary>
@@ -64,16 +83,11 @@
         /// <returns></returns>
         public void CreateMenu(Menu rootMenu)
         {
-            if (EntityManager.Heroes.Allies.Where(x => x.ChampionName == Champion.Thresh.ToString()).FirstOrDefault() == null || Player.ChampionName.Equals("Thresh"))
-            {
-                return;
-            }
-
             var autoLanternMenu = rootMenu.AddSubMenu("锤石灯笼", "Threshlantern");
             {
                 autoLanternMenu.Add("ThreshLantern", new CheckBox("自动点击灯笼"));
                 autoLanternMenu.Add("ThreshLanternHotkey", new KeyBind("点击灯笼按键", false, KeyBind.BindTypes.HoldActive, 'M'));
-                autoLanternMenu.Add("ThreshLanternHPSlider", new Slider("当血量% 时点击灯笼", 20));
+                autoLanternMenu.Add("ThreshLanternHPSlider", new Slider("当血量% 时自动点击灯笼", 20));
             }
 
             this.Menu = autoLanternMenu;
@@ -84,10 +98,6 @@
         /// </summary>
         public void Load()
         {
-            if (EntityManager.Heroes.Allies.Where(x => x.ChampionName == Champion.Thresh.ToString()).FirstOrDefault() == null || Player.ChampionName.Equals("Thresh"))
-            {
-                return;
-            }
             try
             {
                 Game.OnUpdate += this.OnUpdate;
@@ -160,14 +170,14 @@
         {
             try
             {
-                if (this.Player.IsDead || !this.Menu["ThreshLantern"].Cast<CheckBox>().CurrentValue || this.ThreshLantern == null
+                if (this.Player.IsDead || !getCheckBoxItem(this.Menu, "ThreshLantern") || this.ThreshLantern == null
                     || !this.ThreshLantern.IsValid)
                 {
                     return;
                 }
 
                 if (this.Player.HealthPercent < this.ClickBelowHp
-                    || this.Menu["ThreshLanternHotkey"].Cast<KeyBind>().CurrentValue)
+                    || getKeyBindItem(this.Menu, "ThreshLanternHotkey"))
                 {
                     if (this.ThreshLantern.Position.LSDistance(this.Player.Position) <= 500)
                     {

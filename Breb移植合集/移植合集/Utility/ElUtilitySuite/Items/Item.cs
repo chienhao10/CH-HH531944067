@@ -1,12 +1,15 @@
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu;
-
 namespace ElUtilitySuite.Items
 {
-    /// <summary>
-    ///     Represents an item.
-    /// </summary>
+    using System.Linq;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+    using EloBuddy;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;
+    using EloBuddy.SDK;/// <summary>
+                       ///     Represents an item.
+                       /// </summary>
     internal abstract class Item
     {
         #region Public Properties
@@ -21,7 +24,7 @@ namespace ElUtilitySuite.Items
         {
             get
             {
-                return Entry.getComboMenu() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
+                return Entry.getCombo() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
             }
         }
 
@@ -84,9 +87,10 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public virtual void CreateMenu()
         {
-            
+            this.Menu.AddGroupLabel(Name);
+            this.Menu.Add(this.Name + "combo", new CheckBox("Use in Combo"));
+            this.Menu.AddSeparator();
         }
-
 
         /// <summary>
         ///     Shoulds the use item.
@@ -102,7 +106,27 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public virtual void UseItem()
         {
-            LeagueSharp.Common.Items.UseItem((int)Id);
+            Items.UseItem((int)this.Id);
+        }
+
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
         }
 
         #endregion

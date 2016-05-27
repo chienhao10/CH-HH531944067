@@ -100,7 +100,7 @@ namespace Evade
             }
 
 
-        /*Console.WriteLine(
+        /* Console.WriteLine(
                 Utils.TickCount + " Projectile Created: " + missile.SData.Name + " distance: " +
                 missile.SData.CastRange + "Radius: " +
                 missile.SData.LineWidth + " Speed: " + missile.SData.MissileSpeed);  */
@@ -237,6 +237,7 @@ namespace Evade
             int startT,
             Vector2 start,
             Vector2 end,
+            
             Obj_AI_Base unit)
         {
             var skillshot = new Skillshot(detectionType, spellData, startT, start, end, unit);

@@ -3,40 +3,34 @@
     using System;
 
     using EloBuddy;
+    using EloBuddy.SDK;
     using EloBuddy.SDK.Events;
 
     using Modes;
 
     internal class Program
     {
-        /// <summary>
-        /// This event is triggered when the game loads
-        /// </summary>
-        /// <param name="args"></param>
-        public static void Execute()
+        private static void Main(string[] args)
         {
-            try
-            {
-                //Put the name of the champion here
-                if (Player.Instance.Hero != Champion.Azir)
-                {
-                    return;
-                }
+            Loading.OnLoadingComplete += Loading_OnLoadingComplete;
+        }
 
-                SpellsManager.InitializeSpells();
-                Menus.CreateMenu();
-                ModeManager.InitializeModes();
-                DrawingsManager.InitializeDrawings();
-                Jumper.OnLoad();
-            }
-            catch (Exception e)
+        private static void Loading_OnLoadingComplete(EventArgs args)
+        {
+            if (Player.Instance.Hero != Champion.Azir)
             {
-                if (e.ToString().Contains("Mario"))
-                {
-                    Chat.Print("[KappAzir ERROR] Failed to Load addon Please Make sure you have Mario's Lib installed");
-                    Console.Write("[KappAzir ERROR] Failed to Load addon Please Make sure you have Mario's Lib installed");
-                }
+                return;
             }
+
+            Azir.Execute();
+            Menus.Execute();
+            Game.OnTick += Base.Game_OnTick;
+            Obj_AI_Base.OnProcessSpellCast += Base.Obj_AI_Base_OnProcessSpellCast;
+            Gapcloser.OnGapcloser += Base.Gapcloser_OnGapcloser;
+            Interrupter.OnInterruptableSpell += Base.Interrupter_OnInterruptableSpell;
+            Drawing.OnDraw += Base.Drawing_OnDraw;
+            GameObject.OnCreate += Base.GameObject_OnCreate;
+            Orbwalker.OnPreAttack += Base.Orbwalker_OnPreAttack;
         }
     }
 }

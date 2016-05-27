@@ -162,8 +162,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 Orbwalker.DisableAttacking = true;
                 Orbwalker.DisableMovement = true;
             }
-            else if (R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
+            else
             {
+                if (R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
                 LogicR();
                 Orbwalker.DisableAttacking = false;
                 Orbwalker.DisableMovement = false;

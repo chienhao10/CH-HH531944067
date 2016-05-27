@@ -56,8 +56,8 @@ namespace D_Zyra
             _r = new Spell(SpellSlot.R, 700);
             _passive = new Spell(SpellSlot.Q, 1470);
 
-            _q.SetSkillshot(0.6f, 85f, float.MaxValue, false, SkillshotType.SkillshotCircle);
-            _e.SetSkillshot(0.5f, 70f, 1150f, false, SkillshotType.SkillshotLine);
+            _q.SetSkillshot(1f, 100f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            _e.SetSkillshot(0.5f, 100f, 1150f, false, SkillshotType.SkillshotLine);
             _r.SetSkillshot(0.5f, 500f, 20f, false, SkillshotType.SkillshotCircle);
             _passive.SetSkillshot(0.5f, 70f, 1400f, false, SkillshotType.SkillshotLine);
 

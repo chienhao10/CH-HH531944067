@@ -5,31 +5,41 @@
     using EloBuddy;
     using EloBuddy.SDK;
 
-    using Mario_s_Lib;
-    using static Menus;
-    using static SpellsManager;
+    using KappAzir.Utility;
 
-    /// <summary>
-    /// This mode will run when the key of the orbwalker is pressed
-    /// </summary>
     internal class JungleClear
     {
-        /// <summary>
-        /// Put in here what you want to do when the mode is running
-        /// </summary>
         public static void Execute()
         {
-            if (Q.GetJungleMinion() == null)
+            var mobs = EntityManager.MinionsAndMonsters.GetJungleMonsters().OrderByDescending(m => m.MaxHealth).Where(m => m.IsKillable());
+
+            foreach (var mob in mobs)
             {
-                return;
+                if (mob != null)
+                {
+                    var menu = Menus.JungleClearMenu;
+                    var Q = mob.IsValidTarget(Azir.Q.Range) && Azir.Q.IsReady() && menu.checkbox("Q")
+                            && Player.Instance.ManaPercent > menu.slider("Qmana");
+                    var W = mob.IsValidTarget(Azir.W.Range) && Azir.W.IsReady() && menu.checkbox("W")
+                            && Player.Instance.ManaPercent > menu.slider("Wmana");
+                    var wsave = menu.checkbox("Wsave") && Azir.W.Handle.Ammo < 2;
+
+                    if (W)
+                    {
+                        if (wsave)
+                        {
+                            return;
+                        }
+
+                        Azir.W.Cast(mob.ServerPosition);
+                    }
+
+                    if (Q && Orbwalker.AzirSoldiers.Count(s => s.IsAlly) > 0)
+                    {
+                        Azir.Q.Cast(mob);
+                    }
+                }
             }
-            Q.RangeCheckSource = Player.Instance.ServerPosition;
-            Q.SourcePosition = Orbwalker.AzirSoldiers.FirstOrDefault(s => s.IsAlly)?.ServerPosition;
-            if (Orbwalker.AzirSoldiers.Count(s => s.IsAlly) >= 1)
-            {
-                Q.TryToCast(Q.GetJungleMinion().Position, JungleClearMenu);
-            }
-            W.TryToCast(W.GetJungleMinion().Position, JungleClearMenu);
         }
     }
 }

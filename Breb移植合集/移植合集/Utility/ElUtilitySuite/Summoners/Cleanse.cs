@@ -5,19 +5,14 @@ namespace ElUtilitySuite.Summoners
     using System.Drawing;
     using System.Linq;
 
-    using EloBuddy;
-    using EloBuddy.SDK;
-    using EloBuddy.SDK.Enumerations;
-    using EloBuddy.SDK.Events;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK.Menu.Values;
-    using SharpDX;
+    using LeagueSharp;
     using LeagueSharp.Common;
-    using LeagueSharp.Common.Data;
 
     using Color = SharpDX.Color;
     using ItemData = LeagueSharp.Common.Data.ItemData;
-
+    using EloBuddy;
+    using EloBuddy.SDK.Menu;
+    using EloBuddy.SDK.Menu.Values;
     internal class Cleanse : IPlugin
     {
         #region Constructors and Destructors
@@ -31,18 +26,18 @@ namespace ElUtilitySuite.Summoners
 
             Spells = new List<CleanseSpell>
                          {
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Name = "summonerdot", MenuName = "Summoner Ignite", Evade = false, DoT = true,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Unknown,
                                      Interval = 1.0
-                                 },*/
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Name = "summonerexhaustdebuff", MenuName = "Summoner Exhaust", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
-                                 },*/
+                                 },
                              /*new CleanseSpell
                                  {
                                      Name = "itemdusknightfall", MenuName = "Duskblade", Evade = false, DoT = true,
@@ -51,19 +46,19 @@ namespace ElUtilitySuite.Summoners
                                  },*/
                              new CleanseSpell
                                  {
-                                     Champion = "Taric", Name = "stun", MenuName = "Taric Stun", Evade = false,
+                                     Champion = "Taric", Name = "taricE", MenuName = "Taric Stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Lulu", Name = "polymorph", MenuName = "Lulu polymorph", Evade = false,
+                                     Champion = "Lulu", Name = "LuluWDebuff", MenuName = "Lulu polymorph", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Nocturne", Name = "fear", MenuName = "Nocturne Fear", Evade = false,
+                                     Champion = "Nocturne", Name = "flee", MenuName = "Nocturne Fear", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
                                  },
@@ -113,19 +108,24 @@ namespace ElUtilitySuite.Summoners
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Unknown,
                                      Interval = 1.0
                                  },
-                             /*new CleanseSpell
+                              new CleanseSpell
+                                 {
+                                     Champion = "Kayle", Name = "JudicatorReckoning", MenuName = "Kayle slow", Evade = false, DoT = false,
+                                     EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q,
+                                     Interval = 1.0
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "Vi", Name = "virknockup", MenuName = "Vi R Knockup", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown, Interval = 1.0
-                                 },*/
-
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "Gangplank", Name = "gangplankpassiveattackdot",
                                      MenuName = "Gangplank Passive Burn", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Unknown, Interval = .8
-                                 },*/
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Teemo", Name = "bantamtraptarget", MenuName = "Teemo Shroom",
@@ -144,12 +144,12 @@ namespace ElUtilitySuite.Summoners
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Talon", Name = "talonbleeddebuf", MenuName = "Talon Bleed", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.Q,
                                      Interval = .8
-                                 },*/
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Malzahar", Name = "MalzaharR",
@@ -176,7 +176,7 @@ namespace ElUtilitySuite.Summoners
                                  },*/
                              new CleanseSpell
                                  {
-                                     Champion = "FiddleSticks", Name = "fleeslow", MenuName = "Fiddle Fear", Evade = false,
+                                     Champion = "FiddleSticks", Name = "flee", MenuName = "Fiddle Fear", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q,
                                      Interval = 1.0
                                  },
@@ -204,18 +204,18 @@ namespace ElUtilitySuite.Summoners
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Hecarim", Name = "hecarimdefilelifeleech",
                                      MenuName = "Hecarim Defile Leech", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.W, Interval = 1.0
-                                 },*/
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "Swain", Name = "swaintorment", MenuName = "Swain Torment", Evade = false,
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
-                                 },*/
+                                 },
                              /*new CleanseSpell
                                  {
                                      Champion = "Brand", Name = "brandablaze", MenuName = "Brand Burn Passive",
@@ -234,12 +234,12 @@ namespace ElUtilitySuite.Summoners
                                      MenuName = "Tristana Explosive Charge", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E, Interval = .8
                                  },*/
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Darius", Name = "DariusNoxianTacticsONH", MenuName = "Darius (W)",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.W, Interval = 1.0
-                                 },*/
+                                 },
                              /*new CleanseSpell
                                  {
                                      Champion = "Nidalee", Name = "bushwackdamage", MenuName = "Nidalee Bushwhack",
@@ -264,17 +264,17 @@ namespace ElUtilitySuite.Summoners
                                      Champion = "MissFortune", Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R,
                                      Interval = 0.5
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Wukong", Name = "monkeykingspintowin", Evade = false, DoT = true,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R, Interval = 1.0
-                                 },*/
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "Cassiopeia", Name = "cassiopeianoxiousblastpoison",
                                      MenuName = "Cassio Noxious Blast", Evade = false, Cleanse = false, DoT = true,
                                      EvadeTimer = 0, CleanseTimer = 0, Slot = SpellSlot.Q, Interval = 0.4
-                                 },*/
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Cassiopeia", Name = "cassiopeiamiasmapoison", MenuName = "Cassio Miasma",
@@ -299,23 +299,23 @@ namespace ElUtilitySuite.Summoners
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 100,
                                      Slot = SpellSlot.R, Interval = 1.0
                                  },*/
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Twitch", Name = "twitchdeadlyvenon", MenuName = "Twitch Deadly Venom",
                                      Evade = false, DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0,
                                      Slot = SpellSlot.E, Interval = 0.6
-                                 },*/
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "Urgot", Name = "urgotcorrosivedebuff",
                                      MenuName = "Urgot Corrosive Charge", Evade = false, DoT = true, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E, Interval = 1.0
-                                 },*/
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "Zac", Name = "zacr", Evade = true, DoT = true, EvadeTimer = 150,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R, Interval = 1.5
-                                 },*/
+                                 },
                              /*new CleanseSpell
                                  {
                                      Champion = "Mordekaiser", Name = "mordekaiserchildrenofthegrave",
@@ -328,28 +328,28 @@ namespace ElUtilitySuite.Summoners
                                      Champion = "Zed", Name = "zedrtargetmark", MenuName = "Zed Mark", Evade = true,
                                      DoT = false, EvadeTimer = 2600, Cleanse = true, CleanseTimer = 1000,
                                      Slot = SpellSlot.R, Interval = 1.0
-                                 }, */
-                             /*new CleanseSpell
+                                 },*/
+                             new CleanseSpell
                                  {
                                      Champion = "Karthus", Name = "fallenonetarget", Evade = true, DoT = false,
                                      EvadeTimer = 2600, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },*/
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "Karthus", Name = "karthusfallenonetarget", Evade = true, DoT = false,
                                      EvadeTimer = 2600, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },*/
+                                 },
                               new CleanseSpell
                                  {
                                      Champion = "Karthus", Name = "KarthusWallOfPain ",  MenuName = "Karthus W", Evade = true, DoT = false,
                                      EvadeTimer = 1600, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Fizz", Name = "fizzmarinerdoombomb", MenuName = "Fizz Shark Bait",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R
-                                 },*/
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Morgana", Name = "SoulShackless", MenuName = "Morgana Soul Shackles",
@@ -368,24 +368,24 @@ namespace ElUtilitySuite.Summoners
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Caitlyn", Name = "caitlynaceinthehole",
                                      MenuName = "Caitlyn Ace in the Hole", Evade = true, DoT = false, EvadeTimer = 900,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },*/
+                                 },
                              /*new CleanseSpell
                                  {
                                      Champion = "Vladimir", Name = "vladimirhemoplague", MenuName = "Vladimir Hemoplague",
                                      Evade = true, DoT = false, EvadeTimer = 4500, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.R
                                  },*/
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Diana", Name = "dianamoonlight", MenuName = "Diana Moonlight",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Q
-                                 },*/
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Urgot", Name = "urgotswap2", MenuName = "Urgot Swap", Evade = false,
@@ -407,21 +407,16 @@ namespace ElUtilitySuite.Summoners
                                      Champion = "Poppy", Name = "Stun", MenuName = "Poppy wall stun", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "Poppy", Name = "poppyulttargetmark",
                                      MenuName = "Poppy Diplomatic Immunity", Evade = false, DoT = false, EvadeTimer = 0,
                                      Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },*/
-                             /*new CleanseSpell
+                                 },
+                             new CleanseSpell
                                  {
                                      Champion = "LeeSin", Name = "blindmonkqone", MenuName = "Lee Sin Q", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
-                                 },*/
-                             new CleanseSpell
-                                 {
-                                     Champion = "LeeSin", Name = "knockback", MenuName = "Lee Sin R", Evade = false,
-                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
                                  },
                              new CleanseSpell
                                  {
@@ -441,9 +436,15 @@ namespace ElUtilitySuite.Summoners
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
                                      Slot = SpellSlot.Unknown
                                  },
+                              new CleanseSpell
+                                 {
+                                     Champion = "Rengar", Name = "RengarERoot", MenuName = "Rengar EMP (E)", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
+                                 },
+
                              new CleanseSpell
                                  {
-                                     Champion = "amumu", Name = "bandagetoss", MenuName = "bandagetoss (Q)", Evade = false,
+                                     Champion = "amumu", Name = "stun", MenuName = "bandagetoss (Q)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
@@ -481,7 +482,7 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "nunu", Name = "IceBlast", MenuName = "Nunu E", Evade = false, DoT = false,
+                                     Champion = "nunu", Name = "IceBlast", MenuName = "Nunu Q", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
@@ -499,11 +500,6 @@ namespace ElUtilitySuite.Summoners
                                  {
                                      Champion = "Warwick", Name = "suppression", MenuName = "Warwick (R)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },
-                              new CleanseSpell
-                                 {
-                                     Champion = "maokai", Name = "MaokaiUnstableGrowthRoot", MenuName = "Maokai (W)", Evade = false,
-                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W
                                  },
                              new CleanseSpell
                                  {
@@ -534,7 +530,7 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "udyr", Name = "stun", MenuName = "Udyr Stun", Evade = false, DoT = false,
+                                     Champion = "udyr", Name = "UdyrBearStunCheck", MenuName = "Udyr Stun", Evade = false, DoT = false,
                                      EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.E
                                  },
                              new CleanseSpell
@@ -573,6 +569,11 @@ namespace ElUtilitySuite.Summoners
                                      Champion = "thresh", Name = "threshq", MenuName = "Thresh (Q)", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
+                              new CleanseSpell
+                                 {
+                                     Champion = "viktor", Name = "ViktorGravitonStun", MenuName = "Viktor (W) stun", Evade = true,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Lissandra", Name = "lissandrarenemy2", MenuName = "Lissandra (R)",
@@ -587,8 +588,13 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "lux", Name = "luxlightbinding", MenuName = "Lux (Q)", Evade = false,
+                                     Champion = "lux", Name = "luxlightbindingmis", MenuName = "Lux (Q)", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
+                                 },
+                              new CleanseSpell
+                                 {
+                                     Champion = "maokai", Name = "MaokaiUnstableGrowthRoot", MenuName = "Maokai (W)", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W
                                  },
                              new CleanseSpell
                                  {
@@ -611,13 +617,13 @@ namespace ElUtilitySuite.Summoners
                                  {
                                      Champion = "nautilus", Name = "nautilusanchordragroot", MenuName = "Nautilus Q",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0,
-                                     Slot = SpellSlot.Q //The Q isn't the root here, is this just a weird entry that still happens to be tracking the passive?//
+                                     Slot = SpellSlot.Q
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
                                      Champion = "nautilus", Name = "stun", MenuName = "Nautilus R", Evade = false,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.R
-                                 },*/ //Looking at the wiki it seems like nautilus has a stun on impact along with the knockup, displacement can't be cleansed, but I don't know if the stun lasts after the hit and when you're back on the ground//
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "zilean", Name = "stun", MenuName = "Zilean double Q", Evade = false,
@@ -790,6 +796,14 @@ namespace ElUtilitySuite.Summoners
         /// </value>
         private static Random Random { get; set; }
 
+        /// <summary>
+        ///     Gets or sets the menu.
+        /// </summary>
+        /// <value>
+        ///     The menu.
+        /// </value>
+        private Menu Menu { get; set; }
+
         #endregion
 
         #region Public Methods and Operators
@@ -798,43 +812,46 @@ namespace ElUtilitySuite.Summoners
         ///     Creates the menu.
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
-        public static Menu rootMenu = ElUtilitySuite.Entry.menu;
-        public static Menu cleanseMenu;
-
-        public static bool getCheckBoxItem(string item)
-        {
-            return cleanseMenu[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(string item)
-        {
-            return cleanseMenu[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(string item)
-        {
-            return cleanseMenu[item].Cast<KeyBind>().CurrentValue;
-        }
-
         public void CreateMenu(Menu rootMenu)
         {
-            cleanseMenu = rootMenu.AddSubMenu("Cleanse/QSS", "CleanseV3");
-
-            cleanseMenu.Add("CleanseActivated", new CheckBox("使用净化"));
-            cleanseMenu.AddSeparator();
-
-            cleanseMenu.AddGroupLabel("使用水银的技能");
-            foreach (var spell in Spells)
+            this.Menu = rootMenu.AddSubMenu("解控", "CleanseV3");
             {
-                cleanseMenu.Add(spell.MenuName != null ? spell.MenuName.Replace(" ", string.Empty) : spell.Name, new CheckBox(string.IsNullOrEmpty(spell.MenuName) ? spell.Name : spell.MenuName));
+                this.Menu.AddGroupLabel("技能");
+                foreach (var spell in Spells)
+                {
+                    this.Menu.Add(spell.MenuName != null ? spell.MenuName.Replace(" ", string.Empty) : spell.Name, new CheckBox(string.IsNullOrEmpty(spell.MenuName) ? spell.Name : spell.MenuName, spell.Cleanse));
+                }
+                this.Menu.AddSeparator();
+                this.Menu.AddGroupLabel("人性化延迟");
+                this.Menu.Add("CleanseMinDelay", new Slider("最低延迟 (毫秒)", 500, 0, 1000));
+                this.Menu.Add("CleanseMaxDelay", new Slider("最高延迟 (毫秒)", 800, 0, 1500));
+                this.Menu.AddSeparator();
+                this.Menu.Add("CleanseActivated", new CheckBox("使用净化"));
+                foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly))
+                {
+                    this.Menu.Add("cleanseon" + x.ChampionName, new CheckBox("为以下事使用 " + x.ChampionName));
+                }
             }
+        }
 
-            cleanseMenu.AddSeparator();
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
 
-            cleanseMenu.AddGroupLabel("人性化延迟");
-            cleanseMenu.Add("CleanseMaxDelay", new Slider("延迟 (毫秒)", 800, 0, 1500));
-            cleanseMenu.AddSeparator();
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
 
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
         }
 
         /// <summary>
@@ -866,22 +883,23 @@ namespace ElUtilitySuite.Summoners
         /// <param name="args">The <see cref="System.EventArgs" /> instance containing the event data.</param>
         private void GameOnUpdate(EventArgs args)
         {
-            if (Player.IsDead || Player.IsInvulnerable || Player.HasBuffOfType(BuffType.SpellImmunity) || Player.HasBuffOfType(BuffType.Invulnerability))
+            if (Player.IsDead || Player.IsInvulnerable || Player.HasBuffOfType(BuffType.SpellImmunity)
+                || Player.HasBuffOfType(BuffType.Invulnerability))
             {
                 return;
             }
 
-            if (!getCheckBoxItem("CleanseActivated"))
+            if (!getCheckBoxItem(this.Menu, "CleanseActivated"))
             {
                 return;
             }
 
-            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.IsValidTarget(800f)))
+            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.LSIsValidTarget(800f, false)))
             {
                 var ally1 = ally;
                 foreach (var spell in Spells.Where(x => ally1.HasBuff(x.Name)))
                 {
-                    if (!getCheckBoxItem(spell.MenuName != null ? spell.MenuName.Replace(" ", string.Empty) : spell.Name))
+                    if (!getCheckBoxItem(this.Menu, spell.MenuName != null ? spell.MenuName.Replace(" ", string.Empty) : spell.Name))
                     {
                         continue;
                     }
@@ -906,19 +924,21 @@ namespace ElUtilitySuite.Summoners
                     var ally2 = ally;
                     LeagueSharp.Common.Utility.DelayAction.Add(
                         spell.CleanseTimer
-                        + Random.Next(getSliderItem("CleanseMaxDelay")),
+                        + Random.Next(
+                            getSliderItem(this.Menu, "CleanseMinDelay"),
+                            getSliderItem(this.Menu, "CleanseMaxDelay")),
                         () =>
-                        {
-                            if (!ally2.HasBuff(buff.Name) || ally2.IsInvulnerable)
                             {
-                                return;
-                            }
+                                if (!ally2.HasBuff(buff.Name) || ally2.IsInvulnerable || !getCheckBoxItem(this.Menu, string.Format("cleanseon{0}", ally2.ChampionName)))
+                                {
+                                    return;
+                                }
 
-                            if (item.Slot != SpellSlot.Unknown)
-                            {
-                                Player.Spellbook.CastSpell(item.Slot, ally2);
-                            }
-                        });
+                                if (item.Slot != SpellSlot.Unknown)
+                                {
+                                    Player.Spellbook.CastSpell(item.Slot, ally2);
+                                }
+                            });
                 }
             }
         }
@@ -975,11 +995,11 @@ namespace ElUtilitySuite.Summoners
             /// <value>
             ///     The spell.
             /// </value>
-            public LeagueSharp.Common.Spell Spell
+            public Spell Spell
             {
                 get
                 {
-                    return new LeagueSharp.Common.Spell(this.Slot(), this.Range);
+                    return new Spell(this.Slot(), this.Range);
                 }
             }
 
