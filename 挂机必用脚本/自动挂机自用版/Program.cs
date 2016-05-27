@@ -107,7 +107,7 @@ namespace AutoBuddy
 
             menu.AddLabel("----------------------------");
             menu.Add("autoclose", new CheckBox("自动关闭游戏 (按F5生效)", true));
-            menu.Add("oldWalk", new CheckBox("使用老板走砍 (按F5生效)", false));
+            menu.Add("oldWalk", new CheckBox("使用老版走砍 (按F5生效)", false));
             menu.Add("debuginfo", new CheckBox("显示调试信息", false));
             menu.Add("l1", new Label("推荐打开智能寻路以及重新选择路线！其他可以无视"));
 
