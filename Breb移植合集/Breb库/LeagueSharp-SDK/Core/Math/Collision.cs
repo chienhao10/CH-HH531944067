@@ -117,7 +117,7 @@ namespace LeagueSharp.SDK
                             .Concat(GameObjects.Jungle)
                             .Where(
                                 minion =>
-                                minion.IsValidTarget(
+                                minion.LSIsValidTarget(
                                     Math.Min(input.Range + input.Radius + 100, 2000),
                                     true,
                                     input.RangeCheckFrom) && IsHitCollision(minion, input, position, 15)));
@@ -128,7 +128,7 @@ namespace LeagueSharp.SDK
                     result.AddRange(
                         GameObjects.EnemyHeroes.Where(
                             hero =>
-                            hero.IsValidTarget(
+                            hero.LSIsValidTarget(
                                 Math.Min(input.Range + input.Radius + 100, 2000),
                                 true,
                                 input.RangeCheckFrom) && IsHitCollision(hero, input, position, 50)));

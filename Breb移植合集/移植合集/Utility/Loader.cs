@@ -86,7 +86,7 @@ namespace PortAIO.Utility
         public static int taliyah { get { return Miscc["taliyah"].Cast<ComboBox>().CurrentValue; } }
         public static int janna { get { return Miscc["janna"].Cast<ComboBox>().CurrentValue; } }
         public static int irelia { get { return Miscc["irelia"].Cast<ComboBox>().CurrentValue; } }
-        public static int masteryi { get { return Miscc["masteryi"].Cast<ComboBox>().CurrentValue; } }
+        public static int sivir { get { return Miscc["sivir"].Cast<ComboBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -151,7 +151,7 @@ namespace PortAIO.Utility
             "Taliyah", //50
             "Janna", //51
             "Irelia", //52
-            "MasterYi" //53
+            "Sivir" //53
         });
 
         public static void Menu()
@@ -364,19 +364,19 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[50]))
                 {
-                    Miscc.Add("taliyah", new ComboBox("Use addon for Taliyah : ", 0, "Taliyah", "TophSharp"));
+                    Miscc.Add("taliyah", new ComboBox("切换 塔莉亚脚本 : ", 0, "Taliyah", "TophSharp"));
                 }
                 if (Player.ChampionName.Equals(Champion[51]))
                 {
-                    Miscc.Add("janna", new ComboBox("Use addon for Janna : ", 0, "LCS Janna", "FreshBooster"));
+                    Miscc.Add("janna", new ComboBox("切换 风女脚本 : ", 0, "LCS Janna", "FreshBooster"));
                 }
                 if (Player.ChampionName.Equals(Champion[52]))
                 {
-                    Miscc.Add("irelia", new ComboBox("Use addon for Irelia : ", 0, "ChallengerSeries", "IreliaGOD"));
+                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD"));
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {
-                    Miscc.Add("masteryi", new ComboBox("Use addon for MasterYi : ", 0, "MasterSharp", "Hoola Yi"));
+                    Miscc.Add("sivir", new ComboBox("切换 战争女神脚本 : ", 0, "OKTW", "ExorAIO SDK"));
                 }
             }
             else

@@ -111,11 +111,6 @@ namespace ExorSDK.Utilities
         public static Menu Menu { internal get; set; }
 
         /// <summary>
-        ///     Gets or sets the settings menu.
-        /// </summary>
-        public static Menu SpellsMenu { internal get; set; }
-
-        /// <summary>
         ///     Gets or sets the Q Spell menu.
         /// </summary>
         public static Menu QMenu { internal get; set; }

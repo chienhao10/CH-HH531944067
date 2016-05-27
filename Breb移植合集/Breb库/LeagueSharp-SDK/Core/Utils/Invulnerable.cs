@@ -79,6 +79,7 @@ namespace LeagueSharp.SDK.Core.Utils
                         new InvulnerableEntry("BansheesVeil") { IsShield = true, DamageType = DamageType.Magical },
                         new InvulnerableEntry("SivirE") { ChampionName = "Sivir", IsShield = true },
                         new InvulnerableEntry("NocturneShroudofDarkness") { ChampionName = "Nocturne", IsShield = true },
+                        new InvulnerableEntry("malzaharpassiveshield") { ChampionName = "Malzahar", IsShield = true },
                         new InvulnerableEntry("KindredrNoDeathBuff")
                             {
                                 ChampionName = "Kindred", MinHealthPercent = 10,
@@ -126,7 +127,7 @@ namespace LeagueSharp.SDK.Core.Utils
                     {
                         if (hero.HasBuff(entry.BuffName))
                         {
-                            if (!ignoreShields || !entry.IsShield)
+                            if (ignoreShields || !entry.IsShield)
                             {
                                 if (entry.CheckFunction == null || ExecuteCheckFunction(entry, hero, damageType))
                                 {

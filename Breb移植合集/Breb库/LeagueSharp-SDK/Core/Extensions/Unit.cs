@@ -19,14 +19,9 @@ namespace LeagueSharp.SDK
 {
     using System;
     using System.Linq;
-    using EloBuddy.SDK.Enumerations;
-    using EloBuddy.SDK.Events;
-    using EloBuddy.SDK.Menu.Values;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK;
-    using EloBuddy;
-    using SharpDX;
 
+    using SharpDX;
+    using EloBuddy;
     /// <summary>
     ///     Provides helpful extensions to Units.
     /// </summary>
@@ -51,14 +46,14 @@ namespace LeagueSharp.SDK
             };
 
         /// <summary>
-        ///     Turrets Tier Three
-        /// </summary>
-        private static readonly string[] TurretsTierThree = { "SRUAP_Turret_Order3", "SRUAP_Turret_Chaos3" };
-
-        /// <summary>
         ///     Turrets Tier Two
         /// </summary>
         private static readonly string[] TurretsTierTwo = { "SRUAP_Turret_Order2", "SRUAP_Turret_Chaos2" };
+
+        /// <summary>
+        ///     Turrets Tier Three
+        /// </summary>
+        private static readonly string[] TurretsTierThree = { "SRUAP_Turret_Order3", "SRUAP_Turret_Chaos3" };
 
         #endregion
 
@@ -349,6 +344,7 @@ namespace LeagueSharp.SDK
         public static bool InFountain(this AIHeroClient hero)
         {
             float fountainRange = 562500; // 750 * 750
+
             if (Game.MapId == GameMapId.SummonersRift)
             {
                 fountainRange = 1102500; // 1050 * 1050
@@ -376,7 +372,7 @@ namespace LeagueSharp.SDK
         /// <returns>Returns if the source and target are facing each-other (boolean)</returns>
         public static bool IsBothFacing(this Obj_AI_Base source, Obj_AI_Base target)
         {
-            return source.IsFacing(target) && target.IsFacing(source);
+            return source.LSIsFacing(target) && target.LSIsFacing(source);
         }
 
         /// <summary>
@@ -387,7 +383,7 @@ namespace LeagueSharp.SDK
         /// <returns>Returns if the source is facing the target (boolean)</returns>
         public static bool LSIsFacing(this Obj_AI_Base source, Obj_AI_Base target)
         {
-            return (source.IsValid() && target.IsValid())
+            return source.LSIsValid() && target.LSIsValid()
                    && source.Direction.AngleBetween(target.Position - source.Position) < 90;
         }
 
@@ -463,35 +459,6 @@ namespace LeagueSharp.SDK
         /// <returns>
         ///     The <see cref="bool" />.
         /// </returns>
-        public static bool IsValidTarget(
-            this AttackableUnit unit,
-            float range = float.MaxValue,
-            bool checkTeam = true,
-            Vector3 from = default(Vector3))
-        {
-            if (unit == null || !unit.IsValid || !unit.IsVisible || unit.IsDead || !unit.IsTargetable
-                || unit.IsInvulnerable)
-            {
-                return false;
-            }
-
-            if (checkTeam && GameObjects.Player.Team == unit.Team)
-            {
-                return false;
-            }
-
-            var @base = unit as Obj_AI_Base;
-
-            if (@base != null && !@base.IsHPBarRendered)
-            {
-                return false;
-            }
-
-            return
-                (@from.IsValid() ? @from : GameObjects.Player.ServerPosition).DistanceSquared(
-                    @base?.ServerPosition ?? unit.Position) < range * range;
-        }
-
         public static bool LSIsValidTarget(
             this AttackableUnit unit,
             float range = float.MaxValue,

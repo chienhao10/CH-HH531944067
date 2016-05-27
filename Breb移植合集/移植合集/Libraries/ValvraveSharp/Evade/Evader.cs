@@ -149,28 +149,28 @@ namespace Valvrave_Sharp.Evade
                 {
                     case SpellValidTargets.AllyChampions:
                         allTargets.AddRange(
-                            GameObjects.AllyHeroes.Where(i => i.IsValidTarget(spellData.Range, false) && !i.IsMe));
+                            GameObjects.AllyHeroes.Where(i => i.LSIsValidTarget(spellData.Range, false) && !i.IsMe));
                         break;
                     case SpellValidTargets.AllyMinions:
                         allTargets.AddRange(
                             GameObjects.AllyMinions.Where(
-                                i => i.IsValidTarget(spellData.Range, false) && (i.IsMinion() || i.IsPet())));
+                                i => i.LSIsValidTarget(spellData.Range, false) && (i.IsMinion() || i.IsPet())));
                         break;
                     case SpellValidTargets.AllyWards:
                         allTargets.AddRange(
-                            GameObjects.AllyWards.Where(i => i.IsValidTarget(spellData.Range, false) && i.IsWard()));
+                            GameObjects.AllyWards.Where(i => i.LSIsValidTarget(spellData.Range, false) && i.IsWard()));
                         break;
                     case SpellValidTargets.EnemyChampions:
-                        allTargets.AddRange(GameObjects.EnemyHeroes.Where(i => i.IsValidTarget(spellData.Range)));
+                        allTargets.AddRange(GameObjects.EnemyHeroes.Where(i => i.LSIsValidTarget(spellData.Range)));
                         break;
                     case SpellValidTargets.EnemyMinions:
                         allTargets.AddRange(
                             GameObjects.EnemyMinions.Where(
-                                i => i.IsValidTarget(spellData.Range) && (i.IsMinion() || i.IsPet(false))));
-                        allTargets.AddRange(GameObjects.Jungle.Where(i => i.IsValidTarget(spellData.Range)));
+                                i => i.LSIsValidTarget(spellData.Range) && (i.IsMinion() || i.IsPet(false))));
+                        allTargets.AddRange(GameObjects.Jungle.Where(i => i.LSIsValidTarget(spellData.Range)));
                         break;
                     case SpellValidTargets.EnemyWards:
-                        allTargets.AddRange(GameObjects.EnemyWards.Where(i => i.IsValidTarget(spellData.Range)));
+                        allTargets.AddRange(GameObjects.EnemyWards.Where(i => i.LSIsValidTarget(spellData.Range)));
                         break;
                 }
             }

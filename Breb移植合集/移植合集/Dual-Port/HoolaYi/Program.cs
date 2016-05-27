@@ -315,7 +315,7 @@ namespace HoolaMasterYi
         {
             if (KsQ && Q.IsReady())
             {
-                var targets = HeroManager.Enemies.Where(x => x.IsValidTarget(Q.Range) && !x.IsZombie);
+                var targets = HeroManager.Enemies.Where(x => x.LSIsValidTarget(Q.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.IsValid && target.Health < Q.GetDamage(target) && (!target.HasBuff("kindrednodeathbuff") || !target.HasBuff("Undying Rage") || !target.HasBuff("JudicatorIntervention")) && (!Orbwalking.InAutoAttackRange(target) || !Orbwalker.CanAutoAttack))
@@ -328,7 +328,7 @@ namespace HoolaMasterYi
             {
                 var targets =
                     HeroManager.Enemies.Where(
-                        x => x.IsValidTarget(ItemData.Blade_of_the_Ruined_King.Range) && !x.IsZombie);
+                        x => x.LSIsValidTarget(ItemData.Blade_of_the_Ruined_King.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Damage.GetItemDamage(Player, target, Damage.DamageItems.Bilgewater)) ItemData.Bilgewater_Cutlass.GetItem().Cast(target);
@@ -341,7 +341,7 @@ namespace HoolaMasterYi
             {
                 var targets =
                     HeroManager.Enemies.Where(
-                        x => x.IsValidTarget(ItemData.Ravenous_Hydra_Melee_Only.Range) && !x.IsZombie);
+                        x => x.LSIsValidTarget(ItemData.Ravenous_Hydra_Melee_Only.Range) && !x.IsZombie);
                 foreach (var target in targets)
                 {
                     if (target.Health < Damage.GetItemDamage(Player, target, Damage.DamageItems.Tiamat)) ItemData.Tiamat_Melee_Only.GetItem().Cast();
@@ -397,7 +397,7 @@ namespace HoolaMasterYi
             foreach (
                 var enemy in
                     ObjectManager.Get<AIHeroClient>()
-                        .Where(ene => ene.IsValidTarget() && !ene.IsZombie))
+                        .Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
             {
                 if (Dind)
                 {

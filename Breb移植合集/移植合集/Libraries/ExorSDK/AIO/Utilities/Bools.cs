@@ -97,7 +97,7 @@ namespace ExorSDK.Utilities
         /// </summary>
         public static bool ShouldCleanse(AIHeroClient target)
             =>
-                GameObjects.EnemyHeroes.Any(t => t.IsValidTarget(1500f)) &&
+                GameObjects.EnemyHeroes.Any(t => t.LSIsValidTarget(1500f)) &&
                 !Invulnerable.Check(GameObjects.Player, DamageType.True, false) &&
                 (
                     target.HasBuffOfType(BuffType.Flee) ||
@@ -128,7 +128,7 @@ namespace ExorSDK.Utilities
         {
             if (target is Obj_AI_Minion)
             {
-                if (target.IsValidTarget(Vars.E.Range) &&
+                if (target.LSIsValidTarget(Vars.E.Range) &&
                     target.HasBuff("kalistaexpungemarker"))
                 {
                     return true;
@@ -136,7 +136,7 @@ namespace ExorSDK.Utilities
             }
             else if (target is AIHeroClient)
             {
-                if (target.IsValidTarget(Vars.E.Range) &&
+                if (target.LSIsValidTarget(Vars.E.Range) &&
                     target.HasBuff("kalistaexpungemarker") &&
                     !Invulnerable.Check(target as AIHeroClient))
                 {

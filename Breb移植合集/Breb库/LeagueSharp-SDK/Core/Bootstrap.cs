@@ -50,8 +50,9 @@ namespace LeagueSharp.SDK
         /// <param name="args">
         ///     The additional arguments the loader passes.
         /// </param>
-        [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
-        public static void Init(string[] args)
+        /// 
+
+        public static void Init()
         {
             if (initialized)
             {
@@ -60,16 +61,11 @@ namespace LeagueSharp.SDK
 
             initialized = true;
 
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-
             // Initial notification.
             Logging.Write()(LogLevel.Info, "[-- SDK Bootstrap Loading --]");
 
             // Load Resource Content.
-            ResourceLoader.Initialize();
+            //ResourceLoader.Initialize();
             Logging.Write()(LogLevel.Info, "[SDK Bootstrap] Resources Initialized.");
 
             // Load GameObjects.
@@ -77,7 +73,7 @@ namespace LeagueSharp.SDK
             Logging.Write()(LogLevel.Info, "[SDK Bootstrap] GameObjects Initialized.");
 
             // Load Damages.
-            Damage.Initialize();
+            //Damage.Initialize();
             Logging.Write()(LogLevel.Info, "[SDK Bootstrap] Damage Library Initialized.");
 
             // Final notification.

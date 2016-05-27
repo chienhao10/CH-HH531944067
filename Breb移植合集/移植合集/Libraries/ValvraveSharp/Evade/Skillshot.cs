@@ -575,7 +575,7 @@
                     this.helperTick = this.StartTick;
                 }
                 this.SpellData.MissileSpeed = (int)this.Unit.MoveSpeed;
-                if (this.Unit.IsValidTarget(float.MaxValue, false))
+                if (this.Unit.LSIsValidTarget(float.MaxValue, false))
                 {
                     if (!this.Unit.HasBuff("SionR") && Variables.TickCount - this.helperTick > 600)
                     {

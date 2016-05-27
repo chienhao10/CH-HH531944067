@@ -116,7 +116,7 @@ namespace ElSejuani
 
             var comboQ = ElSejuaniMenu.getCheckBoxItem(ElSejuaniMenu.cMenu, "ElSejuani.Combo.Q");
             var comboE = ElSejuaniMenu.getCheckBoxItem(ElSejuaniMenu.cMenu, "ElSejuani.Combo.E");
-            var comboW = ElSejuaniMenu.getCheckBoxItem(ElSejuaniMenu.cMenu, "ElSejuani.Combo.E");
+            var comboW = ElSejuaniMenu.getCheckBoxItem(ElSejuaniMenu.cMenu, "ElSejuani.Combo.W");
             var comboR = ElSejuaniMenu.getCheckBoxItem(ElSejuaniMenu.cMenu, "ElSejuani.Combo.R");
             var countEnemyR = ElSejuaniMenu.getSliderItem(ElSejuaniMenu.cMenu, "ElSejuani.Combo.R.Count");
 

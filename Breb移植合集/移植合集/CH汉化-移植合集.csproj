@@ -56,8 +56,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Berb.Common">
-      <HintPath>..\..\..\Downloads\Berb.Common.dll</HintPath>
+    <Reference Include="Berb.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Berb.Common\Berb.Common\bin\Debug\Berb.Common.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy">
       <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
@@ -253,6 +254,18 @@
     <Compile Include="Dual-Port\ExorCait\Properties\Utilities\Methods.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Utilities\Spells.cs" />
     <Compile Include="Dual-Port\ExorCait\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Modes\Automatic.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Modes\PvM\Clear.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Modes\PvM\LastHit.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Modes\PvP\Combo.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Modes\PvP\Harass.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Modes\PvP\Killsteal.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Modes\PvP\Weaving.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Utilities\Menus.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Utilities\Methods.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Utilities\Spells.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Properties\Utilities\Targets.cs" />
+    <Compile Include="Dual-Port\ExorSivir\Sivir.cs" />
     <Compile Include="Dual-Port\FastTrundle\FastTrundle.cs" />
     <Compile Include="Dual-Port\FastTrundle\FastTrundleMenu.cs" />
     <Compile Include="Dual-Port\FreshBooster LeeSin\LeeSin.cs" />
@@ -271,9 +284,6 @@
     <Compile Include="Dual-Port\GosuMechanics Yasuo\Yasuo.cs" />
     <Compile Include="Dual-Port\HeavenStrikeReksaj\Program.cs" />
     <Compile Include="Dual-Port\hi_im_gosu\Program.cs" />
-    <Compile Include="Dual-Port\HoolaYi\HpBarIndicator.cs" />
-    <Compile Include="Dual-Port\HoolaYi\Program.cs" />
-    <Compile Include="Dual-Port\HoolaYi\Spelldatabase.cs" />
     <Compile Include="Dual-Port\iDzEzreal\Ezreal.cs" />
     <Compile Include="Dual-Port\iDzEzreal\EzrealBootstrap.cs" />
     <Compile Include="Dual-Port\iDzEzreal\MenuHelper\MenuGenerator.cs" />

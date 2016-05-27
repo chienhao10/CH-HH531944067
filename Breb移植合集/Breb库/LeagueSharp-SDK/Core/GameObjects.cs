@@ -444,60 +444,60 @@ namespace LeagueSharp.SDK
             initialized = true;
 
             Events.OnLoad += (sender, args) =>
-                {
-                    Player = ObjectManager.Player;
+            {
+                Player = ObjectManager.Player;
 
-                    HeroesList.AddRange(ObjectManager.Get<AIHeroClient>());
-                    MinionsList.AddRange(
-                        ObjectManager.Get<Obj_AI_Minion>()
-                            .Where(
-                                o => o.Team != GameObjectTeam.Neutral && !o.GetMinionType().HasFlag(MinionTypes.Ward)));
-                    TurretsList.AddRange(ObjectManager.Get<Obj_AI_Turret>());
-                    InhibitorsList.AddRange(ObjectManager.Get<Obj_BarracksDampener>());
-                    JungleList.AddRange(
-                        ObjectManager.Get<Obj_AI_Minion>()
-                            .Where(o => o.Team == GameObjectTeam.Neutral && o.Name != "WardCorpse"));
-                    WardsList.AddRange(
-                        ObjectManager.Get<Obj_AI_Minion>().Where(o => o.GetMinionType().HasFlag(MinionTypes.Ward)));
-                    ShopsList.AddRange(ObjectManager.Get<Obj_Shop>());
-                    SpawnPointsList.AddRange(ObjectManager.Get<Obj_SpawnPoint>());
-                    GameObjectsList.AddRange(ObjectManager.Get<GameObject>());
-                    NexusList.AddRange(ObjectManager.Get<Obj_HQ>());
-                    AttackableUnitsList.AddRange(ObjectManager.Get<AttackableUnit>());
-                    ParticleEmittersList.AddRange(ObjectManager.Get<Obj_GeneralParticleEmitter>());
+                HeroesList.AddRange(ObjectManager.Get<AIHeroClient>());
+                MinionsList.AddRange(
+                    ObjectManager.Get<Obj_AI_Minion>()
+                        .Where(
+                            o => o.Team != GameObjectTeam.Neutral && !o.GetMinionType().HasFlag(MinionTypes.Ward)));
+                TurretsList.AddRange(ObjectManager.Get<Obj_AI_Turret>());
+                InhibitorsList.AddRange(ObjectManager.Get<Obj_BarracksDampener>());
+                JungleList.AddRange(
+                    ObjectManager.Get<Obj_AI_Minion>()
+                        .Where(o => o.Team == GameObjectTeam.Neutral && o.Name != "WardCorpse"));
+                WardsList.AddRange(
+                    ObjectManager.Get<Obj_AI_Minion>().Where(o => o.GetMinionType().HasFlag(MinionTypes.Ward)));
+                ShopsList.AddRange(ObjectManager.Get<Obj_Shop>());
+                SpawnPointsList.AddRange(ObjectManager.Get<Obj_SpawnPoint>());
+                GameObjectsList.AddRange(ObjectManager.Get<GameObject>());
+                NexusList.AddRange(ObjectManager.Get<Obj_HQ>());
+                AttackableUnitsList.AddRange(ObjectManager.Get<AttackableUnit>());
+                ParticleEmittersList.AddRange(ObjectManager.Get<Obj_GeneralParticleEmitter>());
 
-                    EnemyHeroesList.AddRange(HeroesList.Where(o => o.IsEnemy));
-                    EnemyMinionsList.AddRange(MinionsList.Where(o => o.IsEnemy));
-                    EnemyTurretsList.AddRange(TurretsList.Where(o => o.IsEnemy));
-                    EnemyInhibitorsList.AddRange(InhibitorsList.Where(o => o.IsEnemy));
-                    EnemyList.AddRange(
-                        EnemyHeroesList.Cast<Obj_AI_Base>().Concat(EnemyMinionsList).Concat(EnemyTurretsList));
-                    EnemyNexus = NexusList.FirstOrDefault(n => n.IsEnemy);
+                EnemyHeroesList.AddRange(HeroesList.Where(o => o.IsEnemy));
+                EnemyMinionsList.AddRange(MinionsList.Where(o => o.IsEnemy));
+                EnemyTurretsList.AddRange(TurretsList.Where(o => o.IsEnemy));
+                EnemyInhibitorsList.AddRange(InhibitorsList.Where(o => o.IsEnemy));
+                EnemyList.AddRange(
+                    EnemyHeroesList.Cast<Obj_AI_Base>().Concat(EnemyMinionsList).Concat(EnemyTurretsList));
+                EnemyNexus = NexusList.FirstOrDefault(n => n.IsEnemy);
 
-                    AllyHeroesList.AddRange(HeroesList.Where(o => o.IsAlly));
-                    AllyMinionsList.AddRange(MinionsList.Where(o => o.IsAlly));
-                    AllyTurretsList.AddRange(TurretsList.Where(o => o.IsAlly));
-                    AllyInhibitorsList.AddRange(InhibitorsList.Where(o => o.IsAlly));
-                    AllyList.AddRange(
-                        AllyHeroesList.Cast<Obj_AI_Base>().Concat(AllyMinionsList).Concat(AllyTurretsList));
-                    AllyNexus = NexusList.FirstOrDefault(n => n.IsAlly);
+                AllyHeroesList.AddRange(HeroesList.Where(o => o.IsAlly));
+                AllyMinionsList.AddRange(MinionsList.Where(o => o.IsAlly));
+                AllyTurretsList.AddRange(TurretsList.Where(o => o.IsAlly));
+                AllyInhibitorsList.AddRange(InhibitorsList.Where(o => o.IsAlly));
+                AllyList.AddRange(
+                    AllyHeroesList.Cast<Obj_AI_Base>().Concat(AllyMinionsList).Concat(AllyTurretsList));
+                AllyNexus = NexusList.FirstOrDefault(n => n.IsAlly);
 
-                    JungleSmallList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Small));
-                    JungleLargeList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Large));
-                    JungleLegendaryList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Legendary));
+                JungleSmallList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Small));
+                JungleLargeList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Large));
+                JungleLegendaryList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Legendary));
 
-                    AllyWardsList.AddRange(WardsList.Where(o => o.IsAlly));
-                    EnemyWardsList.AddRange(WardsList.Where(o => o.IsEnemy));
+                AllyWardsList.AddRange(WardsList.Where(o => o.IsAlly));
+                EnemyWardsList.AddRange(WardsList.Where(o => o.IsEnemy));
 
-                    AllyShopsList.AddRange(ShopsList.Where(o => o.IsAlly));
-                    EnemyShopsList.AddRange(ShopsList.Where(o => o.IsEnemy));
+                AllyShopsList.AddRange(ShopsList.Where(o => o.IsAlly));
+                EnemyShopsList.AddRange(ShopsList.Where(o => o.IsEnemy));
 
-                    AllySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsAlly));
-                    EnemySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsEnemy));
+                AllySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsAlly));
+                EnemySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsEnemy));
 
-                    GameObject.OnCreate += OnCreate;
-                    GameObject.OnDelete += OnDelete;
-                };
+                GameObject.OnCreate += OnCreate;
+                GameObject.OnDelete += OnDelete;
+            };
         }
 
         /// <summary>

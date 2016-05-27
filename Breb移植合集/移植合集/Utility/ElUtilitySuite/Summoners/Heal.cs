@@ -93,7 +93,7 @@
                 healMenu.Add("min-damage", new Slider("预计受到 伤害% 使用治疗", 20, 1));
                 foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly))
                 {
-                    healMenu.Add("healon" + x.ChampionName, new Slider("为以下使用 " + x.ChampionName));
+                    healMenu.Add("healon" + x.ChampionName, new CheckBox("为以下使用 " + x.ChampionName));
                 }
             }
 

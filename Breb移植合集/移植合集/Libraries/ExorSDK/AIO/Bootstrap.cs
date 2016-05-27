@@ -1,3 +1,4 @@
+using ExorSDK.Champions.Sivir;
 using ExorSDK.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
@@ -16,8 +17,8 @@ namespace ExorSDK.Core
         {
             switch (GameObjects.Player.ChampionName)
             {
-                case "Akali":
-                    //new Akali().OnLoad();
+                case "Sivir":
+                    new Sivir().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

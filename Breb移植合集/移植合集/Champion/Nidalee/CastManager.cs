@@ -62,30 +62,6 @@ namespace KurisuNidalee
                         if (target.IsChampion())
                         {
                             var qoutput = KL.Spells["Javelin"].GetPrediction(target);
-                            if (qoutput.Hitchance == HitChance.Collision && KL.Smite.IsReady())
-                            {
-                                if (getCheckBoxItem(qHMenu, "qsmcol") && target.Health <= KL.CatDamage(target)*3)
-                                {
-                                    if (qoutput.CollisionObjects.All(i => i.NetworkId != KL.Player.NetworkId))
-                                    {
-                                        var obj = qoutput.CollisionObjects.Cast<Obj_AI_Minion>().ToList();
-                                        if (obj.Count == 1)
-                                        {
-                                            if (obj.Any(
-                                                i =>
-                                                    i.Health <=
-                                                    KL.Player.GetSummonerSpellDamage(i, Damage.SummonerSpell.Smite) &&
-                                                    KL.Player.LSDistance(i) < 500 &&
-                                                    KL.Player.Spellbook.CastSpell(KL.Smite, obj.First())))
-                                            {
-                                                KL.Spells["Javelin"].Cast(qoutput.CastPosition);
-                                                return;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-
 
                             if (getCheckBoxItem(qHMenu, "ndhqcheck"))
                             {
@@ -106,8 +82,7 @@ namespace KurisuNidalee
                                         };
 
                                         var po = Prediction.GetPrediction(pi);
-                                        if (po.Hitchance >=
-                                            (SebbyLib.Prediction.HitChance) (getBoxItem(KN.Root, "ndhqch") + 3))
+                                        if (po.Hitchance == (SebbyLib.Prediction.HitChance) (getBoxItem(KN.Root, "ndhqch") + 3))
                                         {
                                             KL.Spells["Javelin"].Cast(po.CastPosition);
                                         }
@@ -116,7 +91,7 @@ namespace KurisuNidalee
 
                                     case 2:
                                         var so = KL.Spells["Javelin"].GetPrediction((AIHeroClient) target);
-                                        if (so.Hitchance >= (HitChance) (getBoxItem(KN.Root, "ndhqch") + 3))
+                                        if (so.Hitchance == (HitChance) (getBoxItem(KN.Root, "ndhqch") + 3))
                                         {
                                             KL.Spells["Javelin"].Cast(so.CastPosition);
                                         }
@@ -124,11 +99,33 @@ namespace KurisuNidalee
 
                                     case 0:
                                         var co = KL.Spells["Javelin"].GetPrediction(target);
-                                        if (co.Hitchance >= (HitChance) (getBoxItem(KN.Root, "ndhqch") + 3))
+                                        if (co.Hitchance == (HitChance) (getBoxItem(KN.Root, "ndhqch") + 3))
                                         {
                                             KL.Spells["Javelin"].Cast(co.CastPosition);
                                         }
                                         break;
+                                }
+                            }
+
+                            if (qoutput.Hitchance == HitChance.Collision && KL.Smite.IsReady())
+                            {
+                                if (getCheckBoxItem(KN.qHMenu, "qsmcol") && target.Health <= KL.CatDamage(target) * 3)
+                                {
+                                    if (qoutput.CollisionObjects.All(i => i.NetworkId != KL.Player.NetworkId))
+                                    {
+                                        var obj = qoutput.CollisionObjects.Cast<Obj_AI_Minion>().ToList();
+                                        if (obj.Count == 1)
+                                        {
+                                            if (obj.Any(
+                                                i =>
+                                                    i.Health <= KL.Player.GetSummonerSpellDamage(i, Damage.SummonerSpell.Smite) &&
+                                                    KL.Player.Distance(i) < 500 && KL.Player.Spellbook.CastSpell(KL.Smite, obj.First())))
+                                            {
+                                                KL.Spells["Javelin"].Cast(qoutput.CastPosition);
+                                                return;
+                                            }
+                                        }
+                                    }
                                 }
                             }
 

@@ -81,7 +81,7 @@ namespace Challenger_Series.Utils
         public static bool UnderTurret(this Vector3 position, bool enemyTurretsOnly)
         {
             return
-                ObjectManager.Get<Obj_AI_Turret>().Any(turret => turret.IsValidTarget(950, enemyTurretsOnly, position));
+                ObjectManager.Get<Obj_AI_Turret>().Any(turret => turret.LSIsValidTarget(950, enemyTurretsOnly, position));
         }
         public static bool UnderAllyTurret(this Obj_AI_Base unit)
         {

@@ -84,7 +84,7 @@ namespace Challenger_Series.Utils
 
         public static List<Obj_AI_Base> GetDashObjects(IEnumerable<Obj_AI_Base> predefinedObjectList = null)
         {
-            var objects = predefinedObjectList != null ? predefinedObjectList.ToList() : ObjectManager.Get<Obj_AI_Base>().Where(o => o.IsValidTarget(ObjectManager.Player.AttackRange)).ToList();
+            var objects = predefinedObjectList != null ? predefinedObjectList.ToList() : ObjectManager.Get<Obj_AI_Base>().Where(o => o.LSIsValidTarget(ObjectManager.Player.AttackRange)).ToList();
             var apexPoint = ObjectManager.Player.ServerPosition.ToVector2() + (ObjectManager.Player.ServerPosition.ToVector2() - Game.CursorPos.ToVector2()).LSNormalized() * ObjectManager.Player.AttackRange;
 
             return objects.Where(o => IsLyingInCone(o.ServerPosition.ToVector2(), apexPoint, ObjectManager.Player.ServerPosition.ToVector2(), Math.PI)).OrderBy(o => o.DistanceSquared(apexPoint)).ToList();

@@ -83,11 +83,11 @@
             if (skillshot.SpellData.CollisionObjects.HasFlag(CollisionableObjects.Minions))
             {
                 var minions = new List<Obj_AI_Minion>();
-                minions.AddRange(GameObjects.Jungle.Where(i => i.IsValidTarget(1200, true, from.ToVector3())));
+                minions.AddRange(GameObjects.Jungle.Where(i => i.LSIsValidTarget(1200, true, from.ToVector3())));
                 minions.AddRange(
                     GameObjects.Minions.Where(
                         i =>
-                        i.IsValidTarget(1200, false, @from.ToVector3())
+                        i.LSIsValidTarget(1200, false, @from.ToVector3())
                         && (skillshot.Unit.Team == Program.Player.Team
                                 ? i.Team != Program.Player.Team
                                 : i.Team == Program.Player.Team) && (i.IsMinion() || i.IsPet())));
@@ -116,7 +116,7 @@
             if (skillshot.SpellData.CollisionObjects.HasFlag(CollisionableObjects.Heroes))
             {
                 collisions.AddRange(
-                    from hero in GameObjects.AllyHeroes.Where(i => i.IsValidTarget(1200, false) && !i.IsMe)
+                    from hero in GameObjects.AllyHeroes.Where(i => i.LSIsValidTarget(1200, false) && !i.IsMe)
                     let pred =
                         FastPrediction(
                             @from,

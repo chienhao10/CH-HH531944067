@@ -164,7 +164,7 @@ namespace LeagueSharp.SDK
             {
                 var attackDamage = 0f;
 
-                if (attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.IsValidTarget())
+                if (attack.Source.LSIsValidTarget(float.MaxValue, false) && attack.Target.LSIsValidTarget())
                 {
                     var landTime = attack.StartTick + attack.Delay
                                    + 1000
@@ -206,7 +206,7 @@ namespace LeagueSharp.SDK
                 var n = 0;
 
                 if (Variables.TickCount - 100 <= attack.StartTick + attack.AnimationTime
-                    && attack.Source.IsValidTarget(float.MaxValue, false) && attack.Target.IsValidTarget())
+                    && attack.Source.LSIsValidTarget(float.MaxValue, false) && attack.Target.LSIsValidTarget())
                 {
                     var fromT = attack.StartTick;
                     var toT = Variables.TickCount + time;
@@ -331,7 +331,7 @@ namespace LeagueSharp.SDK
         /// <param name="args">Processed Spell Cast Data</param>
         private static void OnObjAiBaseProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!sender.IsValidTarget(2000, false) || !AutoAttack.IsAutoAttack(args.SData.Name) || !sender.IsAlly)
+            if (!sender.LSIsValidTarget(2000, false) || !AutoAttack.IsAutoAttack(args.SData.Name) || !sender.IsAlly)
             {
                 return;
             }

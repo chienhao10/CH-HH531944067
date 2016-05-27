@@ -230,7 +230,7 @@ namespace KurisuRiven
                     {
                         if (riventarget().LSIsValidTarget() && !riventarget().IsZombie && !riventarget().HasBuff("kindredrnodeathbuff"))
                         {
-                            if (shy() && uo)
+                            if (shy() && uo && !canhd)
                             {
                                 if (riventarget().HasBuffOfType(BuffType.Stun))
                                     r.Cast(riventarget().ServerPosition);
@@ -433,6 +433,10 @@ namespace KurisuRiven
 
                     else if (q.IsReady() && riventarget().LSDistance(player.ServerPosition) <= truerange + 100)
                     {
+                        if (Utils.GameTimeTickCount - lastw < 500 && Utils.GameTimeTickCount - lasthd < 1000)
+                        {
+                            DoOneQ(riventarget().ServerPosition);
+                        }
                         checkr();
                         TryIgnote(riventarget());
 
@@ -1453,8 +1457,14 @@ namespace KurisuRiven
                             }
                         }
 
-
-
+                        if (Getkeybindvalue(keybindsMenu, "shycombo"))
+                        {
+                            if (cc == 2 && !uo && r.IsReady())
+                            {
+                                checkr();
+                                Utility.DelayAction.Add(240 - Game.Ping, () => q.Cast(Game.CursorPos));
+                            }
+                        }
 
                         if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                         {

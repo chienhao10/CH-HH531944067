@@ -19,16 +19,13 @@ namespace LeagueSharp.SDK
 {
     using System;
     using System.Linq;
-    using System.Text.RegularExpressions;
-    using EloBuddy;
+
     using LeagueSharp.Data.DataTypes;
     using LeagueSharp.Data.Enumerations;
-    using LeagueSharp.SDK;
-    using LeagueSharp.SDK.Core.Utils;
-
-    /// <summary>
-    ///     Damage wrapper class, contains functions to calculate estimated damage to a unit and also provides damage details.
-    /// </summary>
+    using EloBuddy;
+    using Core.Utils;    /// <summary>
+                         ///     Damage wrapper class, contains functions to calculate estimated damage to a unit and also provides damage details.
+                         /// </summary>
     public static partial class Damage
     {
         #region Public Methods and Operators
@@ -70,7 +67,7 @@ namespace LeagueSharp.SDK
                     damage = source.CalculateMixedDamage(target, damage / 2, damage / 2);
                     break;
                 case DamageType.True:
-                    damage = Math.Max(amount, 0);
+                    damage = Math.Max(Math.Floor(amount), 0);
                     break;
             }
 
@@ -201,12 +198,6 @@ namespace LeagueSharp.SDK
                     }
                 }
 
-                // Devourer Stacks
-                if (hero.HasBuff("enchantment_slayer_stacks"))
-                {
-                    dmgMagical += hero.GetBuffCount("enchantment_slayer_stacks");
-                }
-
                 if (targetHero != null)
                 {
                     // Dorans Shield
@@ -238,7 +229,7 @@ namespace LeagueSharp.SDK
                     }
 
                     // RiftHerald P
-                    if (!hero.IsMelee() && target.Name.Equals("SRU_RiftHerald"))
+                    if (!hero.IsMelee() && target.Team == GameObjectTeam.Neutral && target.Name == "SRU_RiftHerald")
                     {
                         dmgReduce *= 0.65;
                     }
@@ -667,16 +658,6 @@ namespace LeagueSharp.SDK
         {
             var targetHero = target as AIHeroClient;
 
-            // Dragon Buff
-            if (source is Obj_AI_Turret && targetHero != null)
-            {
-                var dragonBuff = targetHero.GetBuffCount("s5test_dragonslayerbuff");
-                if (dragonBuff >= 4)
-                {
-                    amount *= dragonBuff == 5 ? 0.6 : 0.8;
-                }
-            }
-
             if (source is AIHeroClient)
             {
                 // Exhaust
@@ -718,9 +699,9 @@ namespace LeagueSharp.SDK
                 }
 
                 // Alistar R
-                if (targetHero.HasBuff("Ferocious Howl"))
+                if (targetHero.HasBuff("FerociousHowl"))
                 {
-                    amount *= 0.3;
+                    amount *= 0.6 - new[] { 0.1, 0.2, 0.3 }[targetHero.Spellbook.GetSpell(SpellSlot.R).Level - 1];
                 }
 
                 // Amumu E
