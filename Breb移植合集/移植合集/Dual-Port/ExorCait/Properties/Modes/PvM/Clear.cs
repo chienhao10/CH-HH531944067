@@ -1,17 +1,15 @@
-using LeagueSharp;
-using LeagueSharp.Common;
+using System;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using System;
-    using System.Linq;
-    using ExorAIO.Utilities;
-    using Geometry = LeagueSharp.Common.Geometry;
-    using EloBuddy;
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Fired when the game is updated.
@@ -27,50 +25,30 @@ namespace ExorAIO.Champions.Caitlyn
             /// <summary>
             ///     The Clear Q Logics.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana && Menus.getCheckBoxItem(Variables.QMenu, "qspell.farm"))
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "clear")) &&
+                Vars.getSliderItem(Vars.QMenu, "clear") != 101)
             {
                 /// <summary>
                 ///     The JungleClear Q Logic.
                 /// </summary>
                 if (Targets.JungleMinions.Any())
                 {
-                    Variables.Q.Cast(Targets.JungleMinions[0].Position);
+                    Vars.Q.Cast(Targets.JungleMinions[0].ServerPosition);
                 }
 
                 /// <summary>
-                ///     The LaneClear Q Logics.
+                ///     The LaneClear Q Logic.
                 /// </summary>
-                else
+                else if (!GameObjects.EnemyHeroes.Any(
+                    t =>
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.Q.Range + 100f)))
                 {
-                    /// <summary>
-                    ///     The Aggressive LaneClear Q Logic.
-                    /// </summary>
-                    if (HeroManager.Enemies.Any(
-                        t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.LSIsValidTarget(Variables.Q2.Range)))
+                    if (Vars.Q.GetLineFarmLocation(Targets.Minions, Vars.Q.Width).MinionsHit >= 3)
                     {
-                        if (Variables.Q2.GetLineFarmLocation(Targets.Minions, Variables.Q2.Width).MinionsHit >= 3 &&
-                            new Geometry.Polygon.Rectangle(
-                                    ObjectManager.Player.ServerPosition,
-                                    ObjectManager.Player.ServerPosition.LSExtend(
-                                        Targets.Minions[0].ServerPosition,
-                                        Variables.Q2.Range), Variables.Q2.Width).IsInside(Variables.Q2.GetPrediction(HeroManager.Enemies.FirstOrDefault(t => !Bools.IsSpellShielded(t) && t.LSIsValidTarget(Variables.Q2.Range))).CastPosition))
-                        {
-                            Variables.Q.Cast(Variables.Q2.GetLineFarmLocation(Targets.Minions, Variables.Q2.Width).Position);
-                        }
-                    }
-
-                    /// <summary>
-                    ///     The LaneClear Q Logic.
-                    /// </summary>
-                    else if (!HeroManager.Enemies.Any(t => !Bools.IsSpellShielded(t) && t.LSIsValidTarget(Variables.Q2.Range + 100f)))
-                    {
-                        if (Variables.Q2.GetLineFarmLocation(Targets.Minions, Variables.Q2.Width).MinionsHit >= 3)
-                        {
-                            Variables.Q.Cast(Variables.Q2.GetLineFarmLocation(Targets.Minions, Variables.Q2.Width).Position);
-                        }
+                        Vars.Q.Cast(Vars.Q.GetLineFarmLocation(Targets.Minions, Vars.Q.Width).Position);
                     }
                 }
             }

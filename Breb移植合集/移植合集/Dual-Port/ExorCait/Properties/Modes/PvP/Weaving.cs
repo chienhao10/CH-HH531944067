@@ -1,15 +1,14 @@
+using EloBuddy;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using System;
-    using ExorAIO.Utilities;
-    using EloBuddy;
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Called on do-cast.
@@ -18,12 +17,7 @@ namespace ExorAIO.Champions.Caitlyn
         /// <param name="args">The args.</param>
         public static void Weaving(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!args.Target.IsValid<AIHeroClient>() ||
-                Bools.IsSpellShielded(args.Target as AIHeroClient))
-            {
-                return;
-            }
-
+            if (!(args.Target is AIHeroClient) || Invulnerable.Check(args.Target as AIHeroClient)) {}
         }
     }
 }

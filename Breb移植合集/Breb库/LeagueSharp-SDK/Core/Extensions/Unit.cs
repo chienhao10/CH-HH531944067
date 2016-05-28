@@ -466,7 +466,7 @@ namespace LeagueSharp.SDK
             Vector3 from = default(Vector3))
         {
             if (unit == null || !unit.IsValid || !unit.IsVisible || unit.IsDead || !unit.IsTargetable
-                || unit.IsInvulnerable)
+                || unit.IsInvulnerable || unit.IsZombie)
             {
                 return false;
             }

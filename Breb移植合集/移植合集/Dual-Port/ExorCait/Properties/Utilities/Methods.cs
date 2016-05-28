@@ -1,13 +1,13 @@
 using EloBuddy;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
     /// <summary>
     ///     The methods class.
     /// </summary>
-    class Methods
+    internal class Methods
     {
         /// <summary>
         ///     Initializes the methods.
@@ -15,8 +15,7 @@ namespace ExorAIO.Champions.Caitlyn
         public static void Initialize()
         {
             Game.OnUpdate += Caitlyn.OnUpdate;
-            Obj_AI_Base.OnPlayAnimation += Caitlyn.OnPlayAnimation;
-            AntiGapcloser.OnEnemyGapcloser += Caitlyn.OnEnemyGapcloser;
+            Events.OnGapCloser += Caitlyn.OnGapCloser;
         }
     }
 }

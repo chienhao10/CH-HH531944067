@@ -1,24 +1,24 @@
+using System;
+using System.Linq;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using System;
-    using System.Linq;
-    using ExorAIO.Utilities;
-    using EloBuddy;
-    using EloBuddy.SDK;    /// <summary>
-                           ///     The logics class.
-                           /// </summary>
-    partial class Logics
+    /// <summary>
+    ///     The logics class.
+    /// </summary>
+    internal partial class Logics
     {
         /// <summary>
         ///     Called when the game updates itself.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            if (ObjectManager.Player.LSIsRecalling())
+            if (GameObjects.Player.LSIsRecalling())
             {
                 return;
             }
@@ -26,13 +26,19 @@ namespace ExorAIO.Champions.Caitlyn
             /// <summary>
             ///     The Automatic Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() && Menus.getCheckBoxItem(Variables.QMenu, "qspell.auto"))
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.CountEnemyHeroesInRange(Vars.Q.Range) == 1 &&
+                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
             {
-                foreach (var target in GameObjects.EnemyHeroes.Where(t => !Bools.IsSpellShielded(t) && t.IsValidTarget(Variables.Q.Range)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.Q.Range)))
                 {
-                    if (target.HasBuff("caitlynyordletrapdebuff") || target.HasBuff("caitlynyordletrapinternal"))
+                    if (target.HasBuff("caitlynyordletrapdebuff") ||
+                        target.HasBuff("caitlynyordletrapinternal"))
                     {
-                        Variables.Q.Cast(target);
+                        Vars.Q.Cast(Vars.Q.GetPrediction(target).UnitPosition);
                     }
                 }
             }
@@ -40,14 +46,39 @@ namespace ExorAIO.Champions.Caitlyn
             /// <summary>
             ///     The Automatic W Logic. 
             /// </summary>
-            if (Variables.W.IsReady() && Menus.getCheckBoxItem(Variables.WMenu, "wspell.auto"))
+            if (Vars.W.IsReady() &&
+                Vars.getCheckBoxItem(Vars.WMenu, "logical"))
             {
-                foreach (AIHeroClient target in HeroManager.Enemies.Where(t => Bools.IsImmobile(t) && !Bools.IsSpellShielded(t) && t.LSIsValidTarget(Variables.W.Range) && t.IsEnemy))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        Bools.IsImmobile(t) &&
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.W.Range)))
                 {
-                    if (!ObjectManager.Get<Obj_AI_Minion>().Any(m => m.LSDistance(target.Position) < 100f && m.CharData.BaseSkinName.Contains("Cupcake")))
+                    if (!GameObjects.Minions.Any(
+                        m =>
+                            m.Distance(target.ServerPosition) < 100f &&
+                            m.CharData.BaseSkinName.Contains("Cupcake")))
                     {
-                        Variables.W.Cast(target.Position);
+                        Vars.W.Cast(target.ServerPosition);
                     }
+                }
+            }
+
+            /// <summary>
+            ///     The Semi-Automatic R Management.
+            /// </summary>
+            if (Vars.R.IsReady() &&
+                Vars.getCheckBoxItem(Vars.RMenu, "bool"))
+            {
+                if (GameObjects.EnemyHeroes.Any(t => t.LSIsValidTarget(Vars.R.Range)) &&
+                    Vars.getKeyBindItem(Vars.RMenu, "key"))
+                {
+                    Vars.R.CastOnUnit(
+                        GameObjects.EnemyHeroes
+                            .Where(t => t.LSIsValidTarget(Vars.R.Range))
+                            .OrderBy(o => o.Health)
+                            .LastOrDefault());
                 }
             }
         }

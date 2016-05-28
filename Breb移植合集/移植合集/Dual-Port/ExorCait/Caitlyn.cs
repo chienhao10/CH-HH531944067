@@ -1,21 +1,22 @@
+using System;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
+using EloBuddy;
+using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using System;
-    using System.Linq;
-    using ExorAIO.Utilities;
-    using EloBuddy;
-    using EloBuddy.SDK;    /// <summary>
-                           ///     The champion class.
-                           /// </summary>
-    class Caitlyn
+    /// <summary>
+    ///     The champion class.
+    /// </summary>
+    internal class Caitlyn
     {
         /// <summary>
         ///     Loads Caitlyn.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -39,7 +40,7 @@ namespace ExorAIO.Champions.Caitlyn
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -59,7 +60,7 @@ namespace ExorAIO.Champions.Caitlyn
             /// </summary>
             Logics.Killsteal(args);
 
-            if (Orbwalker.IsAutoAttacking)
+            if (GameObjects.Player.Spellbook.IsAutoAttacking)
             {
                 return;
             }
@@ -69,7 +70,7 @@ namespace ExorAIO.Champions.Caitlyn
                 Logics.Combo(args);
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Logics.Harass(args);
             }
@@ -81,52 +82,27 @@ namespace ExorAIO.Champions.Caitlyn
         }
 
         /// <summary>
-        ///     Fired on animation start.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="GameObjectPlayAnimationEventArgs" /> instance containing the event data.</param>
-        public static void OnPlayAnimation(Obj_AI_Base sender, GameObjectPlayAnimationEventArgs args)
-        {
-            if (sender.IsMe &&
-                args.Animation.Equals("Spell3"))
-            {
-                if (Variables.Q.IsReady() && Targets.Target.IsValidTarget(Variables.Q.Range) && Menus.getCheckBoxItem(Variables.QMenu, "qspell.auto"))
-                {
-                    Variables.Q.Cast(Variables.Q.GetPrediction(Targets.Target).UnitPosition);
-                }
-            }
-        }
-
-        /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="gapcloser">The gapcloser.</param>
-        public static void OnEnemyGapcloser(ActiveGapcloser gapcloser)
+        /// <param name="sender">The object.</param>
+        /// <param name="args">The <see cref="Events.GapCloserEventArgs" /> instance containing the event data.</param>
+        public static void OnGapCloser(object sender, Events.GapCloserEventArgs args)
         {
-            /// <summary>
-            ///     The Anti-GapCloser W Logic.
-            /// </summary>
-            if (Variables.W.IsReady() &&
-                ObjectManager.Player.LSDistance(gapcloser.End) < Variables.W.Range &&
-                Menus.getCheckBoxItem(Variables.WMenu, "wspell.gp"))
+            if (Vars.W.IsReady() &&
+                args.Sender.LSIsValidTarget(Vars.W.Range) &&
+                !Invulnerable.Check(args.Sender, DamageType.Magical, false) &&
+                Vars.getCheckBoxItem(Vars.WMenu, "gapcloser"))
             {
-                if (!ObjectManager.Get<Obj_AI_Minion>().Any(
-                    m =>
-                        m.LSDistance(gapcloser.End) < 100f &&
-                        m.CharData.BaseSkinName.Contains("Cupcake")))
-                {
-                    Variables.W.Cast(gapcloser.End);
-                }
+                Vars.W.Cast(args.End);
+                return;
             }
 
-            /// <summary>
-            ///     The Anti-GapCloser E Logic.
-            /// </summary>
-            if (Variables.E.IsReady() &&
-                ObjectManager.Player.LSDistance(gapcloser.End) < 300f &&
-                Menus.getCheckBoxItem(Variables.EMenu, "espell.gp"))
+            if (Vars.E.IsReady() &&
+                args.IsDirectedToPlayer &&
+                args.Sender.LSIsValidTarget(Vars.E.Range) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "gapcloser"))
             {
-                Variables.E.Cast(gapcloser.Sender.Position);
+                Vars.E.Cast(args.Sender.ServerPosition);
             }
         }
     }

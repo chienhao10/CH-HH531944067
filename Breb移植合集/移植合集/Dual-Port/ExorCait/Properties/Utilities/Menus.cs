@@ -1,65 +1,66 @@
-using LeagueSharp.Common;
+using EloBuddy.SDK.Menu.Values;
+using ExorSDK.Utilities;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using System.Drawing;
-    using ExorAIO.Utilities;
-    using Color = SharpDX.Color;
-    using EloBuddy.SDK.Menu.Values;
-    using EloBuddy.SDK.Menu;    /// <summary>
-                                ///     The menu class.
-                                /// </summary>
-    class Menus
+    /// <summary>
+    ///     The menu class.
+    /// </summary>
+    internal class Menus
     {
         /// <summary>
         ///     Initializes the menus.
         /// </summary>
-        /// 
-
-        public static bool getCheckBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(Menu m, string item)
-        {
-            return m[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(Menu m, string item)
-        {
-            return m[item].Cast<KeyBind>().CurrentValue;
-        }
-
-        public static int getBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<ComboBox>().CurrentValue;
-        }
-
         public static void Initialize()
         {
-            Variables.QMenu = Variables.Menu.AddSubMenu("使用 Q 至:", "qmenu");
-            Variables.QMenu.Add("qspell.auto", new CheckBox("逻辑"));
-            Variables.QMenu.Add("qspell.ks", new CheckBox("前提"));
-            Variables.QMenu.Add("qspell.farm", new CheckBox("清线"));
-            Variables.QMenu.Add("qspell.mana", new Slider("清线: 蓝 >= x%", 50));
+            /// <summary>
+            ///     Sets the menu for the Q.
+            /// </summary>
+            Vars.QMenu = Vars.Menu.AddSubMenu("Use Q to:", "Q");
+            {
+                Vars.QMenu.Add("logical", new CheckBox("Logical", true));
+                Vars.QMenu.Add("killsteal", new CheckBox("KillSteal", true));
+                Vars.QMenu.Add("clear", new Slider("Clear / if Mana >= x%", 50, 0, 101));
+            }
 
-            Variables.WMenu = Variables.Menu.AddSubMenu("使用 W 至:", "wmenu");
-            Variables.WMenu.Add("wspell.auto", new CheckBox("逻辑"));
-            Variables.WMenu.Add("wspell.gp", new CheckBox("防突进"));
+            /// <summary>
+            ///     Sets the menu for the W.
+            /// </summary>
+            Vars.WMenu = Vars.Menu.AddSubMenu("Use W to:", "W");
+            {
+                Vars.WMenu.Add("logical", new CheckBox("Logical", true));
+                Vars.WMenu.Add("gapcloser", new CheckBox("Anti-Gapcloser", true));
+            }
 
-            Variables.EMenu = Variables.Menu.AddSubMenu("使用 E 至:", "emenu");
-            Variables.EMenu.Add("espell.combo", new CheckBox("连招"));
-            Variables.EMenu.Add("espell.gp", new CheckBox("防突进"));
+            /// <summary>
+            ///     Sets the menu for the E.
+            /// </summary>
+            Vars.EMenu = Vars.Menu.AddSubMenu("Use E to:", "e");
+            {
+                Vars.EMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.EMenu.Add("gapcloser", new CheckBox("Anti-Gapcloser", true));
+            }
 
-            Variables.RMenu = Variables.Menu.AddSubMenu("使用 R 至:", "rmenu");
-            Variables.RMenu.Add("rspell.ks", new CheckBox("抢头"));
+            /// <summary>
+            ///     Sets the menu for the R.
+            /// </summary>
+            Vars.RMenu = Vars.Menu.AddSubMenu("Use R to:", "r");
+            {
+                Vars.RMenu.Add("killsteal", new CheckBox("KillSteal", true));
+                Vars.RMenu.Add("bool", new CheckBox("Semi-Automatic R", true));
+                Vars.RMenu.Add("key", new KeyBind("Key (Semi-Auto) : ", false, KeyBind.BindTypes.HoldActive, 'T'));
+            }
 
-            Variables.DrawingsMenu = Variables.Menu.AddSubMenu("线圈", "drawingsmenu");
-            Variables.DrawingsMenu.Add("drawings.q", new CheckBox("Q 范围", false));
-            Variables.DrawingsMenu.Add("drawings.w", new CheckBox("W 范围", false));
-            Variables.DrawingsMenu.Add("drawings.e", new CheckBox("E 范围", false));
-            Variables.DrawingsMenu.Add("drawings.r", new CheckBox("R 范围", false));
+            /// <summary>
+            ///     Sets the menu for the drawings.
+            /// </summary>
+            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("Drawings", "Ddrawings");
+            {
+                Vars.DrawingsMenu.Add("q", new CheckBox("Q Range"));
+                Vars.DrawingsMenu.Add("w", new CheckBox("W Range"));
+                Vars.DrawingsMenu.Add("e", new CheckBox("E Range"));
+                Vars.DrawingsMenu.Add("r", new CheckBox("R Range"));
+            }
         }
     }
 }

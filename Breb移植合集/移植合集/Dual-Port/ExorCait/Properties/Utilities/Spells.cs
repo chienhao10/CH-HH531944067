@@ -1,30 +1,29 @@
+using EloBuddy;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using EloBuddy;
-    using ExorAIO.Utilities;
-
     /// <summary>
     ///     The settings class.
     /// </summary>
-    class Spells
+    internal class Spells
     {
         /// <summary>
         ///     Initializes the spells.
         /// </summary>
         public static void Initialize()
         {
-            Variables.Q = new Spell(SpellSlot.Q, 1250f);
-            Variables.Q2 = new Spell(SpellSlot.Q, 1250f);
-            Variables.W = new Spell(SpellSlot.W, 800f);
-            Variables.E = new Spell(SpellSlot.E, 750f);
-            Variables.R = new Spell(SpellSlot.R, 1500f + (500f * ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Level));
+            Vars.Q = new Spell(SpellSlot.Q, 1250f);
+            Vars.Q2 = new Spell(SpellSlot.Q, 1250f);
+            Vars.W = new Spell(SpellSlot.W, 800f);
+            Vars.E = new Spell(SpellSlot.E, 750f);
+            Vars.R = new Spell(SpellSlot.R, 1500f + 500f * GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).Level);
 
-            Variables.Q.SetSkillshot(0.65f, 40f, 2200f, false, SkillshotType.SkillshotLine);
-            Variables.Q2.SetSkillshot(0.65f, Variables.Q.Width*2, 2200f, false, SkillshotType.SkillshotLine);
-            Variables.E.SetSkillshot(0.25f, 70f, 1600f, true, SkillshotType.SkillshotLine);
+            Vars.Q.SetSkillshot(0.65f, 40f, 2200f, false, SkillshotType.SkillshotLine);
+            Vars.Q2.SetSkillshot(0.65f, Vars.Q.Width * 2, 2200f, false, SkillshotType.SkillshotLine);
+            Vars.E.SetSkillshot(0.25f, 70f, 1600f, true, SkillshotType.SkillshotLine);
         }
     }
 }

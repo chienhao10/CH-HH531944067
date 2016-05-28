@@ -5,6 +5,7 @@ using SharpDX;
 using EloBuddy.SDK.Menu;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK.Menu.Values;
 
 namespace ExorSDK.Utilities
 {
@@ -64,7 +65,27 @@ namespace ExorSDK.Utilities
             new JungleHpBarOffset { BaseSkinName = "SRU_Razorbeak", Width = 74, Height = 2, XOffset = 1, YOffset = 7 },
             new JungleHpBarOffset { BaseSkinName = "SRU_Murkwolf", Width = 74, Height = 2, XOffset = 1, YOffset = 7 }
         };
-        
+
+        public static bool getCheckBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<CheckBox>().CurrentValue;
+        }
+
+        public static int getSliderItem(Menu m, string item)
+        {
+            return m[item].Cast<Slider>().CurrentValue;
+        }
+
+        public static bool getKeyBindItem(Menu m, string item)
+        {
+            return m[item].Cast<KeyBind>().CurrentValue;
+        }
+
+        public static int getBoxItem(Menu m, string item)
+        {
+            return m[item].Cast<ComboBox>().CurrentValue;
+        }
+
         /// <summary>
         ///     The args End.
         /// </summary>

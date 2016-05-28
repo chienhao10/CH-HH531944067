@@ -1,0 +1,139 @@
+﻿#region LICENSE
+
+// Copyright 2014-2015 Support
+// Taric.cs is part of Support.
+// 
+// Support is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+// 
+// Support is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+// 
+// You should have received a copy of the GNU General Public License
+// along with Support. If not, see <http://www.gnu.org/licenses/>.
+// 
+// Filename: Support/Support/Taric.cs
+// Created:  01/10/2014
+// Date:     20/01/2015/11:20
+// Author:   h3h3
+
+#endregion
+
+using System; using EloBuddy; using EloBuddy.SDK.Menu; using EloBuddy.SDK; using EloBuddy.SDK.Menu.Values;
+using AutoSharp.Utils;
+using LeagueSharp;
+using LeagueSharp.Common;
+
+namespace AutoSharp.Plugins
+{
+    #region
+
+    
+
+    #endregion
+
+    public class Taric : PluginBase
+    {
+        public Taric()
+        {
+            Q = new LeagueSharp.Common.Spell(SpellSlot.Q, 750);
+            W = new LeagueSharp.Common.Spell(SpellSlot.W, 200);
+            E = new LeagueSharp.Common.Spell(SpellSlot.E, 625);
+            R = new LeagueSharp.Common.Spell(SpellSlot.R, 200);
+        }
+
+        public override void OnUpdate(EventArgs args)
+        {
+            if (ComboMode)
+            {
+                var ally = Helpers.AllyBelowHp(ComboConfig["ComboHealthQ"].Cast<Slider>().CurrentValue, Q.Range);
+                if (Q.CastCheck(ally, "ComboQ", true, false))
+                {
+                    Q.Cast(ally);
+                }
+
+                if (W.IsReady() && Heroes.Player.LSDistance(Target) < W.Range)
+                {
+                    W.Cast();
+                }
+
+                if (E.IsReady() && Heroes.Player.LSDistance(Target) < E.Range)
+                {
+                    E.Cast(Target);
+                }
+
+                if (R.IsReady() && Heroes.Player.LSDistance(Target) < R.Range)
+                {
+                    R.Cast();
+                }
+            }
+
+            if (HarassMode)
+            {
+                var ally = Helpers.AllyBelowHp(HarassConfig["HarassHealthQ"].Cast<Slider>().CurrentValue, Q.Range);
+                if (Q.CastCheck(ally, "HarassQ", true, false))
+                {
+                    Q.Cast(ally);
+                }
+
+                if (E.CastCheck(Target, "HarassE"))
+                {
+                    E.Cast(Target);
+                }
+            }
+        }
+
+        public override void OnEnemyGapcloser(ActiveGapcloser gapcloser)
+        {
+            if (gapcloser.Sender.IsAlly)
+            {
+                return;
+            }
+
+            if (E.CastCheck(gapcloser.Sender, "GapcloserE"))
+            {
+                E.Cast(gapcloser.Sender);
+            }
+        }
+
+        public override void OnPossibleToInterrupt(AIHeroClient unit, Interrupter2.InterruptableTargetEventArgs spell)
+        {
+            if (spell.DangerLevel < Interrupter2.DangerLevel.High || unit.IsAlly)
+            {
+                return;
+            }
+
+            if (E.CastCheck(unit, "InterruptE"))
+            {
+                E.Cast(unit);
+            }
+        }
+
+        public override void ComboMenu(Menu config)
+        {
+            config.AddBool("ComboQ", "Use Q", true);
+            config.AddBool("ComboW", "Use W", true);
+            config.AddBool("ComboE", "Use E", true);
+            config.AddBool("ComboR", "Use R", true);
+            config.AddSlider("ComboHealthQ", "Health to Heal", 20, 1, 100);
+        }
+
+        public override void HarassMenu(Menu config)
+        {
+            config.AddBool("HarassQ", "Use Q", true);
+            config.AddBool("HarassE", "Use E", true);
+            config.AddSlider("HarassHealthQ", "Health to Heal", 20, 1, 100);
+        }
+
+        public override void InterruptMenu(Menu config)
+        {
+            config.AddBool("GapcloserE", "Use E to Interrupt Gapcloser", true);
+
+            config.AddBool("InterruptE", "Use E to Interrupt Spells", true);
+        }
+    }
+}

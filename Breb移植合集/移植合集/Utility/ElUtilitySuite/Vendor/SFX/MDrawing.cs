@@ -48,7 +48,7 @@ namespace ElUtilitySuite.Vendor.SFX
             {
                 Drawing.OnPreReset += OnDrawingPreReset;
                 Drawing.OnPostReset += OnDrawingPostReset;
-                Entry.OnUnload += OnUnload;
+                //Entry.OnUnload += OnUnload;
             }
             catch (Exception e)
             {

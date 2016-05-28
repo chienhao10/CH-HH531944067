@@ -24,17 +24,16 @@ namespace Feedlesticks
         /// <param name="args"></param>
         public static void Game_OnGameLoad()
         {
-            Menus.Config = MainMenu.AddMenu("稻草人", "Feedlestick");
+            Menus.Config = MainMenu.AddMenu("Feedlestick", "Feedlestick");
 
             {
                 Spells.Init();
                 Menus.Init();
             }
 
-            Spellbook.OnCastSpell += Spellbook_OnCastSpell;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
             Game.OnUpdate += Game_OnGameUpdate;
             Drawing.OnDraw += OnDraw;
+            EloBuddy.Player.OnIssueOrder += Obj_AI_Base_OnIssueOrder;
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -84,29 +83,16 @@ namespace Feedlesticks
         {
             get
             {
-                return Player.HasBuff("Drain");
+                return Player.HasBuff("Drain") || Spells.W.IsChanneling;
             }
         }
 
-
-        /// <summary>
-        ///     Process spell cast. thats need for last w game time
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private static void OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void Obj_AI_Base_OnIssueOrder(Obj_AI_Base sender, PlayerIssueOrderEventArgs args)
         {
-            Helper.OnProcessSpellCast(sender, args);
-        }
-
-        /// <summary>
-        ///     W lock
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="args"></param>
-        private static void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
-        {
-            Helper.Spellbook_OnCastSpell(sender, args);
+            if (sender.IsMe && (ObjectManager.Player.IsChannelingImportantSpell() || IsWActive))
+            {
+                args.Process = false;
+            }
         }
 
         /// <summary>
@@ -115,36 +101,22 @@ namespace Feedlesticks
         /// <param name="args"></param>
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (FiddleStick.IsDead)
+            if (FiddleStick.IsDead || FiddleStick.LSIsRecalling())
             {
                 return;
             }
-
-            if (IsWActive || FiddleStick.IsChannelingImportantSpell())
-            {
-                Orbwalker.DisableAttacking = true;
-                Orbwalker.DisableMovement = true;
-                return;
-            }
-            else
-            {
-                Orbwalker.DisableAttacking = false;
-                Orbwalker.DisableMovement = false;
-            }
-
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && !IsWActive)
             {
                 Combo();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && !IsWActive)
             {
                 Harass();
             }
 
-            if ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)))
+            if ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) && !IsWActive)
             {
                 Jungle();
                 WaveClear();
@@ -152,37 +124,42 @@ namespace Feedlesticks
 
             if (!IsWActive)
             {
-                if (getCheckBoxItem(Menus.qMenu, "auto.q.immobile") && !IsWActive && Spells.Q.IsReady())
+                Automatic();
+            }
+        }
+
+        private static void Automatic()
+        {
+            if (getCheckBoxItem(Menus.qMenu, "auto.q.immobile") && Spells.Q.IsReady())
+            {
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x)))
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x) && !IsWActive))
-                    {
-                        if (!IsWActive)
-                            Spells.Q.Cast(enemy);
-                    }
+                    if (!IsWActive)
+                        Spells.Q.Cast(enemy);
                 }
-                if (getCheckBoxItem(Menus.qMenu, "auto.q.channeling") && !IsWActive && Spells.Q.IsReady())
+            }
+            if (getCheckBoxItem(Menus.qMenu, "auto.q.channeling") && Spells.Q.IsReady())
+            {
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && x.IsChannelingImportantSpell()))
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.Q.Range) && getCheckBoxItem(Menus.qMenu, "q.enemy." + x.NetworkId) && !IsWActive && x.IsChannelingImportantSpell()))
-                    {
-                        if (!IsWActive)
-                            Spells.Q.Cast(enemy);
-                    }
+                    if (!IsWActive)
+                        Spells.Q.Cast(enemy);
                 }
-                if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.immobile") && !IsWActive && Spells.E.IsReady())
+            }
+            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.immobile") && Spells.E.IsReady())
+            {
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x)))
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && Helper.IsEnemyImmobile(x)))
-                    {
-                        if (!IsWActive)
-                            Spells.E.Cast(enemy);
-                    }
+                    if (!IsWActive)
+                        Spells.E.Cast(enemy);
                 }
-                if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.channeling") && !IsWActive && Spells.E.IsReady())
+            }
+            if (getCheckBoxItem(Menus.eMenu, "auto.e.enemy.channeling") && Spells.E.IsReady())
+            {
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && x.IsChannelingImportantSpell()))
                 {
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(Spells.E.Range) && !IsWActive && getCheckBoxItem(Menus.eMenu, "e.enemy." + x.NetworkId) && x.IsChannelingImportantSpell()))
-                    {
-                        if (!IsWActive)
-                            Spells.E.Cast(enemy);
-                    }
+                    if (!IsWActive)
+                        Spells.E.Cast(enemy);
                 }
             }
         }

@@ -48,7 +48,8 @@
             }
         }
 
-        public static event EventHandler<UnloadEventArgs> OnUnload;
+        //public static event EventHandler<UnloadEventArgs> OnUnload;
+
         public class UnloadEventArgs : EventArgs
         {
             public bool Final;

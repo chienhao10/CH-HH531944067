@@ -19,6 +19,7 @@ namespace PortAIO.Utility
 
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
         public static bool cheat { get { return Miscc["cheat"].Cast<CheckBox>().CurrentValue; } }
+        public static bool autoSharp { get { return Miscc["autoSharp"].Cast<CheckBox>().CurrentValue; } }
         public static bool useTracker { get { return Miscc["tracker"].Cast<CheckBox>().CurrentValue; } }
         public static bool useRecall { get { return Miscc["recall"].Cast<CheckBox>().CurrentValue; } }
         public static bool useSkin { get { return Miscc["skin"].Cast<CheckBox>().CurrentValue; } }
@@ -393,18 +394,19 @@ namespace PortAIO.Utility
             Miscc.Add("activator", new CheckBox("载入 El活化剂?"));
             Miscc.Add("tracker", new CheckBox("载入 Nabb计时器?"));
             Miscc.Add("recall", new CheckBox("载入 回城计时?"));
-            Miscc.AddSeparator();
             Miscc.Add("skin", new CheckBox("开启换肤?"));
+            Miscc.AddSeparator();
             Miscc.Add("evade", new CheckBox("开启 躲避?", false));
             Miscc.Add("godTracker", new CheckBox("载入 野区计时（El活化剂中有）?", false));
-            Miscc.AddSeparator();
             Miscc.Add("ping", new CheckBox("载入 信号管理器（玩家信号）?", false));
             Miscc.Add("human", new CheckBox("载入 人性化?", false));
-            Miscc.Add("gank", new CheckBox("载入 Gank提示?", false));
             Miscc.AddSeparator();
+            Miscc.Add("gank", new CheckBox("载入 Gank提示?", false));
             Miscc.Add("cheat", new CheckBox("开启 辅助探测器?", false));
             Miscc.Add("banwards", new CheckBox("开启 Sebby 人性化?", false));
             Miscc.Add("antialistar", new CheckBox("开启 防牛头冲撞?", true));
+            Miscc.AddSeparator();
+            Miscc.Add("autoSharp", new CheckBox("开启Auto Sharp(挂机)?", false));
             Miscc.Add("traptrack", new CheckBox("开启 陷阱计时?", false));
 
             /*

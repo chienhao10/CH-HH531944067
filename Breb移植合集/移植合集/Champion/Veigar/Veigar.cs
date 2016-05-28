@@ -251,7 +251,7 @@ namespace FreshBooster.Champion
                         return;
                     }
 
-                    if (getCheckBoxItem(Combo, "Veigar_CUseR_Select") && getCheckBoxItem(Combo, "Veigar_CUseR") && _R.IsReady() && KTarget.Health < Player.GetSpellDamage(KTarget, SpellSlot.R) && KTarget.LSDistance(Player) <= _R.Range)
+                    if (getCheckBoxItem(Combo, "Veigar_CUseR_Select") && getCheckBoxItem(Combo, "Veigar_CUseR") && _R.IsReady() && KTarget.Health < getRDam(KTarget) && KTarget.LSDistance(Player) <= _R.Range)
                     {
                         _R.Cast(KTarget, true);
                         return;
@@ -337,6 +337,32 @@ namespace FreshBooster.Champion
                 }
             }
         }
+
+        public static float getRDam(AIHeroClient target)
+        {
+            if (target == null)
+                return 0f;
+
+            var rDam = 0f;
+            var percMissingHP = (int)Math.Floor((100 - ((target.Health / target.MaxHealth) * 100)));
+
+            if (target.HealthPercent <= 33.4) // deals 2x damage if target lower than 33.4%
+            {
+                rDam = new[] { 350, 500, 650 }[_R.Level] + (1.5f * Player.TotalMagicalDamage);
+            }
+            else
+            {
+                rDam = new[] { 175, 250, 325 }[_R.Level] + (.75f * Player.TotalMagicalDamage);
+            }
+
+            for (int i = 0; i < percMissingHP; i++)
+            {
+                rDam += (rDam * 1.5f);
+            }
+
+            return rDam;
+        }
+
         public static void SpellUseE(AIHeroClient target)
         {
             if (!target.CanMove && !target.IsMoving)

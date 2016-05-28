@@ -24,7 +24,6 @@ namespace PortAIO
         private static void Main()
         {
             Loading.OnLoadingComplete += Initialize;
-            //Game.OnUpdate += Game_OnUpdate;
         }
 
         private static void Game_OnUpdate(EventArgs args)
@@ -51,6 +50,7 @@ namespace PortAIO
         private static void Initialize(EventArgs args)
         {
             LeagueSharp.SDK.Bootstrap.Init();
+
             Notifications.Show(new SimpleNotification("CH汉化移植合集", "欢迎使用移植合集,此合集每一个英雄都有各自的脚本可选择使用。如果在使用上有任何的BUG，请在我的GITHUB回报或者私聊我。祝你玩的开心，杀的超神！QQ交流群：531944067 请附上你的EB ID！否则不给进!"), 10000);
 
             Loader.Menu();
@@ -131,6 +131,11 @@ namespace PortAIO
                     AntiTrap.Program.Game_OnGameLoad();
                 }
 
+                if (Loader.autoSharp)
+                {
+                    AutoSharp.Program.Main();
+                }
+
                 /*
                 if (Loader.stream)
                 {
@@ -178,8 +183,7 @@ namespace PortAIO
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             case 1:
-                                ExorAIO.Core.Bootstrap.BuildMenu();
-                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                ExorSDK.AIO.OnLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();

@@ -17,7 +17,7 @@
 
 -Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
-Caitlyn, Anivia, Darius, Nautlius, Nunu, Olaf, Pantheon, Renekton, Tryndamere, Ryze = Port hes
+Anivia, Darius, Nautlius, Nunu, Olaf, Pantheon, Renekton, Tryndamere, Ryze = Port these for ExorAIO SDK
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
@@ -46,7 +46,6 @@ Utility Ports [Only doing after Champions are completed] :
 - Universal Leveler [https://github.com/TheSaltyWaffle/LeagueSharp/tree/master/UniversalLeveler]
 - DZAwareness [https://github.com/DZ191/LeagueSharp/tree/master/DZAwarenessAIO]
 - Snitched 3.0 [https://github.com/ChewyMoon/LeagueSharp-Reloaded/blob/master/Snitched%203.0/]
-- AutoSharp (Kappa) [https://github.com/myo/Experimental/tree/master/AutoSharp]
 - OneKeyToBrain [https://github.com/OneKeyToWin/LeagueRepo/tree/master/OneKeyToBrain]
 - BlackFeeder 2.0 [https://github.com/blacky/LeagueSharp/tree/master/BlackFeeder%202.0]
 - Activator # [https://github.com/xKurisu/Activator/tree/master/Activator]
@@ -57,7 +56,6 @@ Utility Ports [Only doing after Champions are completed] :
 - AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
 - StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
 - OKTW Ward Standalone [Already in PortAIO]
-- Trap Tracker
 
 Library Ports [Only doing if I need it for an addon] :
 - ExorAIO Series SDK

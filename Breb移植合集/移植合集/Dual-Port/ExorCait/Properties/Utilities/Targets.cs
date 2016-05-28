@@ -1,47 +1,41 @@
+using System.Collections.Generic;
+using System.Linq;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
+using EloBuddy;
+using EloBuddy.SDK;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using System.Collections.Generic;
-    using ExorAIO.Utilities;
-    using EloBuddy;
-    using EloBuddy.SDK;    /// <summary>
-                           ///     The targets class.
-                           /// </summary>
-    class Targets
+    /// <summary>
+    ///     The targets class.
+    /// </summary>
+    internal class Targets
     {
         /// <summary>
         ///     The main hero target.
         /// </summary>
-        public static AIHeroClient Target
-        =>
-            TargetSelector.GetTarget(
-                Variables.Q.Range,
-                DamageType.Physical);
+        public static AIHeroClient Target => TargetSelector.GetTarget(Vars.Q.Range, DamageType.Physical);
 
         /// <summary>
         ///     The minions target.
         /// </summary>
-        public static List<Obj_AI_Base> Minions
-        =>
-            MinionManager.GetMinions(
-                ObjectManager.Player.ServerPosition,
-                Variables.Q.Range,
-                MinionTypes.All,
-                MinionTeam.NotAlly,
-                MinionOrderTypes.None);
+        public static List<Obj_AI_Minion> Minions
+            =>
+                GameObjects.EnemyMinions.Where(
+                    m =>
+                        m.IsMinion() &&
+                        m.LSIsValidTarget(Vars.Q.Range)).ToList();
 
         /// <summary>
         ///     The jungle minion targets.
         /// </summary>
-        public static List<Obj_AI_Base> JungleMinions
-        => 
-            MinionManager.GetMinions(
-                ObjectManager.Player.ServerPosition,
-                Variables.Q.Range,
-                MinionTypes.All,
-                MinionTeam.Neutral,
-                MinionOrderTypes.MaxHealth);
+        public static List<Obj_AI_Minion> JungleMinions
+            =>
+                GameObjects.Jungle.Where(
+                    m =>
+                        m.LSIsValidTarget(Vars.Q.Range) &&
+                        !GameObjects.JungleSmall.Contains(m)).ToList();
     }
 }

@@ -1,26 +1,26 @@
+using System;
+using System.Linq;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Caitlyn
+namespace ExorSDK.Champions.Caitlyn
 {
-    using System;
-    using System.Linq;
-    using ExorAIO.Utilities;
-    using EloBuddy;
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Called when the game updates itself.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
             if (Bools.HasSheenBuff() ||
                 !Targets.Target.LSIsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
@@ -28,13 +28,22 @@ namespace ExorAIO.Champions.Caitlyn
             /// <summary>
             ///     The E Combo Logic.
             /// </summary>
-            if (Variables.E.IsReady() && Variables.Q.IsReady() && ObjectManager.Player.ManaPercent >= 20 && Menus.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            if (Vars.E.IsReady() &&
+                Vars.Q.IsReady() &&
+                GameObjects.Player.ManaPercent >= 20 &&
+                Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
-                foreach (AIHeroClient target in HeroManager.Enemies.Where(t => t.LSIsValidTarget(550f) && !Bools.IsSpellShielded(t) && !t.HasBuff("caitlynyordletrapinternal")))
+                foreach (var target in
+                    GameObjects.EnemyHeroes.Where(
+                        t =>
+                            t.LSIsValidTarget(550f) &&
+                            !Invulnerable.Check(t) &&
+                            !t.HasBuff("caitlynyordletrapinternal")))
                 {
-                    if (!(Variables.E.GetPrediction(target).CollisionObjects.Count > 1))
+                    if (!Vars.E.GetPrediction(target).CollisionObjects.Any() &&
+						Vars.E.GetPrediction(target).Hitchance >= HitChance.High)
                     {
-                        Variables.E.CastIfHitchanceEquals(target, HitChance.High);
+                        Vars.E.Cast(Vars.E.GetPrediction(target).UnitPosition);
                     }
                 }
             }

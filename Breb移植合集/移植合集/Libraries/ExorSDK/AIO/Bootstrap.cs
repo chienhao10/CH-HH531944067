@@ -1,3 +1,4 @@
+using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Sivir;
 using ExorSDK.Utilities;
 using LeagueSharp;
@@ -19,6 +20,9 @@ namespace ExorSDK.Core
             {
                 case "Sivir":
                     new Sivir().OnLoad();
+                    break;
+                case "Caitlyn":
+                    new Caitlyn().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

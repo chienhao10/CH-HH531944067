@@ -6,11 +6,6 @@ namespace Feedlesticks.Core
     internal class Spells
     {
         /// <summary>
-        ///     last w game time
-        /// </summary>
-        public static float LastW;
-
-        /// <summary>
         ///     Spells
         /// </summary>
         public static Spell Q, W, E, R;
@@ -35,19 +30,6 @@ namespace Feedlesticks.Core
                 return Ignite.IsReady() && Ignite != SpellSlot.Unknown &&
                        FiddleStick.Spellbook.CanUseSpell(Ignite) == SpellState.Ready;
             }
-        }
-
-        /// <summary>
-        ///     Combo Ready Check
-        /// </summary>
-        public static bool ComboIsReady
-        {
-            get { return Q.IsReady() && W.IsReady() && E.IsReady() && R.IsReady(); }
-        }
-
-        public static bool Wable
-        {
-            get { return Game.Time - LastW > 2; }
         }
 
         /// <summary>
