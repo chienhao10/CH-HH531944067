@@ -26,6 +26,9 @@ namespace AutoJungle.Data
                 case BuildType.NOC:
                     SetListNOC();
                     break;
+                 case BuildType.EVE:
+                    SetListEVE();
+                    break;
             }
         }
 
@@ -100,6 +103,31 @@ namespace AutoJungle.Data
             ItemList.Add(new BuyingOrder(18, (int) ItemId.Zeal, "Zeal", 1200));
             ItemList.Add(new BuyingOrder(19, (int) ItemId.Phantom_Dancer, "Phantom Dancer", 1350));
             ItemList.Add(new BuyingOrder(14, 2410, "Elixir of Wrath", 500));
+        }
+
+        private void SetListEVE()
+        {
+            ItemList.Add(new BuyingOrder(1, 1041, "Hunter's Machete", 350));
+            ItemList.Add(new BuyingOrder(2, 2031, "Refillable Potion", 150));
+            ItemList.Add(new BuyingOrder(3, 3340, "Trinket", 0));
+            ItemList.Add(new BuyingOrder(4, 1039, "Hunter's Talisman", 350));
+            ItemList.Add(new BuyingOrder(5, 3715, "Skirmisher's Sabre", 700));
+            ItemList.Add(new BuyingOrder(6, 1036, "Long Sword", 350));
+            ItemList.Add(new BuyingOrder(7, 1412, "Warrior", 1350));
+            ItemList.Add(new BuyingOrder(8, (int) ItemId.Boots_of_Speed, "Boots of Speed", 300));
+            ItemList.Add(new BuyingOrder(9, (int) ItemId.Boots_of_Swiftness, "Boots of Swoftness", 500));
+            ItemList.Add(new BuyingOrder(10, 3052, "Jaurims Fist", 1300));
+            ItemList.Add(new BuyingOrder(10, 3077, "Tiamat", 1300));
+            ItemList.Add(new BuyingOrder(10, 3748, "Titanic Hydra", 1100));
+            ItemList.Add(new BuyingOrder(11, (int) ItemId.Giants_Belt, "Giants Belt", 1000));
+            ItemList.Add(new BuyingOrder(12, (int) ItemId.Chain_Vest, "Chain Vest", 800));
+            ItemList.Add(new BuyingOrder(13, 3742, "Dead Mans Plate", 1800));
+            ItemList.Add(new BuyingOrder(14, 3211, "Spectres Cow", 1200));
+            ItemList.Add(new BuyingOrder(15, 3102, "Banshees Veil", 1250));
+            ItemList.Add(new BuyingOrder(16, (int) ItemId.Bilgewater_Cutlass, "Bilgewater Cutlass", 1650));
+            ItemList.Add(new BuyingOrder(17, (int) ItemId.Blade_of_the_Ruined_King, "BOTRK", 1750));
+            ItemList.Add(new BuyingOrder(14, 2410, "Elixir of Wrath", 500));
+//add heal spell useage and keep buy Elixir of Wrath after full item
         }
         public static void UseItemsJungle()
         {
@@ -186,6 +214,7 @@ namespace AutoJungle.Data
         AS,
         AD,
         ASMANA,
-        NOC
+        NOC,
+        EVE
     }
 }

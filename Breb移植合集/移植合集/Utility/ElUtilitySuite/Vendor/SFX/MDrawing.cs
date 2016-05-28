@@ -41,7 +41,6 @@ namespace ElUtilitySuite.Vendor.SFX
         private static readonly Dictionary<int, Font> Fonts = new Dictionary<int, Font>();
         private static readonly HashSet<Line> Lines = new HashSet<Line>();
         private static Sprite _sprite;
-        //private static bool _unloaded;
 
         static MDrawing()
         {
@@ -49,7 +48,7 @@ namespace ElUtilitySuite.Vendor.SFX
             {
                 Drawing.OnPreReset += OnDrawingPreReset;
                 Drawing.OnPostReset += OnDrawingPostReset;
-                //Global.SFX.OnUnload += OnUnload;
+                Entry.OnUnload += OnUnload;
             }
             catch (Exception e)
             {
@@ -57,12 +56,10 @@ namespace ElUtilitySuite.Vendor.SFX
             }
         }
 
-        /*private static void OnUnload(object sender, UnloadEventArgs unloadEventArgs)
+        private static void OnUnload(object sender, Entry.UnloadEventArgs unloadEventArgs)
         {
             try
             {
-                _unloaded = true;
-
                 if (_sprite != null && !_sprite.IsDisposed)
                 {
                     _sprite.Dispose();
@@ -86,7 +83,6 @@ namespace ElUtilitySuite.Vendor.SFX
                 Console.WriteLine(@"An error occurred: '{0}'", e);
             }
         }
-        */
         private static void OnDrawingPostReset(EventArgs args)
         {
             try

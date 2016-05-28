@@ -660,4 +660,43 @@
   <data name="Zyra" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Zyra.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="CD_Hud" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_Hud.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_HudSelf" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_HudSelf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_SummonerBarrier" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_SummonerBarrier.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonerboost" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonerboost.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonerdot" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonerdot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonerexhaust" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonerexhaust.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonerflash" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonerflash.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonerhaste" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonerhaste.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonerheal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonerheal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonersmite" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonersmite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="CD_summonerteleport" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\CD_summonerteleport.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WT_Green" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WT_Green.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="WT_Pink" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\WT_Pink.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

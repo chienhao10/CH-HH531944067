@@ -34,7 +34,7 @@ namespace ElUtilitySuite.Vendor.SFX
 
     using EloBuddy;
     using LeagueSharp.Common;
-    using EloBuddy.SDK;
+    //using EloBuddy.SDK;
     public static class IncomingDamageManager
     {
         private static readonly Dictionary<int, float> IncomingDamages = new Dictionary<int, float>();
@@ -65,7 +65,7 @@ namespace ElUtilitySuite.Vendor.SFX
                 var enemy = sender as AIHeroClient;
                 var turret = sender as Obj_AI_Turret;
                 foreach (
-                    var hero in EntityManager.Heroes.AllHeroes.Where(h => h.IsValid && IncomingDamages.ContainsKey(h.NetworkId)))
+                    var hero in EloBuddy.SDK.EntityManager.Heroes.AllHeroes.Where(h => h.IsValid && IncomingDamages.ContainsKey(h.NetworkId)))
                 {
                     if (ShouldReset(hero))
                     {
@@ -139,16 +139,7 @@ namespace ElUtilitySuite.Vendor.SFX
 
         private static bool ShouldReset(AIHeroClient hero)
         {
-            try
-            {
-                return !hero.LSIsValidTarget(float.MaxValue, false) || hero.IsZombie ||
-                       hero.HasBuffOfType(BuffType.Invulnerability) || hero.IsInvulnerable;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-            return false;
+            return hero.IsZombie || hero.HasBuffOfType(BuffType.Invulnerability) || hero.IsInvulnerable;
         }
 
         private static float GetTime(Obj_AI_Base sender, AIHeroClient hero, SpellData sData)

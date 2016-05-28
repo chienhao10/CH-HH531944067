@@ -223,6 +223,116 @@ namespace PortAIO.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap CD_Hud {
+            get {
+                object obj = ResourceManager.GetObject("CD_Hud", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_HudSelf {
+            get {
+                object obj = ResourceManager.GetObject("CD_HudSelf", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_SummonerBarrier {
+            get {
+                object obj = ResourceManager.GetObject("CD_SummonerBarrier", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonerboost {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonerboost", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonerdot {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonerdot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonerexhaust {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonerexhaust", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonerflash {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonerflash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonerhaste {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonerhaste", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonerheal {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonerheal", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonersmite {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonersmite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap CD_summonerteleport {
+            get {
+                object obj = ResourceManager.GetObject("CD_summonerteleport", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Chogath {
             get {
                 object obj = ResourceManager.GetObject("Chogath", resourceCulture);
@@ -1494,6 +1604,26 @@ namespace PortAIO.Properties {
         internal static System.Drawing.Bitmap Warwick {
             get {
                 object obj = ResourceManager.GetObject("Warwick", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WT_Green {
+            get {
+                object obj = ResourceManager.GetObject("WT_Green", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap WT_Pink {
+            get {
+                object obj = ResourceManager.GetObject("WT_Pink", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

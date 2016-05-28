@@ -1347,7 +1347,8 @@ namespace AutoJungle
             menuChamps.AddItem(new MenuItem("supportedJax", "武器大师"));
             menuChamps.AddItem(new MenuItem("supportedXinZhao", "赵信"));
             menuChamps.AddItem(new MenuItem("supportedNocturne", "梦魇"));
-            
+            menuChamps.AddItem(new MenuItem("supportedEvelynn", "寡妇"));
+
             //menuChamps.AddItem(new MenuItem("supportedSkarner", "Skarner"));
             menu.AddSubMenu(menuChamps);
             menu.AddItem(

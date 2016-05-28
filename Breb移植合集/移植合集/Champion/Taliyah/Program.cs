@@ -8,14 +8,13 @@ using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp.SDK.Core.Utils;
 using SkillshotType = LeagueSharp.SDK.SkillshotType;
-using Spell = LeagueSharp.SDK.Spell;
 
 namespace Taliyah
 {
     class Program
     {
         private static Menu main_menu;
-        private static Spell Q, W, E;
+        private static LeagueSharp.SDK.Spell Q, W, E;
         private static Vector3 lastE;
         private static int lastETick = Environment.TickCount;
         private static bool Q5x = true;
@@ -31,9 +30,9 @@ namespace Taliyah
             main_menu = MainMenu.AddMenu("Taliyah", "taliyah");
 
             comboMenu = main_menu.AddSubMenu("Combo", "taliyah.combo");
-            comboMenu.Add("useq", new CheckBox("Use Q"));
-            comboMenu.Add("usew", new CheckBox("Use W"));
-            comboMenu.Add("usee", new CheckBox("Use E"));
+            comboMenu.Add("taliyah.combo.useq", new CheckBox("Use Q"));
+            comboMenu.Add("taliyah.combo.usew", new CheckBox("Use W"));
+            comboMenu.Add("taliyah.combo.usee", new CheckBox("Use E"));
 
             harassMenu = main_menu.AddSubMenu("Harass", "taliyah.harass");
             harassMenu.Add("taliyah.harass.useq", new CheckBox("Use Q"));
@@ -52,14 +51,13 @@ namespace Taliyah
             main_menu.Add("taliyah.interrupt", new CheckBox("Auto W to interrupt spells"));
 
 
+            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 900f);
+            Q.SetSkillshot(0f, 60f, 2000f, true, SkillshotType.SkillshotLine);
 
-            Q = new Spell(SpellSlot.Q, 900f);
-            Q.SetSkillshot(0f, 60f, Q.Instance.SData.MissileSpeed, true, SkillshotType.SkillshotLine);
-
-            W = new Spell(SpellSlot.W, 800f);
+            W = new LeagueSharp.SDK.Spell(SpellSlot.W, 800f);
             W.SetSkillshot(0.5f, 50f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
-            E = new Spell(SpellSlot.E, 700f);
+            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 700f);
             E.SetSkillshot(0.25f, 150f, 2000f, false, SkillshotType.SkillshotLine);
 
             Game.OnUpdate += Game_OnUpdate;
@@ -122,9 +120,9 @@ namespace Taliyah
 
                 if (!EWCasting)
                 {
-                    if (E.IsReady() && getCheckBoxItem(comboMenu,"usee"))
+                    if (E.IsReady() && getCheckBoxItem(comboMenu, "taliyah.combo.usee"))
                     {
-                        if (W.IsReady() && getCheckBoxItem(comboMenu, "usew"))
+                        if (W.IsReady() && getCheckBoxItem(comboMenu, "taliyah.combo.usew"))
                         {
                             //e w combo
                             var target = W.GetTarget();
@@ -152,7 +150,7 @@ namespace Taliyah
                         }
                     }
                 }
-                if (W.IsReady() && getCheckBoxItem(comboMenu, "usew") && !EWCasting)
+                if (W.IsReady() && getCheckBoxItem(comboMenu, "taliyah.combo.usew") && !EWCasting)
                 {
                     var target = W.GetTarget();
                     if (target != null)
@@ -164,17 +162,17 @@ namespace Taliyah
                 }
             }
             var qTarget = Q.GetTarget();
-            if (qTarget != null && getCheckBoxItem(comboMenu, "useq") && (!getCheckBoxItem(main_menu, "taliyah.onlyq5") || Q5x))
+            if (qTarget != null && getCheckBoxItem(comboMenu, "taliyah.combo.useq") && (!getCheckBoxItem(main_menu, "taliyah.onlyq5") || Q5x))
                 Q.Cast(qTarget);
 
         }
 
         private static void Harass()
         {
-            if (ObjectManager.Player.ManaPercent < getSliderItem(harassMenu, "manaperc"))
+            if (ObjectManager.Player.ManaPercent < getSliderItem(harassMenu, "taliyah.harass.manaperc"))
                 return;
 
-            if (getCheckBoxItem(harassMenu, "useq"))
+            if (getCheckBoxItem(harassMenu, "taliyah.harass.useq"))
             {
                 var target = Q.GetTarget();
                 if (target != null)
@@ -184,20 +182,20 @@ namespace Taliyah
 
         private static void LaneClear()
         {
-            if (ObjectManager.Player.ManaPercent < getSliderItem(laneclearMenu, "manaperc"))
+            if (ObjectManager.Player.ManaPercent < getSliderItem(laneclearMenu, "taliyah.laneclear.manaperc"))
                 return;
 
-            if (getCheckBoxItem(laneclearMenu, "useq") && Q.IsReady())
+            if (getCheckBoxItem(laneclearMenu, "taliyah.laneclear.useq") && Q.IsReady())
             {
                 var farm = Q.GetCircularFarmLocation(ObjectManager.Get<Obj_AI_Minion>().Where(p => p.IsEnemy && p.DistanceToPlayer() < Q.Range).ToList());
-                if (farm.MinionsHit >= getSliderItem(laneclearMenu, "minq"))
+                if (farm.MinionsHit >= getSliderItem(laneclearMenu, "taliyah.laneclear.minq"))
                     Q.Cast(farm.Position);
             }
 
-            if (getCheckBoxItem(laneclearMenu, "useew") && W.IsReady() && E.IsReady())
+            if (getCheckBoxItem(laneclearMenu, "taliyah.laneclear.useew") && W.IsReady() && E.IsReady())
             {
                 var farm = W.GetCircularFarmLocation(ObjectManager.Get<Obj_AI_Minion>().Where(p => p.IsEnemy && p.DistanceToPlayer() < W.Range).ToList());
-                if (farm.MinionsHit >= getSliderItem(laneclearMenu, "minew"))
+                if (farm.MinionsHit >= getSliderItem(laneclearMenu, "taliyah.laneclear.minew"))
                 {
                     E.Cast(farm.Position);
                     lastE = ObjectManager.Player.ServerPosition;
@@ -216,18 +214,21 @@ namespace Taliyah
                 Combo();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
                 Harass();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 LaneClear();
             }
 
             if (W.Instance.Name == "TaliyahWNoClick")
+            {
                 EWCasting = false;
+            }
+               
         }
 
         private static void Events_OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs e)

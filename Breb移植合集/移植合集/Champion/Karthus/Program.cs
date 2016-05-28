@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp.Common;
@@ -12,6 +12,7 @@ using Color = System.Drawing.Color;
 using HealthPrediction = SebbyLib.HealthPrediction;
 using Spell = LeagueSharp.Common.Spell;
 using Utility = LeagueSharp.Common.Utility;
+using EloBuddy.SDK;
 
 namespace OneKeyToWin_AIO_Sebby.Champions
 {
@@ -115,14 +116,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (Player.IsRecalling())
+            if (Player.LSIsRecalling())
                 return;
 
             if (Player.IsZombie)
             {
                 if (getCheckBoxItem(miscMenu, "autoZombie"))
                 {
-                    Orbwalker.ActiveModesFlags = Player.CountEnemiesInRange(Q.Range) > 0 ? Orbwalker.ActiveModes.Combo : Orbwalker.ActiveModes.LaneClear;
+                    Orbwalker.ActiveModesFlags = Player.LSCountEnemiesInRange(Q.Range) > 0 ? Orbwalker.ActiveModes.Combo : Orbwalker.ActiveModes.LaneClear;
                 }
                 if (R.IsReady() && getCheckBoxItem(rMenu, "autoRzombie"))
                 {
@@ -131,7 +132,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     Program.debug("Time " + timeDeadh);
                     if (timeDeadh < 4)
                     {
-                        foreach (var target in Program.Enemies.Where(target => target.IsValidTarget() && OktwCommon.ValidUlt(target)))
+                        foreach (var target in Program.Enemies.Where(target => target.LSIsValidTarget() && OktwCommon.ValidUlt(target)))
                         {
                             var rDamage = R.GetDamage(target);
                             if (target.Health < 3 * rDamage && target.CountAlliesInRange(800) > 0)
@@ -162,14 +163,14 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void LogicR()
         {
-            if (getCheckBoxItem(rMenu, "autoR") && Player.CountEnemiesInRange(getSliderItem(rMenu, "Renemy")) == 0)
+            if (getCheckBoxItem(rMenu, "autoR") && Player.LSCountEnemiesInRange(getSliderItem(rMenu, "Renemy")) == 0)
             {
                 if (Player.UnderTurret(true) && getCheckBoxItem(rMenu, "Rturrent"))
                     return;
 
                 foreach (var target in Program.Enemies.Where(target => target.IsValid && !target.IsDead))
                 {
-                    if (target.IsValidTarget() && target.CountAlliesInRange(getSliderItem(rMenu, "RenemyA")) == 0)
+                    if (target.LSIsValidTarget() && target.CountAlliesInRange(getSliderItem(rMenu, "RenemyA")) == 0)
                     {
                         var predictedHealth = target.Health + target.HPRegenRate * 4;
                         var Rdmg = OktwCommon.GetKsDamage(target, R);
@@ -223,7 +224,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         public static float GetRealAutoAttackRange(AttackableUnit target)
         {
             var result = ObjectManager.Player.AttackRange + ObjectManager.Player.BoundingRadius;
-            if (target.IsValidTarget())
+            if (target.LSIsValidTarget())
             {
                 var aiBase = target as Obj_AI_Base;
                 if (aiBase != null && ObjectManager.Player.ChampionName == "Caitlyn")
@@ -242,21 +243,21 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         public static bool InAutoAttackRange(AttackableUnit target)
         {
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return false;
             }
             var myRange = GetRealAutoAttackRange(target);
             return
                 Vector2.DistanceSquared(
-                    target is Obj_AI_Base ? ((Obj_AI_Base)target).ServerPosition.To2D() : target.Position.To2D(),
-                    ObjectManager.Player.ServerPosition.To2D()) <= myRange * myRange;
+                    target is Obj_AI_Base ? ((Obj_AI_Base)target).ServerPosition.LSTo2D() : target.Position.LSTo2D(),
+                    ObjectManager.Player.ServerPosition.LSTo2D()) <= myRange * myRange;
         }
 
         private static void LogicQ()
         {
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (t.IsValidTarget() && getCheckBoxItem(qMenu, "Qon" + t.NetworkId))
+            if (t.LSIsValidTarget() && getCheckBoxItem(qMenu, "Qon" + t.NetworkId))
             {
                 if (Program.Combo && Player.Mana > RMANA + QMANA + WMANA)
                     Program.CastSpell(Q, t);
@@ -269,9 +270,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
                 foreach (
                     var enemy in
-                        Program.Enemies.Where(enemy => enemy.IsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                        Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                     Program.CastSpell(Q, t);
             }
+
             if (!OktwCommon.CanHarras())
                 return;
 
@@ -285,7 +287,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         var minion in
                             allMinions.Where(
                                 minion =>
-                                    minion.IsValidTarget(Q.Range) &&
+                                    minion.LSIsValidTarget(Q.Range) &&
                                     (!InAutoAttackRange(minion) || (!minion.UnderTurret(true) && minion.UnderTurret())))
                         )
                     {
@@ -301,9 +303,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 if (Program.LaneClear && getCheckBoxItem(farmMenu, "farmQ") &&
                     Player.ManaPercent > getSliderItem(farmMenu, "Mana"))
                 {
-                    foreach (
-                        var minion in
-                            allMinions.Where(minion => minion.IsValidTarget(Q.Range) && InAutoAttackRange(minion)))
+                    foreach (var minion in allMinions.Where(minion => minion.LSIsValidTarget(Q.Range) && InAutoAttackRange(minion)))
                     {
                         var hpPred = HealthPrediction.GetHealthPrediction(minion, 1100);
                         if (hpPred < GetQDamage(minion) * 0.9 && hpPred > minion.Health - hpPred * 2)
@@ -329,7 +329,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             if ((Program.Combo || (Program.Farm && getCheckBoxItem(wMenu, "harrasW"))) && Player.Mana > RMANA + WMANA)
             {
                 var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-                if (t.IsValidTarget())
+                if (t.LSIsValidTarget())
                 {
                     Program.CastSpell(W, t);
                 }
@@ -350,7 +350,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     }
                     else if (getCheckBoxItem(eMenu, "autoE"))
                     {
-                        if (Player.ManaPercent < getSliderItem(eMenu, "Emana") || Player.CountEnemiesInRange(E.Range) == 0)
+                        if (Player.ManaPercent < getSliderItem(eMenu, "Emana") || Player.LSCountEnemiesInRange(E.Range) == 0)
                             E.Cast();
                     }
                 }
@@ -360,7 +360,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     {
                         E.Cast();
                     }
-                    if (getCheckBoxItem(eMenu, "autoE") && Player.ManaPercent > getSliderItem(eMenu, "Emana") && Player.CountEnemiesInRange(E.Range) > 0)
+                    if (getCheckBoxItem(eMenu, "autoE") && Player.ManaPercent > getSliderItem(eMenu, "Emana") && Player.LSCountEnemiesInRange(E.Range) > 0)
                     {
                         E.Cast();
                     }
@@ -381,7 +381,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         Q.Cast(mob.ServerPosition);
                         return;
                     }
-                    if (E.IsReady() && getCheckBoxItem(farmMenu, "jungleE") && mob.IsValidTarget(E.Range))
+                    if (E.IsReady() && getCheckBoxItem(farmMenu, "jungleE") && mob.LSIsValidTarget(E.Range))
                     {
                         E.Cast(mob.ServerPosition);
                     }
@@ -456,7 +456,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
 
-                if (t.IsValidTarget() && OktwCommon.GetKsDamage(t, R) > t.Health)
+                if (t.LSIsValidTarget() && OktwCommon.GetKsDamage(t, R) > t.Health)
                 {
                     Drawing.DrawText(Drawing.Width * 0.1f, Drawing.Height * 0.5f, Color.Red,
                         "R可击杀: " + t.ChampionName + " 治疗 - 伤害 =  " +

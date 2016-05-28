@@ -23,7 +23,6 @@ namespace PortAIO
     {
         private static void Main()
         {
-            LeagueSharp.SDK.Bootstrap.Init();
             Loading.OnLoadingComplete += Initialize;
             //Game.OnUpdate += Game_OnUpdate;
         }
@@ -51,7 +50,7 @@ namespace PortAIO
 
         private static void Initialize(EventArgs args)
         {
-
+            LeagueSharp.SDK.Bootstrap.Init();
             Notifications.Show(new SimpleNotification("CH汉化移植合集", "欢迎使用移植合集,此合集每一个英雄都有各自的脚本可选择使用。如果在使用上有任何的BUG，请在我的GITHUB回报或者私聊我。祝你玩的开心，杀的超神！QQ交流群：531944067 请附上你的EB ID！否则不给进!"), 10000);
 
             Loader.Menu();
@@ -125,6 +124,11 @@ namespace PortAIO
                 if (Loader.antialistar)
                 {
                     AntiAlistar.AntiAlistar.OnLoad();
+                }
+
+                if (Loader.traptrack)
+                {
+                    AntiTrap.Program.Game_OnGameLoad();
                 }
 
                 /*

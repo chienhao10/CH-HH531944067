@@ -121,31 +121,38 @@ namespace OneKeyToWin_AIO_Sebby.Core
 
         public Vector3 CalculateReturnPos()
         {
-            if (Missile != null && Missile.IsValidMissile() && Target.IsValidTarget() && Missile.IsValid)
+            if (Target == null)
             {
-                var finishPosition = Missile.Position;
-                if (Missile.SData.Name.ToLower() == MissileName.ToLower())
+                return Vector3.Zero;
+            }
+            if (Missile != null && Missile.IsValid && Target.IsValidTarget())
+            {
+                if (Missile != null)
                 {
-                    finishPosition = MissileEndPos;
-                }
-
-                var misToPlayer = Player.LSDistance(finishPosition);
-                var tarToPlayer = Player.LSDistance(Target);
-
-                if (misToPlayer > tarToPlayer)
-                {
-                    var misToTarget = Target.LSDistance(finishPosition);
-
-                    if (misToTarget < QWER.Range && misToTarget > 50)
+                    var finishPosition = Missile.Position;
+                    if (Missile.SData.Name.ToLower() == MissileName.ToLower())
                     {
-                        var cursorToTarget = Target.LSDistance(Player.Position.LSExtend(Game.CursorPos, 100));
-                        var ext = finishPosition.LSExtend(Target.ServerPosition, cursorToTarget + misToTarget);
+                        finishPosition = MissileEndPos;
+                    }
 
-                        if (ext.LSDistance(Player.Position) < 800 && ext.CountEnemiesInRange(400) < 2)
+                    var misToPlayer = Player.LSDistance(finishPosition);
+                    var tarToPlayer = Player.LSDistance(Target);
+
+                    if (misToPlayer > tarToPlayer)
+                    {
+                        var misToTarget = Target.LSDistance(finishPosition);
+
+                        if (misToTarget < QWER.Range && misToTarget > 50)
                         {
-                            if (getCheckBoxItem("drawHelper"))
-                                Utility.DrawCircle(ext, 100, System.Drawing.Color.White, 1, 1);
-                            return ext;
+                            var cursorToTarget = Target.LSDistance(Player.Position.LSExtend(Game.CursorPos, 100));
+                            var ext = finishPosition.LSExtend(Target.ServerPosition, cursorToTarget + misToTarget);
+
+                            if (ext.LSDistance(Player.Position) < 800 && ext.CountEnemiesInRange(400) < 2)
+                            {
+                                if (getCheckBoxItem("drawHelper"))
+                                    Utility.DrawCircle(ext, 100, System.Drawing.Color.White, 1, 1);
+                                return ext;
+                            }
                         }
                     }
                 }

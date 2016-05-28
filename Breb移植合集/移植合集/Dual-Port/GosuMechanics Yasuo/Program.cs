@@ -250,7 +250,7 @@ namespace GosuMechanicsYasuo
         {
             var target = gapcloser.Sender;
 
-            if (!target.IsValidTarget(Q3.Range))
+            if (!target.LSIsValidTarget(Q3.Range))
             {
                 return;
             }
@@ -263,7 +263,7 @@ namespace GosuMechanicsYasuo
 
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (sender != null && Q3.IsReady() && Q3READY() && sender.IsValidTarget(Q3.Range) && getCheckBoxItem(miscMenu, "IntAnt"))
+            if (sender != null && Q3.IsReady() && Q3READY() && sender.LSIsValidTarget(Q3.Range) && getCheckBoxItem(miscMenu, "IntAnt"))
             {
                 Q3.Cast(sender);
             }
@@ -373,7 +373,7 @@ namespace GosuMechanicsYasuo
                     return;
                 }
 
-                if (!minion.IsDead && minion != null && getCheckBoxItem(lastHitMenu, "LastHitQ1") && Q.IsReady() && minion.IsValidTarget(500) && !Q3READY() && Q.IsInRange(minion))
+                if (!minion.IsDead && minion != null && getCheckBoxItem(lastHitMenu, "LastHitQ1") && Q.IsReady() && minion.LSIsValidTarget(500) && !Q3READY() && Q.IsInRange(minion))
                 {
                     var predHealth = HealthPrediction.GetHealthPrediction(minion, (int)(Program.myHero.LSDistance(minion.Position) * 1000 / 2000));
                     if (predHealth <= GetQDmg(minion))
@@ -422,12 +422,12 @@ namespace GosuMechanicsYasuo
             {
                 var bestMinion =
                    ObjectManager.Get<Obj_AI_Base>()
-                       .Where(x => x.IsValidTarget(E.Range))
+                       .Where(x => x.LSIsValidTarget(E.Range))
                        .Where(x => x.LSDistance(Game.CursorPos) < ObjectManager.Player.LSDistance(Game.CursorPos))
                        .OrderByDescending(x => x.LSDistance(ObjectManager.Player))
                        .FirstOrDefault();
 
-                if (bestMinion != null && ObjectManager.Player.IsFacing(bestMinion) && CanCastE(bestMinion) && E.IsReady())
+                if (bestMinion != null && ObjectManager.Player.LSIsFacing(bestMinion) && CanCastE(bestMinion) && E.IsReady())
                 {
                     E.CastOnUnit(bestMinion, true);
                 }
@@ -436,13 +436,13 @@ namespace GosuMechanicsYasuo
         public static void AutoQFlee()
         {
             List<Obj_AI_Base> Qminion = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, 1000, MinionTypes.All, MinionTeam.NotAlly);
-            foreach (var minion in Qminion.Where(minion => minion.IsValidTarget(Q.Range) && !minion.IsDead))
+            foreach (var minion in Qminion.Where(minion => minion.LSIsValidTarget(Q.Range) && !minion.IsDead))
             {
                 if (minion == null)
                 {
                     return;
                 }
-                if (!Q3READY() && getCheckBoxItem(fleeMenu, "AutoQ1") && minion.IsValidTarget(Q.Range) && IsDashing)
+                if (!Q3READY() && getCheckBoxItem(fleeMenu, "AutoQ1") && minion.LSIsValidTarget(Q.Range) && IsDashing)
                 {
                     CastQ12(minion);
                 }
@@ -451,13 +451,13 @@ namespace GosuMechanicsYasuo
         public static void AutoQ()
         {
             List<Obj_AI_Base> Qminion = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, 1000, MinionTypes.All, MinionTeam.NotAlly);
-            foreach (var minion in Qminion.Where(minion => minion.IsValidTarget(Q.Range) && !minion.IsDead))
+            foreach (var minion in Qminion.Where(minion => minion.LSIsValidTarget(Q.Range) && !minion.IsDead))
             {
                 if (minion == null && minion.CharData.BaseSkinName == "gangplankbarrel")
                 {
                     return;
                 }
-                if (!Q3READY() && getCheckBoxItem(fleeMenu, "AutoQ1") && minion.IsValidTarget(Q.Range) && !IsDashing)
+                if (!Q3READY() && getCheckBoxItem(fleeMenu, "AutoQ1") && minion.LSIsValidTarget(Q.Range) && !IsDashing)
                 {
                     CastQ12(minion);
                 }
@@ -472,7 +472,7 @@ namespace GosuMechanicsYasuo
                     return;
                 }
 
-                if (!minion.IsDead && minion != null && getCheckBoxItem(lastHitMenu, "LastHitQ1") && Q.IsReady() && minion.IsValidTarget(500) && !Q3READY() && Q.IsInRange(minion) && !IsDashing)
+                if (!minion.IsDead && minion != null && getCheckBoxItem(lastHitMenu, "LastHitQ1") && Q.IsReady() && minion.LSIsValidTarget(500) && !Q3READY() && Q.IsInRange(minion) && !IsDashing)
                 {
                     var predHealth = HealthPrediction.GetHealthPrediction(minion, (int)(Program.myHero.LSDistance(minion.Position) * 1000 / 2000));
                     if (predHealth <= GetQDmg(minion))
@@ -480,7 +480,7 @@ namespace GosuMechanicsYasuo
                         CastQ12(minion);
                     }
                 }
-                if (!minion.IsDead && minion != null && getCheckBoxItem(lastHitMenu, "LastHitQ3") && Q.IsReady() && minion.IsValidTarget(1100) && Q3READY() && Q3.IsInRange(minion) && !IsDashing)
+                if (!minion.IsDead && minion != null && getCheckBoxItem(lastHitMenu, "LastHitQ3") && Q.IsReady() && minion.LSIsValidTarget(1100) && Q3READY() && Q3.IsInRange(minion) && !IsDashing)
                 {
                     var predHealth = HealthPrediction.GetHealthPrediction(minion, (int)(Program.myHero.LSDistance(minion.Position) * 1000 / 2000));
                     if (predHealth <= GetQDmg(minion))
@@ -488,7 +488,7 @@ namespace GosuMechanicsYasuo
                         CastQ3(minion);
                     }
                 }
-                if (getCheckBoxItem(lastHitMenu, "LastHitE") && E.IsReady() && minion.IsValidTarget(475))
+                if (getCheckBoxItem(lastHitMenu, "LastHitE") && E.IsReady() && minion.LSIsValidTarget(475))
                 {
                     if (!UnderTower(PosAfterE(minion)) && CanCastE(minion))
                     {
@@ -504,13 +504,13 @@ namespace GosuMechanicsYasuo
         public static void LaneClear()
         {
             List<Obj_AI_Base> Qminion = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, 1000, MinionTypes.All, MinionTeam.Enemy);
-            foreach (var minion in Qminion.Where(minion => minion.IsValidTarget(Q3.Range)))
+            foreach (var minion in Qminion.Where(minion => minion.LSIsValidTarget(Q3.Range)))
             {
                 if (minion == null)
                 {
                     return;
                 }
-                if (minion != null && getCheckBoxItem(laneClearMenu, "LaneClearQ1") && Q.IsReady() && minion.IsValidTarget(500) && !Q3READY() && Q.IsInRange(minion))
+                if (minion != null && getCheckBoxItem(laneClearMenu, "LaneClearQ1") && Q.IsReady() && minion.LSIsValidTarget(500) && !Q3READY() && Q.IsInRange(minion))
                 {
                     var predHealth = HealthPrediction.LaneClearHealthPrediction(minion, (int)(Program.myHero.LSDistance(minion.Position) * 1000 / 2000));
                     if (predHealth <= GetQDmg(minion) && !IsDashing)
@@ -534,7 +534,7 @@ namespace GosuMechanicsYasuo
                         }
                     }
                 }
-                if (!minion.IsDead && minion != null && getCheckBoxItem(laneClearMenu, "LaneClearQ3") && Q3.IsReady() && minion.IsValidTarget(1100) && Q3READY() && Q3.IsInRange(minion))
+                if (!minion.IsDead && minion != null && getCheckBoxItem(laneClearMenu, "LaneClearQ3") && Q3.IsReady() && minion.LSIsValidTarget(1100) && Q3READY() && Q3.IsInRange(minion))
                 {
                     var predHealth = HealthPrediction.LaneClearHealthPrediction(minion, (int)(Program.myHero.LSDistance(minion.Position) * 1000 / 2000));
                     if (predHealth <= GetQDmg(minion) && !IsDashing)
@@ -560,14 +560,14 @@ namespace GosuMechanicsYasuo
                 }
             }
             var allMinionsE = MinionManager.GetMinions(myHero.ServerPosition, E.Range, MinionTypes.All, MinionTeam.Enemy);
-            foreach (var minion in allMinionsE.Where(x => x.IsValidTarget(E.Range) && CanCastE(x)))
+            foreach (var minion in allMinionsE.Where(x => x.LSIsValidTarget(E.Range) && CanCastE(x)))
             {
                 if (minion == null)
                 {
                     return;
                 }
 
-                if (getCheckBoxItem(laneClearMenu, "LaneClearE") && E.IsReady() && minion.IsValidTarget(E.Range) && CanCastE(minion))
+                if (getCheckBoxItem(laneClearMenu, "LaneClearE") && E.IsReady() && minion.LSIsValidTarget(E.Range) && CanCastE(minion))
                 {
                     if (!UnderTower(PosAfterE(minion)))
                     {
@@ -585,21 +585,21 @@ namespace GosuMechanicsYasuo
                 }
             }
             var jminions = MinionManager.GetMinions(myHero.ServerPosition, 1000, MinionTypes.All, MinionTeam.Neutral);
-            foreach (var jungleMobs in jminions.Where(x => x.IsValidTarget(Q3.Range)))
+            foreach (var jungleMobs in jminions.Where(x => x.LSIsValidTarget(Q3.Range)))
             {
                 if (jungleMobs == null)
                 {
                     return;
                 }
-                if (getCheckBoxItem(jungleClearMenu, "JungleClearE") && E.IsReady() && jungleMobs != null && jungleMobs.IsValidTarget(E.Range) && CanCastE(jungleMobs))
+                if (getCheckBoxItem(jungleClearMenu, "JungleClearE") && E.IsReady() && jungleMobs != null && jungleMobs.LSIsValidTarget(E.Range) && CanCastE(jungleMobs))
                 {
                     E.CastOnUnit(jungleMobs);
                 }
-                if (jungleMobs != null && getCheckBoxItem(jungleClearMenu, "JungleClearQ3") && Q3.IsReady() && jungleMobs.IsValidTarget(1000) && Q3READY() && Q3.IsInRange(jungleMobs))
+                if (jungleMobs != null && getCheckBoxItem(jungleClearMenu, "JungleClearQ3") && Q3.IsReady() && jungleMobs.LSIsValidTarget(1000) && Q3READY() && Q3.IsInRange(jungleMobs))
                 {
                     CastQ3(jungleMobs);
                 }
-                if (jungleMobs != null && getCheckBoxItem(jungleClearMenu, "JungleClearQ12") && Q.IsReady() && jungleMobs.IsValidTarget(500) && !Q3READY() && Q.IsInRange(jungleMobs))
+                if (jungleMobs != null && getCheckBoxItem(jungleClearMenu, "JungleClearQ12") && Q.IsReady() && jungleMobs.LSIsValidTarget(500) && !Q3READY() && Q.IsInRange(jungleMobs))
                 {
                     CastQ12(jungleMobs);
                 }
@@ -613,7 +613,7 @@ namespace GosuMechanicsYasuo
                 Items.UseItem((int)ItemId.Blade_of_the_Ruined_King, unit);
             }
             if (Items.HasItem((int)ItemId.Bilgewater_Cutlass, myHero) && Items.CanUseItem((int)ItemId.Bilgewater_Cutlass)
-               && unit.IsValidTarget(Q.Range))
+               && unit.LSIsValidTarget(Q.Range))
             {
                 Items.UseItem((int)ItemId.Bilgewater_Cutlass, unit);
             }
@@ -658,7 +658,7 @@ namespace GosuMechanicsYasuo
 
             var enemiesKnockedUp =
                 ObjectManager.Get<AIHeroClient>()
-                    .Where(x => x.IsValidTarget(Program.R.Range))
+                    .Where(x => x.LSIsValidTarget(Program.R.Range))
                     .Where(x => x.HasBuffOfType(BuffType.Knockup) || x.HasBuffOfType(BuffType.Knockback) && x.IsEnemy);
 
             var enemies = enemiesKnockedUp as IList<AIHeroClient> ?? enemiesKnockedUp.ToList();
@@ -679,7 +679,7 @@ namespace GosuMechanicsYasuo
             }
             if (TsTarget != null && getCheckBoxItem(comboMenu, "QC"))
             {
-                if (Q3READY() && Q3.IsReady() && TsTarget.IsValidTarget(Q3.Range) && !IsDashing)
+                if (Q3READY() && Q3.IsReady() && TsTarget.LSIsValidTarget(Q3.Range) && !IsDashing)
                 {
                     PredictionOutput Q3Pred = Q3.GetPrediction(TsTarget);
                     if (Q3.IsInRange(TsTarget) && Q3Pred.Hitchance >= HitChance.Medium) 
@@ -687,7 +687,7 @@ namespace GosuMechanicsYasuo
                         Q3.Cast(Q3Pred.CastPosition, true);
                     }
                 }
-                if (!Q3READY() && Q.IsReady() && TsTarget.IsValidTarget(Q.Range))
+                if (!Q3READY() && Q.IsReady() && TsTarget.LSIsValidTarget(Q.Range))
                 {
                     PredictionOutput QPred = Q.GetPrediction(TsTarget);
                     if (Q.IsInRange(TsTarget) && QPred.Hitchance >= HitChance.Medium)
@@ -707,11 +707,11 @@ namespace GosuMechanicsYasuo
             if (getCheckBoxItem(comboMenu, "EC") && TsTarget != null)
             {
                 var dmg = ((float)myHero.GetSpellDamage(TsTarget, SpellSlot.Q) + (float)myHero.GetSpellDamage(TsTarget, SpellSlot.E) + (float)myHero.GetSpellDamage(TsTarget, SpellSlot.R));
-                if (E.IsReady() && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E1")) && dmg >= TsTarget.Health && UnderTower(PosAfterE(TsTarget)) && CanCastE(TsTarget) && myHero.IsFacing(TsTarget))
+                if (E.IsReady() && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E1")) && dmg >= TsTarget.Health && UnderTower(PosAfterE(TsTarget)) && CanCastE(TsTarget) && myHero.LSIsFacing(TsTarget))
                 {
                     E.CastOnUnit(TsTarget);
                 }
-                else if(TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E1")) && dmg <= TsTarget.Health && CanCastE(TsTarget) && myHero.IsFacing(TsTarget))
+                else if(TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E1")) && dmg <= TsTarget.Health && CanCastE(TsTarget) && myHero.LSIsFacing(TsTarget))
                 {
                     useENormal(TsTarget);
                 }
@@ -731,17 +731,17 @@ namespace GosuMechanicsYasuo
                 if (getCheckBoxItem(comboMenu, "E3") && E.IsReady())
                 {
                     var bestMinion =
-                    ObjectManager.Get<Obj_AI_Base>()
-                    .Where(x => x.IsValidTarget(E.Range))
+                    EntityManager.MinionsAndMonsters.CombinedAttackable
+                    .Where(x => x.LSIsValidTarget(E.Range))
                     .Where(x => x.LSDistance(TsTarget) < myHero.LSDistance(TsTarget))
                     .OrderByDescending(x => x.LSDistance(myHero))
                     .FirstOrDefault();
                     var dmg2 = ((float)myHero.GetSpellDamage(TsTarget, SpellSlot.Q) + (float)myHero.GetSpellDamage(TsTarget, SpellSlot.E) + (float)myHero.GetSpellDamage(TsTarget, SpellSlot.R));
-                    if (bestMinion != null && TsTarget != null && dmg2 >= TsTarget.Health && UnderTower(PosAfterE(bestMinion)) && myHero.IsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.IsFacing(bestMinion))
+                    if (bestMinion != null && TsTarget != null && dmg2 >= TsTarget.Health && UnderTower(PosAfterE(bestMinion)) && myHero.LSIsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.LSIsFacing(bestMinion))
                     {
                         E.CastOnUnit(bestMinion, true);
                     }
-                    else if (bestMinion != null && TsTarget != null && dmg2 <= TsTarget.Health && myHero.IsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.IsFacing(bestMinion))
+                    else if (bestMinion != null && TsTarget != null && dmg2 <= TsTarget.Health && myHero.LSIsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.IsFacing(bestMinion))
                     {
                         useENormal(bestMinion);
                     }
@@ -749,18 +749,18 @@ namespace GosuMechanicsYasuo
                 if (!getCheckBoxItem(comboMenu, "E3") && E.IsReady())
                 {
                        var bestMinion =
-                       ObjectManager.Get<Obj_AI_Base>()
-                      .Where(x => x.IsValidTarget(E.Range))
+                       EntityManager.MinionsAndMonsters.CombinedAttackable
+                      .Where(x => x.LSIsValidTarget(E.Range))
                       .Where(x => x.LSDistance(Game.CursorPos) < ObjectManager.Player.LSDistance(Game.CursorPos))
                       .OrderByDescending(x => x.LSDistance(myHero))
                       .FirstOrDefault();
 
                     var dmg3 = ((float)myHero.GetSpellDamage(TsTarget, SpellSlot.Q) + (float)myHero.GetSpellDamage(TsTarget, SpellSlot.E) + (float)myHero.GetSpellDamage(TsTarget, SpellSlot.R));
-                    if (bestMinion != null && TsTarget != null && dmg3 >= TsTarget.Health && UnderTower(PosAfterE(bestMinion)) && myHero.IsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.IsFacing(bestMinion))
+                    if (bestMinion != null && TsTarget != null && dmg3 >= TsTarget.Health && UnderTower(PosAfterE(bestMinion)) && myHero.LSIsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.LSIsFacing(bestMinion))
                     {
                         E.CastOnUnit(bestMinion, true);
                     }
-                    else if (bestMinion != null && TsTarget != null && dmg3 <= TsTarget.Health && myHero.IsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.IsFacing(bestMinion))
+                    else if (bestMinion != null && TsTarget != null && dmg3 <= TsTarget.Health && myHero.IsFacing(bestMinion) && TsTarget.LSDistance(myHero) >= (getSliderItem(comboMenu, "E2")) && CanCastE(bestMinion) && myHero.LSIsFacing(bestMinion))
                     {
                         useENormal(bestMinion);
                     }
@@ -791,16 +791,16 @@ namespace GosuMechanicsYasuo
                     {
                         var enemiesKnockedUp =
                             ObjectManager.Get<AIHeroClient>()
-                            .Where(x => x.IsValidTarget(Program.R.Range))
+                            .Where(x => x.LSIsValidTarget(Program.R.Range))
                             .Where(x => x.HasBuffOfType(BuffType.Knockup));
 
                         var enemiesKnocked = enemiesKnockedUp as IList<AIHeroClient> ?? enemiesKnockedUp.ToList();
-                        if (enemy.IsValidTarget(Program.R.Range) && Program.CanCastDelayR(enemy) && enemiesKnocked.Count() >= (getSliderItem(comboMenu, "R2")))
+                        if (enemy.LSIsValidTarget(Program.R.Range) && Program.CanCastDelayR(enemy) && enemiesKnocked.Count() >= (getSliderItem(comboMenu, "R2")))
                         {
                             Program.R.Cast();
                         }
                     }
-                    if (enemy.IsValidTarget(Program.R.Range))
+                    if (enemy.LSIsValidTarget(Program.R.Range))
                     {
                         
                         if (Program.IsKnockedUp(enemy) && Program.CanCastDelayR(enemy) && enemy.Health <= ((getSliderItem(comboMenu, "R1") / 100 * enemy.MaxHealth) * 1.5f) && getCheckBoxItem(ultMenu, enemy.ChampionName))
@@ -821,7 +821,7 @@ namespace GosuMechanicsYasuo
                     Ignite.Cast(TsTarget);
                 }
                 
-                if (getCheckBoxItem(comboMenu, "comboItems") && TsTarget != null && TsTarget.IsValidTarget())
+                if (getCheckBoxItem(comboMenu, "comboItems") && TsTarget != null && TsTarget.LSIsValidTarget())
                 {
                     UseItems(TsTarget);
                 }
@@ -831,7 +831,7 @@ namespace GosuMechanicsYasuo
         {
             foreach (AIHeroClient enemy in HeroManager.Enemies)
             {
-                if (enemy.IsValidTarget(Q.Range) && getCheckBoxItem(miscMenu, "KS"))
+                if (enemy.LSIsValidTarget(Q.Range) && getCheckBoxItem(miscMenu, "KS"))
                 {
                     if (Q.IsReady() && !Q3READY())
                     {
@@ -894,7 +894,7 @@ namespace GosuMechanicsYasuo
         }
         public static void CastQ3AoE()
         {
-            foreach (AIHeroClient target in HeroManager.Enemies.Where(x => x.IsValidTarget(1100)))
+            foreach (AIHeroClient target in HeroManager.Enemies.Where(x => x.LSIsValidTarget(1100)))
             {
                 PredictionOutput Q3Pred = Q3.GetPrediction(target, true);
                 if (Q3Pred.Hitchance >= HitChance.Medium && Q3.IsInRange(target) && Q3Pred.AoeTargetsHitCount >= 2)

@@ -3,6 +3,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using ExorAIO.Utilities;
 using LeagueSharp.Common;
+using SharpDX;
 
 namespace ExorAIO.Champions.Olaf
 {
@@ -35,18 +36,18 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     The Q Combo Logic.
             /// </summary>
-            if (Variables.Q.IsReady() && !Targets.Target.HasBuffOfType(BuffType.Slow) && Targets.Target.IsValidTarget(Variables.Q.Range) && Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
+            if (Variables.Q.IsReady() && Targets.Target.IsValidTarget(Variables.Q.Range) && Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
             {
-                var castPosition = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -120);
-                var castPosition2 = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -90);
+                var castPosition = Variables.Q.GetPrediction(Targets.Target);
+                var castPosition2 = castPosition.CastPosition.LSExtend(ObjectManager.Player.Position, -100);
 
-                if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 300)
+                if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 350)
                 {
-                    Variables.Q.Cast(castPosition);
+                    Variables.Q.Cast(castPosition2);
                 }
                 else
                 {
-                    Variables.Q.Cast(castPosition2);
+                    Variables.Q.Cast(castPosition.CastPosition);
                 }
             }
         }

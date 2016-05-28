@@ -27,7 +27,7 @@ namespace AutoJungle
             {
                 case "MasterYi":
                     Hero = ObjectManager.Player;
-                    Type = BuildType.AS;
+                    Type = BuildType.NOC;
 
                     Q = new Spell(SpellSlot.Q, 600);
                     Q.SetTargetted(0.5f, float.MaxValue);
@@ -147,10 +147,86 @@ namespace AutoJungle
                     Combo = NocturneCombo;
                     Console.WriteLine("Nocturne loaded");
                     break;
+
+                    case "Evelynn":
+                    Hero = ObjectManager.Player;
+                    Type = BuildType.EVE;
+
+                    Q = new Spell(SpellSlot.Q, 500f);
+                    W = new Spell(SpellSlot.W);
+                    E = new Spell(SpellSlot.E, 225);
+                    R = new Spell(SpellSlot.R, 650);
+                    R.SetSkillshot(R.Instance.SData.SpellCastTime, R.Instance.SData.LineWidth, R.Speed, false, SkillshotType.SkillshotCone);
+
+                    Autolvl = new AutoLeveler(new int[] { 0, 2, 1, 0, 0, 3, 0, 2, 0, 2, 3, 2, 2, 1, 1, 3, 1, 1 });
+
+                    JungleClear = EveJungleClear;
+                    Combo = EveCombo;
+                    Console.WriteLine("Evelynn loaded");
+                    break;
                 default:
                     Console.WriteLine(ObjectManager.Player.ChampionName + " not supported");
                     break;
             }
+        }
+
+        private bool EveCombo()
+        {
+            var targetHero = Program._GameInfo.Target;
+            if (targetHero == null)
+            {
+                return false;
+            }
+            if (W.IsReady() && targetHero.IsValidTarget(300))
+            {
+                W.Cast();
+            }
+            if (R.IsReady() && Hero.Distance(targetHero) < 650 && Hero.Mana > 100)
+            {
+                R.Cast();
+            }
+            ItemHandler.UseItemsCombo(targetHero, !Q.IsReady());
+            if (Hero.IsWindingUp)
+            {
+                return false;
+            }
+            if (Q.IsReady() && Hero.Distance(targetHero) < 500 && Hero.Mana > 200)
+            {
+                Q.Cast();
+            }
+            Hero.IssueOrder(GameObjectOrder.AttackUnit, targetHero);
+            return false;
+        }
+
+        private bool EveJungleClear()
+        {
+            var targetMob = Program._GameInfo.Target;
+            var structure = Helpers.CheckStructure();
+            if (structure != null)
+            {
+                Hero.IssueOrder(GameObjectOrder.AttackUnit, structure);
+                return false;
+            }
+            if (targetMob == null)
+            {
+                return false;
+            }
+            ItemHandler.UseItemsJungle();
+            if (Q.IsReady() && Hero.Distance(targetMob) < Q.Range &&
+            (Helpers.getMobs(Hero.Position, Q.Range).Count >= 2))
+            {
+                Q.Cast(targetMob);
+            }
+            if (E.IsReady() && targetMob.IsValidTarget(225))
+            {
+                E.Cast(targetMob);
+            }
+            if (Hero.IsWindingUp)
+            {
+                return false;
+            }
+            Hero.IssueOrder(GameObjectOrder.AttackUnit, targetMob);
+            return false;
         }
 
         private bool JaxCombo()

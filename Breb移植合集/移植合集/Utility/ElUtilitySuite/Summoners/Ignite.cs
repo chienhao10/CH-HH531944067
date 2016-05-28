@@ -55,6 +55,10 @@
             var igniteMenu = rootMenu.AddSubMenu("点燃", "Ignite");
             {
                 igniteMenu.Add("Ignite.Activated", new CheckBox("开启点燃"));
+                foreach (var x in HeroManager.Enemies)
+                {
+                    igniteMenu.Add("igniteon" + x.ChampionName, new CheckBox("为以下使用 " + x.ChampionName));
+                }
             }
 
             Menu = igniteMenu;
@@ -125,6 +129,10 @@
 
                 if (kSableEnemy != null)
                 {
+                    if (!getCheckBoxItem(Menu, string.Format("igniteon{0}", kSableEnemy.ChampionName)))
+                    {
+                        return;
+                    }
                     this.Player.Spellbook.CastSpell(this.IgniteSpell.Slot, kSableEnemy);
                 }
             }

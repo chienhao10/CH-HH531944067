@@ -48,6 +48,17 @@
             }
         }
 
+        public static event EventHandler<UnloadEventArgs> OnUnload;
+        public class UnloadEventArgs : EventArgs
+        {
+            public bool Final;
+
+            public UnloadEventArgs(bool final = false)
+            {
+                Final = final;
+            }
+        }
+
         #endregion
 
         #region Public Methods and Operators
@@ -93,19 +104,12 @@
                 }
                 Console.ForegroundColor = ConsoleColor.White;
 
-                menu.Add("usecombo", new KeyBind("连招 (开启)", false, KeyBind.BindTypes.HoldActive, 32));
-
                 Menu = menu;
             }
             catch (Exception e)
             {
                 Console.WriteLine(@"An error occurred: '{0}'", e);
             }
-        }
-
-        public static bool getCombo()
-        {
-            return Menu["usecombo"].Cast<KeyBind>().CurrentValue;
         }
 
         #endregion

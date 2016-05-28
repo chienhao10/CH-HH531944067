@@ -26,7 +26,7 @@ namespace iLucian.MenuHelper
             comboOptions.Add("com.ilucian.combo.startE", new CheckBox("连招 E 起手", true));
             comboOptions.Add("com.ilucian.combo.eRange", new Slider("E 冲刺距离", 65, 50, 475));
             comboOptions.Add("com.ilucian.combo.eMode", new ComboBox("E 模式", 5, "风筝", "边上", "鼠标", "敌人", "快速模式", "智能 E", "URF（阿福快打）"));
-            comboOptions.Add("com.ilucian.combo.forceR", new KeyBind("半自动R按键", false, KeyBind.BindTypes.PressToggle, 'T'));
+            comboOptions.Add("com.ilucian.combo.forceR", new KeyBind("半自动R按键", false, KeyBind.BindTypes.HoldActive, 'T'));
 
             harassOptions = Variables.Menu.AddSubMenu(":: I卢锡安 - 骚扰", "com.ilucian.harass");
             harassOptions.AddGroupLabel("自动骚扰 : ");

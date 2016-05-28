@@ -24,7 +24,7 @@ namespace ElUtilitySuite.Items
         {
             get
             {
-                return Entry.getCombo() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
+                return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
             }
         }
 
@@ -106,7 +106,8 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public virtual void UseItem()
         {
-            Items.UseItem((int)this.Id);
+            //Items.UseItem((int)this.Id);
+            EloBuddy.SDK.Item.UseItem((int)this.Id);
         }
 
         public static bool getCheckBoxItem(Menu m, string item)

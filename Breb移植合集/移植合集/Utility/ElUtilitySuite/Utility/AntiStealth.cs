@@ -218,12 +218,10 @@
                 {
                     return;
                 }
-                    
-                foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(x => x.IsEnemy &&
-                    x.ChampionName.ToLower().Contains("vayne") &&
-                    x.Buffs.Any(y => y.Name == "VayneInquisition")))
+
+                foreach (var hero in HeroManager.Enemies.Where(x => x.ChampionName.ToLower().Contains("vayne") && x.Buffs.Any(y => y.Name.ToLower().Contains("vayneinquisition"))))
                 {
-                    this.VayneBuffEndTime = hero.Buffs.First(x => x.Name == "VayneInquisition").EndTime;
+                    this.VayneBuffEndTime = hero.Buffs.First(x => x.Name.ToLower().Contains("vayneinquisition")).EndTime;
                 }
             }
             catch (Exception e)

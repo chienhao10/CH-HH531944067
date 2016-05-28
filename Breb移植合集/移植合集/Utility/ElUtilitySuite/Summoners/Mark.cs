@@ -77,7 +77,7 @@
         {
             get
             {
-                return Entry.getCombo() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
+                return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
             }
         }
 

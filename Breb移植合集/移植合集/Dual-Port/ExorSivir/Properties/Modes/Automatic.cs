@@ -77,6 +77,13 @@ namespace ExorSDK.Champions.Sivir
                     return;
                 }
 
+                if (args.SData.Name.Equals("HextechGunblade") ||
+                    args.SData.Name.Equals("BilgewaterCutlass") ||
+                    args.SData.Name.Equals("ItemSwordOfFeastAndFamine"))
+                {
+                    return;
+                }
+
                 /// <summary>
                 ///     Block Gangplank's Barrels.
                 /// </summary>

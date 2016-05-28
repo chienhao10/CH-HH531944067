@@ -225,6 +225,20 @@
             return (float)Player.GetSummonerSpellDamage(target, LeagueSharp.Common.Damage.SummonerSpell.Ignite);
         }
 
+
+        private static void TurnOffQ()
+        {
+            if (getCheckBoxItem(miscMenu, "DontOffQ"))
+            {
+                return;
+            }
+            if (spells[Spells.Q].Instance.ToggleState == 2 && System.Environment.TickCount - poisonTime > 1200)
+            {
+                spells[Spells.Q].Cast();
+            }
+        }
+
+
         private static void LaneClear()
         {
 
@@ -284,13 +298,6 @@
             }
         }
 
-        private static void TurnOffQ()
-        {
-            if (spells[Spells.Q].Instance.ToggleState == 2 && Environment.TickCount - poisonTime > 1200)
-            {
-                spells[Spells.Q].Cast();
-            }
-        }
 
         #endregion
     }

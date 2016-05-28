@@ -49,7 +49,15 @@ namespace SebbyLib
 
         public static bool None
         {
-            get { return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.None); }
+            get
+            {
+                return !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
+                       !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) &&
+                       !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && 
+                       !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
+                       !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Flee) &&
+                       !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit);
+            }
         }
 
         public static bool LaneClear
@@ -97,7 +105,7 @@ namespace SebbyLib
             Config.Add("debug", new CheckBox("调试", false));
             Config.Add("debugChat", new CheckBox("调试信息", false));
             Config.Add("print", new CheckBox("OKTW更新信息"));
-
+            
             #endregion
 
             Config.Add("AIOmode", new Slider("合集模式 (0 : 功能集 & 英雄 | 1 : 只载入英雄 | 2 : 只载入功能集)", 0, 0, 2));

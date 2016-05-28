@@ -153,15 +153,10 @@
 
                     var enemies = ally.LSCountEnemiesInRange(600);
                     var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
-                    if (totalDamage <= 0)
-                    {
-                        return;
-                    }
 
-                    if (ally.HealthPercent <= getSliderItem(this.Menu, "min-health") && this.HealSpell.IsInRange(ally) && enemies >= 1)
+                    if (ally.HealthPercent <= getSliderItem(this.Menu, "min-health") && (this.HealSpell.IsInRange(ally) || ally.IsMe) && enemies >= 1)
                     {
-                        if ((int)(totalDamage / ally.Health) > getSliderItem(this.Menu, "min-damage")
-                            || ally.HealthPercent < getSliderItem(this.Menu, "min-health"))
+                        if ((int)(totalDamage / ally.Health) > getSliderItem(this.Menu, "min-damage") || ally.HealthPercent < getSliderItem(this.Menu, "min-health"))
                         {
                             this.Player.Spellbook.CastSpell(this.HealSpell.Slot);
                             Console.ForegroundColor = ConsoleColor.Green;

@@ -77,6 +77,7 @@ namespace PortAIO.Utility
         public static int ahri { get { return Miscc["ahri"].Cast<ComboBox>().CurrentValue; } }
         public static bool banwards { get { return Miscc["banwards"].Cast<CheckBox>().CurrentValue; } }
         public static bool antialistar { get { return Miscc["antialistar"].Cast<CheckBox>().CurrentValue; } }
+        public static bool traptrack { get { return Miscc["traptrack"].Cast<CheckBox>().CurrentValue; } }
         public static int elise { get { return Miscc["elise"].Cast<ComboBox>().CurrentValue; } }
         public static int rengar { get { return Miscc["rengar"].Cast<ComboBox>().CurrentValue; } }
         public static int zed { get { return Miscc["zed"].Cast<ComboBox>().CurrentValue; } }
@@ -151,7 +152,7 @@ namespace PortAIO.Utility
             "Taliyah", //50
             "Janna", //51
             "Irelia", //52
-            "Sivir" //53
+            "Sivir", //53
         });
 
         public static void Menu()
@@ -395,7 +396,7 @@ namespace PortAIO.Utility
             Miscc.AddSeparator();
             Miscc.Add("skin", new CheckBox("开启换肤?"));
             Miscc.Add("evade", new CheckBox("开启 躲避?", false));
-            Miscc.Add("godTracker", new CheckBox("载入 野区计时（El活化剂中有?", false));
+            Miscc.Add("godTracker", new CheckBox("载入 野区计时（El活化剂中有）?", false));
             Miscc.AddSeparator();
             Miscc.Add("ping", new CheckBox("载入 信号管理器（玩家信号）?", false));
             Miscc.Add("human", new CheckBox("载入 人性化?", false));
@@ -404,6 +405,7 @@ namespace PortAIO.Utility
             Miscc.Add("cheat", new CheckBox("开启 辅助探测器?", false));
             Miscc.Add("banwards", new CheckBox("开启 Sebby 人性化?", false));
             Miscc.Add("antialistar", new CheckBox("开启 防牛头冲撞?", true));
+            Miscc.Add("traptrack", new CheckBox("开启 陷阱计时?", false));
 
             /*
             Miscc.Add("stream", new CheckBox("Enable StreamBuddy?", false));

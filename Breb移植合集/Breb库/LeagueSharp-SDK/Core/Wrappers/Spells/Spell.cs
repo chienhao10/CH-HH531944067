@@ -516,7 +516,24 @@ namespace LeagueSharp.SDK
         /// </returns>
         public bool Cast(Vector3 fromPosition, Vector3 toPosition)
         {
-            return this.IsReady() && GameObjects.Player.Spellbook.CastSpell(this.Slot, fromPosition, toPosition);
+            if (!this.IsReady())
+            {
+                return false;
+            }
+
+            if (!this.minManaPercent.Equals(0) && ObjectManager.Player.ManaPercent < this.minManaPercent)
+            {
+                return false;
+            }
+
+            if (this.CastCondition != null && !this.CastCondition())
+            {
+                return false;
+            }
+
+            this.LastCastAttemptT = Variables.TickCount;
+
+            return GameObjects.Player.Spellbook.CastSpell(this.Slot, fromPosition, toPosition);
         }
 
         /// <summary>
@@ -545,6 +562,16 @@ namespace LeagueSharp.SDK
         public bool Cast(Vector3 position)
         {
             if (!this.IsReady())
+            {
+                return false;
+            }
+
+            if (!this.minManaPercent.Equals(0) && ObjectManager.Player.ManaPercent < this.minManaPercent)
+            {
+                return false;
+            }
+
+            if (this.CastCondition != null && !this.CastCondition())
             {
                 return false;
             }
@@ -653,6 +680,16 @@ namespace LeagueSharp.SDK
         public bool CastOnUnit(Obj_AI_Base unit)
         {
             if (!this.IsReady() || this.From.DistanceSquared(unit.ServerPosition) > this.RangeSqr)
+            {
+                return false;
+            }
+
+            if (!this.minManaPercent.Equals(0) && ObjectManager.Player.ManaPercent < this.minManaPercent)
+            {
+                return false;
+            }
+
+            if (this.CastCondition != null && !this.CastCondition())
             {
                 return false;
             }

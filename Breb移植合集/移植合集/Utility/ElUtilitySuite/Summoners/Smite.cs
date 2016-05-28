@@ -347,7 +347,7 @@
         {
             get
             {
-                return Entry.getCombo() || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
+                return Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo);
             }
         }
 
@@ -375,8 +375,7 @@
             {
                 smiteMenu.Add("ElSmite.Activated", new KeyBind("开启惩戒", true, KeyBind.BindTypes.PressToggle, 'M'));
 
-
-                smiteMenu.Add("Smite.Spell", new CheckBox("Use spell smite combo"));
+                smiteMenu.Add("Smite.Spell", new CheckBox("连招使用惩戒"));
                 smiteMenu.Add("Smite.Ammo", new CheckBox("保留一个惩戒"));
 
                 if (Game.MapId == GameMapId.SummonersRift)
@@ -747,13 +746,9 @@
                     return;
                 }
 
-                Minion =
-                    (Obj_AI_Minion)
-                    MinionManager.GetMinions(this.Player.ServerPosition, SmiteRange, MinionTypes.All, MinionTeam.Neutral)
-                        .FirstOrDefault(
-                            buff => buff.Name.StartsWith(buff.CharData.BaseSkinName)
-                            && BuffsThatActuallyMakeSenseToSmite.Contains(buff.CharData.BaseSkinName)
-                            && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
+                this.SmiteKill();
+
+                Minion = (Obj_AI_Minion)EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(buff => this.Player.IsInRange(buff, 570) && (buff.Name.StartsWith(buff.BaseSkinName) || BuffsThatActuallyMakeSenseToSmite.Contains(buff.BaseSkinName)) && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
 
                 if (Minion == null)
                 {
@@ -778,8 +773,6 @@
                         }
                     }
                 }
-
-                this.SmiteKill();
             }
             catch (Exception e)
             {
@@ -813,12 +806,9 @@
                     return;
                 }
 
-                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Combo")
-                    && this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteduel"
-                    && this.ComboModeActive)
+                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Combo") && (this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteduel" || this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteplayerganker") && this.ComboModeActive)
                 {
-                    var smiteComboEnemy =
-                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500));
+                    var smiteComboEnemy = HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500));
                     if (smiteComboEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, smiteComboEnemy);
