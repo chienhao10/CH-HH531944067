@@ -220,7 +220,7 @@ namespace FreshBooster.Champion
                         _Q.CastIfHitchanceEquals(KTarget, Hitchance("Veigar_CUseQ_Hit"), true);
                         return;
                     }
-                    if (getCheckBoxItem(KillSteal, "Veigar_KseR") && _R.IsReady() && KTarget.Health < _R.GetDamage(KTarget) && KTarget.LSDistance(Player) <= _R.Range)
+                    if (getCheckBoxItem(KillSteal, "Veigar_KseR") && _R.IsReady() && KTarget.Health < getRDam(KTarget) && KTarget.LSDistance(Player) <= _R.Range)
                     {
                         _R.Cast(KTarget, true);
                         return;
@@ -344,7 +344,7 @@ namespace FreshBooster.Champion
                 return 0f;
 
             var rDam = 0f;
-            var percMissingHP = (int)Math.Floor((100 - ((target.Health / target.MaxHealth) * 100)));
+            var percMissingHP = (100 - ((target.Health / target.MaxHealth) * 100));
 
             if (target.HealthPercent <= 33.4) // deals 2x damage if target lower than 33.4%
             {
@@ -357,7 +357,7 @@ namespace FreshBooster.Champion
 
             for (int i = 0; i < percMissingHP; i++)
             {
-                rDam += (rDam * 1.5f);
+                rDam += (rDam * .015f); // For Every 1% missing health, 1.5% increased damage of R
             }
 
             return rDam;

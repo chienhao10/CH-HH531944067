@@ -37,7 +37,7 @@ namespace MathFizz
             {
                 Render.Circle.DrawCircle(Player.Position, R.Range, Color.DarkRed, 3);
             }
-            if (getCheckBoxItem(drawingsMenu, "drawMinionQCombo") && SelectedTarget.IsValidTarget())
+            if (getCheckBoxItem(drawingsMenu, "drawMinionQCombo") && SelectedTarget.LSIsValidTarget())
             {
                 if (Player.LSDistance(SelectedTarget) <= R.Range + Q.Range)
                 {
@@ -57,7 +57,7 @@ namespace MathFizz
             {
                 Drawing.DrawText(400, 800, Color.DarkTurquoise, "Debug: " + debugText2);
             }
-            if (getCheckBoxItem(drawingsMenu, "drawR") && SelectedTarget.IsValidTarget())
+            if (getCheckBoxItem(drawingsMenu, "drawR") && SelectedTarget.LSIsValidTarget())
             {
                 Render.Circle.DrawCircle(
                     R.GetPrediction(SelectedTarget, false, Player.LSDistance(SelectedTarget.Position))
@@ -65,7 +65,7 @@ namespace MathFizz
             }
             if (getCheckBoxItem(drawingsMenu, "drawComboDamage"))
             {
-                foreach (var unit in HeroManager.Enemies.Where(u => u.IsValidTarget() && u.IsHPBarRendered))
+                foreach (var unit in HeroManager.Enemies.Where(u => u.LSIsValidTarget() && u.IsHPBarRendered))
                 {
                     var damage = TotalComboDamage(unit);
                     if (damage <= 0)
@@ -92,7 +92,7 @@ namespace MathFizz
 
         private static void OnUpdate(EventArgs args)
         {
-            if (Player.IsDead || Player.IsRecalling())
+            if (Player.IsDead || Player.LSIsRecalling())
             {
                 return;
             }
@@ -103,16 +103,16 @@ namespace MathFizz
 
             #region working stuff
 
-            if (SelectedTarget.IsValidTarget())
+            if (SelectedTarget.LSIsValidTarget())
             {
                 if (Player.LSDistance(SelectedTarget) <= R.Range + Q.Range + 100)
                 {
                     CollisionableObjects[] collisionCheck = {CollisionableObjects.YasuoWall};
-                    RRectangle.Start = Player.Position.LSShorten(SelectedTarget.Position, -250).To2D();
+                    RRectangle.Start = Player.Position.LSShorten(SelectedTarget.Position, -250).LSTo2D();
                     RRectangle.End =
                         R.GetPrediction(SelectedTarget, false, 1, collisionCheck)
                             .CastPosition.LSExtend(Player.Position, -330)
-                            .To2D();
+                            .LSTo2D();
                     RRectangle.UpdatePolygon();
                 }
             }
@@ -165,7 +165,7 @@ namespace MathFizz
             }
 
 
-            if (getCheckBoxItem(drawingsMenu, "drawRHitChance") && SelectedTarget.IsValidTarget())
+            if (getCheckBoxItem(drawingsMenu, "drawRHitChance") && SelectedTarget.LSIsValidTarget())
             {
                 var collisionCheck = new CollisionableObjects[1];
                 collisionCheck[0] = CollisionableObjects.YasuoWall;
@@ -237,19 +237,19 @@ namespace MathFizz
                 if (getKeyBindItem(customComboMenu, "manualR"))
                 {
                     var t = SelectedTarget;
-                    if (!t.IsValidTarget())
+                    if (!t.LSIsValidTarget())
                     {
                         t = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                        if (!t.IsValidTarget())
+                        if (!t.LSIsValidTarget())
                         {
                             t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                            if (!t.IsValidTarget())
+                            if (!t.LSIsValidTarget())
                             {
                                 t = TargetSelector.GetTarget(R.Range, DamageType.True);
                             }
                         }
                     }
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                     {
                         if (Player.LSDistance(t.Position) <= R.Range)
                         {
@@ -380,22 +380,22 @@ namespace MathFizz
             double predamage;
             if (Q.IsReady())
             {
-                predamage = Player.GetSpellDamage(target, SpellSlot.Q);
+                predamage = Player.LSGetSpellDamage(target, SpellSlot.Q);
                 damage += Player.CalcDamage(target, DamageType.Magical, predamage);
             }
             if (W.IsReady())
             {
-                predamage = Player.GetSpellDamage(target, SpellSlot.W);
+                predamage = Player.LSGetSpellDamage(target, SpellSlot.W);
                 damage += Player.CalcDamage(target, DamageType.Magical, predamage);
             }
             if (E.IsReady())
             {
-                predamage = Player.GetSpellDamage(target, SpellSlot.E);
+                predamage = Player.LSGetSpellDamage(target, SpellSlot.E);
                 damage += Player.CalcDamage(target, DamageType.Magical, predamage);
             }
             if (R.IsReady())
             {
-                predamage = Player.GetSpellDamage(target, SpellSlot.R);
+                predamage = Player.LSGetSpellDamage(target, SpellSlot.R);
                 damage += Player.CalcDamage(target, DamageType.Magical, predamage);
             }
             if (D.IsReady())
@@ -410,7 +410,7 @@ namespace MathFizz
                 predamage = Player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Smite);
                 damage += Player.CalcDamage(target, DamageType.True, predamage);
             }
-            predamage = Player.GetAutoAttackDamage(target);
+            predamage = Player.LSGetAutoAttackDamage(target);
             damage += Player.CalcDamage(target, DamageType.Physical, predamage);
             return (float) damage;
         }
@@ -469,15 +469,15 @@ namespace MathFizz
                 return;
             var mob = mobs.First();
 
-            if (getCheckBoxItem(jungleClearMenu, "jungleclearQ") && Q.IsReady() && mob.IsValidTarget(Q.Range))
+            if (getCheckBoxItem(jungleClearMenu, "jungleclearQ") && Q.IsReady() && mob.LSIsValidTarget(Q.Range))
             {
                 Q.Cast(mob);
             }
-            if (getCheckBoxItem(jungleClearMenu, "jungleclearW") && W.IsReady() && mob.IsValidTarget(W.Range))
+            if (getCheckBoxItem(jungleClearMenu, "jungleclearW") && W.IsReady() && mob.LSIsValidTarget(W.Range))
             {
                 W.Cast(mob);
             }
-            if (getCheckBoxItem(jungleClearMenu, "jungleclearE") && E.IsReady() && mob.IsValidTarget(E.Range))
+            if (getCheckBoxItem(jungleClearMenu, "jungleclearE") && E.IsReady() && mob.LSIsValidTarget(E.Range))
             {
                 E.Cast(mob.ServerPosition);
             }
@@ -493,19 +493,19 @@ namespace MathFizz
             var useW = getCheckBoxItem(harassMenu, "useharassW") && W.IsReady();
             var useE = getCheckBoxItem(harassMenu, "useharassE") && E.IsReady();
             var m = SelectedTarget;
-            if (!m.IsValidTarget())
+            if (!m.LSIsValidTarget())
             {
                 m = TargetSelector.GetTarget(530, DamageType.Magical);
-                if (!m.IsValidTarget())
+                if (!m.LSIsValidTarget())
                 {
                     m = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                    if (!m.IsValidTarget())
+                    if (!m.LSIsValidTarget())
                     {
                         m = TargetSelector.GetTarget(R.Range, DamageType.True);
                     }
                 }
             }
-            if (m.IsValidTarget())
+            if (m.LSIsValidTarget())
             {
                 if (ObjectManager.Player.ManaPercent <= getSliderItem(harassMenu, "harassmana"))
                 {
@@ -530,7 +530,7 @@ namespace MathFizz
                                 E.Cast(harassEcastPosition);
                                 //Delay for fizzjumptwo
                                 Utility.DelayAction.Add(365 - ping,
-                                    () => E.Cast(E.GetPrediction(m, false, 1).CastPosition.Extend(startPos, -135)));
+                                    () => E.Cast(E.GetPrediction(m, false, 1).CastPosition.LSExtend(startPos, -135)));
                             }
                             if (useW && (Player.LSDistance(m.Position) <= 175))
                             {
@@ -550,7 +550,7 @@ namespace MathFizz
                                 //Delay for fizzjumptwo
                                 Utility.DelayAction.Add(365 - ping, () =>
                                 {
-                                    E.Cast(E.GetPrediction(m, false, 1).CastPosition.Extend(startPos, -135));
+                                    E.Cast(E.GetPrediction(m, false, 1).CastPosition.LSExtend(startPos, -135));
                                     enoughManaEQ = false;
                                 });
                             }
@@ -589,19 +589,19 @@ namespace MathFizz
             var afterdash = getBoxItem(comboMenu, "ComboMode") == 2;
             var realondash = getBoxItem(comboMenu, "ComboMode") == 3;
             var m = SelectedTarget;
-            if (!m.IsValidTarget())
+            if (!m.LSIsValidTarget())
             {
                 m = TargetSelector.GetTarget(R.Range, DamageType.Magical);
-                if (!m.IsValidTarget())
+                if (!m.LSIsValidTarget())
                 {
                     m = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                    if (!m.IsValidTarget())
+                    if (!m.LSIsValidTarget())
                     {
                         m = TargetSelector.GetTarget(R.Range, DamageType.True);
                     }
                 }
             }
-            if (m.IsValidTarget())
+            if (m.LSIsValidTarget())
             {
                 //Only use when R is Ready & Q is Ready and target is valid
                 if (ondash && !m.IsZombie && useR && Player.LSDistance(m.Position) <= 550)
@@ -1001,9 +1001,9 @@ namespace MathFizz
                         {
                             if (EtoComeback || EEtoComeback)
                             {
-                                var haraspos = harassQCastedPosition.Extend(Player.Position, -(E.Range + E.Range));
+                                var haraspos = harassQCastedPosition.LSExtend(Player.Position, -(E.Range + E.Range));
                                 //E to comeback
-                                E.Cast(harassQCastedPosition.Extend(Player.Position, -(E.Range + E.Range)));
+                                E.Cast(harassQCastedPosition.LSExtend(Player.Position, -(E.Range + E.Range)));
                                 if (EEtoComeback)
                                 {
                                     Utility.DelayAction.Add(365 - ping, () => E.Cast(haraspos));
@@ -1051,7 +1051,7 @@ namespace MathFizz
         {
             Orbwalker.OrbwalkTo(Game.CursorPos);
             var m = SelectedTarget;
-            if (m.IsValidTarget())
+            if (m.LSIsValidTarget())
             {
                 var distance = Player.LSDistance(m.Position);
                 //Check distance
@@ -1111,7 +1111,7 @@ namespace MathFizz
         {
             Orbwalker.OrbwalkTo(Game.CursorPos);
             var m = SelectedTarget;
-            if (m.IsValidTarget())
+            if (m.LSIsValidTarget())
             {
                 var distance = Player.LSDistance(m.Position);
                 if (distance <= Q.Range + R.Range - 600)
@@ -1194,7 +1194,7 @@ namespace MathFizz
             //E Flash RWQ Combo
             Orbwalker.OrbwalkTo(Game.CursorPos);
             var m = SelectedTarget;
-            if (m.IsValidTarget())
+            if (m.LSIsValidTarget())
             {
                 var distance = Player.LSDistance(m.Position);
                 if (distance <= E.Range + F.Range + 165)

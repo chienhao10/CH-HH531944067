@@ -1,11 +1,4 @@
 ﻿To-Do :
-- Fix Valvrave
-- hi im gosu Null Ref [http://i.hizliresim.com/4lZjZL.png]
-- Check out UnderratedShaco
-- Fix Karthus LaneClear
-- Gosu Yas - Doesn't E on C - Fix GapClose on minions
-- Check Liss
-- Check out ElVarus
 - Shen Q Clearing
 - Akali Q Last Hit
 - Veigar R in Zhonya
@@ -17,14 +10,10 @@
 
 -Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
-Anivia, Darius, Nautlius, Nunu, Olaf, Pantheon, Renekton, Tryndamere, Ryze = Port these for ExorAIO SDK
+Darius, Nautlius, Nunu, Olaf, Pantheon, Renekton, Tryndamere, Ryze, Ashe, Mundo, Graves, Jax, Jhin, Jax, Quinn, Karma = Port these for ExorAIO SDK
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
-- J4 [https://github.com/diabaths/Mycodes]
-- STahmKench [https://github.com/Screeder/LeagueSharp/blob/master/Common/SStandalone/SChampions/STahmKench/Champions/TahmKench.cs]
-- ExorAshe/Mundo/Graves/Jax/Jhin/Jax/Quinn/Sivir/Karma [https://github.com/nabbhacker/ExoryREPO/tree/master/ExorAIO] (After porting common version, remember to update to SDK version)
-- FreshBooster Braum & LeBlanc [https://github.com/NaviFly/LeagueSharp/tree/master/FreshBooster]
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
 - Sharpy AIO Zed [https://github.com/deop7138/Sharpy-AIO/tree/master/Sharpy%20AIO]
 - Swiftly Teemo [https://github.com/Nechrito/SDK/tree/master/Swiftly%20Teemo]
@@ -38,7 +27,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Underrated Renekton/Singed [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/]
 - Royal Ziggs [https://github.com/princer007/LSResurrected/tree/master/RoyalZiggy]
 - Badao Draven (https://github.com/badao/Draven/)
-- xQx LeBlanc & Irelia & Olaf [https://github.com/CPMSoft/xQx-LeagueSharp]
+- xQx LeBlanc & Irelia & Olaf & Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
 - S+ Class Tristana
 - SoloVayne
 
@@ -56,8 +45,5 @@ Utility Ports [Only doing after Champions are completed] :
 - AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
 - StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
 - OKTW Ward Standalone [Already in PortAIO]
-
-Library Ports [Only doing if I need it for an addon] :
-- ExorAIO Series SDK
 
 ------------------------------------------------------------------------

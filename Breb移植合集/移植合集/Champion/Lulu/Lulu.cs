@@ -1,24 +1,12 @@
-﻿using ClipperLib;
-using Color = System.Drawing.Color;
-using EloBuddy.SDK.Enumerations;
-using EloBuddy.SDK.Events;
+﻿using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK;
 using EloBuddy;
-using Font = SharpDX.Direct3D9.Font;
-using LeagueSharp.Common.Data;
 using LeagueSharp.Common;
-using SharpDX.Direct3D9;
-using SharpDX;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using System.Security.AccessControl;
 using System;
-using System.Speech.Synthesis;
 using TreeLib.Core;
 using TreeLib.Core.Extensions;
 using TreeLib.Managers;
@@ -186,7 +174,7 @@ namespace LuluLicious
 
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Magical) ?? Pix.GetTarget();
 
-            if (!target.IsValidTarget() || !SpellManager.Q.IsInRange(target))
+            if (!target.LSIsValidTarget() || !SpellManager.Q.IsInRange(target))
             {
                 PixCombo();
                 return;
@@ -222,7 +210,7 @@ namespace LuluLicious
 
         private static bool PixCombo(AIHeroClient target, bool useQ, bool useE, bool killSteal = false)
         {
-            if (!target.IsValidTarget() || !Pix.IsValid())
+            if (!target.LSIsValidTarget() || !Pix.IsValid())
             {
                 return false;
             }
@@ -324,7 +312,7 @@ namespace LuluLicious
                 return;
             }
 
-            if (Player.IsRecalling())
+            if (Player.LSIsRecalling())
             {
                 return;
             }
@@ -375,7 +363,7 @@ namespace LuluLicious
             }
 
             foreach (var enemy in
-                Enemies.Where(e => e.IsValidTarget(E.Range + Q.Range) && !e.IsZombie).OrderBy(e => e.Health))
+                Enemies.Where(e => e.LSIsValidTarget(E.Range + Q.Range) && !e.IsZombie).OrderBy(e => e.Health))
             {
                 var qDmg = Q.GetDamage(enemy);
                 var eDmg = E.GetDamage(enemy);
@@ -424,7 +412,7 @@ namespace LuluLicious
                 return false;
             }
 
-            foreach (var ally in Allies.Where(h => h.IsValidTarget(R.Range, false) && h.CountEnemiesInRange(300) > 0))
+            foreach (var ally in Allies.Where(h => h.LSIsValidTarget(R.Range, false) && h.LSCountEnemiesInRange(300) > 0))
             {
                 var hp = ally.GetPredictedHealthPercent();
 
@@ -446,7 +434,7 @@ namespace LuluLicious
         private static bool AutoQ()
         {
             return getCheckBoxItem(qMenu, "QImpaired") && Q.IsReady() &&
-                   Enemies.Any(e => e.IsValidTarget(Q.Range) && e.IsMovementImpaired() && Q.Cast(e).IsCasted());
+                   Enemies.Any(e => e.LSIsValidTarget(Q.Range) && e.IsMovementImpaired() && Q.Cast(e).IsCasted());
         }
 
         private static bool Superman()
@@ -477,7 +465,7 @@ namespace LuluLicious
             }
 
             if (getKeyBindItem(rMenu, "RForce") &&
-                Allies.Where(h => h.IsValidTarget(R.Range, false)).OrderBy(o => o.Health).Any(o => R.CastOnUnit(o)))
+                Allies.Where(h => h.LSIsValidTarget(R.Range, false)).OrderBy(o => o.Health).Any(o => R.CastOnUnit(o)))
             {
                 return true;
             }
@@ -490,9 +478,9 @@ namespace LuluLicious
 
             var count = 0;
             var bestAlly = Player;
-            foreach (var ally in Allies.Where(a => a.IsValidTarget(R.Range, false)))
+            foreach (var ally in Allies.Where(a => a.LSIsValidTarget(R.Range, false)))
             {
-                var c = ally.CountEnemiesInRange(RRadius);
+                var c = ally.LSCountEnemiesInRange(RRadius);
 
                 if (c <= count)
                 {
@@ -625,7 +613,7 @@ namespace LuluLicious
         public override void Orbwalking_BeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
             if (!getCheckBoxItem(miscMenu, "Support") ||
-                !HeroManager.Allies.Any(x => x.IsValidTarget(1000, false) && !x.IsMe))
+                !HeroManager.Allies.Any(x => x.LSIsValidTarget(1000, false) && !x.IsMe))
             {
                 return;
             }
@@ -637,7 +625,7 @@ namespace LuluLicious
             }
 
             var minion = args.Target as Obj_AI_Base;
-            if (minion != null && minion.IsMinion && minion.IsValidTarget())
+            if (minion != null && minion.IsMinion && minion.LSIsValidTarget())
             {
                 args.Process = false;
             }
@@ -646,7 +634,7 @@ namespace LuluLicious
         public void CustomInterrupter_OnInterruptableTarget(AIHeroClient sender,
             CustomInterrupter.InterruptableTargetEventArgs args)
         {
-            if (sender == null || !sender.IsValidTarget())
+            if (sender == null || !sender.LSIsValidTarget())
             {
                 return;
             }
@@ -668,12 +656,12 @@ namespace LuluLicious
 
             if (
                 Allies.OrderBy(h => h.LSDistance(sender))
-                    .Any(h => h.IsValidTarget(R.Range, false) && h.LSDistance(sender) < RRadius && R.CastOnUnit(h))) {}
+                    .Any(h => h.LSIsValidTarget(R.Range, false) && h.LSDistance(sender) < RRadius && R.CastOnUnit(h))) {}
         }
 
         private static void CustomAntiGapcloser_OnEnemyGapcloser(TreeLib.Core.ActiveGapcloser gapcloser)
         {
-            if (!gapcloser.Sender.IsValidTarget())
+            if (!gapcloser.Sender.LSIsValidTarget())
             {
                 return;
             }

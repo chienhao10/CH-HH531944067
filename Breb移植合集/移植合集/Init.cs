@@ -313,8 +313,7 @@ namespace PortAIO
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
                             case 1:
-                                ExorAIO.Core.Bootstrap.BuildMenu();
-                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                ExorSDK.AIO.OnLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
@@ -335,9 +334,22 @@ namespace PortAIO
                                 break;
                         }
                         break;
+                    case "braum":
+                        switch (Loader.braum)
+                        {
+                            case 0:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                            case 1:
+                                new FreshBooster.Champion.Braum();
+                                break;
+                            default:
+                                SebbyLib.Program.GameOnOnGameLoad();
+                                break;
+                        }
+                        break;
                     case "thresh": // OKTW - Sebby - All Seeby champs go down here
                     case "annie":
-                    case "braum":
                     case "jinx":
                     case "karthus":
                     case "missfortune":
@@ -444,6 +456,9 @@ namespace PortAIO
                             case 1:
                                 ElEasy.Plugins.Ryze f = new ElEasy.Plugins.Ryze();
                                 f.Load();
+                                break;
+                            case 2:
+                                Slutty_ryze.Program.OnLoad();
                                 break;
                             default:
                                 ExorAIO.Core.Bootstrap.BuildMenu();
@@ -590,8 +605,19 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "jarvaniv": // BrianSharp
-                        BrianSharp.Plugin.JarvanIV.OnLoad();
+                    case "jarvaniv": // BrianSharp & D_Jarvan
+                        switch (Loader.jarvan)
+                        {
+                            case 0:
+                                BrianSharp.Plugin.JarvanIV.OnLoad();
+                                break;
+                            case 1:
+                                D_Jarvan.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                BrianSharp.Plugin.JarvanIV.OnLoad();
+                                break;
+                        }
                         break;
                     case "jax": // xqx
                         switch (Loader.jax)
@@ -720,6 +746,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 Leblanc.Program.Game_OnGameLoad();
+                                break;
+                            case 2:
+                                new FreshBooster.Champion.Leblanc();
                                 break;
                             default:
                                 PopBlanc.Program.OnLoad();

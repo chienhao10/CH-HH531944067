@@ -19,8 +19,7 @@ namespace ExorSDK.Champions.Caitlyn
         public static void Combo(EventArgs args)
         {
             if (Bools.HasSheenBuff() ||
-                !Targets.Target.LSIsValidTarget() ||
-                Invulnerable.Check(Targets.Target))
+                GameObjects.Player.Mana < Vars.E.Instance.SData.Mana + Vars.Q.Instance.SData.Mana)
             {
                 return;
             }
@@ -29,8 +28,6 @@ namespace ExorSDK.Champions.Caitlyn
             ///     The E Combo Logic.
             /// </summary>
             if (Vars.E.IsReady() &&
-                Vars.Q.IsReady() &&
-                GameObjects.Player.ManaPercent >= 20 &&
                 Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
                 foreach (var target in
@@ -44,6 +41,13 @@ namespace ExorSDK.Champions.Caitlyn
 						Vars.E.GetPrediction(target).Hitchance >= HitChance.High)
                     {
                         Vars.E.Cast(Vars.E.GetPrediction(target).UnitPosition);
+
+                        if (Vars.Q.IsReady() &&
+                            Vars.getCheckBoxItem(Vars.QMenu, "logical"))
+                        {
+                            Vars.Q.Cast(target.ServerPosition);
+                        }
+
                     }
                 }
             }

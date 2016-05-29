@@ -1,14 +1,14 @@
 using EloBuddy;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
     /// <summary>
     ///     The methods class.
     /// </summary>
-    class Methods
-    {  
+    internal class Methods
+    {
         /// <summary>
         ///     Initializes the methods.
         /// </summary>
@@ -17,8 +17,8 @@ namespace ExorAIO.Champions.Anivia
             Game.OnUpdate += Anivia.OnUpdate;
             GameObject.OnCreate += Anivia.OnCreate;
             GameObject.OnDelete += Anivia.OnDelete;
-            AntiGapcloser.OnEnemyGapcloser += Anivia.OnEnemyGapcloser;
-            Interrupter2.OnInterruptableTarget += Anivia.OnInterruptableTarget;
+            Events.OnGapCloser += Anivia.OnGapCloser;
+            Events.OnInterruptableTarget += Anivia.OnInterruptableTarget;
         }
     }
 }

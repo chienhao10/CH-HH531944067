@@ -94,6 +94,7 @@ namespace ElRengarRevamped
             miscMenu.Add("Misc.Drawings.W", new CheckBox("Draw W"));
             miscMenu.Add("Misc.Drawings.E", new CheckBox("Draw E"));
             miscMenu.Add("Misc.Drawings.Minimap", new CheckBox("Draw R on minimap"));
+            miscMenu.Add("Misc.Root", new CheckBox("Auto E on stunned targets1", false));
         }
 
         #endregion

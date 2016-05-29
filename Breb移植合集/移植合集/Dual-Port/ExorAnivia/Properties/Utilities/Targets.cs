@@ -1,72 +1,59 @@
+using System.Collections.Generic;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
-using LeagueSharp.Common;
 using EloBuddy.SDK;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System.Collections.Generic;
-    using ExorAIO.Utilities;
-
     /// <summary>
     ///     The targets class.
     /// </summary>
-    class Targets
+    internal class Targets
     {
         /// <summary>
         ///     The main hero target.
         /// </summary>
-        public static AIHeroClient Target
-        =>
-            TargetSelector.GetTarget(
-                Variables.Q.Range,
-                DamageType.Magical);
+        public static AIHeroClient Target => TargetSelector.GetTarget(Vars.Q.Range, DamageType.Magical);
 
         /// <summary>
         ///     The minions target.
         /// </summary>
-        public static List<Obj_AI_Base> Minions
-        =>
-            MinionManager.GetMinions(
-                ObjectManager.Player.ServerPosition,
-                Variables.Q.Range,
-                MinionTypes.All,
-                MinionTeam.NotAlly,
-                MinionOrderTypes.None);
+        public static List<Obj_AI_Minion> Minions
+            =>
+                GameObjects.EnemyMinions.Where(
+                    m =>
+                        m.IsMinion() &&
+                        m.LSIsValidTarget(Vars.E.Range)).ToList();
 
         /// <summary>
         ///     The jungle minion targets.
         /// </summary>
-        public static List<Obj_AI_Base> JungleMinions
-        => 
-            MinionManager.GetMinions(
-                ObjectManager.Player.ServerPosition,
-                Variables.Q.Range,
-                MinionTypes.All,
-                MinionTeam.Neutral,
-                MinionOrderTypes.MaxHealth);
+        public static List<Obj_AI_Minion> JungleMinions
+            =>
+                GameObjects.Jungle.Where(
+                    m =>
+                        m.LSIsValidTarget(Vars.Q.Range) &&
+                        !GameObjects.JungleSmall.Contains(m)).ToList();
 
         /// <summary>
         ///     The minions hit by the Q missile.
         /// </summary>
-        public static List<Obj_AI_Base> QMinions
-        => 
-            MinionManager.GetMinions(
-                Anivia.QMissile.Position,
-                Variables.Q.Width,
-                MinionTypes.All,
-                MinionTeam.NotAlly,
-                MinionOrderTypes.MaxHealth);
+        public static List<Obj_AI_Minion> QMinions
+            =>
+                Minions.Concat(JungleMinions)
+                    .Where(m => m.Distance(Anivia.QMissile.Position) < Vars.Q.Width*2 -10f)
+                    .ToList();
 
         /// <summary>
         ///     The minions hit by the R missile.
         /// </summary>
-        public static List<Obj_AI_Base> RMinions
-        => 
-            MinionManager.GetMinions(
-                Anivia.RMissile.Position,
-                Variables.R.Width,
-                MinionTypes.All,
-                MinionTeam.NotAlly,
-                MinionOrderTypes.MaxHealth);
+        public static List<Obj_AI_Minion> RMinions
+            =>
+                Minions.Concat(JungleMinions)
+                    .Where(m => m.Distance(Anivia.RMissile.Position) < Vars.R.Width+250f)
+                    .ToList();
     }
 }

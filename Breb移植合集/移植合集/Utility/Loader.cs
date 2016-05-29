@@ -89,6 +89,8 @@ namespace PortAIO.Utility
         public static int janna { get { return Miscc["janna"].Cast<ComboBox>().CurrentValue; } }
         public static int irelia { get { return Miscc["irelia"].Cast<ComboBox>().CurrentValue; } }
         public static int sivir { get { return Miscc["sivir"].Cast<ComboBox>().CurrentValue; } }
+        public static int jarvan { get { return Miscc["jarvan"].Cast<ComboBox>().CurrentValue; } }
+        public static int braum { get { return Miscc["braum"].Cast<ComboBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -154,6 +156,8 @@ namespace PortAIO.Utility
             "Janna", //51
             "Irelia", //52
             "Sivir", //53
+            "JarvanIV", // 54
+            "Braum", //55
         });
 
         public static void Menu()
@@ -318,7 +322,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[38]))
                 {
-                    Miscc.Add("leblanc", new ComboBox("切换 妖姬脚本 : ", 0, "PopBlanc", "xQx LeBlanc"));
+                    Miscc.Add("leblanc", new ComboBox("切换 妖姬脚本 : ", 0, "PopBlanc", "xQx LeBlanc", "FreshBooster"));
                 }
                 if (Player.ChampionName.Equals(Champion[39]))
                 {
@@ -379,6 +383,14 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[53]))
                 {
                     Miscc.Add("sivir", new ComboBox("切换 战争女神脚本 : ", 0, "OKTW", "ExorAIO SDK"));
+                }
+                if (Player.ChampionName.Equals(Champion[54]))
+                {
+                    Miscc.Add("jarvan", new ComboBox("切换 J4脚本 : ", 0, "BrianSharp", "D_Jarvan"));
+                }
+                if (Player.ChampionName.Equals(Champion[55]))
+                {
+                    Miscc.Add("braum", new ComboBox("切换 巴隆脚本 : ", 0, "OKTW", "FreshBooster"));
                 }
             }
             else

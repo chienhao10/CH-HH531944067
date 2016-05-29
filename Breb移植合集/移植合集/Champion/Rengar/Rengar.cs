@@ -54,7 +54,7 @@ namespace ElRengarRevamped
                     .FirstOrDefault(
                         a =>
                             a.IsValid<AIHeroClient>() && a.IsEnemy && a.LSDistance(Game.CursorPos) < a.BoundingRadius + 80 &&
-                            a.IsValidTarget());
+                            a.LSIsValidTarget());
             if (unit2 != null)
             {
                 SelectedEnemy = unit2;
@@ -108,7 +108,7 @@ namespace ElRengarRevamped
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ||
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
                 {
-                    if (target.IsValidTarget(spells[Spells.Q].Range))
+                    if (target.LSIsValidTarget(spells[Spells.Q].Range))
                     {
                         spells[Spells.Q].Cast();
                     }
@@ -131,7 +131,7 @@ namespace ElRengarRevamped
                       MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio") == 1 && Ferocity == 5))
                 {
                     var x = Prediction.GetPrediction(args.Target as Obj_AI_Base, Player.AttackCastDelay * 1000);
-                    if (Player.Position.To2D().LSDistance(x.UnitPosition.To2D())
+                    if (Player.Position.LSTo2D().LSDistance(x.UnitPosition.LSTo2D())
                         >= Player.BoundingRadius + Player.AttackRange + args.Target.BoundingRadius)
                     {
                         args.Process = false;
@@ -149,7 +149,7 @@ namespace ElRengarRevamped
         {
             try
             {
-                if (Player.IsRecalling() || Player.InFountain() || Ferocity <= 4 || RengarR)
+                if (Player.LSIsRecalling() || Player.InFountain() || Ferocity <= 4 || RengarR)
                 {
                     return;
                 }
@@ -171,19 +171,34 @@ namespace ElRengarRevamped
         {
             try
             {
-                if (!MenuInit.getCheckBoxItem(MenuInit.ksMenu, "Killsteal.On"))
+                if (!MenuInit.getCheckBoxItem(MenuInit.ksMenu, "Killsteal.On") || RengarR)
                 {
                     return;
                 }
 
                 var target =
                     Enemies.FirstOrDefault(
-                        x => x.IsValidTarget(spells[Spells.W].Range) && x.Health < spells[Spells.W].GetDamage(x));
+                        x => x.LSIsValidTarget(spells[Spells.E].Range));
 
-                if (target != null)
+                if (target == null)
+                {
+                    return;
+                }
+
+                if (spells[Spells.W].GetDamage(target) > target.Health && target.LSIsValidTarget(spells[Spells.W].Range))
                 {
                     spells[Spells.W].Cast();
                 }
+
+                if (spells[Spells.E].GetDamage(target) > target.Health && target.LSIsValidTarget(spells[Spells.E].Range))
+                {
+                    var prediction = spells[Spells.E].GetPrediction(target);
+                    if (prediction.Hitchance >= HitChance.VeryHigh)
+                    {
+                        spells[Spells.E].Cast(prediction.CastPosition);
+                    }
+                }
+
             }
             catch (Exception e)
             {
@@ -201,7 +216,7 @@ namespace ElRengarRevamped
                 }
 
                 var target = TargetSelector.GetTarget(1500f, DamageType.Physical);
-                if (!target.IsValidTarget())
+                if (!target.LSIsValidTarget())
                 {
                     return;
                 }
@@ -212,7 +227,7 @@ namespace ElRengarRevamped
                     switch (MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio"))
                     {
                         case 0:
-                            if (spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                            if (spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                             {
                                 var pred = spells[Spells.E].GetPrediction(target);
                                 spells[Spells.E].Cast(target);
@@ -220,7 +235,7 @@ namespace ElRengarRevamped
                             break;
                         case 2:
                             if (spells[Spells.Q].IsReady()
-                                && Player.CountEnemiesInRange(Player.AttackRange + Player.BoundingRadius + 100) != 0)
+                                && Player.LSCountEnemiesInRange(Player.AttackRange + Player.BoundingRadius + 100) != 0)
                             {
                                 spells[Spells.Q].Cast();
                             }
@@ -230,7 +245,7 @@ namespace ElRengarRevamped
                     switch (MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio"))
                     {
                         case 0:
-                            if (spells[Spells.E].IsReady() && target.IsValidTarget(spells[Spells.E].Range))
+                            if (spells[Spells.E].IsReady() && target.LSIsValidTarget(spells[Spells.E].Range))
                             {
                                 var pred = spells[Spells.E].GetPrediction(target);
                                 spells[Spells.E].Cast(target);
@@ -267,7 +282,7 @@ namespace ElRengarRevamped
                 var drawsearchrangeQ = MenuInit.getCheckBoxItem(MenuInit.betaMenu, "Beta.Search.QCastRange");
                 var searchrangeQCastRange = MenuInit.getSliderItem(MenuInit.betaMenu, "Beta.searchrange.Q");
 
-                if (SelectedEnemy.IsValidTarget() && SelectedEnemy.IsVisible && !SelectedEnemy.IsDead)
+                if (SelectedEnemy.LSIsValidTarget() && SelectedEnemy.IsVisible && !SelectedEnemy.IsDead)
                 {
                     Drawing.DrawText(Drawing.WorldToScreen(SelectedEnemy.Position).X - 40,
                         Drawing.WorldToScreen(SelectedEnemy.Position).Y + 10, Color.White, "Selected Target");
@@ -435,6 +450,13 @@ namespace ElRengarRevamped
                 Heal();
                 KillstealHandler();
 
+                // E on Immobile targets
+                if (MenuInit.getCheckBoxItem(MenuInit.miscMenu, "Misc.Root") && spells[Spells.E].IsReady() && !RengarR && Ferocity == 5)
+                {
+                    var target = HeroManager.Enemies.FirstOrDefault(h => h.IsValidTarget(spells[Spells.E].Range));
+                    if (target != null) spells[Spells.E].CastIfHitchanceEquals(target, HitChance.Immobile);
+                }
+
                 if (MenuInit.getCheckBoxItem(MenuInit.betaMenu, "Beta.Cast.Q1") &&
                     MenuInit.getBoxItem(MenuInit.comboMenu, "Combo.Prio") == 2)
                 {
@@ -444,9 +466,9 @@ namespace ElRengarRevamped
                     }
 
                     var searchrange = MenuInit.getSliderItem(MenuInit.betaMenu, "Beta.searchrange");
-                    var target = HeroManager.Enemies.FirstOrDefault(h => h.IsValidTarget(searchrange, false));
+                    var target = HeroManager.Enemies.FirstOrDefault(h => h.LSIsValidTarget(searchrange, false));
 
-                    if (!target.IsValidTarget())
+                    if (!target.LSIsValidTarget())
                     {
                         return;
                     }

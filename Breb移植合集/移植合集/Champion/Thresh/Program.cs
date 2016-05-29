@@ -157,7 +157,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && getCheckBoxItem(eMenu, "inter") && sender.IsValidTarget(E.Range))
+            if (E.IsReady() && getCheckBoxItem(eMenu, "inter") && sender.LSIsValidTarget(E.Range))
             {
                 E.Cast(sender.ServerPosition);
             }
@@ -178,11 +178,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     CastW(allyHero.Position);
                 }
             }
-            if (E.IsReady() && getCheckBoxItem(eMenu, "Gap") && gapcloser.Sender.IsValidTarget(E.Range))
+            if (E.IsReady() && getCheckBoxItem(eMenu, "Gap") && gapcloser.Sender.LSIsValidTarget(E.Range))
             {
                 E.Cast(gapcloser.Sender);
             }
-            else if (Q.IsReady() && getCheckBoxItem(qMenu, "GapQ") && gapcloser.Sender.IsValidTarget(Q.Range))
+            else if (Q.IsReady() && getCheckBoxItem(qMenu, "GapQ") && gapcloser.Sender.LSIsValidTarget(Q.Range))
             {
                 Q.Cast(gapcloser.Sender);
             }
@@ -207,7 +207,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 ThrowLantern();
             }
 
-            if (Marked.IsValidTarget())
+            if (Marked.LSIsValidTarget())
             {
                 if (Program.Combo)
                 {
@@ -245,7 +245,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicE()
         {
             var t = TargetSelector.GetTarget(E.Range, DamageType.Physical);
-            if (t.IsValidTarget() && OktwCommon.CanMove(t))
+            if (t.LSIsValidTarget() && OktwCommon.CanMove(t))
             {
 
                 if (Program.Combo)
@@ -271,7 +271,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var eCastPosition = Epush.GetPrediction(target).CastPosition;
                 var distance = Player.LSDistance(eCastPosition);
-                var ext = Player.Position.Extend(eCastPosition, -distance);
+                var ext = Player.Position.LSExtend(eCastPosition, -distance);
                 E.Cast(ext);
             }
         }
@@ -285,11 +285,11 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 var t = TargetSelector.GetTarget(maxGrab, DamageType.Physical);
 
-                if (t.IsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.LSDistance(t.ServerPosition) > minGrab)
+                if (t.LSIsValidTarget(maxGrab) && !t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.LSDistance(t.ServerPosition) > minGrab)
                     Program.CastSpell(Q, t);
             }
 
-            foreach (var t in Program.Enemies.Where(t => t.IsValidTarget(maxGrab) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.LSDistance(t.ServerPosition) > minGrab))
+            foreach (var t in Program.Enemies.Where(t => t.LSIsValidTarget(maxGrab) && getCheckBoxItem(qMenu, "grab" + t.NetworkId) && Player.LSDistance(t.ServerPosition) > minGrab))
             {
                 if (!t.HasBuffOfType(BuffType.SpellImmunity) && !t.HasBuffOfType(BuffType.SpellShield))
                 {
@@ -314,17 +314,17 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void LogicR()
         {
             bool rKs = getCheckBoxItem(rMenu, "rKs");
-            foreach (var target in Program.Enemies.Where(target => target.IsValidTarget(R.Range) && target.HasBuff("rocketgrab2")))
+            foreach (var target in Program.Enemies.Where(target => target.LSIsValidTarget(R.Range) && target.HasBuff("rocketgrab2")))
             {
                 if (rKs && R.GetDamage(target) > target.Health && R.IsInRange(target))
                     R.Cast();
             }
-            if (Player.CountEnemiesInRange(R.Range) >= getSliderItem(rMenu, "rCount") && getSliderItem(rMenu, "rCount") > 0)
+            if (Player.LSCountEnemiesInRange(R.Range) >= getSliderItem(rMenu, "rCount") && getSliderItem(rMenu, "rCount") > 0)
                 R.Cast();
             if (getCheckBoxItem(rMenu, "comboR"))
             {
                 var t = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-                if (t.IsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo) && R.IsInRange(t))
+                if (t.LSIsValidTarget() && ((Player.UnderTurret(false) && !Player.UnderTurret(true)) || Program.Combo) && R.IsInRange(t))
                 {
                     if (Player.LSDistance(t.ServerPosition) > Player.LSDistance(t.Position))
                         R.Cast();
@@ -342,7 +342,6 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                     var blitz = saveAlly.GetBuff("rocketgrab2").Caster;
                     if (Player.LSDistance(blitz.Position) <= W.Range + 550 && W.IsReady())
                     {
-
                         CastW(blitz.Position);
                     }
                 }
@@ -357,15 +356,15 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         if (ally.IsStunned || ally.IsRooted)
                         {
                             //W.Cast(ally.Position);
-                            LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(ally.Position); });
+                            LeagueSharp.Common.Utility.DelayAction.Add(250, () => { W.Cast(ally.Position); });
                         }
                     }
                 }
 
-                int nearEnemys = ally.CountEnemiesInRange(900);
+                int nearEnemys = ally.LSCountEnemiesInRange(900);
 
                 if (nearEnemys >= getSliderItem(wMenu, "wCount") && getSliderItem(wMenu, "wCount") > 0)
-                    CastW(W.GetPrediction(ally).CastPosition);
+                    CastW(W.GetPrediction(ally).UnitPosition);
 
                 if (getCheckBoxItem(wMenu, "autoW") && Player.LSDistance(ally) < W.Range + 100)
                 {
@@ -395,9 +394,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
         private static void CastW(Vector3 pos)
         {
             if (Player.LSDistance(pos) < W.Range)
-                LeagueSharp.Common.Utility.DelayAction.Add(500, () => { W.Cast(pos); });
+                LeagueSharp.Common.Utility.DelayAction.Add(250, () => { W.Cast(pos); });
             else
-                LeagueSharp.Common.Utility.DelayAction.Add(500, () => { Player.Position.Extend(pos, W.Range); });
+                LeagueSharp.Common.Utility.DelayAction.Add(250, () => { Player.Position.LSExtend(pos, W.Range); });
         }
 
         private static void Drawing_OnDraw(EventArgs args)

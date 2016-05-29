@@ -1,29 +1,23 @@
 using EloBuddy;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System;
-    using ExorAIO.Utilities;
-
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        /// <param name="(sender as AIHeroClient)">The (sender as AIHeroClient).</param>
         /// <param name="args">The args.</param>
         public static void Weaving(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!args.Target.IsValid<AIHeroClient>() ||
-                Bools.IsSpellShielded((AIHeroClient)args.Target))
-            {
-                return;
-            }
-
+            if (!(args.Target is AIHeroClient) || Invulnerable.Check((AIHeroClient) args.Target)) {}
         }
     }
 }

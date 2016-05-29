@@ -1,3 +1,4 @@
+using ExorSDK.Champions.Anivia;
 using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Sivir;
 using ExorSDK.Utilities;
@@ -23,6 +24,9 @@ namespace ExorSDK.Core
                     break;
                 case "Caitlyn":
                     new Caitlyn().OnLoad();
+                    break;
+                case "Anivia":
+                    new Anivia().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

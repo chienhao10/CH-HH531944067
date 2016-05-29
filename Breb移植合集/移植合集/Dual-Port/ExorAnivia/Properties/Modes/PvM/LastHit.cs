@@ -1,22 +1,16 @@
-using LeagueSharp;
-using LeagueSharp.Common;
+using System;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System;
-
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public static void LastHit(EventArgs args)
-        {
-
-        }
+        public static void LastHit(EventArgs args) {}
     }
 }

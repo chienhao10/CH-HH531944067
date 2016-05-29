@@ -35,10 +35,9 @@ namespace ExorSDK.Utilities
             else if (target is AIHeroClient)
             {
                 return 
-                    target.HasBuff("pantheon_grandskyfall_jump") ||
                     target.HasBuff("rebirth") ||
                     target.HasBuff("zhonyasringshield") ||
-                    target.MoveSpeed < 50 ||
+                    target.MoveSpeed < 150 ||
                     (target as AIHeroClient).LSIsRecalling() ||
                     (target as AIHeroClient).IsCastingInterruptableSpell() ||
                     IsValidStun(target as AIHeroClient) ||

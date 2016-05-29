@@ -172,32 +172,32 @@ namespace LCS_Janna
 
         private static void OnProcess(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
+            if (sender == null)
+            {
+                return;
+            }
             if (E.IsReady())
             {
-                Console.WriteLine("1");
                 if (esettings["e.engage." + args.SData.Name] != null)
                 {
-                    if (sender.IsAlly && sender is AIHeroClient && getCheckBoxItem(esettings, "e.engage." + args.SData.Name) && getCheckBoxItem(esettings, "e." + sender.BaseSkinName) && sender.LSDistance(ObjectManager.Player.Position) <= E.Range && !sender.IsDead && !sender.IsZombie && sender.IsValid)
+                    if (sender is AIHeroClient && sender.IsAlly && getCheckBoxItem(esettings, "e.engage." + args.SData.Name) && getCheckBoxItem(esettings, "e." + sender.BaseSkinName) && E.IsInRange((AIHeroClient)args.Target) && !sender.IsDead && !sender.IsZombie && sender.IsValid)
                     {
                         E.CastOnUnit(sender);
                     }
                 }
 
-                Console.WriteLine("2");
                 if (args.Target != null && !sender.IsMinion)
                 {
                     if (args.Target.IsAlly && args.Target.IsValid)
                     {
                         if (esettings["e." + ((AIHeroClient)args.Target).ChampionName] != null)
-                            if (sender is AIHeroClient && sender.IsEnemy && args.Target.IsAlly && args.Target.Type == GameObjectType.AIHeroClient && args.SData.IsAutoAttack() && ObjectManager.Player.ManaPercent >= getSliderItem(esettings, "min.mana.for.e") && getCheckBoxItem(esettings, "e." + ((AIHeroClient)args.Target).ChampionName) && ((AIHeroClient)args.Target).LSDistance(ObjectManager.Player.Position) < E.Range)
+                            if (sender is AIHeroClient && sender.IsEnemy && args.Target.IsAlly && args.Target.Type == GameObjectType.AIHeroClient && args.SData.IsAutoAttack() && ObjectManager.Player.ManaPercent >= getSliderItem(esettings, "min.mana.for.e") && getCheckBoxItem(esettings, "e." + ((AIHeroClient)args.Target).ChampionName) && E.IsInRange((AIHeroClient)args.Target))
                             {
                                 E.Cast((AIHeroClient)args.Target);
                             }
-
                     }
                 }
 
-                Console.WriteLine("3");
                 if (args.Target != null)
                 {
                     if (args.Target.IsAlly && sender is Obj_AI_Turret)
@@ -205,7 +205,7 @@ namespace LCS_Janna
                         if (esettings["e." + ((AIHeroClient)args.Target).ChampionName] != null)
                         {
                             if (sender is Obj_AI_Turret && args.Target.IsAlly && ObjectManager.Player.ManaPercent >= getSliderItem(esettings, "min.mana.for.e")
-                                && getCheckBoxItem(esettings, "e." + ((AIHeroClient)args.Target).ChampionName) && ((AIHeroClient)args.Target).LSDistance(ObjectManager.Player.Position) < E.Range
+                                && getCheckBoxItem(esettings, "e." + ((AIHeroClient)args.Target).ChampionName) && E.IsInRange((AIHeroClient)args.Target)
                                 && getCheckBoxItem(esettings, "protect.carry.from.turret"))
                             {
                                 E.Cast((AIHeroClient)args.Target);
@@ -214,7 +214,6 @@ namespace LCS_Janna
                     }
                 }
 
-                Console.WriteLine("4");
                 if (esettings["e.protect." + args.SData.Name] != null || esettings["e.protect.targetted." + args.SData.Name] != null)
                 {
                     if (sender is AIHeroClient && args.Target.IsAlly && args.Target.Type == GameObjectType.AIHeroClient
@@ -225,11 +224,9 @@ namespace LCS_Janna
                     }
                 }
 
-                Console.WriteLine("5");
-                if (sender is AIHeroClient && sender.IsEnemy && args.Target.IsAlly && args.Target.Type == GameObjectType.obj_AI_Turret
-                    && args.SData.IsAutoAttack() && ObjectManager.Player.ManaPercent >= getSliderItem(esettings, "min.mana.for.e")
-                    && ((AIHeroClient)args.Target).LSDistance(ObjectManager.Player.Position) < E.Range
-                    && ((AIHeroClient)args.Target).HealthPercent < getSliderItem(esettings, "turret.hp.percent"))
+                 if (sender is AIHeroClient && sender.IsEnemy && args.Target.IsAlly && args.Target.Type == GameObjectType.obj_AI_Turret
+                    && args.SData.IsAutoAttack() && ObjectManager.Player.ManaPercent >= getSliderItem(esettings, "min.mana.for.e") && E.IsInRange((Obj_AI_Turret)args.Target)
+                    && ((Obj_AI_Turret)args.Target).HealthPercent < getSliderItem(esettings, "turret.hp.percent"))
                 {
                     E.Cast((AIHeroClient)args.Target);
                 }
@@ -252,7 +249,6 @@ namespace LCS_Janna
                     }
                     if (args.Target != null && args.Target.Position.LSDistance(Player.Position) <= E.Range && args.Target is AIHeroClient)
                     {
-                        Console.WriteLine("7");
                         var ShieldTarget = HeroManager.Allies.FirstOrDefault(f => f.Position.LSDistance(args.Target.Position) <= 10);
                         E.Cast(ShieldTarget, true);
                         return;

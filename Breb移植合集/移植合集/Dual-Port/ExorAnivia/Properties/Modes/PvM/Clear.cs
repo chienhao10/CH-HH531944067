@@ -1,18 +1,19 @@
+using System;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using SharpDX;
+using Geometry = ExorSDK.Utilities.Geometry;
 using EloBuddy;
-using LeagueSharp.Common;
-using EloBuddy.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System;
-    using System.Linq;
-    using ExorAIO.Utilities;
-    using Geometry = LeagueSharp.Common.Geometry;
-
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Fired when the game is updated.
@@ -28,17 +29,18 @@ namespace ExorAIO.Champions.Anivia
             /// <summary>
             ///     The R Clear Logic.
             /// </summary>
-            if (Variables.R.IsReady() &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededRMana &&
-                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).ToggleState == 1 &&
-                Variables.getCheckBoxItem(Variables.RMenu, "rspell.farm"))
+            if (Vars.R.IsReady() &&
+                GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).ToggleState == 1 &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.R.Slot, Vars.getSliderItem(Vars.RMenu, "clear")) &&
+                Vars.getSliderItem(Vars.RMenu, "clear") != 101)
             {
                 /// <summary>
                 ///     The R LaneClear Logic.
                 /// </summary>
-                if (Variables.R.GetCircularFarmLocation(Targets.Minions, Variables.R.Width).MinionsHit >= 3)
+                if (Vars.R.GetCircularFarmLocation(Targets.Minions).MinionsHit >= 3)
                 {
-                    Variables.R.Cast(Variables.R.GetCircularFarmLocation(Targets.Minions, Variables.R.Width).Position);
+                    Vars.R.Cast(Vars.R.GetCircularFarmLocation(Targets.Minions).Position);
                 }
 
                 /// <summary>
@@ -46,7 +48,7 @@ namespace ExorAIO.Champions.Anivia
                 /// </summary>
                 else if (Targets.JungleMinions.Any())
                 {
-                    Variables.R.Cast((Targets.JungleMinions[0]).Position);
+                    Vars.R.Cast(Targets.JungleMinions[0].ServerPosition);
                 }
                 return;
             }
@@ -54,17 +56,18 @@ namespace ExorAIO.Champions.Anivia
             /// <summary>
             ///     The Q Clear Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana &&
-                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState == 1 &&
-               Variables.getCheckBoxItem(Variables.QMenu, "qspell.farm"))
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState == 1 &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "clear")) &&
+                Vars.getSliderItem(Vars.QMenu, "clear") != 101)
             {
                 /// <summary>
                 ///     The Q JungleClear Logic.
                 /// </summary>
                 if (Targets.JungleMinions.Any())
                 {
-                    Variables.Q.Cast(Targets.JungleMinions[0].Position);
+                    Vars.Q.Cast(Targets.JungleMinions[0].ServerPosition);
                 }
 
                 /// <summary>
@@ -75,38 +78,37 @@ namespace ExorAIO.Champions.Anivia
                     /// <summary>
                     ///     The Aggressive LaneClear Q Logic.
                     /// </summary>
-                    if (HeroManager.Enemies.Any(
+                    if (GameObjects.EnemyHeroes.Any(
                         t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.IsValidTarget(Variables.Q.Range)))
+                            t.LSIsValidTarget(Vars.Q.Range) &&
+                            !Invulnerable.Check(t, DamageType.Magical, false)))
                     {
-                        if (Variables.Q.GetLineFarmLocation(Targets.Minions, Variables.Q.Width).MinionsHit >= 3 &&
-                            new Geometry.Polygon.Rectangle(
-                                    ObjectManager.Player.ServerPosition,
-                                    ObjectManager.Player.ServerPosition.LSExtend(
-                                        Targets.Minions[0].ServerPosition,
-                                        Variables.Q.Range),
-                                    Variables.Q.Width).IsInside(
-                                        Variables.Q.GetPrediction(HeroManager.Enemies.FirstOrDefault(
-                                        t =>
-                                            !Bools.IsSpellShielded(t) &&
-                                            t.IsValidTarget(Variables.Q.Range))).CastPosition))
+                        if (Vars.Q.GetLineFarmLocation(Targets.Minions, Vars.Q.Width*2-10f).MinionsHit >= 3 &&
+                            !new Geometry.Rectangle(
+                                GameObjects.Player.ServerPosition,
+                                GameObjects.Player.ServerPosition.LSExtend(
+                                    Targets.Minions[0].ServerPosition, Vars.Q.Range),
+                                    Vars.Q.Width*2-10f).IsOutside((Vector2)Vars.Q.GetPrediction(
+                                        GameObjects.EnemyHeroes.FirstOrDefault(
+                                            t =>
+                                                !Invulnerable.Check(t) &&
+                                                t.LSIsValidTarget(Vars.Q.Range))).CastPosition))
                         {
-                            Variables.Q.Cast(Variables.Q.GetLineFarmLocation(Targets.Minions, Variables.Q.Width).Position);
+                            Vars.Q.Cast(Vars.Q.GetLineFarmLocation(Targets.Minions, Vars.Q.Width*2-10f).Position);
                         }
                     }
 
                     /// <summary>
                     ///     The LaneClear Q Logic.
                     /// </summary>
-                    else if (!HeroManager.Enemies.Any(
+                    else if (!GameObjects.EnemyHeroes.Any(
                         t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.IsValidTarget(Variables.Q.Range + 100f)))
+                            !Invulnerable.Check(t) &&
+                            t.LSIsValidTarget(Vars.Q.Range + 100)))
                     {
-                        if (Variables.Q.GetLineFarmLocation(Targets.Minions, Variables.Q.Width).MinionsHit >= 3)
+                        if (Vars.Q.GetCircularFarmLocation(Targets.Minions, Vars.Q.Width*2-10f).MinionsHit >= 3)
                         {
-                            Variables.Q.Cast(Variables.Q.GetLineFarmLocation(Targets.Minions, Variables.Q.Width).Position);
+                            Vars.Q.Cast(Vars.Q.GetCircularFarmLocation(Targets.Minions, Vars.Q.Width*2-10f).Position);
                         }
                     }
                 }

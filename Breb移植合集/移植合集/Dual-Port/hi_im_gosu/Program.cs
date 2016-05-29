@@ -255,7 +255,7 @@ namespace hi_im_gosu
         public static void Game_OnGameUpdate(EventArgs args)
         {
             if (getCheckBoxItem(menu, "useR") && R.IsReady()
-                && ObjectManager.Player.CountEnemiesInRange(1000) >= getSliderItem(menu, "enemys")
+                && ObjectManager.Player.LSCountEnemiesInRange(1000) >= getSliderItem(menu, "enemys")
                 && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 R.Cast();

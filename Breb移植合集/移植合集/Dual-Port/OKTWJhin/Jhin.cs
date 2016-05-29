@@ -236,8 +236,8 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 }
 
                 if (!IsCastingR && getCheckBoxItem(rMenu, "Rks")
-                    && GetRdmg(t) * 4 > t.Health && t.CountAlliesInRange(700) == 0 && Player.CountEnemiesInRange(getSliderItem(rMenu, "Rsafe")) == 0
-                    && Player.Distance(t) > getSliderItem(rMenu, "MinRangeR")
+                    && GetRdmg(t) * 4 > t.Health && t.CountAlliesInRange(700) == 0 && Player.LSCountEnemiesInRange(getSliderItem(rMenu, "Rsafe")) == 0
+                    && Player.LSDistance(t) > getSliderItem(rMenu, "MinRangeR")
                     && !Player.UnderTurret(true) && OktwCommon.ValidUlt(t) && !OktwCommon.IsSpellHeroCollision(t, R))
                 {
                     R.Cast(rPosLast);

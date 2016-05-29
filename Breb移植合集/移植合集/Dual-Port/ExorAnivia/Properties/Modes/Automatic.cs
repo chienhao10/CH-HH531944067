@@ -1,26 +1,26 @@
+using System;
+using System.Linq;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
+using EloBuddy;
+using LeagueSharp.SDK.Core.Utils;
+using EloBuddy.SDK;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System;
-    using System.Linq;
-    using ExorAIO.Utilities;
-    using EloBuddy;
-    using EloBuddy.SDK;
-
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Called when the game updates itself.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling())
+            if (GameObjects.Player.LSIsRecalling())
             {
                 return;
             }
@@ -28,97 +28,131 @@ namespace ExorAIO.Champions.Anivia
             /// <summary>
             ///     The R Stacking Manager.
             /// </summary>
-            if (ObjectManager.Player.InFountain() &&
-                Bools.HasTear(ObjectManager.Player) &&
-                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).ToggleState == 1 &&
-               Variables.getCheckBoxItem(Variables.MiscMenu, "misc.tear"))
+            if (GameObjects.Player.InFountain() &&
+                Bools.HasTear(GameObjects.Player) &&
+                GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).ToggleState == 1 &&
+                Vars.getCheckBoxItem(Vars.MiscMenu, "tear"))
             {
-                Variables.R.Cast(Game.CursorPos);
+                Vars.R.Cast(Game.CursorPos);
             }
 
             /// <summary>
             ///     The Automatic Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState == 1 &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.auto"))
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState == 1 &&
+                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
             {
-                foreach (AIHeroClient target in
-                    HeroManager.Enemies.Where(
+                foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
                         Bools.IsImmobile(t) &&
-                        !Bools.IsSpellShielded(t) &&
-                        t.IsValidTarget(Variables.Q.Range)))
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.Q.Range)))
                 {
-                    Variables.Q.Cast(Variables.Q.GetPrediction(target).CastPosition);
+                    Vars.Q.Cast(Vars.Q.GetPrediction(target).UnitPosition);
+                }
+            }
+
+            /// <summary>
+            ///     The Automatic W Logic.
+            /// </summary>
+            if (Vars.W.IsReady() &&
+                Vars.getCheckBoxItem(Vars.WMenu, "logical"))
+            {
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        Bools.IsImmobile(t) &&
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.W.Range)))
+                {
+                    Vars.W.Cast(
+                        GameObjects.Player.ServerPosition.LSExtend(
+                            target.ServerPosition, GameObjects.Player.Distance(target)+20f));
                 }
             }
 
             /// <summary>
             ///     The Q Missile Manager.
             /// </summary>
-            if (Variables.Q.IsReady() &&
+            if (Vars.Q.IsReady() &&
                 Anivia.QMissile != null &&
-                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState != 1)
+                GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState != 1)
             {
-                switch (Orbwalker.ActiveModesFlags)
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
                 {
                     /// <summary>
                     ///     The Q Clear Logic.
                     /// </summary>
-                    case Orbwalker.ActiveModes.LaneClear:
+                    if (Anivia.QMissile.Position.CountEnemyHeroesInRange(Vars.Q.Width * 2 - 5f) > 0)
+                    {
+                        Vars.Q.Cast();
+                    }
 
-                        if (Targets.QMinions.Count() >= 3)
-                        {
-                            Variables.Q.Cast();
-                        }
-                        else if (Anivia.QMissile.Position.CountEnemiesInRange(100f) > 0)
-                        {
-                            Variables.Q.Cast();
-                        }
-                        break;
+                    if (Vars.getSliderItem(Vars.QMenu, "clear") == 101)
+                    {
+                        return;
+                    }
 
-                    /// <summary>
-                    ///     The Default Q Logic.
-                    /// </summary>
-                    default:
-                        if (Anivia.QMissile.Position.CountEnemiesInRange(100f) > 0)
-                        {
-                            Variables.Q.Cast();
-                        }
-                        break;
+                    if (Targets.QMinions.Count() >= 2)
+                    {
+                        Vars.Q.Cast();
+                    }
+                }
+                else
+                {
+                    if (!Vars.getCheckBoxItem(Vars.QMenu, "combo"))
+                    {
+                        return;
+                    }
+
+                    if (Anivia.QMissile.Position.CountEnemyHeroesInRange(Vars.Q.Width * 2 - 5f) > 0)
+                    {
+                        Vars.Q.Cast();
+                    }
                 }
             }
 
             /// <summary>
             ///     The R Missile Manager.
             /// </summary>
-            if (Variables.R.IsReady() &&
+            if (Vars.R.IsReady() &&
                 Anivia.RMissile != null &&
-                !ObjectManager.Player.InFountain() &&
-                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).ToggleState != 1)
+                !GameObjects.Player.InFountain() &&
+                GameObjects.Player.Spellbook.GetSpell(SpellSlot.R).ToggleState != 1)
             {
-                switch (Orbwalker.ActiveModesFlags)
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
                 {
                     /// <summary>
                     ///     The R Clear Logic.
                     /// </summary>
-                    case Orbwalker.ActiveModes.LaneClear:
-                        if (Targets.RMinions.Count() < 3)
-                        {
-                            Variables.R.Cast();
-                        }
-                        break;
+                    if (Vars.getSliderItem(Vars.RMenu, "clear") == 101)
+                    {
+                        return;
+                    }
 
+                    if (!Targets.RMinions.Any() ||
+                        GameObjects.Player.ManaPercent <
+                            ManaManager.GetNeededMana(Vars.R.Slot, Vars.getSliderItem(Vars.RMenu, "clear")))
+                    {
+                        Vars.R.Cast();
+                    }
+                }
+                else
+                {
                     /// <summary>
                     ///     The Default R Logic.
                     /// </summary>
-                    default:
-                        if (Anivia.RMissile.Position.CountEnemiesInRange(Variables.R.Width) < 1)
-                        {
-                            Variables.R.Cast();
-                        }
-                        break;
+                    if (!Vars.getCheckBoxItem(Vars.RMenu, "combo"))
+                    {
+                        return;
+                    }
+
+                    if (Anivia.RMissile.Position.CountEnemyHeroesInRange(Vars.R.Width + 250f) < 1)
+                    {
+                        Vars.R.Cast();
+                    }
                 }
             }
         }

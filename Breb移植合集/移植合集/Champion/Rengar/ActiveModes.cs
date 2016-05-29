@@ -25,7 +25,7 @@ namespace ElRengarRevamped
             try
             {
                 var target = TargetSelector.SelectedTarget ?? TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                if (target.IsValidTarget() == false)
+                if (target.LSIsValidTarget() == false)
                 {
                     return;
                 }
@@ -37,7 +37,7 @@ namespace ElRengarRevamped
                 if (Ferocity <= 4)
                 {
                     if (spells[Spells.Q].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Q")
-                         && Player.CountEnemiesInRange(Player.AttackRange
+                         && Player.LSCountEnemiesInRange(Player.AttackRange
                             + Player.BoundingRadius + 100) != 0)
                     {
                         if (Orbwalker.CanMove)
@@ -53,11 +53,11 @@ namespace ElRengarRevamped
                             if (spells[Spells.E].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.E"))
                             {
                                 var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                if (targetE.IsValidTarget())
+                                if (targetE.LSIsValidTarget())
                                 {
                                     spells[Spells.E].Cast(targetE);
                                 }
-                                foreach (var target2 in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
+                                foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
                                 {
                                     spells[Spells.E].Cast(target2);
                                 }
@@ -70,11 +70,11 @@ namespace ElRengarRevamped
                                 if (Player.IsDashing())
                                 {
                                     var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                    if (targetE.IsValidTarget())
+                                    if (targetE.LSIsValidTarget())
                                     {
                                         spells[Spells.E].Cast(targetE);
                                     }
-                                    foreach (var target2 in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
+                                    foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
                                     {
                                         spells[Spells.E].Cast(target2);
                                     }
@@ -104,11 +104,11 @@ namespace ElRengarRevamped
                                     if (Orbwalker.CanMove)
                                     {
                                         var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                        if (targetE.IsValidTarget())
+                                        if (targetE.LSIsValidTarget())
                                         {
                                             spells[Spells.E].Cast(targetE);
                                         }
-                                        foreach (var target2 in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
+                                        foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
                                         {
                                             spells[Spells.E].Cast(target2);
                                         }
@@ -129,11 +129,11 @@ namespace ElRengarRevamped
                                     if (Player.IsDashing())
                                     {
                                         var targetE = TargetSelector.GetTarget(spells[Spells.E].Range, DamageType.Physical);
-                                        if (targetE.IsValidTarget())
+                                        if (targetE.LSIsValidTarget())
                                         {
                                             spells[Spells.E].Cast(targetE);
                                         }
-                                        foreach (var target2 in HeroManager.Enemies.Where(x => x.IsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
+                                        foreach (var target2 in HeroManager.Enemies.Where(x => x.LSIsValidTarget(spells[Spells.E].Range) && !x.IsZombie))
                                         {
                                             spells[Spells.E].Cast(target2);
                                         }
@@ -169,7 +169,7 @@ namespace ElRengarRevamped
 
                 #region Summoner spells
 
-                if (Youmuu.IsReady() && target.IsValidTarget(spells[Spells.Q].Range))
+                if (Youmuu.IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
                 {
                     Youmuu.Cast();
                 }
@@ -180,7 +180,7 @@ namespace ElRengarRevamped
                     Player.Spellbook.CastSpell(Smite, target);
                 }
 
-                if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Ignite") && target.IsValidTarget(600f) && IgniteDamage(target) >= target.Health)
+                if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Ignite") && target.LSIsValidTarget(600f) && IgniteDamage(target) >= target.Health)
                 {
                     Player.Spellbook.CastSpell(Ignite, target);
                 }
@@ -207,7 +207,7 @@ namespace ElRengarRevamped
         {
             try
             {
-                if (!spells[Spells.E].IsReady() || !target.IsValidTarget(spells[Spells.E].Range))
+                if (!spells[Spells.E].IsReady() || !target.LSIsValidTarget(spells[Spells.E].Range))
                 {
                     return;
                 }
@@ -258,8 +258,8 @@ namespace ElRengarRevamped
                 var hits =
                     HeroManager.Enemies.Where(
                         e =>
-                        e.IsValidTarget() && e.Distance(Player) < 450f
-                        || e.Distance(Player) < 450f && e.IsFacing(Player)).ToList();
+                        e.LSIsValidTarget() && e.LSDistance(Player) < 450f
+                        || e.LSDistance(Player) < 450f && e.LSIsFacing(Player)).ToList();
 
                 return new Tuple<int, List<AIHeroClient>>(hits.Count, hits);
             }
@@ -282,7 +282,7 @@ namespace ElRengarRevamped
                              ? TargetSelector.SelectedTarget
                              : TargetSelector.GetTarget(spells[Spells.Q].Range, DamageType.Physical);
 
-            if (target.IsValidTarget() == false)
+            if (target.LSIsValidTarget() == false)
             {
                 return;
             }
@@ -301,7 +301,7 @@ namespace ElRengarRevamped
                         break;
 
                     case 1:
-                        if (MenuInit.getCheckBoxItem(MenuInit.harassMenu, "Harass.Use.Q") && target.IsValidTarget(spells[Spells.Q].Range))
+                        if (MenuInit.getCheckBoxItem(MenuInit.harassMenu, "Harass.Use.Q") && target.LSIsValidTarget(spells[Spells.Q].Range))
                         {
                             spells[Spells.Q].Cast();
                         }
@@ -311,7 +311,7 @@ namespace ElRengarRevamped
 
             if (Ferocity <= 4)
             {
-                if (MenuInit.getCheckBoxItem(MenuInit.harassMenu, "Harass.Use.Q") && target.IsValidTarget(spells[Spells.Q].Range))
+                if (MenuInit.getCheckBoxItem(MenuInit.harassMenu, "Harass.Use.Q") && target.LSIsValidTarget(spells[Spells.Q].Range))
                 {
                     spells[Spells.Q].Cast();
                 }
@@ -359,7 +359,7 @@ namespace ElRengarRevamped
 
                 if (Ferocity == 5 && MenuInit.getCheckBoxItem(MenuInit.jungleClear, "Jungle.Save.Ferocity"))
                 {
-                    if (minion.IsValidTarget(spells[Spells.W].Range) && !HasPassive)
+                    if (minion.LSIsValidTarget(spells[Spells.W].Range) && !HasPassive)
                     {
                         LaneItems(minion);
                     }
@@ -367,7 +367,7 @@ namespace ElRengarRevamped
                 }
 
                 if (MenuInit.getCheckBoxItem(MenuInit.jungleClear, "Jungle.Use.Q") && spells[Spells.Q].IsReady()
-                    && minion.IsValidTarget(spells[Spells.Q].Range + 100))
+                    && minion.LSIsValidTarget(spells[Spells.Q].Range + 100))
                 {
                     spells[Spells.Q].Cast();
                 }
@@ -383,7 +383,7 @@ namespace ElRengarRevamped
 
                 if (!HasPassive)
                 {
-                    if (MenuInit.getCheckBoxItem(MenuInit.jungleClear, "Jungle.Use.W") && spells[Spells.W].IsReady() && minion.IsValidTarget(spells[Spells.W].Range))
+                    if (MenuInit.getCheckBoxItem(MenuInit.jungleClear, "Jungle.Use.W") && spells[Spells.W].IsReady() && minion.LSIsValidTarget(spells[Spells.W].Range))
                     {
                         if (Ferocity == 5 && spells[Spells.Q].IsReady())
                         {
@@ -394,7 +394,7 @@ namespace ElRengarRevamped
                 }
 
                 if (MenuInit.getCheckBoxItem(MenuInit.jungleClear, "Jungle.Use.E") && spells[Spells.E].IsReady()
-                    && minion.IsValidTarget(spells[Spells.E].Range))
+                    && minion.LSIsValidTarget(spells[Spells.E].Range))
                 {
 
                     if (Ferocity == 5)
@@ -431,7 +431,7 @@ namespace ElRengarRevamped
 
                 if (Ferocity == 5 && MenuInit.getCheckBoxItem(MenuInit.laneClear, "Clear.Save.Ferocity"))
                 {
-                    if (minion.IsValidTarget(spells[Spells.W].Range))
+                    if (minion.LSIsValidTarget(spells[Spells.W].Range))
                     {
                         LaneItems(minion);
                     }
@@ -439,7 +439,7 @@ namespace ElRengarRevamped
                 }
 
                 if (MenuInit.getCheckBoxItem(MenuInit.laneClear, "Clear.Use.Q") && spells[Spells.Q].IsReady()
-                    && minion.IsValidTarget(spells[Spells.Q].Range))
+                    && minion.LSIsValidTarget(spells[Spells.Q].Range))
                 {
                     spells[Spells.Q].Cast();
                 }
@@ -447,12 +447,12 @@ namespace ElRengarRevamped
                 LaneItems(minion);
 
                 if (MenuInit.getCheckBoxItem(MenuInit.laneClear, "Clear.Use.W") && spells[Spells.W].IsReady()
-                    && minion.IsValidTarget(spells[Spells.W].Range))
+                    && minion.LSIsValidTarget(spells[Spells.W].Range))
                 {
                     spells[Spells.W].Cast();
                 }
 
-                if (MenuInit.getCheckBoxItem(MenuInit.laneClear, "Clear.Use.E") && spells[Spells.E].IsReady() && minion.IsValidTarget(spells[Spells.E].Range))
+                if (MenuInit.getCheckBoxItem(MenuInit.laneClear, "Clear.Use.E") && spells[Spells.E].IsReady() && minion.LSIsValidTarget(spells[Spells.E].Range))
                 {
                     if (Ferocity == 5)
                     {

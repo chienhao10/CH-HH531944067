@@ -1,81 +1,89 @@
-using LeagueSharp.Common;
+using EloBuddy.SDK.Menu.Values;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System.Drawing;
-    using ExorAIO.Utilities;
-    using Color = SharpDX.Color;
-    using EloBuddy.SDK.Menu.Values;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy;
-
     /// <summary>
     ///     The menu class.
     /// </summary>
-    class Menus
+    internal class Menus
     {
-
-        public static bool getCheckBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<CheckBox>().CurrentValue;
-        }
-
-        public static int getSliderItem(Menu m, string item)
-        {
-            return m[item].Cast<Slider>().CurrentValue;
-        }
-
-        public static bool getKeyBindItem(Menu m, string item)
-        {
-            return m[item].Cast<KeyBind>().CurrentValue;
-        }
-
-        public static int getBoxItem(Menu m, string item)
-        {
-            return m[item].Cast<ComboBox>().CurrentValue;
-        }
         /// <summary>
         ///     Initializes the menus.
         /// </summary>
-        /// 
-
         public static void Initialize()
         {
-            Variables.QMenu = Variables.Menu.AddSubMenu("Use Q to:", "qmenu");
-            Variables.QMenu.Add("qspell.combo", new CheckBox("Combo"));
-            Variables.QMenu.Add("qspell.auto", new CheckBox("Logical"));
-            Variables.QMenu.Add("qspell.ks", new CheckBox("KillSteal"));
-            Variables.QMenu.Add("qspell.farm", new CheckBox("Clear"));
-
-            Variables.WMenu = Variables.Menu.AddSubMenu("Use W to:", "wmenu");
-            Variables.WMenu.Add("wspell.combo", new CheckBox("Combo"));
-            Variables.WMenu.Add("wspell.gp", new CheckBox("Anti-Gapcloser"));
-            Variables.WMenu.Add("wspell.ir", new CheckBox("Interrupt Enemy Channels"));
-
-            Variables.WhiteListMenu = Variables.Menu.AddSubMenu("Wall: Whitelist Menu", "wmenu.whitelistmenu");
-            foreach (var champ in HeroManager.Enemies)
+            /// <summary>
+            ///     Sets the menu for the Q.
+            /// </summary>
+            Vars.QMenu = Vars.Menu.AddSubMenu("q", "Use Q to:");
             {
-                Variables.WhiteListMenu.Add("wspell.whitelist." + champ.NetworkId,
-                    new CheckBox("Use against: " + champ.ChampionName));
+                Vars.QMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.QMenu.Add("logical", new CheckBox("Logical", true));
+                Vars.QMenu.Add("killsteal", new CheckBox("KillSteal", true));
+                Vars.QMenu.Add("clear", new Slider("Clear / if Mana >= x%", 50, 0, 101));
             }
 
-            Variables.EMenu = Variables.Menu.AddSubMenu("Use E to:", "emenu");
-            Variables.EMenu.Add("espell.combo", new CheckBox("Combo"));
-            Variables.EMenu.Add("espell.ks", new CheckBox("KillSteal"));
+            /// <summary>
+            ///     Sets the menu for the W.
+            /// </summary>
+            Vars.WMenu = Vars.Menu.AddSubMenu("w", "Use W to:");
+            {
+                Vars.WMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.WMenu.Add("logical", new CheckBox("Logical", true));
+                Vars.WMenu.Add("interrupter", new CheckBox("Interrupt Enemy Channels", true));
+                Vars.WMenu.Add("gapcloser", new CheckBox("Anti-Gapcloser", true));
+                {
+                    /// <summary>
+                    ///     Sets the menu for the W Whitelist.
+                    /// </summary>
+                    Vars.WhiteListMenu = Vars.Menu.AddSubMenu("whitelist", "Wall: Whitelist Menu");
+                    {
+                        foreach (var target in GameObjects.EnemyHeroes)
+                        {
+                            Vars.WhiteListMenu.Add(target.ChampionName.ToLower(), new CheckBox($"Use against: {target.ChampionName}", true));
+                        }
+                    }
+                }
+            }
 
+            /// <summary>
+            ///     Sets the menu for the E.
+            /// </summary>
+            Vars.EMenu = Vars.Menu.AddSubMenu("e", "Use E to:");
+            {
+                Vars.EMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.EMenu.Add("killsteal", new CheckBox("KillSteal", true));
+            }
 
-            Variables.RMenu = Variables.Menu.AddSubMenu("Use R to:", "rmenu");
-            Variables.RMenu.Add("rspell.combo", new CheckBox("Combo"));
-            Variables.RMenu.Add("rspell.farm", new CheckBox("LaneClear"));
+            /// <summary>
+            ///     Sets the menu for the R.
+            /// </summary>
+            Vars.RMenu = Vars.Menu.AddSubMenu("r", "Use R to:");
+            {
+                Vars.RMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.RMenu.Add("clear", new Slider("Clear / if Mana >= x%", 50, 0, 101));
+            }
 
-            Variables.MiscMenu = Variables.Menu.AddSubMenu("Miscellaneous", "miscmenu");
-            Variables.MiscMenu.Add("misc.tear", new CheckBox("Stack Tear"));
+            /// <summary>
+            ///     Sets the miscellaneous menu.
+            /// </summary>
+            Vars.MiscMenu = Vars.Menu.AddSubMenu("miscellaneous", "Miscellaneous");
+            {
+                Vars.MiscMenu.Add("tear", new CheckBox("Stack Tear", true));
+            }
 
-            Variables.DrawingsMenu = Variables.Menu.AddSubMenu("Drawings", "drawingsmenu");
-            Variables.DrawingsMenu.Add("drawings.q", new CheckBox("Q Range", false));
-            Variables.DrawingsMenu.Add("drawings.w", new CheckBox("W Range", false));
-            Variables.DrawingsMenu.Add("drawings.e", new CheckBox("E Range", false));
-            Variables.DrawingsMenu.Add("drawings.r", new CheckBox("R Range", false));
+            /// <summary>
+            ///     Sets the menu for the drawings.
+            /// </summary>
+            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("drawings", "Drawings");
+            {
+                Vars.DrawingsMenu.Add("q", new CheckBox("Q Range"));
+                Vars.DrawingsMenu.Add("w", new CheckBox("W Range"));
+                Vars.DrawingsMenu.Add("e", new CheckBox("E Range"));
+                Vars.DrawingsMenu.Add("r", new CheckBox("R Range"));
+            }
         }
     }
 }

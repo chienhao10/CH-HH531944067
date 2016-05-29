@@ -216,6 +216,7 @@
     <Compile Include="Dual-Port\D-Corki\Program.cs" />
     <Compile Include="Dual-Port\D-Elise\Program.cs" />
     <Compile Include="Dual-Port\D-Graves\Program.cs" />
+    <Compile Include="Dual-Port\D-Jarvan\Program.cs" />
     <Compile Include="Dual-Port\D-Rengar\Program.cs" />
     <Compile Include="Dual-Port\e.MotionKatarina\Program.cs" />
     <Compile Include="Dual-Port\ElEasy Ryze\Ryze.cs" />
@@ -269,7 +270,9 @@
     <Compile Include="Dual-Port\FastTrundle\FastTrundle.cs" />
     <Compile Include="Dual-Port\FastTrundle\FastTrundleMenu.cs" />
     <Compile Include="Dual-Port\FreshBooster LeeSin\LeeSin.cs" />
+    <Compile Include="Dual-Port\FreshBoosterBraum\Braum.cs" />
     <Compile Include="Dual-Port\FreshBoosterJanna\Program.cs" />
+    <Compile Include="Dual-Port\FreshBoosterLeBlanc\Program.cs" />
     <Compile Include="Dual-Port\GosuMechanics Yasuo\Collision.cs" />
     <Compile Include="Dual-Port\GosuMechanics Yasuo\Config.cs" />
     <Compile Include="Dual-Port\GosuMechanics Yasuo\EvadeSpellData.cs" />
@@ -350,6 +353,15 @@
     <Compile Include="Dual-Port\OKTWTwistedFate\TwistedFate.cs" />
     <Compile Include="Dual-Port\SimpleSion\Sion.cs" />
     <Compile Include="Champion\Taliyah\Program.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\AutoLevelManager.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\Champion.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\DrawManager.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\GlobalManager.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\Humanizer.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\ItemManager.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\LaneOptions.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\MenuManager.cs" />
+    <Compile Include="Dual-Port\SluttyRyze\Program.cs" />
     <Compile Include="Dual-Port\TophSharp\MenuConfig.cs" />
     <Compile Include="Dual-Port\TophSharp\Taliyah.cs" />
     <Compile Include="Dual-Port\Tyler1\Program.cs" />
@@ -1397,6 +1409,7 @@
     <None Include="Resources\CD_summonerheal.png" />
     <None Include="Resources\CD_summonersmite.png" />
     <None Include="Resources\CD_summonerteleport.png" />
+    <None Include="Resources\Aurelionsol.png" />
     <Content Include="Resources\Images\cursor_drag.png" />
     <Content Include="Resources\Images\notifications_arrow.png" />
     <Content Include="Resources\Images\notifications_check.png" />

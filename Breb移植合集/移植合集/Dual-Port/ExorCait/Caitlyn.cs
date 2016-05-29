@@ -5,6 +5,7 @@ using LeagueSharp.SDK;
 using EloBuddy;
 using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
+using System.Linq;
 
 namespace ExorSDK.Champions.Caitlyn
 {
@@ -93,8 +94,14 @@ namespace ExorSDK.Champions.Caitlyn
                 !Invulnerable.Check(args.Sender, DamageType.Magical, false) &&
                 Vars.getCheckBoxItem(Vars.WMenu, "gapcloser"))
             {
-                Vars.W.Cast(args.End);
-                return;
+                if (!ObjectManager.Get<Obj_AI_Minion>().Any(
+                    m =>
+                        m.Distance(args.End) < 100f &&
+                        m.CharData.BaseSkinName.Equals("caitlyntrap")))
+                {
+                    Vars.W.Cast(args.End);
+                    return;
+                }
             }
 
             if (Vars.E.IsReady() &&

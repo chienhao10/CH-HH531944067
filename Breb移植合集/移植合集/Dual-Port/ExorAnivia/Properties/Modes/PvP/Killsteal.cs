@@ -1,38 +1,39 @@
+using System;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.Data.Enumerations;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System;
-    using System.Linq;
-    using ExorAIO.Utilities;
-    using EloBuddy.SDK;
-
     /// <summary>
     ///     The logics class.
     /// </summary>
-    partial class Logics
+    internal partial class Logics
     {
         /// <summary>
         ///     Called when the game updates itself.
         /// </summary>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Killsteal(EventArgs args)
         {
             /// <summary>
             ///     The KillSteal E Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-               Variables.getCheckBoxItem(Variables.EMenu, "espell.ks"))
+            if (Vars.E.IsReady() &&
+                Vars.getCheckBoxItem(Vars.EMenu, "killsteal"))
             {
-                foreach (AIHeroClient target in
-                    HeroManager.Enemies.Where(
+                foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
-                        !Bools.IsSpellShielded(t) &&
-                        t.IsValidTarget(Variables.E.Range) &&
-                        t.Health < Variables.E.GetDamage(t)))
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.E.Range) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.E)))
                 {
-                    Variables.E.CastOnUnit(target);
+                    Vars.E.CastOnUnit(target);
                     return;
                 }
             }
@@ -40,18 +41,18 @@ namespace ExorAIO.Champions.Anivia
             /// <summary>
             ///     The KillSteal Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState == 1 &&
-               Variables.getCheckBoxItem(Variables.QMenu, "qspell.ks"))
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState == 1 &&
+                Vars.getCheckBoxItem(Vars.QMenu, "killsteal"))
             {
-                foreach (AIHeroClient target in
-                    HeroManager.Enemies.Where(
+                foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
-                        !Bools.IsSpellShielded(t) &&
-                        t.IsValidTarget(Variables.Q.Range) &&
-                        t.Health < Variables.Q.GetDamage(t)))
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.Q.Range) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.Q)))
                 {
-                    Variables.Q.Cast(Variables.Q.GetPrediction(target).CastPosition);
+                    Vars.Q.Cast(Vars.Q.GetPrediction(target).UnitPosition);
                 }
             }
         }

@@ -4,6 +4,7 @@ using ExorSDK.Utilities;
 using LeagueSharp;
 using LeagueSharp.SDK;
 using LeagueSharp.SDK.Core.Utils;
+using EloBuddy;
 
 namespace ExorSDK.Champions.Caitlyn
 {
@@ -24,44 +25,42 @@ namespace ExorSDK.Champions.Caitlyn
             }
 
             /// <summary>
-            ///     The Automatic Q Logic.
-            /// </summary>
-            if (Vars.Q.IsReady() &&
-                GameObjects.Player.CountEnemyHeroesInRange(Vars.Q.Range) == 1 &&
-                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
-            {
-                foreach (var target in GameObjects.EnemyHeroes.Where(
-                    t =>
-                        !Invulnerable.Check(t) &&
-                        t.LSIsValidTarget(Vars.Q.Range)))
-                {
-                    if (target.HasBuff("caitlynyordletrapdebuff") ||
-                        target.HasBuff("caitlynyordletrapinternal"))
-                    {
-                        Vars.Q.Cast(Vars.Q.GetPrediction(target).UnitPosition);
-                    }
-                }
-            }
-
-            /// <summary>
             ///     The Automatic W Logic. 
             /// </summary>
             if (Vars.W.IsReady() &&
                 Vars.getCheckBoxItem(Vars.WMenu, "logical"))
             {
+                foreach (var target in ObjectManager.Get<Obj_AI_Base>().Where(
+                    t =>
+                        Bools.IsImmobile(t) &&
+                        t.LSIsValidTarget(Vars.W.Range) &&
+                        !Invulnerable.Check(t as AIHeroClient, DamageType.Magical, false)))
+                {
+                    if (!ObjectManager.Get<Obj_AI_Minion>().Any(
+                        m =>
+                            m.Distance(target.ServerPosition) < 100f &&
+                            m.CharData.BaseSkinName.Equals("caitlyntrap")))
+                    {
+                        Vars.W.Cast(target.ServerPosition);
+                    }
+                }
+            }
+
+            /// <summary>
+            ///     The Automatic Q Logic.
+            /// </summary>
+            if (Vars.Q.IsReady() &&
+                GameObjects.Player.CountEnemyHeroesInRange(Vars.AARange) < 2 &&
+                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
+            {
                 foreach (var target in GameObjects.EnemyHeroes.Where(
                     t =>
                         Bools.IsImmobile(t) &&
                         !Invulnerable.Check(t) &&
-                        t.LSIsValidTarget(Vars.W.Range)))
+                        t.LSIsValidTarget(Vars.Q.Range) &&
+                        t.HasBuff("caitlynyordletrapinternal")))
                 {
-                    if (!GameObjects.Minions.Any(
-                        m =>
-                            m.Distance(target.ServerPosition) < 100f &&
-                            m.CharData.BaseSkinName.Contains("Cupcake")))
-                    {
-                        Vars.W.Cast(target.ServerPosition);
-                    }
+                    Vars.Q.Cast(target.ServerPosition);
                 }
             }
 

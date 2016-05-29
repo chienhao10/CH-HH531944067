@@ -4,12 +4,14 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using ElUtilitySuite.Vendor.SFX;
+
     using LeagueSharp;
     using LeagueSharp.Common;
 
     using SharpDX;
-    using EloBuddy.SDK.Menu;
     using EloBuddy;
+    using EloBuddy.SDK.Menu;
     using EloBuddy.SDK.Menu.Values;/// <summary>
                                    ///     Casts Zhonya on dangerous spells.
                                    /// </summary>
@@ -446,6 +448,11 @@
                                      ChampionName = "vladimir", SDataName = "vladimirhemoplague", MissileName = "",
                                      Delay = 250, MissileSpeed = int.MaxValue, CastRange = 875f
                                  },
+                              new ZhonyaSpell
+                                 {
+                                     ChampionName = "Yasuo", SDataName = "yasuorknockupcombow", MissileName = "",
+                                     Delay = 1000, MissileSpeed = int.MaxValue, CastRange = 875f
+                                 },
                              new ZhonyaSpell
                                  {
                                      ChampionName = "mordekaiser", SDataName = "mordekaiserchildrenofthegrave",
@@ -530,27 +537,9 @@
         {
             get
             {
-                return getSliderItem(this.Menu, "ZhonyaHPSlider");
+                return getSliderItem(this.Menu, "ZhonyaHPSlider-1");
             }
         }
-
-        /// <summary>
-        ///     Gets a value indicating whether to zhonya at low hp.
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if zhonya at low hp; otherwise, <c>false</c>.
-        /// </value>
-        private bool ZhonyaLowHp
-        {
-            get
-            {
-                return getCheckBoxItem(this.Menu, "ZhonyaHP");
-            }
-        }
-
-        #endregion
-
-        #region Public Methods and Operators
 
         public static bool getCheckBoxItem(Menu m, string item)
         {
@@ -573,6 +562,24 @@
         }
 
         /// <summary>
+        ///     Gets a value indicating whether to zhonya at low hp.
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if zhonya at low hp; otherwise, <c>false</c>.
+        /// </value>
+        private bool ZhonyaLowHp
+        {
+            get
+            {
+                return getCheckBoxItem(this.Menu, "ZhonyaHP");
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        /// <summary>
         ///     Creates the menu.
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
@@ -583,16 +590,9 @@
             {
                 zhonyaMenu.AddGroupLabel("Spells");
                 {
-                    foreach (var spell in
-                        Spells.Where(
-                            x =>
-                            ObjectManager.Get<AIHeroClient>()
-                                .Where(y => y.IsEnemy)
-                                .Any(y => y.ChampionName.ToLower() == x.ChampionName)))
+                    foreach (var spell in Spells.Where(x => ObjectManager.Get<AIHeroClient>().Where(y => y.IsEnemy).Any(y => y.ChampionName.ToLower() == x.ChampionName)))
                     {
-                        var objAiHero =
-                            ObjectManager.Get<AIHeroClient>()
-                                .FirstOrDefault(x => x.ChampionName.ToLower() == spell.ChampionName);
+                        var objAiHero = ObjectManager.Get<AIHeroClient>().FirstOrDefault(x => x.ChampionName.ToLower() == spell.ChampionName);
 
                         if (objAiHero == null)
                         {
@@ -604,7 +604,14 @@
 
                         if (firstOrDefault != null)
                         {
-                            zhonyaMenu.Add(string.Format("Zhonya{0}", spell.SDataName), new CheckBox(string.Format("{0} ({1}) - {2}", char.ToUpper(spell.ChampionName[0]) + spell.ChampionName.Substring(1), firstOrDefault.Slot, spell.SDataName)));
+                            zhonyaMenu.Add(
+                                    string.Format("Zhonya{0}", spell.SDataName),
+                                    new CheckBox(
+                                    string.Format(
+                                        "{0} ({1}) - {2}",
+                                        char.ToUpper(spell.ChampionName[0]) + spell.ChampionName.Substring(1),
+                                        firstOrDefault.Slot,
+                                        spell.SDataName)));
                         }
                     }
                 }
@@ -624,10 +631,12 @@
         public void Load()
         {
             zhonyaItem = new Items.Item(Game.MapId == GameMapId.SummonersRift ? 3157 : 3090);
+            IncomingDamageManager.RemoveDelay = 500;
+            IncomingDamageManager.Skillshots = true;
 
+            Game.OnUpdate += this.OnUpdate;
             GameObject.OnCreate += this.GameObjectOnCreate;
             Obj_AI_Base.OnProcessSpellCast += this.ObjAiBaseOnProcessSpellCast;
-            AttackableUnit.OnDamage += this.ObjAiBaseOnOnDamage;
         }
 
         #endregion
@@ -690,7 +699,8 @@
                 return;
             }
 
-            if (!getCheckBoxItem(this.Menu, string.Format("Zhonya{0}", sdata.SDataName)) || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
+            if (!getCheckBoxItem(this.Menu, string.Format("Zhonya{0}", sdata.SDataName))
+                || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;
             }
@@ -754,23 +764,45 @@
         }
 
         /// <summary>
-        ///     Called when an Obj_AI_Base takes damage.
+        ///     Fired when the game is updated.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="AttackableUnitDamageEventArgs" /> instance containing the event data.</param>
-        private void ObjAiBaseOnOnDamage(AttackableUnit sender, AttackableUnitDamageEventArgs args)
+        /// <param name="args">The <see cref="System.EventArgs" /> instance containing the event data.</param>
+        private void OnUpdate(EventArgs args)
         {
-            if (args.Target.NetworkId != Player.NetworkId
-                || !ObjectManager.GetUnitByNetworkId<GameObject>((uint)args.Target.NetworkId).IsMe || !this.ZhonyaLowHp
-                || !zhonyaItem.IsReady())
+            try
             {
-                return;
-            }
+                if (Player.IsDead || Player.InFountain() || Player.LSIsRecalling())
+                {
+                    return;
+                }
 
-            if (Player.HealthPercent < this.ZhonyaBelowHp
-                || (Player.Health - args.Damage) / Player.MaxHealth * 100 < this.ZhonyaBelowHp)
+                if (!this.ZhonyaLowHp || !zhonyaItem.IsReady())
+                {
+                    return;
+                }
+
+                var enemies = Player.LSCountEnemiesInRange(875f);
+                var totalDamage = IncomingDamageManager.GetDamage(Player) * 1.1f;
+                if (totalDamage <= 0)
+                {
+                    return;
+                }
+
+                if (Player.HealthPercent <= this.ZhonyaBelowHp && enemies >= 1)
+                {
+                    if (Player.HealthPercent < this.ZhonyaBelowHp)
+                    {
+                        zhonyaItem.Cast();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("[ELUTILITYSUITE - ZHOYNA] Used for: {0} - health percentage: {1}%", Player.ChampionName, (int)Player.HealthPercent);
+                    }
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+
+            }
+            catch (Exception e)
             {
-                zhonyaItem.Cast();
+                Console.WriteLine(@"An error occurred: '{0}'", e);
             }
         }
 

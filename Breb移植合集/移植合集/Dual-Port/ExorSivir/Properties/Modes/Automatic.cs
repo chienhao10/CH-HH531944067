@@ -87,28 +87,28 @@ namespace ExorSDK.Champions.Sivir
                 /// <summary>
                 ///     Block Gangplank's Barrels.
                 /// </summary>
-                if ((sender as AIHeroClient).ChampionName.Equals("Gangplank"))
-				{
-					if (AutoAttack.IsAutoAttack(args.SData.Name) ||
-						args.SData.Name.Equals("GangplankQProceed"))
-					{
-						if ((args.Target as Obj_AI_Minion).Health == 1 &&
-							(args.Target as Obj_AI_Minion).CharData.BaseSkinName.Equals("gangplankbarrel"))
-						{
-							if (GameObjects.Player.Distance(args.Target) < 450)
-							{
-								Vars.E.Cast();
-							}
-						}
-					}
-					else if (args.SData.Name.Equals("GangplankEBarrelFuseMissile"))
-					{
-						if (GameObjects.Player.Distance(args.End) < 450)
-						{
-							Vars.E.Cast();
-						}
-					}
-				}
+                if ((sender as AIHeroClient) != null && (sender as AIHeroClient).ChampionName.Equals("Gangplank"))
+                {
+                    if (AutoAttack.IsAutoAttack(args.SData.Name) ||
+                        args.SData.Name.Equals("GangplankQProceed"))
+                    {
+                        if ((args.Target as Obj_AI_Minion).Health == 1 &&
+                            (args.Target as Obj_AI_Minion).CharData.BaseSkinName.Equals("gangplankbarrel"))
+                        {
+                            if (GameObjects.Player.Distance(args.Target) < 450)
+                            {
+                                Vars.E.Cast();
+                            }
+                        }
+                    }
+                    else if (args.SData.Name.Equals("GangplankEBarrelFuseMissile"))
+                    {
+                        if (GameObjects.Player.Distance(args.End) < 450)
+                        {
+                            Vars.E.Cast();
+                        }
+                    }
+                }
 
                 if (!args.Target.IsMe)
                 {
@@ -122,7 +122,7 @@ namespace ExorSDK.Champions.Sivir
                 {
                     if (!sender.CharData.BaseSkinName.Equals("SRU_Baron") &&
                         !sender.CharData.BaseSkinName.Contains("SRU_Dragon") &&
-						!sender.CharData.BaseSkinName.Equals("SRU_RiftHerald"))
+                        !sender.CharData.BaseSkinName.Equals("SRU_RiftHerald"))
                     {
                         return;
                     }
@@ -139,20 +139,20 @@ namespace ExorSDK.Champions.Sivir
                 /// </summary>
                 if (AutoAttack.IsAutoAttack(args.SData.Name))
                 {
-					if (!sender.IsMelee)
-					{
-						if (!args.SData.Name.Contains("Card"))
-						{
-							return;
-						}
-					}
-					else
-					{
-						if (sender.Buffs.Any(b => AutoAttack.IsAutoAttackReset(args.SData.Name)))
-						{
-							Vars.E.Cast();
-						}
-					}
+                    if (!sender.IsMelee)
+                    {
+                        if (!args.SData.Name.Contains("Card"))
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        if (sender.Buffs.Any(b => AutoAttack.IsAutoAttackReset(args.SData.Name)))
+                        {
+                            Vars.E.Cast();
+                        }
+                    }
                 }
 
                 /// <summary>
@@ -161,8 +161,9 @@ namespace ExorSDK.Champions.Sivir
                 if (args.SData.TargettingType.Equals(SpellDataTargetType.LocationAoe))
                 {
                     if (args.SData.Name.Equals("GangplankE") ||
-						args.SData.Name.Equals("TrundleCircle") ||
-						args.SData.Name.Equals("TormentedSoil") ||
+                        args.SData.Name.Equals("TrundleCircle") ||
+                        args.SData.Name.Equals("TormentedSoil") ||
+                        args.SData.Name.Equals("SwainDecrepify") ||
                         args.SData.Name.Equals("MissFortuneScattershot"))
                     {
                         return;
@@ -187,21 +188,21 @@ namespace ExorSDK.Champions.Sivir
                 ///     If the sender is Zed and the processed arg is a Targetted spell (His Ultimate), delay the shieldcasting by 200ms.
                 /// </summary>
                 DelayAction.Add(200,
-				() =>
-					{
-						Vars.E.Cast();
-					}
-				);
+                () =>
+                    {
+                        Vars.E.Cast();
+                    }
+                );
             }
             else
             {
                 DelayAction.Add(
-					Menus.getSliderItem(Vars.EMenu, "delay"),
-				() =>
-					{
-						Vars.E.Cast();
-					}
-				);
+                    Menus.getSliderItem(Vars.EMenu, "delay"),
+                () =>
+                    {
+                        Vars.E.Cast();
+                    }
+                );
             }
         }
     }

@@ -9,7 +9,6 @@ using ExorAIO.Champions.Renekton;
 using ExorAIO.Champions.Ryze;
 using ExorAIO.Champions.Tryndamere;
 using ExorAIO.Utilities;
-using ExorAIO.Champions.Anivia;
 
 namespace ExorAIO.Core
 {
@@ -59,9 +58,6 @@ namespace ExorAIO.Core
                     break;
                 case "Ryze":
                     Ryze.OnLoad();
-                    break;
-                case "Anivia":
-                    Anivia.OnLoad();
                     break;
                 default:
                     Variables.IsLoaded = false;

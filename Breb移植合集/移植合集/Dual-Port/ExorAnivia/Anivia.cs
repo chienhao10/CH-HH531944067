@@ -1,17 +1,16 @@
+using System;
+using ExorSDK.Utilities;
 using LeagueSharp;
-using LeagueSharp.Common;
+using LeagueSharp.SDK;
+using EloBuddy;
+using EloBuddy.SDK;
 
-namespace ExorAIO.Champions.Anivia
+namespace ExorSDK.Champions.Anivia
 {
-    using System;
-    using ExorAIO.Utilities;
-    using EloBuddy;
-    using EloBuddy.SDK;
-
     /// <summary>
     ///     The champion class.
     /// </summary>
-    class Anivia
+    internal class Anivia
     {
         /// <summary>
         ///     Defines the missile object for the Q.
@@ -26,7 +25,7 @@ namespace ExorAIO.Champions.Anivia
         /// <summary>
         ///     Loads Anivia.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -53,7 +52,7 @@ namespace ExorAIO.Champions.Anivia
         ///     Called when an object gets created by the game.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnCreate(GameObject obj, EventArgs args)
         {
             if (obj.IsValid)
@@ -80,7 +79,7 @@ namespace ExorAIO.Champions.Anivia
         ///     Called when an object gets deleted by the game.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <param name="args">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnDelete(GameObject obj, EventArgs args)
         {
             if (obj.IsValid)
@@ -109,7 +108,7 @@ namespace ExorAIO.Champions.Anivia
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -124,7 +123,7 @@ namespace ExorAIO.Champions.Anivia
             /// </summary>
             Logics.Killsteal(args);
 
-            if (Orbwalker.IsAutoAttacking)
+            if (GameObjects.Player.Spellbook.IsAutoAttacking)
             {
                 return;
             }
@@ -146,41 +145,42 @@ namespace ExorAIO.Champions.Anivia
         }
 
         /// <summary>
-        ///     Called on interruptable spell.
+        ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="Interrupter2.InterruptableTargetEventArgs"/> instance containing the event data.</param>
-        public static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
+        /// <param name="sender">The object.</param>
+        /// <param name="args">The <see cref="Events.GapCloserEventArgs" /> instance containing the event data.</param>
+        public static void OnGapCloser(object sender, Events.GapCloserEventArgs args)
         {
-            /// <summary>
-            ///     The Interrupter W Logic.
-            /// </summary>
-            if (Variables.W.IsReady() &&
-                !Bools.IsSpellShielded(sender) &&
-                sender.IsValidTarget(Variables.W.Range) &&
-               Menus.getCheckBoxItem(Variables.WMenu, "wspell.ir"))
+            if (Vars.W.IsReady() &&
+                args.IsDirectedToPlayer &&
+                args.Sender.LSIsValidTarget(Vars.W.Range) &&
+                Vars.getCheckBoxItem(Vars.WMenu, "gapcloser"))
             {
-                Variables.W.Cast(ObjectManager.Player.ServerPosition.Extend(Targets.Target.ServerPosition, ObjectManager.Player.Distance(Targets.Target) + 5f));
+                Vars.W.Cast(
+                    GameObjects.Player.ServerPosition.LSExtend(
+                        args.Sender.ServerPosition, GameObjects.Player.BoundingRadius));
             }
         }
 
         /// <summary>
-        ///     Fired on an incoming gapcloser.
+        ///     Fired on interruptable spell.
         /// </summary>
-        /// <param name="gapcloser">The gapcloser.</param>
-        public static void OnEnemyGapcloser(ActiveGapcloser gapcloser)
+        /// <param name="sender">The object.</param>
+        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
+        public static void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
         {
-            /// <summary>
-            ///     The Anti-GapCloser W Logic.
-            /// </summary>
-            if (Variables.W.IsReady() &&
-                gapcloser.Sender.IsValidTarget(Variables.W.Range) &&
-                Menus.getCheckBoxItem(Variables.WMenu, "wspell.gp"))
+            if (Vars.W.IsReady() &&
+                args.Sender.LSIsValidTarget(Vars.W.Range) &&
+                Vars.getCheckBoxItem(Vars.WMenu, "interrupter"))
             {
-                if (gapcloser.SkillType.Equals(GapcloserType.Targeted) &&
-                    ObjectManager.Player.Distance(gapcloser.End) < 100f)
+                if (GameObjects.Player.Distance(
+                        GameObjects.Player.ServerPosition.LSExtend(
+                            args.Sender.ServerPosition,
+                            GameObjects.Player.Distance(args.Sender) + 20f)) < Vars.W.Range)
                 {
-                    Variables.W.Cast(gapcloser.End.Extend(gapcloser.Sender.Position, 10f));
+                    Vars.W.Cast(
+                        GameObjects.Player.ServerPosition.LSExtend(
+                            args.Sender.ServerPosition, GameObjects.Player.Distance(args.Sender) + 20f));
                 }
             }
         }

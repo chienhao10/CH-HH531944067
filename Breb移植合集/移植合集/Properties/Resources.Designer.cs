@@ -153,6 +153,16 @@ namespace PortAIO.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Aurelionsol {
+            get {
+                object obj = ResourceManager.GetObject("Aurelionsol", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Azir {
             get {
                 object obj = ResourceManager.GetObject("Azir", resourceCulture);
@@ -420,8 +430,7 @@ namespace PortAIO.Properties {
         ///     .`.,&apos;             `..,&apos;.&apos;       , |`-.
         ///     l                       .&apos;`.  _/  |   `.
         ///     `-.._&apos;-   ,          _ _&apos;   -&quot; \  .     `
-        ///`.&quot;&quot;&quot;&quot;&quot;&apos;-.`-...,---------&apos;,&apos;         `. `....__.
-        ///.&apos; [rest of string was truncated]&quot;;.
+        ///`.&quot;&quot;&quot;&quot;&quot;&apos;-.`-...,---------&apos;,&apos;         `. [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string display {
             get {
@@ -443,7 +452,7 @@ namespace PortAIO.Properties {
         ///      ._     &apos;           _&apos;  |                    , &apos; \ `
         ///  `.. `.`-...___,...---&quot;&quot;    |       __,.        ,`&quot;   L,|
         ///  |, `- .`._        _,-,.&apos;   .  __.-&apos;-. /        .   ,    \
-        ///-:..     `. `-. [rest of string was truncated]&quot;;.
+        ///-: [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string display2 {
             get {
@@ -461,7 +470,7 @@ namespace PortAIO.Properties {
         ///                 |  |     .                       \.\
         ///       ____      |___._.  |       __               \ `.
         ///     .&apos;    `---&quot;&quot;       ``&quot;-.--&quot;&apos;`  \               .  \
-        ///    .  ,            __               `  [rest of string was truncated]&quot;;.
+        ///    .  ,            __         [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string display3 {
             get {

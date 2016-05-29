@@ -1,24 +1,11 @@
-﻿using ClipperLib;
-using Color = System.Drawing.Color;
-using EloBuddy.SDK.Enumerations;
-using EloBuddy.SDK.Events;
-using EloBuddy.SDK.Menu.Values;
-using EloBuddy.SDK.Menu;
+﻿using Color = System.Drawing.Color;
 using EloBuddy.SDK;
 using EloBuddy;
-using Font = SharpDX.Direct3D9.Font;
-using LeagueSharp.Common.Data;
 using LeagueSharp.Common;
-using SharpDX.Direct3D9;
 using SharpDX;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
 using System.Linq;
-using System.Security.AccessControl;
 using System;
-using System.Speech.Synthesis;
 using TreeLib.Extensions;
 
 namespace LuluLicious
@@ -84,7 +71,7 @@ namespace LuluLicious
                 ObjectManager.Get<Obj_AI_Base>()
                     .Where(
                         o =>
-                            o.IsValidTarget(SpellManager.E.Range, false, _instance.ServerPosition) &&
+                            o.LSIsValidTarget(SpellManager.E.Range, false, _instance.ServerPosition) &&
                             o.LSDistance(target) < 600 && (o.IsAlly || !SpellManager.Q.IsKillable(o)))
                     .OrderBy(o => o.LSDistance(target))
                     .ThenBy(o => o.Team != ObjectManager.Player.Team)
