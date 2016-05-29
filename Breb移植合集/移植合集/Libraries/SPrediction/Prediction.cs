@@ -20,13 +20,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp.Common;
 using SharpDX;
 using Spell = LeagueSharp.Common.Spell;
+using EloBuddy.SDK;
 
 namespace SPrediction
 {
@@ -179,10 +180,9 @@ namespace SPrediction
 
             internal void Lock(bool checkDodge = true)
             {
-                CollisionResult = Collision.GetCollisions(Input.From.LSTo2D(), CastPosition, Input.SpellRange,
-                    Input.SpellWidth, Input.SpellDelay, Input.SpellMissileSpeed);
-                CheckCollisions();
-                CheckOutofRange(checkDodge);
+                this.CollisionResult = Collision.GetCollisions(this.Input.From.To2D(), this.CastPosition, this.Input.SpellRange, this.Input.SpellWidth, this.Input.SpellDelay, this.Input.SpellMissileSpeed);
+                this.CheckCollisions();
+                this.CheckOutofRange(checkDodge);
             }
 
             #endregion
@@ -199,9 +199,8 @@ namespace SPrediction
 
             private void CheckOutofRange(bool checkDodge)
             {
-                if (Input.RangeCheckFrom.LSTo2D().LSDistance(CastPosition) >
-                    Input.SpellRange - (checkDodge ? GetArrivalTime(Input.From.LSTo2D().LSDistance(CastPosition), Input.SpellDelay, Input.SpellMissileSpeed)*Unit.MoveSpeed*(100 - ConfigMenu.MaxRangeIgnore)/100f: 0))
-                    HitChance = HitChance.OutOfRange;
+                if (this.Input.RangeCheckFrom.To2D().Distance(this.CastPosition) > this.Input.SpellRange - (checkDodge ? GetArrivalTime(this.Input.From.To2D().Distance(this.CastPosition), this.Input.SpellDelay, this.Input.SpellMissileSpeed) * this.Unit.MoveSpeed * (100 - ConfigMenu.MaxRangeIgnore) / 100f : 0))
+                    this.HitChance = HitChance.OutOfRange;
             }
 
             #endregion
@@ -328,18 +327,13 @@ namespace SPrediction
         /// <param name="from">Spell casted position</param>
         /// <param name="rangeCheckFrom"></param>
         /// <returns>Prediction result as <see cref="Prediction.Result" /></returns>
-        internal static Result GetPrediction(Obj_AI_Base target, float width, float delay, float missileSpeed,
-            float range, bool collisionable, SkillshotType type, List<Vector2> path, float avgt, float movt, float avgp,
-            float anglediff, Vector2 from, Vector2 rangeCheckFrom)
+        internal static Result GetPrediction(Obj_AI_Base target, float width, float delay, float missileSpeed, float range, bool collisionable, SkillshotType type, List<Vector2> path, float avgt, float movt, float avgp, float anglediff, Vector2 from, Vector2 rangeCheckFrom)
         {
-            AssertInitializationMode();
+            Prediction.AssertInitializationMode();
 
-            var result = new Result
-            {
-                Input = new Input(target, delay, missileSpeed, width, range, collisionable, type, @from.To3D2(),
-                    rangeCheckFrom.To3D2()),
-                Unit = target
-            };
+            Result result = new Result();
+            result.Input = new Input(target, delay, missileSpeed, width, range, collisionable, type, from.To3D2(), rangeCheckFrom.To3D2());
+            result.Unit = target;
 
             try
             {
@@ -350,7 +344,7 @@ namespace SPrediction
                 if (path.Count <= 1 && movt > 100 && (Environment.TickCount - PathTracker.EnemyInfo[target.NetworkId].LastAATick > 300 || !ConfigMenu.CheckAAWindUp)) //if target is not moving, easy to hit (and not aaing)
                 {
                     result.HitChance = HitChance.VeryHigh;
-                    result.CastPosition = target.ServerPosition.LSTo2D();
+                    result.CastPosition = target.ServerPosition.To2D();
                     result.UnitPosition = result.CastPosition;
                     result.Lock();
 
@@ -359,10 +353,10 @@ namespace SPrediction
 
                 if (target is AIHeroClient)
                 {
-                    if (((AIHeroClient) target).IsChannelingImportantSpell())
+                    if (((AIHeroClient)target).IsChannelingImportantSpell())
                     {
                         result.HitChance = HitChance.VeryHigh;
-                        result.CastPosition = target.ServerPosition.LSTo2D();
+                        result.CastPosition = target.ServerPosition.To2D();
                         result.UnitPosition = result.CastPosition;
                         result.Lock();
 
@@ -371,10 +365,10 @@ namespace SPrediction
 
                     if (Environment.TickCount - PathTracker.EnemyInfo[target.NetworkId].LastAATick < 300 && ConfigMenu.CheckAAWindUp)
                     {
-                        if (target.AttackCastDelay*1000 + PathTracker.EnemyInfo[target.NetworkId].AvgOrbwalkTime + avgt - width/2f/target.MoveSpeed >= GetArrivalTime(target.ServerPosition.LSTo2D().LSDistance(from), delay, missileSpeed))
+                        if (target.AttackCastDelay * 1000 + PathTracker.EnemyInfo[target.NetworkId].AvgOrbwalkTime + avgt - width / 2f / target.MoveSpeed >= GetArrivalTime(target.ServerPosition.To2D().Distance(from), delay, missileSpeed))
                         {
                             result.HitChance = HitChance.High;
-                            result.CastPosition = target.ServerPosition.LSTo2D();
+                            result.CastPosition = target.ServerPosition.To2D();
                             result.UnitPosition = result.CastPosition;
                             result.Lock();
 
@@ -394,7 +388,7 @@ namespace SPrediction
                     }
                 }
 
-                if (target.LSIsDashing()) //if unit is dashing
+                if (target.IsDashing()) //if unit is dashing
                     return GetDashingPrediction(target, width, delay, missileSpeed, range, collisionable, type, from, rangeCheckFrom);
 
                 if (Utility.IsImmobileTarget(target)) //if unit is immobile
@@ -402,8 +396,8 @@ namespace SPrediction
 
                 result = WaypointAnlysis(target, width, delay, missileSpeed, range, collisionable, type, path, avgt, movt, avgp, anglediff, from);
 
-                var d = result.CastPosition.LSDistance(target.ServerPosition.LSTo2D());
-                if (d >= (avgt - movt)*target.MoveSpeed && d >= avgp)
+                float d = result.CastPosition.Distance(target.ServerPosition.To2D());
+                if (d >= (avgt - movt) * target.MoveSpeed && d >= avgp)
                     result.HitChance = HitChance.Medium;
 
                 result.Lock();
@@ -430,16 +424,25 @@ namespace SPrediction
         /// <param name="type">Spell skillshot type</param>
         /// <param name="from">Spell casted position</param>
         /// <returns></returns>
-        internal static Result GetDashingPrediction(Obj_AI_Base target, float width, float delay, float missileSpeed,
-            float range, bool collisionable, SkillshotType type, Vector2 from, Vector2 rangeCheckFrom)
+        /// <summary>
+        /// Gets Prediction result while unit is dashing
+        /// </summary>
+        /// <param name="target">Target for spell</param>
+        /// <param name="width">Spell width</param>
+        /// <param name="delay">Spell delay</param>
+        /// <param name="missileSpeed">Spell missile speed</param>
+        /// <param name="range">Spell range</param>
+        /// <param name="collisionable">Spell collisionable</param>
+        /// <param name="type">Spell skillshot type</param>
+        /// <param name="from">Spell casted position</param>
+        /// <returns></returns>
+        internal static Result GetDashingPrediction(Obj_AI_Base target, float width, float delay, float missileSpeed, float range, bool collisionable, SkillshotType type, Vector2 from, Vector2 rangeCheckFrom)
         {
-            var result = new Result
-            {
-                Input = new Input(target, delay, missileSpeed, width, range, collisionable, type, @from.To3D2(), rangeCheckFrom.To3D2()),
-                Unit = target
-            };
+            Result result = new Result();
+            result.Input = new Input(target, delay, missileSpeed, width, range, collisionable, type, from.To3D2(), rangeCheckFrom.To3D2());
+            result.Unit = target;
 
-            if (target.LSIsDashing())
+            if (target.IsDashing())
             {
                 var dashInfo = target.LSGetDashInfo();
                 if (dashInfo.IsBlink)
@@ -474,25 +477,21 @@ namespace SPrediction
         /// <param name="type">Spell skillshot type</param>
         /// <param name="from">Spell casted position</param>
         /// <returns></returns>
-        internal static Result GetImmobilePrediction(Obj_AI_Base target, float width, float delay, float missileSpeed,
-            float range, bool collisionable, SkillshotType type, Vector2 from, Vector2 rangeCheckFrom)
+        internal static Result GetImmobilePrediction(Obj_AI_Base target, float width, float delay, float missileSpeed, float range, bool collisionable, SkillshotType type, Vector2 from, Vector2 rangeCheckFrom)
         {
-            var result = new Result
-            {
-                Input = new Input(target, delay, missileSpeed, width, range, collisionable, type, @from.To3D2(),
-                    rangeCheckFrom.To3D2()),
-                Unit = target,
-                CastPosition = target.ServerPosition.LSTo2D()
-            };
+            Result result = new Result();
+            result.Input = new Input(target, delay, missileSpeed, width, range, collisionable, type, from.To3D2(), rangeCheckFrom.To3D2());
+            result.Unit = target;
+            result.CastPosition = target.ServerPosition.To2D();
             result.UnitPosition = result.CastPosition;
 
             //calculate spell arrival time
-            var t = delay + Game.Ping/2000f;
+            float t = delay + Game.Ping / 2000f;
             if (missileSpeed != 0)
-                t += from.LSDistance(target.ServerPosition)/missileSpeed;
+                t += from.Distance(target.ServerPosition) / missileSpeed;
 
             if (type == SkillshotType.SkillshotCircle)
-                t += width/target.MoveSpeed/2f;
+                t += width / target.MoveSpeed / 2f;
 
             if (t >= Utility.LeftImmobileTime(target))
             {
@@ -503,8 +502,7 @@ namespace SPrediction
             }
 
             if (target is AIHeroClient)
-                result.HitChance = GetHitChance(t - Utility.LeftImmobileTime(target),
-                    ((AIHeroClient) target).AvgMovChangeTime(), 0, 0, 0);
+                result.HitChance = GetHitChance(t - Utility.LeftImmobileTime(target), ((AIHeroClient)target).AvgMovChangeTime(), 0, 0, 0);
             else
                 result.HitChance = HitChance.High;
 
@@ -527,19 +525,23 @@ namespace SPrediction
             {
                 if (movt > 50)
                 {
-                    if (avgt >= t*1.25f)
+                    if (avgt >= t * 1.25f)
                     {
                         if (anglediff < 30)
                             return HitChance.VeryHigh;
-                        return HitChance.High;
+                        else
+                            return HitChance.High;
                     }
-                    if (avgt - movt >= t)
+                    else if (avgt - movt >= t)
                         return HitChance.Medium;
-                    return HitChance.Low;
+                    else
+                        return HitChance.Low;
                 }
-                return HitChance.VeryHigh;
+                else
+                    return HitChance.VeryHigh;
             }
-            return HitChance.High;
+            else
+                return HitChance.High;
         }
 
         /// <summary>
@@ -552,7 +554,7 @@ namespace SPrediction
         internal static float GetArrivalTime(float distance, float delay, float missileSpeed = 0)
         {
             if (missileSpeed != 0)
-                return distance/missileSpeed + delay;
+                return distance / missileSpeed + delay;
 
             return delay;
         }
@@ -573,29 +575,28 @@ namespace SPrediction
         /// <param name="avgp">Average Path Lenght</param>
         /// <param name="from">Spell casted position</param>
         /// <returns></returns>
-        internal static Result WaypointAnlysis(Obj_AI_Base target, float width, float delay, float missileSpeed,
-            float range, bool collisionable, SkillshotType type, List<Vector2> path, float avgt, float movt, float avgp,
-            float anglediff, Vector2 from, float moveSpeed = 0, bool isDash = false)
+        internal static Result WaypointAnlysis(Obj_AI_Base target, float width, float delay, float missileSpeed, float range, bool collisionable, SkillshotType type, List<Vector2> path, float avgt, float movt, float avgp, float anglediff, Vector2 from, float moveSpeed = 0, bool isDash = false)
         {
             if (moveSpeed == 0)
                 moveSpeed = target.MoveSpeed;
 
-            var result = new Result {Unit = target};
+            Result result = new Result();
+            result.Unit = target;
 
-            var flyTimeMax = 0f;
+            float flyTimeMax = 0f;
 
             if (missileSpeed != 0) //skillshot with a missile
-                flyTimeMax = range/missileSpeed;
+                flyTimeMax = range / missileSpeed;
 
-            var tMin = delay + Game.Ping/2000f + ConfigMenu.SpellDelay/1000f;
-            var tMax = flyTimeMax + delay + Game.Ping/1000f + ConfigMenu.SpellDelay/1000f;
-            var pathTime = 0f;
-            int[] pathBounds = {-1, -1};
+            float tMin = delay + Game.Ping / 2000f + ConfigMenu.SpellDelay / 1000f;
+            float tMax = flyTimeMax + delay + Game.Ping / 1000f + ConfigMenu.SpellDelay / 1000f;
+            float pathTime = 0f;
+            int[] pathBounds = new int[] { -1, -1 };
 
             //find bounds
-            for (var i = 0; i < path.Count - 1; i++)
+            for (int i = 0; i < path.Count - 1; i++)
             {
-                var t = path[i + 1].LSDistance(path[i])/moveSpeed;
+                float t = path[i + 1].Distance(path[i]) / moveSpeed;
 
                 if (pathTime <= tMin && pathTime + t >= tMin)
                     pathBounds[0] = i;
@@ -611,37 +612,36 @@ namespace SPrediction
             //calculate cast & unit position
             if (pathBounds[0] != -1 && pathBounds[1] != -1)
             {
-                for (var k = pathBounds[0]; k <= pathBounds[1]; k++)
+                for (int k = pathBounds[0]; k <= pathBounds[1]; k++)
                 {
-                    var direction = (path[k + 1] - path[k]).LSNormalized();
-                    var distance = width;
-                    var extender = target.BoundingRadius;
+                    Vector2 direction = (path[k + 1] - path[k]).Normalized();
+                    float distance = width;
+                    float extender = target.BoundingRadius;
 
                     if (type == SkillshotType.SkillshotLine)
                         extender = width;
 
-                    var steps = (int) Math.Floor(path[k].LSDistance(path[k + 1])/distance);
+                    int steps = (int)Math.Floor(path[k].Distance(path[k + 1]) / distance);
                     //split & anlyse current path
-                    for (var i = 1; i < steps - 1; i++)
+                    for (int i = 1; i < steps - 1; i++)
                     {
-                        var pCenter = path[k] + direction*distance*i;
-                        var pA = pCenter - direction*extender;
-                        var pB = pCenter + direction*extender;
+                        Vector2 pCenter = path[k] + (direction * distance * i);
+                        Vector2 pA = pCenter - (direction * extender);
+                        Vector2 pB = pCenter + (direction * extender);
 
-                        var flytime = missileSpeed != 0 ? from.LSDistance(pCenter)/missileSpeed : 0f;
-                        var t = flytime + delay + Game.Ping/2000f + ConfigMenu.SpellDelay/1000f;
+                        float flytime = missileSpeed != 0 ? from.Distance(pCenter) / missileSpeed : 0f;
+                        float t = flytime + delay + Game.Ping / 2000f + ConfigMenu.SpellDelay / 1000f;
 
-                        var currentPosition = target.ServerPosition.LSTo2D();
+                        Vector2 currentPosition = target.ServerPosition.To2D();
 
-                        var arriveTimeA = currentPosition.LSDistance(pA)/moveSpeed;
-                        var arriveTimeB = currentPosition.LSDistance(pB)/moveSpeed;
+                        float arriveTimeA = currentPosition.Distance(pA) / moveSpeed;
+                        float arriveTimeB = currentPosition.Distance(pB) / moveSpeed;
 
                         if (Math.Min(arriveTimeA, arriveTimeB) <= t && Math.Max(arriveTimeA, arriveTimeB) >= t)
                         {
                             result.HitChance = GetHitChance(t, avgt, movt, avgp, anglediff);
                             result.CastPosition = pCenter;
-                            result.UnitPosition = pCenter;
-                                //+ (direction * (t - Math.Min(arriveTimeA, arriveTimeB)) * moveSpeed);
+                            result.UnitPosition = pCenter; //+ (direction * (t - Math.Min(arriveTimeA, arriveTimeB)) * moveSpeed);
                             return result;
                         }
                     }
@@ -649,7 +649,7 @@ namespace SPrediction
             }
 
             result.HitChance = HitChance.Impossible;
-            result.CastPosition = target.ServerPosition.LSTo2D();
+            result.CastPosition = target.ServerPosition.To2D();
 
             return result;
         }
@@ -658,62 +658,62 @@ namespace SPrediction
 
         #region Public Methods
 
+
         /// <summary>
-        ///     Gets fast-predicted unit position
+        /// Gets fast-predicted unit position
         /// </summary>
         /// <param name="target">Target</param>
         /// <param name="delay">Spell delay</param>
         /// <param name="missileSpeed">Spell missile speed</param>
         /// <param name="from">Spell casted position</param>
         /// <returns></returns>
-        public static Vector2 GetFastUnitPosition(Obj_AI_Base target, float delay, float missileSpeed = 0,
-            Vector2? from = null, float distanceSet = 0)
+        public static Vector2 GetFastUnitPosition(Obj_AI_Base target, float delay, float missileSpeed = 0, Vector2? from = null, float distanceSet = 0)
         {
-            var path = target.GetWaypoints();
+            List<Vector2> path = target.GetWaypoints();
             if (from == null)
-                from = ObjectManager.Player.ServerPosition.LSTo2D();
+                from = ObjectManager.Player.ServerPosition.To2D();
 
-            if (path.Count <= 1 || (target is AIHeroClient && target.Spellbook.IsChanneling) || Utility.IsImmobileTarget(target))
-                return target.ServerPosition.LSTo2D();
+            if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient)target).IsChannelingImportantSpell()) || Utility.IsImmobileTarget(target))
+                return target.ServerPosition.To2D();
 
-            if (target.LSIsDashing())
-                return target.LSGetDashInfo().Path.Last();
+            if (target.IsDashing())
+                return target.GetDashInfo().Path.Last();
 
-            var distance = distanceSet;
+            float distance = distanceSet;
 
             if (distance == 0)
             {
-                var targetDistance = from.Value.LSDistance(target.ServerPosition);
-                var flyTime = targetDistance/missileSpeed;
+                float targetDistance = from.Value.Distance(target.ServerPosition);
+                float flyTime = targetDistance / missileSpeed;
 
                 if (missileSpeed != 0 && path.Count == 2)
                 {
-                    var Vt = (path[1] - path[0]).LSNormalized()*target.MoveSpeed;
-                    var Vs = (target.ServerPosition.LSTo2D() - from.Value).LSNormalized()*missileSpeed;
-                    var Vr = Vt - Vs;
+                    Vector2 Vt = (path[1] - path[0]).Normalized() * target.MoveSpeed;
+                    Vector2 Vs = (target.ServerPosition.To2D() - from.Value).Normalized() * missileSpeed;
+                    Vector2 Vr = Vt - Vs;
 
-                    flyTime = targetDistance/Vr.Length();
+                    flyTime = targetDistance / Vr.Length();
                 }
 
-                var t = flyTime + delay + Game.Ping/2000f;
-                distance = t*target.MoveSpeed;
+                float t = flyTime + delay + Game.Ping / 2000f;
+                distance = t * target.MoveSpeed;
             }
 
-            for (var i = 0; i < path.Count - 1; i++)
+            for (int i = 0; i < path.Count - 1; i++)
             {
-                var d = path[i + 1].LSDistance(path[i]);
+                float d = path[i + 1].Distance(path[i]);
                 if (distance == d)
                     return path[i + 1];
-                if (distance < d)
-                    return path[i] + distance*(path[i + 1] - path[i]).LSNormalized();
-                distance -= d;
+                else if (distance < d)
+                    return path[i] + distance * (path[i + 1] - path[i]).Normalized();
+                else distance -= d;
             }
 
             return path.Last();
         }
 
         /// <summary>
-        ///     Gets fast-predicted unit position
+        /// Gets fast-predicted unit position
         /// </summary>
         /// <param name="target">Target</param>
         /// <param name="path">Path</param>
@@ -726,48 +726,48 @@ namespace SPrediction
         public static Vector2 GetFastUnitPosition(Obj_AI_Base target, List<Vector2> path, float delay, float missileSpeed = 0, Vector2? from = null, float moveSpeed = 0, float distanceSet = 0)
         {
             if (from == null)
-                from = target.ServerPosition.LSTo2D();
+                from = target.ServerPosition.To2D();
 
             if (moveSpeed == 0)
                 moveSpeed = target.MoveSpeed;
 
-            if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient) target).IsChannelingImportantSpell()) || Utility.IsImmobileTarget(target))
-                return target.ServerPosition.LSTo2D();
+            if (path.Count <= 1 || (target is AIHeroClient && ((AIHeroClient)target).IsChannelingImportantSpell()) || Utility.IsImmobileTarget(target))
+                return target.ServerPosition.To2D();
 
-            if (target.LSIsDashing())
-                return target.LSGetDashInfo().Path.Last();
+            if (target.IsDashing())
+                return target.GetDashInfo().Path.Last();
 
-            var distance = distanceSet;
+            float distance = distanceSet;
 
             if (distance == 0)
             {
-                var targetDistance = from.Value.LSDistance(target.ServerPosition);
-                var flyTime = 0f;
+                float targetDistance = from.Value.Distance(target.ServerPosition);
+                float flyTime = 0f;
 
                 if (missileSpeed != 0) //skillshot with a missile
                 {
-                    var Vt = (path[path.Count - 1] - path[0]).LSNormalized()*moveSpeed;
-                    var Vs = (target.ServerPosition.LSTo2D() - from.Value).LSNormalized()*missileSpeed;
-                    var Vr = Vs - Vt;
+                    Vector2 Vt = (path[path.Count - 1] - path[0]).Normalized() * moveSpeed;
+                    Vector2 Vs = (target.ServerPosition.To2D() - from.Value).Normalized() * missileSpeed;
+                    Vector2 Vr = Vs - Vt;
 
-                    flyTime = targetDistance/Vr.Length();
+                    flyTime = targetDistance / Vr.Length();
 
                     if (path.Count > 5) //complicated movement
-                        flyTime = targetDistance/missileSpeed;
+                        flyTime = targetDistance / missileSpeed;
                 }
 
-                var t = flyTime + delay + Game.Ping/2000f + ConfigMenu.SpellDelay/1000f;
-                distance = t*moveSpeed;
+                float t = flyTime + delay + Game.Ping / 2000f + ConfigMenu.SpellDelay / 1000f;
+                distance = t * moveSpeed;
             }
 
-            for (var i = 0; i < path.Count - 1; i++)
+            for (int i = 0; i < path.Count - 1; i++)
             {
-                var d = path[i + 1].LSDistance(path[i]);
+                float d = path[i + 1].Distance(path[i]);
                 if (distance == d)
                     return path[i + 1];
-                if (distance < d)
-                    return path[i] + distance*(path[i + 1] - path[i]).LSNormalized();
-                distance -= d;
+                else if (distance < d)
+                    return path[i] + distance * (path[i + 1] - path[i]).Normalized();
+                else distance -= d;
             }
 
             return path.Last();

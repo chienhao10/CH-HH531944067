@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using LeagueSharp.Common;
 using SharpDX;
@@ -41,7 +41,7 @@ namespace SPrediction
         {
             return GetPrediction(input.Target, input.SpellWidth, input.SpellDelay, input.SpellMissileSpeed,
                 input.SpellRange, input.SpellCollisionable, input.Path, input.AvgReactionTime, input.LastMovChangeTime,
-                input.AvgPathLenght, input.LastAngleDiff, input.From.To2D(), input.RangeCheckFrom.To2D());
+                input.AvgPathLenght, input.LastAngleDiff, input.From.LSTo2D(), input.RangeCheckFrom.LSTo2D());
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace SPrediction
         {
             return GetPrediction(target, width, delay, missileSpeed, range, collisionable, target.GetWaypoints(),
                 target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), target.LastAngleDiff(),
-                ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
+                ObjectManager.Player.ServerPosition.LSTo2D(), ObjectManager.Player.ServerPosition.LSTo2D());
         }
 
         /// <summary>
@@ -97,8 +97,8 @@ namespace SPrediction
                     avgt, movt, avgp, anglediff, from, rangeCheckFrom);
                 if (pred.HitChance >= HitChance.Low)
                 {
-                    pred.CastPosition = @from + (pred.CastPosition - @from).Normalized()*range
-                        /*.RotateAroundPoint(from, (1 - pred.UnitPosition.LSDistance(ObjectManager.Player.ServerPosition.To2D()) / 820f) * (float)Math.PI / 2f)*/;
+                    pred.CastPosition = @from + (pred.CastPosition - @from).LSNormalized()*range
+                        /*.RotateAroundPoint(from, (1 - pred.UnitPosition.LSDistance(ObjectManager.Player.ServerPosition.LSTo2D()) / 820f) * (float)Math.PI / 2f)*/;
                     var cos = (float) Math.Cos((1 - pred.UnitPosition.LSDistance(from)/820f)*Math.PI/2);
                     var sin = (float) Math.Sin((1 - pred.UnitPosition.LSDistance(from)/820f)*Math.PI/2);
                     var x = cos*(pred.CastPosition.X - from.X) - sin*(pred.CastPosition.Y - from.Y) + from.X;
@@ -113,7 +113,7 @@ namespace SPrediction
             if (path.Count <= 1) //if target is not moving, easy to hit
             {
                 result.HitChance = HitChance.Immobile;
-                result.CastPosition = target.ServerPosition.To2D();
+                result.CastPosition = target.ServerPosition.LSTo2D();
                 result.UnitPosition = result.CastPosition;
                 return result;
             }
@@ -121,7 +121,7 @@ namespace SPrediction
             if (target is AIHeroClient && ((AIHeroClient) target).IsChannelingImportantSpell())
             {
                 result.HitChance = HitChance.Immobile;
-                result.CastPosition = target.ServerPosition.To2D();
+                result.CastPosition = target.ServerPosition.LSTo2D();
                 result.UnitPosition = result.CastPosition;
                 return result;
             }
@@ -139,8 +139,8 @@ namespace SPrediction
 
             if (missileSpeed != 0)
             {
-                var Vt = (path[path.Count - 1] - path[0]).Normalized()*target.MoveSpeed;
-                var Vs = (target.ServerPosition.To2D() - rangeCheckFrom).Normalized()*missileSpeed;
+                var Vt = (path[path.Count - 1] - path[0]).LSNormalized()*target.MoveSpeed;
+                var Vs = (target.ServerPosition.LSTo2D() - rangeCheckFrom).LSNormalized()*missileSpeed;
                 var Vr = Vs - Vt;
 
                 flyTime = targetDistance/Vr.Length();
@@ -170,7 +170,7 @@ namespace SPrediction
                         ClipperWrapper.DefineArc(senderPos - new Vector2(875/2f, 20), testPos, (float) Math.PI*multp,
                             410, 320*multp));
 
-                    if (!dianaArc.IsOutside(target.ServerPosition.To2D()))
+                    if (!dianaArc.IsOutside(target.ServerPosition.LSTo2D()))
                     {
                         result.HitChance = HitChance.VeryHigh;
                         result.CastPosition = testPos;

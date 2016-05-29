@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 
@@ -105,7 +105,7 @@ namespace SPrediction
             var enemies =
                 HeroManager.Enemies.Where(
                     p =>
-                        p.IsValidTarget() &&
+                        p.LSIsValidTarget() &&
                         Prediction.GetFastUnitPosition(p, delay, 0, from).LSDistance(rangeCheckFrom) < range);
 
             if (enemies.Count() > 0)

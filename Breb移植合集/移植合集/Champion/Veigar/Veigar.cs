@@ -355,10 +355,9 @@ namespace FreshBooster.Champion
                 rDam = new[] { 175, 250, 325 }[_R.Level] + (.75f * Player.TotalMagicalDamage);
             }
 
-            for (int i = 0; i < percMissingHP; i++)
-            {
-                rDam += (rDam * .015f); // For Every 1% missing health, 1.5% increased damage of R
-            }
+            var precentofR = ((rDam * .015f) * percMissingHP);
+
+            rDam += precentofR; // For Every 1% missing health, 1.5% increased damage of R
 
             return rDam;
         }

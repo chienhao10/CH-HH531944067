@@ -51,7 +51,7 @@
         public static float CountEnemies(int range)
         {
             return EntityManager.Heroes.Enemies.Count(e => e.IsValidTarget(range) && !e.IsDead && e.IsVisible);
-        }
+        }   
 
         public static void Log(string message, [CallerFilePath] string file = null, [CallerLineNumber] int line = 0)
         {

@@ -134,7 +134,7 @@ namespace AutoSharp
                         _loaded = true;
                         break;
                     case "irelia":
-                        new Irelia();
+                        new AutoSharp.Plugins.Irelia();
                         _loaded = true;
                         break;
                     case "kalista":

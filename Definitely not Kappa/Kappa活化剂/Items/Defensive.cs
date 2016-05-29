@@ -89,5 +89,46 @@
                 Randuin.Cast();
             }
         }
+
+        public static void defcast(Obj_AI_Base caster, Obj_AI_Base target, Obj_AI_Base enemy, float dmg)
+        {
+            var damagepercent = (dmg / target.TotalShieldHealth()) * 100;
+            var death = damagepercent >= target.HealthPercent || dmg >= target.TotalShieldHealth();
+
+            if (target.IsValidTarget(Defensive.FOTM.Range) && Defensive.FaceOfTheMountainc)
+            {
+                if (Defensive.FaceOfTheMountainh >= target.HealthPercent || death || damagepercent >= Defensive.FaceOfTheMountainn)
+                {
+                    Defensive.FOTM.Cast(target);
+                }
+            }
+
+            if (target.IsValidTarget(Defensive.Solari.Range) && Defensive.Solaric)
+            {
+                if (Defensive.Solarih >= target.HealthPercent || death || damagepercent >= Defensive.Solarin)
+                {
+                    Defensive.Solari.Cast();
+                }
+            }
+
+            if (target.IsMe)
+            {
+                if (Defensive.Seraphc)
+                {
+                    if (Defensive.Seraphh >= target.HealthPercent || death || damagepercent >= Defensive.Seraphn)
+                    {
+                        Defensive.Seraph.Cast();
+                    }
+                }
+
+                if (Defensive.Zhonyasc)
+                {
+                    if (Defensive.Zhonyash >= target.HealthPercent || death || damagepercent >= Defensive.Zhonyasn)
+                    {
+                        Defensive.Zhonyas.Cast();
+                    }
+                }
+            }
+        }
     }
 }

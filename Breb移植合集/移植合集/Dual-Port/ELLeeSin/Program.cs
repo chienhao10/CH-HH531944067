@@ -471,7 +471,7 @@ namespace ElLeeSin
 
             if (prediction.Hitchance >= HitChance.High)
             {
-                spells[Spells.Q].Cast(target);
+                spells[Spells.Q].Cast(prediction.CastPosition);
             }
             else if (getCheckBoxItem(InitMenu.miscMenu, "ElLeeSin.Smite.Q") && spells[Spells.Q].IsReady()
                      && target.IsValidTarget(spells[Spells.Q].Range)

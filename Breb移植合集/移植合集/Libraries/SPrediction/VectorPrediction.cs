@@ -19,7 +19,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
 using LeagueSharp.Common;
 using SharpDX;
@@ -88,8 +88,8 @@ namespace SPrediction
             //auto aoe hit (2 hits with using one target as from position)
             if (target.IsChampion()) //do these calcs if champion kappa
             {
-                if (ObjectManager.Player.CountEnemiesInRange(range) > 0 &&
-                    ObjectManager.Player.CountEnemiesInRange(range + vectorLenght) > 1)
+                if (ObjectManager.Player.LSCountEnemiesInRange(range) > 0 &&
+                    ObjectManager.Player.LSCountEnemiesInRange(range + vectorLenght) > 1)
                     //if there is at least 1 enemy in range && at least 2 enemy which laser can hit
                 {
                     var predPos1 = Prediction.GetFastUnitPosition(target, delay); //get target unit position after delay

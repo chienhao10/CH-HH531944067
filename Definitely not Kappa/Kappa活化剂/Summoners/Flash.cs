@@ -30,23 +30,21 @@
             if (sender.Owner.IsMe && args.Slot == F.Slot)
             {
                 var wall = SummMenu["wall"].Cast<CheckBox>().CurrentValue
-                           && (NavMesh.GetCollisionFlags(args.EndPosition) == CollisionFlags.Wall
-                               || NavMesh.GetCollisionFlags(args.EndPosition) == CollisionFlags.Building);
+                           && (NavMesh.GetCollisionFlags(Player.Instance.ServerPosition.Extend(Game.CursorPos, F.Range).To3D()) == CollisionFlags.Wall
+                               || NavMesh.GetCollisionFlags(Player.Instance.ServerPosition.Extend(Game.CursorPos, F.Range).To3D()) == CollisionFlags.Building);
+                var extend = SummMenu["extend"].Cast<CheckBox>().CurrentValue;
 
-                if (wall && SummMenu["wall"].Cast<CheckBox>().CurrentValue
-                    || args.EndPosition.Distance(Player.Instance) < 450 && SummMenu["extend"].Cast<CheckBox>().CurrentValue)
+                if (extend)
                 {
-                    args.Process = false;
+                    if (Player.Instance.Distance(args.EndPosition) < 450)
+                    {
+                        F.Cast(Player.Instance.Position.Extend(Game.CursorPos, 450).To3D());
+                    }
                 }
 
-                if (args.EndPosition.Distance(Player.Instance) < 450 && SummMenu["extend"].Cast<CheckBox>().CurrentValue)
+                if (wall)
                 {
-                    if (wall && SummMenu["wall"].Cast<CheckBox>().CurrentValue)
-                    {
-                        args.Process = false;
-                    }
-
-                    F.Cast(Player.Instance.Position.Extend(Game.CursorPos, 450).To3D());
+                    args.Process = false;
                 }
             }
         }

@@ -62,10 +62,10 @@ namespace IreliaGod
 
             laneclearMenu = Config.AddSubMenu("Laneclear", "Laneclear settings");
             {
-                laneclearMenu.Add("laneclear.q", new CheckBox("Use Q"));
                 laneclearMenu.Add("laneclear.r", new CheckBox("Use R"));
                 laneclearMenu.Add("laneclear.r.minimum", new Slider("   minimum minions", 2, 1, 6));
                 laneclearMenu.Add("laneclear.mana", new Slider("Mana manager (%)", 40, 1));
+                laneclearMenu.Add("useqfarm", new ComboBox("Q Farm Mode: ", 0, "ONLY-UNKILLABLE", "ALWAYS", "NEVER"));
             }
 
             drawingsMenu = Config.AddSubMenu("Drawings", "Drawings settings");

@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 
@@ -92,8 +92,8 @@ namespace SPrediction
 
                 if (sample1.Count() > 0 && sample2.Count() > 0)
                 {
-                    var sample1_avg = sample1.Average(p => p.AngleBetween(Vector2.Zero));
-                    var sample2_avg = sample2.Average(p => p.AngleBetween(Vector2.Zero));
+                    var sample1_avg = sample1.Average(p => p.LSAngleBetween(Vector2.Zero));
+                    var sample2_avg = sample2.Average(p => p.LSAngleBetween(Vector2.Zero));
                     enemy.LastAngleDiff = Math.Abs(sample2_avg - sample1_avg);
                 }
                 if (!enemy.LastWaypoints.SequenceEqual(wp))

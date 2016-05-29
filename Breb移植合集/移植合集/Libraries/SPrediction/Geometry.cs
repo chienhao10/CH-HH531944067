@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using EloBuddy;
-using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;

@@ -16,34 +16,34 @@
  along with SPrediction. If not, see <http://www.gnu.org/licenses/>.
 */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
+using EloBuddy.SDK;
 
 namespace SPrediction
 {
     /// <summary>
-    ///     Line prediction class
+    /// Line prediction class
     /// </summary>
     public static class LinePrediction
     {
         /// <summary>
-        ///     Gets Prediction result
+        /// Gets Prediction result
         /// </summary>
         /// <param name="input">Neccesary inputs for prediction calculations</param>
-        /// <returns>Prediction result as <see cref="Prediction.Result" /></returns>
+        /// <returns>Prediction result as <see cref="Prediction.Result"/></returns>
         public static Prediction.Result GetPrediction(Prediction.Input input)
         {
-            return GetPrediction(input.Target, input.SpellWidth, input.SpellDelay, input.SpellMissileSpeed,
-                input.SpellRange, input.SpellCollisionable, input.Path, input.AvgReactionTime, input.LastMovChangeTime,
-                input.AvgPathLenght, input.LastAngleDiff, input.From.LSTo2D(), input.RangeCheckFrom.LSTo2D());
+            return GetPrediction(input.Target, input.SpellWidth, input.SpellDelay, input.SpellMissileSpeed, input.SpellRange, input.SpellCollisionable, input.Path, input.AvgReactionTime, input.LastMovChangeTime, input.AvgPathLenght, input.LastAngleDiff, input.From.To2D(), input.RangeCheckFrom.To2D());
         }
 
         /// <summary>
-        ///     Gets Prediction result
+        /// Gets Prediction result
         /// </summary>
         /// <param name="target">Target for spell</param>
         /// <param name="width">Spell width</param>
@@ -53,17 +53,14 @@ namespace SPrediction
         /// <param name="collisionable">Spell collisionable</param>
         /// <param name="type">Spell skillshot type</param>
         /// <param name="from">Spell casted position</param>
-        /// <returns>Prediction result as <see cref="Prediction.Result" /></returns>
-        public static Prediction.Result GetPrediction(AIHeroClient target, float width, float delay, float missileSpeed,
-            float range, bool collisionable)
+        /// <returns>Prediction result as <see cref="Prediction.Result"/></returns>
+        public static Prediction.Result GetPrediction(AIHeroClient target, float width, float delay, float missileSpeed, float range, bool collisionable)
         {
-            return GetPrediction(target, width, delay, missileSpeed, range, collisionable, target.GetWaypoints(),
-                target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), target.LastAngleDiff(),
-                ObjectManager.Player.ServerPosition.LSTo2D(), ObjectManager.Player.ServerPosition.LSTo2D());
+            return GetPrediction(target, width, delay, missileSpeed, range, collisionable, target.GetWaypoints(), target.AvgMovChangeTime(), target.LastMovChangeTime(), target.AvgPathLenght(), target.LastAngleDiff(), ObjectManager.Player.ServerPosition.To2D(), ObjectManager.Player.ServerPosition.To2D());
         }
 
         /// <summary>
-        ///     Gets Prediction result
+        /// Gets Prediction result
         /// </summary>
         /// <param name="target">Target for spell</param>
         /// <param name="width">Spell width</param>
@@ -78,17 +75,14 @@ namespace SPrediction
         /// <param name="avgp">Average Path Lenght</param>
         /// <param name="from">Spell casted position</param>
         /// <param name="rangeCheckFrom"></param>
-        /// <returns>Prediction result as <see cref="Prediction.Result" /></returns>
-        public static Prediction.Result GetPrediction(Obj_AI_Base target, float width, float delay, float missileSpeed,
-            float range, bool collisionable, List<Vector2> path, float avgt, float movt, float avgp, float anglediff,
-            Vector2 from, Vector2 rangeCheckFrom)
+        /// <returns>Prediction result as <see cref="Prediction.Result"/></returns>
+        public static Prediction.Result GetPrediction(Obj_AI_Base target, float width, float delay, float missileSpeed, float range, bool collisionable, List<Vector2> path, float avgt, float movt, float avgp, float anglediff, Vector2 from, Vector2 rangeCheckFrom)
         {
-            return Prediction.GetPrediction(target, width, delay, missileSpeed, range, collisionable,
-                SkillshotType.SkillshotLine, path, avgt, movt, avgp, anglediff, from, rangeCheckFrom);
+            return Prediction.GetPrediction(target, width, delay, missileSpeed, range, collisionable, SkillshotType.SkillshotLine, path, avgt, movt, avgp, anglediff, from, rangeCheckFrom);
         }
 
         /// <summary>
-        ///     Gets Aoe Prediction result
+        /// Gets Aoe Prediction result
         /// </summary>
         /// <param name="width">Spell width</param>
         /// <param name="delay">Spell delay</param>
@@ -96,29 +90,22 @@ namespace SPrediction
         /// <param name="range">Spell range</param>
         /// <param name="from">Spell casted position</param>
         /// <param name="rangeCheckFrom"></param>
-        /// <returns>Prediction result as <see cref="Prediction.AoeResult" /></returns>
-        public static Prediction.AoeResult GetAoePrediction(float width, float delay, float missileSpeed, float range,
-            Vector2 from, Vector2 rangeCheckFrom)
+        /// <returns>Prediction result as <see cref="Prediction.AoeResult"/></returns>
+        public static Prediction.AoeResult GetAoePrediction(float width, float delay, float missileSpeed, float range, Vector2 from, Vector2 rangeCheckFrom)
         {
-            var result = new Prediction.AoeResult();
-            var enemies =
-                HeroManager.Enemies.Where(
-                    p =>
-                        p.LSIsValidTarget() &&
-                        Prediction.GetFastUnitPosition(p, delay, 0, from).LSDistance(rangeCheckFrom) < range);
+            Prediction.AoeResult result = new Prediction.AoeResult();
+            var enemies = HeroManager.Enemies.Where(p => p.IsValidTarget() && Prediction.GetFastUnitPosition(p, delay, 0, from).Distance(rangeCheckFrom) < range);
 
-            foreach (var enemy in enemies)
+            foreach (AIHeroClient enemy in enemies)
             {
-                var prediction = GetPrediction(enemy, width, delay, missileSpeed, range, false, enemy.GetWaypoints(),
-                    enemy.AvgMovChangeTime(), enemy.LastMovChangeTime(), enemy.AvgPathLenght(), enemy.LastAngleDiff(),
-                    from, rangeCheckFrom);
+                Prediction.Result prediction = GetPrediction(enemy, width, delay, missileSpeed, range, false, enemy.GetWaypoints(), enemy.AvgMovChangeTime(), enemy.LastMovChangeTime(), enemy.AvgPathLenght(), enemy.LastAngleDiff(), from, rangeCheckFrom);
                 if (prediction.HitChance > HitChance.Medium)
                 {
-                    var to = from + (prediction.CastPosition - from).LSNormalized()*range;
-                    var colResult = Collision.GetCollisions(from, to, range, width, delay, missileSpeed);
+                    Vector2 to = from + (prediction.CastPosition - from).Normalized() * range;
+                    Collision.Result colResult = Collision.GetCollisions(from, to, range, width, delay, missileSpeed, false);
                     if (colResult.Objects.HasFlag(Collision.Flags.EnemyChampions))
                     {
-                        var collisionCount = colResult.Units.Count(p => p.IsEnemy && p.IsChampion());
+                        int collisionCount = colResult.Units.Count(p => p.IsEnemy && p.IsChampion());
                         if (collisionCount > result.HitCount)
                             result = prediction.ToAoeResult(collisionCount, colResult);
                     }

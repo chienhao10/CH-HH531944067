@@ -586,6 +586,9 @@ namespace PortAIO
                             case 1:
                                 IreliaGod.Program.OnGameLoad();
                                 break;
+                            case 2:
+                                Irelia.Irelia.Init();
+                                break;
                             default:
                                 Challenger_Series.Irelia.OnLoad();
                                 break;

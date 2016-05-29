@@ -18,7 +18,7 @@
 
 using System;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 using Spell = LeagueSharp.Common.Spell;

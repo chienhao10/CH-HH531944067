@@ -562,6 +562,47 @@ namespace IreliaGod
 
         private static void Laneclear()
         {
+            {
+                var farmMode = getBoxItem(laneclearMenu, "useqfarm");
+                switch (farmMode)
+                {
+                    case 0:
+                        {
+                            var unkillableMinion =
+                                ObjectManager.Get<Obj_AI_Minion>()
+                                    .FirstOrDefault(
+                                        m =>
+                                            m.IsEnemy && m.Position.LSDistance(ObjectManager.Player.ServerPosition) < 650 &&
+                                            m.Position.LSDistance(ObjectManager.Player.Position) >
+                                            ObjectManager.Player.AttackRange && m.LSIsValidTarget() &&
+                                            m.Health < 25);
+                            if (unkillableMinion != null)
+                            {
+                                Spells.Q.Cast(unkillableMinion);
+                            }
+                            break;
+                        }
+                    case 1:
+                        {
+                            var killableMinion =
+                                ObjectManager.Get<Obj_AI_Minion>()
+                                    .FirstOrDefault(
+                                        m =>
+                                            m.IsEnemy && m.Position.LSDistance(ObjectManager.Player.ServerPosition) < 650 &&
+                                            m.LSIsValidTarget() && m.Health < Spells.Q.GetDamage(m));
+                            if (killableMinion != null)
+                            {
+                                Spells.Q.Cast(killableMinion);
+                            }
+                            break;
+                        }
+                    case 2:
+                        {
+                            break;
+                        }
+                }
+ }
+
             if (Player.ManaPercent <= getSliderItem(laneclearMenu, "laneclear.mana")) return;
 
             var qminion =
@@ -575,10 +616,6 @@ namespace IreliaGod
                             m.LSIsValidTarget());
 
 
-            if (Spells.Q.IsReady() && getCheckBoxItem(laneclearMenu, "laneclear.q") && qminion != null)
-            {
-                Spells.Q.CastOnUnit(qminion);
-            }
 
             var rminions = MinionManager.GetMinions(Player.Position, Spells.R.Range);
             if (Spells.R.IsReady() && getCheckBoxItem(laneclearMenu, "laneclear.r") && rminions.Count != 0)

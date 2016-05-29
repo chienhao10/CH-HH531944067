@@ -378,7 +378,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[52]))
                 {
-                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD"));
+                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD", "Irelia II"));
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {

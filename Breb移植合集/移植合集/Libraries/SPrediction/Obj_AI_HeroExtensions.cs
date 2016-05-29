@@ -17,31 +17,33 @@
 */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using LeagueSharp;
+using LeagueSharp.Common;
 using EloBuddy;
 
 namespace SPrediction
 {
     /// <summary>
-    ///     AIHeroClient extensions for SPrediction
+    /// AIHeroClient extensions for SPrediction
     /// </summary>
     public static class AIHeroClientExtensions
     {
         /// <summary>
-        ///     Gets passed time without moving
+        /// Gets passed time without moving
         /// </summary>
         /// <param name="t">target</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static int MovImmobileTime(this AIHeroClient t)
         {
             Prediction.AssertInitializationMode();
-            return PathTracker.EnemyInfo[t.NetworkId].IsStopped
-                ? Environment.TickCount - PathTracker.EnemyInfo[t.NetworkId].StopTick
-                : 0;
+            return PathTracker.EnemyInfo[t.NetworkId].IsStopped ? Environment.TickCount - PathTracker.EnemyInfo[t.NetworkId].StopTick : 0;
         }
 
         /// <summary>
-        ///     Gets passed time from last movement change
+        /// Gets passed time from last movement change
         /// </summary>
         /// <param name="t">target</param>
         /// <returns></returns>
@@ -53,7 +55,7 @@ namespace SPrediction
         }
 
         /// <summary>
-        ///     Gets average movement reaction time
+        /// Gets average movement reaction time
         /// </summary>
         /// <param name="t">target</param>
         /// <returns></returns>
@@ -65,7 +67,7 @@ namespace SPrediction
         }
 
         /// <summary>
-        ///     Gets average path lenght
+        /// Gets average path lenght
         /// </summary>
         /// <param name="t">target</param>
         /// <returns></returns>
@@ -77,6 +79,7 @@ namespace SPrediction
         }
 
         /// <summary>
+        /// 
         /// </summary>
         /// <param name="t">target</param>
         /// <returns></returns>

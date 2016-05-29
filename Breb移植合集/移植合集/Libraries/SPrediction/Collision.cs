@@ -20,21 +20,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+
 //typedefs
+using Geometry = SPrediction.Geometry;
+using EloBuddy;
+using EloBuddy.SDK;
 
 namespace SPrediction
 {
     /// <summary>
-    ///     SPrediction Collision class
+    /// SPrediction Collision class
     /// </summary>
     public static class Collision
     {
         /// <summary>
-        ///     Enum for collision flags
+        /// Enum for collision flags
         /// </summary>
         public enum Flags
         {
@@ -43,19 +46,41 @@ namespace SPrediction
             AllyChampions = 2,
             EnemyChampions = 4,
             Wall = 8,
-            YasuoWall = 16
+            YasuoWall = 16,
         }
 
         /// <summary>
-        ///     Initialize Collision services
+        /// Collision Result structure
+        /// </summary>
+        public struct Result
+        {
+            public List<Obj_AI_Base> Units;
+            public Flags Objects;
+            public static readonly Result NoCollision;
+
+            public Result(List<Obj_AI_Base> _units, Flags _objects)
+            {
+                Units = _units;
+                Objects = _objects;
+            }
+        }
+
+        #region yasuo wall stuff
+        private static int yasuoWallCastedTick;
+        private static int yasuoWallLevel;
+        private static Vector2 yasuoWallCastedPos;
+        #endregion
+
+        /// <summary>
+        /// Initialize Collision services
         /// </summary>
         public static void Initialize()
         {
-            Obj_AI_Base.OnProcessSpellCast += AIHeroClient_OnProcessSpellCast;
+            AIHeroClient.OnProcessSpellCast += Obj_AI_Hero_OnProcessSpellCast;
         }
 
         /// <summary>
-        ///     Checks collisions
+        /// Checks collisions
         /// </summary>
         /// <param name="from">Start position</param>
         /// <param name="to">End position</param>
@@ -69,19 +94,17 @@ namespace SPrediction
         /// <param name="checkWall">Check wall collisions</param>
         /// <param name="isArc">Checks collision for arc spell</param>
         /// <returns>true if collision found</returns>
-        public static bool CheckCollision(Vector2 from, Vector2 to, float width, float delay, float missileSpeed,
-            bool checkMinion = true, bool checkEnemyHero = false, bool checkYasuoWall = true, bool checkAllyHero = false,
-            bool checkWall = false, bool isArc = false)
+        public static bool CheckCollision(Vector2 from, Vector2 to, float width, float delay, float missileSpeed, bool checkMinion = true, bool checkEnemyHero = false, bool checkYasuoWall = true, bool checkAllyHero = false, bool checkWall = false, bool isArc = false)
         {
-            return (checkMinion && CheckMinionCollision(from, to, width, delay, missileSpeed, isArc)) ||
-                   (checkEnemyHero && CheckEnemyHeroCollision(from, to, width, delay, missileSpeed, isArc)) ||
-                   (checkYasuoWall && CheckYasuoWallCollision(from, to, width, isArc)) ||
-                   (checkAllyHero && CheckAllyHeroCollision(from, to, width, delay, missileSpeed, isArc)) ||
-                   (checkWall && CheckWallCollision(from, to));
+            return (checkMinion && CheckMinionCollision(from, to, width, delay, missileSpeed, isArc))
+                   || (checkEnemyHero && CheckEnemyHeroCollision(from, to, width, delay, missileSpeed, isArc))
+                   || (checkYasuoWall && CheckYasuoWallCollision(from, to, width, isArc))
+                   || (checkAllyHero && CheckAllyHeroCollision(from, to, width, delay, missileSpeed, isArc))
+                   || (checkWall && CheckWallCollision(from, to));
         }
 
         /// <summary>
-        ///     Checks minion collisions
+        /// Checks minion collisions
         /// </summary>
         /// <param name="from">Start position</param>
         /// <param name="to">End position</param>
@@ -90,32 +113,21 @@ namespace SPrediction
         /// <param name="missileSpeed">Spell missile speed</param>
         /// <param name="isArc">Checks collision for arc spell</param>
         /// <returns>true if collision found</returns>
-        public static bool CheckMinionCollision(Vector2 from, Vector2 to, float width, float delay,
-            float missileSpeed = 0, bool isArc = false)
+        public static bool CheckMinionCollision(Vector2 from, Vector2 to, float width, float delay, float missileSpeed = 0, bool isArc = false)
         {
             var spellHitBox = ClipperWrapper.MakePaths(ClipperWrapper.DefineRectangle(from, to, width));
             if (isArc)
             {
-                spellHitBox = ClipperWrapper.MakePaths(new Geometry.Polygon(
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 200*(to.LSDistance(from)/ 900)),
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 320*(to.LSDistance(from)/ 900))));
+                spellHitBox = ClipperWrapper.MakePaths(new SPrediction.Geometry.Polygon(
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 200 * (to.Distance(from) / 900)),
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 320 * (to.Distance(from) / 900))));
+
             }
-            return
-                MinionManager.GetMinions(from.LSDistance(to) + 250, MinionTypes.All, MinionTeam.NotAlly,
-                    MinionOrderTypes.None)
-                    .AsParallel()
-                    .Any(
-                        p =>
-                            ClipperWrapper.IsIntersects(
-                                ClipperWrapper.MakePaths(
-                                    ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed),
-                                        p.BoundingRadius*2f + 10f)), spellHitBox));
+            return MinionManager.GetMinions(from.Distance(to) + 250, MinionTypes.All, MinionTeam.NotAlly, MinionOrderTypes.None).AsParallel().Any(p => ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed), p.BoundingRadius * 2f + 10f)), spellHitBox));
         }
 
         /// <summary>
-        ///     Checks enemy hero collisions
+        /// Checks enemy hero collisions
         /// </summary>
         /// <param name="from">Start position</param>
         /// <param name="to">End position</param>
@@ -124,30 +136,20 @@ namespace SPrediction
         /// <param name="missileSpeed">Spell missile speed</param>
         /// <param name="isArc">Checks collision for arc spell</param>
         /// <returns>true if collision found</returns>
-        public static bool CheckEnemyHeroCollision(Vector2 from, Vector2 to, float width, float delay,
-            float missileSpeed = 0, bool isArc = false)
+        public static bool CheckEnemyHeroCollision(Vector2 from, Vector2 to, float width, float delay, float missileSpeed = 0, bool isArc = false)
         {
             var spellHitBox = ClipperWrapper.MakePaths(ClipperWrapper.DefineRectangle(from, to, width));
             if (isArc)
             {
-                spellHitBox = ClipperWrapper.MakePaths(new Geometry.Polygon(
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 200*(to.LSDistance(from)/ 900)),
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 320*(to.LSDistance(from)/ 900))));
+                spellHitBox = ClipperWrapper.MakePaths(new SPrediction.Geometry.Polygon(
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 200 * (to.Distance(from) / 900)),
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 320 * (to.Distance(from) / 900))));
             }
-            return
-                HeroManager.Enemies.AsParallel()
-                    .Any(
-                        p =>
-                            ClipperWrapper.IsIntersects(
-                                ClipperWrapper.MakePaths(
-                                    ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed),
-                                        p.BoundingRadius)), spellHitBox));
+            return HeroManager.Enemies.AsParallel().Any(p => ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed), p.BoundingRadius)), spellHitBox));
         }
 
         /// <summary>
-        ///     Checks enemy hero collisions
+        /// Checks enemy hero collisions
         /// </summary>
         /// <param name="from">Start position</param>
         /// <param name="to">End position</param>
@@ -156,40 +158,30 @@ namespace SPrediction
         /// <param name="missileSpeed">Spell missile speed</param>
         /// <param name="isArc">Checks collision for arc spell</param>
         /// <returns>true if collision found</returns>
-        public static bool CheckAllyHeroCollision(Vector2 from, Vector2 to, float width, float delay,
-            float missileSpeed = 0, bool isArc = false)
+        public static bool CheckAllyHeroCollision(Vector2 from, Vector2 to, float width, float delay, float missileSpeed = 0, bool isArc = false)
         {
             var spellHitBox = ClipperWrapper.MakePaths(ClipperWrapper.DefineRectangle(from, to, width));
             if (isArc)
             {
-                spellHitBox = ClipperWrapper.MakePaths(new Geometry.Polygon(
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 200*(to.LSDistance(from)/ 900)),
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 320*(to.LSDistance(from)/ 900))));
+                spellHitBox = ClipperWrapper.MakePaths(new SPrediction.Geometry.Polygon(
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 200 * (to.Distance(from) / 900)),
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 320 * (to.Distance(from) / 900))));
             }
-            return
-                HeroManager.Allies.AsParallel()
-                    .Any(
-                        p =>
-                            ClipperWrapper.IsIntersects(
-                                ClipperWrapper.MakePaths(
-                                    ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed),
-                                        p.BoundingRadius)), spellHitBox));
+            return HeroManager.Allies.AsParallel().Any(p => ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed), p.BoundingRadius)), spellHitBox));
         }
 
         /// <summary>
-        ///     Checks wall collisions
+        /// Checks wall collisions
         /// </summary>
         /// <param name="from">Start position</param>
         /// <param name="to">End position</param>
         /// <returns>true if collision found</returns>
         public static bool CheckWallCollision(Vector2 from, Vector2 to)
         {
-            var step = from.LSDistance(to)/20;
+            float step = from.Distance(to) / 20;
             for (var i = 0; i < 20; i++)
             {
-                var p = from.LSExtend(to, step*i);
+                var p = from.Extend(to, step * i);
                 if (NavMesh.GetCollisionFlags(p.X, p.Y).HasFlag(CollisionFlags.Wall))
                     return true;
             }
@@ -198,7 +190,7 @@ namespace SPrediction
         }
 
         /// <summary>
-        ///     Check Yasuo wall collisions
+        /// Check Yasuo wall collisions
         /// </summary>
         /// <param name="from">Start position</param>
         /// <param name="to">End position</param>
@@ -210,39 +202,32 @@ namespace SPrediction
             if (Utils.TickCount - yasuoWallCastedTick > 4000)
                 return false;
 
-            var yasuoWall =
-                ObjectManager.Get<GameObject>()
-                    .Where(
-                        p => p.IsValid && Regex.IsMatch(p.Name, "_w_windwall_enemy_0.\\.troy", RegexOptions.IgnoreCase))
-                    .FirstOrDefault();
+            GameObject yasuoWall = ObjectManager.Get<GameObject>().Where(p => p.IsValid && Regex.IsMatch(p.Name, "_w_windwall_enemy_0.\\.troy", RegexOptions.IgnoreCase)).FirstOrDefault();
 
             if (yasuoWall == null)
                 return false;
 
-            var yasuoWallDirection = (yasuoWall.Position.LSTo2D() - yasuoWallCastedPos).LSNormalized().LSPerpendicular();
-            float yasuoWallWidth = 300 + 50*yasuoWallLevel;
+            Vector2 yasuoWallDirection = (yasuoWall.Position.To2D() - yasuoWallCastedPos).Normalized().Perpendicular();
+            float yasuoWallWidth = 300 + 50 * yasuoWallLevel;
 
-            var yasuoWallStart = yasuoWall.Position.LSTo2D() + yasuoWallWidth/2f*yasuoWallDirection;
-            var yasuoWallEnd = yasuoWallStart - yasuoWallWidth*yasuoWallDirection;
+            Vector2 yasuoWallStart = yasuoWall.Position.To2D() + yasuoWallWidth / 2f * yasuoWallDirection;
+            Vector2 yasuoWallEnd = yasuoWallStart - yasuoWallWidth * yasuoWallDirection;
 
-            var yasuoWallPoly = ClipperWrapper.DefineRectangle(yasuoWallStart, yasuoWallEnd, 5);
-            var spellHitBox = ClipperWrapper.DefineRectangle(from, to, width);
+            Geometry.Polygon yasuoWallPoly = ClipperWrapper.DefineRectangle(yasuoWallStart, yasuoWallEnd, 5);
+            Geometry.Polygon spellHitBox = ClipperWrapper.DefineRectangle(from, to, width);
 
             if (isArc)
             {
-                spellHitBox = new Geometry.Polygon(
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 200*(to.LSDistance(from)/ 900)),
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 320*(to.LSDistance(from)/ 900)));
+                spellHitBox = new SPrediction.Geometry.Polygon(
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 200 * (to.Distance(from) / 900)),
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 320 * (to.Distance(from) / 900)));
             }
 
-            return ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(yasuoWallPoly),
-                ClipperWrapper.MakePaths(spellHitBox));
+            return ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(yasuoWallPoly), ClipperWrapper.MakePaths(spellHitBox));
         }
 
         /// <summary>
-        ///     Checks Yasuo wall collisions
+        /// Checks Yasuo wall collisions
         /// </summary>
         /// <param name="poly">Polygon to check collision</param>
         /// <returns>true if collision found</returns>
@@ -251,62 +236,45 @@ namespace SPrediction
             if (Utils.TickCount - yasuoWallCastedTick > 4000)
                 return false;
 
-            var yasuoWall =
-                ObjectManager.Get<GameObject>()
-                    .Where(
-                        p => p.IsValid && Regex.IsMatch(p.Name, "_w_windwall_enemy_0.\\.troy", RegexOptions.IgnoreCase))
-                    .FirstOrDefault();
+            GameObject yasuoWall = ObjectManager.Get<GameObject>().Where(p => p.IsValid && Regex.IsMatch(p.Name, "_w_windwall_enemy_0.\\.troy", RegexOptions.IgnoreCase)).FirstOrDefault();
 
             if (yasuoWall == null)
                 return false;
 
-            var yasuoWallDirection = (yasuoWall.Position.LSTo2D() - yasuoWallCastedPos).LSNormalized().LSPerpendicular();
-            float yasuoWallWidth = 300 + 50*yasuoWallLevel;
+            Vector2 yasuoWallDirection = (yasuoWall.Position.To2D() - yasuoWallCastedPos).Normalized().Perpendicular();
+            float yasuoWallWidth = 300 + 50 * yasuoWallLevel;
 
-            var yasuoWallStart = yasuoWall.Position.LSTo2D() + yasuoWallWidth/2f*yasuoWallDirection;
-            var yasuoWallEnd = yasuoWallStart - yasuoWallWidth*yasuoWallDirection;
+            Vector2 yasuoWallStart = yasuoWall.Position.To2D() + yasuoWallWidth / 2f * yasuoWallDirection;
+            Vector2 yasuoWallEnd = yasuoWallStart - yasuoWallWidth * yasuoWallDirection;
 
-            var yasuoWallPoly = ClipperWrapper.DefineRectangle(yasuoWallStart, yasuoWallEnd, 5);
+            Geometry.Polygon yasuoWallPoly = ClipperWrapper.DefineRectangle(yasuoWallStart, yasuoWallEnd, 5);
 
-            return ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(yasuoWallPoly),
-                ClipperWrapper.MakePaths(spellHitBox));
+            return ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(yasuoWallPoly), ClipperWrapper.MakePaths(spellHitBox));
         }
 
         /// <summary>
-        ///     Gets collided units & flags
+        /// Gets collided units & flags
         /// </summary>
         /// <param name="from">Start position</param>
         /// <param name="to">End position</param>
         /// <param name="width">Rectangle scale</param>
         /// <param name="delay">Spell delay</param>
         /// <param name="missileSpeed">Spell missile speed</param>
-        /// <returns>Collision result as <see cref="Collision.Result" /></returns>
-        public static Result GetCollisions(Vector2 from, Vector2 to, float range, float width, float delay,
-            float missileSpeed = 0, bool isArc = false)
+        /// <returns>Collision result as <see cref="Collision.Result"/></returns>
+        public static Result GetCollisions(Vector2 from, Vector2 to, float range, float width, float delay, float missileSpeed = 0, bool isArc = false)
         {
-            var collidedUnits = new List<Obj_AI_Base>();
-            var spellHitBox =
-                ClipperWrapper.MakePaths(ClipperWrapper.DefineRectangle(from, to.LSExtend(from, -width), width));
+            List<Obj_AI_Base> collidedUnits = new List<Obj_AI_Base>();
+            var spellHitBox = ClipperWrapper.MakePaths(ClipperWrapper.DefineRectangle(from, to.Extend(from, -width), width));
             if (isArc)
             {
-                spellHitBox = ClipperWrapper.MakePaths(new Geometry.Polygon(
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 200*(to.LSDistance(from)/ 900)),
-                    ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to,
-                        (float) Math.PI*(to.LSDistance(from)/ 900), 410, 320*(to.LSDistance(from)/ 900))));
+                spellHitBox = ClipperWrapper.MakePaths(new SPrediction.Geometry.Polygon(
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 200 * (to.Distance(from) / 900)),
+                                ClipperWrapper.DefineArc(from - new Vector2(900 / 2f, 20), to, (float)Math.PI * (to.Distance(from) / 900), 410, 320 * (to.Distance(from) / 900))));
             }
-            var _colFlags = Flags.None;
+            Flags _colFlags = Flags.None;
             var collidedMinions = MinionManager.GetMinions(range + 100, MinionTypes.All, MinionTeam.NotAlly, MinionOrderTypes.None).AsParallel().Where(p => ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed), p.BoundingRadius + 15)), spellHitBox));
-
-            var collidedEnemies = HeroManager.Enemies.AsParallel().Where(p =>ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed), p.BoundingRadius)), spellHitBox));
-            var collidedAllies =
-                HeroManager.Allies.AsParallel()
-                    .Where(
-                        p =>
-                            ClipperWrapper.IsIntersects(
-                                ClipperWrapper.MakePaths(
-                                    ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed),
-                                        p.BoundingRadius)), spellHitBox));
+            var collidedEnemies = HeroManager.Enemies.AsParallel().Where(p => ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed), p.BoundingRadius)), spellHitBox));
+            var collidedAllies = HeroManager.Allies.AsParallel().Where(p => ClipperWrapper.IsIntersects(ClipperWrapper.MakePaths(ClipperWrapper.DefineCircle(Prediction.GetFastUnitPosition(p, delay, missileSpeed), p.BoundingRadius)), spellHitBox));
 
             if (collidedMinions != null && collidedMinions.Count() != 0)
             {
@@ -336,40 +304,16 @@ namespace SPrediction
         }
 
         /// <summary>
-        ///     OnProcressSpell cast event for Yasuo Wall position
+        /// OnProcressSpell cast event for Yasuo Wall position
         /// </summary>
-        private static void AIHeroClient_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
+        private static void Obj_AI_Hero_OnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             if (sender.IsValid && sender.IsEnemy && args.SData.Name == "YasuoWMovingWall")
             {
                 yasuoWallCastedTick = Utils.TickCount;
                 yasuoWallLevel = args.Level;
-                yasuoWallCastedPos = sender.ServerPosition.LSTo2D();
+                yasuoWallCastedPos = sender.ServerPosition.To2D();
             }
         }
-
-        /// <summary>
-        ///     Collision Result structure
-        /// </summary>
-        public struct Result
-        {
-            public List<Obj_AI_Base> Units;
-            public Flags Objects;
-            public static readonly Result NoCollision;
-
-            public Result(List<Obj_AI_Base> _units, Flags _objects)
-            {
-                Units = _units;
-                Objects = _objects;
-            }
-        }
-
-        #region yasuo wall stuff
-
-        private static int yasuoWallCastedTick;
-        private static int yasuoWallLevel;
-        private static Vector2 yasuoWallCastedPos;
-
-        #endregion
     }
 }
