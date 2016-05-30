@@ -4,7 +4,7 @@ using EloBuddy.SDK;
 
 namespace AutoBuddy.MyChampLogic
 {
-    internal class Tristana : IChampLogic
+    internal class Morgana : IChampLogic
     {
 
         public float MaxDistanceForAA { get { return int.MaxValue; } }
@@ -14,11 +14,11 @@ namespace AutoBuddy.MyChampLogic
         public Spell.Active Q;
         public Spell.Skillshot W, E, R;
 
-        public Tristana()
+        public Morgana()
         {
             skillSequence = new[] {2, 1, 3, 2, 2, 4, 2, 1, 2, 1, 4, 1, 1, 3, 3, 4, 3, 3};
             ShopSequence =
-                "3340:Buy,1036:Buy,2003:StartHpPot,1053:Buy,1042:Buy,1001:Buy,3006:Buy,1036:Buy,1038:Buy,3072:Buy,2003:StopHpPot,1042:Buy,1051:Buy,3086:Buy,1042:Buy,1042:Buy,1043:Buy,3085:Buy,2015:Buy,3086:Buy,3094:Buy,1018:Buy,1038:Buy,3031:Buy,1037:Buy,3035:Buy,3033:Buy";
+                "3340:Buy,2003:StartHpPot,1056:Buy,3028:Buy,3108:Buy,3174:Buy,1001:Buy,1058:Buy,3191:Buy,3157:Buy,3020:Buy,1058:Buy,1056:Sell,3113:Buy,3285:Buy,2003:StopHpPot,1058:Buy,1026:Buy,3089:Buy,1058:Buy,3116:Buy";
         }
 
         public int[] skillSequence { get; private set; }

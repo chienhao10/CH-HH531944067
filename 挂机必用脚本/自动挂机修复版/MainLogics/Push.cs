@@ -45,8 +45,8 @@ namespace AutoBuddy.MainLogics
             Core.DelayAction(SetWaveNumber, 500);
             SetCurrentWave();
             SetOffset();
-            
-            Drawing.OnDraw += Drawing_OnDraw;
+            if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
+                Drawing.OnDraw += Drawing_OnDraw;
         }
 
         public Obj_AI_Base myTurret { get; private set; }
@@ -61,7 +61,7 @@ namespace AutoBuddy.MainLogics
 
         public void Reset(Obj_AI_Base myTower, Obj_AI_Base enemyTower, Lane ln)
         {
-            Vector3 pingPos = AutoWalker.myHero.Distance(AutoWalker.MyNexus) - 100 > myTower.Distance(AutoWalker.MyNexus)
+            Vector3 pingPos = AutoWalker.p.Distance(AutoWalker.MyNexus) - 100 > myTower.Distance(AutoWalker.MyNexus)
                 ? enemyTower.Position
                 : myTower.Position;
             Core.DelayAction(() => SafeFunctions.Ping(PingCategory.OnMyWay, pingPos.Randomized()), RandGen.r.Next(3000));
@@ -91,16 +91,22 @@ namespace AutoBuddy.MainLogics
 
         private void Game_OnTick(EventArgs args)
         {
-            if (!active||myTurret==null)
-                return;
-
-            if (!AutoWalker.myHero.IsDead() && (myTurret.Health <= 0 || enemyTurret.Health <= 0))
+            if (Shop.CanShop == false)
+            {
+                int hppotval = Program.hpvaluePot;
+                if (ObjectManager.Player.HealthPercent() < hppotval)
+                {
+                    AutoWalker.UseHPot();
+                }
+            }
+            if (!active||myTurret==null) return;
+            if (!AutoWalker.p.IsDead() && (myTurret.Health <= 0 || enemyTurret.Health <= 0))
             {
                 currentLogic.loadLogic.SetLane();
             }
             if (currentWave.Length == 0)
                 UnderMyTurret();
-            else if (AutoWalker.myHero.Distance(enemyTurret) < 950 + AutoWalker.myHero.BoundingRadius)
+            else if (AutoWalker.p.Distance(enemyTurret) < 950 + AutoWalker.p.BoundingRadius)
                 UnderEnemyTurret();
             else
                 Between();
@@ -109,12 +115,9 @@ namespace AutoBuddy.MainLogics
 
         private void Drawing_OnDraw(EventArgs args)
         {
-            if (!MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
-                return;
-
             Drawing.DrawText(250, 40, Color.Gold,
                 "Push, active: " + active + "  wave num: " + CurrentWaveNum + " minions left: " + currentWave.Length);
-            Circle.Draw(color, 100, currentWave.Length <= 0 ? AutoWalker.myHero.Position : AvgPos(currentWave));
+            Circle.Draw(color, 100, currentWave.Length <= 0 ? AutoWalker.p.Position : AvgPos(currentWave));
 
             if (myTurret != null)
                 Circle.Draw(colorGreen, 200, myTurret.Position);
@@ -127,15 +130,15 @@ namespace AutoBuddy.MainLogics
         {
             if (
                 ObjectManager.Get<Obj_AI_Minion>()
-                    .Count(min => min.IsAlly && min.HealthPercent() > 30 && min.Distance(enemyTurret) < 850) < 2 || (EntityManager.Heroes.Enemies.Any(en => en.IsVisible && en.HasBuffOfType(BuffType.Damage)&&AutoWalker.myHero.HealthPercent-en.HealthPercent<65 && en.Distance(enemyTurret) < 800 && AutoWalker.myHero.Distance(enemyTurret) < AutoWalker.myHero.BoundingRadius+850)))
+                    .Count(min => min.IsAlly && min.HealthPercent() > 30 && min.Distance(enemyTurret) < 850) < 2 || (EntityManager.Heroes.Enemies.Any(en => en.IsVisible && en.HasBuffOfType(BuffType.Damage)&&AutoWalker.p.HealthPercent-en.HealthPercent<65 && en.Distance(enemyTurret) < 800 && AutoWalker.p.Distance(enemyTurret) < AutoWalker.p.BoundingRadius+850)))
             {
                 AutoWalker.SetMode(Orbwalker.ActiveModes.LaneClear);
-                AutoWalker.WalkTo(AutoWalker.myHero.Position.Away(enemyTurret.Position, 1200));
+                AutoWalker.WalkTo(AutoWalker.p.Position.Away(enemyTurret.Position, 1200));
                 return;
             }
-            if (AutoWalker.myHero.Distance(enemyTurret) <
-                AutoWalker.myHero.AttackRange + enemyTurret.BoundingRadius + Orbwalker.HoldRadius &&
-                AutoWalker.myHero.Distance(enemyTurret) > AutoWalker.myHero.AttackRange)
+            if (AutoWalker.p.Distance(enemyTurret) <
+                AutoWalker.p.AttackRange + enemyTurret.BoundingRadius + Orbwalker.HoldRadius &&
+                AutoWalker.p.Distance(enemyTurret) > AutoWalker.p.AttackRange)
             {
                 AutoWalker.SetMode(Orbwalker.ActiveModes.None);
                 if (Game.Time > lastAtk)
@@ -149,7 +152,7 @@ namespace AutoBuddy.MainLogics
             {
                 AutoWalker.SetMode(Orbwalker.ActiveModes.LastHit);
                 AutoWalker.WalkTo(
-                    enemyTurret.Position.Extend(AutoWalker.myHero, AutoWalker.myHero.AttackRange + enemyTurret.BoundingRadius)
+                    enemyTurret.Position.Extend(AutoWalker.p, AutoWalker.p.AttackRange + enemyTurret.BoundingRadius)
                         .To3DWorld());
             }
         }
@@ -163,17 +166,17 @@ namespace AutoBuddy.MainLogics
                 AIHeroClient ally =
                     EntityManager.Heroes.Allies.Where(
                         al => !al.IsMe &&
-                              AutoWalker.myHero.Distance(al) < 1500 &&
+                              AutoWalker.p.Distance(al) < 1500 &&
                               al.Distance(enemyTurret) < p.Distance(enemyTurret) + 100 &&
                               currentLogic.localAwareness.LocalDomination(al) < -10000)
-                        .OrderBy(l => l.Distance(AutoWalker.myHero))
+                        .OrderBy(l => l.Distance(AutoWalker.p))
                         .FirstOrDefault();
                 if (ally != null &&
-                    Math.Abs(p.Distance(AutoWalker.EneMyNexus) - AutoWalker.myHero.Distance(AutoWalker.EneMyNexus)) < 200)
+                    Math.Abs(p.Distance(AutoWalker.EneMyNexus) - AutoWalker.p.Distance(AutoWalker.EneMyNexus)) < 200)
                     p = ally.Position.Extend(myTurret, 160).To3DWorld() + randomVector;
                 p =
                     p.Extend(p.Extend(
-                        AutoWalker.myHero.Distance(myTurret) < AutoWalker.myHero.Distance(enemyTurret)
+                        AutoWalker.p.Distance(myTurret) < AutoWalker.p.Distance(enemyTurret)
                             ? myTurret
                             : enemyTurret,
                         400).To3D().RotatedAround(p, 1.57f), randomExtend).To3DWorld();
@@ -185,7 +188,7 @@ namespace AutoBuddy.MainLogics
 
         private void UnderMyTurret()
         {
-            if (AutoWalker.myHero.Gold <= 100 ||
+            if (AutoWalker.p.Gold <= 100 ||
                 !EntityManager.MinionsAndMonsters.EnemyMinions.Any(en => en.Distance(myTurret) < 1000))
             {
                 if (Game.Time > lastRand)
@@ -207,21 +210,21 @@ namespace AutoBuddy.MainLogics
             AIHeroClient ally =
                 EntityManager.Heroes.Allies.Where(
                     al => !al.IsMe &&
-                          AutoWalker.myHero.Distance(al) < 1200 && al.Distance(enemyTurret) < p.Distance(enemyTurret) + 150 &&
+                          AutoWalker.p.Distance(al) < 1200 && al.Distance(enemyTurret) < p.Distance(enemyTurret) + 150 &&
                           currentLogic.localAwareness.LocalDomination(al) < -15000)
-                    .OrderBy(l => l.Distance(AutoWalker.myHero))
+                    .OrderBy(l => l.Distance(AutoWalker.p))
                     .FirstOrDefault();
-            if (AutoWalker.myHero.Gold > 100 && ally != null)
+            if (AutoWalker.p.Gold > 100 && ally != null)
             {
                 p = ally.Position.Extend(myTurret, 160).To3DWorld() + randomVector;
-                AutoWalker.SetMode(AutoWalker.myHero.Distance(enemyTurret) < 900
+                AutoWalker.SetMode(AutoWalker.p.Distance(enemyTurret) < 900
                     ? Orbwalker.ActiveModes.LastHit
                     : Orbwalker.ActiveModes.LaneClear);
                 AutoWalker.WalkTo(p);
             }
             else
             {
-                AutoWalker.WalkTo(myTurret.Position.Extend(AutoWalker.myHero.Position, 350 + randomExtend/2)
+                AutoWalker.WalkTo(myTurret.Position.Extend(AutoWalker.p.Position, 350 + randomExtend/2)
                     .To3D()
                     .RotatedAround(myTurret.Position, randomAngle));
             }

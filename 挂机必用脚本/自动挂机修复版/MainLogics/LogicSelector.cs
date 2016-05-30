@@ -18,7 +18,7 @@ namespace AutoBuddy.MainLogics
         public readonly LocalAwareness localAwareness;
         public readonly Push pushLogic;
         public readonly Recall recallLogic;
-        public readonly MiscEvents GameEvents;
+        public readonly Surrender surrender;
         public readonly Survi surviLogic;
 
 
@@ -34,12 +34,12 @@ namespace AutoBuddy.MainLogics
             pushLogic = new Push(this);
             loadLogic = new Load(this);
             combatLogic = new Combat(this);
-            GameEvents = new MiscEvents();
+            surrender = new Surrender();
 
             Core.DelayAction(() => loadLogic.SetLane(), 1000);
             localAwareness = new LocalAwareness();
-            
-            Drawing.OnEndScene += Drawing_OnDraw;
+            if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
+                Drawing.OnEndScene += Drawing_OnDraw;
             myChamp.Logic = this;
             AutoWalker.EndGame += end;
             Core.DelayAction(Watchdog, 3000);
@@ -49,9 +49,6 @@ namespace AutoBuddy.MainLogics
 
         private void Drawing_OnDraw(System.EventArgs args)
         {
-            if (!MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
-                return;
-
             Drawing.DrawText(250, 85, Color.Gold, current.ToString());
             Vector2 v = Game.CursorPos.WorldToScreen();
             Drawing.DrawText(v.X, v.Y - 20, Color.Gold, localAwareness.LocalDomination(Game.CursorPos) + " ");
@@ -115,7 +112,15 @@ namespace AutoBuddy.MainLogics
 
         private void end(object o, EventArgs e)
         {
-
+            Telemetry.SendEvent("GameEnd", new Dictionary<string, string>()
+            {
+                {"GameChamp", AutoWalker.p.ChampionName},
+                {"GameKills",localAwareness.me.kills2+""},
+                {"GameDeaths",localAwareness.me.deaths+""},
+                {"GameAssists",localAwareness.me.assists+""},
+                {"GameFarm",localAwareness.me.farm+""},
+                {"GameID", AutoWalker.GameID},
+            });
         }
         internal enum MainLogics
         {

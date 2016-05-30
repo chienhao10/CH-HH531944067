@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using AutoBuddy.MainLogics;
 using EloBuddy;
 using EloBuddy.SDK;
@@ -10,8 +10,8 @@ namespace AutoBuddy.MyChampLogic
     {
 
         public float MaxDistanceForAA { get { return int.MaxValue; } }
-        public float OptimalMaxComboDistance { get { return AutoWalker.myHero.AttackRange; } }
-        public float HarassDistance { get { return AutoWalker.myHero.AttackRange; } }
+        public float OptimalMaxComboDistance { get { return AutoWalker.p.AttackRange; } }
+        public float HarassDistance { get { return AutoWalker.p.AttackRange; } }
 
         public static Spell.Active Q;
         public static Spell.Skillshot W, E, R;
@@ -28,7 +28,7 @@ namespace AutoBuddy.MyChampLogic
 
             skillSequence = new[] { 1, 3, 2, 1, 1, 4, 1, 2, 1, 2, 4, 2, 2, 3, 3, 4, 3, 3 };
             ShopSequence =
-                "3340:Buy,1036:Buy,2003:StartHpPot,1053:Buy,1042:Buy,1001:Buy,3006:Buy,1036:Buy,1038:Buy,3072:Buy,2003:StopHpPot,1042:Buy,1051:Buy,3086:Buy,1042:Buy,1042:Buy,1043:Buy,3085:Buy,2015:Buy,3086:Buy,3094:Buy,1018:Buy,1038:Buy,3031:Buy,1037:Buy,3035:Buy,3033:Buy";
+                "3340:Buy,2003:StartHpPot,1055:Buy,3086:Buy,3087:Buy,1001:Buy,1053:Buy,3144:Buy,1043:Buy,3153:Buy,1038:Buy,2003:StopHpPot,1037:Buy,3031:Buy,3006:Buy,1038:Buy,1055:Sell,1053:Buy,3072:Buy,3140:Buy,3139:Buy";
             Game.OnTick += Game_OnTick;
         }
 
@@ -45,13 +45,13 @@ namespace AutoBuddy.MyChampLogic
 
         private void Game_OnTick(System.EventArgs args)
         {
-            if (AutoWalker.myHero.HasBuff("JinxQ") && AutoWalker.myHero.CountEnemiesInRange(800) == 0)
+            if (AutoWalker.p.HasBuff("JinxQ") && AutoWalker.p.CountEnemiesInRange(800) == 0)
                 Q.Cast();
         }
 
         public void Harass(AIHeroClient target)
         {
-            if (AutoWalker.myHero.ManaPercent >= 65)
+            if (AutoWalker.p.ManaPercent >= 65)
             {
                 if (W.IsReady() && target != null && target.IsValidTarget())
                 {
@@ -64,17 +64,17 @@ namespace AutoBuddy.MyChampLogic
 
         public void Survi()
         {
-            AIHeroClient chaser = EntityManager.Heroes.Enemies.FirstOrDefault(chase => chase.Distance(AutoWalker.myHero) < 600 && chase.IsVisible());
+            AIHeroClient chaser = EntityManager.Heroes.Enemies.FirstOrDefault(chase => chase.Distance(AutoWalker.p) < 600 && chase.IsVisible());
             if (chaser != null)
             {
                 if (chaser != null && chaser.IsValidTarget())
                 {
-                    if (chaser.Distance(AutoWalker.myHero) <= AutoWalker.myHero.AttackRange - FishBonesBonus)
+                    if (chaser.Distance(AutoWalker.p) <= AutoWalker.p.AttackRange - FishBonesBonus)
                     {
                         Q.Cast();
                     }
 
-                    if (chaser.Distance(AutoWalker.myHero) > AutoWalker.myHero.AttackRange)
+                    if (chaser.Distance(AutoWalker.p) > AutoWalker.p.AttackRange)
                     {
                         Q.Cast();
                     }
@@ -103,32 +103,32 @@ namespace AutoBuddy.MyChampLogic
                 return 0;
             var level = R.Level - 1;
 
-            if (target.Distance(AutoWalker.myHero) < 1350)
+            if (target.Distance(AutoWalker.p) < 1350)
             {
-                return AutoWalker.myHero.CalculateDamageOnUnit(target, DamageType.Physical,
+                return AutoWalker.p.CalculateDamageOnUnit(target, DamageType.Physical,
                     (float)
                         (new double[] { 25, 35, 45 }[level] +
                          new double[] { 25, 30, 35 }[level] / 100 * (target.MaxHealth - target.Health) +
-                         0.1 * AutoWalker.myHero.TotalAttackDamage));
+                         0.1 * AutoWalker.p.TotalAttackDamage));
             }
 
-            return AutoWalker.myHero.CalculateDamageOnUnit(target, DamageType.Physical,
+            return AutoWalker.p.CalculateDamageOnUnit(target, DamageType.Physical,
                 (float)
                     (new double[] { 250, 350, 450 }[level] +
                      new double[] { 25, 30, 35 }[level] / 100 * (target.MaxHealth - target.Health) +
-                     1 * AutoWalker.myHero.TotalAttackDamage));
+                     1 * AutoWalker.p.TotalAttackDamage));
         }
 
         public void Combo(AIHeroClient target)
         {
             if (target != null && target.IsValidTarget())
             {
-                if (target.Distance(AutoWalker.myHero) <= AutoWalker.myHero.AttackRange - FishBonesBonus)
+                if (target.Distance(AutoWalker.p) <= AutoWalker.p.AttackRange - FishBonesBonus)
                 {
                     Q.Cast();
                 }
 
-                if (target.Distance(AutoWalker.myHero) > AutoWalker.myHero.AttackRange)
+                if (target.Distance(AutoWalker.p) > AutoWalker.p.AttackRange)
                 {
                     Q.Cast();
                 }
@@ -150,7 +150,7 @@ namespace AutoBuddy.MyChampLogic
 
             foreach (var enemy in EntityManager.Heroes.Enemies)
             {
-                if (R.IsReady() && enemy.Distance(AutoWalker.myHero) <= 1000 && RDamage(enemy) >= enemy.Health && !enemy.IsZombie && !enemy.IsDead)
+                if (R.IsReady() && enemy.Distance(AutoWalker.p) <= 1000 && RDamage(enemy) >= enemy.Health && !enemy.IsZombie && !enemy.IsDead)
                 {
                     R.Cast(enemy);
                 }
