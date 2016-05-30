@@ -326,6 +326,7 @@
     <Compile Include="Dual-Port\IreliaGod\IreliaMenu.cs" />
     <Compile Include="Dual-Port\IreliaGod\Program.cs" />
     <Compile Include="Dual-Port\IreliaGod\Spells.cs" />
+    <Compile Include="Dual-Port\iTwitch\CustomDamageIndicator.cs" />
     <Compile Include="Dual-Port\iTwitch\Extensions.cs" />
     <Compile Include="Dual-Port\iTwitch\Twitch.cs" />
     <Compile Include="Dual-Port\KurisuBlitz\Program.cs" />

@@ -27,7 +27,7 @@ using SebbyLib;
                                                                          {
                                                                              { SpellSlot.Q, new Spell(SpellSlot.Q) },
                                                                              { SpellSlot.W, new Spell(SpellSlot.W, 950f) },
-                                                                             { SpellSlot.E, new Spell(SpellSlot.E, 1150f) },
+                                                                             { SpellSlot.E, new Spell(SpellSlot.E, 1100) },
                                                                              { SpellSlot.R, new Spell(SpellSlot.R) },
                                                                          };
 
@@ -65,6 +65,7 @@ using SebbyLib;
 
 
             drawOptions = Menu.AddSubMenu("iTwitch 2.0 - Drawing", "com.itwitch.drawing");
+            drawOptions.Add("com.itwitch.misc.eDamage", new CheckBox("Draw E Damage on Enemies", true));
             drawOptions.Add("com.itwitch.drawing.drawQTime", new CheckBox("Draw Q Time", true));
             drawOptions.Add("com.itwitch.drawing.drawEStacks", new CheckBox("Draw E Stacks", true));
             drawOptions.Add("com.itwitch.drawing.drawEStackT", new CheckBox("Draw E Stack Time", true));
@@ -109,7 +110,7 @@ using SebbyLib;
                     return;
                 }
                 var wTarget = TargetSelector.GetTarget(Spells[SpellSlot.W].Range, DamageType.Physical);
-                if (wTarget.IsValidTarget(Spells[SpellSlot.W].Range) && !ObjectManager.Player.HasBuff("TwitchHideInShadows"))
+                if (wTarget.LSIsValidTarget(Spells[SpellSlot.W].Range) && !ObjectManager.Player.HasBuff("TwitchHideInShadows"))
                 {
                     var prediction = Spells[SpellSlot.W].GetPrediction(wTarget);
                     if (prediction.Hitchance >= HitChance.High)
@@ -142,7 +143,7 @@ using SebbyLib;
 
                 if (eventArgs.Slot == SpellSlot.R && getCheckBoxItem(miscOptions, "com.itwitch.misc.autoYo"))
                 {
-                    if (!HeroManager.Enemies.Any(x => ObjectManager.Player.Distance(x) <= Spells[SpellSlot.R].Range)) return;
+                    if (!HeroManager.Enemies.Any(x => ObjectManager.Player.LSDistance(x) <= Spells[SpellSlot.R].Range)) return;
 
                     if (Items.HasItem(ItemData.Youmuus_Ghostblade.Id))
                     {
@@ -168,7 +169,7 @@ using SebbyLib;
             if (getCheckBoxItem(harassOptions, "com.itwitch.harass.useW") && Spells[SpellSlot.W].IsReady())
             {
                 var wTarget = TargetSelector.GetTarget(Spells[SpellSlot.W].Range, DamageType.Physical);
-                if (wTarget.IsValidTarget(Spells[SpellSlot.W].Range))
+                if (wTarget.LSIsValidTarget(Spells[SpellSlot.W].Range))
                 {
                     var prediction = Spells[SpellSlot.W].GetPrediction(wTarget);
                     if (prediction.Hitchance >= HitChance.High)
@@ -185,6 +186,9 @@ using SebbyLib;
 
         private static void OnDraw(EventArgs args)
         {
+            CustomDamageIndicator.DrawingColor = System.Drawing.Color.DarkOliveGreen;
+            CustomDamageIndicator.Enabled = getCheckBoxItem(drawOptions, "com.itwitch.misc.eDamage");
+
             if (getCheckBoxItem(drawOptions, "com.itwitch.drawing.drawQTime")
                 && ObjectManager.Player.HasBuff("TwitchHideInShadows"))
             {
@@ -239,10 +243,7 @@ using SebbyLib;
 
             if (getKeyBindItem(comboOptions, "com.itwitch.combo.useEKillable") && Spells[SpellSlot.E].IsReady())
             {
-                if (HeroManager.Enemies.Any(
-                    x =>
-                        x.IsPoisonKillable() &&
-                        x.IsValidTarget(Spells[SpellSlot.E].Range)))
+                if (HeroManager.Enemies.Any(x => x.IsPoisonKillable() && x.LSIsValidTarget(Spells[SpellSlot.E].Range)))
                 {
                     Spells[SpellSlot.E].Cast();
                 }
