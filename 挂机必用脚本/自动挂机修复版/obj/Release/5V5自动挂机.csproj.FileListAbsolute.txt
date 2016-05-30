@@ -1,0 +1,3 @@
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\挂机必用脚本\自动挂机修复版\obj\Release\5V5自动挂机.csprojResolveAssemblyReference.cache
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\挂机必用脚本\自动挂机修复版\obj\Release\AutoBuddy.Properties.Resources.resources
+C:\Users\huang_000\Documents\GitHub\CH-HH531944067\挂机必用脚本\自动挂机修复版\obj\Release\5V5自动挂机.csproj.GenerateResource.Cache

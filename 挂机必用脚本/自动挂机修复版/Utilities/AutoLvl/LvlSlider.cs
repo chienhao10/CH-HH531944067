@@ -35,7 +35,7 @@ namespace AutoBuddy.Utilities
             s.DisplayName = skills[s.CurrentValue];
             s.OnValueChange += s_OnValueChange;
 
-            menu.Add(level + AutoWalker.myHero.ChampionName+"d", s);
+            menu.Add(level + AutoWalker.p.ChampionName+"d", s);
         }
 
         private void s_OnValueChange(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs args)

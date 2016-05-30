@@ -21,5 +21,8 @@ namespace AutoBuddy.Utilities
             if (args.EventId == GameEventId.OnChampionKill && args.NetworkId == hero.NetworkId)
                 kills++;
         }
+
+
+
     }
 }

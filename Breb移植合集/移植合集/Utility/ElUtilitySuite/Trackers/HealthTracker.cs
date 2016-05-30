@@ -189,31 +189,13 @@
                     : champion;
 
                 // Draws the championnames
-                Font.DrawText(
-                    null,
-                    championInfo,
-                    (int)
-                    ((Drawing.Width - this.HudOffsetRight - this.HudOffsetText - Font.MeasureText(null, championInfo, FontDrawFlags.Left).Width)),
-                    (int)(this.HudOffsetTop + i + 4 - Font.MeasureText(null, championInfo, FontDrawFlags.Left).Height / 2f),
-                    hero.HealthPercent > 0 ? new ColorBGRA(255, 255, 255, 255) : new ColorBGRA(244, 8, 8, 255));
+                Font.DrawText(null, championInfo, (int) ((Drawing.Width - this.HudOffsetRight - this.HudOffsetText - Font.MeasureText(null, championInfo, FontDrawFlags.Left).Width)), (int)(this.HudOffsetTop + i + 4 - Font.MeasureText(null, championInfo, FontDrawFlags.Left).Height / 2f), hero.HealthPercent > 0 ? new ColorBGRA(255, 255, 255, 255) : new ColorBGRA(244, 8, 8, 255));
 
                 // Draws the rectangle
-                this.DrawRect(
-                    Drawing.Width - this.HudOffsetRight,
-                    this.HudOffsetTop + i,
-                    100,
-                    this.BarHeight,
-                    1,
-                    Color.FromArgb(255, 51, 55, 51));
+                this.DrawRect(Drawing.Width - this.HudOffsetRight, this.HudOffsetTop + i, 100, this.BarHeight, 1, Color.FromArgb(255, 51, 55, 51));
 
                 // Fils the rectangle
-                this.DrawRect(
-                    Drawing.Width - this.HudOffsetRight,
-                    this.HudOffsetTop + i,
-                    hero.HealthPercent <= 0 ? 100 : (int)(hero.HealthPercent),
-                    this.BarHeight,
-                    1,
-                    hero.HealthPercent < 30 && hero.HealthPercent > 0 ? Color.FromArgb(255, 230, 169, 14) : hero.HealthPercent <= 0 ? Color.FromArgb(255, 206, 20, 30) : Color.FromArgb(255, 29, 201, 38));
+                this.DrawRect(Drawing.Width - this.HudOffsetRight, this.HudOffsetTop + i, hero.HealthPercent <= 0 ? 100 : (int)(hero.HealthPercent), this.BarHeight, 1, hero.HealthPercent < 30 && hero.HealthPercent > 0 ? Color.FromArgb(255, 230, 169, 14) : hero.HealthPercent <= 0 ? Color.FromArgb(255, 206, 20, 30) : Color.FromArgb(255, 29, 201, 38));
 
                 i += 20f + this.HudSpacing;
             }

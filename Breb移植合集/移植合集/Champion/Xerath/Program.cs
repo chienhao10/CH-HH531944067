@@ -204,11 +204,9 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            //if (Program.LagFree(3) && R.IsReady() && getCheckBoxItem(rMenu, "autoR"))
             if (Program.LagFree(3) && R.IsReady())
                 LogicR();
 
-            //Program.debug(""+OktwCommon.GetPassiveTime(Player, "XerathArcanopulseChargeUp"));
             if (IsCastingR || Player.IsChannelingImportantSpell())
             {
                 Orbwalker.DisableAttacking = true;
@@ -277,10 +275,10 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                 {
                     Program.CastSpell(R, t);
                 }
-                Rtarget = R.GetPrediction(t).CastPosition;
+                //Rtarget = R.GetPrediction(t).UnitPosition;
+                Rtarget = t.ServerPosition;
             }
-            else if (getCheckBoxItem(rMenu, "autoRlast") && Game.Time - lastR > 0.001 * getSliderItem(rMenu, "delayR") &&
-                     IsCastingR)
+            else if (getCheckBoxItem(rMenu, "autoRlast") && Game.Time - lastR > 0.001 * getSliderItem(rMenu, "delayR") && IsCastingR)
             {
                 R.Cast(Rtarget);
             }

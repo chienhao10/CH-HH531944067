@@ -114,7 +114,7 @@ namespace AutoBuddy.Utilities.AutoShop
 
                 int hp = cur.Count(e => e.action == ShopActionType.StartHpPot) -
                          cur.Count(e => e.action == ShopActionType.StopHpPot);
-                if (hp > 0 && !AutoWalker.myHero.InventoryItems.Any(it => it.Id.IsHealthlyConsumable()))
+                if (hp > 0 && !AutoWalker.p.InventoryItems.Any(it => it.Id.IsHealthlyConsumable()))
                     Shop.BuyItem(ItemId.Health_Potion);
                 else if (hp <= 0)
                 {
