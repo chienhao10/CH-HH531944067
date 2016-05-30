@@ -1,10 +1,9 @@
 using System;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
-using EloBuddy;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Darius
+namespace ExorSDK.Champions.Darius
 {
     /// <summary>
     ///     The logics class.
@@ -18,34 +17,21 @@ namespace ExorAIO.Champions.Darius
         public static void Combo(EventArgs args)
         {
             if (Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+                !Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
 
             /// <summary>
-            /// The E Combo Logic.
+            ///     The E Combo Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
-                !Targets.Target.IsValidTarget(Variables.AARange) &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                !Targets.Target.LSIsValidTarget(Vars.AARange) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
-                Variables.E.Cast(Targets.Target);
-            }
-
-            if (Variables.Q.IsCharging)
-            {
-                Orbwalker.OrbwalkTo(Game.CursorPos);
-            }
-
-            /// <summary>
-            /// The Q Combo Logic.
-            /// </summary>
-            if (Variables.Q.IsReady() && Targets.Target.IsValidTarget(Variables.Q.Range) && Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
-            {
-                Variables.Q.StartCharging();
+                Vars.E.Cast(Vars.E.GetPrediction(Targets.Target).UnitPosition);
             }
         }
     }

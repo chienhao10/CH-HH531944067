@@ -44,7 +44,7 @@ namespace Evade
                         SpellName = "TestSkillShot",
                         Slot = SpellSlot.R,
                         Type = SkillShotType.SkillshotCircle,
-                        Delay = 600,
+                        Delay = 0,
                         Range = 650,
                         Radius = 350,
                         MissileSpeed = int.MaxValue,
@@ -120,7 +120,7 @@ namespace Evade
                     IsDangerous = false,
                     MissileSpellName = "AhriOrbMissile",
                     ForceRemove = true,
-                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall}
+                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall},
                 });
 
             Spells.Add(
@@ -144,7 +144,7 @@ namespace Evade
                     MissileFollowsUnit = true,
                     ForceRemove = true,
                     MissileSpellName = "AhriOrbReturn",
-                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall}
+                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall},
                 });
 
             Spells.Add(
@@ -167,6 +167,28 @@ namespace Evade
                 });
 
             #endregion Ahri
+            
+            #region Alistar
+            
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Alistar",
+                    SpellName = "Pulverize",
+                    Slot = SpellSlot.Q,
+                    Type = SkillShotType.SkillshotCircle,
+                    Delay = 0,
+                    Range = 365,
+                    Radius = 365,
+                    MissileSpeed = int.MaxValue,
+                    FixedRange = true,
+                    AddHitbox = false,
+                    DangerValue =2,
+                    IsDangerous = true,
+                    MissileSpellName = "Pulverize",
+                });
+                
+            #endregion Alistar
             
             #region Amumu
 
@@ -1007,8 +1029,6 @@ namespace Evade
                     IsDangerous = false,
                     MissileSpellName = "EzrealMysticShotMissile",
                     ExtraMissileNames = new[] {"EzrealMysticShotPulseMissile"},
-                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                    CanBeRemoved = true,
                     CollisionObjects =
                         new[]
                         {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
@@ -1734,8 +1754,6 @@ namespace Evade
                     DangerValue = 3,
                     IsDangerous = true,
                     MissileSpellName = "JinxWMissile",
-                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                    CanBeRemoved = true,
                     CollisionObjects =
                         new[]
                         {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
@@ -1757,8 +1775,6 @@ namespace Evade
                     DangerValue = 5,
                     IsDangerous = true,
                     MissileSpellName = "JinxR",
-                    EarlyEvade = new[] {EarlyObjects.Allies},
-                    CanBeRemoved = true,
                     CollisionObjects = new[] {CollisionObjectTypes.Champions, CollisionObjectTypes.YasuoWall},
                 });
 
@@ -1783,8 +1799,6 @@ namespace Evade
                     IsDangerous = false,
                     MissileSpellName = "kalistamysticshotmis",
                     ExtraMissileNames = new[] {"kalistamysticshotmistrue"},
-                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                    CanBeRemoved = true,
                     CollisionObjects =
                         new[]
                         {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
@@ -1860,7 +1874,7 @@ namespace Evade
                     Type = SkillShotType.SkillshotCircle,
                     Delay = 625,
                     Range = 875,
-                    Radius = 160,
+                    Radius = 190,
                     MissileSpeed = int.MaxValue,
                     FixedRange = false,
                     AddHitbox = true,
@@ -2159,7 +2173,6 @@ namespace Evade
                     IsDangerous = true,
                     TakeClosestPath = true,
                     MissileSpellName = "LeonaZenithBladeMissile",
-                    EarlyEvade = new[] {EarlyObjects.Allies},
                     CollisionObjects = new[] {CollisionObjectTypes.YasuoWall},
                 });
 
@@ -2253,8 +2266,8 @@ namespace Evade
                     SpellName = "LucianQ",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotLine,
-                    Delay = 500,
-                    Range = 1300,
+                    Delay = 450,
+                    Range = 1140,
                     Radius = 65,
                     MissileSpeed = int.MaxValue,
                     FixedRange = true,
@@ -2273,14 +2286,13 @@ namespace Evade
                     Type = SkillShotType.SkillshotMissileLine,
                     Delay = 250,
                     Range = 1000,
-                    Radius = 55,
+                    Radius = 80,
                     MissileSpeed = 1600,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 2,
                     IsDangerous = false,
                     MissileSpellName = "lucianwmissile",
-                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
                 });
 
             Spells.Add(
@@ -2300,7 +2312,6 @@ namespace Evade
                     IsDangerous = false,
                     MissileSpellName = "lucianrmissileoffhand",
                     ExtraMissileNames = new[] {"lucianrmissile"},
-                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
                     DontCheckForDuplicates = true,
                     DisabledByDefault = true,
                 });
@@ -2480,37 +2491,11 @@ namespace Evade
                     DangerValue = 3,
                     IsDangerous = true,
                     MissileSpellName = "DarkBindingMissile",
-                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                    CanBeRemoved = true,
                     CollisionObjects =
                         new[]
                         {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
                 });
                 
-                Spells.Add(
-                    new SpellData
-                    {
-                        ChampionName = "Morgana",
-                        SpellName = "MorganaW",
-                        Slot = SpellSlot.W,
-                        Type = SkillShotType.SkillshotCircle,
-                        Delay = 250,
-                        Range = 1100,
-                        Radius = 275,
-                        MissileSpeed = int.MaxValue,
-                        FixedRange = false,
-                        AddHitbox = false,
-                        DangerValue = 2,
-                        IsDangerous = false,
-                        MissileSpellName = "MorganaWMissile",
-                        EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                        CanBeRemoved = true,
-                        CollisionObjects =
-                            new[]
-                            {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
-                        
-                    });
-
             #endregion Morgana
 
             #region Nami
@@ -2621,8 +2606,6 @@ namespace Evade
                     DangerValue = 3,
                     IsDangerous = true,
                     MissileSpellName = "JavelinToss",
-                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                    CanBeRemoved = true,
                     CollisionObjects =
                         new[]
                         {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
@@ -2649,7 +2632,6 @@ namespace Evade
                     DangerValue = 2,
                     IsDangerous = false,
                     MissileSpellName = "olafaxethrow",
-                    CanBeRemoved = true,
                     CollisionObjects = new[] {CollisionObjectTypes.YasuoWall}
                 });
 

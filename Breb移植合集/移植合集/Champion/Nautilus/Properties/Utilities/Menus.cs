@@ -1,8 +1,9 @@
+using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Nautilus
+namespace ExorSDK.Champions.Nautilus
 {
     /// <summary>
     ///     The menu class.
@@ -14,46 +15,66 @@ namespace ExorAIO.Champions.Nautilus
         /// </summary>
         public static void Initialize()
         {
-
             /// <summary>
-            /// Sets the spells menu.
+            ///     Sets the menu for the Q.
             /// </summary>
-            Variables.QMenu = Variables.Menu.AddSubMenu("使用Q:", "qmenu");
-            Variables.QMenu.Add("qspell.combo", new CheckBox("连招"));
-            Variables.QMenu.Add("qspell.ks", new CheckBox("抢头"));
-
-            Variables.WMenu = Variables.Menu.AddSubMenu("使用W:", "wmenu");
-            Variables.WMenu.Add("wspell.combo", new CheckBox("连招"));
-
-            Variables.EMenu = Variables.Menu.AddSubMenu("使用E:", "emenu");
-            Variables.EMenu.Add("espell.combo", new CheckBox("连招"));
-            Variables.EMenu.Add("espell.harass", new CheckBox("骚扰"));
-            Variables.EMenu.Add("espell.farm", new CheckBox("农兵"));
-            Variables.EMenu.Add("espell.mana", new Slider("农兵: 蓝量 >= x%", 50, 0, 99));
-
-            Variables.RMenu = Variables.Menu.AddSubMenu("使用R:", "rmenu");
-            Variables.RMenu.Add("rspell.combo", new CheckBox("连招"));
-            Variables.RMenu.Add("rspell.ks", new CheckBox("抢头"));
-
-            Variables.WhiteListMenu = Variables.Menu.AddSubMenu("大招: 白名单", "rmenu.whitelistmenu");
-            foreach (var champ in HeroManager.Enemies)
+            Vars.QMenu = Vars.Menu.AddSubMenu("q", "使用 Q:");
             {
-                Variables.WhiteListMenu.Add("rspell.whitelist." + champ.NetworkId,
-                    new CheckBox("使用于: " + champ.ChampionName));
+                Vars.QMenu.Add("combo", new CheckBox("连招", true));
+                Vars.QMenu.Add("killsteal", new CheckBox("抢头", true));
             }
 
             /// <summary>
-            /// Sets the drawings menu.
+            ///     Sets the menu for the W.
             /// </summary>
-            Variables.DrawingsMenu = Variables.Menu.AddSubMenu("线圈", "drawingsmenu");
-            Variables.DrawingsMenu.Add("drawings.q", new CheckBox("Q 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Green);
-            Variables.DrawingsMenu.Add("drawings.w", new CheckBox("W 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Purple);
-            Variables.DrawingsMenu.Add("drawings.e", new CheckBox("E 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Cyan);
-            Variables.DrawingsMenu.Add("drawings.r", new CheckBox("R 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Red);
+            Vars.WMenu = Vars.Menu.AddSubMenu("w", "使用 W:");
+            {
+                Vars.WMenu.Add("combo", new CheckBox("连招", true));
+                Vars.WMenu.Add("buildings", new Slider("建筑物 / 如果蓝量 >= x%", 50, 0, 101));
+                Vars.WMenu.Add("jungleclear", new Slider("清野 / 如果蓝量 >= x%", 50, 0, 101));
+            }
+
+            /// <summary>
+            ///     Sets the menu for the E.
+            /// </summary>
+            Vars.EMenu = Vars.Menu.AddSubMenu("e", "使用 E:");
+            {
+                Vars.EMenu.Add("combo", new CheckBox("连招", true));
+                Vars.EMenu.Add("harass", new Slider("骚扰 / 如果蓝量 >= x%", 50, 0, 101));
+                Vars.EMenu.Add("clear", new Slider("清线 / 如果蓝量 >= x%", 50, 0, 101));
+            }
+
+            /// <summary>
+            ///     Sets the menu for the R.
+            /// </summary>
+            Vars.RMenu = Vars.Menu.AddSubMenu("r", "使用 R:");
+            {
+                Vars.RMenu.Add("combo", new CheckBox("连招", true));
+                Vars.RMenu.Add("killsteal", new CheckBox("抢头", true));
+                {
+                    /// <summary>
+                    ///     Sets the whitelist menu for the R.
+                    /// </summary>
+                    Vars.WhiteListMenu = Vars.Menu.AddSubMenu("whitelist", "大招白名单");
+                    {
+                        foreach (var target in GameObjects.EnemyHeroes)
+                        {
+                            Vars.WhiteListMenu.Add(target.ChampionName.ToLower(), new CheckBox($"Use against: {target.ChampionName}", true));
+                        }
+                    }
+                }
+            }
+
+            /// <summary>
+            ///     Sets the drawings menu.
+            /// </summary>
+            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("drawings", "线圈");
+            {
+                Vars.DrawingsMenu.Add("q", new CheckBox("Q 范围"));
+                Vars.DrawingsMenu.Add("w", new CheckBox("W 范围"));
+                Vars.DrawingsMenu.Add("e", new CheckBox("E 范围"));
+                Vars.DrawingsMenu.Add("r", new CheckBox("R 范围"));
+            }
         }
     }
 }

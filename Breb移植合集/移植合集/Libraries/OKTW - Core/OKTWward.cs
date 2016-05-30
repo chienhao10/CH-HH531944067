@@ -61,12 +61,12 @@ namespace OneKeyToWin_AIO_Sebby.Core
             W = new Spell(SpellSlot.W);
             R = new Spell(SpellSlot.R);
 
-            Sub = Config.AddSubMenu("自动插眼 OKTW©");
-            Sub.Add("AutoWard", new CheckBox("自动插眼"));
-            Sub.Add("autoBuy", new CheckBox("9级后自动换眼", false));
-            Sub.Add("AutoWardBlue", new CheckBox("自动买蓝眼"));
-            Sub.Add("AutoWardCombo", new CheckBox("只在连招模式使用"));
-            Sub.Add("AutoWardPink", new CheckBox("自动真眼, 扫隐形"));
+            Sub = Config.AddSubMenu("AutoWard OKTW©");
+            Sub.Add("AutoWard", new CheckBox("Auto Ward"));
+            Sub.Add("autoBuy", new CheckBox("Auto buy blue trinket after lvl 9", false));
+            Sub.Add("AutoWardBlue", new CheckBox("Auto Blue Trinket"));
+            Sub.Add("AutoWardCombo", new CheckBox("Only combo mode"));
+            Sub.Add("AutoWardPink", new CheckBox("Auto VisionWard, OracleLens"));
 
             foreach (var hero in ObjectManager.Get<AIHeroClient>())
             {
@@ -158,7 +158,7 @@ namespace OneKeyToWin_AIO_Sebby.Core
                         E.Cast(Player.Position.Extend(need.PredictedPos, 800));
                     }
 
-                    if (!Orbwalker.IsAutoAttacking && PPDistance < 800 && Player.ChampionName == "Caitlyn" && W.IsReady() && Player.Mana > 200f && PortAIO.Champion.Caitlyn.Program.getBushW() && Utils.TickCount - W.LastCastAttemptT > 2000)
+                    if (!Orbwalker.IsAutoAttacking && PPDistance < 800 && Player.ChampionName == "Caitlyn" && W.IsReady() && Player.Mana > 200f && Caitlyn.getBushW() && Utils.TickCount - W.LastCastAttemptT > 2000)
                     {
                         W.Cast(need.PredictedPos);
                     }

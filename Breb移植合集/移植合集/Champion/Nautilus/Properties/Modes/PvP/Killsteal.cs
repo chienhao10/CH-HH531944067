@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using EloBuddy;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Nautilus
+namespace ExorSDK.Champions.Nautilus
 {
     /// <summary>
     ///     The logics class.
@@ -20,35 +22,40 @@ namespace ExorAIO.Champions.Nautilus
             /// <summary>
             ///     The KillSteal Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.ks"))
+            if (Vars.Q.IsReady() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "killsteal"))
             {
-                foreach (var target in
-                    HeroManager.Enemies.Where(
-                        t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.IsValidTarget(Variables.Q.Range) &&
-                            !t.IsValidTarget(Variables.AARange) &&
-                            t.Health < Variables.Q.GetDamage(t)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        t.LSIsValidTarget(Vars.Q.Range) &&
+                        !t.LSIsValidTarget(Vars.AARange) &&
+                        !Invulnerable.Check(t, DamageType.Magical, false) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.Q)))
                 {
-                    Variables.Q.Cast(target);
-                    return;
+                    if (!Vars.Q.GetPrediction(Targets.Target).CollisionObjects.Any())
+                    {
+                        Vars.Q.Cast(Vars.Q.GetPrediction(target).UnitPosition);
+                        return;
+                    }
                 }
             }
 
             /// <summary>
             ///     The KillSteal R Logic.
             /// </summary>
-            if (Variables.R.IsReady() && Variables.getCheckBoxItem(Variables.RMenu, "rspell.ks"))
+            if (Vars.R.IsReady() &&
+                Vars.getCheckBoxItem(Vars.RMenu, "killsteal"))
             {
-                foreach (
-                    var target in
-                        HeroManager.Enemies.Where(
-                            t =>
-                                !Bools.IsSpellShielded(t) && t.IsValidTarget(Variables.R.Range) &&
-                                !t.IsValidTarget(Variables.AARange) && t.Health < Variables.R.GetDamage(t)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        t.LSIsValidTarget(Vars.R.Range) &&
+                        !t.LSIsValidTarget(Vars.AARange) &&
+                        !Invulnerable.Check(t, DamageType.Magical, false) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.R)))
                 {
-                    Variables.R.CastOnUnit(target);
+                    Vars.R.CastOnUnit(target);
                 }
             }
         }

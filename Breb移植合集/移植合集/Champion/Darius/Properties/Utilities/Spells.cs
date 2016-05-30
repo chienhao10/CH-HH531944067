@@ -1,9 +1,10 @@
 using System;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Darius
+namespace ExorSDK.Champions.Darius
 {
     /// <summary>
     ///     The spell class.
@@ -15,14 +16,12 @@ namespace ExorAIO.Champions.Darius
         /// </summary>
         public static void Initialize()
         {
-            Variables.Q = new Spell(SpellSlot.Q, 425f);
-            Variables.W = new Spell(SpellSlot.W, 200f);
-            Variables.E = new Spell(SpellSlot.E, 500f);
-            Variables.R = new Spell(SpellSlot.R, 460f);
+            Vars.Q = new Spell(SpellSlot.Q, 425f);
+            Vars.W = new Spell(SpellSlot.W, Vars.AARange + 25f);
+            Vars.E = new Spell(SpellSlot.E, 500f);
+            Vars.R = new Spell(SpellSlot.R, 460f);
 
-            Variables.E.SetSkillshot(0.25f, (float) (80f*Math.PI/180), float.MaxValue, false,
-                SkillshotType.SkillshotCone);
-            Variables.R.SetTargetted(0.5f, float.MaxValue);
+            Vars.E.SetSkillshot(0.25f, (float) (80f * Math.PI / 180), float.MaxValue, false, SkillshotType.SkillshotCone);
         }
     }
 }

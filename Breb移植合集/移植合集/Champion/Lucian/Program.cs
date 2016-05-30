@@ -72,13 +72,13 @@ namespace LCS_Lucian
         private static void ECast(AIHeroClient enemy)
         {
             var range = Orbwalking.GetRealAutoAttackRange(enemy);
-            var path = Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.To2D(),
-                Prediction.GetPrediction(enemy, 0.25f).UnitPosition.To2D(), LucianSpells.E.Range, range);
+            var path = Geometry.CircleCircleIntersection(ObjectManager.Player.ServerPosition.LSTo2D(),
+                Prediction.GetPrediction(enemy, 0.25f).UnitPosition.LSTo2D(), LucianSpells.E.Range, range);
 
             if (path.Count() > 0)
             {
                 var epos = path.MinOrDefault(x => x.LSDistance(Game.CursorPos));
-                if (epos.To3D().UnderTurret(true) || epos.To3D().IsWall())
+                if (epos.To3D().UnderTurret(true) || epos.To3D().LSIsWall())
                 {
                     return;
                 }
@@ -92,7 +92,7 @@ namespace LCS_Lucian
             if (path.Count() == 0)
             {
                 var epos = ObjectManager.Player.ServerPosition.LSExtend(enemy.ServerPosition, -LucianSpells.E.Range);
-                if (epos.UnderTurret(true) || epos.IsWall())
+                if (epos.UnderTurret(true) || epos.LSIsWall())
                 {
                     return;
                 }
@@ -215,7 +215,7 @@ namespace LCS_Lucian
                     LucianSpells.W.Cast(((Obj_AI_Minion) args.Target).Position);
                 }
                 if (LucianSpells.E.IsReady() && getCheckBoxItem(jungleMenu, "lucian.e.jungle") &&
-                    ((Obj_AI_Minion) args.Target).IsValidTarget(1000) &&
+                    ((Obj_AI_Minion) args.Target).LSIsValidTarget(1000) &&
                     Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) &&
                     ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
                 {
@@ -244,7 +244,8 @@ namespace LCS_Lucian
             if (UltActive)
             {
                 Orbwalker.DisableAttacking = true;
-            } else
+            }
+            else
             {
                 Orbwalker.DisableAttacking = false;
             }
@@ -257,7 +258,7 @@ namespace LCS_Lucian
             {
                 return;
             }
-            foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(LucianSpells.R.Range) && LucianSpells.R.GetPrediction(x).CollisionObjects.Count == 0))
+            foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(LucianSpells.R.Range) && LucianSpells.R.GetPrediction(x).CollisionObjects.Count == 0))
             {
                 LucianSpells.R.Cast(enemy);
             }
@@ -275,7 +276,7 @@ namespace LCS_Lucian
             }
             if (LucianSpells.W.IsReady() && getCheckBoxItem(harassMenu, "lucian.w.harass") && ObjectManager.Player.Buffs.Any(buff => buff.Name != "lucianpassivebuff"))
             {
-                foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(LucianSpells.W.Range) && LucianSpells.W.GetPrediction(x).Hitchance >= HitChance.Medium))
+                foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(LucianSpells.W.Range) && LucianSpells.W.GetPrediction(x).Hitchance >= HitChance.Medium))
                 {
                     LucianSpells.W.Cast(enemy);
                 }
@@ -310,10 +311,10 @@ namespace LCS_Lucian
 
                     foreach (AIHeroClient target in ObjectManager.Player.GetEnemiesInRange(LucianSpells.Q2.Range))
                     {
-                        List<Vector2> position = new List<Vector2> { target.Position.To2D() };
+                        List<Vector2> position = new List<Vector2> { target.Position.LSTo2D() };
 
                         Obj_AI_Base colisionMinion =
-                            LucianSpells.Q2.GetCollision(ObjectManager.Player.Position.To2D(), position)
+                            LucianSpells.Q2.GetCollision(ObjectManager.Player.Position.LSTo2D(), position)
                                 .FirstOrDefault(
                                     minion => LucianSpells.Q.CanCast(minion) && LucianSpells.Q.IsInRange(minion) && CheckLine(ObjectManager.Player.Position, minion.Position, target.ServerPosition) && CheckDistance(target, minion) && target.LSDistance(ObjectManager.Player) > minion.LSDistance(ObjectManager.Player) && ObjectManager.Player.LSDistance(minion) + minion.LSDistance(target) <= ObjectManager.Player.LSDistance(target) + 10f);
 
@@ -324,7 +325,7 @@ namespace LCS_Lucian
                     }
                     break;
                 case 1:
-                    foreach (var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(LucianSpells.Q.Range)))
+                    foreach (var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(LucianSpells.Q.Range)))
                     {
                         LucianSpells.Q.CastOnUnit(enemy);
                     }
@@ -345,7 +346,7 @@ namespace LCS_Lucian
                 {
                     var prediction = Prediction.GetPrediction(minion, LucianSpells.Q.Delay, ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).SData.CastRadius);
 
-                    var collision = LucianSpells.Q.GetCollision(ObjectManager.Player.Position.To2D(), new List<Vector2> {prediction.UnitPosition.To2D()});
+                    var collision = LucianSpells.Q.GetCollision(ObjectManager.Player.Position.LSTo2D(), new List<Vector2> {prediction.UnitPosition.LSTo2D()});
 
                     foreach (var cs in collision)
                     {

@@ -1,8 +1,10 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Darius
+namespace ExorSDK.Champions.Darius
 {
     /// <summary>
     ///     The logics class.
@@ -15,8 +17,30 @@ namespace ExorAIO.Champions.Darius
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling())
+            if (Bools.HasSheenBuff() ||
+                !Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
+                return;
+            }
+
+            /// <summary>
+            ///     The Automatic Q Logic.
+            /// </summary>
+            if (Vars.Q.IsReady() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
+            {
+                if (GameObjects.EnemyHeroes.Any(
+                    t =>
+                        t.LSIsValidTarget(Vars.Q.Range) &&
+                        !t.LSIsValidTarget(Vars.AARange)))
+                {
+                    Vars.Q.Cast();
+                }
+                else if (GameObjects.Player.CountEnemyHeroesInRange(Vars.Q.Range) >= 3)
+                {
+                    Vars.Q.Cast();
+                }
             }
         }
     }

@@ -1,9 +1,12 @@
 using System;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
+using EloBuddy;
 
-namespace ExorAIO.Champions.Nautilus
+namespace ExorSDK.Champions.Nautilus
 {
     /// <summary>
     ///     The logics class.
@@ -16,10 +19,9 @@ namespace ExorAIO.Champions.Nautilus
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
-            if (Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget() ||
+            if (!Targets.Target.LSIsValidTarget() ||
                 Bools.IsImmobile(Targets.Target) ||
-                Bools.IsSpellShielded(Targets.Target))
+                Invulnerable.Check(Targets.Target, DamageType.Magical, false))
             {
                 return;
             }
@@ -27,23 +29,25 @@ namespace ExorAIO.Champions.Nautilus
             /// <summary>
             ///     The R Combo Logic.
             /// </summary>
-            if (Variables.R.IsReady() && Targets.Target.IsValidTarget(Variables.R.Range) &&
-                Variables.getCheckBoxItem(Variables.RMenu, "rspell.combo") &&
-                Variables.getCheckBoxItem(Variables.WhiteListMenu,
-                    "rspell.whitelist." + Targets.Target.NetworkId))
+            if (Vars.R.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.R.Range) &&
+                Vars.getCheckBoxItem(Vars.RMenu, "combo") &&
+                Vars.getCheckBoxItem(Vars.WhiteListMenu, Targets.Target.ChampionName.ToLower()))
             {
-                Variables.R.CastOnUnit(Targets.Target);
+                Vars.R.CastOnUnit(Targets.Target);
                 return;
             }
 
             /// <summary>
             ///     The Q Combo Logic.
             /// </summary>
-            if (Variables.Q.IsReady() && Targets.Target.IsValidTarget(Variables.Q.Range) && Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
+            if (Vars.Q.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+                Vars.getCheckBoxItem(Vars.QMenu, "combo"))
             {
-                if (Variables.Q.GetPrediction(Targets.Target).CollisionObjects.Count < 0)
+                if (!Vars.Q.GetPrediction(Targets.Target).CollisionObjects.Any())
                 {
-                    Variables.Q.Cast(Targets.Target);
+                    Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target).UnitPosition);
                     return;
                 }
             }
@@ -56,11 +60,11 @@ namespace ExorAIO.Champions.Nautilus
             /// <summary>
             ///     The E Combo Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
-                Variables.E.Cast();
+                Vars.E.Cast();
             }
         }
     }

@@ -163,6 +163,7 @@
     <Compile Include="LeagueSharp-SDK\Core\Enumerations\WindowsMessages.cs" />
     <Compile Include="LeagueSharp-SDK\Core\Events\Dash.cs" />
     <Compile Include="LeagueSharp-SDK\Core\Events\Events.cs" />
+    <Compile Include="LeagueSharp-SDK\Core\Events\GameObjectNotifier.cs" />
     <Compile Include="LeagueSharp-SDK\Core\Events\Gapcloser.cs" />
     <Compile Include="LeagueSharp-SDK\Core\Events\InterruptableSpell.cs" />
     <Compile Include="LeagueSharp-SDK\Core\Events\Load.cs" />

@@ -1,10 +1,9 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Nautilus
+namespace ExorSDK.Champions.Nautilus
 {
     /// <summary>
     ///     The logics class.
@@ -17,8 +16,8 @@ namespace ExorAIO.Champions.Nautilus
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Harass(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+            if (!Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
@@ -26,12 +25,13 @@ namespace ExorAIO.Champions.Nautilus
             /// <summary>
             ///     The E Harass Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededEMana &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.harass"))
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "harass")) &&
+                Vars.getSliderItem(Vars.EMenu, "harass") != 101)
             {
-                Variables.E.Cast();
+                Vars.E.Cast();
             }
         }
     }

@@ -27,6 +27,8 @@
 
         #region Static Fields
 
+        internal static EloBuddy.SDK.Item Bilgewater, BotRuinedKing, Youmuu, Tiamat, Hydra, Titanic;
+
         internal static SpellSlot Flash, Ignite, Smite;
 
         internal static Menu _MainMenu;
@@ -58,6 +60,16 @@
             }
         }
 
+        private static void InitItem()
+        {
+            Bilgewater = new EloBuddy.SDK.Item(ItemId.Bilgewater_Cutlass, 550);
+            BotRuinedKing = new EloBuddy.SDK.Item(ItemId.Blade_of_the_Ruined_King, 550);
+            Youmuu = new EloBuddy.SDK.Item(ItemId.Youmuus_Ghostblade, 0);
+            Tiamat = new EloBuddy.SDK.Item(ItemId.Tiamat_Melee_Only, 400);
+            Hydra = new EloBuddy.SDK.Item(ItemId.Ravenous_Hydra_Melee_Only, 400);
+            Titanic = new EloBuddy.SDK.Item(3748, 0);
+        }
+
         private static void InitSummonerSpell()
         {
             var smiteName = Player.Spellbook.Spells.Where(i => (i.Slot == SpellSlot.Summoner1 || i.Slot == SpellSlot.Summoner2) && i.Name.ToLower().Contains("smite")).Select(i => i.Name).FirstOrDefault();
@@ -74,6 +86,7 @@
             Player = ObjectManager.Player;
             var isSupport = Plugins.ContainsKey(Player.ChampionName);
             InitMenu(isSupport);
+            InitItem();
             InitSummonerSpell();
         }
 

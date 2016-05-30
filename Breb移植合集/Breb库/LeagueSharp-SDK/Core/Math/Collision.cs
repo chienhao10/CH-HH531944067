@@ -26,9 +26,9 @@ namespace LeagueSharp.SDK
 
     using SharpDX;
     using EloBuddy;
-    /// <summary>
-    ///     Collision class, calculates collision for moving objects.
-    /// </summary>
+    using Core.Utils;    /// <summary>
+                         ///     Collision class, calculates collision for moving objects.
+                         /// </summary>
     public static class Collision
     {
         #region Static Fields
@@ -113,7 +113,7 @@ namespace LeagueSharp.SDK
                 if (input.CollisionObjects.HasFlag(CollisionableObjects.Minions))
                 {
                     result.AddRange(
-                        GameObjects.EnemyMinions.Where(i => i.IsMinion)
+                        GameObjects.EnemyMinions.Where(i => i.IsMinion() || i.IsPet())
                             .Concat(GameObjects.Jungle)
                             .Where(
                                 minion =>

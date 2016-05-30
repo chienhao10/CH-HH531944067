@@ -132,7 +132,7 @@ namespace SebbyLib
                 Config.Add("comboDisableMode", new CheckBox("连招屏蔽普攻", false));
                 Config.Add("manaDisable", new CheckBox("连招时无视蓝量控制器"));
                 Config.Add("collAA", new CheckBox("面对亚索风墙停止普攻"));
-
+                
                 #region LOAD CHAMPIONS
 
                 switch (Player.ChampionName)
@@ -150,7 +150,7 @@ namespace SebbyLib
                         PortAIO.Champion.Braum.Program.LoadOKTW();
                         break;
                     case "Caitlyn":
-                        PortAIO.Champion.Caitlyn.Program.LoadOKTW();
+                        new Caitlyn().LoadOKTW();
                         break;
                     case "Ekko":
                         PortAIO.Champion.Ekko.Program.LoadOKTW();

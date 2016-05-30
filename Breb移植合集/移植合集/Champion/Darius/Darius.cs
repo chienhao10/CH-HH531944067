@@ -1,10 +1,12 @@
 using System;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Darius
+namespace ExorSDK.Champions.Darius
 {
     /// <summary>
     ///     The champion class.
@@ -14,7 +16,7 @@ namespace ExorAIO.Champions.Darius
         /// <summary>
         ///     Loads Darius.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -43,7 +45,7 @@ namespace ExorAIO.Champions.Darius
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -58,10 +60,10 @@ namespace ExorAIO.Champions.Darius
             /// </summary>
             Logics.Killsteal(args);
 
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            /// 
+            if (GameObjects.Player.Spellbook.IsAutoAttacking)
+            {
+                return;
+            }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
@@ -73,8 +75,7 @@ namespace ExorAIO.Champions.Darius
                 Logics.Harass(args);
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Logics.Clear(args);
             }
@@ -87,26 +88,53 @@ namespace ExorAIO.Champions.Darius
         /// <param name="args">The args.</param>
         public static void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe && Orbwalking.IsAutoAttack(args.SData.Name) &&
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (sender.IsMe &&
+                AutoAttack.IsAutoAttack(args.SData.Name))
             {
-                Logics.Weaving(sender, args);
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                {
+                    Logics.Weaving(sender, args);
+                }
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+                {
+                    Logics.JungleClear(sender, args);
+                    Logics.BuildingClear(sender, args);
+                }
             }
         }
 
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="gapcloser">The gapcloser.</param>
-        public static void OnEnemyGapcloser(ActiveGapcloser gapcloser)
+        /// <param name="sender">The object.</param>
+        /// <param name="args">The <see cref="Events.GapCloserEventArgs" /> instance containing the event data.</param>
+        public static void OnGapCloser(object sender, Events.GapCloserEventArgs args)
         {
-            /// <summary>
-            ///     The Anti-GapCloser E Logic.
-            /// </summary>
-            if (Variables.E.IsReady() && ObjectManager.Player.LSDistance(gapcloser.End) < Variables.E.Range &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.gp"))
+            if (Vars.E.IsReady() &&
+                args.IsDirectedToPlayer &&
+                args.Sender.LSIsValidTarget(Vars.E.Range) &&
+                !Invulnerable.Check(args.Sender, DamageType.Physical, false) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "gapcloser"))
             {
-                Variables.E.Cast(gapcloser.End);
+                Vars.E.Cast(args.Sender.ServerPosition);
+            }
+        }
+
+        /// <summary>
+        ///     Called on interruptable spell.
+        /// </summary>
+        /// <param name="sender">The object.</param>
+        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
+        public static void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
+        {
+            if (Vars.E.IsReady() &&
+                args.Sender.LSIsValidTarget(Vars.E.Range) &&
+                !Invulnerable.Check(args.Sender, DamageType.Physical, false) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "interrupter"))
+            {
+                Vars.E.Cast(args.Sender.ServerPosition);
             }
         }
     }

@@ -34,7 +34,7 @@ namespace iKalistaReborn.Utils
         /// <summary>
         ///     TODO The raw rend damage per spear multiplier.
         /// </summary>
-        private static readonly float[] RawRendDamagePerSpearMultiplier = { 0.2f, 0.225f, 0.25f, 0.275f, 0.3f };
+        private static readonly float[] RawRendDamagePerSpearMultiplier = { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
 
         #endregion
 

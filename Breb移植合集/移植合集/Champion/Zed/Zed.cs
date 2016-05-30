@@ -67,10 +67,10 @@
 
         public Zed()
         {
-            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 925).SetSkillshot(0.265f, 50, 1700, true, SkillshotType.SkillshotLine);
+            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 925).SetSkillshot(0.25f, 50, 1650, true, SkillshotType.SkillshotLine);
             Q2 = new LeagueSharp.SDK.Spell(Q.Slot, Q.Range).SetSkillshot(Q.Delay, Q.Width, Q.Speed, true, Q.Type);
             Q3 = new LeagueSharp.SDK.Spell(Q.Slot, Q.Range).SetSkillshot(Q.Delay, Q.Width, Q.Speed, true, Q.Type);
-            W = new LeagueSharp.SDK.Spell(SpellSlot.W, 700).SetTargetted(0.01f, 1750);
+            W = new LeagueSharp.SDK.Spell(SpellSlot.W, 700).SetTargetted(0.005f, 1750);
             E = new LeagueSharp.SDK.Spell(SpellSlot.E, 290).SetTargetted(0.001f, float.MaxValue);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 625);
             Q.DamageType = W.DamageType = E.DamageType = R.DamageType = DamageType.Physical;
@@ -134,6 +134,7 @@
             miscMenu = config.AddSubMenu("Misc", "杂项");
             miscMenu.Add("FleeW", new KeyBind("使用 W 逃跑", false, KeyBind.BindTypes.HoldActive, 'C'));
 
+
             Evade.Evading += Evading;
             Evade.TryEvading += TryEvading;
             Game.OnUpdate += OnUpdate;
@@ -162,7 +163,7 @@
                         return;
                     }
                     var shadow = sender as Obj_AI_Minion;
-                    if (shadow == null || shadow.CharData.BaseSkinName != "ZedUltMissile" || shadow.CharData.BaseSkinName != "ZedShadowDashMissile" || shadow.CharData.BaseSkinName != "zedshadow")
+                    if (shadow == null || !shadow.IsAlly || shadow.CharData.BaseSkinName != "ZedUltMissile" || shadow.CharData.BaseSkinName != "ZedShadowDashMissile" || shadow.CharData.BaseSkinName != "zedshadow")
                     {
                         return;
                     }
@@ -191,20 +192,18 @@
                         switch (args.Buff.Name)
                         {
                             case "zedwshadowbuff":
-                                if (wShadow.Compare(shadow))
+                                if (!wShadow.Compare(shadow))
                                 {
-                                    return;
+                                    wShadowT = Variables.TickCount;
+                                    wShadow = shadow;
                                 }
-                                wShadowT = Variables.TickCount;
-                                wShadow = shadow;
                                 break;
                             case "zedrshadowbuff":
-                                if (rShadow.Compare(shadow))
+                                if (!rShadow.Compare(shadow))
                                 {
-                                    return;
+                                    rShadowT = Variables.TickCount;
+                                    rShadow = shadow;
                                 }
-                                rShadowT = Variables.TickCount;
-                                rShadow = shadow;
                                 break;
                         }
                     }
@@ -975,7 +974,7 @@
                     .FirstOrDefault();
             if (target != null)
             {
-                Player.Spellbook.CastSpell(zedR1.Slot, target);
+                R.CastOnUnit(target);
             }
         }
 

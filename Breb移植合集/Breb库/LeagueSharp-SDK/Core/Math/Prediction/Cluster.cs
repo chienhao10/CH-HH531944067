@@ -20,10 +20,8 @@ namespace LeagueSharp.SDK
     using System.Collections.Generic;
     using System.Linq;
 
-    using LeagueSharp.SDK;
-    using EloBuddy;
     using SharpDX;
-    using EloBuddy.SDK;
+    using EloBuddy;
     /// <summary>
     ///     Cluster (Area of Effect) Prediction class.
     /// </summary>
@@ -71,10 +69,10 @@ namespace LeagueSharp.SDK
             var result = new List<PossibleTarget>();
 
             foreach (var enemy in
-                EntityManager.Heroes.Enemies.Where(
+                GameObjects.EnemyHeroes.Where(
                     h =>
                     !h.Compare(input.Unit)
-                    && h.IsValidTarget(input.Range + 200 + input.RealRadius, true, input.RangeCheckFrom)))
+                    && h.LSIsValidTarget(input.Range + 200 + input.RealRadius, true, input.RangeCheckFrom)))
             {
                 var inputs = input.Clone() as PredictionInput;
 
@@ -139,13 +137,14 @@ namespace LeagueSharp.SDK
                         && mecCircle.Center.DistanceSquared(input.RangeCheckFrom) < input.Range * input.Range)
                     {
                         return new PredictionOutput
-                                   {
-                                       AoeTargetsHit = posibleTargets.Select(h => (AIHeroClient)h.Unit).ToList(),
-                                       CastPosition = mecCircle.Center.ToVector3(),
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       Hitchance = mainTargetPrediction.Hitchance, Input = input,
-                                       AoeHitCount = posibleTargets.Count
-                                   };
+                        {
+                            AoeTargetsHit = posibleTargets.Select(h => (AIHeroClient)h.Unit).ToList(),
+                            CastPosition = mecCircle.Center.ToVector3(),
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            Input = input,
+                            AoeHitCount = posibleTargets.Count
+                        };
                     }
 
                     float maxdist = -1;
@@ -247,11 +246,13 @@ namespace LeagueSharp.SDK
                     if (bestCandidateHits > 1 && input.From.DistanceSquared(bestCandidate) > 50 * 50)
                     {
                         return new PredictionOutput
-                                   {
-                                       Hitchance = mainTargetPrediction.Hitchance, AoeHitCount = bestCandidateHits,
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = bestCandidate.ToVector3(), Input = input
-                                   };
+                        {
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            AoeHitCount = bestCandidateHits,
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            CastPosition = bestCandidate.ToVector3(),
+                            Input = input
+                        };
                     }
                 }
 
@@ -273,8 +274,8 @@ namespace LeagueSharp.SDK
             internal static int GetHits(Vector2 end, double range, float angle, List<Vector2> points)
             {
                 return (from point in points
-                        let edge1 = end.Rotated(-angle / 2)
-                        let edge2 = edge1.Rotated(angle)
+                        let edge1 = end.LSRotated(-angle / 2)
+                        let edge2 = edge1.LSRotated(angle)
                         where
                             point.LSDistanceSquared(default(Vector2)) < range * range && edge1.CrossProduct(point) > 0
                             && point.CrossProduct(edge2) > 0
@@ -384,11 +385,13 @@ namespace LeagueSharp.SDK
                         }
 
                         return new PredictionOutput
-                                   {
-                                       Hitchance = mainTargetPrediction.Hitchance, AoeHitCount = bestCandidateHits,
-                                       UnitPosition = mainTargetPrediction.UnitPosition,
-                                       CastPosition = ((p1 + p2) * 0.5f).ToVector3(), Input = input
-                                   };
+                        {
+                            Hitchance = mainTargetPrediction.Hitchance,
+                            AoeHitCount = bestCandidateHits,
+                            UnitPosition = mainTargetPrediction.UnitPosition,
+                            CastPosition = ((p1 + p2) * 0.5f).ToVector3(),
+                            Input = input
+                        };
                     }
                 }
 

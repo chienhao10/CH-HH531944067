@@ -262,7 +262,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[23]))
                 {
-                    Miscc.Add("jhin", new ComboBox("切换 烬脚本 : ", 0, "Jhin Virtuoso", "OKTW"));
+                    Miscc.Add("jhin", new ComboBox("切换 烬脚本 : ", 0, "Jhin Virtuoso", "OKTW", "hJhin"));
                 }
                 if (Player.ChampionName.Equals(Champion[24]))
                 {

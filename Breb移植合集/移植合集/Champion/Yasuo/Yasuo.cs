@@ -27,6 +27,8 @@
     {
         #region Constants
 
+        private const float QDelay = 0.215f, Q2Delay = 0.3f;
+
         private const int RWidth = 400;
 
         #endregion
@@ -37,7 +39,7 @@
 
         public static Menu config = _MainMenu;
 
-        private static bool haveQ3, haveR;
+        private static bool haveQ3;
 
         private static bool isDash;
 
@@ -54,19 +56,16 @@
         public Yasuo()
         {
 
-            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 505).SetSkillshot(0.4f, 20, float.MaxValue, false, SkillshotType.SkillshotLine);
-            Q2 = new LeagueSharp.SDK.Spell(Q.Slot, 1100).SetSkillshot(Q.Delay, 90, 1250, true, Q.Type);
-            Q3 = new LeagueSharp.SDK.Spell(Q.Slot, 250).SetTargetted(0.01f, float.MaxValue);
+            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 510).SetSkillshot(0.4f, 40, float.MaxValue, false, SkillshotType.SkillshotLine);
+            Q2 = new LeagueSharp.SDK.Spell(Q.Slot, 1100).SetSkillshot(Q.Delay, 90, 1300, true, Q.Type);
+            Q3 = new LeagueSharp.SDK.Spell(Q.Slot, 250).SetTargetted(0.005f, float.MaxValue);
             W = new LeagueSharp.SDK.Spell(SpellSlot.W, 400);
-            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 475).SetTargetted(0.01f, 1250);
+            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 475).SetTargetted(0.005f, 1250);
             E2 = new LeagueSharp.SDK.Spell(E.Slot).SetTargetted(E.Delay + Q3.Delay, E.Speed);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 1200);
             Q.DamageType = Q2.DamageType = R.DamageType = DamageType.Physical;
             E.DamageType = DamageType.Magical;
             Q.MinHitChance = Q2.MinHitChance = HitChance.VeryHigh;
-            Q.CastCondition += () => !haveR;
-            Q2.CastCondition += () => !haveR;
-            Q3.CastCondition += () => !haveR && IsDashing;
             E.CastCondition += () => !posDash.IsValid();
 
             if (YasuoPro.YasuoMenu.ComboM != null)
@@ -146,6 +145,7 @@
             miscMenu = config.AddSubMenu("杂项", "Misc");
             miscMenu.Add("StackQ", new KeyBind("自动叠加Q", false, KeyBind.BindTypes.PressToggle, 'Z'));
 
+
             Evade.Evading += Evading;
             Evade.TryEvading += TryEvading;
             Game.OnUpdate += OnUpdate;
@@ -164,31 +164,11 @@
                     if (isDash && !Player.IsDashing())
                     {
                         isDash = false;
-                        DelayAction.Add(70, () => posDash = new Vector2());
+                        DelayAction.Add(50, () => posDash = new Vector2());
                     }
-                    if (!haveQ3 && Q.Delay > 0.18f)
-                    {
-                        var qDelay = Math.Max(0.4f * (1 - Math.Min((Player.AttackSpeedMod - 1) * 0.5f, 0.55f)), 0.18f);
-                        if (!Q.Delay.Equals(qDelay))
-                        {
-                            Q.Delay = qDelay;
-                        }
-                    }
-                    if (haveQ3 && Q2.Delay > 0.27f)
-                    {
-                        var qDelay = Math.Max(
-                            0.4f * (1 - Math.Min((Player.AttackSpeedMod - 1) * 0.296f, 0.325f)),
-                            0.27f);
-                        if (!Q2.Delay.Equals(qDelay))
-                        {
-                            Q2.Delay = qDelay;
-                        }
-                    }
-                    var eSpeed = 1250 + (Player.MoveSpeed - 345);
-                    if (!E.Speed.Equals(eSpeed))
-                    {
-                        E.Speed = E2.Speed = eSpeed;
-                    }
+                    Q.Delay = GetQDelay(false);
+                    Q2.Delay = GetQDelay(true);
+                    E.Speed = E2.Speed = 1250 + (Player.MoveSpeed - 345);
                 };
             Orbwalker.OnPostAttack += (sender, args) =>
                 {
@@ -216,7 +196,7 @@
                 };
             Obj_AI_Base.OnBuffGain += (sender, args) =>
                 {
-                    if (!sender.IsMe || !args.Buff.Caster.IsMe)
+                    if (!sender.IsMe)
                     {
                         return;
                     }
@@ -228,21 +208,12 @@
                         case "YasuoDashScalar":
                             cDash = 1;
                             break;
-                        case "YasuoRArmorPen":
-                            haveR = true;
-                            Orbwalker.DisableAttacking = true;
-                            Orbwalker.DisableMovement = true;
-                            break;
                         case "yasuoeqcombosoundmiss":
                         case "YasuoEQComboSoundHit":
                             DelayAction.Add(
                                 70,
                                 () =>
                                     {
-                                        if (Player.IsDead)
-                                        {
-                                            return;
-                                        }
                                         Orbwalker.ResetAutoAttack();
                                         EloBuddy.Player.IssueOrder(GameObjectOrder.AttackTo, Player.ServerPosition.LSExtend(Game.CursorPos, Player.BoundingRadius * 2));
                                     });
@@ -259,7 +230,7 @@
             };
             Obj_AI_Base.OnBuffLose += (sender, args) =>
                 {
-                    if (!sender.IsMe || !args.Buff.Caster.IsMe)
+                    if (!sender.IsMe)
                     {
                         return;
                     }
@@ -273,18 +244,6 @@
                             break;
                     }
                 };
-
-            Obj_AI_Base.OnBuffLose += (sender, args) =>
-            {
-                if (!haveR || !sender.IsEnemy || !args.Buff.Caster.IsMe || args.Buff.DisplayName != "YasuoRStun")
-                {
-                    return;
-                }
-                haveR = false;
-
-                Orbwalker.DisableAttacking = false;
-                Orbwalker.DisableMovement = false;
-            };
             Obj_AI_Base.OnProcessSpellCast += (sender, args) =>
             {
                 if (!sender.IsMe || args.Slot != SpellSlot.Q)
@@ -387,18 +346,22 @@
         private static bool CastQ3()
         {
             var targets = EntityManager.Heroes.Enemies.Where(i => Q2.IsInRange(i) && i.LSIsValidTarget()).ToList();
-            if (targets.Count == 0 || targets == null)
+            if (targets.Count == 0)
             {
                 return false;
             }
-            var preds = targets.Select(i => Q2.GetPrediction(i, true, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall)).Where(i => i.Hitchance >= Q2.MinHitChance || (i.Hitchance >= HitChance.High && i.AoeTargetsHitCount > 1)).ToList();
-
-            if (preds.Count < 0 || preds == null)
+            var posCast = new Vector3();
+            foreach (var pred in
+                targets.Select(i => Q2.GetPrediction(i, true, -1, LeagueSharp.SDK.CollisionableObjects.YasuoWall))
+                    .Where(
+                        i =>
+                        i.Hitchance >= Q2.MinHitChance || (i.Hitchance >= HitChance.High && i.AoeTargetsHitCount > 1))
+                    .OrderByDescending(i => i.AoeTargetsHitCount))
             {
-                return false;
+                posCast = pred.CastPosition;
+                break;
             }
-
-            return preds.Count > 0 && Q2.Cast(preds.MaxOrDefault(i => i.AoeTargetsHitCount).CastPosition);
+            return posCast.IsValid() && Q2.Cast(posCast);
         }
 
         private static bool CastQCir(List<Obj_AI_Base> obj)
@@ -408,11 +371,7 @@
                 return false;
             }
             var target = obj.FirstOrDefault();
-            if (target != null)
-            {
-                Q3.Cast(target);
-            }
-            return true;
+            return target != null && Q3.Cast(!haveQ3 ? Q.GetPredPosition(target) : Q2.GetPredPosition(target));
         }
 
         private static void Combo()
@@ -597,12 +556,23 @@
 
         private static double GetEDmg(Obj_AI_Base target)
         {
-            return E.GetDamage(target) + E.GetDamage(target, DamageStage.Buff);
+            return E.GetDamage(target) + E.GetDamage(target, DamageStage.Buff) - 10;
         }
 
         private static Vector3 GetPosAfterDash(Obj_AI_Base target)
         {
             return Player.ServerPosition.LSExtend(target.ServerPosition, E.Range);
+        }
+
+        private static float GetQDelay(bool isQ3)
+        {
+            var delayOri = 0.4f;
+            var delayMax = !isQ3 ? QDelay : Q2Delay;
+            var perReduce = 1 - delayMax / delayOri;
+            var delay = Math.Max(
+                delayOri * (1 - Math.Min((Player.AttackSpeedMod - 1) * (perReduce / 1.1f), perReduce)),
+                delayMax);
+            return (float)Math.Round((decimal)delay, 3, MidpointRounding.AwayFromZero);
         }
 
         private static double GetQDmg(Obj_AI_Base target)
@@ -673,7 +643,7 @@
 
         private static bool IsInRangeQ(Obj_AI_Minion minion)
         {
-            return minion.IsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 3, 475));
+            return minion.IsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 4, 475));
         }
 
         private static void KillSteal()
@@ -682,10 +652,13 @@
             {
                 if (IsDashing)
                 {
-                    if (CanCastQCir
-                        && CastQCir(GetQCirTarget.Where(i => i.Health + i.AttackShield <= GetQDmg(i)).ToList()))
+                    if (CanCastQCir)
                     {
-                        return;
+                        var targets = GetQCirTarget.Where(i => i.Health + i.AttackShield <= GetQDmg(i)).ToList();
+                        if (CastQCir(targets))
+                        {
+                            return;
+                        }
                     }
                 }
                 else
@@ -814,10 +787,10 @@
                 {
                     if (CanCastQCir)
                     {
-                        var minions = GetQCirObj.Select(i => i as Obj_AI_Minion).Where(i => i.IsValid()).ToList();
+                        var minions = GetQCirObj.Where(i => i is Obj_AI_Minion).ToList();
                         if (minions.Any(i => i.Health <= GetQDmg(i) || i.Team == GameObjectTeam.Neutral) || minions.Count > 1)
                         {
-                            Q3.Cast(minions.First().ServerPosition);
+                            CastQCir(minions);
                         }
                     }
                 }

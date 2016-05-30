@@ -782,10 +782,10 @@ namespace Valvrave_Sharp.Evade
                     SpellName = "InfectedCleaverMissileCast",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotMissileLine,
-                    Delay = 275,
+                    Delay = 250,
                     Range = 1050,
                     Radius = 60,
-                    MissileSpeed = 2100,
+                    MissileSpeed = 2000,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 3,
@@ -2005,10 +2005,10 @@ namespace Valvrave_Sharp.Evade
                     SpellName = "BlindMonkQOne",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotMissileLine,
-                    Delay = 275,
+                    Delay = 250,
                     Range = 1100,
                     Radius = 60,
-                    MissileSpeed = 1850,
+                    MissileSpeed = 1800,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 3,
@@ -3766,18 +3766,19 @@ namespace Valvrave_Sharp.Evade
                 new SpellData
                 {
                     ChampionName = "Yasuo",
-                    SpellName = "yasuoq2w",
+                    SpellName = "yasuoq2",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotLine,
                     Delay = 400,
                     Range = 550,
-                    Radius = 20,
+                    Radius = 40,
                     MissileSpeed = int.MaxValue,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 2,
                     IsDangerous = true,
-                    MissileSpellName = "yasuoq2"
+                    MissileSpellName = "yasuoq2",
+                    Invert = true
                 });
 
             Spells.Add(
@@ -3790,12 +3791,12 @@ namespace Valvrave_Sharp.Evade
                     Delay = 400,
                     Range = 1100,
                     Radius = 90,
-                    MissileSpeed = 1200,
+                    MissileSpeed = 1300,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 3,
                     IsDangerous = true,
-                    MissileSpellName = "yasuoq3mis",
+                    MissileSpellName = "yasuoq3w",
                     CollisionObjects = CollisionableObjects.YasuoWall
                 });
 
@@ -3803,18 +3804,19 @@ namespace Valvrave_Sharp.Evade
                 new SpellData
                 {
                     ChampionName = "Yasuo",
-                    SpellName = "yasuoqw",
+                    SpellName = "yasuoq",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotLine,
                     Delay = 400,
                     Range = 550,
-                    Radius = 20,
+                    Radius = 40,
                     MissileSpeed = int.MaxValue,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 2,
                     IsDangerous = true,
-                    MissileSpellName = "yasuoq"
+                    MissileSpellName = "yasuoq",
+                    Invert = true
                 });
 
             #endregion Yasuo
@@ -3849,10 +3851,10 @@ namespace Valvrave_Sharp.Evade
                     SpellName = "ZedQ",
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotMissileLine,
-                    Delay = 275,
+                    Delay = 250,
                     Range = 925,
                     Radius = 50,
-                    MissileSpeed = 1700,
+                    MissileSpeed = 1650,
                     FixedRange = true,
                     AddHitbox = true,
                     DangerValue = 2,

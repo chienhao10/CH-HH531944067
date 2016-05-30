@@ -1,10 +1,10 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Darius
+namespace ExorSDK.Champions.Darius
 {
     /// <summary>
     ///     The logics class.
@@ -17,22 +17,28 @@ namespace ExorAIO.Champions.Darius
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Harass(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+            if (!Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
 
             /// <summary>
-            /// The Q Harass Logic.
+            ///     The Q Harass Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                !ObjectManager.Player.UnderTurret() &&
-                Targets.Target.IsValidTarget(Variables.Q.Range) &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
+            if (Vars.Q.IsReady() &&
+                !GameObjects.Player.IsUnderEnemyTurret() &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "harass")) &&
+                Vars.getSliderItem(Vars.QMenu, "harass") != 101)
             {
-                Variables.Q.Cast();
+                if (GameObjects.EnemyHeroes.Any(
+                    t =>
+                        t.LSIsValidTarget(Vars.Q.Range) &&
+                        !t.LSIsValidTarget(Vars.AARange)))
+                {
+                    Vars.Q.Cast();
+                }
             }
         }
     }

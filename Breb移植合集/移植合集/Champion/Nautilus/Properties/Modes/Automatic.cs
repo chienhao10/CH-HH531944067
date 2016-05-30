@@ -1,8 +1,6 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
 
-namespace ExorAIO.Champions.Nautilus
+namespace ExorSDK.Champions.Nautilus
 {
     /// <summary>
     ///     The logics class.
@@ -13,11 +11,6 @@ namespace ExorAIO.Champions.Nautilus
         ///     Called when the game updates itself.
         /// </summary>
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public static void Automatic(EventArgs args)
-        {
-            if (ObjectManager.Player.IsRecalling())
-            {
-            }
-        }
+        public static void Automatic(EventArgs args) {}
     }
 }

@@ -145,8 +145,8 @@ namespace EvadePlus
                         MissileSpellName = "Pulverize"
                     }
                 },
-
-#endregion Alistar
+                
+                #endregion Alistar
 
                 #region Amumu
 
@@ -1621,6 +1621,42 @@ namespace EvadePlus
                     {
                         DisplayName = "Lay Waste",
                         ChampionName = "Karthus",
+                        SpellName = "KarthusLayWasteA2",
+                        Slot = SpellSlot.Q,
+                        Delay = 625,
+                        Range = 875,
+                        Radius = 190,
+                        MissileSpeed = 0,
+                        DangerValue = 2,
+                        IsDangerous = false,
+                        MissileSpellName = "KarthusLayWasteA2"
+                    }
+                },
+                
+                new CircularMissileSkillshot
+                {
+                    SpellData = new SpellData
+                    {
+                        DisplayName = "Lay Waste",
+                        ChampionName = "Karthus",
+                        SpellName = "KarthusLayWasteA3",
+                        Slot = SpellSlot.Q,
+                        Delay = 625,
+                        Range = 875,
+                        Radius = 190,
+                        MissileSpeed = 0,
+                        DangerValue = 2,
+                        IsDangerous = false,
+                        MissileSpellName = "KarthusLayWasteA3"
+                    }
+                },
+                
+                new CircularMissileSkillshot
+                {
+                    SpellData = new SpellData
+                    {
+                        DisplayName = "Lay Waste",
+                        ChampionName = "Karthus",
                         SpellName = "KarthusLayWasteA1",
                         Slot = SpellSlot.Q,
                         Delay = 625,
@@ -1630,6 +1666,60 @@ namespace EvadePlus
                         DangerValue = 2,
                         IsDangerous = false,
                         MissileSpellName = "KarthusLayWasteA1"
+                    }
+                },
+                
+                new CircularMissileSkillshot
+                {
+                    SpellData = new SpellData
+                    {
+                        DisplayName = "Lay Waste",
+                        ChampionName = "Karthus",
+                        SpellName = "KarthusLayWasteA1",
+                        Slot = SpellSlot.Q,
+                        Delay = 625,
+                        Range = 875,
+                        Radius = 190,
+                        MissileSpeed = 0,
+                        DangerValue = 2,
+                        IsDangerous = false,
+                        MissileSpellName = "KarthusLayWasteA1"
+                    }
+                },
+                
+                new CircularMissileSkillshot
+                {
+                    SpellData = new SpellData
+                    {
+                        DisplayName = "Lay Waste",
+                        ChampionName = "Karthus",
+                        SpellName = "KarthusLayWasteA2",
+                        Slot = SpellSlot.Q,
+                        Delay = 625,
+                        Range = 875,
+                        Radius = 190,
+                        MissileSpeed = 0,
+                        DangerValue = 2,
+                        IsDangerous = false,
+                        MissileSpellName = "KarthusLayWasteA2"
+                    }
+                },
+                
+                new CircularMissileSkillshot
+                {
+                    SpellData = new SpellData
+                    {
+                        DisplayName = "Lay Waste",
+                        ChampionName = "Karthus",
+                        SpellName = "KarthusLayWasteA3",
+                        Slot = SpellSlot.Q,
+                        Delay = 625,
+                        Range = 875,
+                        Radius = 190,
+                        MissileSpeed = 0,
+                        DangerValue = 2,
+                        IsDangerous = false,
+                        MissileSpellName = "KarthusLayWasteA3"
                     }
                 },
 
@@ -3481,21 +3571,21 @@ namespace EvadePlus
                         MissileSpellName = "zyrapassivedeathmanager"
                     }
                 },
-                new LinearMissileSkillshot
+                new CircularMissileSkillshot
                 {
                     SpellData = new SpellData
                     {
                         DisplayName = "Rampant Growth",
                         ChampionName = "Zyra",
-                        SpellName = "ZyraQ",
+                        SpellName = "ZyraQFissure",
                         Slot = SpellSlot.Q,
-                        Delay = 850,
-                        Range = 800,
-                        Radius = 140,
+                        Delay = 800,
+                        Range = 825,
+                        Radius = 260,
                         MissileSpeed = 0,
                         DangerValue = 2,
                         IsDangerous = false,
-                        MissileSpellName = "ZyraQ"
+                        MissileSpellName = "ZyraQFissure"
                     }
                 },
                 new CircularMissileSkillshot
@@ -3605,6 +3695,28 @@ namespace EvadePlus
                 },
                 
                 #endregion Taric
+                
+                #region Twitch
+                
+                new CircularMissileSkillshot
+                {
+                    SpellData = new SpellData
+                    {
+                        DisplayName = "TwitchVenomCask",
+                        ChampionName = "Twitch",
+                        SpellName = "TwitchW",
+                        Slot = SpellSlot.W,
+                        Delay = 250,
+                        Range = 900,
+                        Radius = 275,
+                        MissileSpeed = 0,
+                        DangerValue = 2,
+                        IsDangerous = false,
+                        MissileSpellName = "TwitchVenomCaskMissile",
+                    }
+                },
+                
+                #endregion Twitch
             };
         }
     }

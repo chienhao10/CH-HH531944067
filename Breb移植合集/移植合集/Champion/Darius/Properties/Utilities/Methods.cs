@@ -1,7 +1,8 @@
 using EloBuddy;
-using LeagueSharp.Common;
+using LeagueSharp;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Darius
+namespace ExorSDK.Champions.Darius
 {
     /// <summary>
     ///     The methods class.
@@ -15,7 +16,8 @@ namespace ExorAIO.Champions.Darius
         {
             Game.OnUpdate += Darius.OnUpdate;
             Obj_AI_Base.OnSpellCast += Darius.OnDoCast;
-            AntiGapcloser.OnEnemyGapcloser += Darius.OnEnemyGapcloser;
+            Events.OnGapCloser += Darius.OnGapCloser;
+            Events.OnInterruptableTarget += Darius.OnInterruptableTarget;
         }
     }
 }

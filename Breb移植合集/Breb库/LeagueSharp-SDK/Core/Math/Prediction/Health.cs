@@ -20,8 +20,7 @@ namespace LeagueSharp.SDK
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using LeagueSharp.SDK;
+    
     using EloBuddy;
     using Core.Utils;    /// <summary>
                          ///     Health Prediction class for prediction of health of units.
@@ -51,7 +50,7 @@ namespace LeagueSharp.SDK
         {
             Game.OnUpdate += OnGameUpdate;
             Obj_AI_Base.OnProcessSpellCast += OnObjAiBaseProcessSpellCast;
-            Spellbook.OnStopCast += Spellbook_OnStopCast;
+            Spellbook.OnStopCast += OnSpellbookStopCast;
             GameObject.OnDelete += OnGameObjectDelete;
             Obj_AI_Base.OnSpellCast += OnObjAiBaseDoCast;
         }
@@ -368,7 +367,7 @@ namespace LeagueSharp.SDK
         ///     <see cref="Spellbook" /> sender
         /// </param>
         /// <param name="args">Spell-book Stop Cast Data</param>
-        private static void Spellbook_OnStopCast(Obj_AI_Base sender, SpellbookStopCastEventArgs args)
+        private static void OnSpellbookStopCast(Obj_AI_Base sender, SpellbookStopCastEventArgs args)
         {
             if (sender.IsValid && args.StopAnimation && args.DestroyMissile)
             {

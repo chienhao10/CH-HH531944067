@@ -184,7 +184,8 @@
                 foreach (var skillshot in
                     Evade.DetectedSkillshots.Where(
                         i =>
-                        i.SpellData.MissileSpellName == spellName && i.Unit.NetworkId == unit.NetworkId
+                        i.SpellData.MissileSpellName.Equals(spellName, StringComparison.InvariantCultureIgnoreCase)
+                        && i.Unit.NetworkId == unit.NetworkId
                         && (missile.EndPosition.ToVector2() - missile.StartPosition.ToVector2()).AngleBetween(
                             i.Direction) < 10 && i.SpellData.CanBeRemoved))
                 {
@@ -194,7 +195,8 @@
             }
             Evade.DetectedSkillshots.RemoveAll(
                 i =>
-                (i.SpellData.MissileSpellName == spellName || i.SpellData.ExtraMissileNames.Contains(spellName))
+                (i.SpellData.MissileSpellName.Equals(spellName, StringComparison.InvariantCultureIgnoreCase)
+                || i.SpellData.ExtraMissileNames.Contains(spellName, StringComparer.InvariantCultureIgnoreCase))
                 && (i.Unit.NetworkId == unit.NetworkId
                     && (missile.EndPosition.ToVector2() - missile.StartPosition.ToVector2()).AngleBetween(i.Direction)
                     < 10 && i.SpellData.CanBeRemoved || i.SpellData.ForceRemove));

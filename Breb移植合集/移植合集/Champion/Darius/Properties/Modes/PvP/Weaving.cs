@@ -1,9 +1,10 @@
 using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Darius
+namespace ExorSDK.Champions.Darius
 {
     /// <summary>
     ///     The logics class.
@@ -17,19 +18,19 @@ namespace ExorAIO.Champions.Darius
         /// <param name="args">The args.</param>
         public static void Weaving(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!args.Target.IsValid<AIHeroClient>() || Bools.IsSpellShielded((AIHeroClient) args.Target))
+            if (!(args.Target is AIHeroClient) ||
+                Invulnerable.Check(args.Target as AIHeroClient))
             {
                 return;
             }
 
             /// <summary>
-            ///     The W Weaving Logic.
+            ///     The W Combo Weaving Logic.
             /// </summary>
-            if (Variables.W.IsReady() && !Variables.Q.IsReady() &&
-                ((AIHeroClient) args.Target).IsValidTarget(Variables.W.Range) &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
+            if (Vars.W.IsReady() &&
+                Vars.getCheckBoxItem(Vars.WMenu, "combo"))
             {
-                Variables.W.Cast();
+                Vars.W.Cast();
             }
         }
     }

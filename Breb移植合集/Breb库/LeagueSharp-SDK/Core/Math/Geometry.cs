@@ -17,8 +17,6 @@
 
 namespace LeagueSharp.SDK
 {
-    using LeagueSharp.SDK;
-
     using SharpDX;
     using SharpDX.Direct3D9;
 

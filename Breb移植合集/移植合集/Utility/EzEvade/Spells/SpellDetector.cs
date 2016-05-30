@@ -120,12 +120,12 @@ namespace ezEvade
                         foreach (KeyValuePair<int, Spell> entry in detectedSpells)
                         {
                             Spell spell = entry.Value;
+                            var dir = (missile.EndPosition.LSTo2D() - missile.StartPosition.LSTo2D()).LSNormalized();
 
-                            var dir = (missile.EndPosition.To2D() - missile.StartPosition.To2D()).Normalized();
-
-                            if (spell.info.missileName.ToLower() == missile.SData.Name.ToLower()
+                            if (spell.info.missileName.Equals(missile.SData.Name, StringComparison.InvariantCultureIgnoreCase) ||
+                               (spell.info.missileName + "_urf").Equals(missile.SData.Name, StringComparison.InvariantCultureIgnoreCase)
                                 && spell.heroID == missile.SpellCaster.NetworkId
-                                && dir.AngleBetween(spell.direction) < 10)
+                                && dir.LSAngleBetween(spell.direction) < 10)
                             {
 
                                 if (spell.info.isThreeWay == false
@@ -221,7 +221,7 @@ namespace ezEvade
                         {
                             Spell spell = entry.Value;
 
-                            var dir = (missile.EndPosition.To2D() - missile.StartPosition.To2D()).Normalized();
+                            var dir = (missile.EndPosition.LSTo2D() - missile.StartPosition.LSTo2D()).LSNormalized();
 
                             if (spell.info.missileName == missile.SData.Name
                                 && spell.heroID == missile.SpellCaster.NetworkId
@@ -297,23 +297,31 @@ namespace ezEvade
 
                         if (specialSpellArgs.noProcess == false && spellData.noProcess == false)
                         {
-
                             bool foundMissile = false;
 
                             if (spellData.isThreeWay == false && spellData.isSpecial == false)
                             {
-                                if ((from entry in detectedSpells select entry.Value into spell let dir = (args.End.To2D() - args.Start.To2D()).Normalized() where spell.spellObject != null
-                                                                                                                                                                   && spell.info.spellName.ToLower() == args.SData.Name.ToLower()
-                                                                                                                                                                   && spell.heroID == hero.NetworkId
-                                                                                                                                                                   && dir.AngleBetween(spell.direction) < 10 select spell).Any())
+                                foreach (KeyValuePair<int, Spell> entry in detectedSpells)
                                 {
-                                    foundMissile = true;
+                                    Spell spell = entry.Value;
+
+                                    var dir = (args.End.LSTo2D() - args.Start.LSTo2D()).LSNormalized();
+
+                                    if (spell.spellObject != null
+                                        && (spell.info.spellName.Equals(args.SData.Name, StringComparison.InvariantCultureIgnoreCase) ||
+                                           (spell.info.spellName.ToLower() + "_urf").Equals(args.SData.Name, StringComparison.InvariantCultureIgnoreCase))
+                                        && spell.heroID == hero.NetworkId
+                                        && dir.AngleBetween(spell.direction) < 10)
+                                    {
+                                        foundMissile = true;
+                                        break;
+                                    }
                                 }
                             }
 
                             if (foundMissile == false)
                             {
-                                CreateSpellData(hero, hero.ServerPosition, args.End, spellData);
+                                CreateSpellData(hero, hero.ServerPosition, args.End, spellData, null);
                             }
 
                             /*if (spellData.spellType == SpellType.Line)
@@ -356,9 +364,9 @@ namespace ezEvade
 
             if (spellStartPos.LSDistance(myHero.Position) < spellData.range + 1000)
             {
-                Vector2 startPosition = spellStartPos.To2D();
-                Vector2 endPosition = spellEndPos.To2D();
-                Vector2 direction = (endPosition - startPosition).Normalized();
+                Vector2 startPosition = spellStartPos.LSTo2D();
+                Vector2 endPosition = spellEndPos.LSTo2D();
+                Vector2 direction = (endPosition - startPosition).LSNormalized();
                 float endTick = 0;
 
                 if (spellType == SpellType.None)
@@ -370,8 +378,8 @@ namespace ezEvade
                 {
                     if (endPosition.LSDistance(startPosition) > spellData.range)
                     {
-                        //var heroCastPos = hero.ServerPosition.To2D();
-                        //direction = (endPosition - heroCastPos).Normalized();
+                        //var heroCastPos = hero.ServerPosition.LSTo2D();
+                        //direction = (endPosition - heroCastPos).LSNormalized();
                         endPosition = startPosition + direction*spellData.range;
                     }
                 }
@@ -383,9 +391,9 @@ namespace ezEvade
 
                     if (spellData.useEndPosition)
                     {
-                        var range = spellEndPos.To2D().LSDistance(spellStartPos.To2D());
+                        var range = spellEndPos.LSTo2D().LSDistance(spellStartPos.LSTo2D());
                         endTick = spellData.spellDelay + (range/spellData.projectileSpeed)*1000;
-                        endPosition = spellEndPos.To2D();
+                        endPosition = spellEndPos.LSTo2D();
                     }
 
                     if (obj != null)
@@ -397,7 +405,7 @@ namespace ezEvade
 
                     if (spellData.projectileSpeed == 0)
                     {
-                        endPosition = hero.ServerPosition.To2D();
+                        endPosition = hero.ServerPosition.LSTo2D();
                     }
                     else if (spellData.projectileSpeed > 0)
                     {
@@ -527,7 +535,7 @@ namespace ezEvade
 
                 if (collisionObject != null)
                 {
-                    spell.predictedEndPos = spell.GetSpellProjection(collisionObject.ServerPosition.To2D());
+                    spell.predictedEndPos = spell.GetSpellProjection(collisionObject.ServerPosition.LSTo2D());
 
                     if (spell.currentSpellPosition.LSDistance(collisionObject.ServerPosition)
                         < collisionObject.BoundingRadius + spell.radius)
@@ -542,7 +550,7 @@ namespace ezEvade
         {
             if (ObjectCache.menuCache.cache["AdvancedSpellDetection"].Cast<CheckBox>().CurrentValue)
             {
-                Vector2 heroPos = myHero.Position.To2D();
+                Vector2 heroPos = myHero.Position.LSTo2D();
                 var extraDist = myHero.LSDistance(ObjectCache.myHeroCache.serverPos2D);
 
                 if (spell.spellType == SpellType.Line)
