@@ -51,17 +51,17 @@ namespace AutoBuddy.Utilities
             foreach (
                 Obj_AI_Minion tt in
                     ObjectManager.Get<Obj_AI_Minion>()
-                        .Where(min => min.Health > 0 && min.Distance(pos) < 550+AutoWalker.p.BoundingRadius))
+                        .Where(min => min.Health > 0 && min.Distance(pos) < 550+AutoWalker.myHero.BoundingRadius))
             {
                 if(tt.Name.StartsWith("H28-G"))
                     danger += 10000*(tt.IsAlly ? -1 : 1);
                 else if (tt.CombatType==GameObjectCombatType.Ranged)
                     danger += 800 * (tt.IsAlly ? -1 : 2);
-                else if (tt.CombatType == GameObjectCombatType.Ranged && tt.Distance(AutoWalker.p) < 130 + AutoWalker.p.BoundingRadius)
+                else if (tt.CombatType == GameObjectCombatType.Ranged && tt.Distance(AutoWalker.myHero) < 130 + AutoWalker.myHero.BoundingRadius)
                     danger += 800 * (tt.IsAlly ? -1 : 2);
             }
-            if (AutoWalker.p.GetNearestTurret().Distance(pos) < 1000 + AutoWalker.p.BoundingRadius) danger += 35000;
-            if (AutoWalker.p.GetNearestTurret(false).Distance(pos) < 400) danger -= 35000;
+            if (AutoWalker.myHero.GetNearestTurret().Distance(pos) < 1000 + AutoWalker.myHero.BoundingRadius) danger += 35000;
+            if (AutoWalker.myHero.GetNearestTurret(false).Distance(pos) < 400) danger -= 35000;
             return danger;
         }
 

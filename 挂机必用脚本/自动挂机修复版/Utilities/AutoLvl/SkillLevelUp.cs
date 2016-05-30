@@ -30,8 +30,8 @@ namespace AutoBuddy.Utilities.AutoLvl
 
         private void Game_OnTick(System.EventArgs args)
         {
-            if (AutoWalker.p.Level <= oldLvl) return;
-            oldLvl = AutoWalker.p.Level;
+            if (AutoWalker.myHero.Level <= oldLvl) return;
+            oldLvl = AutoWalker.myHero.Level;
             OnLvLUp(oldLvl);
         }
 

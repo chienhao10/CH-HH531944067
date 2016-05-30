@@ -20,7 +20,7 @@ namespace AutoBuddy.Utilities.AutoShop
             {
                 all.Add(loLItem);
                 if (loLItem.purchasable && loLItem.maps.Contains((int)Game.MapId) &&
-                    (loLItem.requiredChampion == String.Empty || loLItem.requiredChampion == AutoWalker.p.ChampionName))
+                    (loLItem.requiredChampion == String.Empty || loLItem.requiredChampion == AutoWalker.myHero.ChampionName))
                     av.Add(loLItem);
             }
             itemDB = all.ToArray();
@@ -59,7 +59,7 @@ namespace AutoBuddy.Utilities.AutoShop
 
         public static List<LoLItem> MyItems()
         {
-            List<LoLItem> l = AutoWalker.p.InventoryItems.Select(s => itemDB.FindItemByID((int)s.Id)).ToList();
+            List<LoLItem> l = AutoWalker.myHero.InventoryItems.Select(s => itemDB.FindItemByID((int)s.Id)).ToList();
             l.Remove(l.FirstOrDefault(le => le.id == 1411)); //TODO !! Remove this when eb or rito will fix it
             return l;
         }

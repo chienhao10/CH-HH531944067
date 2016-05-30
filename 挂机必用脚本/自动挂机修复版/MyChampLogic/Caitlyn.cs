@@ -11,8 +11,8 @@ namespace AutoBuddy.MyChampLogic
 
 
         public float MaxDistanceForAA { get { return int.MaxValue; } }
-        public float OptimalMaxComboDistance { get { return AutoWalker.p.AttackRange; } }
-        public float HarassDistance { get { return AutoWalker.p.AttackRange; } }
+        public float OptimalMaxComboDistance { get { return AutoWalker.myHero.AttackRange; } }
+        public float HarassDistance { get { return AutoWalker.myHero.AttackRange; } }
         public Spell.Skillshot E;
         public Spell.Skillshot Q;
         public Spell.Targeted R;
@@ -49,14 +49,14 @@ namespace AutoBuddy.MyChampLogic
             {
                 AIHeroClient chaser =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
-                        chase => chase.Distance(AutoWalker.p) < 600 && chase.IsVisible());
+                        chase => chase.Distance(AutoWalker.myHero) < 600 && chase.IsVisible());
                 if (chaser != null)
                 {
                     E.Cast(chaser);
                     return;
                 }
-                if (AutoWalker.p.HealthPercent() < 15)
-                    E.Cast(AutoWalker.p.Position.Extend(AutoWalker.MyNexus, -200).To3DWorld());
+                if (AutoWalker.myHero.HealthPercent() < 15)
+                    E.Cast(AutoWalker.myHero.Position.Extend(AutoWalker.MyNexus, -200).To3DWorld());
             }
         }
 
@@ -72,7 +72,7 @@ namespace AutoBuddy.MyChampLogic
                     EntityManager.Heroes.Enemies.Where(
                         en =>
                             en.HasBuff("caitlynyordletrapinternal") &&
-                            en.Distance(AutoWalker.p) < AutoWalker.p.AttackRange*2 + en.BoundingRadius)
+                            en.Distance(AutoWalker.myHero) < AutoWalker.myHero.AttackRange*2 + en.BoundingRadius)
                         .OrderBy(e => e.HealthPercent())
                         .FirstOrDefault();
                 if (toShoot != null)
@@ -85,9 +85,9 @@ namespace AutoBuddy.MyChampLogic
             AIHeroClient vic =
                 EntityManager.Heroes.Enemies.FirstOrDefault(
                     v => v.IsVisible() &&
-                         v.Health < AutoWalker.p.GetSpellDamage(v, SpellSlot.R) &&
-                         v.Distance(AutoWalker.p) > 670 + v.BoundingRadius &&
-                         AutoWalker.p.Distance(v) < 2000 && Logic.surviLogic.dangerValue < -10000);
+                         v.Health < AutoWalker.myHero.GetSpellDamage(v, SpellSlot.R) &&
+                         v.Distance(AutoWalker.myHero) > 670 + v.BoundingRadius &&
+                         AutoWalker.myHero.Distance(v) < 2000 && Logic.surviLogic.dangerValue < -10000);
             if (vic == null) return;
             R.Cast(vic);
         }

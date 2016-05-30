@@ -20,12 +20,14 @@ namespace AutoBuddy.MainLogics
         {
             current = currentLogic;
             Game.OnTick += Game_OnTick;
-            if (MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
-                Drawing.OnDraw += Drawing_OnDraw;
+            Drawing.OnDraw += Drawing_OnDraw;
         }
 
         private void Drawing_OnDraw(EventArgs args)
         {
+            if (!MainMenu.GetMenu("AB").Get<CheckBox>("debuginfo").CurrentValue)
+                return;
+
             Drawing.DrawText(250, 25, System.Drawing.Color.Gold,
                 "Combat, active:  " + active + " last mode: " + lastMode);
         }
@@ -50,20 +52,20 @@ namespace AutoBuddy.MainLogics
             if (current.surviLogic.dangerValue < -15000)
                 victim = EntityManager.Heroes.Enemies.Where(
                     vic => !vic.IsZombie &&
-                        vic.Distance(AutoWalker.p) < vic.BoundingRadius + AutoWalker.p.AttackRange + 450 &&
+                        vic.Distance(AutoWalker.myHero) < vic.BoundingRadius + AutoWalker.myHero.AttackRange + 450 &&
                         vic.IsVisible() && vic.Health > 0 &&
                         current.localAwareness.MyStrength()/current.localAwareness.HeroStrength(vic) > 1.5)
                     .OrderBy(v => v.Health)
                     .FirstOrDefault();
 
             
-            if (victim == null || AutoWalker.p.GetNearestTurret().Distance(AutoWalker.p) > 1100)
+            if (victim == null || AutoWalker.myHero.GetNearestTurret().Distance(AutoWalker.myHero) > 1100)
             {
                 har =
                     EntityManager.Heroes.Enemies.Where(
                         h => !h.IsZombie &&
-                            h.Distance(AutoWalker.p) < AutoWalker.p.AttackRange + h.BoundingRadius + 50 && h.IsVisible() &&
-                            h.HealthPercent() > 0).OrderBy(h => h.Distance(AutoWalker.p)).FirstOrDefault();
+                            h.Distance(AutoWalker.myHero) < AutoWalker.myHero.AttackRange + h.BoundingRadius + 50 && h.IsVisible() &&
+                            h.HealthPercent() > 0).OrderBy(h => h.Distance(AutoWalker.myHero)).FirstOrDefault();
             }
 
 
@@ -85,7 +87,7 @@ namespace AutoBuddy.MainLogics
                 Vector3 vicPos = Prediction.Position.PredictUnitPosition(victim, 500).To3D();
 
                 Vector3 posToWalk =
-                    AutoWalker.p.Position.Away(vicPos,
+                    AutoWalker.myHero.Position.Away(vicPos,
                         (victim.BoundingRadius + current.myChamp.OptimalMaxComboDistance - 30)*
                         Math.Min(current.localAwareness.HeroStrength(victim)/current.localAwareness.MyStrength()*1.6f, 1));
                         
@@ -93,7 +95,7 @@ namespace AutoBuddy.MainLogics
                 {
                     posToWalk =
                         vicPos.Extend(current.pushLogic.myTurret,
-                            (victim.BoundingRadius + AutoWalker.p.AttackRange - 30)*
+                            (victim.BoundingRadius + AutoWalker.myHero.AttackRange - 30)*
                             Math.Min(
                                 current.localAwareness.HeroStrength(victim)/current.localAwareness.MyStrength()*2f, 1))
                             .To3DWorld();
@@ -101,16 +103,16 @@ namespace AutoBuddy.MainLogics
 
                 Obj_AI_Turret nearestEnemyTurret = posToWalk.GetNearestTurret();
 
-                if (victim.Health < 10 + 4 * AutoWalker.p.Level && EntityManager.Heroes.Allies.Any(al => !al.IsDead() && al.Distance(vicPos) < 550))
+                if (victim.Health < 10 + 4 * AutoWalker.myHero.Level && EntityManager.Heroes.Allies.Any(al=>!al.IsDead()&&al.Distance(vicPos)<550))
                     AutoWalker.UseIgnite(victim);
-                if (victim.Health + victim.HPRegenRate * 2.5f < 50 + 20 * AutoWalker.p.Level && vicPos.Distance(nearestEnemyTurret) < 1350)
+                if (victim.Health + victim.HPRegenRate * 2.5f < 50 + 20 * AutoWalker.myHero.Level && vicPos.Distance(nearestEnemyTurret)<1350)
                     AutoWalker.UseIgnite(victim);
                 lastMode = "combo";
-                if (AutoWalker.p.Distance(nearestEnemyTurret) < 950 + AutoWalker.p.BoundingRadius)
+                if (AutoWalker.myHero.Distance(nearestEnemyTurret) < 950 + AutoWalker.myHero.BoundingRadius)
                 {
 
-                    if (victim.Health > AutoWalker.p.GetAutoAttackDamage(victim) + 15 ||
-                        victim.Distance(AutoWalker.p) > AutoWalker.p.AttackRange + victim.BoundingRadius - 20)
+                    if (victim.Health > AutoWalker.myHero.GetAutoAttackDamage(victim) + 15 ||
+                        victim.Distance(AutoWalker.myHero) > AutoWalker.myHero.AttackRange + victim.BoundingRadius - 20)
                     {
 
 
@@ -121,55 +123,46 @@ namespace AutoBuddy.MainLogics
                     lastMode = "combo under turret";
                 }
                 Orbwalker.DisableAttacking = current.myChamp.MaxDistanceForAA <
-                                             AutoWalker.p.Distance(victim) + victim.BoundingRadius+10;
+                                             AutoWalker.myHero.Distance(victim) + victim.BoundingRadius+10;
                 AutoWalker.SetMode(Orbwalker.ActiveModes.Combo);
                 AutoWalker.WalkTo(posToWalk);
 
 
-                if (AutoWalker.HasGhost == true && AutoWalker.Ghost.IsReady() &&
-                    AutoWalker.p.HealthPercent() / victim.HealthPercent() > 2 &&
-                    victim.Distance(AutoWalker.p) > AutoWalker.p.AttackRange + victim.BoundingRadius + 150 &&
+                if (AutoWalker.Ghost != null && AutoWalker.Ghost.IsReady() &&
+                    AutoWalker.myHero.HealthPercent()/victim.HealthPercent() > 2 &&
+                    victim.Distance(AutoWalker.myHero) > AutoWalker.myHero.AttackRange + victim.BoundingRadius + 150 &&
                     victim.Distance(victim.Position.GetNearestTurret()) > 1500)
                     AutoWalker.Ghost.Cast();
 
                 if (ObjectManager.Player.HealthPercent() < 35)
                 {
-                    if (AutoWalker.p.HealthPercent < 25)
+                    if (AutoWalker.myHero.HealthPercent < 25)
                         AutoWalker.UseSeraphs();
-                    if (AutoWalker.p.HealthPercent < 20)
+                    if (AutoWalker.myHero.HealthPercent < 20)
                         AutoWalker.UseBarrier();
 
-                    AutoWalker.UseHPot();
-                }
-
-                if (Shop.CanShop == false)
-                {
-                    int hppotval = Program.hpvaluePot;
-                    if (ObjectManager.Player.HealthPercent() < hppotval)
-                    {
                         AutoWalker.UseHPot();
-                    }
                 }
             }
             else
             {
                 Vector3 harPos = Prediction.Position.PredictUnitPosition(har, 500).To3D();
-                harPos = AutoWalker.p.Position.Away(harPos, current.myChamp.HarassDistance + har.BoundingRadius - 20);
+                harPos = AutoWalker.myHero.Position.Away(harPos, current.myChamp.HarassDistance + har.BoundingRadius - 20);
                 
                 lastMode = "harass";
                 Obj_AI_Turret tu = harPos.GetNearestTurret();
                 AutoWalker.SetMode(Orbwalker.ActiveModes.Harass);
                 if (harPos.Distance(tu) < 1000)
                 {
-                    if (harPos.Distance(tu) < 850 + AutoWalker.p.BoundingRadius)
+                    if (harPos.Distance(tu) < 850 + AutoWalker.myHero.BoundingRadius)
                         AutoWalker.SetMode(Orbwalker.ActiveModes.Flee);
-                    harPos = AutoWalker.p.Position.Away(tu.Position, 1090);
+                    harPos = AutoWalker.myHero.Position.Away(tu.Position, 1090);
                     
                     lastMode = "harass under turret";
 
                     /*if (harPos.Distance(AutoWalker.MyNexus) > tu.Distance(AutoWalker.MyNexus))
                         harPos =
-                            tu.Position.Extend(AutoWalker.MyNexus, 1050 + AutoWalker.p.BoundingRadius).To3DWorld();*/
+                            tu.Position.Extend(AutoWalker.MyNexus, 1050 + AutoWalker.myHero.BoundingRadius).To3DWorld();*/
                 }
 
 

@@ -9,9 +9,8 @@ namespace AutoBuddy.MyChampLogic
     internal class Ashe : IChampLogic
     {
         public float MaxDistanceForAA { get { return int.MaxValue; } }
-        public float OptimalMaxComboDistance { get { return AutoWalker.p.AttackRange; } }
-        public float HarassDistance { get { return AutoWalker.p.AttackRange; } }
-
+        public float OptimalMaxComboDistance { get { return AutoWalker.myHero.AttackRange; } }
+        public float HarassDistance { get { return AutoWalker.myHero.AttackRange; } }
 
         public Spell.Active Q;
         public Spell.Skillshot W, E, R;
@@ -47,10 +46,10 @@ namespace AutoBuddy.MyChampLogic
             {
                 AIHeroClient chaser =
                     EntityManager.Heroes.Enemies.FirstOrDefault(
-                        chase => chase.Distance(AutoWalker.p) < 600 && chase.IsVisible());
+                        chase => chase.Distance(AutoWalker.myHero) < 600 && chase.IsVisible());
                 if (chaser != null)
                 {
-                    if (R.IsReady() && AutoWalker.p.HealthPercent() > 18)
+                    if (R.IsReady() && AutoWalker.myHero.HealthPercent() > 18)
                         R.Cast(chaser);
                     if (W.IsReady())
                         W.Cast(chaser);
@@ -60,9 +59,15 @@ namespace AutoBuddy.MyChampLogic
 
         public void Combo(AIHeroClient target)
         {
-            if (R.IsReady() && target.HealthPercent() < 25 && AutoWalker.p.Distance(target) > 600 &&
-                AutoWalker.p.Distance(target) < 1600 && target.IsVisible())
+            if (R.IsReady() && AutoWalker.myHero.Distance(target) > 600 &&
+                AutoWalker.myHero.Distance(target) < 1600 && target.IsVisible())
                 R.Cast(target);
+
+            if (W.IsReady())
+                W.Cast(target);
+
+            if (Q.IsReady())
+                Q.Cast();
         }
 
         private void Game_OnTick(System.EventArgs args)
@@ -71,8 +76,8 @@ namespace AutoBuddy.MyChampLogic
             AIHeroClient vic =
                 EntityManager.Heroes.Enemies.FirstOrDefault(
                     v => v.IsVisible() &&
-                         v.Health < AutoWalker.p.GetSpellDamage(v, SpellSlot.R) && v.Distance(AutoWalker.p) > 700 &&
-                         AutoWalker.p.Distance(v) < 2500);
+                         v.Health < AutoWalker.myHero.GetSpellDamage(v, SpellSlot.R) && v.Distance(AutoWalker.myHero) > 700 &&
+                         AutoWalker.myHero.Distance(v) < 2500);
             if (vic == null) return;
             R.Cast(vic);
         }
