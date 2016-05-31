@@ -148,8 +148,8 @@ namespace D_RekSai
                 Harass();
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
             {
                 Farm();
                 JungleClear();
@@ -198,14 +198,14 @@ namespace D_RekSai
 
         public static Vector2? GetFirstWallPoint(Vector3 from, Vector3 to, float step = 25)
         {
-            return GetFirstWallPoint(from.To2D(), to.To2D(), step);
+            return GetFirstWallPoint(from.LSTo2D(), to.LSTo2D(), step);
         }
 
         public static Vector2? GetFirstWallPoint(Vector2 from, Vector2 to, float step = 25)
         {
             var direction = (to - from).Normalized();
 
-            for (float d = 0; d < from.Distance(to); d = d + step)
+            for (float d = 0; d < from.LSDistance(to); d = d + step)
             {
                 var testPoint = from + d*direction;
                 var flags = NavMesh.GetCollisionFlags(testPoint.X, testPoint.Y);
@@ -255,7 +255,7 @@ namespace D_RekSai
                 var wallPosition = movePosition;
 
                 // Check 300 units to the cursor position in a 160 degree cone for a valid non-wall spot
-                var direction = (Game.CursorPos.To2D() - wallPosition.To2D()).Normalized();
+                var direction = (Game.CursorPos.LSTo2D() - wallPosition.LSTo2D()).Normalized();
                 float maxAngle = 80;
                 var step = maxAngle/20;
                 float currentAngle = 0;
@@ -299,10 +299,10 @@ namespace D_RekSai
 
                             // Check if it's worth to jump considering the path length
                             if (_player.GetPath(wallPositionOpposite).ToList().LSTo2D().PathLength()
-                                - _player.Distance(wallPositionOpposite) > 200) //200
+                                - _player.LSDistance(wallPositionOpposite) > 200) //200
                             {
                                 // Check the distance to the opposite side of the wall
-                                if (_player.Distance(wallPositionOpposite, true)
+                                if (_player.LSDistance(wallPositionOpposite, true)
                                     < Math.Pow(_be.Range + 200 - _player.BoundingRadius/2, 2))
                                 {
                                     // Make the jump happen
@@ -342,7 +342,7 @@ namespace D_RekSai
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient unit,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (IsBurrowed() && _bw.IsReady() && unit.IsValidTarget(_q.Range) && getCheckBoxItem(extraMenu, "Inter_W"))
+            if (IsBurrowed() && _bw.IsReady() && unit.LSIsValidTarget(_q.Range) && getCheckBoxItem(extraMenu, "Inter_W"))
                 _bw.Cast(unit);
         }
 
@@ -382,24 +382,24 @@ namespace D_RekSai
                 if (getCheckBoxItem(comboMenu, "UseEBCombo"))
                 {
                     var te = TargetSelector.GetTarget(_be.Range + _bw.Range, DamageType.Physical);
-                    if (_be.IsReady() && te.IsValidTarget(_be.Range + _bw.Range) && _player.Distance(te) > _q.Range)
+                    if (_be.IsReady() && te.LSIsValidTarget(_be.Range + _bw.Range) && _player.LSDistance(te) > _q.Range)
                     {
                         var predE = _be.GetPrediction(te, true);
                         if (predE.Hitchance >= HitChance.High)
-                            _be.Cast(predE.CastPosition.Extend(_player.ServerPosition, -50));
+                            _be.Cast(predE.CastPosition.LSExtend(_player.ServerPosition, -50));
                     }
                 }
 
                 if (getCheckBoxItem(comboMenu, "UseQBCombo"))
                 {
                     var tbq = TargetSelector.GetTarget(_bq.Range, DamageType.Magical);
-                    if (_bq.IsReady() && t.IsValidTarget(_bq.Range)) _bq.CastIfHitchanceEquals(tbq, HitChance.High);
+                    if (_bq.IsReady() && t.LSIsValidTarget(_bq.Range)) _bq.CastIfHitchanceEquals(tbq, HitChance.High);
                 }
 
                 if (getCheckBoxItem(comboMenu, "UseWCombo"))
                 {
                     var tw = TargetSelector.GetTarget(_w.Range, DamageType.Physical);
-                    if (_w.IsReady() && tw.IsValidTarget(_w.Range) && !_bq.IsReady())
+                    if (_w.IsReady() && tw.LSIsValidTarget(_w.Range) && !_bq.IsReady())
                     {
                         _bw.Cast(t);
                     }
@@ -411,13 +411,13 @@ namespace D_RekSai
                 if (getCheckBoxItem(comboMenu, "UseQCombo"))
                 {
                     var tq = TargetSelector.GetTarget(_q.Range, DamageType.Physical);
-                    if (_q.IsReady() && tq.IsValidTarget(_q.Range)) _q.Cast(t);
+                    if (_q.IsReady() && tq.LSIsValidTarget(_q.Range)) _q.Cast(t);
                 }
 
                 if (getCheckBoxItem(comboMenu, "UseECombo"))
                 {
                     var te = TargetSelector.GetTarget(_e.Range, DamageType.Physical);
-                    if (te.IsValidTarget(_e.Range) && _e.IsReady())
+                    if (te.LSIsValidTarget(_e.Range) && _e.IsReady())
                     {
                         if (reksaifury && !Qactive(_player))
                         {
@@ -441,7 +441,7 @@ namespace D_RekSai
                 if (getCheckBoxItem(comboMenu, "UseWCombo") && _w.IsReady())
                 {
                     var tw = TargetSelector.GetTarget(_bq.Range, DamageType.Physical);
-                    if (!_q.IsReady() && !tw.IsValidTarget(_e.Range) && tw.IsValidTarget(_bq.Range) && !Qactive(_player))
+                    if (!_q.IsReady() && !tw.LSIsValidTarget(_e.Range) && tw.LSIsValidTarget(_bq.Range) && !Qactive(_player))
                         _w.Cast();
                 }
             }
@@ -482,18 +482,18 @@ namespace D_RekSai
             var reksaifury = Equals(_player.Mana, _player.MaxMana);
             if (getCheckBoxItem(harassMenu, "UseQHarass"))
             {
-                if (target.IsValidTarget(_bq.Range) && _bq.IsReady() && IsBurrowed())
+                if (target.LSIsValidTarget(_bq.Range) && _bq.IsReady() && IsBurrowed())
                 {
                     _bq.CastIfHitchanceEquals(target, HitChance.High);
                 }
 
-                if (targetq.IsValidTarget(_q.Range) && _q.IsReady() && !IsBurrowed())
+                if (targetq.LSIsValidTarget(_q.Range) && _q.IsReady() && !IsBurrowed())
                 {
                     _q.Cast();
                 }
             }
 
-            if (targete.IsValidTarget(_e.Range) && getCheckBoxItem(harassMenu, "UseEHarass") && _e.IsReady() &&
+            if (targete.LSIsValidTarget(_e.Range) && getCheckBoxItem(harassMenu, "UseEHarass") && _e.IsReady() &&
                 !IsBurrowed() && reksaifury)
             {
                 _e.Cast(targete);
@@ -555,7 +555,7 @@ namespace D_RekSai
             if (_q.IsReady() && useQ && !IsBurrowed())
             {
                 if (
-                    allMinionsQ.Where(m => m.Distance(_player.Position) <= _q.Range)
+                    allMinionsQ.Where(m => m.LSDistance(_player.Position) <= _q.Range)
                         .Count(x => _q.GetDamage(x) > x.Health) >= 0)
                 {
                     _q.Cast();
@@ -564,15 +564,15 @@ namespace D_RekSai
 
             if (_bq.IsReady() && useQ && IsBurrowed())
             {
-                if (allMinions.Where(m => m.Distance(_player.Position) <= _bq.Range).Count(x => BqDamage(x) > x.Health)
+                if (allMinions.Where(m => m.LSDistance(_player.Position) <= _bq.Range).Count(x => BqDamage(x) > x.Health)
                     >= 0)
                 {
                     _bq.Cast(allMinions.FirstOrDefault());
                 }
                 else
                     foreach (var minion in allMinions)
-                        if (minion.Health < 0.75*_player.GetSpellDamage(minion, SpellSlot.Q)
-                            && minion.IsValidTarget(_bq.Range)) _bq.Cast(minion);
+                        if (minion.Health < 0.75*_player.LSGetSpellDamage(minion, SpellSlot.Q)
+                            && minion.LSIsValidTarget(_bq.Range)) _bq.Cast(minion);
             }
 
             if (_e.IsReady() && useE && !IsBurrowed())
@@ -590,7 +590,7 @@ namespace D_RekSai
                 }
 
                 if (IsBurrowed() && _bw.IsReady() && useW &&
-                    minion.IsValidTarget(Orbwalking.GetRealAutoAttackRange(_player)))
+                    minion.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(_player)))
                 {
                     _bw.Cast();
                 }
@@ -599,19 +599,15 @@ namespace D_RekSai
 
         private static void JungleClear()
         {
-            var mob =
-                MinionManager.GetMinions(
-                    _player.ServerPosition,
-                    _bq.Range,
-                    MinionTypes.All,
-                    MinionTeam.Neutral,
-                    MinionOrderTypes.MaxHealth).FirstOrDefault();
+            var mob = MinionManager.GetMinions(_player.ServerPosition, _bq.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth).FirstOrDefault();
+
             var useQ = getCheckBoxItem(jungleMenu, "UseQJungle");
             var useW = getCheckBoxItem(jungleMenu, "UseWJungle");
             var useE = getCheckBoxItem(jungleMenu, "UseEJungle");
             var reksaifury = Equals(_player.Mana, _player.MaxMana);
 
             if (mob == null) return;
+
             if (!IsBurrowed())
             {
                 if (useQ && _q.IsReady() && Orbwalking.InAutoAttackRange(mob))
@@ -619,7 +615,7 @@ namespace D_RekSai
                     _q.Cast();
                 }
 
-                if (_e.IsReady() && useE && _player.Distance(mob) < _e.Range && !mob.Name.Contains("Mini"))
+                if (_e.IsReady() && useE && _player.LSDistance(mob) < _e.Range && !mob.Name.Contains("Mini"))
                 {
                     if (reksaifury && !Qactive(_player))
                     {
@@ -633,18 +629,18 @@ namespace D_RekSai
                 }
 
                 if (useW && !mob.HasBuff("RekSaiKnockupImmune") && _w.IsReady() && !_q.IsReady() && !_e.IsReady()
-                    && mob.IsValidTarget(Orbwalking.GetRealAutoAttackRange(_player)) && !Qactive(_player))
+                    && mob.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(_player)) && !Qactive(_player))
                 {
                     _w.Cast();
                 }
             }
 
-            if (IsBurrowed() && _bq.IsReady() && useQ && _player.Distance(mob) <= _bq.Range)
+            if (IsBurrowed() && _bq.IsReady() && useQ && _player.LSDistance(mob) <= _bq.Range)
             {
                 _bq.Cast(mob);
             }
 
-            if (IsBurrowed() && _bw.IsReady() && useW && mob.IsValidTarget(Orbwalking.GetRealAutoAttackRange(_player)))
+            if (IsBurrowed() && _bw.IsReady() && useW && mob.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(_player)))
             {
                 _bw.Cast();
             }
@@ -657,25 +653,25 @@ namespace D_RekSai
             {
                 if (getCheckBoxItem(ksMenu, "UseQKs"))
                 {
-                    if (_bq.IsReady() && hero.IsValidTarget(_bq.Range) && IsBurrowed())
+                    if (_bq.IsReady() && hero.LSIsValidTarget(_bq.Range) && IsBurrowed())
                     {
                         if (hero.Health <= BqDamage(hero)) _bq.CastIfHitchanceEquals(hero, HitChance.High);
                     }
 
-                    if (_bq.IsReady() && _w.IsReady() && !hero.IsValidTarget(_q.Range) && hero.IsValidTarget(_bq.Range)
+                    if (_bq.IsReady() && _w.IsReady() && !hero.LSIsValidTarget(_q.Range) && hero.LSIsValidTarget(_bq.Range)
                         && hero.Health <= BqDamage(hero))
                     {
                         _w.Cast();
                         _bq.CastIfHitchanceEquals(hero, HitChance.High);
                     }
 
-                    if (_q.IsReady() && hero.IsValidTarget(_q.Range) && !IsBurrowed())
+                    if (_q.IsReady() && hero.LSIsValidTarget(_q.Range) && !IsBurrowed())
                     {
                         if (hero.Health <= QDamage(hero)) _q.Cast();
                     }
                 }
 
-                if (_e.IsReady() && hero.IsValidTarget(_e.Range) && getCheckBoxItem(ksMenu, "UseEKs")
+                if (_e.IsReady() && hero.LSIsValidTarget(_e.Range) && getCheckBoxItem(ksMenu, "UseEKs")
                     && !IsBurrowed())
                 {
                     if (_player.Mana <= 100 && hero.Health <= EDamage(hero))

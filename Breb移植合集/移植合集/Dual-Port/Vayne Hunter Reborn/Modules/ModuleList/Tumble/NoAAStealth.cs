@@ -22,7 +22,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Tumble
             if (ShouldGetExecuted() && ObjectManager.Player.Buffs.Any(m => m.Name.ToLower() == "vaynetumblefade"))
             {
                 if (ObjectManager.Player.CountEnemiesInRange(1100f) <= 1 
-                    || ObjectManager.Player.CountEnemiesInRange(1100f) < MenuGenerator.miscMenu["dz191.vhr.misc.tumble.noaa.enemies"].Cast<Slider>().CurrentValue)
+                    || ObjectManager.Player.CountEnemiesInRange(1100f) < MenuGenerator.miscMenu["dz191.vhr.misc.tumble.noaa.enemies"].Cast<Slider>().CurrentValue || ObjectManager.Player.HealthPercent > MenuGenerator.miscMenu["dz191.vhr.misc.tumble.noaastealthex.hp"].Cast<Slider>().CurrentValue)
                 {
                     return;
                 }

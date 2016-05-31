@@ -56,6 +56,7 @@ namespace VayneHunter_Reborn.Utility.MenuUtility
             miscMenu.Add("dz191.vhr.mixed.mirinQ", new CheckBox("尝试 Q 至墙上 (Mirin 模式)", true));
             miscMenu.Add("dz191.vhr.misc.tumble.smartq", new CheckBox("尝试 QE"));
             miscMenu.Add("dz191.vhr.misc.tumble.noaastealthex", new KeyBind("隐身时不普攻按键", false, KeyBind.BindTypes.PressToggle, 'K'));
+            miscMenu.Add("dz191.vhr.misc.tumble.noaastealthex.hp", new Slider("当血量低于 x 时", 35, 0, 100));
             miscMenu.Add("dz191.vhr.misc.tumble.noqenemies", new CheckBox("不Q进敌人"));
             miscMenu.Add("dz191.vhr.misc.tumble.noqenemies.old", new CheckBox("不Q进敌人 （旧版）"));
             miscMenu.Add("dz191.vhr.misc.tumble.dynamicqsafety", new CheckBox("使用 安全动态Q距离"));

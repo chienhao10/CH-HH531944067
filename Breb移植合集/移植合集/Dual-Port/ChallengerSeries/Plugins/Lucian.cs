@@ -51,7 +51,7 @@ namespace Challenger_Series.Plugins
             //Anti Melee
             var possibleNearbyMeleeChampion =
                 ValidTargets.FirstOrDefault(
-                    e => e.IsMelee && e.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 350);
+                    e => e.IsMelee && e.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 350 && e.IsEnemy);
 
             if (possibleNearbyMeleeChampion.IsValidTarget())
             {
@@ -127,13 +127,13 @@ namespace Challenger_Series.Plugins
                     {
                         if (!IsDangerousPosition(Game.CursorPos))
                         {
-                            E.Cast(ObjectManager.Player.Position.Extend(Game.CursorPos, Misc.GiveRandomInt(50, 100)));
+                            E.Cast(ObjectManager.Player.Position.LSExtend(Game.CursorPos, Misc.GiveRandomInt(50, 100)));
                         }
                         return true;
                     }
                 case 2:
                     {
-                        E.Cast(ObjectManager.Player.Position.Extend(target.Position, Misc.GiveRandomInt(50, 100)));
+                        E.Cast(ObjectManager.Player.Position.LSExtend(target.Position, Misc.GiveRandomInt(50, 100)));
                         return true;
                     }
             }
@@ -169,7 +169,7 @@ namespace Challenger_Series.Plugins
             var tg = target as Obj_AI_Base;
             if (tg != null && !HasPassive)
             {
-                if (tg.IsHPBarRendered && tg.CharData.BaseSkinName.Contains("SRU") && !tg.CharData.BaseSkinName.Contains("Mini"))
+                if (tg.IsHPBarRendered && tg.CharData.BaseSkinName.Contains("SRU") && !tg.CharData.BaseSkinName.Contains("Mini") && (tg.IsMonster || tg.IsMinion))
                 {
                     if (EJg && E.IsReady())
                     {

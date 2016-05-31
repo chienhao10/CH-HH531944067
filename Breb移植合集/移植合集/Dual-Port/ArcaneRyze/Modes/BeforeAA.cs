@@ -15,9 +15,9 @@ namespace Arcane_Ryze.Modes
 
                 if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
-                if(Spells.Q.IsReady() && Target.LSIsValidTarget() && !Target.IsZombie && PassiveStack < 4)
+                if(Spells.Q.IsReady() && target.LSIsValidTarget() && !target.IsZombie && PassiveStack < 4)
                 {
-                    Spells.Q.Cast(Target);  
+                    Spells.Q.Cast(target);  
                 }
             }
         }

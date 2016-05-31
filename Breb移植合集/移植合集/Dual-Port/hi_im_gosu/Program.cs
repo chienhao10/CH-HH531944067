@@ -125,7 +125,7 @@ namespace hi_im_gosu
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if (E.IsReady() && gapcloser.Sender.LSIsValidTarget(200) && getCheckBoxItem(emenu, "Gap_E"))
+            if (E.IsReady() && gapcloser.Sender.LSIsValidTarget(200) && getCheckBoxItem(emenu, "Gap_E") && gapcloser.Sender.IsEnemy)
             {
                 E.Cast(gapcloser.Sender);
             }
@@ -155,7 +155,7 @@ namespace hi_im_gosu
             AIHeroClient unit,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (E.IsReady() && unit.LSIsValidTarget(550) && getCheckBoxItem(emenu, "Int_E"))
+            if (E.IsReady() && unit.LSIsValidTarget(550) && getCheckBoxItem(emenu, "Int_E") && unit.IsEnemy)
             {
                 E.Cast(unit);
             }
@@ -252,6 +252,47 @@ namespace hi_im_gosu
             return new Vector3(new Vector2((float)(A.X / distance)), (float)(A.Y / distance));
         }
 
+        public static List<Vector2> Points = new List<Vector2>();
+
+        public static bool threeSixty(AIHeroClient unit, Vector2 pos = new Vector2())
+        {
+            if (unit.HasBuffOfType(BuffType.SpellImmunity) || unit.HasBuffOfType(BuffType.SpellShield) ||
+                ObjectManager.Player.LSIsDashing()) return false;
+            var prediction = E.GetPrediction(unit);
+            var predictionsList = pos.IsValid()
+                ? new List<Vector3> { pos.To3D() }
+                : new List<Vector3>
+                {
+                    unit.ServerPosition,
+                    unit.Position,
+                    prediction.CastPosition,
+                    prediction.UnitPosition
+                };
+
+            var wallsFound = 0;
+            Points = new List<Vector2>();
+            foreach (var position in predictionsList)
+            {
+                for (var i = 0; i < 425; i += (int)unit.BoundingRadius) // 420 = push distance
+                {
+                    var cPos = ObjectManager.Player.Position.Extend(position, ObjectManager.Player.Distance(position) + i).To3D();
+                    Points.Add(cPos.LSTo2D());
+                    if (NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Wall) ||
+                        NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Building))
+                    {
+                        wallsFound++;
+                        break;
+                    }
+                }
+            }
+            if (wallsFound / predictionsList.Count >= 33 / 100f)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static void Game_OnGameUpdate(EventArgs args)
         {
             if (getCheckBoxItem(menu, "useR") && R.IsReady()
@@ -274,9 +315,9 @@ namespace hi_im_gosu
             if (!E.IsReady()) return;
             if ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(emenu, "UseEC")) || (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && getCheckBoxItem(emenu, "he")) || getKeyBindItem(emenu, "UseET"))
             {
-                foreach (var hero in from hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.LSIsValidTarget(550f) && hero.IsEnemy) let prediction = E.GetPrediction(hero) where NavMesh.GetCollisionFlags(prediction.UnitPosition.LSTo2D().LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -getSliderItem(emenu, "PushDistance")).To3D()).HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(prediction.UnitPosition.LSTo2D().LSExtend(ObjectManager.Player.ServerPosition.LSTo2D(), -(getSliderItem(emenu, "PushDistance"))).To3D()).HasFlag(CollisionFlags.Wall) select hero)
+                foreach (var enemy in EntityManager.Heroes.Enemies.Where(x => x.LSIsValidTarget(E.Range) && !x.HasBuffOfType(BuffType.SpellShield) && !x.HasBuffOfType(BuffType.SpellImmunity) && threeSixty(x)))
                 {
-                    E.Cast(hero);
+                    E.Cast(enemy);
                 }
             }
         }
