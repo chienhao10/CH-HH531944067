@@ -133,7 +133,7 @@ namespace PortAIO
 
                 if (Loader.autoSharp)
                 {
-                    AutoSharp.Program.Main();
+                    //AutoSharp.Program.Main();
                 }
 
                 /*

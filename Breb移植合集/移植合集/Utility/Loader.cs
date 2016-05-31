@@ -298,7 +298,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[32]))
                 {
-                    Miscc.Add("ryze", new ComboBox("切换 瑞兹脚本 : ", 0, "ExoryAIO", "ElEasy Ryze"));
+                    Miscc.Add("ryze", new ComboBox("切换 瑞兹脚本 : ", 0, "ExoryAIO", "ElEasy Ryze", "Arcane Ryze"));
                 }
                 if (Player.ChampionName.Equals(Champion[33]))
                 {

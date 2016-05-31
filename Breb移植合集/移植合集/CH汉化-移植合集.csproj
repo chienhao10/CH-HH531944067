@@ -58,7 +58,7 @@
   <ItemGroup>
     <Reference Include="Berb.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Berb.Common\Berb.Common\bin\Debug\Berb.Common.dll</HintPath>
+      <HintPath>..\..\..\Downloads\Berb.Common.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy">
       <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
@@ -178,6 +178,20 @@
     <Compile Include="Dual-Port\AJayce\Helper.cs" />
     <Compile Include="Dual-Port\AJayce\Jayce.cs" />
     <Compile Include="Dual-Port\AJayce\MenuConfig.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Core.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Draw\Drawings.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Draw\HpBarIndicator.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Handler\Dmg.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Handler\KillSteal.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Handler\Usables.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Main\MenuConfig.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Modes\BeforeAA.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Modes\Combo.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Modes\Harass.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Modes\Jungle.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Modes\Lane.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Modes\LastHit.cs" />
+    <Compile Include="Dual-Port\ArcaneRyze\Program.cs" />
     <Compile Include="Dual-Port\BadaoGP\BadaoChecker.cs" />
     <Compile Include="Dual-Port\BadaoGP\BadaoMainVariables.cs" />
     <Compile Include="Dual-Port\BadaoGP\BadaoMath.cs" />
