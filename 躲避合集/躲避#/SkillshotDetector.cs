@@ -173,7 +173,7 @@ namespace EvadePlus
                 nSkillshot.Caster = sender;
                 nSkillshot.CastArgs = args;
                 nSkillshot.SData = args.SData;
-                nSkillshot.Team = sender.Team;
+                nSkillshot.Team = Utils.GetGameObjectTeam(sender);
 
                 nSkillshot.OnCreate(null);
                 nSkillshot.OnSpellDetection(sender, args);

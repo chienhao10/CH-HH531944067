@@ -3312,9 +3312,9 @@ namespace EvadePlus
                 {
                     SpellData = new SpellData
                     {
-                        DisplayName = "Arcanopulse",
+                        DisplayName = "XerathQ",
                         ChampionName = "Xerath",
-                        SpellName = "xeratharcanopulse2",
+                        SpellName = "XerathQ",
                         Slot = SpellSlot.Q,
                         Delay = 600,
                         Range = 1600,
@@ -3322,24 +3322,24 @@ namespace EvadePlus
                         MissileSpeed = 0,
                         DangerValue = 2,
                         IsDangerous = false,
-                        MissileSpellName = "xeratharcanopulse2"
+                        MissileSpellName = "XerathQ"
                     }
                 },
                 new CircularMissileSkillshot
                 {
                     SpellData = new SpellData
                     {
-                        DisplayName = "Rite of the Arcane",
+                        DisplayName = "XerathR",
                         ChampionName = "Xerath",
-                        SpellName = "xerathrmissilewrapper",
+                        SpellName = "XerathR",
                         Slot = SpellSlot.R,
                         Delay = 700,
                         Range = 5600,
-                        Radius = 200,
+                        Radius = 130,
                         MissileSpeed = 0,
                         DangerValue = 2,
                         IsDangerous = false,
-                        MissileSpellName = "xerathrmissilewrapper"
+                        MissileSpellName = "xerathR"
                     }
                 },
                 new LinearMissileSkillshot

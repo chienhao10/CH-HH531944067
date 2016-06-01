@@ -17,7 +17,7 @@ namespace EvadePlus
 
         public Vector2[] CreatePathOld(Vector2 start, Vector2 end)
         {
-            const int extraWidth = 15;
+            const int extraWidth = 10;
             var walkPolygons = Geometry.ClipPolygons(Evade.Skillshots.Select(c => c.ToPolygon(extraWidth))).ToPolygons();
 
             //if (walkPolygons.Any(pol => pol.IsInside(start)))
