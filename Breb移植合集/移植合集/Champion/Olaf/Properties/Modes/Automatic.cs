@@ -1,9 +1,8 @@
 using System;
-using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Olaf
+namespace ExorSDK.Champions.Olaf
 {
     /// <summary>
     ///     The logics class.
@@ -19,11 +18,11 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     The R Automatic Logic.
             /// </summary>
-            if (Variables.R.IsReady() &&
-                Bools.ShouldCleanse(ObjectManager.Player) &&
-                Variables.getCheckBoxItem(Variables.RMenu, "rspell.auto"))
+            if (Vars.R.IsReady() &&
+                Bools.ShouldCleanse(GameObjects.Player) &&
+                Vars.getCheckBoxItem(Vars.RMenu, "logical"))
             {
-                Variables.R.Cast();
+                Vars.R.Cast();
             }
         }
     }

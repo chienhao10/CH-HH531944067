@@ -1,9 +1,9 @@
 using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Olaf
+namespace ExorSDK.Champions.Olaf
 {
     /// <summary>
     ///     The logics class.
@@ -17,8 +17,8 @@ namespace ExorAIO.Champions.Olaf
         /// <param name="args">The args.</param>
         public static void Weaving(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!args.Target.IsValid<AIHeroClient>() ||
-                Bools.IsSpellShielded((AIHeroClient) args.Target))
+            if (!(args.Target is AIHeroClient) ||
+                Invulnerable.Check(args.Target as AIHeroClient))
             {
                 return;
             }
@@ -26,11 +26,10 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     The E Weaving Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                ((AIHeroClient) args.Target).IsValidTarget(Variables.E.Range) &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            if (Vars.E.IsReady() &&
+                Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
-                Variables.E.CastOnUnit((AIHeroClient) args.Target);
+                Vars.E.CastOnUnit(args.Target as AIHeroClient);
             }
         }
     }

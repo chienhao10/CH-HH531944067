@@ -1,11 +1,11 @@
 using System;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
-using SharpDX;
 
-namespace ExorAIO.Champions.Olaf
+namespace ExorSDK.Champions.Olaf
 {
     /// <summary>
     ///     The logics class.
@@ -19,8 +19,8 @@ namespace ExorAIO.Champions.Olaf
         public static void Combo(EventArgs args)
         {
             if (Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+                !Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
@@ -28,27 +28,23 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     The Combo W Logic.
             /// </summary>
-            if (Variables.W.IsReady() && ObjectManager.Player.CountEnemiesInRange(Variables.AARange + 125) > 0 && Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
+            if (Vars.W.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.AARange) &&
+                Vars.getCheckBoxItem(Vars.WMenu, "combo"))
             {
-                Variables.W.Cast();
+                Vars.W.Cast();
             }
 
             /// <summary>
             ///     The Q Combo Logic.
             /// </summary>
-            if (Variables.Q.IsReady() && Targets.Target.IsValidTarget(Variables.Q.Range) && Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
+            if (Vars.Q.IsReady() &&
+                !Targets.Target.HasBuffOfType(BuffType.Slow) &&
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+                Vars.getCheckBoxItem(Vars.QMenu, "combo"))
             {
-                var castPosition = Variables.Q.GetPrediction(Targets.Target);
-                var castPosition2 = castPosition.CastPosition.LSExtend(ObjectManager.Player.Position, -100);
-
-                if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 350)
-                {
-                    Variables.Q.Cast(castPosition2);
-                }
-                else
-                {
-                    Variables.Q.Cast(castPosition.CastPosition);
-                }
+                Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target)
+                    .UnitPosition.LSExtend(GameObjects.Player.ServerPosition, -100f));
             }
         }
     }

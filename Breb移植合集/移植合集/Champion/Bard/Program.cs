@@ -145,7 +145,7 @@ namespace PortAIO.Champion.Bard
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 if (spells[SpellSlot.Q].IsReady() && getCheckBoxItem(comboMenu, "dz191.bard.combo.useq") &&
-                    ComboTarget.IsValidTarget())
+                    ComboTarget.LSIsValidTarget())
                 {
                     HandleQ(ComboTarget);
                 }
@@ -159,7 +159,7 @@ namespace PortAIO.Champion.Bard
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
                 if (spells[SpellSlot.Q].IsReady() && getCheckBoxItem(harassMenu, "dz191.bard.mixed.useq") &&
-                    ComboTarget.IsValidTarget() &&
+                    ComboTarget.LSIsValidTarget() &&
                     getCheckBoxItem(harassMenu,
                         string.Format("dz191.bard.qtarget.{0}", ComboTarget.NetworkId)))
                 {
@@ -203,13 +203,13 @@ namespace PortAIO.Champion.Bard
 
                 foreach (var position in BeamStartPositions)
                 {
-                    var collisionableObjects = spells[SpellSlot.Q].GetCollision(position.To2D(),
+                    var collisionableObjects = spells[SpellSlot.Q].GetCollision(position.LSTo2D(),
                         new List<Vector2> { position.LSExtend(PlayerPosition, -QPushDistance).LSTo2D() });
 
                     if (collisionableObjects.Any())
                     {
                         if (collisionableObjects.Any(h => h is AIHeroClient) &&
-                            collisionableObjects.All(h => h.IsValidTarget()))
+                            collisionableObjects.All(h => h.LSIsValidTarget()))
                         {
                             spells[SpellSlot.Q].Cast(QPrediction.CastPosition);
                             break;
@@ -230,7 +230,7 @@ namespace PortAIO.Champion.Bard
                 if (PositionsList.Any())
                 {
                     //We don't want to divide by 0 Kappa
-                    var WallNumber = PositionsList.Count(p => p.IsWall()) * 1.3f;
+                    var WallNumber = PositionsList.Count(p => p.LSIsWall()) * 1.3f;
                     var CollisionPositionCount = CollisionPositions.Count;
                     var Percent = (WallNumber + CollisionPositionCount) / PositionsList.Count;
                     var AccuracyEx = QAccuracy / 100f;
@@ -253,7 +253,7 @@ namespace PortAIO.Champion.Bard
 
         private static void HandleW()
         {
-            if (ObjectManager.Player.IsRecalling() || ObjectManager.Player.InShop() || !spells[SpellSlot.W].IsReady())
+            if (ObjectManager.Player.LSIsRecalling() || ObjectManager.Player.InShop() || !spells[SpellSlot.W].IsReady())
             {
                 return;
             }
@@ -268,7 +268,7 @@ namespace PortAIO.Champion.Bard
             var LowHealthAlly =
                 HeroManager.Allies.Where(
                     ally =>
-                        ally.IsValidTarget(spells[SpellSlot.W].Range) &&
+                        ally.LSIsValidTarget(spells[SpellSlot.W].Range) &&
                         ally.HealthPercent <= getSliderItem(miscMenu, "dz191.bard.wtarget.healthpercent") &&
                         getCheckBoxItem(miscMenu, string.Format("dz191.bard.wtarget.{0}", ally.NetworkId)))
                     .OrderBy(ally => ally.Health)
@@ -287,7 +287,7 @@ namespace PortAIO.Champion.Bard
             for (uint i = 0; i < distance; i += 10)
             {
                 var tempPosition = start.LSExtend(end, i);
-                if (tempPosition.IsWall())
+                if (tempPosition.LSIsWall())
                 {
                     return true;
                 }
@@ -302,7 +302,7 @@ namespace PortAIO.Champion.Bard
             for (uint i = 0; i < distance; i += 10)
             {
                 var tempPosition = start.LSExtend(end, i);
-                if (tempPosition.IsWall())
+                if (tempPosition.LSIsWall())
                 {
                     return tempPosition.LSExtend(start, -35);
                 }
@@ -320,12 +320,12 @@ namespace PortAIO.Champion.Bard
             for (uint i = 0; i < distance; i += 10)
             {
                 var tempPosition = start.LSExtend(end, i);
-                if (tempPosition.IsWall() && firstPosition == Vector3.Zero)
+                if (tempPosition.LSIsWall() && firstPosition == Vector3.Zero)
                 {
                     firstPosition = tempPosition;
                 }
                 lastPosition = tempPosition;
-                if (!lastPosition.IsWall() && firstPosition != Vector3.Zero)
+                if (!lastPosition.LSIsWall() && firstPosition != Vector3.Zero)
                 {
                     break;
                 }

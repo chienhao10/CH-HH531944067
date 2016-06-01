@@ -221,7 +221,7 @@ namespace ElAurelion_Sol
                 var kSableEnemy =
                     HeroManager.Enemies.FirstOrDefault(
                         hero =>
-                            hero.IsValidTarget(550) && ShieldCheck(hero) && !hero.HasBuff("summonerdot") &&
+                            hero.LSIsValidTarget(550) && ShieldCheck(hero) && !hero.HasBuff("summonerdot") &&
                             !hero.IsZombie
                             && Player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite) >= hero.Health);
 
@@ -288,7 +288,7 @@ namespace ElAurelion_Sol
                 {
                     if (!HasPassive())
                     {
-                        if (target.IsValidTarget(W1.Range))
+                        if (target.LSIsValidTarget(W1.Range))
                         {
                             return;
                         }
@@ -365,7 +365,7 @@ namespace ElAurelion_Sol
                 return;
             }
 
-            if (sender.IsValidTarget(Q.Range) && args.DangerLevel == Interrupter2.DangerLevel.High
+            if (sender.LSIsValidTarget(Q.Range) && args.DangerLevel == Interrupter2.DangerLevel.High
                 && Q.IsReady())
             {
                 var prediction = Q.GetPrediction(sender);
@@ -388,7 +388,7 @@ namespace ElAurelion_Sol
 
             if (Q.IsReady() && gapcloser.Sender.LSDistance(Player) < Q.Range)
             {
-                if (gapcloser.Sender.IsValidTarget(Q.Range) && Q.IsReady())
+                if (gapcloser.Sender.LSIsValidTarget(Q.Range) && Q.IsReady())
                 {
                     var prediction = Q.GetPrediction(gapcloser.Sender);
                     if (prediction.Hitchance >= HitChance.High)
@@ -527,9 +527,9 @@ namespace ElAurelion_Sol
             try
             {
                 foreach (
-                    var enemy in HeroManager.Enemies.Where(x => x.IsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
+                    var enemy in HeroManager.Enemies.Where(x => x.LSIsValidTarget(R.Range) && !x.IsDead && !x.IsZombie))
                 {
-                    if (Q.IsReady() && enemy.IsValidTarget(Q.Range) && enemy.Health < QDamage(enemy))
+                    if (Q.IsReady() && enemy.LSIsValidTarget(Q.Range) && enemy.Health < QDamage(enemy))
                     {
                         var prediction = Q.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)
@@ -538,7 +538,7 @@ namespace ElAurelion_Sol
                         }
                     }
 
-                    if (R.IsReady() && enemy.IsValidTarget(R.Range) && enemy.Health < RDamage(enemy))
+                    if (R.IsReady() && enemy.LSIsValidTarget(R.Range) && enemy.Health < RDamage(enemy))
                     {
                         var prediction = R.GetPrediction(enemy);
                         if (prediction.Hitchance >= HitChance.High)

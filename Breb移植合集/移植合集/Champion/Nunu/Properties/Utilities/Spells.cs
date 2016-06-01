@@ -1,8 +1,9 @@
 using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The spells class.
@@ -14,10 +15,10 @@ namespace ExorAIO.Champions.Nunu
         /// </summary>
         public static void Initialize()
         {
-            Variables.Q = new Spell(SpellSlot.Q, ObjectManager.Player.BoundingRadius + 125f);
-            Variables.W = new Spell(SpellSlot.W, 700f);
-            Variables.E = new Spell(SpellSlot.E, 550f);
-            Variables.R = new Spell(SpellSlot.R, 650f);
+            Vars.Q = new Spell(SpellSlot.Q, GameObjects.Player.BoundingRadius + 125f);
+            Vars.W = new Spell(SpellSlot.W, 700f);
+            Vars.E = new Spell(SpellSlot.E, 550f);
+            Vars.R = new Spell(SpellSlot.R, 650f);
         }
     }
 }

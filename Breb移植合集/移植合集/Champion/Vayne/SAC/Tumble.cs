@@ -4,7 +4,7 @@ using EloBuddy;
 using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
-using Vayne;
+using Vayne1;
 using Geometry = LeagueSharp.Common.Geometry;
 using Utility = LeagueSharp.Common.Utility;
 

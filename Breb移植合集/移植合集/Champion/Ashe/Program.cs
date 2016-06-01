@@ -107,7 +107,7 @@ namespace PortAIO.Champion.Ashe
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
             Interrupter2.InterruptableTargetEventArgs args)
         {
-            if (getCheckBoxItem(RMenu, "autoRinter") && R.IsReady() && sender.IsValidTarget(R.Range))
+            if (getCheckBoxItem(RMenu, "autoRinter") && R.IsReady() && sender.LSIsValidTarget(R.Range))
                 R.Cast(sender);
         }
 
@@ -116,7 +116,7 @@ namespace PortAIO.Champion.Ashe
             if (R.IsReady())
             {
                 var Target = gapcloser.Sender;
-                if (Target.IsValidTarget(800) && getCheckBoxItem(RMenu, "GapCloser" + Target.NetworkId))
+                if (Target.LSIsValidTarget(800) && getCheckBoxItem(RMenu, "GapCloser" + Target.NetworkId))
                 {
                     R.Cast(Target.ServerPosition, true);
                     SebbyLib.Program.debug("AGC " + Target.ChampionName);
@@ -136,7 +136,7 @@ namespace PortAIO.Champion.Ashe
                 if (getKeyBindItem(RMenu, "useR"))
                 {
                     var t = TargetSelector.GetTarget(1500, DamageType.Physical);
-                    if (t.IsValidTarget())
+                    if (t.LSIsValidTarget())
                         R.Cast(t, true, true);
                 }
             }
@@ -183,14 +183,14 @@ namespace PortAIO.Champion.Ashe
                 foreach (
                     var target in
                         SebbyLib.Program.Enemies.Where(
-                            target => target.IsValidTarget(R.Range) && OktwCommon.ValidUlt(target)))
+                            target => target.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(target)))
                 {
                     var rDmg = OktwCommon.GetKsDamage(target, R);
-                    if (SebbyLib.Program.Combo && target.CountEnemiesInRange(250) > 2 &&
+                    if (SebbyLib.Program.Combo && target.LSCountEnemiesInRange(250) > 2 &&
                         getCheckBoxItem(RMenu, "autoRaoe"))
                         SebbyLib.Program.CastSpell(R, target);
-                    if (SebbyLib.Program.Combo && target.IsValidTarget(W.Range) && getCheckBoxItem(RMenu, "Rkscombo") &&
-                        Player.GetAutoAttackDamage(target)*5 + rDmg + W.GetDamage(target) > target.Health &&
+                    if (SebbyLib.Program.Combo && target.LSIsValidTarget(W.Range) && getCheckBoxItem(RMenu, "Rkscombo") &&
+                        Player.LSGetAutoAttackDamage(target)*5 + rDmg + W.GetDamage(target) > target.Health &&
                         target.HasBuffOfType(BuffType.Slow) && !OktwCommon.IsSpellHeroCollision(target, R))
                         SebbyLib.Program.CastSpell(R, target);
                     if (rDmg > target.Health && target.CountAlliesInRange(600) == 0 &&
@@ -208,7 +208,7 @@ namespace PortAIO.Champion.Ashe
                     var enemy in
                         SebbyLib.Program.Enemies.Where(
                             enemy =>
-                                enemy.IsValidTarget(300) && enemy.IsMelee &&
+                                enemy.LSIsValidTarget(300) && enemy.IsMelee &&
                                 getCheckBoxItem(RMenu, "GapCloser" + enemy.NetworkId) && !OktwCommon.ValidUlt(enemy))
                     )
                 {
@@ -221,10 +221,10 @@ namespace PortAIO.Champion.Ashe
         private static void LogicQ()
         {
             var t = Orbwalker.LastTarget as AIHeroClient;
-            if (t != null && t.IsValidTarget())
+            if (t != null && t.LSIsValidTarget())
             {
                 if (SebbyLib.Program.Combo &&
-                    (Player.Mana > RMANA + QMANA || t.Health < 5*Player.GetAutoAttackDamage(Player)))
+                    (Player.Mana > RMANA + QMANA || t.Health < 5*Player.LSGetAutoAttackDamage(Player)))
                     Q.Cast();
                 else if (SebbyLib.Program.Farm && Player.Mana > RMANA + QMANA + WMANA && getCheckBoxItem(QMenu, "harasQ") &&
                          getCheckBoxItem(harassMenu, "haras" + t.NetworkId))
@@ -246,7 +246,7 @@ namespace PortAIO.Champion.Ashe
         {
             var t = Orbwalker.LastTarget as AIHeroClient ?? TargetSelector.GetTarget(W.Range, DamageType.Physical);
 
-            if (t.IsValidTarget())
+            if (t.LSIsValidTarget())
             {
                 if (SebbyLib.Program.Combo && Player.Mana > RMANA + WMANA)
                     CastW(t);
@@ -256,7 +256,7 @@ namespace PortAIO.Champion.Ashe
                         var enemy in
                             SebbyLib.Program.Enemies.Where(
                                 enemy =>
-                                    enemy.IsValidTarget(W.Range) &&
+                                    enemy.LSIsValidTarget(W.Range) &&
                                     getCheckBoxItem(harassMenu, "haras" + t.NetworkId)))
                         CastW(t);
                 }
@@ -270,7 +270,7 @@ namespace PortAIO.Champion.Ashe
                     foreach (
                         var enemy in
                             SebbyLib.Program.Enemies.Where(
-                                enemy => enemy.IsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
+                                enemy => enemy.LSIsValidTarget(W.Range) && !OktwCommon.CanMove(enemy)))
                         W.Cast(t);
                 }
             }

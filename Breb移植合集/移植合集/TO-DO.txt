@@ -10,7 +10,7 @@
 
 -Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
-Darius, Nautlius, Nunu, Olaf, Pantheon, Renekton, Tryndamere, Ryze, Ashe, Mundo, Graves, Jax, Jhin, Jax, Quinn, Karma = Port these for ExorAIO SDK
+Pantheon, Renekton, Tryndamere, Ryze, Ashe, Mundo, Graves, Jax, Jhin, Jax, Quinn, Karma = Port these for ExorAIO SDK
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
@@ -27,9 +27,15 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Underrated Renekton/Singed [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/]
 - Royal Ziggs [https://github.com/princer007/LSResurrected/tree/master/RoyalZiggy]
 - Badao Draven (https://github.com/badao/Draven/)
-- xQx LeBlanc & Irelia & Olaf & Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
-- S+ Class Tristana
+- xQx LeBlanc & Olaf & Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
+- Geass Tristana
 - SoloVayne
+- YasuoSharpV2
+- Spirit Karma
+- TroopAIO
+- Dicaste's Ashe/Urgot
+- PrideStalker Rengar
+- Shen Hand of God
 
 Utility Ports [Only doing after Champions are completed] :
 - Universal Leveler [https://github.com/TheSaltyWaffle/LeagueSharp/tree/master/UniversalLeveler]
@@ -45,5 +51,8 @@ Utility Ports [Only doing after Champions are completed] :
 - AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
 - StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
 - OKTW Ward Standalone [Already in PortAIO]
+- Evade+
+- LeagueSharp.Utility [Looks harder than anything I've ever ported]
+- AioCaster
 
 ------------------------------------------------------------------------

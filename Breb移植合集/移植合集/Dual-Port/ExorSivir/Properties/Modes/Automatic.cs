@@ -187,11 +187,19 @@ namespace ExorSDK.Champions.Sivir
                 /// <summary>
                 ///     If the sender is Zed and the processed arg is a Targetted spell (His Ultimate), delay the shieldcasting by 200ms.
                 /// </summary>
-                DelayAction.Add(200,
+                DelayAction.Add(
+                    sender.CharData.BaseSkinName.Equals("Zed")
+                        ? 200
+                        : sender.CharData.BaseSkinName.Equals("Caitlyn")
+                            ? 1000
+                            : sender.CharData.BaseSkinName.Equals("Nocturne") &&
+                              args.SData.Name.Equals("NocturneUnspeakableHorror")
+                                ? 500
+                                : Vars.getSliderItem(Vars.EMenu, "delay"),
                 () =>
-                    {
-                        Vars.E.Cast();
-                    }
+                {
+                    Vars.E.Cast();
+                }
                 );
             }
             else

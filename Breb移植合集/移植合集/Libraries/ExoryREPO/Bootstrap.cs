@@ -1,7 +1,5 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK.Menu;
-using ExorAIO.Champions.Nunu;
-using ExorAIO.Champions.Olaf;
 using ExorAIO.Champions.Pantheon;
 using ExorAIO.Champions.Renekton;
 using ExorAIO.Champions.Ryze;
@@ -33,12 +31,6 @@ namespace ExorAIO.Core
         {
             switch (ObjectManager.Player.ChampionName)
             {
-                case "Nunu":
-                    Nunu.OnLoad();
-                    break;
-                case "Olaf":
-                    Olaf.OnLoad();
-                    break;
                 case "Pantheon":
                     Pantheon.OnLoad();
                     break;

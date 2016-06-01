@@ -1,11 +1,13 @@
 using System;
 using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The logics class.
@@ -18,27 +20,47 @@ namespace ExorAIO.Champions.Nunu
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling())
+            if (GameObjects.Player.LSIsRecalling())
             {
                 return;
             }
 
             /// <summary>
+            ///     The Semi-Automatic R Management.
+            /// </summary>
+            if (Vars.R.IsReady() &&
+                Vars.getCheckBoxItem(Vars.RMenu, "bool"))
+            {
+                if (!GameObjects.Player.HasBuff("AbsoluteZero") &&
+                    GameObjects.Player.CountEnemyHeroesInRange(Vars.R.Range) > 0 &&
+                    Vars.getKeyBindItem(Vars.RMenu, "key"))
+                {
+                    Vars.R.Cast();
+                }
+
+                if (GameObjects.Player.HasBuff("AbsoluteZero") &&
+                    !Vars.getKeyBindItem(Vars.RMenu, "key"))
+                {
+                    Orbwalker.MoveTo(Game.CursorPos);
+                    Vars.R.Cast();
+                }
+            }
+
+            /// <summary>
             ///     The JungleClear Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.jgc"))
+            if (Vars.Q.IsReady() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "jungleclear"))
             {
                 if (Targets.JungleMinions.Any())
                 {
-                    foreach (Obj_AI_Minion minion in
-                        Targets.JungleMinions.Where(
-                            m =>
-                                m.IsValidTarget(Variables.Q.Range) &&
-                                m.Health < Variables.Q.GetDamage(m) &&
-                                !m.CharData.BaseSkinName.Contains("Mini")))
+                    foreach (var minion in Targets.JungleMinions.Where(
+                        m =>
+                            m.LSIsValidTarget(Vars.Q.Range) &&
+                            Vars.GetRealHealth(m) <
+                                (float)GameObjects.Player.LSGetSpellDamage(m, SpellSlot.Q)))
                     {
-                        Variables.Q.CastOnUnit(minion);
+                        Vars.Q.CastOnUnit(minion);
                     }
                 }
             }
@@ -46,17 +68,18 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     The Automatic Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
+            if (Vars.Q.IsReady() &&
                 Targets.Minions.Any() &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.auto"))
+                Vars.getCheckBoxItem(Vars.QMenu, "logical"))
             {
-                if (ObjectManager.Player.Health +
-                    30 + 45*ObjectManager.Player.Spellbook.GetSpell(SpellSlot.Q).Level +
-                    ObjectManager.Player.TotalMagicalDamage*0.75 < ObjectManager.Player.MaxHealth)
+                if (GameObjects.Player.MaxHealth >
+                        GameObjects.Player.Health +
+                        (30 + 45 * GameObjects.Player.Spellbook.GetSpell(SpellSlot.Q).Level) +
+                        GameObjects.Player.TotalMagicalDamage * 0.75)
                 {
-                    foreach (Obj_AI_Minion minion in Targets.Minions.Where(m => m.IsValidTarget(Variables.Q.Range)))
+                    foreach (var minion in Targets.Minions.Where(m => m.LSIsValidTarget(Vars.Q.Range)))
                     {
-                        Variables.Q.CastOnUnit(minion);
+                        Vars.Q.CastOnUnit(minion);
                     }
                 }
             }
@@ -64,65 +87,67 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     The Automatic W Logic.
             /// </summary>
-            if (Variables.W.IsReady() &&
-                (ObjectManager.Player.ManaPercent > ManaManager.NeededWMana ||
-                 ObjectManager.Player.Buffs.Any(b => b.Name.Equals("visionary"))) &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.auto"))
+            if (Vars.W.IsReady() &&
+                Vars.getSliderItem(Vars.WMenu, "logical") != 101)
             {
-                if (HeroManager.Allies.Any(h => !h.IsMe))
+                if (GameObjects.Player.ManaPercent <
+                        ManaManager.GetNeededMana(Vars.W.Slot, Vars.getSliderItem(Vars.WMenu, "logical")) &&
+                    !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
                 {
-                    foreach (var ally in HeroManager.Allies
-                        .Where(
-                            a =>
-                                a.IsValidTarget(Variables.W.Range) &&
-                                (HeroManager.Enemies.Any(t => t.IsValidTarget(1200f)) || Targets.Minions.Any()) &&
-                                Variables.getCheckBoxItem(Variables.WhiteListMenu,
-                                    "wspell.whitelist." + a.NetworkId))
-                        .OrderBy(
-                            o =>
-                                ObjectManager.Player.TotalAttackDamage))
-                    {
-                        Variables.W.CastOnUnit(ally);
-                    }
+                    return;
                 }
-                else if (Targets.Minions.Any() &&
-                         GameObjects.AllyMinions.Any() &&
-                         !Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
-                {
-                    foreach (
-                        var minion in
-                            GameObjects.AllyMinions.Where(
-                                m =>
-                                    m.IsValidTarget(Variables.W.Range) &&
-                                    m.CharData.BaseSkinName.ToLower().Contains("super") ||
-                                    m.CharData.BaseSkinName.ToLower().Contains("siege")))
-                    {
-                        Variables.W.CastOnUnit(minion);
-                    }
-                }
-                else
-                {
-                    Variables.W.CastOnUnit(ObjectManager.Player);
-                }
-            }
 
-            /// <summary>
-            ///     The Semi-Automatic R Management.
-            ///     Testare Semi-Auto R.
-            /// </summary>
-            if (Variables.R.IsReady() && Variables.getCheckBoxItem(Variables.RMenu, "rspell.boolrsa"))
-            {
-                if (ObjectManager.Player.CountEnemiesInRange(Variables.R.Range) > 0 &&
-                    Variables.getKeyBindItem(Variables.RMenu, "rspell.keyrsa") &&
-                    !ObjectManager.Player.HasBuff("AbsoluteZero"))
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
                 {
-                    Variables.R.Cast();
+                    /// <summary>
+                    ///     The Ally W Combo Logic.
+                    /// </summary>
+                    if (GameObjects.AllyHeroes.Any(a => !a.IsMe && a.LSIsValidTarget(Vars.W.Range, false) && Vars.getCheckBoxItem(Vars.WhiteListMenu, a.ChampionName.ToLower())))
+                    {
+                        Vars.W.CastOnUnit(GameObjects.AllyHeroes.Where(a => !a.IsMe && a.LSIsValidTarget(Vars.W.Range, false) && Vars.getCheckBoxItem(Vars.WhiteListMenu, a.ChampionName.ToLower())).OrderBy(o => o.TotalAttackDamage).First());
+                    }
+
+                    /// <summary>
+                    ///     The Normal W Combo Logic.
+                    /// </summary>
+                    else
+                    {
+                        if (Targets.Target.LSIsValidTarget())
+                        {
+                            Vars.W.CastOnUnit(GameObjects.Player);
+                        }
+                    }
                 }
-                else if (!Variables.getKeyBindItem(Variables.RMenu, "rspell.keyrsa") &&
-                         ObjectManager.Player.HasBuff("AbsoluteZero"))
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
                 {
-                    Player.IssueOrder(GameObjectOrder.MoveTo, ObjectManager.Player.Position);
-                    Variables.R.Cast();
+                    /// <summary>
+                    ///     Use if There are Enemy Minions in range.
+                    /// </summary>
+                    if (Targets.Minions.Any() ||
+                        Targets.JungleMinions.Any())
+                    {
+                        Vars.W.CastOnUnit(GameObjects.Player);
+                    }
+                }
+
+                /// <summary>
+                ///     The W Pushing Logic.
+                /// </summary>
+                if (Targets.Minions.Any() &&
+                    GameObjects.AllyMinions.Any())
+                {
+                    /// <summary>
+                    ///     Use if there are Super or Siege minions in W Range.
+                    /// </summary>
+                    foreach (var minion in GameObjects.AllyMinions.Where(m => m.LSIsValidTarget(Vars.W.Range, false)))
+                    {
+                        if (minion.GetMinionType() == MinionTypes.Super ||
+                            minion.GetMinionType() == MinionTypes.Siege)
+                        {
+                            Vars.W.CastOnUnit(minion);
+                        }
+                    }
                 }
             }
         }

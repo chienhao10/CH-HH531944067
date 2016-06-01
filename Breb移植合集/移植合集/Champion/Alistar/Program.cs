@@ -235,7 +235,7 @@ namespace PortAIO.Champion.Alistar
                 var kSableEnemy =
                     HeroManager.Enemies.FirstOrDefault(
                         hero =>
-                            hero.IsValidTarget(550) && ShieldCheck(hero) && !hero.HasBuff("summonerdot") &&
+                            hero.LSIsValidTarget(550) && ShieldCheck(hero) && !hero.HasBuff("summonerdot") &&
                             !hero.IsZombie &&
                             Player.GetSummonerSpellDamage(hero, DamageLibrary.SummonerSpells.Ignite) >= hero.Health);
 
@@ -294,9 +294,9 @@ namespace PortAIO.Champion.Alistar
                 if (getCheckBoxItem(comboMenu, "ElAlistar.Combo.Q") && getCheckBoxItem(comboMenu, "ElAlistar.Combo.W") &&
                     Q.IsReady() && W.IsReady())
                 {
-                    if (target.IsValidTarget(W.Range) && HasEnoughMana())
+                    if (target.LSIsValidTarget(W.Range) && HasEnoughMana())
                     {
-                        if (target.IsValidTarget(Q.Range))
+                        if (target.LSIsValidTarget(Q.Range))
                         {
                             Q.Cast();
                             return;
@@ -310,14 +310,14 @@ namespace PortAIO.Champion.Alistar
                     }
                 }
 
-                if (getCheckBoxItem(comboMenu, "ElAlistar.Combo.Q") && target.IsValidTarget(Q.Range))
+                if (getCheckBoxItem(comboMenu, "ElAlistar.Combo.Q") && target.LSIsValidTarget(Q.Range))
                 {
                     Q.Cast();
                 }
 
                 if (getCheckBoxItem(comboMenu, "ElAlistar.Combo.W"))
                 {
-                    if (target.IsValidTarget(W.Range) && W.GetDamage(target) > target.Health)
+                    if (target.LSIsValidTarget(W.Range) && W.GetDamage(target) > target.Health)
                     {
                         W.Cast(target);
                     }
@@ -341,12 +341,12 @@ namespace PortAIO.Champion.Alistar
                 return;
             }
 
-            if (sender.IsValidTarget(Q.Range) && Q.IsReady() && getCheckBoxItem(interrupterMenu, "ElAlistar.Interrupter.Q"))
+            if (sender.LSIsValidTarget(Q.Range) && Q.IsReady() && getCheckBoxItem(interrupterMenu, "ElAlistar.Interrupter.Q"))
             {
                 Q.Cast();
             }
 
-            if (sender.IsValidTarget(W.Range) && W.IsReady() &&
+            if (sender.LSIsValidTarget(W.Range) && W.IsReady() &&
                 getCheckBoxItem(interrupterMenu, "ElAlistar.Interrupter.W"))
             {
                 W.Cast(sender);
@@ -399,7 +399,7 @@ namespace PortAIO.Champion.Alistar
                                 ((int) (args.Damage/x.MaxHealth*100) >
                                  getSliderItem(comboMenu, "ElAlistar.Combo.RHeal.Damage") ||
                                  x.HealthPercent < getSliderItem(comboMenu, "ElAlistar.Combo.RHeal.HP") &&
-                                 x.CountEnemiesInRange(1000) >= 1)))
+                                 x.LSCountEnemiesInRange(1000) >= 1)))
                 {
                     R.Cast();
                 }
@@ -416,7 +416,7 @@ namespace PortAIO.Champion.Alistar
                                 getCheckBoxItem(healMenu, string.Format("healon{0}", x.NetworkId)) &&
                                 ((int) (args.Damage/x.MaxHealth*100) > getSliderItem(healMenu, "Heal.Damage") ||
                                  x.HealthPercent < getSliderItem(healMenu, "Heal.HP")) && x.LSDistance(Player) < E.Range &&
-                                x.CountEnemiesInRange(1000) >= 1))
+                                x.LSCountEnemiesInRange(1000) >= 1))
                 {
                     E.Cast();
                 }
@@ -431,7 +431,7 @@ namespace PortAIO.Champion.Alistar
         {
             try
             {
-                if (Player.IsDead || Player.IsRecalling() || Player.InFountain())
+                if (Player.IsDead || Player.LSIsRecalling() || Player.InFountain())
                 {
                     return;
                 }
@@ -454,7 +454,7 @@ namespace PortAIO.Champion.Alistar
                         ? TargetSelector.SelectedTarget
                         : TargetSelector.GetTarget(W.Range, DamageType.Magical);
 
-                    if (!target.IsValidTarget(W.Range))
+                    if (!target.LSIsValidTarget(W.Range))
                     {
                         return;
                     }

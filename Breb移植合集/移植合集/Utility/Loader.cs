@@ -210,7 +210,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[10]))
                 {
-                    Miscc.Add("vayne", new ComboBox("切换 薇恩脚本 : ", 0, "挑战者Vayne", "薇恩猎手：重生（VHR)", "hi im gosu"));
+                    Miscc.Add("vayne", new ComboBox("切换 薇恩脚本 : ", 0, "挑战者Vayne", "薇恩猎手：重生（VHR)", "hi im gosu", "hVayne SDK"));
                 }
                 if (Player.ChampionName.Equals(Champion[11]))
                 {
@@ -326,7 +326,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[39]))
                 {
-                    Miscc.Add("Ekko", new ComboBox("切换 艾克脚本 : ", 0, "OKTW", "ElEkko"));
+                    Miscc.Add("Ekko", new ComboBox("切换 艾克脚本 : ", 0, "OKTW", "ElEkko", "EkkoGod"));
                 }
                 if (Player.ChampionName.Equals(Champion[40]))
                 {

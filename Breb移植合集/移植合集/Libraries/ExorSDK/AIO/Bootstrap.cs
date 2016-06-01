@@ -2,6 +2,8 @@ using ExorSDK.Champions.Anivia;
 using ExorSDK.Champions.Caitlyn;
 using ExorSDK.Champions.Darius;
 using ExorSDK.Champions.Nautilus;
+using ExorSDK.Champions.Nunu;
+using ExorSDK.Champions.Olaf;
 using ExorSDK.Champions.Sivir;
 using ExorSDK.Utilities;
 using LeagueSharp;
@@ -35,6 +37,12 @@ namespace ExorSDK.Core
                     break;
                 case "Nautilus":
                     new Nautilus().OnLoad();
+                    break;
+                case "Nunu":
+                    new Nunu().OnLoad();
+                    break;
+                case "Olaf":
+                    new Olaf().OnLoad();
                     break;
                 default:
                     Vars.IsLoaded = false;

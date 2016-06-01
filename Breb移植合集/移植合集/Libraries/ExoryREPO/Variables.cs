@@ -45,7 +45,7 @@ namespace ExorAIO.Utilities
         /// <summary>
         ///     Gets or sets the Whitelist menu.
         /// </summary>
-        public static Menu WhiteListMenu;
+        //public static Menu WhiteListMenu;
 
         /// <summary>
         ///     Gets or sets the Drawings menu.

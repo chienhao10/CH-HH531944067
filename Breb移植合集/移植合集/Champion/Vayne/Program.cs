@@ -17,7 +17,7 @@ using LS = LeagueSharp.Common;
 using SV = SoloVayne.Skills.Tumble;
 using EvadeA;
 
-namespace Vayne
+namespace Vayne1
 {
     public static class Program
     {

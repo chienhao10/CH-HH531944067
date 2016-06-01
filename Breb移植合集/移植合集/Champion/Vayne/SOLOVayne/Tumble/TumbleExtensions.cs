@@ -4,7 +4,7 @@ using EloBuddy.SDK;
 using LeagueSharp.Common;
 using NabbTracker;
 using SharpDX;
-using Program = Vayne.Program;
+using Program = Vayne1.Program;
 
 namespace SoloVayne.Skills.Tumble
 {

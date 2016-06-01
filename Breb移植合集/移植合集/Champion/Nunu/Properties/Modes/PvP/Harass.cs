@@ -1,11 +1,10 @@
 using System;
 using System.Linq;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The logics class.
@@ -18,8 +17,8 @@ namespace ExorAIO.Champions.Nunu
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Harass(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+            if (!Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
@@ -27,13 +26,18 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     The E Harass Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
-                (ObjectManager.Player.ManaPercent > ManaManager.NeededEMana ||
-                 ObjectManager.Player.Buffs.Any(b => b.Name.Equals("visionary"))) &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.harass"))
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                Vars.getSliderItem(Vars.EMenu, "harass") != 101)
             {
-                Variables.E.CastOnUnit(Targets.Target);
+                if (GameObjects.Player.ManaPercent <
+                        ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.EMenu, "harass")) &&
+                    !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
+                {
+                    return;
+                }
+
+                Vars.E.CastOnUnit(Targets.Target);
             }
         }
     }

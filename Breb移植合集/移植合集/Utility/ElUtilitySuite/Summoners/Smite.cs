@@ -7,18 +7,16 @@
 
     using ElUtilitySuite.Vendor.SFX;
 
-    using EloBuddy;
+    using LeagueSharp;
     using LeagueSharp.Common;
 
     using SharpDX;
 
     using Color = System.Drawing.Color;
-    using EloBuddy.SDK.Menu;
-    using EloBuddy.SDK;
-    using Spell = LeagueSharp.Common.Spell;
+    using EloBuddy;
+    using EloBuddy.SDK.Menu;    // ReSharper disable once ClassNeverInstantiated.Global
     using EloBuddy.SDK.Menu.Values;
-
-    // ReSharper disable once ClassNeverInstantiated.Global
+    using EloBuddy.SDK;
     public class Smite : IPlugin
     {
         #region Static Fields
@@ -30,7 +28,7 @@
         /// </summary>
         public const float SmiteRange = 570f;
 
-        private static readonly string[] SmiteObjects =
+        private static readonly string[] BuffsThatActuallyMakeSenseToSmite =
             {
                 "SRU_Red", "SRU_Blue", "SRU_Dragon_Water",  "SRU_Dragon_Fire", "SRU_Dragon_Earth", "SRU_Dragon_Air", "SRU_Dragon_Elder",
                 "SRU_Baron", "SRU_Gromp", "SRU_Murkwolf",
@@ -122,6 +120,11 @@
                              new Smite
                                  {
                                      ChampionName = "Evelynn", Range = 225f, Slot = SpellSlot.E, Stage = 0,
+                                     TargetType = SpellDataTargetType.Unit
+                                 },
+                             new Smite
+                                 {
+                                     ChampionName = "Shen", Range = 520f, Slot = SpellSlot.E, Stage = 0,
                                      TargetType = SpellDataTargetType.Unit
                                  },
                              new Smite
@@ -304,7 +307,7 @@
         /// <value>
         ///     The Smitespell
         /// </value>
-        public Spell SmiteSpell { get; set; }
+        public LeagueSharp.Common.Spell SmiteSpell { get; set; }
 
         /// <summary>
         /// Gets or sets the slot.
@@ -357,8 +360,6 @@
         /// </summary>
         /// <param name="rootMenu">The root menu.</param>
         /// <returns></returns>
-        /// 
-
         public void CreateMenu(Menu rootMenu)
         {
             var smiteSlot =
@@ -424,7 +425,6 @@
             this.Menu = smiteMenu;
         }
 
-
         public void Load()
         {
             try
@@ -435,8 +435,8 @@
 
 
                 if (smiteSlot != null)
-                {
-                    this.SmiteSpell = new Spell(smiteSlot.Slot, SmiteRange, DamageType.True);
+                {   
+                    this.SmiteSpell = new LeagueSharp.Common.Spell(smiteSlot.Slot, SmiteRange, DamageType.True);
 
                     Drawing.OnDraw += this.OnDraw;
                     Game.OnUpdate += this.OnUpdate;
@@ -541,7 +541,7 @@
                                 .Where(
                                     m =>
                                     m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget()
-                                    && SmiteObjects.Contains(m.CharData.BaseSkinName));
+                                    && BuffsThatActuallyMakeSenseToSmite.Contains(m.CharData.BaseSkinName));
 
                         foreach (var minion in minions.Where(m => m.IsHPBarRendered))
                         {
@@ -729,34 +729,6 @@
         }
 
         /// <summary>
-        ///     Gets the nearest minions
-        /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
-        public static Obj_AI_Minion GetNearest(Vector3 pos)
-        {
-            var minions =
-                ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(minion => minion.IsValid && SmiteObjects.Any(name => minion.Name.StartsWith(name)) &&
-                    !SmiteObjects.Any(name => minion.Name.Contains("Mini"))
-                    && !SmiteObjects.Any(name => minion.Name.Contains("Spawn")));
-
-            var objAiMinions = minions as Obj_AI_Minion[] ?? minions.ToArray();
-            Obj_AI_Minion sMinion = objAiMinions.FirstOrDefault();
-            double? nearest = null;
-            foreach (Obj_AI_Minion minion in objAiMinions)
-            {
-                double distance = Vector3.Distance(pos, minion.Position);
-                if (nearest == null || nearest > distance)
-                {
-                    nearest = distance;
-                    sMinion = minion;
-                }
-            }
-            return sMinion;
-        }
-
-        /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="System.EventArgs" /> instance containing the event data.</param>
@@ -776,34 +748,31 @@
 
                 this.SmiteKill();
 
-                Minion = GetNearest(ObjectManager.Player.ServerPosition);
+                Minion = (Obj_AI_Minion)EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(buff => this.Player.IsInRange(buff, 570) && (buff.Name.StartsWith(buff.BaseSkinName) || BuffsThatActuallyMakeSenseToSmite.Contains(buff.BaseSkinName)) && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
+
                 if (Minion == null)
                 {
                     return;
                 }
 
-                if (!getCheckBoxItem(this.Menu, Minion.CharData.BaseSkinName))
+                if (getCheckBoxItem(this.Menu, Minion.CharData.BaseSkinName))
                 {
-                    return;
-                }
-
-                if (this.SmiteSpell.IsReady())
-                {
-                    if (Vector3.Distance(ObjectManager.Player.ServerPosition, Minion.ServerPosition) <= SmiteRange)
+                    if (this.SmiteSpell.IsReady())
                     {
-                        if (this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite) >= Minion.Health
-                            && this.SmiteSpell.CanCast(Minion))
+                        if (Minion.LSIsValidTarget(SmiteRange))
                         {
-                            this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, Minion);
+                            if (this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite) > Minion.Health)
+                            {
+                                this.SmiteSpell.Cast(Minion);
+                            }
+                        }
+
+                        if (getCheckBoxItem(this.Menu, "Smite.Spell"))
+                        {
+                            this.ChampionSpellSmite((float)this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite), Minion);
                         }
                     }
-
-                    if (getCheckBoxItem(this.Menu, "Smite.Spell"))
-                    {
-                        this.ChampionSpellSmite((float)this.Player.GetSummonerSpellDamage(Minion, LeagueSharp.Common.Damage.SummonerSpell.Smite), Minion);
-                    }
                 }
-
             }
             catch (Exception e)
             {
@@ -837,12 +806,9 @@
                     return;
                 }
 
-                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Combo")
-                    && this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteduel"
-                    && this.ComboModeActive)
+                if (getCheckBoxItem(this.Menu, "ElSmite.KS.Combo") && (this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteduel" || this.Player.GetSpell(this.SmiteSpell.Slot).Name.ToLower() == "s5_summonersmiteplayerganker") && this.ComboModeActive)
                 {
-                    var smiteComboEnemy =
-                        HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500));
+                    var smiteComboEnemy = HeroManager.Enemies.FirstOrDefault(hero => !hero.IsZombie && hero.LSIsValidTarget(500));
                     if (smiteComboEnemy != null)
                     {
                         this.Player.Spellbook.CastSpell(this.SmiteSpell.Slot, smiteComboEnemy);

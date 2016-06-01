@@ -1,11 +1,11 @@
 using System;
 using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The logics class.
@@ -26,23 +26,32 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     The Q LaneClear Logic.
             /// </summary>
-            if (Variables.Q.IsReady() && Targets.Minions.Any() && Variables.getCheckBoxItem(Variables.QMenu, "qspell.lc"))
+            if (Vars.Q.IsReady() &&
+                Targets.Minions.Any() &&
+                Vars.getSliderItem(Vars.QMenu, "laneclear") != 101)
             {
-                if (GameObjects.Player.ManaPercent < ManaManager.NeededQMana && !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
+                if (GameObjects.Player.ManaPercent <
+                        ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "laneclear")) &&
+                    !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
                 {
                     return;
                 }
 
-                Variables.Q.CastOnUnit(Targets.Minions.FirstOrDefault(m => m.Health < Variables.Q.GetDamage(m)));
+                Vars.Q.CastOnUnit(Targets.Minions.FirstOrDefault(
+                    m =>
+                        Vars.GetRealHealth(m) <
+                            (float)GameObjects.Player.LSGetSpellDamage(m, SpellSlot.Q)));
             }
 
             /// <summary>
             ///     The E Clear Logics.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.farm"))
+            if (Vars.E.IsReady() &&
+                Vars.getSliderItem(Vars.EMenu, "clear") != 101)
             {
-                if (GameObjects.Player.ManaPercent < ManaManager.NeededQMana && !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
+                if (GameObjects.Player.ManaPercent <
+                        ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "clear")) &&
+                    !GameObjects.Player.Buffs.Any(b => b.Name.Equals("visionary")))
                 {
                     return;
                 }
@@ -50,9 +59,13 @@ namespace ExorAIO.Champions.Nunu
                 /// <summary>
                 ///     The E LaneClear Logic.
                 /// </summary>
-                foreach (var minion in Targets.Minions.Where(m => m.IsValidTarget(Variables.E.Range) && m.Health < Variables.E.GetDamage(m)))
+                foreach (var minion in Targets.Minions.Where(
+                    m =>
+                        m.LSIsValidTarget(Vars.E.Range) &&
+                        Vars.GetRealHealth(m) <
+                            (float)GameObjects.Player.LSGetSpellDamage(m, SpellSlot.E)))
                 {
-                    Variables.E.CastOnUnit(minion);
+                    Vars.E.CastOnUnit(minion);
                 }
 
                 /// <summary>
@@ -60,7 +73,7 @@ namespace ExorAIO.Champions.Nunu
                 /// </summary>
                 if (Targets.JungleMinions.Any())
                 {
-                    Variables.E.CastOnUnit(Targets.JungleMinions[0]);
+                    Vars.E.CastOnUnit(Targets.JungleMinions[0]);
                 }
             }
         }

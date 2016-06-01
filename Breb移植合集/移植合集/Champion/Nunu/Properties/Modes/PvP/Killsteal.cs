@@ -1,10 +1,12 @@
 using System;
 using System.Linq;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
+using EloBuddy;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The logics class.
@@ -20,17 +22,17 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     The KillSteal E Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.ks"))
+            if (Vars.E.IsReady() &&
+                Vars.getCheckBoxItem(Vars.EMenu, "killsteal"))
             {
-                foreach (var target in
-                    HeroManager.Enemies.Where(
-                        t =>
-                            !Bools.IsSpellShielded(t) &&
-                            t.IsValidTarget(Variables.E.Range) &&
-                            t.Health < Variables.E.GetDamage(t)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.E.Range) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.E)))
                 {
-                    Variables.E.CastOnUnit(target);
+                    Vars.E.CastOnUnit(target);
                 }
             }
         }

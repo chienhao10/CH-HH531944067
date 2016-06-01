@@ -322,10 +322,10 @@ namespace Slutty_ryze
             if (Q.Contains("2"))
             {
                 menu = MenuManager.laneMenu;
-                qSpell = getCheckBoxItem(MenuManager.jungleMenu, "useQ2L");
-                wSpell = getCheckBoxItem(MenuManager.jungleMenu, "useW2L");
-                eSpell = getCheckBoxItem(MenuManager.jungleMenu, "useE2L");
-                rSpell = getCheckBoxItem(MenuManager.jungleMenu, "useRl");
+                qSpell = getCheckBoxItem(MenuManager.laneMenu, "useQ2L");
+                wSpell = getCheckBoxItem(MenuManager.laneMenu, "useW2L");
+                eSpell = getCheckBoxItem(MenuManager.laneMenu, "useE2L");
+                rSpell = getCheckBoxItem(MenuManager.laneMenu, "useRl");
             }
             else
             {

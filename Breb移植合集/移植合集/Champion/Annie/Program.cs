@@ -132,9 +132,9 @@ namespace PortAIO.Champion.Annie
                 foreach (
                     var enemy in
                         SebbyLib.Program.Enemies.Where(
-                            enemy => enemy.IsValidTarget(realRange) && OktwCommon.ValidUlt(enemy)))
+                            enemy => enemy.LSIsValidTarget(realRange) && OktwCommon.ValidUlt(enemy)))
                 {
-                    if (enemy.IsValidTarget(R.Range))
+                    if (enemy.LSIsValidTarget(R.Range))
                     {
                         var Rmode = getSliderItem(RMenu, "UM" + enemy.NetworkId);
 
@@ -183,7 +183,7 @@ namespace PortAIO.Champion.Annie
             }
 
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (t.IsValidTarget() && SebbyLib.Program.LagFree(2))
+            if (t.LSIsValidTarget() && SebbyLib.Program.LagFree(2))
             {
                 if (Q.IsReady() && getCheckBoxItem(QMenu, "autoQ"))
                 {
@@ -203,7 +203,7 @@ namespace PortAIO.Champion.Annie
                     }
                 }
                 if (W.IsReady() && SebbyLib.Program.LagFree(2) && getCheckBoxItem(WMenu, "autoW") &&
-                    t.IsValidTarget(W.Range))
+                    t.LSIsValidTarget(W.Range))
                 {
                     var poutput = W.GetPrediction(t, true);
 
@@ -256,7 +256,7 @@ namespace PortAIO.Champion.Annie
                     {
                         var enemy =
                             SebbyLib.Program.Enemies.Where(
-                                x => x.IsValidTarget() && Tibbers.LSDistance(x.Position) < 1000 && !x.UnderTurret(true))
+                                x => x.LSIsValidTarget() && Tibbers.LSDistance(x.Position) < 1000 && !x.UnderTurret(true))
                                 .OrderBy(x => x.LSDistance(Tibbers))
                                 .FirstOrDefault();
                         if (enemy != null)
@@ -307,7 +307,7 @@ namespace PortAIO.Champion.Annie
             {
                 var minion =
                     minionsList.FirstOrDefault(x => HealthPrediction.LaneClearHealthPrediction(x, 250, 50) < Q.GetDamage(x) &&
-                            x.Health > Player.GetAutoAttackDamage(x));
+                            x.Health > Player.LSGetAutoAttackDamage(x));
                 Q.Cast(minion);
             }
             else if (SebbyLib.Program.LaneClear && W.IsReady() && Player.ManaPercent > getSliderItem(FarmMenu, "Mana") &&

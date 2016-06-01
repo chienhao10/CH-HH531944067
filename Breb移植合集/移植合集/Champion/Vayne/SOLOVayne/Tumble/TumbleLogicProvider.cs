@@ -4,7 +4,7 @@ using EloBuddy.SDK;
 using LeagueSharp.Common;
 using SharpDX;
 using SoloVayne.Skills.Condemn;
-using Vayne;
+using Vayne1;
 using WardTracker;
 using Geometry = LeagueSharp.Common.Geometry;
 using WardType = WardTracker.WardType;

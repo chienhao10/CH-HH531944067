@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
 
-namespace ExorAIO.Champions.Olaf
+namespace ExorSDK.Champions.Olaf
 {
     /// <summary>
     ///     The logics class.
@@ -21,22 +22,19 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     The KillSteal Q Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.ks"))
+            if (Vars.Q.IsReady() &&
+                Vars.getCheckBoxItem(Vars.QMenu, "killsteal"))
             {
-                foreach (var target in HeroManager.Enemies.Where(t => !Bools.IsSpellShielded(t) && t.IsValidTarget(Variables.Q.Range) && !t.IsValidTarget(Variables.AARange) && t.Health < Variables.Q.GetDamage(t)))
+                foreach (var target in GameObjects.EnemyHeroes.Where(
+                    t =>
+                        !Invulnerable.Check(t) &&
+                        t.LSIsValidTarget(Vars.Q.Range) &&
+                        !t.LSIsValidTarget(Vars.AARange) &&
+                        Vars.GetRealHealth(t) <
+                            (float)GameObjects.Player.LSGetSpellDamage(t, SpellSlot.Q)))
                 {
-                    var castPosition = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -120);
-                    var castPosition2 = Targets.Target.Position.LSExtend(ObjectManager.Player.Position, -90);
-
-                    if (ObjectManager.Player.LSDistance(Targets.Target.ServerPosition) >= 300)
-                    {
-                        Variables.Q.Cast(castPosition);
-                    }
-                    else
-                    {
-                        Variables.Q.Cast(castPosition2);
-                    }
+                    Vars.Q.Cast(Vars.Q.GetPrediction(Targets.Target)
+                        .UnitPosition.LSExtend(GameObjects.Player.ServerPosition, -100f));
                 }
             }
         }

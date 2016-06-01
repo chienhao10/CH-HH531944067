@@ -1,9 +1,9 @@
 using System;
-using EloBuddy;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The champion class.
@@ -13,7 +13,7 @@ namespace ExorAIO.Champions.Nunu
         /// <summary>
         ///     Loads Nunu.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -42,7 +42,7 @@ namespace ExorAIO.Champions.Nunu
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -57,7 +57,7 @@ namespace ExorAIO.Champions.Nunu
             /// </summary>
             Logics.Killsteal(args);
 
-            if (Orbwalker.IsAutoAttacking)
+            if (GameObjects.Player.Spellbook.IsAutoAttacking)
             {
                 return;
             }
@@ -65,8 +65,6 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            /// 
-
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Logics.Combo(args);
@@ -77,11 +75,11 @@ namespace ExorAIO.Champions.Nunu
                 Logics.Harass(args);
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Logics.Clear(args);
             }
+
         }
     }
 }

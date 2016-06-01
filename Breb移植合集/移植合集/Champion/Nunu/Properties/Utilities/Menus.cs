@@ -1,9 +1,9 @@
 using System.Linq;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 using EloBuddy.SDK.Menu.Values;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The menu class.
@@ -15,44 +15,66 @@ namespace ExorAIO.Champions.Nunu
         /// </summary>
         public static void Initialize()
         {
-            Variables.QMenu = Variables.Menu.AddSubMenu("使用Q:", "qmenu");
-            Variables.QMenu.Add("qspell.jgc", new CheckBox("偷野"));
-            Variables.QMenu.Add("qspell.auto", new CheckBox("自动逻辑"));
-            Variables.QMenu.Add("qspell.lc", new CheckBox("清线"));
-            Variables.QMenu.Add("qspell.mana", new Slider("清线蓝量 >= x%", 50, 0, 99));
-
-            Variables.WMenu = Variables.Menu.AddSubMenu("使用W:", "wmenu");
-            Variables.WMenu.Add("wspell.auto", new CheckBox("自动逻辑"));
-            Variables.WMenu.Add("wspell.mana", new Slider("逻辑蓝量 >= x%", 50, 0, 99));
-
-            Variables.WhiteListMenu = Variables.Menu.AddSubMenu("W: 白名单", "wmenu.whitelistmenu");
+            /// <summary>
+            ///     Sets the menu for the Q.
+            /// </summary>
+            Vars.QMenu = Vars.Menu.AddSubMenu("Use Q to:");
             {
-                foreach (var champ in HeroManager.Allies.Where(h => !h.IsMe))
+                Vars.QMenu.Add("jungleclear", new CheckBox("JungleSteal", true));
+                Vars.QMenu.Add("logical", new CheckBox("Logical", true));
+                Vars.QMenu.Add("laneclear", new Slider("LaneClear / if Mana >= x%", 50, 0, 101));
+            }
+
+            /// <summary>
+            ///     Sets the menu for the W.
+            /// </summary>
+            Vars.WMenu = Vars.Menu.AddSubMenu("Use W to:");
+            {
+                Vars.WMenu.Add("logical", new Slider("Logical / if Mana >= x%", 50, 0, 101));
                 {
-                    Variables.WhiteListMenu.Add("wspell.whitelist." + champ.NetworkId, new CheckBox("使用在: " + champ.ChampionName));
+                    /// <summary>
+                    ///     Sets the whitelist menu for the W.
+                    /// </summary>
+                    Vars.WhiteListMenu = Vars.Menu.AddSubMenu("W: Whitelist Menu");
+                    {
+                        foreach (var target in GameObjects.AllyHeroes.Where(h => !h.IsMe))
+                        {
+                            Vars.WhiteListMenu.Add(target.ChampionName.ToLower(), new CheckBox($"Use on: {target.ChampionName}", true));
+                        }
+                    }
                 }
             }
 
-            Variables.EMenu = Variables.Menu.AddSubMenu("使用E:", "emenu");
-            Variables.EMenu.Add("espell.combo", new CheckBox("连招"));
-            Variables.EMenu.Add("espell.ks", new CheckBox("抢头"));
-            Variables.EMenu.Add("espell.harass", new CheckBox("骚扰"));
-            Variables.EMenu.Add("espell.farm", new CheckBox("农兵"));
-            Variables.EMenu.Add("espell.mana", new Slider("骚扰/推选: 蓝量 >= x%", 50, 0, 99));
+            /// <summary>
+            ///     Sets the menu for the E.
+            /// </summary>
+            Vars.EMenu = Vars.Menu.AddSubMenu("Use E to:");
+            {
+                Vars.EMenu.Add("combo", new CheckBox("Combo", true));
+                Vars.EMenu.Add("killsteal", new CheckBox("KillSteal", true));
+                Vars.EMenu.Add("harass", new Slider("Harass / if Mana >= x%", 50, 0, 101));
+                Vars.EMenu.Add("clear", new Slider("Clear / if Mana >= x%", 50, 0, 101));
+            }
 
-            Variables.RMenu = Variables.Menu.AddSubMenu("使用R:", "rmenu");
-            Variables.RMenu.Add("rspell.boolrsa", new CheckBox("开启半自动按键 R"));
-            Variables.RMenu.Add("rspell.keyrsa", new KeyBind("按键:", false, KeyBind.BindTypes.HoldActive, 'T'));
+            /// <summary>
+            ///     Sets the menu for the R.
+            /// </summary>
+            Vars.RMenu = Vars.Menu.AddSubMenu("Use R to:");
+            {
+                Vars.RMenu.Add("bool", new CheckBox("Semi-Automatic R", true));
+                Vars.RMenu.Add("key", new KeyBind("Key:", false, KeyBind.BindTypes.HoldActive, 'T'));
+            }
 
-            Variables.DrawingsMenu = Variables.Menu.AddSubMenu("线圈", "drawingsmenu");
-            Variables.DrawingsMenu.Add("drawings.q", new CheckBox("Q 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Green);
-            Variables.DrawingsMenu.Add("drawings.w", new CheckBox("W 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Purple);
-            Variables.DrawingsMenu.Add("drawings.e", new CheckBox("E 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Cyan);
-            Variables.DrawingsMenu.Add("drawings.r", new CheckBox("R 范围"));
-                //.SetValue(false).SetFontStyle(FontStyle.Regular, Color.Red);
+            /// <summary>
+            ///     Sets the drawings menu.
+            /// </summary>
+            Vars.DrawingsMenu = Vars.Menu.AddSubMenu("Drawings");
+            {
+                Vars.DrawingsMenu.Add("q", new CheckBox("Q Range"));
+                Vars.DrawingsMenu.Add("w", new CheckBox("W Range"));
+                Vars.DrawingsMenu.Add("e", new CheckBox("E Range"));
+                Vars.DrawingsMenu.Add("r", new CheckBox("R Range"));
+            }
         }
     }
 }

@@ -39,7 +39,7 @@ namespace PortAIO.Champion.Akali
             {
                 return
                     (from enemy in
-                        ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy && enemy.IsValidTarget(R.Range))
+                        ObjectManager.Get<AIHeroClient>().Where(enemy => enemy.IsEnemy && enemy.LSIsValidTarget(R.Range))
                         from buff in enemy.Buffs
                         where buff.DisplayName == "AkaliMota"
                         select enemy).FirstOrDefault();
@@ -110,7 +110,7 @@ namespace PortAIO.Champion.Akali
             DrawingMenu = Menu.AddSubMenu("线圈", "Drawings");
             DrawingMenu.Add("QRange", new CheckBox("Q 范围"));
             DrawingMenu.Add("RRange", new CheckBox("R 范围"));
-
+            
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnUpdate;
         }
@@ -125,13 +125,13 @@ namespace PortAIO.Champion.Akali
             var fComboDamage = 0d;
 
             if (Q.IsReady())
-                fComboDamage += myHero.GetSpellDamage(vTarget, SpellSlot.Q) +
+                fComboDamage += myHero.LSGetSpellDamage(vTarget, SpellSlot.Q) +
                                 myHero.LSGetSpellDamage(vTarget, SpellSlot.Q, 1);
             if (E.IsReady())
-                fComboDamage += myHero.GetSpellDamage(vTarget, SpellSlot.E);
+                fComboDamage += myHero.LSGetSpellDamage(vTarget, SpellSlot.E);
 
             if (R.IsReady())
-                fComboDamage += myHero.GetSpellDamage(vTarget, SpellSlot.R)*R.Instance.Ammo;
+                fComboDamage += myHero.LSGetSpellDamage(vTarget, SpellSlot.R)*R.Instance.Ammo;
 
             if (Items.CanUseItem(3146))
                 fComboDamage += myHero.GetItemDamage(vTarget, Damage.DamageItems.Hexgun);
@@ -144,7 +144,7 @@ namespace PortAIO.Champion.Akali
 
         private static void Game_OnUpdate(EventArgs args)
         {
-            if (W.IsReady() && myHero.CountEnemiesInRange(W.Range/2 + 100) >= 2)
+            if (W.IsReady() && myHero.LSCountEnemiesInRange(W.Range/2 + 100) >= 2)
             {
                 W.Cast(myHero.Position);
             }
@@ -204,31 +204,31 @@ namespace PortAIO.Champion.Akali
                 myHero.Spellbook.CastSpell(IgniteSlot, t);
             }
 
-            if (Q.IsReady() && t.IsValidTarget(Q.Range))
+            if (Q.IsReady() && t.LSIsValidTarget(Q.Range))
             {
                 Q.CastOnUnit(t);
             }
 
-            if (Hex.IsReady() && t.IsValidTarget(Hex.Range))
+            if (Hex.IsReady() && t.LSIsValidTarget(Hex.Range))
             {
                 Hex.Cast(t);
             }
 
-            if (Cutlass.IsReady() && t.IsValidTarget(Cutlass.Range))
+            if (Cutlass.IsReady() && t.LSIsValidTarget(Cutlass.Range))
             {
                 Cutlass.Cast(t);
             }
 
             var motaEnemy = enemyHaveMota;
-            if (motaEnemy != null && motaEnemy.IsValidTarget(Orbwalking.GetRealAutoAttackRange(t)))
+            if (motaEnemy != null && motaEnemy.LSIsValidTarget(Orbwalking.GetRealAutoAttackRange(t)))
                 return;
 
-            if (E.IsReady() && t.IsValidTarget(E.Range))
+            if (E.IsReady() && t.LSIsValidTarget(E.Range))
             {
                 E.Cast();
             }
 
-            if (R.IsReady() && t.IsValidTarget(R.Range))
+            if (R.IsReady() && t.LSIsValidTarget(R.Range))
             {
                 R.CastOnUnit(t);
             }
@@ -240,12 +240,12 @@ namespace PortAIO.Champion.Akali
             var useE = getCheckBoxItem(HarassMenu, "UseEHarass") && E.IsReady();
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
 
-            if (useQ && t.IsValidTarget(Q.Range))
+            if (useQ && t.LSIsValidTarget(Q.Range))
             {
                 Q.CastOnUnit(t);
             }
 
-            if (useE && t.IsValidTarget(E.Range))
+            if (useE && t.LSIsValidTarget(E.Range))
             {
                 E.Cast();
             }
@@ -261,9 +261,9 @@ namespace PortAIO.Champion.Akali
             {
                 foreach (var minion in allMinions)
                 {
-                    if (minion.IsValidTarget() &&
+                    if (minion.LSIsValidTarget() &&
                         HealthPrediction.GetHealthPrediction(minion, (int) (myHero.LSDistance(minion)*1000/1400)) <
-                        0.75*myHero.GetSpellDamage(minion, SpellSlot.Q))
+                        0.75*myHero.LSGetSpellDamage(minion, SpellSlot.Q))
                     {
                         Q.CastOnUnit(minion);
                         return;
@@ -276,9 +276,9 @@ namespace PortAIO.Champion.Akali
                 if (
                     allMinions.Any(
                         minion =>
-                            minion.IsValidTarget(E.Range) &&
-                            minion.Health < 0.75*myHero.GetSpellDamage(minion, SpellSlot.E) &&
-                            minion.IsValidTarget(E.Range)))
+                            minion.LSIsValidTarget(E.Range) &&
+                            minion.Health < 0.75*myHero.LSGetSpellDamage(minion, SpellSlot.E) &&
+                            minion.LSIsValidTarget(E.Range)))
                 {
                     E.Cast();
                     return;
@@ -292,7 +292,7 @@ namespace PortAIO.Champion.Akali
                     if (useQ)
                         Q.CastOnUnit(minion);
 
-                    if (useE && minion.IsValidTarget(E.Range))
+                    if (useE && minion.LSIsValidTarget(E.Range))
                         E.Cast();
                 }
             }
@@ -319,10 +319,10 @@ namespace PortAIO.Champion.Akali
             var useR = getCheckBoxItem(MiscMenu, "KillstealR") && R.IsReady();
             if (useR)
             {
-                foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.IsValidTarget(R.Range)))
+                foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(hero => hero.LSIsValidTarget(R.Range)))
                 {
                     if (hero.LSDistance(ObjectManager.Player) <= R.Range &&
-                        myHero.GetSpellDamage(hero, SpellSlot.R) >= hero.Health)
+                        myHero.LSGetSpellDamage(hero, SpellSlot.R) >= hero.Health)
                         R.CastOnUnit(hero, true);
                 }
             }

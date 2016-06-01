@@ -33,6 +33,13 @@ namespace iLucian.MenuHelper
             harassOptions.Add("com.ilucian.harass.auto.autoharass", new KeyBind("开关按键", false, KeyBind.BindTypes.PressToggle, 'Z'));
             harassOptions.Add("com.ilucian.harass.auto.q", new CheckBox("使用 Q", true));
             harassOptions.Add("com.ilucian.harass.auto.qExtended", new CheckBox("使用延长 Q", true));
+            harassOptions.AddSeparator();
+            harassOptions.Add("com.ilucian.harass.whitelist", new CheckBox("延长 Q 白名单", true));            
+                foreach (var hero in HeroManager.Enemies)
+                {
+                  harassOptions.Add("com.ilucian.harass.whitelist." + hero.NetworkId, new CheckBox("不Q: " + hero.ChampionName));
+                }
+            
             harassOptions.AddGroupLabel("骚扰 : ");
             harassOptions.Add("com.ilucian.harass.q", new CheckBox("使用 Q", true));
             harassOptions.Add("com.ilucian.harass.qExtended", new CheckBox("使用延长 Q", true));
@@ -54,7 +61,8 @@ namespace iLucian.MenuHelper
             miscOptions.Add("com.ilucian.misc.gapcloser", new CheckBox("使用 E 接近/防突进", true));
             miscOptions.Add("com.ilucian.misc.eqKs", new CheckBox("EQ - 抢头", true));
             miscOptions.Add("com.ilucian.misc.useChampions", new CheckBox("对敌方使用EQ", true));
-            miscOptions.Add("com.ilucian.misc.extendChamps", new CheckBox("对敌方使用延迟Q", true));
+            miscOptions.Add("com.ilucian.misc.extendChamps", new CheckBox("对敌方使用延长Q", true));
+            miscOptions.Add("com.ilucian.misc.drawQ", new CheckBox("显示 延长Q 范围", true));
         }
     }
 }

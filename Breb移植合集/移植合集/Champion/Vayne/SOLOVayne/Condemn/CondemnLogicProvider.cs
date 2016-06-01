@@ -5,7 +5,7 @@ using LeagueSharp.Common;
 using NabbTracker;
 using SharpDX;
 using SOLOVayne;
-using Program = Vayne.Program;
+using Program = Vayne1.Program;
 
 namespace SoloVayne.Skills.Condemn
 {

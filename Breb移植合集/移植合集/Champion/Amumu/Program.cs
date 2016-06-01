@@ -94,7 +94,7 @@ namespace PortAIO.Champion.Amumu
 
             if (getKeyBindItem(miscMenu, "aimQ"))
                 CastQ(
-                    Helper.EnemyTeam.Where(x => x.IsValidTarget(_spellQ.Range) && x.LSDistance(Game.CursorPos) < 400)
+                    Helper.EnemyTeam.Where(x => x.LSIsValidTarget(_spellQ.Range) && x.LSDistance(Game.CursorPos) < 400)
                         .OrderBy(x => x.LSDistance(Game.CursorPos))
                         .FirstOrDefault());
 
@@ -121,7 +121,7 @@ namespace PortAIO.Champion.Amumu
                 var enemiesHit = 0;
                 var killableHits = 0;
 
-                foreach (var enemy in Helper.EnemyTeam.Where(x => x.IsValidTarget(_spellR.Range)))
+                foreach (var enemy in Helper.EnemyTeam.Where(x => x.LSIsValidTarget(_spellR.Range)))
                 {
                     var prediction = Prediction.GetPrediction(enemy, _spellR.Delay);
 
@@ -130,7 +130,7 @@ namespace PortAIO.Champion.Amumu
                     {
                         enemiesHit++;
 
-                        if (ObjectManager.Player.GetSpellDamage(enemy, SpellSlot.W) >= enemy.Health)
+                        if (ObjectManager.Player.LSGetSpellDamage(enemy, SpellSlot.W) >= enemy.Health)
                             killableHits++;
                     }
                 }
@@ -143,7 +143,7 @@ namespace PortAIO.Champion.Amumu
 
         private static void CastE(Obj_AI_Base target)
         {
-            if (!_spellE.IsReady() || target == null || !target.IsValidTarget())
+            if (!_spellE.IsReady() || target == null || !target.LSIsValidTarget())
                 return;
 
             if (_spellE.GetPrediction(target).UnitPosition.LSDistance(ObjectManager.Player.ServerPosition) <=
@@ -176,10 +176,10 @@ namespace PortAIO.Champion.Amumu
                             ObjectManager.Get<Obj_AI_Base>()
                                 .Where(
                                     x =>
-                                        x.IsValidTarget(_spellQ.Range) &&
+                                        x.LSIsValidTarget(_spellQ.Range) &&
                                         _spellQ.GetPrediction(x).Hitchance >= HitChance.High)) //causes troubles?
                     {
-                        var targetsHit = unit.CountEnemiesInRange((int) _spellR.Range);
+                        var targetsHit = unit.LSCountEnemiesInRange((int) _spellR.Range);
                             //unitposition might not reflect where you land with Q
 
                         if (targetsHit > maxTargetsHit ||
@@ -199,7 +199,7 @@ namespace PortAIO.Champion.Amumu
                 if (target != null)
                 {
                     var pred = _spellQ.GetPrediction(target);
-                    if (comboQ == 2 || (comboQ == 3 && !Orbwalking.InAutoAttackRange(target)) && _spellQ.IsReady() && target.IsValidTarget() && pred.Hitchance >= HitChance.High)
+                    if (comboQ == 2 || (comboQ == 3 && !Orbwalking.InAutoAttackRange(target)) && _spellQ.IsReady() && target.LSIsValidTarget() && pred.Hitchance >= HitChance.High)
                         _spellQ.Cast(pred.CastPosition);
                     else if (!target.CanMove && comboQ == 2 || comboQ == 3)
                     {
@@ -302,7 +302,7 @@ namespace PortAIO.Champion.Amumu
         {
             if (!_spellQ.IsReady())
                 return;
-            if (target == null || !target.IsValidTarget())
+            if (target == null || !target.LSIsValidTarget())
                 return;
 
             _spellQ.CastIfHitchanceEquals(target, hitChance);

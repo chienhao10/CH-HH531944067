@@ -1,9 +1,9 @@
 using System;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Nunu
+namespace ExorSDK.Champions.Nunu
 {
     /// <summary>
     ///     The logics class.
@@ -16,14 +16,15 @@ namespace ExorAIO.Champions.Nunu
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() || Bools.HasAnyImmunity(Targets.Target))
+            if (!Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
 
             if (Bools.HasSheenBuff())
             {
-                if (Targets.Target.IsValidTarget(Variables.AARange))
+                if (Targets.Target.LSIsValidTarget(Vars.AARange))
                 {
                     return;
                 }
@@ -32,11 +33,11 @@ namespace ExorAIO.Champions.Nunu
             /// <summary>
             ///     The E Combo Logic.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.E.Range) &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
-                Variables.E.CastOnUnit(Targets.Target);
+                Vars.E.CastOnUnit(Targets.Target);
             }
         }
     }

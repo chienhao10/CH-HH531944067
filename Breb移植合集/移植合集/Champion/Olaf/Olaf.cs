@@ -1,10 +1,12 @@
 using System;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
 using EloBuddy;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Olaf
+namespace ExorSDK.Champions.Olaf
 {
     /// <summary>
     ///     The champion class.
@@ -14,7 +16,7 @@ namespace ExorAIO.Champions.Olaf
         /// <summary>
         ///     Loads Olaf.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -43,7 +45,7 @@ namespace ExorAIO.Champions.Olaf
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -58,7 +60,7 @@ namespace ExorAIO.Champions.Olaf
             /// </summary>
             Logics.Killsteal(args);
 
-            if (Orbwalker.IsAutoAttacking)
+            if (GameObjects.Player.Spellbook.IsAutoAttacking)
             {
                 return;
             }
@@ -66,8 +68,6 @@ namespace ExorAIO.Champions.Olaf
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            /// 
-
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Logics.Combo(args);
@@ -78,8 +78,7 @@ namespace ExorAIO.Champions.Olaf
                 Logics.Harass(args);
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Logics.Clear(args);
             }
@@ -92,10 +91,24 @@ namespace ExorAIO.Champions.Olaf
         /// <param name="args">The args.</param>
         public static void OnDoCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (sender.IsMe && Orbwalking.IsAutoAttack(args.SData.Name) &&
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (sender.IsMe &&
+                AutoAttack.IsAutoAttack(args.SData.Name))
             {
-                Logics.Weaving(sender, args);
+                /// <summary>
+                ///     Initializes the orbwalkingmodes.
+                /// </summary>
+                /// 
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                {
+                    Logics.Weaving(sender, args);
+                }
+
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+                {
+                    Logics.JungleClear(sender, args);
+                    Logics.BuildingClear(sender, args);
+                }
             }
         }
     }
