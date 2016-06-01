@@ -27,11 +27,7 @@ namespace Auto_Carry_Vayne.Features.Module.Condemn
 
         public void OnExecute()
         {
-            var ctarget = Logic.Condemn.GetTarget(Variables._Player.Position);
-            if (ctarget != null)
-            {
-                Manager.SpellManager.E.Cast(ctarget);
-            }
+            Logic.Condemn.Execute();
         }
     }
 }

@@ -20,6 +20,8 @@ namespace Auto_Carry_Vayne
             get { return ObjectManager.Player; }
         }
 
+        public static Vector3 EndPosition = Vector3.Zero;
+
         public static int currentSkin = 0;
 
         public static bool bought = false;
@@ -60,7 +62,13 @@ namespace Auto_Carry_Vayne
             new Healme(),
             new Barrier(),
             new EInterrupt(),
+            new AutoLantern(),
         };
+
+        public static bool ThreshInGame()
+        {
+            return ObjectManager.Get<AIHeroClient>().Any(h => h.IsAlly && !h.IsMe && h.ChampionName == "Thresh");
+        }
 
         public static bool UltActive()
         {
@@ -110,6 +118,18 @@ namespace Auto_Carry_Vayne
                     return true;
                 }
                 return false;
+            }
+        }
+
+        public static IEnumerable<AIHeroClient> EnemiesClose
+        {
+            get
+            {
+                return
+                    EntityManager.Heroes.Enemies.Where(
+                        m =>
+                            m.Distance(ObjectManager.Player, true) <= Math.Pow(1000, 2) && m.IsValidTarget(1500, false) &&
+                            m.CountEnemiesInRange(m.IsMelee ? m.AttackRange * 1.5f : m.AttackRange + 20 * 1.5f) > 0);
             }
         }
         #region MenuOptions

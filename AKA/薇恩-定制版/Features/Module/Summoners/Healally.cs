@@ -22,12 +22,12 @@ namespace Auto_Carry_Vayne.Features.Module.Summoners
 
         public bool ShouldGetExecuted()
         {
-            return Manager.SpellManager.Heal != null && Manager.SpellManager.Heal.IsReady() && Manager.MenuManager.HealAlly && Variables._Player.HealthPercent <= Manager.MenuManager.HealAllyHp;
+            return Manager.SpellManager.Heal != null && Manager.SpellManager.Heal.IsReady() && Manager.MenuManager.HealAlly;
         }
 
         public void OnExecute()
         {
-            foreach (var ally in EntityManager.Heroes.Allies.Where(a => !a.IsDead && a.Position.Distance(Variables._Player) < Manager.SpellManager.Heal.Range && a.IsValid))
+            foreach (var ally in EntityManager.Heroes.Allies.Where(a => !a.IsDead && a.Position.Distance(Variables._Player) < Manager.SpellManager.Heal.Range && a.IsValid && a.HealthPercent <= Manager.MenuManager.HealAllyHp))
             {
                 if (ally.CountEnemiesInRange(800) >= 1)
                 {

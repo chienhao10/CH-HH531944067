@@ -29,6 +29,9 @@ namespace Auto_Carry_Vayne.Manager
             Logic.Mechanics.FlashE();
             Logic.Mechanics.Insec();
 
+            //Reset the positions
+            Variables.EndPosition = Logic.NewTumble.AkaQPosition();
+
             foreach (var module in Variables.moduleList.Where(module => module.GetModuleType() == ModuleType.OnUpdate
     && module.ShouldGetExecuted()))
             {

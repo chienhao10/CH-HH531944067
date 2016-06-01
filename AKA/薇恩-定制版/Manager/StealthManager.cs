@@ -13,7 +13,7 @@ namespace Auto_Carry_Vayne.Manager
         /// <summary>
         ///     Static constructor.
         /// </summary>
-        static StealthManager()
+        public static void Load()
         {
             GameObject.OnIntegerPropertyChange += GameObject_OnIntegerPropertyChange;
         }

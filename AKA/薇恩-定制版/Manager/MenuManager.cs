@@ -43,7 +43,6 @@ namespace Auto_Carry_Vayne.Manager
         {
             VMenu = MainMenu.AddMenu("AKA薇恩-自由版", "akavayne");
             VMenu.AddGroupLabel("Made by Aka.");
-            VMenu.AddGroupLabel("CH汉化.");
             VMenu.AddSeparator();
         }
 
@@ -130,15 +129,12 @@ namespace Auto_Carry_Vayne.Manager
             ComboMenu.Add("UseQE", new CheckBox("尝试QE"));
             ComboMenu.Add("UseQWall", new CheckBox("防止Q墙"));
             ComboMenu.Add("UseQEnemies", new Slider("防止Q进 X 名敌人", 3, 5, 0));
-            ComboMenu.Add("UseQStacks", new CheckBox("对2层 W 目标使用Q", false));
             ComboMenu.Add("UseQMode", new ComboBox("Q 模式", 1, "靠边", "安全距离"));
             ComboMenu.Add("UseW", new CheckBox("集火 W目标", false));
             ComboMenu.Add("UseE", new CheckBox("使用 E"));
             ComboMenu.Add("UseEKill", new CheckBox("使用E杀死敌方?"));
             ComboMenu.Add("UseR", new CheckBox("使用 R", false));
             ComboMenu.Add("UseRif", new Slider("使用 R 如果敌人数量为 X", 2, 1, 5));
-            ComboMenu.Add("RnoAA", new CheckBox("隐身时不普攻", false));
-            ComboMenu.Add("RnoAAif", new Slider("当附近敌人数量为 X 时，隐身不普攻", 2, 0, 5));
 
         }
 
@@ -198,6 +194,8 @@ namespace Auto_Carry_Vayne.Manager
             MiscMenu.Add("AutolvlS", new ComboBox("加点模式", 0, "主 W", "主 Q(我喜欢)"));
             MiscMenu.Add("Autobuy", new CheckBox("开局自动买装备"));
             MiscMenu.Add("Autobuyt", new CheckBox("自动买饰品", false));
+            MiscMenu.Add("Autolantern", new CheckBox("自动点灯笼"));
+            MiscMenu.Add("AutolanternHP", new Slider("点灯笼当血量低于 =>", 40));
         }
 
         private static void Activator()
@@ -249,8 +247,10 @@ namespace Auto_Carry_Vayne.Manager
             DrawingMenu = VMenu.AddSubMenu("线圈", "Drawings");
             DrawingMenu.Add("DrawQ", new CheckBox("显示 Q", false));
             DrawingMenu.Add("DrawE", new CheckBox("显示 E", false));
-            DrawingMenu.Add("DrawCondemn", new CheckBox("显示定墙"));
             DrawingMenu.Add("DrawOnlyReady", new CheckBox("只显示无冷却技能"));
+            DrawingMenu.AddGroupLabel("预判");
+            DrawingMenu.Add("DrawCondemn", new CheckBox("显示 定墙"));
+            DrawingMenu.Add("DrawTumble", new CheckBox("显示 翻滚(Q)"));
         }
 
         #region checkvalues
@@ -480,6 +480,15 @@ namespace Auto_Carry_Vayne.Manager
             get { return (VMenu["Misc"].Cast<CheckBox>().CurrentValue ? MiscMenu["Autobuyt"].Cast<CheckBox>().CurrentValue : true); }
         }
 
+        public static bool AutoLantern
+        {
+            get { return (VMenu["Misc"].Cast<CheckBox>().CurrentValue ? MiscMenu["Autolantern"].Cast<CheckBox>().CurrentValue : true); }
+        }
+
+        public static int AutoLanternS
+        {
+            get { return (VMenu["Misc"].Cast<CheckBox>().CurrentValue ? MiscMenu["AutolanternHP"].Cast<Slider>().CurrentValue : 40); }
+        }
 
         #endregion checkvalues:Misc
         #region checkvalues:Activator
@@ -619,6 +628,11 @@ namespace Auto_Carry_Vayne.Manager
         public static bool DrawCondemn
         {
             get { return (VMenu["Drawing"].Cast<CheckBox>().CurrentValue ? DrawingMenu["DrawCondemn"].Cast<CheckBox>().CurrentValue : true); }
+        }
+
+        public static bool DrawTumble
+        {
+            get { return (VMenu["Drawing"].Cast<CheckBox>().CurrentValue ? DrawingMenu["DrawTumble"].Cast<CheckBox>().CurrentValue : true); }
         }
 
         public static bool DrawOnlyRdy

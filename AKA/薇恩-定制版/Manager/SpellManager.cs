@@ -20,10 +20,10 @@ namespace Auto_Carry_Vayne.Manager
             Q = new Spell.Active(SpellSlot.Q, 300);
             Q2 = new Spell.Skillshot(SpellSlot.Q, 300, SkillShotType.Linear);
             W = new Spell.Active(SpellSlot.W);
-            E = new Spell.Targeted(SpellSlot.E, 590);
+            E = new Spell.Targeted(SpellSlot.E, (uint)(650 + Variables._Player.BoundingRadius));
             E2 = new Spell.Skillshot(
                 SpellSlot.E,
-                (uint)(590 + ObjectManager.Player.BoundingRadius),
+                (uint)(650 + Variables._Player.BoundingRadius),
                 SkillShotType.Linear,
                 250,
                 1200);

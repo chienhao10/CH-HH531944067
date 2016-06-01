@@ -1,72 +1,70 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SharpDX;
 using EloBuddy;
 using EloBuddy.SDK;
 using EloBuddy.SDK.Events;
-using SharpDX;
-
+using System.Linq;
+using System.Collections.Generic;
+using System;
+using Auto_Carry_Vayne.Manager;
 
 namespace Auto_Carry_Vayne.Logic
 {
     class Condemn
     {
-        //my condemn logic so far
-        public static Obj_AI_Base GetTarget(Vector3 fromPosition)
+        //The First One ~Aka
+
+        public static long LastCheck;
+        public static List<Vector2> Points = new List<Vector2>();
+
+        public static void Execute()
         {
-            var targetList =
-                EntityManager.Heroes.Enemies.Where(
-                    h =>
-                    h.IsValidTarget(Manager.SpellManager.E.Range) && !h.HasBuffOfType(BuffType.SpellShield)
-                    && !h.HasBuffOfType(BuffType.SpellImmunity)
-                    && h.Health > ObjectManager.Player.GetAutoAttackDamage(h, true) * 2).ToList();
+            foreach (
+                var enemy in
+                    EntityManager.Heroes.Enemies.Where(
+                        x =>
+                            x.IsValidTarget(SpellManager.E.Range) && !x.HasBuffOfType(BuffType.SpellShield) &&
+                            !x.HasBuffOfType(BuffType.SpellImmunity) &&
+                            IsCondemable(x)))
 
-            if (!targetList.Any())
-            {
-                return null;
-            }
+                SpellManager.E.Cast(enemy);
+        }
 
-            foreach (var enemy in targetList)
-            {
-                var prediction = Manager.SpellManager.E2.GetPrediction(enemy);
-                var predictionsList = new List<Vector3>
-                                          {
-                                              enemy.ServerPosition,
-                                              enemy.Position,
-                                              prediction.CastPosition,
-                                              prediction.UnitPosition
-                                          };
 
-                var wallsFound = 0;
 
-                foreach (var position in predictionsList)
-                {
-                    var distance = fromPosition.Distance(position);
-
-                    for (var i = 0; i < Manager.MenuManager.CondemnPushDistance; i += (int)enemy.BoundingRadius)
-                    {
-                        var finalPosition = fromPosition.Extend(position, distance + i).To3D();
-                        var j4Flag = Manager.MenuManager.J4Flag && (Variables.IsJ4Flag(finalPosition, enemy));
-                        if (NavMesh.GetCollisionFlags(finalPosition).HasFlag(CollisionFlags.Wall)
-                            || NavMesh.GetCollisionFlags(finalPosition).HasFlag(CollisionFlags.Building) || j4Flag)
+        public static bool IsCondemable(AIHeroClient unit, Vector2 pos = new Vector2())
+        {
+            if (unit.HasBuffOfType(BuffType.SpellImmunity) || unit.HasBuffOfType(BuffType.SpellShield) || LastCheck + 50 > Environment.TickCount || Variables._Player.IsDashing()) return false;
+            var prediction = SpellManager.E2.GetPrediction(unit);
+            var predictionsList = pos.IsValid() ? new List<Vector3>() { pos.To3D() } : new List<Vector3>
                         {
-                            wallsFound++;
-                            break;
-                        }
+                            unit.ServerPosition,
+                            unit.Position,
+                            prediction.CastPosition,
+                            prediction.UnitPosition
+                        };
+
+            var wallsFound = 0;
+            Points = new List<Vector2>();
+            foreach (var position in predictionsList)
+            {
+                for (var i = 0; i < MenuManager.CondemnPushDistance; i += (int)unit.BoundingRadius)
+                {
+                    var cPos = ObjectManager.Player.Position.Extend(position, ObjectManager.Player.Distance(position) + i).To3D();
+                    Points.Add(cPos.To2D());
+                    if (NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Building))
+                    {
+                        wallsFound++;
+                        break;
                     }
                 }
-
-                if (wallsFound >= Manager.MenuManager.CondemnHitchance)
-                {
-                    return enemy;
-                }
             }
-
-            return null;
+            if ((wallsFound / predictionsList.Count) >= 33 / 100f)
+            {
+                return true;
+            }
+            return false;
         }
+
     }
 }
-
 

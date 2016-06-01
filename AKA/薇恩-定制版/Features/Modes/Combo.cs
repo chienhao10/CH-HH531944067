@@ -34,7 +34,8 @@ namespace Auto_Carry_Vayne.Features.Modes
                     return;
                 }
                 #endregion
-                Tumble.CastDash();
+                var TumblePos = NewTumble.AkaQPosition();
+                Player.CastSpell(SpellSlot.Q, TumblePos);
             }
         }
 
@@ -42,9 +43,7 @@ namespace Auto_Carry_Vayne.Features.Modes
         {
             if (Variables.AfterAttack && Manager.MenuManager.UseE && Manager.SpellManager.E.IsReady())
             {
-                var ctarget = Logic.Condemn.GetTarget(ObjectManager.Player.Position);
-                if (ctarget == null) return;
-                Manager.SpellManager.E.Cast(ctarget);
+                Condemn.Execute();
             }
         }
 

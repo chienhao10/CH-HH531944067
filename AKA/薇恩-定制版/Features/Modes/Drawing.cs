@@ -84,12 +84,39 @@ namespace Auto_Carry_Vayne.Features.Utility
                     }
                 }
             }
+            if (Manager.MenuManager.DrawTumble)
+            {
+
+                var startpos = Variables._Player.Position.Extend(Variables.EndPosition, 10);
+                var endpos = startpos.Extend(Variables.EndPosition, Manager.SpellManager.Q.Range);
+                var endpos1 = (Vector3)endpos +
+              (startpos - endpos).Normalized().Rotated(45 * (float)Math.PI / 180).To3D() *
+              Variables._Player.BoundingRadius;
+                var endpos2 = (Vector3)endpos +
+                              (startpos - endpos).Normalized().Rotated(-45 * (float)Math.PI / 180).To3D() *
+                              Variables._Player.BoundingRadius;
+                var width = 2;
+                var color = System.Drawing.Color.Red;
+
+                var x = new Geometry.Polygon.Line(startpos, endpos);
+                {
+                    x.Draw(color, width);
+                }
+
+                var y = new Geometry.Polygon.Line((Vector3)endpos, endpos1);
+                {
+                    y.Draw(color, width);
+                }
+
+                var z = new Geometry.Polygon.Line((Vector3)endpos, endpos2);
+                {
+                    z.Draw(color, width);
+                }
+
+                return;
+            }
         }
 
-        internal static object WorldToScreen(Vector3 position)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 

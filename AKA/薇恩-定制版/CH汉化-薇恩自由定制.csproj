@@ -75,6 +75,7 @@
     <Compile Include="Features\Module\Items\Youmus.cs" />
     <Compile Include="Features\Module\Misc\Autobuystarters.cs" />
     <Compile Include="Features\Module\Misc\Autobuytrinkets.cs" />
+    <Compile Include="Features\Module\Misc\AutoLantern.cs" />
     <Compile Include="Features\Module\Misc\AutoLvl.cs" />
     <Compile Include="Features\Module\Misc\FocusW.cs" />
     <Compile Include="Features\Module\Misc\Gapcloser.cs" />
@@ -86,8 +87,9 @@
     <Compile Include="Features\Module\Summoners\Healme.cs" />
     <Compile Include="Features\Module\Tumble\QKS.cs" />
     <Compile Include="Features\Modes\Drawing.cs" />
-    <Compile Include="Logic\Condemn.cs" />
     <Compile Include="Logic\Mechanics.cs" />
+    <Compile Include="Logic\Condemn.cs" />
+    <Compile Include="Logic\NewTumble.cs" />
     <Compile Include="Logic\Tumble.cs" />
     <Compile Include="Manager\DamageManager.cs" />
     <Compile Include="Manager\EventManager.cs" />

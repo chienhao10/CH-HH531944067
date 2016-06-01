@@ -17,7 +17,8 @@ namespace Auto_Carry_Vayne.Manager
             MenuManager.Load();
             //EventManager
             EventManager.Load();
-
+            //StealthManager
+            StealthManager.Load();
             //Less Fps drops i hope
             drawing.Load();
 
