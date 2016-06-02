@@ -63,8 +63,6 @@ namespace AutoSharp
             randomizer.Add("autosharp.randomizer.playdefensive", new CheckBox("Play Defensive?"));
             randomizer.Add("autosharp.randomizer.auto", new CheckBox("Auto-Adjust? (ALPHA)"));
 
-            new PluginLoader();
-
             Cache.Load();
             Game.OnUpdate += Positioning.OnUpdate;
             Autoplay.Load();
@@ -113,17 +111,22 @@ namespace AutoSharp
 
         private static void AntiShrooms2(EventArgs args)
         {
-            if (Map == LeagueSharp.Common.Utility.Map.MapType.SummonersRift && !Heroes.Player.InFountain() &&
-                Heroes.Player.HealthPercent < getSliderItem(options, "recallhp"))
+            Orbwalker.DisableMovement = true;
+
+            if (Map == LeagueSharp.Common.Utility.Map.MapType.SummonersRift)
             {
-                if (Heroes.Player.HealthPercent > 0 && Heroes.Player.CountEnemiesInRange(1800) == 0 &&
-                    !Turrets.EnemyTurrets.Any(t => t.LSDistance(Heroes.Player) < 950) &&
-                    !Minions.EnemyMinions.Any(m => m.LSDistance(Heroes.Player) < 950))
+                if (!Heroes.Player.InFountain() &&
+                    Heroes.Player.HealthPercent < getSliderItem(options, "recallhp"))
                 {
-                    Orbwalker.ActiveModesFlags = Orbwalker.ActiveModes.None;
-                    if (!Heroes.Player.HasBuff("Recall"))
+                    if (Heroes.Player.HealthPercent > 0 && Heroes.Player.CountEnemiesInRange(1800) == 0 &&
+                        !Turrets.EnemyTurrets.Any(t => t.LSDistance(Heroes.Player) < 950) &&
+                        !Minions.EnemyMinions.Any(m => m.LSDistance(Heroes.Player) < 950))
                     {
-                        Heroes.Player.Spellbook.CastSpell(SpellSlot.Recall);
+                        Orbwalker.ActiveModesFlags = Orbwalker.ActiveModes.None;
+                        if (!Heroes.Player.HasBuff("Recall"))
+                        {
+                            Heroes.Player.Spellbook.CastSpell(SpellSlot.Recall);
+                        }
                     }
                 }
             }
@@ -257,10 +260,13 @@ namespace AutoSharp
                         args.Process = false;
                         return;
                     }
-                    if (Heroes.Player.HealthPercent < getSliderItem(options, "recallhp"))
+                    if (Map == LeagueSharp.Common.Utility.Map.MapType.SummonersRift)
                     {
-                        args.Process = false;
-                        return;
+                        if (Heroes.Player.HealthPercent < getSliderItem(options, "recallhp"))
+                        {
+                            args.Process = false;
+                            return;
+                        }
                     }
                 }
 

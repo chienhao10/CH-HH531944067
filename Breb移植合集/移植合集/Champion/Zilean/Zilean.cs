@@ -145,11 +145,20 @@ namespace ElZilean
             if (getCheckBoxItem(comboMenu, "ElZilean.Combo.E") && spells[Spells.E].IsReady()
                 && target.IsValidTarget(spells[Spells.E].Range))
             {
-                if (!spells[Spells.Q].IsReady())
+                if (Player.GetAlliesInRange(spells[Spells.E].Range).Any())
                 {
-                    return;
+                    var closestToTarget =
+                        Player.GetAlliesInRange(spells[Spells.E].Range)
+                            .OrderByDescending(h => (h.PhysicalDamageDealtPlayer + h.MagicDamageDealtPlayer))
+                            .First();
+
+                    spells[Spells.W].Cast();
+                    Utility.DelayAction.Add(100, () => spells[Spells.E].Cast(closestToTarget));
                 }
-                spells[Spells.E].Cast(target);
+                else
+                {
+                    Utility.DelayAction.Add(100, () => spells[Spells.E].Cast(Player));
+                }
             }
 
             var zileanQEnemyBomb =
@@ -335,9 +344,10 @@ namespace ElZilean
             }
             else
             {
-                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+                if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && spells[Spells.Q].IsReady()
+                    && Player.LSDistance(args.Target) < spells[Spells.Q].Range - 100)
                 {
-                    args.Process = !(spells[Spells.Q].IsReady() || Player.LSDistance(args.Target) >= 1000);
+                    args.Process = false;
                 }
             }
 
@@ -352,9 +362,8 @@ namespace ElZilean
 
         private static void SelfUlt()
         {
-            if (Player.IsRecalling() || Player.InFountain() || Player.IsInvulnerable ||
-                Player.HasBuffOfType(BuffType.SpellImmunity)
-                || Player.HasBuffOfType(BuffType.Invulnerability))
+            if (Player.IsRecalling() || Player.InFountain() || Player.IsInvulnerable
+                || Player.HasBuffOfType(BuffType.SpellImmunity) || Player.HasBuffOfType(BuffType.Invulnerability))
             {
                 return;
             }
@@ -412,11 +421,13 @@ namespace ElZilean
                        SebbyLib.OktwCommon.GetIncomingDamage(hero, 0.5f) < enemys*hero.Level*20))) continue;
                 if (castUltMenu["ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName] == null ||
                     !getCheckBoxItem(castUltMenu, "ElZilean.Cast.Ult.Ally" + hero.CharData.BaseSkinName)) continue;
-                if (hero.IsInvulnerable || hero.HasBuffOfType(BuffType.SpellImmunity) ||
-                    hero.HasBuffOfType(BuffType.Invulnerability))
+
+                if (hero.IsInvulnerable || hero.HasBuffOfType(BuffType.SpellImmunity)
+                    || hero.HasBuffOfType(BuffType.Invulnerability))
                 {
                     return;
                 }
+
                 spells[Spells.R].Cast(hero);
             }
         }

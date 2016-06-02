@@ -69,7 +69,14 @@ namespace AutoSharp.Auto.HowlingAbyss
 
         internal static void Fight()
         {
-            Orbwalker.ActiveModesFlags = Heroes.Player.LSCountEnemiesInRange(Heroes.Player.AttackRange) == 0 ? Orbwalker.ActiveModes.LaneClear : Orbwalker.ActiveModes.Combo;
+            if (Heroes.Player.IsMelee)
+            {
+                Orbwalker.ActiveModesFlags = Heroes.Player.LSCountEnemiesInRange(Heroes.Player.AttackRange + 1000) == 0 ? Orbwalker.ActiveModes.LaneClear : Orbwalker.ActiveModes.Combo;
+            }
+            else
+            {
+                Orbwalker.ActiveModesFlags = Heroes.Player.LSCountEnemiesInRange(Heroes.Player.AttackRange + 300) == 0 ? Orbwalker.ActiveModes.LaneClear : Orbwalker.ActiveModes.Combo;
+            }
             Orbwalker.MoveTo(Positioning.RandomlyChosenMove);
         }
 

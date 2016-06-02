@@ -53,7 +53,7 @@ namespace Challenger_Series.Plugins
                 ValidTargets.FirstOrDefault(
                     e => e.IsMelee && e.ServerPosition.Distance(ObjectManager.Player.ServerPosition) < 350 && e.IsEnemy);
 
-            if (possibleNearbyMeleeChampion.IsValidTarget())
+            if (possibleNearbyMeleeChampion.LSIsValidTarget())
             {
                 if (E.IsReady() && UseEAntiMelee)
                 {
@@ -61,6 +61,10 @@ namespace Challenger_Series.Plugins
                         -Misc.GiveRandomInt(250, 475));
                     if (!IsDangerousPosition(pos))
                     {
+                        if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                        {
+                            return;
+                        }
                         E.Cast(pos);
                     }
                 }
@@ -118,22 +122,36 @@ namespace Challenger_Series.Plugins
             {
                 case 0:
                     {
-                        E.Cast(
-                            Deviate(ObjectManager.Player.Position.ToVector2(), target.Position.ToVector2(), this.GetHugAngle())
-                                .ToVector3());
+                        var pos = Deviate(ObjectManager.Player.Position.ToVector2(), target.Position.ToVector2(), this.GetHugAngle())
+                                .ToVector3();
+                        if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                        {
+                            return false;
+                        }
+                        E.Cast(pos);
                         return true;
                     }
                 case 1:
                     {
                         if (!IsDangerousPosition(Game.CursorPos))
                         {
-                            E.Cast(ObjectManager.Player.Position.LSExtend(Game.CursorPos, Misc.GiveRandomInt(50, 100)));
+                            var pos = ObjectManager.Player.Position.LSExtend(Game.CursorPos, Misc.GiveRandomInt(50, 100));
+                            if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                            {
+                                return false;
+                            }
+                            E.Cast(pos);
                         }
                         return true;
                     }
                 case 2:
                     {
-                        E.Cast(ObjectManager.Player.Position.LSExtend(target.Position, Misc.GiveRandomInt(50, 100)));
+                        var pos = ObjectManager.Player.Position.LSExtend(target.Position, Misc.GiveRandomInt(50, 100));
+                        if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                        {
+                            return false;
+                        }
+                        E.Cast(pos);
                         return true;
                     }
             }
@@ -173,10 +191,13 @@ namespace Challenger_Series.Plugins
                 {
                     if (EJg && E.IsReady())
                     {
-
-                        E.Cast(
-                            Deviate(ObjectManager.Player.Position.ToVector2(), tg.Position.ToVector2(), this.GetHugAngle())
-                                .ToVector3());
+                        var pos = Deviate(ObjectManager.Player.Position.ToVector2(), tg.Position.ToVector2(), this.GetHugAngle())
+                                .ToVector3();
+                        if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                        {
+                            return;
+                        }
+                        E.Cast(pos);
                         return;
                     }
                     if (QJg && Q.IsReady())
@@ -268,7 +289,12 @@ namespace Challenger_Series.Plugins
         {
             if (E.IsReady() && this.UseEGapclose && args.DangerLevel == LeagueSharp.SDK.DangerLevel.High && args.Sender.Distance(ObjectManager.Player) < 400)
             {
-                E.Cast(ObjectManager.Player.Position.Extend(args.Sender.Position, -Misc.GiveRandomInt(300, 600)));
+                var pos = ObjectManager.Player.Position.LSExtend(args.Sender.Position, -Misc.GiveRandomInt(300, 600));
+                if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                {
+                    return;
+                }
+                E.Cast(ObjectManager.Player.Position.LSExtend(args.Sender.Position, -Misc.GiveRandomInt(300, 600)));
             }
         }
 
@@ -276,21 +302,41 @@ namespace Challenger_Series.Plugins
         {
             if (E.IsReady() && UseEGapclose && args.Sender.IsMelee && args.End.Distance(ObjectManager.Player.ServerPosition) > args.Sender.AttackRange)
             {
-                E.Cast(ObjectManager.Player.Position.Extend(args.Sender.Position, -Misc.GiveRandomInt(250, 600)));
+                var pos = ObjectManager.Player.Position.LSExtend(args.Sender.Position, -Misc.GiveRandomInt(250, 600));
+                if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                {
+                    return;
+                }
+                E.Cast(ObjectManager.Player.Position.LSExtend(args.Sender.Position, -Misc.GiveRandomInt(250, 600)));
             }
         }
 
         public override void OnUpdate(EventArgs args)
         {
             if (ObjectManager.Player.IsCastingInterruptableSpell()) return;
-            var ultTarget = TargetSelector.GetTarget(R.Range, DamageType.Physical);
-            if (this.SemiAutoRKey && ultTarget != null && ultTarget.IsHPBarRendered)
+
+            if (this.SemiAutoRKey)
             {
-                this.pressedR = true;
-                R.Cast(R.GetPrediction(ultTarget).UnitPosition);
-                return;
+                if (ObjectManager.Player.CountEnemyHeroesInRange(1300) > 0)
+                {
+                    var ultTarget = TargetSelector.GetTarget(R.Range, DamageType.Physical);
+                    if (ultTarget != null && ultTarget.IsHPBarRendered)
+                    {
+                        this.pressedR = true;
+                        var rPred = R.GetPrediction(ultTarget);
+                        if (rPred.Hitchance >= HitChance.High)
+                        {
+                            R.Cast(rPred.UnitPosition);
+                        }
+                        return;
+                    }
+                }
+                else
+                {
+                    R.Cast(Game.CursorPos);
+                }
             }
-            if (Variables.TickCount - this.ECastTime > 250)
+            if (Variables.TickCount - this.ECastTime > 300)
             {
                 if (!HasPassive && Orbwalker.CanMove)
                 {
@@ -308,7 +354,10 @@ namespace Challenger_Series.Plugins
                                         target.ServerPosition, Math.Abs(dist - 500));
                                     if (!IsDangerousPosition(pos))
                                     {
-                                        E.Cast(Deviate(ObjectManager.Player.Position.ToVector2(), target.Position.ToVector2(), this.GetGapclosingAngle()));
+                                        if (pos.IsUnderEnemyTurret() && !ObjectManager.Player.IsUnderEnemyTurret())
+                                        {
+                                            return;
+                                        }
                                         return;
                                     }
                                 }
@@ -368,7 +417,6 @@ namespace Challenger_Series.Plugins
         private bool UseEAntiMelee;
         private bool SemiAutoRKey;
         private bool BlockManualR;
-        private bool ForceR;
         private Menu HarassMenu;
         private bool UseQExtended;
         private int QExManaPercent;
@@ -391,7 +439,6 @@ namespace Challenger_Series.Plugins
             ComboMenu.Add("Lucianegoham", new CheckBox("使用 E 爆发", false));
             ComboMenu.Add("Luciansemiauto", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
             ComboMenu.Add("Lucianblockmanualr", new CheckBox("屏蔽手动 R", true));
-            ComboMenu.Add("Lucianrcombo", new CheckBox("自动 R", true));
             ComboMenu.Add("Lucianqks", new CheckBox("使用 Q 抢头", true));
 
             HarassMenu = MainMenu.AddSubMenu("骚扰设置:", "Harass Settings: ");
@@ -419,7 +466,6 @@ namespace Challenger_Series.Plugins
             UseEGapclose = getCheckBoxItem(ComboMenu, "Lucianegoham");
             SemiAutoRKey = getKeyBindItem(ComboMenu, "Luciansemiauto");
             BlockManualR = getCheckBoxItem(ComboMenu, "Lucianblockmanualr");
-            ForceR = getCheckBoxItem(ComboMenu, "Lucianrcombo");
             QKS = getCheckBoxItem(ComboMenu, "Lucianqks");
             UseQExtended = getCheckBoxItem(HarassMenu, "Lucianqextended");
             QExManaPercent = getSliderItem(HarassMenu, "Lucianqexmanapercent");

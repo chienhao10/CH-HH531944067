@@ -100,7 +100,7 @@ namespace ElRengarRevamped
 
         public static bool RengarR
         {
-            get { return Player.Buffs.Any(x => x.Name.ToLower().Contains("RengarR")); }
+            get { return Player.Buffs.Any(x => x.Name.ToLower().Contains("RengarRBuff")); }
         }
 
         public static string ScriptVersion

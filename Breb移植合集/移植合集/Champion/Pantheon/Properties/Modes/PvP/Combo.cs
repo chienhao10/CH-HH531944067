@@ -17,7 +17,9 @@ namespace ExorSDK.Champions.Pantheon
         public static void Combo(EventArgs args)
         {
             if (!Targets.Target.LSIsValidTarget() ||
-                Invulnerable.Check(Targets.Target))
+                Invulnerable.Check(Targets.Target) ||
+                GameObjects.Player.HasBuff("pantheonesound") ||
+                GameObjects.Player.HasBuff("pantheonpassiveshield"))
             {
                 return;
             }
@@ -35,8 +37,6 @@ namespace ExorSDK.Champions.Pantheon
             /// </summary>
             if (Vars.Q.IsReady() &&
                 Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
-                !GameObjects.Player.HasBuff("pantheonesound") &&
-                !GameObjects.Player.HasBuff("pantheonpassiveshield") &&
                 Vars.getCheckBoxItem(Vars.QMenu, "combo"))
             {
                 Vars.Q.CastOnUnit(Targets.Target);
@@ -47,11 +47,9 @@ namespace ExorSDK.Champions.Pantheon
             /// </summary>
             if (Vars.W.IsReady() &&
                 Targets.Target.LSIsValidTarget(Vars.W.Range) &&
-                !GameObjects.Player.HasBuff("pantheonesound") &&
                 Vars.getCheckBoxItem(Vars.WMenu, "combo"))
             {
                 if (!Targets.Target.LSIsValidTarget(Vars.AARange) ||
-                    !GameObjects.Player.HasBuff("pantheonpassiveshield") &&
                     GameObjects.Player.GetBuffCount("pantheonpassivecounter") < 3)
                 {
                     Vars.W.CastOnUnit(Targets.Target);
@@ -63,7 +61,6 @@ namespace ExorSDK.Champions.Pantheon
             /// </summary>
             if (Vars.E.IsReady() &&
                 Targets.Target.LSIsValidTarget(Vars.E.Range) &&
-                !GameObjects.Player.HasBuff("pantheonpassiveshield") &&
                 Vars.getCheckBoxItem(Vars.EMenu, "combo"))
             {
                 Vars.E.Cast(Targets.Target.ServerPosition);

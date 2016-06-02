@@ -220,7 +220,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             foreach (var target in Program.Enemies.Where(target => target.LSIsValidTarget(R.Range) && Player.LSDistance(target.Position) > getSliderItem(rMenu, "Rrange") && target.LSCountEnemiesInRange(getSliderItem(rMenu, "Rcol")) == 1 && target.CountAlliesInRange(500) == 0 && OktwCommon.ValidUlt(target)))
             {
-                if (R.GetDamage(target) > target.Health)
+                if (target.Health < R.GetDamage(target) * 0.6f)
                 {
                     cast = true;
                     PredictionOutput output = R.GetPrediction(target);
