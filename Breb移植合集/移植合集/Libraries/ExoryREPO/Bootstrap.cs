@@ -1,6 +1,5 @@
 ﻿using EloBuddy;
 using EloBuddy.SDK.Menu;
-using ExorAIO.Champions.Pantheon;
 using ExorAIO.Champions.Renekton;
 using ExorAIO.Champions.Ryze;
 using ExorAIO.Champions.Tryndamere;
@@ -31,9 +30,6 @@ namespace ExorAIO.Core
         {
             switch (ObjectManager.Player.ChampionName)
             {
-                case "Pantheon":
-                    Pantheon.OnLoad();
-                    break;
                 case "Renekton":
                     Renekton.OnLoad();
                     break;

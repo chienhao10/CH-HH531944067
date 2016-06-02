@@ -40,7 +40,7 @@
                     TriggerOnDetectSkillshot(
                         DetectionType.ProcessSpell,
                         spellData,
-                        Variables.TickCount - Game.Ping / 2,
+                        Variables.TickCount,
                         sender.Position.ToVector2(),
                         sender.Position.ToVector2(),
                         sender.Position.ToVector2(),
@@ -153,7 +153,7 @@
                 endPos = endPos
                          + Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(unitPosition)) * direction;
             }
-            var castTime = Variables.TickCount - Game.Ping / 2 - (spellData.MissileDelayed ? 0 : spellData.Delay)
+            var castTime = Variables.TickCount - (spellData.MissileDelayed ? 0 : spellData.Delay)
                            - (int)(1000f * missilePosition.Distance(unitPosition) / spellData.MissileSpeed);
             TriggerOnDetectSkillshot(
                 DetectionType.RecvPacket,
@@ -240,7 +240,7 @@
                     TriggerOnDetectSkillshot(
                         DetectionType.ProcessSpell,
                         spellData,
-                        Variables.TickCount - Game.Ping / 2,
+                        Variables.TickCount,
                         start,
                         end,
                         end,
@@ -270,7 +270,7 @@
             TriggerOnDetectSkillshot(
                 DetectionType.ProcessSpell,
                 spellData,
-                Variables.TickCount - Game.Ping / 2,
+                Variables.TickCount,
                 startPos,
                 endPos,
                 args.End.ToVector2(),

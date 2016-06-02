@@ -1,10 +1,9 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Pantheon
+namespace ExorSDK.Champions.Pantheon
 {
     /// <summary>
     ///     The logics class.
@@ -17,8 +16,8 @@ namespace ExorAIO.Champions.Pantheon
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Harass(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+            if (!Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
@@ -26,12 +25,13 @@ namespace ExorAIO.Champions.Pantheon
             /// <summary>
             ///     The Q Harass Logic.
             /// </summary>
-            if (Variables.Q.IsReady() &&
-                Targets.Target.IsValidTarget(Variables.Q.Range) &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.harass"))
+            if (Vars.Q.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "harass")) &&
+                Vars.getSliderItem(Vars.QMenu, "harass") != 101)
             {
-                Variables.Q.CastOnUnit(Targets.Target);
+                Vars.Q.CastOnUnit(Targets.Target);
             }
         }
     }

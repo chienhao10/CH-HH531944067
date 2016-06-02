@@ -1,8 +1,10 @@
 using System;
-using EloBuddy;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 using EloBuddy.SDK;
+using EloBuddy;
 
-namespace ExorAIO.Champions.Pantheon
+namespace ExorSDK.Champions.Pantheon
 {
     /// <summary>
     ///     The logics class.
@@ -15,7 +17,7 @@ namespace ExorAIO.Champions.Pantheon
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Automatic(EventArgs args)
         {
-            if (ObjectManager.Player.IsRecalling())
+            if (GameObjects.Player.LSIsRecalling())
             {
                 return;
             }

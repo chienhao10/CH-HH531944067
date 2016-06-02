@@ -27,7 +27,7 @@
     {
         #region Constants
 
-        private const float QDelay = 0.215f, Q2Delay = 0.3f;
+        private const float QDelay = 0.38f, Q2Delay = 0.35f, QDelays = 0.19f, Q2Delays = 0.285f;
 
         private const int RWidth = 400;
 
@@ -56,11 +56,11 @@
         public Yasuo()
         {
 
-            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 510).SetSkillshot(0.4f, 40, float.MaxValue, false, SkillshotType.SkillshotLine);
-            Q2 = new LeagueSharp.SDK.Spell(Q.Slot, 1100).SetSkillshot(Q.Delay, 90, 1300, true, Q.Type);
+            Q = new LeagueSharp.SDK.Spell(SpellSlot.Q, 505).SetSkillshot(QDelay, 20, float.MaxValue, false, SkillshotType.SkillshotLine);
+            Q2 = new LeagueSharp.SDK.Spell(Q.Slot, 1100).SetSkillshot(Q2Delay, 90, 1200, true, Q.Type);
             Q3 = new LeagueSharp.SDK.Spell(Q.Slot, 250).SetTargetted(0.005f, float.MaxValue);
             W = new LeagueSharp.SDK.Spell(SpellSlot.W, 400);
-            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 475).SetTargetted(0.005f, 1250);
+            E = new LeagueSharp.SDK.Spell(SpellSlot.E, 475).SetTargetted(0, 1050);
             E2 = new LeagueSharp.SDK.Spell(E.Slot).SetTargetted(E.Delay + Q3.Delay, E.Speed);
             R = new LeagueSharp.SDK.Spell(SpellSlot.R, 1200);
             Q.DamageType = Q2.DamageType = R.DamageType = DamageType.Physical;
@@ -79,72 +79,71 @@
                 return;
             }
 
-            comboMenu = config.AddSubMenu("连招", "Combo");
-            comboMenu.AddGroupLabel("Q: 持续开启");
-            comboMenu.AddGroupLabel("E 突进设置");
-            comboMenu.Add("EGap", new CheckBox("使用 E"));
-            comboMenu.Add("EMode", new ComboBox("突进模式", 0, "敌方", "鼠标位置"));
-            comboMenu.Add("ETower", new CheckBox("塔下 E", false));
-            comboMenu.Add("EStackQ", new CheckBox("E时 叠加Q", false));
-            comboMenu.AddGroupLabel("R 设置");
-            comboMenu.Add("R", new KeyBind("使用 R", false, KeyBind.BindTypes.PressToggle, 'X'));
-            comboMenu.Add("RDelay", new CheckBox("R延迟释放"));
-            comboMenu.Add("RHpU", new Slider("如果敌方血量 < (%)", 60));
-            comboMenu.Add("RCountA", new Slider("或数量>=", 2, 1, 5));
+            comboMenu = config.AddSubMenu("Combo", "Combo");
+            comboMenu.AddGroupLabel("Q: Always On");
+            comboMenu.AddGroupLabel("E Gap Settings");
+            comboMenu.Add("EGap", new CheckBox("Use E"));
+            comboMenu.Add("EMode", new ComboBox("Follow Mode", 0, "Enemy", "Mouse"));
+            comboMenu.Add("ETower", new CheckBox("Under Tower", false));
+            comboMenu.Add("EStackQ", new CheckBox("Stack Q While Gap", false));
+            comboMenu.AddGroupLabel("R Settings");
+            comboMenu.Add("R", new KeyBind("Use R", false, KeyBind.BindTypes.PressToggle, 'X'));
+            comboMenu.Add("RDelay", new CheckBox("Delay Cast"));
+            comboMenu.Add("RHpU", new Slider("If Enemies Hp < (%)", 60));
+            comboMenu.Add("RCountA", new Slider("Or Count >=", 2, 1, 5));
 
-            hybridMenu = config.AddSubMenu("混合", "Hybrid");
-            hybridMenu.AddGroupLabel("Q: 持续开启");
-            hybridMenu.Add("Q3", new CheckBox("使用 Q3"));
-            hybridMenu.Add("QLastHit", new CheckBox("尾兵 (Q1/2)"));
-            hybridMenu.AddGroupLabel("自动 Q 设置");
-            hybridMenu.Add("AutoQ", new KeyBind("自动Q开关按键", false, KeyBind.BindTypes.PressToggle, 'T'));
-            hybridMenu.Add("AutoQ3", new CheckBox("使用 Q3", false));
+            hybridMenu = config.AddSubMenu("Hybrid", "Hybrid");
+            hybridMenu.AddGroupLabel("Q: Always On");
+            hybridMenu.Add("Q3", new CheckBox("Also Q3"));
+            hybridMenu.Add("QLastHit", new CheckBox("Last Hit (Q1/2)"));
+            hybridMenu.AddGroupLabel("Auto Q Settings");
+            hybridMenu.Add("AutoQ", new KeyBind("KeyBind", false, KeyBind.BindTypes.PressToggle, 'T'));
+            hybridMenu.Add("AutoQ3", new CheckBox("Also Q3", false));
 
-            lcMenu = config.AddSubMenu("清线", "Lane Clear");
-            lcMenu.AddGroupLabel("Q 设置");
-            lcMenu.Add("Q", new CheckBox("使用 Q"));
-            lcMenu.Add("Q3", new CheckBox("使用 Q3", false));
-            lcMenu.AddGroupLabel("E 设置");
-            lcMenu.Add("E", new CheckBox("使用 E"));
-            lcMenu.Add("ELastHit", new CheckBox("E 尾兵", false));
-            lcMenu.Add("ETower", new CheckBox("塔下E", false));
+            lcMenu = config.AddSubMenu("LaneClear", "Lane Clear");
+            lcMenu.AddGroupLabel("Q Settings");
+            lcMenu.Add("Q", new CheckBox("Use Q"));
+            lcMenu.Add("Q3", new CheckBox("Also Q3", false));
+            lcMenu.AddGroupLabel("E Settings");
+            lcMenu.Add("E", new CheckBox("Use E"));
+            lcMenu.Add("ELastHit", new CheckBox("Last Hit Only", false));
+            lcMenu.Add("ETower", new CheckBox("Under Tower", false));
 
-            lhMenu = config.AddSubMenu("尾兵", "Last Hit");
-            lhMenu.AddGroupLabel("Q 设置");
-            lhMenu.Add("Q", new CheckBox("使用 Q"));
-            lhMenu.Add("Q3", new CheckBox("使用 Q3", false));
-            lhMenu.AddGroupLabel("E 设置");
-            lhMenu.Add("E", new CheckBox("使用 E"));
-            lhMenu.Add("ETower", new CheckBox("塔下E", false));
+            lhMenu = config.AddSubMenu("LastHit", "Last Hit");
+            lhMenu.AddGroupLabel("Q Settings");
+            lhMenu.Add("Q", new CheckBox("Use Q"));
+            lhMenu.Add("Q3", new CheckBox("Also Q3", false));
+            lhMenu.AddGroupLabel("E Settings");
+            lhMenu.Add("E", new CheckBox("Use E"));
+            lhMenu.Add("ETower", new CheckBox("Under Tower", false));
 
-            ksMenu = config.AddSubMenu("抢头", "Kill Steal");
-            ksMenu.Add("Q", new CheckBox("使用 Q"));
-            ksMenu.Add("E", new CheckBox("使用 E"));
-            ksMenu.Add("R", new CheckBox("使用 R"));
+            ksMenu = config.AddSubMenu("KillSteal", "Kill Steal");
+            ksMenu.Add("Q", new CheckBox("Use Q"));
+            ksMenu.Add("E", new CheckBox("Use E"));
+            ksMenu.Add("R", new CheckBox("Use R"));
             foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(o => o.IsEnemy))
             {
-                ksMenu.Add("RCast" + enemy.NetworkId, new CheckBox("R使用在 " + enemy.ChampionName, false));
+                ksMenu.Add("RCast" + enemy.NetworkId, new CheckBox("Cast On " + enemy.ChampionName, false));
             }
-            
-            fleeMenu = config.AddSubMenu("逃跑", "Flee");
-            fleeMenu.Add("E", new KeyBind("使用 E", false, KeyBind.BindTypes.HoldActive, 'C'));
-            fleeMenu.Add("Q", new CheckBox("逃跑时叠加Q"));
+
+            fleeMenu = config.AddSubMenu("Flee", "Flee");
+            fleeMenu.Add("E", new KeyBind("Use E", false, KeyBind.BindTypes.HoldActive, 'C'));
+            fleeMenu.Add("Q", new CheckBox("Stack Q While Dash"));
 
             if (EntityManager.Heroes.Enemies.Any())
             {
                 Evade.Init();
             }
 
-            drawMenu = config.AddSubMenu("线圈", "Draw");
-            drawMenu.Add("Q", new CheckBox("Q 范围", false));
-            drawMenu.Add("E", new CheckBox("E 范围", false));
-            drawMenu.Add("R", new CheckBox("R 范围", false));
-            drawMenu.Add("UseR", new CheckBox("R 连招状态"));
-            drawMenu.Add("StackQ", new CheckBox("自动叠加Q 状态"));
+            drawMenu = config.AddSubMenu("Draw", "Draw");
+            drawMenu.Add("Q", new CheckBox("Q Range", false));
+            drawMenu.Add("E", new CheckBox("E Range", false));
+            drawMenu.Add("R", new CheckBox("R Range", false));
+            drawMenu.Add("UseR", new CheckBox("R In Combo Status"));
+            drawMenu.Add("StackQ", new CheckBox("Auto Stack Q Status"));
 
-            miscMenu = config.AddSubMenu("杂项", "Misc");
-            miscMenu.Add("StackQ", new KeyBind("自动叠加Q", false, KeyBind.BindTypes.PressToggle, 'Z'));
-
+            miscMenu = config.AddSubMenu("Misc", "Misc");
+            miscMenu.Add("StackQ", new KeyBind("Auto Stack Q", false, KeyBind.BindTypes.PressToggle, 'Z'));
 
             Evade.Evading += Evading;
             Evade.TryEvading += TryEvading;
@@ -168,7 +167,7 @@
                     }
                     Q.Delay = GetQDelay(false);
                     Q2.Delay = GetQDelay(true);
-                    E.Speed = E2.Speed = 1250 + (Player.MoveSpeed - 345);
+                    E.Speed = E2.Speed = 1045 + (Player.MoveSpeed - 345);
                 };
             Orbwalker.OnPostAttack += (sender, args) =>
                 {
@@ -208,16 +207,6 @@
                         case "YasuoDashScalar":
                             cDash = 1;
                             break;
-                        case "yasuoeqcombosoundmiss":
-                        case "YasuoEQComboSoundHit":
-                            DelayAction.Add(
-                                70,
-                                () =>
-                                    {
-                                        Orbwalker.ResetAutoAttack();
-                                        EloBuddy.Player.IssueOrder(GameObjectOrder.AttackTo, Player.ServerPosition.LSExtend(Game.CursorPos, Player.BoundingRadius * 2));
-                                    });
-                            break;
                     }
                 };
             Obj_AI_Base.OnBuffUpdate += (sender, args) =>
@@ -244,13 +233,17 @@
                             break;
                     }
                 };
-            Obj_AI_Base.OnProcessSpellCast += (sender, args) =>
+            Obj_AI_Base.OnSpellCast += (sender, args) =>
             {
-                if (!sender.IsMe || args.Slot != SpellSlot.Q)
+                if (!sender.IsMe || !args.SData.Name.StartsWith("YasuoQ") || args.SData.Name.EndsWith("Mis"))
                 {
                     return;
                 }
-                EloBuddy.Player.IssueOrder(GameObjectOrder.AttackTo, args.Start.LSExtend(args.End, Player.BoundingRadius * 2));
+                if (args.SData.Name.EndsWith("W"))
+                {
+                    DelayAction.Add(50, Orbwalker.ResetAutoAttack);
+                }
+                EloBuddy.Player.IssueOrder(GameObjectOrder.AttackTo, Player.ServerPosition.LSExtend(args.End, -(Player.BoundingRadius * 2)));
             };
         }
 
@@ -556,7 +549,7 @@
 
         private static double GetEDmg(Obj_AI_Base target)
         {
-            return E.GetDamage(target) + E.GetDamage(target, DamageStage.Buff) - 10;
+            return E.GetDamage(target) + E.GetDamage(target, DamageStage.Buff) - 5;
         }
 
         private static Vector3 GetPosAfterDash(Obj_AI_Base target)
@@ -566,13 +559,14 @@
 
         private static float GetQDelay(bool isQ3)
         {
-            var delayOri = 0.4f;
-            var delayMax = !isQ3 ? QDelay : Q2Delay;
+            var delayOri = !isQ3 ? QDelay : Q2Delay;
+            var delayMax = !isQ3 ? QDelays : Q2Delays;
             var perReduce = 1 - delayMax / delayOri;
-            var delay = Math.Max(
-                delayOri * (1 - Math.Min((Player.AttackSpeedMod - 1) * (perReduce / 1.1f), perReduce)),
-                delayMax);
-            return (float)Math.Round((decimal)delay, 3, MidpointRounding.AwayFromZero);
+            var delayReal =
+                Math.Max(
+                    delayOri * (1 - Math.Min((Player.AttackSpeedMod - 1) * (perReduce / 1.1f), perReduce)),
+                    delayMax);
+            return (float)Math.Round((decimal)delayReal, 3, MidpointRounding.AwayFromZero);
         }
 
         private static double GetQDmg(Obj_AI_Base target)
@@ -643,7 +637,7 @@
 
         private static bool IsInRangeQ(Obj_AI_Minion minion)
         {
-            return minion.IsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 4, 475));
+            return minion.IsValidTarget(Math.Max(475 + minion.BoundingRadius / 3 - 5, 475));
         }
 
         private static void KillSteal()
@@ -663,7 +657,7 @@
                 }
                 else
                 {
-                    var target = !haveQ3 ? Q.GetTarget(Q.Width) : Q2.GetTarget(Q2.Width / 2);
+                    var target = !haveQ3 ? Q.GetTarget(Q.Width / 2) : Q2.GetTarget(Q2.Width / 2);
                     if (target != null && target.Health + target.AttackShield <= GetQDmg(target))
                     {
                         if (!haveQ3)

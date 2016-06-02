@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
-using EloBuddy;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Pantheon
+namespace ExorSDK.Champions.Pantheon
 {
     /// <summary>
     ///     The logics class.
@@ -25,37 +24,39 @@ namespace ExorAIO.Champions.Pantheon
             /// <summary>
             ///     The Q JungleClear Logics.
             /// </summary>
-            if (Variables.Q.IsReady() &&
+            if (Vars.Q.IsReady() &&
                 Targets.JungleMinions.Any() &&
-                !ObjectManager.Player.HasBuff("pantheonpassiveshield") &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededQMana &&
-                Variables.getCheckBoxItem(Variables.QMenu, "qspell.jgc"))
+                !GameObjects.Player.HasBuff("pantheonpassiveshield") &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.Q.Slot, Vars.getSliderItem(Vars.QMenu, "jungleclear")) &&
+                Vars.getSliderItem(Vars.QMenu, "jungleclear") != 101)
             {
-                Variables.Q.CastOnUnit(Targets.JungleMinions[0]);
+                Vars.Q.CastOnUnit(Targets.JungleMinions[0]);
             }
 
             /// <summary>
             ///     The E Clear Logics.
             /// </summary>
-            if (Variables.E.IsReady() &&
-                ObjectManager.Player.ManaPercent > ManaManager.NeededEMana &&
-                Variables.getCheckBoxItem(Variables.EMenu, "espell.farm"))
+            if (Vars.E.IsReady() &&
+                GameObjects.Player.ManaPercent >
+                    ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "clear")) &&
+                Vars.getSliderItem(Vars.EMenu, "clear") != 101)
             {
                 /// <summary>
                 ///     The LaneClear E Logic.
                 /// </summary>
                 if (Targets.Minions.Any())
                 {
-                    Variables.E.Cast(Targets.Minions[0].Position);
+                    Vars.E.Cast(Targets.Minions[0].ServerPosition);
                 }
 
                 /// <summary>
                 ///     The JungleClear E Logic.
                 /// </summary>
                 else if (Targets.JungleMinions.Any() &&
-                         !ObjectManager.Player.HasBuff("pantheonpassiveshield"))
+                    !GameObjects.Player.HasBuff("pantheonpassiveshield"))
                 {
-                    Variables.E.Cast(Targets.JungleMinions[0].Position);
+                    Vars.E.Cast(Targets.JungleMinions[0].ServerPosition);
                 }
             }
         }

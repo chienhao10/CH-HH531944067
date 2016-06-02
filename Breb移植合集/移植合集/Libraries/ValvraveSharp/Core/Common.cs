@@ -4,15 +4,16 @@ namespace Valvrave_Sharp.Core
 
     using System.Collections.Generic;
     using System.Linq;
-    using EloBuddy;
+
     using LeagueSharp;
+    using LeagueSharp.Data.Enumerations;
     using LeagueSharp.SDK;
-    using LeagueSharp.SDK.Core.Utils;
 
     using SharpDX;
 
     using Collision = LeagueSharp.SDK.Collision;
-
+    using EloBuddy;
+    using LeagueSharp.SDK.Core.Utils;
     #endregion
 
     internal static class Common
@@ -30,10 +31,6 @@ namespace Valvrave_Sharp.Core
 
         internal static bool CanHitCircle(this Spell spell, Obj_AI_Base unit)
         {
-            if (!unit.LSIsValidTarget() || unit == null)
-            {
-                return false;
-            }
             return spell.IsInRange(spell.GetPredPosition(unit));
         }
 
@@ -47,7 +44,7 @@ namespace Valvrave_Sharp.Core
             this Spell spell,
             Obj_AI_Base unit,
             bool aoe = false,
-            CollisionableObjects collisionable = CollisionableObjects.Minions | CollisionableObjects.YasuoWall)
+            LeagueSharp.SDK.CollisionableObjects collisionable = LeagueSharp.SDK.CollisionableObjects.Minions | LeagueSharp.SDK.CollisionableObjects.YasuoWall)
         {
             if (!unit.LSIsValidTarget())
             {
@@ -86,7 +83,7 @@ namespace Valvrave_Sharp.Core
         internal static CastStates CastingBestTarget(
             this Spell spell,
             bool aoe = false,
-            CollisionableObjects collisionable = CollisionableObjects.Minions | CollisionableObjects.YasuoWall)
+            LeagueSharp.SDK.CollisionableObjects collisionable = LeagueSharp.SDK.CollisionableObjects.Minions | LeagueSharp.SDK.CollisionableObjects.YasuoWall)
         {
             return spell.Casting(spell.GetTarget(spell.Width / 2), aoe, collisionable);
         }
@@ -97,27 +94,30 @@ namespace Valvrave_Sharp.Core
             {
                 return false;
             }
-            var obj = col.FirstOrDefault();
-            if (obj == null)
-            {
-                return false;
-            }
-            return obj.Health <= GetSmiteDmg && obj.DistanceToPlayer() < Program.SmiteRange && Program.Player.Spellbook.CastSpell(Program.Smite, obj);
+            var obj = col.First();
+            return obj.Health <= GetSmiteDmg && obj.DistanceToPlayer() < Program.SmiteRange
+                   && Program.Player.Spellbook.CastSpell(Program.Smite, obj);
         }
 
         internal static List<Obj_AI_Base> GetCollision(
-            this PredictionOutput pred,
-            CollisionableObjects collisionable = CollisionableObjects.Minions)
+            this Spell spell,
+            Obj_AI_Base target,
+            List<Vector3> to,
+            LeagueSharp.SDK.CollisionableObjects collisionable = LeagueSharp.SDK.CollisionableObjects.Minions)
         {
             var col = Collision.GetCollision(
-                new List<Vector3> { pred.UnitPosition, pred.Input.Unit.Position },
+                to,
                 new PredictionInput
-                    {
-                        Delay = pred.Input.Delay, Radius = pred.Input.Radius, Speed = pred.Input.Speed,
-                        Range = pred.Input.Range, Type = pred.Input.Type, CollisionObjects = collisionable,
-                        From = pred.Input.From
-                    });
-            col.RemoveAll(i => i.Compare(pred.Input.Unit));
+                {
+                    Delay = spell.Delay,
+                    Radius = spell.Width,
+                    Speed = spell.Speed,
+                    From = spell.From,
+                    Range = spell.Range,
+                    Type = spell.Type,
+                    CollisionObjects = collisionable
+                });
+            col.RemoveAll(i => i.Compare(target));
             return col;
         }
 

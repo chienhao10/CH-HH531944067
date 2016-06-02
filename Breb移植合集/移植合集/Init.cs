@@ -446,9 +446,9 @@ namespace PortAIO
                     case "nautilus":
                     case "nunu":
                     case "olaf":
+                    case "pantheon":
                         ExorSDK.AIO.OnLoad();
                         break;
-                    case "pantheon":
                     case "renekton":
                     case "tryndamere":
                         ExorAIO.Core.Bootstrap.BuildMenu();

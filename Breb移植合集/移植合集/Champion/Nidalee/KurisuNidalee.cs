@@ -102,6 +102,8 @@ namespace KurisuNidalee
             qCMenu.Add("ndcqwc", new CheckBox("清线使用"));
 
             wCMenu = Root.AddSubMenu("(W) 豹形态", "ndcw");
+            wCMenu.Add("ndcwcHPChecl", new Slider("血量低于 X 不W : ", 15, 0, 100));
+            wCMenu.Add("ndcwcEnemy", new Slider("敌人多于X 不W: ", 3, 1, 5));
             wCMenu.Add("ndcwcheck", new CheckBox("检查命中率", false));
             wCMenu.Add("ndcwch", new ComboBox("-> 最低命中率", 2, "低", "中", "高", "非常高"));
             wCMenu.Add("ndcwco", new CheckBox("连招使用"));

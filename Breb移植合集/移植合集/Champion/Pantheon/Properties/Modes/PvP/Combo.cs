@@ -1,10 +1,9 @@
 using System;
-using EloBuddy;
-using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
+using ExorSDK.Utilities;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 
-namespace ExorAIO.Champions.Pantheon
+namespace ExorSDK.Champions.Pantheon
 {
     /// <summary>
     ///     The logics class.
@@ -17,51 +16,57 @@ namespace ExorAIO.Champions.Pantheon
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void Combo(EventArgs args)
         {
-            if (!Targets.Target.IsValidTarget() ||
-                Bools.IsSpellShielded(Targets.Target))
+            if (!Targets.Target.LSIsValidTarget() ||
+                Invulnerable.Check(Targets.Target))
             {
                 return;
             }
 
-            if (!Bools.HasSheenBuff() ||
-                !Targets.Target.IsValidTarget(Variables.AARange))
+            if (Bools.HasSheenBuff())
             {
-                /// <summary>
-                ///     The Combo Q Logic.
-                /// </summary>
-                if (Variables.Q.IsReady() &&
-                    Targets.Target.IsValidTarget(Variables.Q.Range) &&
-                    !ObjectManager.Player.HasBuff("pantheonesound") &&
-                    !ObjectManager.Player.HasBuff("pantheonpassiveshield") &&
-                    Variables.getCheckBoxItem(Variables.QMenu, "qspell.combo"))
+                if (Targets.Target.LSIsValidTarget(Vars.AARange))
                 {
-                    Variables.Q.CastOnUnit(Targets.Target);
+                    return;
                 }
+            }
 
-                /// <summary>
-                ///     The Combo W Logic.
-                /// </summary>
-                if (Variables.W.IsReady() &&
-                    !Bools.IsImmobile(Targets.Target) &&
-                    Targets.Target.IsValidTarget(Variables.W.Range) &&
-                    !ObjectManager.Player.HasBuff("pantheonesound") &&
-                    Variables.getCheckBoxItem(Variables.WMenu, "wspell.combo"))
-                {
-                    if (!Targets.Target.IsValidTarget(Variables.AARange) ||
-                        !ObjectManager.Player.HasBuff("pantheonpassiveshield") &&
-                        ObjectManager.Player.GetBuffCount("pantheonpassivecounter") < 3)
-                    {
-                        Variables.W.CastOnUnit(Targets.Target);
-                    }
-                }
+            /// <summary>
+            ///     The Combo Q Logic.
+            /// </summary>
+            if (Vars.Q.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.Q.Range) &&
+                !GameObjects.Player.HasBuff("pantheonesound") &&
+                !GameObjects.Player.HasBuff("pantheonpassiveshield") &&
+                Vars.getCheckBoxItem(Vars.QMenu, "combo"))
+            {
+                Vars.Q.CastOnUnit(Targets.Target);
+            }
 
-                /// <summary>
-                ///     The Combo E Logic.
-                /// </summary>
-                if (Variables.E.IsReady() && !ObjectManager.Player.HasBuff("pantheonpassiveshield") && ObjectManager.Player.CountEnemiesInRange(Variables.E.Range) > 0 && Variables.getCheckBoxItem(Variables.EMenu, "espell.combo"))
+            /// <summary>
+            ///     The Combo W Logic.
+            /// </summary>
+            if (Vars.W.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.W.Range) &&
+                !GameObjects.Player.HasBuff("pantheonesound") &&
+                Vars.getCheckBoxItem(Vars.WMenu, "combo"))
+            {
+                if (!Targets.Target.LSIsValidTarget(Vars.AARange) ||
+                    !GameObjects.Player.HasBuff("pantheonpassiveshield") &&
+                    GameObjects.Player.GetBuffCount("pantheonpassivecounter") < 3)
                 {
-                    Variables.E.StartCharging(Targets.Target.Position);
+                    Vars.W.CastOnUnit(Targets.Target);
                 }
+            }
+
+            /// <summary>
+            ///     The Combo E Logic.
+            /// </summary>
+            if (Vars.E.IsReady() &&
+                Targets.Target.LSIsValidTarget(Vars.E.Range) &&
+                !GameObjects.Player.HasBuff("pantheonpassiveshield") &&
+                Vars.getCheckBoxItem(Vars.EMenu, "combo"))
+            {
+                Vars.E.Cast(Targets.Target.ServerPosition);
             }
         }
     }

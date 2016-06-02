@@ -144,6 +144,10 @@ namespace KurisuNidalee
         // Human W Logic
         internal static void CastBushwhack(Obj_AI_Base target, string mode)
         {
+            if (target == null)
+            {
+                return;
+            }
             // if not harass mode ignore mana check
             if (!KL.CatForm() && KL.CanUse(KL.Spells["Bushwhack"], true, mode))
             {
@@ -199,6 +203,16 @@ namespace KurisuNidalee
             // check if target is hunted in 750 range
             if (!target.IsValidTarget(KL.Spells["ExPounce"].Range))
                 return;
+
+            if (KL.Player.HealthPercent <= getSliderItem(wCMenu, "ndcwcHPChecl"))
+            {
+                return;
+            }
+
+            if (KL.Player.CountEnemiesInRange(750) <= getSliderItem(wCMenu, "ndcwcEnemy") && target.IsHunted())
+            {
+                return;
+            }
 
             if (target.IsHunted())
             {

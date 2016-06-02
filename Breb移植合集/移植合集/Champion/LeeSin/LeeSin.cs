@@ -110,6 +110,7 @@
             comboMenu.AddGroupLabel("明星连招");
             comboMenu.Add("Star", new KeyBind("明星连招按键", false, KeyBind.BindTypes.HoldActive, 'X'));
             comboMenu.Add("StarKill", new CheckBox("自动明星连招如果可击杀", false));
+            comboMenu.Add("StarKillWJ", new CheckBox("-> 明星连招使用跳眼", false));
 
             lcMenu = config.AddSubMenu("LaneClear", "清线");
             lcMenu.Add("W", new CheckBox("使用 W", false));
@@ -342,7 +343,7 @@
             {
                 return;
             }
-            var col = pred.GetCollision();
+            var col = Q.GetCollision(target, new List<Vector3> { pred.UnitPosition, target.Position });
             if (col.Count == 0 || (getCheckBoxItem(comboMenu, "QCol") && Common.CastSmiteKillCollision(col)))
             {
                 Q.Cast(predS.CastPosition);
@@ -441,7 +442,7 @@
                     {
                         return;
                     }
-                    if (!R.IsInRange(target) && target.DistanceToPlayer() < WardManager.WardRange + R.Range - 50
+                    if (getCheckBoxItem(comboMenu, "StarKillWJ") && !R.IsInRange(target) && target.DistanceToPlayer() < WardManager.WardRange + R.Range - 50
                         && Player.Mana >= 80 && !isDashing)
                     {
                         Flee(target.ServerPosition, true);
@@ -1338,7 +1339,7 @@
                     var predS = QS.GetPrediction(target);
                     if (pred.Hitchance >= Q.MinHitChance)
                     {
-                        var col = pred.GetCollision();
+                        var col = Q.GetCollision(target, new List<Vector3> { pred.UnitPosition, target.Position });
                         if ((col.Count == 0 || (getCheckBoxItem(insecMenu, "QCol") && Common.CastSmiteKillCollision(col)))
                             && Q.Cast(predS.CastPosition))
                         {

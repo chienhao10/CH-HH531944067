@@ -10,7 +10,7 @@
 
 -Port [Will Port One at a time when I'm bored or there's nothing on the to-do]
 
-Pantheon, Renekton, Tryndamere, Ryze, Ashe, Mundo, Graves, Jax, Jhin, Jax, Quinn, Karma = Port these for ExorAIO SDK
+Renekton, Tryndamere, Ryze, Ashe, Mundo, Graves, Jax, Jhin, Jax, Quinn, Karma = Port these for ExorAIO SDK
 
 Champion Ports [Starting 5/19, I'm going to start checking these in game via L# to see which actually work before porting]:
 - SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]

@@ -1,10 +1,12 @@
 using System;
+using ExorSDK.Utilities;
+using LeagueSharp;
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
 using EloBuddy;
 using EloBuddy.SDK;
-using ExorAIO.Utilities;
-using LeagueSharp.Common;
 
-namespace ExorAIO.Champions.Pantheon
+namespace ExorSDK.Champions.Pantheon
 {
     /// <summary>
     ///     The champion class.
@@ -14,7 +16,7 @@ namespace ExorAIO.Champions.Pantheon
         /// <summary>
         ///     Loads Pantheon.
         /// </summary>
-        public static void OnLoad()
+        public void OnLoad()
         {
             /// <summary>
             ///     Initializes the menus.
@@ -43,7 +45,7 @@ namespace ExorAIO.Champions.Pantheon
         /// <param name="args">The <see cref="EventArgs" /> instance containing the event data.</param>
         public static void OnUpdate(EventArgs args)
         {
-            if (ObjectManager.Player.IsDead)
+            if (GameObjects.Player.IsDead)
             {
                 return;
             }
@@ -61,8 +63,6 @@ namespace ExorAIO.Champions.Pantheon
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            /// 
-
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 Logics.Combo(args);
@@ -73,8 +73,7 @@ namespace ExorAIO.Champions.Pantheon
                 Logics.Harass(args);
             }
 
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) ||
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
                 Logics.Clear(args);
             }
@@ -84,15 +83,15 @@ namespace ExorAIO.Champions.Pantheon
         ///     Called on interruptable spell.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="Interrupter2.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public static void OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
+        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
+        public static void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
         {
-            if (Variables.W.IsReady() &&
-                !Bools.IsSpellShielded(sender) &&
-                sender.IsValidTarget(Variables.W.Range) &&
-                Variables.getCheckBoxItem(Variables.WMenu, "wspell.ir"))
+            if (Vars.W.IsReady() &&
+                args.Sender.LSIsValidTarget(Vars.W.Range) &&
+                !Invulnerable.Check(args.Sender, DamageType.Physical, false) &&
+                Vars.getCheckBoxItem(Vars.WMenu, "interrupter"))
             {
-                Variables.W.CastOnUnit(sender);
+                Vars.W.CastOnUnit(args.Sender);
             }
         }
     }

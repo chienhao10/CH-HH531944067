@@ -165,37 +165,37 @@ namespace Challenger_Series.Plugins
 
         private void InitMenu()
         {
-            ComboMenu = MainMenu.AddSubMenu("Combo Settings: ");
-            ComboMenu.Add("kaliorbwalkonminions", new CheckBox("Orbwalk On Minions", false));
-            ComboMenu.Add("kaliuseqmanaslider", new Slider("Use Q if Mana% > ", 20));
-            ComboMenu.Add("kalifocuswbuffedenemy", new CheckBox("Focus Enemy with W Buff", true));
-            ComboMenu.Add("kaliusersaveally", new CheckBox("Use R to save Soulbound", true));
-            ComboMenu.Add("userengage", new CheckBox("Use R to engage", false));
-            ComboMenu.Add("kaliusercounternengage", new CheckBox("Use R counter-engage", true));
-            ComboMenu.Add("kaliuserinterrupt", new CheckBox("Use R to Interrupt"));
+            ComboMenu = MainMenu.AddSubMenu("连招设置: ");
+            ComboMenu.Add("kaliorbwalkonminions", new CheckBox("走砍小兵", false));
+            ComboMenu.Add("kaliuseqmanaslider", new Slider("使用 Q 如果蓝量 > ", 20));
+            ComboMenu.Add("kalifocuswbuffedenemy", new CheckBox("集火被守卫发现目标", true));
+            ComboMenu.Add("kaliusersaveally", new CheckBox("使用 R 救队友", true));
+            ComboMenu.Add("userengage", new CheckBox("使用 R 开团", false));
+            ComboMenu.Add("kaliusercounternengage", new CheckBox("使用 R 反进攻", true));
+            ComboMenu.Add("kaliuserinterrupt", new CheckBox("使用 R 打断技能"));
 
-            WomboComboMenu = MainMenu.AddSubMenu("Wombo Combos: ");
-            WomboComboMenu.Add("Balista", new CheckBox("Balista", true));
-            WomboComboMenu.Add("Talista", new CheckBox("Talista", true));
-            WomboComboMenu.Add("Salista", new CheckBox("Salista", true));
+            WomboComboMenu = MainMenu.AddSubMenu("合体技: ");
+            WomboComboMenu.Add("Balista", new CheckBox("机器人合体", true));
+            WomboComboMenu.Add("Talista", new CheckBox("蛤蟆合体", true));
+            WomboComboMenu.Add("Salista", new CheckBox("蝎子合体", true));
 
-            HarassMenu = MainMenu.AddSubMenu("Harass Settings: ");
-            HarassMenu.Add("kaliuseqstacktransfer", new CheckBox("Use Q Stack Transfer"));
-            HarassMenu.Add("kaliuseqstacktransferminstacks", new Slider("Min stacks for Stack Transfer", 3, 0, 15));
-            HarassMenu.Add("useeresetharass", new CheckBox("Use E if resetted by a minion"));
-            HarassMenu.Add("useeresetmana", new Slider("Use E Reset by Minion if Mana% > ", 90));
-            HarassMenu.Add("useeresetminenstacks", new Slider("Use E Reset if Enemy stacks > ", 3, 0, 25));
+            HarassMenu = MainMenu.AddSubMenu("骚扰设置: ");
+            HarassMenu.Add("kaliuseqstacktransfer", new CheckBox("使用 Q 叠加"));
+            HarassMenu.Add("kaliuseqstacktransferminstacks", new Slider("最少层数使用Q", 3, 0, 15));
+            HarassMenu.Add("useeresetharass", new CheckBox("使用 E 如果可击杀小兵"));
+            HarassMenu.Add("useeresetmana", new Slider("使用小兵重置 E 如果蓝% > ", 90));
+            HarassMenu.Add("useeresetminenstacks", new Slider("使用英雄重置 E 如果层数 > ", 3, 0, 25));
 
-            FarmMenu = MainMenu.AddSubMenu("Farm Settings");
-            FarmMenu.Add("alwaysuseeif2minkillable", new CheckBox("Always use E if resetted with no mana cost", true));
+            FarmMenu = MainMenu.AddSubMenu("农兵");
+            FarmMenu.Add("alwaysuseeif2minkillable", new CheckBox("总是E如果无蓝消耗", true));
 
-            RendDamageMenu = MainMenu.AddSubMenu("Adjust Rend (E) DMG Prediction: ");
-            RendDamageMenu.Add("kalirendreducedmg", new Slider("Reduce E DMG by: ", 0, 0, 300));
+            RendDamageMenu = MainMenu.AddSubMenu("调整 (E) 伤害预判: ");
+            RendDamageMenu.Add("kalirendreducedmg", new Slider("降低 E 伤害: ", 0, 0, 300));
 
-            DrawMenu = MainMenu.AddSubMenu("Drawing Settings: ");
-            DrawMenu.Add("drawerangekali", new CheckBox("Draw E Range", true));
-            DrawMenu.Add("kalidrawrrange", new CheckBox("Draw R Range", true));
-            DrawMenu.Add("kalidrawedmg", new CheckBox("Draw E Damage", true));
+            DrawMenu = MainMenu.AddSubMenu("线圈设置: ");
+            DrawMenu.Add("drawerangekali", new CheckBox("显示 E 范围", true));
+            DrawMenu.Add("kalidrawrrange", new CheckBox("显示 R 范围", true));
+            DrawMenu.Add("kalidrawedmg", new CheckBox("显示 E 范围", true));
 
             UseQStackTransferBool = HarassMenu["kaliuseqstacktransfer"].Cast<CheckBox>().CurrentValue;
             UseEIfResettedByAMinionBool = HarassMenu["useeresetharass"].Cast<CheckBox>().CurrentValue;
@@ -504,7 +504,7 @@ namespace Challenger_Series.Plugins
             // Take into account all kinds of shields
             var totalHealth = GetTotalHealthWithShieldsApplied(target);
 
-            var dmg = GetRendDamage(target);
+            var dmg = GetRendDamage(target) - ReduceRendDamageBySlider;
 
             if (target.Name.Contains("Baron") && ObjectManager.Player.HasBuff("barontarget"))
             {
@@ -530,7 +530,7 @@ namespace Challenger_Series.Plugins
         public double GetRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)
         {
             // Calculate the damage and return
-            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical, GetRawRendDamage(target, customStacks, rendBuff) - this.ReduceRendDamageBySlider);
+            return ObjectManager.Player.CalculateDamage(target, DamageType.Physical, GetRawRendDamage(target, customStacks, rendBuff));
         }
 
         public float GetRawRendDamage(Obj_AI_Base target, int customStacks = -1, BuffInstance rendBuff = null)

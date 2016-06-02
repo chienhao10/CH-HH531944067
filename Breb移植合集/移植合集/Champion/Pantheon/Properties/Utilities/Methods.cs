@@ -1,7 +1,8 @@
 using EloBuddy;
-using LeagueSharp.Common;
+using LeagueSharp;
+using LeagueSharp.SDK;
 
-namespace ExorAIO.Champions.Pantheon
+namespace ExorSDK.Champions.Pantheon
 {
     /// <summary>
     ///     The methods class.
@@ -14,7 +15,7 @@ namespace ExorAIO.Champions.Pantheon
         public static void Initialize()
         {
             Game.OnUpdate += Pantheon.OnUpdate;
-            Interrupter2.OnInterruptableTarget += Pantheon.OnInterruptableTarget;
+            Events.OnInterruptableTarget += Pantheon.OnInterruptableTarget;
         }
     }
 }
