@@ -1216,6 +1216,12 @@
     <Compile Include="Utility\SkinHack\Program.cs" />
     <Compile Include="Utility\SkinSDK\MenuConfig.cs" />
     <Compile Include="Utility\SkinSDK\Program.cs" />
+    <Compile Include="Utility\SPredictioner\EventHandlers.cs" />
+    <Compile Include="Utility\SPredictioner\Program.cs" />
+    <Compile Include="Utility\SPredictioner\ShineCommon\Utility.cs" />
+    <Compile Include="Utility\SPredictioner\SpellData.cs" />
+    <Compile Include="Utility\SPredictioner\SpellDatabase.cs" />
+    <Compile Include="Utility\SPredictioner\SPredictioner.cs" />
     <Compile Include="Utility\TheCheater\IDetector.cs" />
     <Compile Include="Utility\TheCheater\LeaguesharpOrbwalkDetector.cs" />
     <Compile Include="Utility\TheCheater\SacOrbwalkerDetector.cs" />

@@ -419,18 +419,30 @@ namespace PopBlanc
 
             if (chainable != null)
             {
-                if (E.IsReady() && ObjectManager.Player.LSDistance(chainable) < E.Range)
+                if (E.IsReady())
                 {
-                    E.CastIfHitchanceEquals(chainable, HitChance.High);
+                    if (ObjectManager.Player.LSDistance(chainable) < E.Range)
+                    {
+                        var predA = E.GetPrediction(chainable);
+                        if (predA.Hitchance >= HitChance.High)
+                        {
+                            E.Cast(chainable);
+                        }
+                    }
                 }
-
-                else if (R.IsReady() && ObjectManager.Player.LSDistance(chainable) < E.Range && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Name == "LeblancSoulShackleM")
+                else if (R.IsReady() && ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Name == "LeblancSoulShackleM")
                 {
-                    ER.CastIfHitchanceEquals(chainable, HitChance.High);
-                    Console.WriteLine("2Chainz: Cast R(E)");
+                    if (ObjectManager.Player.LSDistance(chainable) < E.Range)
+                    {
+                        var pred = ER.GetPrediction(chainable);
+                        if (pred.Hitchance >= HitChance.High)
+                        {
+                            ER.Cast(chainable);
+                            Console.WriteLine("2Chainz: Cast R(E)");
+                        }
+                    }
                     return true;
                 }
-
                 return false;
             }
 

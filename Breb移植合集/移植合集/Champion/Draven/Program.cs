@@ -413,6 +413,7 @@ namespace RevampedDraven
                     else
                     {
                         Orbwalker.DisableMovement = false;
+                        Orbwalker.DisableAttacking = false;
                     }
                 }
 

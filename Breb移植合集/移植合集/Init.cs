@@ -131,6 +131,11 @@ namespace PortAIO
                     AntiTrap.Program.Game_OnGameLoad();
                 }
 
+                if (Loader.sdkPredictioner)
+                {
+                    SPredictioner.Program.Init();
+                }
+
                 if (Loader.autoSharp)
                 {
                     //AutoSharp.Program.Main();

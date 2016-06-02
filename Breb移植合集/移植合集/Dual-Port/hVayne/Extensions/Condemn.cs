@@ -11,8 +11,6 @@ namespace hVayne.Extensions
 {
     class Condemn : Spells
     {
-        //
-        public static long _lastCheck;
         // ReSharper disable once CollectionNeverQueried.Local
         private static List<Vector2> _points = new List<Vector2>();
 
@@ -50,8 +48,7 @@ namespace hVayne.Extensions
 
         public static bool Condemn360(AIHeroClient unit, int push, Vector2 pos = new Vector2())
         {
-            if (unit.HasBuffOfType(BuffType.SpellImmunity) || unit.HasBuffOfType(BuffType.SpellShield) ||
-                _lastCheck + 50 > Environment.TickCount || ObjectManager.Player.IsDashing())
+            if (unit.HasBuffOfType(BuffType.SpellImmunity) || unit.HasBuffOfType(BuffType.SpellShield) || ObjectManager.Player.IsDashing())
             {
                 return false;
             }

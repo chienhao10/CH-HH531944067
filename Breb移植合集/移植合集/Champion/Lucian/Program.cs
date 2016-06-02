@@ -249,6 +249,16 @@ namespace LCS_Lucian
             {
                 Orbwalker.DisableAttacking = false;
             }
+
+            if (getCheckBoxItem(killStealMenu, "lucian.q.ks") && (LucianSpells.Q.IsReady() || LucianSpells.Q2.IsReady()))
+            {
+                ExtendedQKillSteal();
+            }
+
+            if (getCheckBoxItem(killStealMenu, "lucian.w.ks") && LucianSpells.W.IsReady())
+            {
+                KillstealW();
+            }
         }
 
         private static void SemiManual()
@@ -330,6 +340,36 @@ namespace LCS_Lucian
                         LucianSpells.Q.CastOnUnit(enemy);
                     }
                     break;
+            }
+        }
+
+        private static void ExtendedQKillSteal()
+        {
+            var minions = ObjectManager.Get<Obj_AI_Minion>().Where(o => o.LSIsValidTarget(LucianSpells.Q.Range));
+            var target = ObjectManager.Get<AIHeroClient>().FirstOrDefault(x => x.LSIsValidTarget(LucianSpells.Q2.Range));
+
+            if (target.Distance(ObjectManager.Player.Position) > LucianSpells.Q.Range && target.LSCountEnemiesInRange(LucianSpells.Q2.Range) > 0
+                && (target.Health < LucianSpells.Q.GetDamage(target) || target.Health < LucianSpells.Q2.GetDamage(target)))
+            {
+                foreach (var minion in minions)
+                {
+                    if (LucianSpells.Q2.WillHit(target, ObjectManager.Player.ServerPosition.LSExtend(minion.ServerPosition, LucianSpells.Q2.Range), 0, HitChance.VeryHigh))
+                    {
+                        LucianSpells.Q2.CastOnUnit(minion);
+                    }
+                }
+            }
+        }
+        private static void KillstealW()
+        {
+            var target = HeroManager.Enemies.Where(x => x.LSIsValidTarget(LucianSpells.W.Range)).
+                FirstOrDefault(x => x.Health < LucianSpells.W.GetDamage(x));
+
+            var pred = LucianSpells.W.GetPrediction(target);
+
+            if (target != null && pred.Hitchance >= HitChance.High)
+            {
+                LucianSpells.W.Cast(pred.CastPosition);
             }
         }
 

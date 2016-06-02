@@ -389,7 +389,7 @@ namespace Challenger_Series.Plugins
             ComboMenu.Add("Lucianecombo", new ComboBox("E 模式", 0, "边上", "鼠标", "敌人", "从不"));
             ComboMenu.Add("Lucianecockblocker", new CheckBox("使用 E 防近距离英雄", true));
             ComboMenu.Add("Lucianegoham", new CheckBox("使用 E 爆发", false));
-            ComboMenu.Add("Luciansemiauto", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'R'));
+            ComboMenu.Add("Luciansemiauto", new KeyBind("半自动 R 按键", false, KeyBind.BindTypes.HoldActive, 'T'));
             ComboMenu.Add("Lucianblockmanualr", new CheckBox("屏蔽手动 R", true));
             ComboMenu.Add("Lucianrcombo", new CheckBox("自动 R", true));
             ComboMenu.Add("Lucianqks", new CheckBox("使用 Q 抢头", true));

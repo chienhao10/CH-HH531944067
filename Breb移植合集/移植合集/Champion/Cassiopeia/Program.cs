@@ -120,6 +120,7 @@ namespace SAutoCarry.Champions
             comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseQ", new CheckBox("使用 Q"));
             comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseW", new CheckBox("使用 W"));
             comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseE", new CheckBox("使用 E"));
+            comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseEPoison", new CheckBox("只使用 E 中毒的目标"));
             comboMenu.Add("SAutoCarry.Cassiopeia.Combo.UseR", new Slider("R最少命中 X个", 1, 1, 5));
 
             harassMenu = rootMenu.AddSubMenu("骚扰", "SAutoCarry.Cassiopeia.Harass");
@@ -155,7 +156,7 @@ namespace SAutoCarry.Champions
             Spells[E].SetTargetted(0.2f, float.MaxValue);
 
             Spells[R] = new Spell(SpellSlot.R, 460f);
-            Spells[R].SetSkillshot(0.3f, (float) (80*Math.PI/180), float.MaxValue, false, SkillshotType.SkillshotCone);
+            Spells[R].SetSkillshot(0.3f, (float)(80 * Math.PI / 180), float.MaxValue, false, SkillshotType.SkillshotCone);
         }
 
         public void BeforeOrbwalk(EventArgs args)
@@ -187,7 +188,7 @@ namespace SAutoCarry.Champions
                 var t = TargetSelector.GetTarget(Spells[Q].Range, DamageType.Magical);
                 if (t != null)
                 {
-                    Spells[Q].Cast(t);   
+                    Spells[Q].Cast(t);
                 }
             }
 
@@ -201,8 +202,12 @@ namespace SAutoCarry.Champions
             if (Spells[E].IsReady() && ComboUseE)
             {
                 var t = TargetSelector.GetTarget(Spells[E].Range, DamageType.Magical);
-                if (t != null && t.HasBuffOfType(BuffType.Poison))
+                if (t != null && t.HasBuffOfType(BuffType.Poison) && getCheckBoxItem(comboMenu, "SAutoCarry.Cassiopeia.Combo.UseEPoison"))
                     Spells[E].CastOnUnit(t);
+
+                if (t != null && !getCheckBoxItem(comboMenu, "SAutoCarry.Cassiopeia.Combo.UseEPoison"))
+                    Spells[E].CastOnUnit(t);
+
             }
 
 
@@ -270,7 +275,7 @@ namespace SAutoCarry.Champions
                 var farm = Spells[Q].GetCircularFarmLocation(MinionManager.GetMinions(Spells[Q].Range + 100, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth));
                 if (farm.MinionsHit > 1)
                 {
-                    Spells[Q].Cast(farm.Position);   
+                    Spells[Q].Cast(farm.Position);
                 }
             }
 
@@ -279,7 +284,7 @@ namespace SAutoCarry.Champions
                 var farm = Spells[W].GetCircularFarmLocation(MinionManager.GetMinions(Spells[W].Range + 100, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth));
                 if (farm.MinionsHit > 2)
                 {
-                    Spells[W].Cast(farm.Position);   
+                    Spells[W].Cast(farm.Position);
                 }
             }
 

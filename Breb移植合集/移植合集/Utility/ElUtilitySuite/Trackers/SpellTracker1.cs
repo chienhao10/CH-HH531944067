@@ -430,6 +430,8 @@
             return name;
         }
 
+        public static string[] a = { "Riven" };
+
         private void OnDrawingEndScene(EventArgs args)
         {
             try
@@ -458,8 +460,26 @@
                             return;
                         }
 
-                        var x = (int)hero.HPBarPosition.X + (hero.ChampionName.Equals("Riven") ? 5 : 0);
-                        var y = (int)hero.HPBarPosition.Y + (hero.ChampionName.Equals("Riven") ? -9 : 0);
+                        var x = (int)hero.HPBarPosition.X;
+                        var y = (int)hero.HPBarPosition.Y;
+
+                        if (!a.Contains(hero.ChampionName) && hero.IsEnemy)
+                        {
+                            x += -19;
+                            y += 2;
+                        }
+
+                        if (!a.Contains(hero.ChampionName) && hero.IsMe)
+                        {
+                            x += 3;
+                            y += -3;
+                        }
+
+                        if (hero.ChampionName.Equals("Riven") && hero.IsMe)
+                        {
+                            x += 5;
+                            y += -9;
+                        }
 
                         this._sprite.Begin(SpriteFlags.AlphaBlend);
                         var summonerData = this._summonerDatas[hero.NetworkId];

@@ -18,6 +18,7 @@ namespace PortAIO.Utility
     {
 
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
+        public static bool sdkPredictioner { get { return Miscc["sdkPredictioner"].Cast<CheckBox>().CurrentValue; } }
         public static bool cheat { get { return Miscc["cheat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoSharp { get { return Miscc["autoSharp"].Cast<CheckBox>().CurrentValue; } }
         public static bool useTracker { get { return Miscc["tracker"].Cast<CheckBox>().CurrentValue; } }
@@ -419,6 +420,7 @@ namespace PortAIO.Utility
             Miscc.Add("antialistar", new CheckBox("开启 防牛头冲撞?", true));
             Miscc.AddSeparator();
             Miscc.Add("autoSharp", new CheckBox("开启Auto Sharp(挂机)?", false));
+            Miscc.Add("sdkPredictioner", new CheckBox("开启 SDK预判者?", true));
             Miscc.Add("traptrack", new CheckBox("开启 陷阱计时?", false));
 
             /*
