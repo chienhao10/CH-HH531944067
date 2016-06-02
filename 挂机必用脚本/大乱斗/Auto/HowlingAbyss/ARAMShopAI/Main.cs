@@ -301,6 +301,12 @@ namespace AutoSharp.Auto.HowlingAbyss.ARAMShopAI
             "Manamune", "Statikk Shiv",
             "Ionian Boots of Lucidity", "Youmuu's Ghostblade", "The Black Cleaver", "Maw of Malmortius"
         };
+        
+        public static string[] Jhin =
+        {
+            "Essence Reaver", "Rapid Firecannon",
+            "Boots of Swiftness", "Infinity Edge", "Mercurial Scimitar", "Lord Dominik's Regards"
+        };
 
         public static string[] Jinx =
         {
@@ -632,6 +638,12 @@ namespace AutoSharp.Auto.HowlingAbyss.ARAMShopAI
             "Mercury's Treads", "Warmog's Armor", "Randuin's Omen", "Liandry's Torment"
         };
 
+        public static string[] Taliyah =
+        {
+            "Rod of Ages", "Rylai's Crystal Scepter",
+            "Sorcerer's Shoes", "Zhonya's Hourglass", "Void Staff", "Rabadon's Deathcap"
+        };
+        
         public static string[] Talon =
         {
             "Ravenous Hydra", "Youmuu's Ghostblade",
@@ -912,6 +924,8 @@ namespace AutoSharp.Auto.HowlingAbyss.ARAMShopAI
                 List = Jax;
             if (name.Equals("Jayce"))
                 List = Jayce;
+            if (name.Equals("Jhin"))
+                List = Jhin;
             if (name.Equals("Jinx"))
                 List = Jinx;
             if (name.Equals("Kalista"))
@@ -1022,6 +1036,8 @@ namespace AutoSharp.Auto.HowlingAbyss.ARAMShopAI
                 List = Syndra;
             if (name.Equals("TahmKench"))
                 List = TahmKench;
+            if (name.Equals("Taliyah"))
+                List = Taliyah;
             if (name.Equals("Talon"))
                 List = Talon;
             if (name.Equals("Taric"))

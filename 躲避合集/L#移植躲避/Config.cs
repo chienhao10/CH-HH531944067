@@ -32,24 +32,10 @@ namespace Evade
     {
         public const bool PrintSpellData = false;
         public const bool TestOnAllies = false;
-        public static int SkillShotsExtraRadius
-        {
-            get { return 9 + humanizer["ExtraEvadeRange"].Cast<Slider>().CurrentValue; }
-        }
-        public static int SkillShotsExtraRange
-        {
-            get { return 20 + humanizer["ExtraEvadeRange"].Cast<Slider>().CurrentValue; }
-        }
+        public const int SkillShotsExtraRadius = 15;
+        public const int SkillShotsExtraRange = 25;
         public const int GridSize = 10;
-        public static int ExtraEvadeDistance
-        {
-            get { return 15 + humanizer["ExtraEvadeRange"].Cast<Slider>().CurrentValue; }
-        }
-
-        public static int ActivationDelay
-        {
-            get { return 0; /*return humanizer["ActivationDelay"].Cast<Slider>().CurrentValue;*/ }
-        }
+        public const int ExtraEvadeDistance = 20;
         public const int PathFindingDistance = 60;
         public const int PathFindingDistance2 = 35;
 
@@ -66,7 +52,7 @@ namespace Evade
         public const int EvadePointChangeInterval = 300;
         public static int LastEvadePointChangeT = 0;
 
-        public static Menu Menu, evadeSpells, skillShots, shielding, collision, drawings, misc, humanizer;
+        public static Menu Menu, evadeSpells, skillShots, shielding, collision, drawings, misc;
         public static Color EnabledColor, DisabledColor, MissileColor;
 
         public static void CreateMenu()
@@ -198,12 +184,7 @@ namespace Evade
 
             drawings.Add("EnableDrawings", new CheckBox("开启线圈"));
             drawings.Add("ShowEvadeStatus", new CheckBox("显示躲避状态"));
-
-            humanizer = Menu.AddSubMenu("人性化");
-
-            //humanizer.Add("ActivationDelay", new Slider("Activation Delay"));
-            humanizer.Add("ExtraEvadeRange", new Slider("额外躲避范围"));
-
+            
             misc = Menu.AddSubMenu("杂项", "Misc");
             misc.AddStringList("BlockSpells", "躲避时屏蔽技能", new[] { "不", "危险时", "总是" }, 1);
             //misc.Add("BlockSpells", "Block spells while evading").SetValue(new StringList(new []{"No", "Only dangerous", "Always"}, 1)));
