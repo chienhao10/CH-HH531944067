@@ -145,8 +145,8 @@ namespace Evade
             //Initialze the collision
             Collision.Init();
 
-            Chat.Print("Evade Loaded", Color.Green);
-            Console.WriteLine("Evade:: Evade Loaded");
+            Chat.Print("Evade By Kyn", Color.Red);
+            Console.WriteLine("Evade:: Evade By Kyn");
             
             if (Config.PrintSpellData)
             {
@@ -1373,7 +1373,7 @@ namespace Evade
                 var heropos = Drawing.WorldToScreen(ObjectManager.Player.Position);
                 if (Config.Menu["Enabled"].Cast<KeyBind>().CurrentValue)
                 {
-                    Drawing.DrawText(heropos.X, heropos.Y, Color.Red, "Evade: ON");
+                    Drawing.DrawText(heropos.X, heropos.Y, Color.Red, "Evade: Testing");
                 }
             }
 
