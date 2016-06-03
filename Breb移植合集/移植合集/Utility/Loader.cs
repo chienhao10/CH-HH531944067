@@ -347,7 +347,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[44]))
                 {
-                    Miscc.Add("rengar", new ComboBox("切换 狮子狗脚本 : ", 0, "ElRengar", "D-Rengar"));
+                    Miscc.Add("rengar", new ComboBox("切换 狮子狗脚本 : ", 0, "ElRengar", "D-Rengar", "PrideStalker"));
                 }
                 if (Player.ChampionName.Equals(Champion[45]))
                 {

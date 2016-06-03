@@ -1013,6 +1013,9 @@ namespace PortAIO
                             case 1:
                                 D_Rengar.Program.Game_OnGameLoad();
                                 break;
+                            case 2:
+                                PrideStalker_Rengar.Program.Load();
+                                break;
                             default:
                                 ElRengarRevamped.Rengar.OnLoad();
                                 break;

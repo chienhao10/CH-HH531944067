@@ -454,6 +454,17 @@
     <Compile Include="Dual-Port\OKTWMorgana\Morgana.cs" />
     <Compile Include="Dual-Port\OKTWQuinn\Quinn.cs" />
     <Compile Include="Dual-Port\OKTWTwistedFate\TwistedFate.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Core.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Draw\Draw.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Draw\HpBarDraw.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\AfterAA.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\BeforeAA.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\Dmg.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\Items.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\KillSteal.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\Mode.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Main\MenuConfig.cs" />
+    <Compile Include="Dual-Port\PrideStalker Rengar\Program.cs" />
     <Compile Include="Dual-Port\SimpleSion\Sion.cs" />
     <Compile Include="Champion\Taliyah\Program.cs" />
     <Compile Include="Dual-Port\SluttyRyze\AutoLevelManager.cs" />
