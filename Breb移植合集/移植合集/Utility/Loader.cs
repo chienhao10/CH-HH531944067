@@ -92,6 +92,7 @@ namespace PortAIO.Utility
         public static int sivir { get { return Miscc["sivir"].Cast<ComboBox>().CurrentValue; } }
         public static int jarvan { get { return Miscc["jarvan"].Cast<ComboBox>().CurrentValue; } }
         public static int braum { get { return Miscc["braum"].Cast<ComboBox>().CurrentValue; } }
+        public static int karma { get { return Miscc["karma"].Cast<ComboBox>().CurrentValue; } }
 
         public static Menu Miscc;
 
@@ -159,6 +160,7 @@ namespace PortAIO.Utility
             "Sivir", //53
             "JarvanIV", // 54
             "Braum", //55
+            "Karma", //56
         });
 
         public static void Menu()
@@ -392,6 +394,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[55]))
                 {
                     Miscc.Add("braum", new ComboBox("切换 巴隆脚本 : ", 0, "OKTW", "FreshBooster"));
+                }
+                if (Player.ChampionName.Equals(Champion[56]))
+                {
+                    Miscc.Add("karma", new ComboBox("切换 天启者脚本 : ", 0, "Spirit Karma", "Esk0r Karma"));
                 }
             }
             else

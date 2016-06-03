@@ -681,8 +681,19 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "karma": // Karma by Eskor
-                        Karma.Program.Game_OnGameLoad();
+                    case "karma": // Karma by Eskor && Spirit Karma
+                        switch (Loader.karma)
+                        {
+                            case 0:
+                                Spirit_Karma.Program.Load();
+                                break;
+                            case 1:
+                                Karma.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                Spirit_Karma.Program.Load();
+                                break;
+                        }
                         break;
                     case "kassadin": // Kassawin
                         Kassawin.Kassadin.OnLoad();
