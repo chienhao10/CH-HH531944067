@@ -703,7 +703,7 @@
                 {
                     if (drawText && this.SmiteSpell != null)
                     {
-                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "未开启惩戒!");
+                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "Smite not active!");
                     }
                 }
 
@@ -729,34 +729,6 @@
         }
 
         /// <summary>
-        ///     Gets the nearest minions
-        /// </summary>
-        /// <param name="pos"></param>
-        /// <returns></returns>
-        public static Obj_AI_Minion GetNearest(Vector3 pos)
-        {
-            var minions =
-                ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(minion => minion.IsValid && SmiteObjects.Any(name => minion.Name.StartsWith(name)) &&
-                    !SmiteObjects.Any(name => minion.Name.Contains("Mini"))
-                    && !SmiteObjects.Any(name => minion.Name.Contains("Spawn")));
-
-            var objAiMinions = minions as Obj_AI_Minion[] ?? minions.ToArray();
-            Obj_AI_Minion sMinion = objAiMinions.FirstOrDefault();
-            double? nearest = null;
-            foreach (Obj_AI_Minion minion in objAiMinions)
-            {
-                double distance = Vector3.Distance(pos, minion.Position);
-                if (nearest == null || nearest > distance)
-                {
-                    nearest = distance;
-                    sMinion = minion;
-                }
-            }
-            return sMinion;
-        }
-
-        /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
         /// <param name="args">The <see cref="System.EventArgs" /> instance containing the event data.</param>
@@ -776,7 +748,14 @@
 
                 this.SmiteKill();
 
-                Minion = GetNearest(ObjectManager.Player.ServerPosition);
+                Minion =
+                   (Obj_AI_Minion)
+                  MinionManager.GetMinions(this.Player.ServerPosition, 570f, MinionTypes.All, MinionTeam.Neutral)
+                      .FirstOrDefault(
+                          buff => buff.Name.StartsWith(buff.CharData.BaseSkinName)
+                          && SmiteObjects.Contains(buff.CharData.BaseSkinName)
+                          && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
+
                 if (Minion == null)
                 {
                     return;
