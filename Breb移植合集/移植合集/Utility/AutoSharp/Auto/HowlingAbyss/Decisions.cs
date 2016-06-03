@@ -75,7 +75,7 @@ namespace AutoSharp.Auto.HowlingAbyss
             }
             else
             {
-                Orbwalker.ActiveModesFlags = Heroes.Player.LSCountEnemiesInRange(Heroes.Player.AttackRange + 300) == 0 ? Orbwalker.ActiveModes.LaneClear : Orbwalker.ActiveModes.Combo;
+                Orbwalker.ActiveModesFlags = Heroes.Player.LSCountEnemiesInRange(Heroes.Player.AttackRange + 500) == 0 ? Orbwalker.ActiveModes.LaneClear : Orbwalker.ActiveModes.Combo;
             }
             Orbwalker.MoveTo(Positioning.RandomlyChosenMove);
         }

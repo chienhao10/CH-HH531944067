@@ -6,27 +6,26 @@ using System.IO;
 using LeagueSharp;
 using LeagueSharp.Common;
 using EloBuddy;
+using System.Security.Permissions;
 
 namespace Chat_Logger
 {
     public static class Program
     {
-        public static string LogFile;
         public static Stopwatch Stopwatch;
+
+        public static StreamWriter Writer { get; set; }
+        public static string LogFile { get; set; }
+
         public static void Init()
         {
             //Define the logfile location
-            LogFile = Config.AppDataDirectory + "\\Chat Logs\\" + DateTime.Now.ToString("yy-MM-dd") + " " + DateTime.Now.ToString("HH-mm-ss") + " - " + ObjectManager.Player.ChampionName + ".txt";
+            LogFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\EloBuddy\", DateTime.Now.ToString("yy -MM-dd") + " " + DateTime.Now.ToString("HH-mm-ss") + " - " + ObjectManager.Player.ChampionName + ".txt");
+            File.CreateText(LogFile);
 
             //Create a stopwatch which we will use to emulate in-game time.
             Stopwatch = new Stopwatch();
             Stopwatch.Start();
-
-            //Create the AppData Directory, if it doesn't exist.
-            if (!Directory.Exists(Config.AppDataDirectory + "\\Chat Logs\\"))
-            {
-                Directory.CreateDirectory(Config.AppDataDirectory + "\\Chat Logs\\");
-            }
 
             //Show the user a message
             Chat.Print("The chat log for this game can be found at " + LogFile);
@@ -36,13 +35,14 @@ namespace Chat_Logger
             Chat.OnMessage += Chat_OnMessage;
         }
 
+        public static string FormatTime(double time)
+        {
+            var t = TimeSpan.FromSeconds(time);
+            return string.Format("{0:D2}:{1:D2}", t.Minutes, t.Seconds);
+        }
+
         private static void Chat_OnMessage(AIHeroClient sender, ChatMessageEventArgs args)
         {
-            if (!File.Exists(LogFile))
-            {
-                File.Create(LogFile);
-            }
-
             using (var sw = new StreamWriter(LogFile, true))
             {
                 //store the current stopwatch millisecond for accurate results

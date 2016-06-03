@@ -279,6 +279,9 @@ namespace Zed
 
         private static void Combo(AIHeroClient t)
         {
+            if (t == null)
+            return;
+            
             var target = t;
 
             if (target == null) return;

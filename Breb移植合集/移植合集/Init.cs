@@ -21,6 +21,7 @@ namespace PortAIO
 {
     internal static class Init
     {
+
         private static void Main()
         {
             Loading.OnLoadingComplete += Initialize;

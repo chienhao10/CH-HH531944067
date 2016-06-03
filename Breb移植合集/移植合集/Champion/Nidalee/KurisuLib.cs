@@ -313,7 +313,7 @@ namespace KurisuNidalee
 
             var p = human ? "h" : "c";
 
-            var enabled = menua["nd" + p + spell.Slot.ToString().ToLower() + mode].Cast<CheckBox>().CurrentValue;
+            var enabled = menua["nd" + p + spell.Slot.ToString().ToLower() + mode.ToLower()].Cast<CheckBox>().CurrentValue;
 
             var learned = !(spell.Level <= 0 || Player.Spellbook.GetSpell(spell.Slot).State == SpellState.NotLearned);
 
