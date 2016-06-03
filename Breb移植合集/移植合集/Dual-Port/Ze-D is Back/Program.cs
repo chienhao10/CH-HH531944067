@@ -199,21 +199,24 @@ namespace Zed
         {
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                if (GetEnemy == null)
-                    return;
-                Combo(GetEnemy);
+                if (GetEnemy != null)
+                {
+                    Combo(GetEnemy);
+                }
             }
             if (getKeyBindItem(comboMenu, "TheLine"))
             {
-                if (GetEnemy == null)
-                    return;
-                TheLine(GetEnemy);
+                if (GetEnemy != null)
+                {
+                    TheLine(GetEnemy);
+                }
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
             {
-                if (GetEnemy == null)
-                    return;
-                Harass(GetEnemy);
+                if (GetEnemy != null)
+                {
+                    Harass(GetEnemy);
+                }
             }
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
@@ -277,15 +280,8 @@ namespace Zed
             return (float)damage;
         }
 
-        private static void Combo(AIHeroClient t)
+        private static void Combo(AIHeroClient target)
         {
-            if (t == null)
-            return;
-            
-            var target = t;
-
-            if (target == null) return;
-
             var overkill = _player.LSGetSpellDamage(target, SpellSlot.Q) + _player.LSGetSpellDamage(target, SpellSlot.E) + _player.LSGetAutoAttackDamage(target, true) * 2;
             var doubleu = _player.Spellbook.GetSpell(SpellSlot.W);
 
@@ -529,7 +525,7 @@ namespace Zed
         {
             get
             {
-                return TargetSelector.GetTarget(1400, DamageType.Magical);
+                return TargetSelector.GetTarget(1400, DamageType.Physical);
             }
         }
 
