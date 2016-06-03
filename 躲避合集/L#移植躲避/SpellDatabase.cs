@@ -44,7 +44,7 @@ namespace Evade
                         SpellName = "TestSkillShot",
                         Slot = SpellSlot.R,
                         Type = SkillShotType.SkillshotCircle,
-                        Delay = 0,
+                        Delay = 600,
                         Range = 650,
                         Radius = 350,
                         MissileSpeed = int.MaxValue,
@@ -494,7 +494,6 @@ namespace Evade
                     IsDangerous = true,
                     MissileSpellName = "BrandQMissile",
                     EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                    CanBeRemoved = true,
                     CollisionObjects =
                         new[]
                         {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall}
@@ -539,7 +538,6 @@ namespace Evade
                     IsDangerous = true,
                     MissileSpellName = "BraumQMissile",
                     EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
-                    CanBeRemoved = true,
                     CollisionObjects =
                         new[]
                         {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall}
@@ -2163,8 +2161,8 @@ namespace Evade
                     SpellName = "LeonaZenithBlade",
                     Slot = SpellSlot.E,
                     Type = SkillShotType.SkillshotMissileLine,
-                    Delay = 250,
-                    Range = 905,
+                    Delay = 350,
+                    Range = 975,
                     Radius = 70,
                     MissileSpeed = 2000,
                     FixedRange = true,
@@ -2183,9 +2181,9 @@ namespace Evade
                     SpellName = "LeonaSolarFlare",
                     Slot = SpellSlot.R,
                     Type = SkillShotType.SkillshotCircle,
-                    Delay = 1000,
+                    Delay = 625,
                     Range = 1200,
-                    Radius = 300,
+                    Radius = 250,
                     MissileSpeed = int.MaxValue,
                     FixedRange = false,
                     AddHitbox = true,
@@ -3873,7 +3871,7 @@ namespace Evade
                     Delay = 250,
                     Range = 1500,
                     Radius = 80,
-                    MissileSpeed = 780,
+                    MissileSpeed = 1050,
                     FixedRange = false,
                     AddHitbox = true,
                     DangerValue = 2,
@@ -3951,7 +3949,7 @@ namespace Evade
                     Type = SkillShotType.SkillshotCircle,
                     Delay = 700,
                     Range = 5600,
-                    Radius = 200,
+                    Radius = 130,
                     MissileSpeed = int.MaxValue,
                     FixedRange = false,
                     AddHitbox = true,
@@ -4208,14 +4206,13 @@ namespace Evade
                     Type = SkillShotType.SkillshotCircle,
                     Delay = 300,
                     Range = 900,
-                    Radius = 210,
+                    Radius = 250,
                     MissileSpeed = 2000,
                     FixedRange = false,
                     AddHitbox = true,
                     DangerValue = 2,
                     IsDangerous = false,
                     MissileSpellName = "ZileanQMissile",
-                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall}
                 });
 
             #endregion Zilean
