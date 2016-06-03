@@ -188,7 +188,7 @@ namespace OneKeyToWin_AIO_Sebby
 
         private static void LogicW()
         {
-            if (Player.Mana > RMANA + WMANA)
+            if (Player.Mana > RMANA + WMANA && !Player.LSIsRecalling())
             {
                 var sensitivity = 20;
                 var dmg = OktwCommon.GetIncomingDamage(Player);

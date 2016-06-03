@@ -171,7 +171,7 @@
             try
             {
                 if (this.Player.IsDead || !getCheckBoxItem(this.Menu, "ThreshLantern") || this.ThreshLantern == null
-                    || !this.ThreshLantern.IsValid)
+                    || !this.ThreshLantern.IsValid || this.Player.ChampionName.Equals("Thresh"))
                 {
                     return;
                 }

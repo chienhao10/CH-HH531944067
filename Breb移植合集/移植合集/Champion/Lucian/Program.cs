@@ -250,7 +250,7 @@ namespace LCS_Lucian
                 Orbwalker.DisableAttacking = false;
             }
 
-            if (getCheckBoxItem(killStealMenu, "lucian.q.ks") && (LucianSpells.Q.IsReady() || LucianSpells.Q2.IsReady()))
+            if (getCheckBoxItem(killStealMenu, "lucian.q.ks") && (LucianSpells.Q.IsReady()))
             {
                 ExtendedQKillSteal();
             }
@@ -346,10 +346,11 @@ namespace LCS_Lucian
         private static void ExtendedQKillSteal()
         {
             var minions = ObjectManager.Get<Obj_AI_Minion>().Where(o => o.LSIsValidTarget(LucianSpells.Q.Range));
-            var target = ObjectManager.Get<AIHeroClient>().FirstOrDefault(x => x.LSIsValidTarget(LucianSpells.Q2.Range));
+            var target = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget(LucianSpells.Q2.Range));
 
-            if (target.Distance(ObjectManager.Player.Position) > LucianSpells.Q.Range && target.LSCountEnemiesInRange(LucianSpells.Q2.Range) > 0
-                && (target.Health < LucianSpells.Q.GetDamage(target) || target.Health < LucianSpells.Q2.GetDamage(target)))
+            if (target.LSDistance(ObjectManager.Player.Position) > LucianSpells.Q.Range &&
+                target.LSDistance(ObjectManager.Player.Position) < LucianSpells.Q2.Range &&
+                target.LSCountEnemiesInRange(LucianSpells.Q2.Range) >= 1 && target.Health < LucianSpells.Q.GetDamage(target) && !target.IsDead)
             {
                 foreach (var minion in minions)
                 {

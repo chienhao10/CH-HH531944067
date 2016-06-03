@@ -31,7 +31,7 @@ namespace iLucian
         {
             Game.OnUpdate += OnUpdate;
             Obj_AI_Base.OnSpellCast += OnDoCast;
-            DZAntigapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
+            AntiGapcloser.OnEnemyGapcloser += OnEnemyGapcloser;
             Obj_AI_Base.OnProcessSpellCast += OnSpellCast;
             Spellbook.OnCastSpell += (sender, args) =>
             {
@@ -85,15 +85,14 @@ namespace iLucian
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
-        private static void OnEnemyGapcloser(DZLib.Core.ActiveGapcloser gapcloser)
+        private static void OnEnemyGapcloser(LeagueSharp.Common.ActiveGapcloser gapcloser)
         {
             if (!getCheckBoxItem(MenuGenerator.miscOptions, "com.ilucian.misc.gapcloser"))
             {
                 return;
             }
 
-            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) < 200))
-                return;
+            if (!gapcloser.Sender.IsEnemy || !(gapcloser.End.LSDistance(ObjectManager.Player.ServerPosition) < 200)) return;
 
             var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(Game.CursorPos,
                 Variables.Spell[Variables.Spells.E].Range);

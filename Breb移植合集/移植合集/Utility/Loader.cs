@@ -16,6 +16,15 @@ namespace PortAIO.Utility
 {
     class Loader
     {
+        public static bool VCursor { get { return Miscc["VCursor"].Cast<CheckBox>().CurrentValue; } }
+        public static bool limitedShat { get { return Miscc["limitedShat"].Cast<CheckBox>().CurrentValue; } }
+        public static bool autoLevel { get { return Miscc["autoLevel"].Cast<CheckBox>().CurrentValue; } }
+        public static bool chatLogger { get { return Miscc["chatLogger"].Cast<CheckBox>().CurrentValue; } }
+        public static bool autoFF { get { return Miscc["autoFF"].Cast<CheckBox>().CurrentValue; } }
+        public static bool urfSpell { get { return Miscc["urfSpell"].Cast<CheckBox>().CurrentValue; } }
+        public static bool pastingSharp { get { return Miscc["pastingSharp"].Cast<CheckBox>().CurrentValue; } }
+        public static bool autoJungle { get { return Miscc["autoJungle"].Cast<CheckBox>().CurrentValue; } }
+
 
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
         public static bool sdkPredictioner { get { return Miscc["sdkPredictioner"].Cast<CheckBox>().CurrentValue; } }
@@ -93,6 +102,9 @@ namespace PortAIO.Utility
         public static int jarvan { get { return Miscc["jarvan"].Cast<ComboBox>().CurrentValue; } }
         public static int braum { get { return Miscc["braum"].Cast<ComboBox>().CurrentValue; } }
         public static int karma { get { return Miscc["karma"].Cast<ComboBox>().CurrentValue; } }
+        public static int teemo { get { return Miscc["teemo"].Cast<ComboBox>().CurrentValue; } }
+        public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
+
 
         public static Menu Miscc;
 
@@ -161,6 +173,7 @@ namespace PortAIO.Utility
             "JarvanIV", // 54
             "Braum", //55
             "Karma", //56
+            "Teemo", //57
         });
 
         public static void Menu()
@@ -399,6 +412,10 @@ namespace PortAIO.Utility
                 {
                     Miscc.Add("karma", new ComboBox("切换 天启者脚本 : ", 0, "Spirit Karma", "Esk0r Karma"));
                 }
+                if (Player.ChampionName.Equals(Champion[57]))
+                {
+                    Miscc.Add("teemo", new ComboBox("切换 提莫脚本 : ", 0, "Sharpshooter", "Swiftly Teemo"));
+                }
             }
             else
             {
@@ -428,6 +445,19 @@ namespace PortAIO.Utility
             Miscc.Add("autoSharp", new CheckBox("开启Auto Sharp(挂机)?", false));
             Miscc.Add("sdkPredictioner", new CheckBox("开启 SDK预判者?", true));
             Miscc.Add("traptrack", new CheckBox("开启 陷阱计时?", false));
+            Miscc.Add("limitedShat", new CheckBox("开启 LimitedShat?", false));
+            Miscc.AddSeparator();
+            Miscc.Add("autoLevel", new CheckBox("开启 自动加点?", false));
+            Miscc.Add("chatLogger", new CheckBox("开启 聊天记录?", false));
+            Miscc.Add("autoFF", new CheckBox("开启 自动投降?", false));
+            Miscc.Add("urfSpell", new CheckBox("开启 阿福快打技能狂放?", false));
+            Miscc.AddSeparator();
+            Miscc.Add("pastingSharp", new CheckBox("开启 PastingSharp?", false));
+            //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
+            Miscc.Add("autoJungle", new CheckBox("开启 爱台湾自动打野?", false));
+            Miscc.AddSeparator();
+            Miscc.AddGroupLabel("功能切换 :");
+            Miscc.Add("evadeCB", new ComboBox("躲避切换?", 0, "ezEvade", "Evade#"));
 
             /*
             Miscc.Add("stream", new CheckBox("Enable StreamBuddy?", false));

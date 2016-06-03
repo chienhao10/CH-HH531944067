@@ -631,6 +631,26 @@ namespace PortAIO.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Hand1 {
+            get {
+                object obj = ResourceManager.GetObject("Hand1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Hand2 {
+            get {
+                object obj = ResourceManager.GetObject("Hand2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Hecarim {
             get {
                 object obj = ResourceManager.GetObject("Hecarim", resourceCulture);
@@ -644,6 +664,66 @@ namespace PortAIO.Properties {
         internal static System.Drawing.Bitmap Heimerdinger {
             get {
                 object obj = ResourceManager.GetObject("Heimerdinger", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HoverEnemy {
+            get {
+                object obj = ResourceManager.GetObject("HoverEnemy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HoverEnemy_Colorblind {
+            get {
+                object obj = ResourceManager.GetObject("HoverEnemy_Colorblind", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HoverFriendly {
+            get {
+                object obj = ResourceManager.GetObject("HoverFriendly", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HoverShop {
+            get {
+                object obj = ResourceManager.GetObject("HoverShop", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HoverUse {
+            get {
+                object obj = ResourceManager.GetObject("HoverUse", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap HoverUse_Colorblind {
+            get {
+                object obj = ResourceManager.GetObject("HoverUse_Colorblind", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1313,6 +1393,76 @@ namespace PortAIO.Properties {
         internal static System.Drawing.Bitmap Singed {
             get {
                 object obj = ResourceManager.GetObject("Singed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SingleTarget {
+            get {
+                object obj = ResourceManager.GetObject("SingleTarget", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SingleTarget_Colorblind {
+            get {
+                object obj = ResourceManager.GetObject("SingleTarget_Colorblind", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SingleTargetAlly {
+            get {
+                object obj = ResourceManager.GetObject("SingleTargetAlly", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SingleTargetEnemy {
+            get {
+                object obj = ResourceManager.GetObject("SingleTargetEnemy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SingleTargetEnemy_Colorblind {
+            get {
+                object obj = ResourceManager.GetObject("SingleTargetEnemy_Colorblind", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SingleTargetEnemyCannoyAttack {
+            get {
+                object obj = ResourceManager.GetObject("SingleTargetEnemyCannoyAttack", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SingleTargetEnemyCannoyAttack_Colorblind {
+            get {
+                object obj = ResourceManager.GetObject("SingleTargetEnemyCannoyAttack_Colorblind", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

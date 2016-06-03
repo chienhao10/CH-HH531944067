@@ -108,7 +108,18 @@ namespace PortAIO
 
                 if (Loader.evade)
                 {
-                    new ezEvade.Evade();
+                    switch (Loader.evadeCB)
+                    {
+                        case 0:
+                            new ezEvade.Evade();
+                            break;
+                        case 1:
+                            EvadeSharp.Program.Game_OnGameStart();
+                            break;
+                        default:
+                            new ezEvade.Evade();
+                            break;
+                    }
                 }
 
                 if (Loader.cheat)
@@ -139,6 +150,46 @@ namespace PortAIO
                 if (Loader.autoSharp)
                 {
                     AutoSharp.Program.Main();
+                }
+
+                if (Loader.limitedShat)
+                {
+                    LimitedShat.Program.Game_OnGameLoad();
+                }
+
+                if (Loader.autoLevel)
+                {
+                    AutoLevelup.Program.Game_OnGameLoad();
+                }
+
+                if (Loader.chatLogger)
+                {
+                    Chat_Logger.Program.Init();
+                }
+
+                if (Loader.autoFF)
+                {
+                    AutoFF.Program.Game_OnGameLoad();
+                }
+
+                if (Loader.urfSpell)
+                {
+                    URF_Spell_Spammer.Program.Game_OnGameLoad();
+                }
+
+                if (Loader.pastingSharp)
+                {
+                    PastingSharp.Program.Game_OnGameLoad();
+                }
+
+                //if (Loader.VCursor)
+                //{
+                    //VCursor.Program.Game_OnGameLoad();
+                //}
+
+                if (Loader.autoJungle)
+                {
+                    AutoJungle.Program.OnGameLoad();
                 }
 
                 /*
@@ -1132,8 +1183,19 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "teemo": // Sharpshooter
-                        new SharpShooter.Plugins.Teemo();
+                    case "teemo": // Sharpshooter & Swiftly_Teemo
+                        switch (Loader.teemo)
+                        {
+                            case 0:
+                                new SharpShooter.Plugins.Teemo();
+                                break;
+                            case 1:
+                                Swiftly_Teemo.Program.Load();
+                                break;
+                            default:
+                                new SharpShooter.Plugins.Teemo();
+                                break;
+                        }
                         break;
                     case "viktor": // Trus In my Viktor
                         Viktor.Program.Game_OnGameLoad();

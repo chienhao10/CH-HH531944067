@@ -58,7 +58,7 @@
   <ItemGroup>
     <Reference Include="Berb.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Downloads\Berb.Common.dll</HintPath>
+      <HintPath>..\Berb.Common\Berb.Common\bin\Debug\Berb.Common.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy">
       <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
@@ -488,6 +488,15 @@
     <Compile Include="Dual-Port\Spirit Karma\Load\Load.cs" />
     <Compile Include="Dual-Port\Spirit Karma\Menus\MenuConfig.cs" />
     <Compile Include="Dual-Port\Spirit Karma\Program.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Core.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Draw\Drawings.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Draw\HpBarIndicator.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Handler\AfterAA.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Handler\Dmg.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Handler\Killsteal.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Main\MenuConfig.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Main\Mode.cs" />
+    <Compile Include="Dual-Port\Swiftly Teemo\Program.cs" />
     <Compile Include="Dual-Port\TophSharp\MenuConfig.cs" />
     <Compile Include="Dual-Port\TophSharp\Taliyah.cs" />
     <Compile Include="Dual-Port\Tyler1\Program.cs" />
@@ -1012,6 +1021,16 @@
     </Compile>
     <Compile Include="Resources\SPRITES\EloDisplayer\EloDisplayer.Designer.cs" />
     <Compile Include="Utility\AntiAlistar\AntiAlistar.cs" />
+    <Compile Include="Utility\AutoFF\Program.cs" />
+    <Compile Include="Utility\AutoJungle\Data\AutoLeveler.cs" />
+    <Compile Include="Utility\AutoJungle\Data\Camps.cs" />
+    <Compile Include="Utility\AutoJungle\Data\Champdata.cs" />
+    <Compile Include="Utility\AutoJungle\Data\GameInfo.cs" />
+    <Compile Include="Utility\AutoJungle\Data\Helpers.cs" />
+    <Compile Include="Utility\AutoJungle\Data\ItemHandler.cs" />
+    <Compile Include="Utility\AutoJungle\Data\Jungle.cs" />
+    <Compile Include="Utility\AutoJungle\Program.cs" />
+    <Compile Include="Utility\AutoLevel\Program.cs" />
     <Compile Include="Utility\AutoSharp\Auto\Autoplay.cs" />
     <Compile Include="Utility\AutoSharp\Auto\HowlingAbyss\ARAMShopAI\BuyItemEvent.cs" />
     <Compile Include="Utility\AutoSharp\Auto\HowlingAbyss\ARAMShopAI\CustomEvents.cs" />
@@ -1040,6 +1059,7 @@
     <Compile Include="Utility\AutoSharp\Utils\Helpers.cs" />
     <Compile Include="Utility\AutoSharp\Utils\Positioning.cs" />
     <Compile Include="Utility\AutoSharp\Utils\Wizard.cs" />
+    <Compile Include="Utility\ChatLogger\Program.cs" />
     <Compile Include="Utility\ElUtilitySuite\Entry.cs" />
     <Compile Include="Utility\ElUtilitySuite\IPlugin.cs" />
     <Compile Include="Utility\ElUtilitySuite\Items\Defensive2.cs" />
@@ -1088,6 +1108,27 @@
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\MDrawing.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\SpriteExtension.cs" />
     <Compile Include="Utility\ElUtilitySuite\Vendor\SFX\VectorExtensions.cs" />
+    <Compile Include="Utility\Evade\Collision.cs" />
+    <Compile Include="Utility\Evade\Config.cs" />
+    <Compile Include="Utility\Evade\EarlyEvade.cs" />
+    <Compile Include="Utility\Evade\Evader.cs" />
+    <Compile Include="Utility\Evade\EvadeSpellData.cs" />
+    <Compile Include="Utility\Evade\EvadeSpellDatabase.cs" />
+    <Compile Include="Utility\Evade\Geometry.cs" />
+    <Compile Include="Utility\Evade\Helpers.cs" />
+    <Compile Include="Utility\Evade\Pathfinding\Core.cs" />
+    <Compile Include="Utility\Evade\Pathfinding\Node.cs" />
+    <Compile Include="Utility\Evade\Pathfinding\Path.cs" />
+    <Compile Include="Utility\Evade\Pathfinding\PathFollower.cs" />
+    <Compile Include="Utility\Evade\Pathfinding\PriorityQueue.cs" />
+    <Compile Include="Utility\Evade\Pathfinding\Utils.cs" />
+    <Compile Include="Utility\Evade\Program.cs" />
+    <Compile Include="Utility\Evade\Skillshot.cs" />
+    <Compile Include="Utility\Evade\SkillshotDetector.cs" />
+    <Compile Include="Utility\Evade\SpellBlocker.cs" />
+    <Compile Include="Utility\Evade\SpellData.cs" />
+    <Compile Include="Utility\Evade\SpellDatabase.cs" />
+    <Compile Include="Utility\Evade\Utils.cs" />
     <Compile Include="Utility\EzEvade\Core\Evade.cs" />
     <Compile Include="Utility\EzEvade\Core\EvadeHelper.cs" />
     <Compile Include="Utility\EzEvade\Draw\RenderCircle.cs" />
@@ -1147,6 +1188,7 @@
     <Compile Include="Utility\God Jungle Tracker\Program.cs" />
     <Compile Include="Utility\Humanizer\Extensions.cs" />
     <Compile Include="Utility\Humanizer\Program.cs" />
+    <Compile Include="Utility\LimitedShat\Program.cs" />
     <Compile Include="Utility\Loader.cs" />
     <Compile Include="Utility\NabbTracker\NabbTracker.cs" />
     <Compile Include="Utility\NabbTracker\Program.cs" />
@@ -1157,10 +1199,16 @@
     <Compile Include="Utility\NabbTracker\Utilities\Properties\Menus.cs" />
     <Compile Include="Utility\NabbTracker\Utilities\Variables.cs" />
     <Compile Include="Utility\NabbTracker\Utilities\WardTracker.cs" />
+    <Compile Include="Utility\PastingSharp\Program.cs" />
     <Compile Include="Utility\SebbyBanWars\Program.cs" />
     <Compile Include="Utility\SkinHack\Program.cs" />
     <Compile Include="Utility\SkinSDK\MenuConfig.cs" />
     <Compile Include="Utility\SkinSDK\Program.cs" />
+    <Compile Include="Utility\Snitched3.0\Config.cs" />
+    <Compile Include="Utility\Snitched3.0\HealthPrediction.cs" />
+    <Compile Include="Utility\Snitched3.0\ObjectTracker.cs" />
+    <Compile Include="Utility\Snitched3.0\Snitched.cs" />
+    <Compile Include="Utility\Snitched3.0\SpellLoader.cs" />
     <Compile Include="Utility\SPredictioner\EventHandlers.cs" />
     <Compile Include="Utility\SPredictioner\Program.cs" />
     <Compile Include="Utility\SPredictioner\ShineCommon\Utility.cs" />
@@ -1175,6 +1223,16 @@
     <Compile Include="Utility\UniversalGankAlerter\Program.cs" />
     <Compile Include="Utility\UniversalPingBlock\Program.cs" />
     <Compile Include="Utility\UniversalRecallTracker\Program.cs" />
+    <Compile Include="Utility\URF Spell Spammer\Program.cs" />
+    <Compile Include="Utility\VCursor\BezierCurve.cs" />
+    <Compile Include="Utility\VCursor\Cursor.cs" />
+    <Compile Include="Utility\VCursor\FakeClicks.cs" />
+    <Compile Include="Utility\VCursor\MouseManager.cs" />
+    <Compile Include="Utility\VCursor\NormalDistribution.cs" />
+    <Compile Include="Utility\VCursor\PathGenerator.cs" />
+    <Compile Include="Utility\VCursor\Program.cs" />
+    <Compile Include="Utility\VCursor\Utility.cs" />
+    <Compile Include="Utility\VCursor\VirtualCursor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -1409,6 +1467,14 @@
     <None Include="Resources\CD_summonersmite.png" />
     <None Include="Resources\CD_summonerteleport.png" />
     <None Include="Resources\Aurelionsol.png" />
+    <None Include="Resources\Hand1.png" />
+    <None Include="Resources\Hand2.png" />
+    <None Include="Resources\HoverEnemy.png" />
+    <None Include="Resources\HoverEnemy_Colorblind.png" />
+    <None Include="Resources\HoverFriendly.png" />
+    <None Include="Resources\HoverShop.png" />
+    <None Include="Resources\HoverUse.png" />
+    <None Include="Resources\HoverUse_Colorblind.png" />
     <Content Include="Resources\Images\cursor_drag.png" />
     <Content Include="Resources\Images\notifications_arrow.png" />
     <Content Include="Resources\Images\notifications_check.png" />
@@ -1479,6 +1545,13 @@
     <None Include="Resources\Skarner.png" />
     <None Include="Resources\Sona.png" />
     <None Include="Resources\Soraka.png" />
+    <None Include="Resources\SingleTarget.png" />
+    <None Include="Resources\SingleTargetAlly.png" />
+    <None Include="Resources\SingleTargetEnemy.png" />
+    <None Include="Resources\SingleTargetEnemyCannoyAttack.png" />
+    <None Include="Resources\SingleTargetEnemyCannoyAttack_Colorblind.png" />
+    <None Include="Resources\SingleTargetEnemy_Colorblind.png" />
+    <None Include="Resources\SingleTarget_Colorblind.png" />
     <Content Include="Resources\SPRITES\EloDisplayer\EloGui.png" />
     <None Include="Resources\Swain.png" />
     <None Include="Resources\Syndra.png" />

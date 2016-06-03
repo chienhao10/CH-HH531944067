@@ -16,7 +16,6 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - SkyLv Tristana/AurelionSol [https://github.com/EloFactory/SkyLv_SoLuTiON]
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
 - Sharpy AIO Zed [https://github.com/deop7138/Sharpy-AIO/tree/master/Sharpy%20AIO]
-- Swiftly Teemo [https://github.com/Nechrito/SDK/tree/master/Swiftly%20Teemo]
 - Teemo God [https://github.com/MasterGFv2/Teemo_The_Real_God/tree/master/Teemo_The_Real_God]
 - RAREKarthus/Zyra [https://github.com/KyonLeague/RAREScripts/tree/master]
 - Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
@@ -31,16 +30,12 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Geass Tristana
 - SoloVayne
 - YasuoSharpV2
-- Spirit Karma
 - TroopAIO
 - Dicaste's Ashe/Urgot
-- PrideStalker Rengar
 - Shen Hand of God
 
 Utility Ports [Only doing after Champions are completed] :
-- Universal Leveler [https://github.com/TheSaltyWaffle/LeagueSharp/tree/master/UniversalLeveler]
 - DZAwareness [https://github.com/DZ191/LeagueSharp/tree/master/DZAwarenessAIO]
-- Snitched 3.0 [https://github.com/ChewyMoon/LeagueSharp-Reloaded/blob/master/Snitched%203.0/]
 - OneKeyToBrain [https://github.com/OneKeyToWin/LeagueRepo/tree/master/OneKeyToBrain]
 - BlackFeeder 2.0 [https://github.com/blacky/LeagueSharp/tree/master/BlackFeeder%202.0]
 - Activator # [https://github.com/xKurisu/Activator/tree/master/Activator]
@@ -51,7 +46,6 @@ Utility Ports [Only doing after Champions are completed] :
 - AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
 - StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
 - OKTW Ward Standalone [Already in PortAIO]
-- Evade+
 - LeagueSharp.Utility [Looks harder than anything I've ever ported]
 - AioCaster
 

@@ -464,14 +464,9 @@
                     var target = objQ as AIHeroClient;
                     if (target != null)
                     {
-                        if ((CanQ2(target) || (!R.IsReady() && IsRecentR && CanR(target))
-                             || target.Health + target.AttackShield
-                             <= Q.GetDamage(target, DamageStage.SecondCast) + Player.GetAutoAttackDamage(target)
-                             || ((R.IsReady()
-                                  || (!target.HasBuff("BlindMonkDragonsRage") && Variables.TickCount - lastR > 1000))
-                                 && target.DistanceToPlayer() > target.GetRealAutoAttackRange() + 100) || cPassive == 0)
-                            && Q2.Cast())
+                        if (CanQ2(target) || (!R.IsReady() && IsRecentR && CanR(target)) || (target.Health + target.AttackShield <= Q.GetDamage(target, DamageStage.SecondCast) + Player.GetAutoAttackDamage(target)) || ((R.IsReady() || (!target.HasBuff("BlindMonkDragonsRage") && Variables.TickCount - lastR > 1000)) && target.DistanceToPlayer() > target.GetRealAutoAttackRange() + 100) || cPassive == 0)
                         {
+                            Q2.Cast();
                             isDashing = true;
                             return;
                         }
@@ -479,9 +474,9 @@
                     else if (getCheckBoxItem(comboMenu, "Q2Obj"))
                     {
                         var targetQ2 = Q2.GetTarget(200);
-                        if (targetQ2 != null && objQ.Distance(targetQ2) < targetQ2.DistanceToPlayer()
-                            && !targetQ2.InAutoAttackRange() && Q2.Cast())
+                        if (targetQ2 != null && objQ.Distance(targetQ2) < targetQ2.DistanceToPlayer() && !targetQ2.InAutoAttackRange())
                         {
+                            Q2.Cast();
                             isDashing = true;
                             return;
                         }

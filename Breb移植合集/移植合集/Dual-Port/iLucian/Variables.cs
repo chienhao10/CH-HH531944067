@@ -16,8 +16,8 @@ namespace iLucian
         public static readonly Dictionary<Spells, Spell> Spell = new Dictionary<Spells, Spell>
         {
             {Spells.Q, new Spell(SpellSlot.Q, 675)},
-            {Spells.Q2, new Spell(SpellSlot.Q, 1200)},
-            {Spells.W, new Spell(SpellSlot.W, 1000)},
+            {Spells.Q2, new Spell(SpellSlot.Q, 900)},
+            {Spells.W, new Spell(SpellSlot.W, 900)},
             {Spells.E, new Spell(SpellSlot.E, 475)},
             {Spells.R, new Spell(SpellSlot.R, 3000f)},
             {Spells.Q3, new Spell(SpellSlot.Q)}

@@ -702,4 +702,49 @@
   <data name="Aurelionsol" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Aurelionsol.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Hand1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hand1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Hand2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Hand2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HoverEnemy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HoverEnemy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HoverEnemy_Colorblind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HoverEnemy_Colorblind.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HoverFriendly" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HoverFriendly.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HoverShop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HoverShop.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HoverUse" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HoverUse.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="HoverUse_Colorblind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\HoverUse_Colorblind.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleTarget" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleTarget.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleTargetAlly" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleTargetAlly.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleTargetEnemy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleTargetEnemy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleTargetEnemyCannoyAttack" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleTargetEnemyCannoyAttack.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleTargetEnemyCannoyAttack_Colorblind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleTargetEnemyCannoyAttack_Colorblind.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleTargetEnemy_Colorblind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleTargetEnemy_Colorblind.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SingleTarget_Colorblind" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SingleTarget_Colorblind.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

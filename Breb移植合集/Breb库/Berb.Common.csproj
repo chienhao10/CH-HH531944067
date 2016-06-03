@@ -92,6 +92,7 @@
     <Compile Include="LeagueSharp-Common\Items.cs" />
     <Compile Include="LeagueSharp-Common\Keys.cs" />
     <Compile Include="LeagueSharp-Common\LastCastedSpell.cs" />
+    <Compile Include="LeagueSharp-Common\MapPosition.cs" />
     <Compile Include="LeagueSharp-Common\MasteryData.cs" />
     <Compile Include="LeagueSharp-Common\MEC.cs" />
     <Compile Include="LeagueSharp-Common\MinionManager.cs" />
