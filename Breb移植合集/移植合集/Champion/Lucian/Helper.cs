@@ -17,9 +17,9 @@ namespace LCS_Lucian
                         AntiGapcloseSpell.GapcloseableSpells.Where(
                             x => spell.SData.Name == ((AIHeroClient) sender).GetSpell(x.Slot).Name)
                             .OrderByDescending(
-                                c => Program.getSliderItem(Program.miscMenu, "gapclose.slider." + spell.SData.Name)))
+                                c => Program.getSliderItem(Program.miscMenu, "gapclose.slider." + spell.SData.Name + spell.Slot)))
                 {
-                    if (Program.getCheckBoxItem(Program.miscMenu, "gapclose." + ((AIHeroClient) sender).ChampionName))
+                    if (Program.getCheckBoxItem(Program.miscMenu, "gapclose." + ((AIHeroClient) sender).ChampionName + spell.Slot))
                     {
                         LucianSpells.E.Cast(ObjectManager.Player.Position.LSExtend(spell.End, -LucianSpells.W.Range));
                     }

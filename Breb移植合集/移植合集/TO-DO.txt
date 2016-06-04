@@ -20,7 +20,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - RAREKarthus/Zyra [https://github.com/KyonLeague/RAREScripts/tree/master]
 - Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
 - NechritoRengar [https://github.com/Nechrito/Leaguesharp/tree/master/Nechrito%20Rengar]
-- SephCassio/Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
+- Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
 - Hikicarry Draven (A really nice manual Draven) [https://github.com/HikigayaAss/hikiMarksman/tree/master/hikiMarksmanRework/hikiMarksmanRework]
 - Rek'Sai - Winner of Fights [https://github.com/HikigayaAss/LeagueSharp/tree/master/RekSai]
 - Underrated Renekton/Singed [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/]

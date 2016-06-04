@@ -56,9 +56,8 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Berb.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Berb.Common\Berb.Common\bin\Debug\Berb.Common.dll</HintPath>
+    <Reference Include="Berb.Common">
+      <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\Berb.Common.dll</HintPath>
     </Reference>
     <Reference Include="EloBuddy">
       <HintPath>..\..\..\AppData\Roaming\EloBuddy\Addons\Libraries\EloBuddy.dll</HintPath>
@@ -244,6 +243,7 @@
     <Compile Include="Dual-Port\BadaoRiven\Program.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\CSPlugin.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Ashe.cs" />
+    <Compile Include="Dual-Port\ChallengerSeries\Plugins\Caitlyn.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Kalista.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\KogMaw.cs" />
     <Compile Include="Dual-Port\ChallengerSeries\Plugins\Lucian.cs" />
@@ -466,6 +466,9 @@
     <Compile Include="Dual-Port\PrideStalker Rengar\Handlers\Mode.cs" />
     <Compile Include="Dual-Port\PrideStalker Rengar\Main\MenuConfig.cs" />
     <Compile Include="Dual-Port\PrideStalker Rengar\Program.cs" />
+    <Compile Include="Dual-Port\SephCassio\Cassiopeia.cs" />
+    <Compile Include="Dual-Port\SephCassio\CassiopeiaMenu.cs" />
+    <Compile Include="Dual-Port\SephCassio\CassioUtils.cs" />
     <Compile Include="Dual-Port\SimpleSion\Sion.cs" />
     <Compile Include="Champion\Taliyah\Program.cs" />
     <Compile Include="Dual-Port\SluttyRyze\AutoLevelManager.cs" />
@@ -839,6 +842,8 @@
     <Compile Include="Libraries\ExorSDK\AIO\Utilities\Helpers\ManaManager.cs" />
     <Compile Include="Libraries\ExorSDK\AIO\Utilities\Vars.cs" />
     <Compile Include="Libraries\ExorSDK\ExorAIO.cs" />
+    <Compile Include="Libraries\SCommon\Orbwalking\Drawings.cs" />
+    <Compile Include="Libraries\SCommon\Orbwalking\Orbwalker.cs" />
     <Compile Include="Libraries\Sebby-OKTW\Movement.cs" />
     <Compile Include="Libraries\ValvraveSharp\Core\Common.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\Collision.cs" />

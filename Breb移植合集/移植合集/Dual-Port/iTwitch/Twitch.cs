@@ -60,6 +60,8 @@ using SebbyLib;
 
             miscOptions = Menu.AddSubMenu("iTwitch 2.0 - Misc", "com.itwitch.misc");
             miscOptions.Add("com.itwitch.misc.autoYo", new CheckBox("Youmuus with R", true));
+            miscOptions.Add("com.itwitch.misc.noWTurret", new CheckBox("Don't W Under Tower", true));
+            miscOptions.Add("com.itwitch.misc.noWAA", new Slider("No W if x aa can kill", 2, 0, 10));
             miscOptions.Add("com.itwitch.misc.saveManaE", new CheckBox("Save Mana for E", true));
             miscOptions.Add("com.itwitch.misc.recall", new KeyBind("Stealth Recall", false, KeyBind.BindTypes.HoldActive, 'T'));
 
@@ -109,7 +111,17 @@ using SebbyLib;
                 {
                     return;
                 }
+
+                if (getCheckBoxItem(miscOptions, "com.itwitch.misc.noWTurret") && ObjectManager.Player.UnderTurret(true))
+                {
+                    return;
+                }
                 var wTarget = TargetSelector.GetTarget(Spells[SpellSlot.W].Range, DamageType.Physical);
+
+                if (wTarget.Health
+                     < ObjectManager.Player.GetAutoAttackDamage(wTarget, true)
+                     * getSliderItem(miscOptions, "com.itwitch.misc.noWAA")) return;
+
                 if (wTarget.LSIsValidTarget(Spells[SpellSlot.W].Range) && !ObjectManager.Player.HasBuff("TwitchHideInShadows"))
                 {
                     var prediction = Spells[SpellSlot.W].GetPrediction(wTarget);

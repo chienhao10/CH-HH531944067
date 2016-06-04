@@ -48,13 +48,10 @@ namespace LCS_Lucian
 
             miscMenu = Config.AddSubMenu(":: 杂项", ":: Miscellaneous");
             miscMenu.AddGroupLabel("自定义防突进");
-            foreach (
-                var gapclose in
-                    AntiGapcloseSpell.GapcloseableSpells.Where(
-                        x => ObjectManager.Get<AIHeroClient>().Any(y => y.ChampionName == x.ChampionName && y.IsEnemy)))
+            foreach (var gapclose in AntiGapcloseSpell.GapcloseableSpells.Where(x => ObjectManager.Get<AIHeroClient>().Any(y => y.ChampionName == x.ChampionName && y.IsEnemy)))
             {
-                miscMenu.Add("gapclose." + gapclose.ChampionName, new CheckBox("防突进: " + gapclose.ChampionName + " - 技能: " + gapclose.Slot));
-                miscMenu.Add("gapclose.slider." + gapclose.SpellName, new Slider("" + gapclose.ChampionName + " - 技能: " + gapclose.Slot + " 优先", gapclose.DangerLevel, 1, 5));
+                miscMenu.Add("gapclose." + gapclose.ChampionName + gapclose.Slot, new CheckBox("防突进: " + gapclose.ChampionName + " - 技能: " + gapclose.Slot));
+                miscMenu.Add("gapclose.slider." + gapclose.SpellName + gapclose.Slot, new Slider("" + gapclose.ChampionName + " - 技能: " + gapclose.Slot + " 优先", gapclose.DangerLevel, 1, 5));
             }
 
             drawMenu = Config.AddSubMenu(":: 线圈", ":: Draw Settings");

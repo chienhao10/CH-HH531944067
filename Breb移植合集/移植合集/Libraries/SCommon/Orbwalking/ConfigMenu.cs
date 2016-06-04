@@ -8,7 +8,7 @@ namespace SCommon.Orbwalking
     {
         private static Menu m_Menu;
 
-        public ConfigMenu(Menu menuToAttach)
+        public ConfigMenu()
         {
             m_Menu = MainMenu.AddMenu("走砍菜单", "Orbwalking.Root");
             m_Menu.Add("Orbwalking.Root.iExtraWindup", new Slider("额外前摇时间"));
@@ -17,16 +17,14 @@ namespace SCommon.Orbwalking
 
             m_Menu.Add("Orbwalking.Root.blLastHit", new KeyBind("尾兵", false, KeyBind.BindTypes.HoldActive, 'X'));
             m_Menu.Add("Orbwalking.Root.blHarass", new KeyBind("骚扰", false, KeyBind.BindTypes.HoldActive, 'C'));
-            m_Menu.Add("Orbwalking.Root.blLaneClear",
-                new KeyBind("清线", false, KeyBind.BindTypes.HoldActive, 'V'));
+            m_Menu.Add("Orbwalking.Root.blLaneClear",new KeyBind("清线", false, KeyBind.BindTypes.HoldActive, 'V'));
             m_Menu.Add("Orbwalking.Root.blCombo", new KeyBind("连招", false, KeyBind.BindTypes.HoldActive, 32));
 
             m_Menu.AddGroupLabel("杂项");
             m_Menu.Add("Orbwalking.Misc.blAttackStructures", new CheckBox("攻击建筑"));
             m_Menu.Add("Orbwalking.Misc.blFocusNormalWhileTurret", new CheckBox("未被塔攻击时集火塔"));
             m_Menu.Add("Orbwalking.Misc.blSupportMode", new CheckBox("辅助模式", false));
-            m_Menu.Add("Orbwalking.Misc.blDontAttackChampWhileLaneClear",
-                new CheckBox("清线不攻击敌方英雄", false));
+            m_Menu.Add("Orbwalking.Misc.blDontAttackChampWhileLaneClear", new CheckBox("清线不攻击敌方英雄", false));
             m_Menu.Add("Orbwalking.Misc.blDisableAA", new CheckBox("屏蔽普攻", false));
             m_Menu.Add("Orbwalking.Misc.blDontMoveMouseOver", new CheckBox("鼠标移动在英雄身上停止移动", false));
             m_Menu.Add("Orbwalking.Misc.blMagnetMelee", new CheckBox("黏住目标 (近程英雄)"));
@@ -43,6 +41,11 @@ namespace SCommon.Orbwalking
             m_Menu.Add("Orbwalking.Drawings.iLineWidth", new Slider("线宽", 2, 1, 6));
         }
 
+        public bool LegitMode
+        {
+            get { return getCheckBoxItem("Orbwalking.Misc.blLegitMode"); }
+        }
+        
         /// <summary>
         ///     Gets or sets combo key is pressed
         /// </summary>

@@ -21,6 +21,8 @@
     {
         private static Menu baseMenu;
 
+        private static readonly List<EnemyInfo> baseultlist = new List<EnemyInfo>();
+
         private static readonly List<EnemyInfo> RecallsList = new List<EnemyInfo>();
 
         private static Spell.Skillshot R { get; set; }
@@ -57,11 +59,12 @@
             baseMenu.AddGroupLabel("线圈:");
             baseMenu.Add("draw", new CheckBox("显示调试信息"));
             baseMenu.AddGroupLabel("对以下使用:");
+            baseultlist.Clear();
             RecallsList.Clear();
             foreach (var enemy in EntityManager.Heroes.Enemies)
             {
                 baseMenu.Add(enemy.NetworkId.ToString(), new CheckBox("使用 " + enemy.BaseSkinName + " - (" + enemy.Name + ")"));
-                RecallsList.Add(new EnemyInfo(enemy));
+                baseultlist.Add(new EnemyInfo(enemy));
             }
 
             Game.OnTick += Game_OnTick;
@@ -71,7 +74,7 @@
 
         private static void Game_OnTick(EventArgs args)
         {
-            foreach (var enemy in RecallsList.Where(e => e.Enemy.IsHPBarRendered && !e.Enemy.IsDead))
+            foreach (var enemy in baseultlist)
             {
                 enemy.lastseen = Game.Time;
             }
@@ -103,12 +106,6 @@
                     + player.Enemy.TotalShieldHealth(),
                     5);
             }
-            /*
-            var order = ObjectManager.Get<GameObject>().FirstOrDefault(name => name.Name == "__Spawn_T1");
-            var choes = ObjectManager.Get<GameObject>().FirstOrDefault(name => name.Name == "__Spawn_T2");
-            Circle.Draw(Color.White, 100, order);
-            Circle.Draw(Color.White, 100, choes);
-            */
         }
 
         private static void Teleport_OnTeleport(Obj_AI_Base sender, Teleport.TeleportEventArgs args)
@@ -244,10 +241,15 @@
 
         private static bool lastseen(EnemyInfo target)
         {
+            var enemy = baseultlist.FirstOrDefault(e => e.Enemy.NetworkId == target.Enemy.NetworkId);
             float timelimit = baseMenu["limit"].Cast<Slider>().CurrentValue;
-            if (timelimit.Equals(0))
+            if (enemy != null)
             {
-                return true;
+                if (timelimit.Equals(0))
+                {
+                    return true;
+                }
+                return Game.Time - enemy.lastseen < timelimit;
             }
             return Game.Time - target.lastseen < timelimit;
         }

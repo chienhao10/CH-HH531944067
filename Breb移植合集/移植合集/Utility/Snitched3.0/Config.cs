@@ -25,7 +25,7 @@
         /// </summary>
         private Config()
         {
-            this.Menu = MainMenu.AddMenu("偷野 3.0", "Snitched3");
+            this.Menu = MainMenu.AddMenu("Snitched 3.0", "Snitched3");
         }
 
         #endregion
@@ -38,19 +38,7 @@
         /// <value>
         ///     The instance.
         /// </value>
-        public static Config Instance
-        {
-            get
-            {
-                if (instance != null)
-                {
-                    return instance;
-                }
-
-                instance = new Config();
-                return instance;
-            }
-        }
+        public static Config Instance => instance ?? (instance = new Config());
 
         /// <summary>
         ///     Gets or sets the menu.
@@ -112,7 +100,7 @@
         /// <param name="name">The name.</param>
         private static void AddSpellsToMenu(Menu rootMenu, string name)
         {
-            SpellLoader.GetUsableSpells().ForEach(x => rootMenu.Add(name + x.Slot, new CheckBox("使用 " + x.Slot)));
+            SpellLoader.GetUsableSpells().ForEach(x => rootMenu.Add(name + x.Slot, new CheckBox("Use " + x.Slot)));
         }
 
         #endregion

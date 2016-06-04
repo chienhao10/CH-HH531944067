@@ -104,6 +104,7 @@ namespace PortAIO.Utility
         public static int braum { get { return Miscc["braum"].Cast<ComboBox>().CurrentValue; } }
         public static int karma { get { return Miscc["karma"].Cast<ComboBox>().CurrentValue; } }
         public static int teemo { get { return Miscc["teemo"].Cast<ComboBox>().CurrentValue; } }
+        public static int cassiopeia { get { return Miscc["cassiopeia"].Cast<ComboBox>().CurrentValue; } }
         public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
         public static int aramCB { get { return Miscc["aramCB"].Cast<ComboBox>().CurrentValue; } }
 
@@ -176,6 +177,7 @@ namespace PortAIO.Utility
             "Braum", //55
             "Karma", //56
             "Teemo", //57
+            "Cassiopeia", //58
         });
 
         public static void Menu()
@@ -417,6 +419,10 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[57]))
                 {
                     Miscc.Add("teemo", new ComboBox("切换 提莫脚本 : ", 0, "Sharpshooter", "Swiftly Teemo"));
+                }
+                if (Player.ChampionName.Equals(Champion[58]))
+                {
+                    Miscc.Add("cassiopeia", new ComboBox("切换 蛇女脚本 : ", 0, "SAutoCarry", "Seph Cassio"));
                 }
             }
             else

@@ -308,8 +308,8 @@
             var target = TargetSelector.GetTarget(600, DamageType.True);
 
             var ally = ObjectManager.Get<AIHeroClient>().FirstOrDefault(a => a.IsValid && a.IsAlly && a.IsVisible);
-
-            if (porotoss != null && !porotoss.Name.ToLower().Contains("snowballfollowupcast"))
+           
+            if (porotoss != null && porotoss.Name.ToLower().Contains("summonerporothrow"))
             {
                 if (SummMenu["Enableactiveporo"].Cast<KeyBind>().CurrentValue || SummMenu["Enableporo"].Cast<KeyBind>().CurrentValue)
                 {

@@ -43,7 +43,7 @@ namespace SCommon.PluginBase
                     Quality = FontQuality.ClearTypeNatural
                 });
 
-            TargetSelector.Initialize(ConfigMenu);
+            TargetSelector.Initialize();
 
             SetSpells();
 

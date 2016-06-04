@@ -106,9 +106,9 @@ namespace SCommon.TS
             return false;
         }
 
-        public static void Initialize(Menu menuToAttach)
+        public static void Initialize()
         {
-            ConfigMenu.Create(menuToAttach);
+            ConfigMenu.Create();
         }
 
         public static AIHeroClient GetTarget(float range, DamageType dmgType = DamageType.Physical,

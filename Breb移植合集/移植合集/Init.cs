@@ -258,6 +258,9 @@ namespace PortAIO
                             case 1:
                                 ExorSDK.AIO.OnLoad();
                                 break;
+                            case 2:
+                                Challenger_Series.Program.Main();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
@@ -474,8 +477,19 @@ namespace PortAIO
                                 break;
                         }
                         break;
-                    case "cassiopeia": // Synx Auto Carry
-                        Champion = new SAutoCarry.Champions.Cassiopeia();
+                    case "cassiopeia": // Synx Auto Carry & Seph Cassio
+                        switch (Loader.cassiopeia)
+                        {
+                            case 0:
+                                Champion = new SAutoCarry.Champions.Cassiopeia();
+                                break;
+                            case 1:
+                                SephCassiopeia.Cassiopeia.CassMain();
+                                break;
+                            default:
+                                Champion = new SAutoCarry.Champions.Cassiopeia();
+                                break;
+                        }
                         break;
                     case "chogath": // Underrated Cho'Gath
                         UnderratedAIO.Champions.Chogath.Load();
