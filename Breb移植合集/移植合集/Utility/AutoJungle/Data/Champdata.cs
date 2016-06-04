@@ -181,7 +181,7 @@ namespace AutoJungle
                     Combo = VoliCombo;
                     Console.WriteLine("Volibear loaded");
                     break;
-                	default:
+                    default:
                     Console.WriteLine(ObjectManager.Player.ChampionName + " not supported");
                     break;
 //nidale w buff?(优先）)nunu R check | sej，结束skr，amumu？ graves！
@@ -225,7 +225,7 @@ namespace AutoJungle
 
         private bool VbJungleClear()
         {
-        	var targetMob = Program._GameInfo.Target;
+            var targetMob = Program._GameInfo.Target;
             var structure = Helpers.CheckStructure();
             if (structure != null)
             {
@@ -236,7 +236,7 @@ namespace AutoJungle
             {
                 return false;
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             if (E.IsReady() && targetMob.LSIsValidTarget(425) && (Hero.ManaPercent > 60 || Hero.HealthPercent < 50))
             {
                 E.Cast();
@@ -305,7 +305,7 @@ namespace AutoJungle
             {
                 return false;
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             if (Q.IsReady() && Hero.LSDistance(targetMob) < Q.Range &&
             (Helpers.getMobs(Hero.Position, Q.Range).Count >= 2 || targetMob.MaxHealth>700))
             {
@@ -338,7 +338,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsCombo(targetHero, !Q.IsReady());
+            Data.ItemHandler.UseItemsCombo(targetHero, !Q.IsReady());
             if (Hero.Spellbook.IsAutoAttacking)
             {
                 return false;
@@ -369,7 +369,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             if (Q.IsReady() && targetMob.LSIsValidTarget(300))
             {
                 Q.Cast();
@@ -402,7 +402,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsCombo(targetHero, !E.IsReady());
+            Data.ItemHandler.UseItemsCombo(targetHero, !E.IsReady());
             if (Hero.Spellbook.IsAutoAttacking)
             {
                 return false;
@@ -438,7 +438,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             if (Q.IsReady() && Q.CanCast(targetMob) && (Hero.ManaPercent > 60 || Hero.HealthPercent < 50))
             {
                 Q.CastOnUnit(targetMob);
@@ -459,7 +459,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsCombo(targetHero, !E.IsReady());
+            Data.ItemHandler.UseItemsCombo(targetHero, !E.IsReady());
             if (Q.IsReady() && ((targetHero != null && Q.CanCast(targetHero)) || rActive))
             {
                 Q.Cast();
@@ -538,7 +538,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             if (Q.IsReady() && Q.CanCast(targetMob))
             {
                 Q.Cast();
@@ -570,7 +570,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsCombo(targetHero, true);
+            Data.ItemHandler.UseItemsCombo(targetHero, true);
             if (Hero.Spellbook.IsAutoAttacking)
             {
                 return false;
@@ -618,7 +618,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             if (Hero.Spellbook.IsAutoAttacking)
             {
                 return false;
@@ -670,7 +670,7 @@ namespace AutoJungle
             {
                 E.Cast();
             }
-            ItemHandler.UseItemsCombo(targetHero, !R.IsReady());
+            Data.ItemHandler.UseItemsCombo(targetHero, !R.IsReady());
             EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, targetHero);
             return false;
         }
@@ -713,7 +713,7 @@ namespace AutoJungle
             {
                 E.Cast();
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, targetMob);
             return false;
         }
@@ -756,7 +756,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, targetMob);
             return false;
         }
@@ -789,7 +789,7 @@ namespace AutoJungle
             {
                 W.Cast();
             }
-            ItemHandler.UseItemsCombo(targetHero, !Q.IsReady());
+            Data.ItemHandler.UseItemsCombo(targetHero, !Q.IsReady());
             EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, targetHero);
             return false;
         }
@@ -849,7 +849,7 @@ namespace AutoJungle
             {
                 return false;
             }
-            ItemHandler.UseItemsJungle();
+            Data.ItemHandler.UseItemsJungle();
             if (Q.IsReady() && targetMob.LSIsValidTarget(400))
             {
                 Q.Cast(targetMob);

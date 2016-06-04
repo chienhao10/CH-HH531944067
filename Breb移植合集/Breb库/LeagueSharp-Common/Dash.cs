@@ -25,7 +25,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 using SharpDX;
 
 #endregion
@@ -66,19 +66,19 @@ namespace LeagueSharp.Common
 
                 if (args.IsDash)
                 {
-                    var path = new List<Vector2> {sender.ServerPosition.To2D()};
+                    var path = new List<Vector2> {sender.ServerPosition.LSTo2D()};
                     path.AddRange(args.Path.ToList().LSTo2D());
 
                     DetectedDashes[sender.NetworkId].StartTick = Utils.TickCount;
                     DetectedDashes[sender.NetworkId].Speed = args.Speed;
-                    DetectedDashes[sender.NetworkId].StartPos = sender.ServerPosition.To2D();
+                    DetectedDashes[sender.NetworkId].StartPos = sender.ServerPosition.LSTo2D();
                     DetectedDashes[sender.NetworkId].Unit = sender;
                     DetectedDashes[sender.NetworkId].Path = path;
                     DetectedDashes[sender.NetworkId].EndPos = DetectedDashes[sender.NetworkId].Path.Last();
                     DetectedDashes[sender.NetworkId].EndTick = DetectedDashes[sender.NetworkId].StartTick +
                                                                (int)
                                                                    (1000*
-                                                                    (DetectedDashes[sender.NetworkId].EndPos.Distance(
+                                                                    (DetectedDashes[sender.NetworkId].EndPos.LSDistance(
                                                                         DetectedDashes[sender.NetworkId].StartPos)/
                                                                      DetectedDashes[sender.NetworkId].Speed));
                     DetectedDashes[sender.NetworkId].Duration = DetectedDashes[sender.NetworkId].EndTick -

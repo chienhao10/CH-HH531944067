@@ -28,7 +28,6 @@ namespace UnderratedAIO.Champions
             Drawing.OnDraw += Game_OnDraw;
             Game.OnUpdate += Game_OnGameUpdate;
             Orbwalker.OnPreAttack += Orbwalking_BeforeAttack;
-            Orbwalker.OnPostAttack += Orbwalking_OnAttack;
             Orbwalker.OnPreAttack += Orbwalking_AfterAttack;
         }
 
@@ -40,35 +39,19 @@ namespace UnderratedAIO.Champions
         private void Orbwalking_AfterAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
             var tar = target as Obj_AI_Base;
-            if (Q.IsReady() && tar is AIHeroClient &&
-                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && tar.HasBuffOfType(BuffType.Slow) &&
-                target.Health > Q.GetDamage(tar) + player.GetAutoAttackDamage(tar) + 50)
+            if (Q.IsReady() && tar is AIHeroClient && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && tar.HasBuffOfType(BuffType.Slow) && target.Health > Q.GetDamage(tar) + player.LSGetAutoAttackDamage(tar) + 50)
             {
-                Q.Cast(getCheckBoxItem(config, "packets"));
+                Q.Cast();
                 Orbwalker.ResetAutoAttack();
-            }
-        }
-
-        private void Orbwalking_OnAttack(AttackableUnit target, EventArgs args)
-        {
-            if (Q.IsReady() &&
-                ((getCheckBoxItem(menuM, "autoQ") &&
-                  target.Health < Q.GetDamage((Obj_AI_Base) target) + player.GetAutoAttackDamage((Obj_AI_Base) target)) ||
-                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) && target.Health > 1000)))
-            {
-                Q.Cast(getCheckBoxItem(config, "packets"));
             }
         }
 
         private void Orbwalking_BeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
             var targeta = args.Target as Obj_AI_Base;
-            if (Q.IsReady() && targeta != null &&
-                ((targeta is AIHeroClient && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) &&
-                  !targeta.HasBuffOfType(BuffType.Slow)) ||
-                 targeta.Health < Q.GetDamage(targeta) + player.GetAutoAttackDamage(targeta)))
+            if (Q.IsReady() && targeta != null && ((targeta is AIHeroClient && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && !targeta.HasBuffOfType(BuffType.Slow)) ||targeta.Health < Q.GetDamage(targeta) + player.LSGetAutoAttackDamage(targeta)))
             {
-                Q.Cast(getCheckBoxItem(config, "packets"));
+                Q.Cast();
             }
         }
 
@@ -114,10 +97,10 @@ namespace UnderratedAIO.Champions
             var bonusDmg = Environment.Hero.GetAdOverTime(player, target, 5);
             if ((getCheckBoxItem(menuC, "user") && player.LSDistance(target) < player.AttackRange + 50 &&
                  cmbdmg + bonusDmg > target.Health && target.Health > bonusDmg + 200 && player.HealthPercent < 50) ||
-                (getSliderItem(menuC, "usertf") <= player.CountEnemiesInRange(600) &&
+                (getSliderItem(menuC, "usertf") <= player.LSCountEnemiesInRange(600) &&
                  player.HealthPercent < 80))
             {
-                R.Cast(getCheckBoxItem(config, "packets"));
+                R.Cast();
             }
             var ignitedmg = (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
@@ -131,7 +114,7 @@ namespace UnderratedAIO.Champions
                 if (((getCheckBoxItem(menuC, "keepManaForR") && R.IsReady()) || !R.IsReady()) &&
                     player.Mana > R.Instance.SData.Mana + W.Instance.SData.Mana)
                 {
-                    W.Cast(target, getCheckBoxItem(config, "packets"));
+                    W.Cast(target);
                 }
             }
             if (((getCheckBoxItem(menuC, "keepManaForR") && R.IsReady()) || !R.IsReady()) &&
@@ -146,7 +129,7 @@ namespace UnderratedAIO.Champions
                     if (E.Range > ePred.CastPosition.LSDistance(player.Position) &&
                         target.LSDistance(ePred.CastPosition) < 400)
                     {
-                        E.Cast(ePred.CastPosition, getCheckBoxItem(config, "packets"));
+                        E.Cast(ePred.CastPosition);
                     }
                     else
                     {
@@ -154,8 +137,8 @@ namespace UnderratedAIO.Champions
                             target.LSDistance(ePred.CastPosition) < 400)
                         {
                             E.Cast(
-                                player.Position.Extend(target.Position, E.Range),
-                                getCheckBoxItem(config, "packets"));
+                                player.Position.LSExtend(target.Position, E.Range)
+                                );
                         }
                     }
                 }
@@ -168,12 +151,12 @@ namespace UnderratedAIO.Champions
             {
                 useQ();
             }
-            if (NasusQ && player.CountEnemiesInRange(Orbwalking.GetRealAutoAttackRange(player)) == 0)
+            if (NasusQ && player.LSCountEnemiesInRange(Orbwalking.GetRealAutoAttackRange(player)) == 0)
             {
                 var minion =
                     MinionManager.GetMinions(
                         Orbwalking.GetRealAutoAttackRange(player), MinionTypes.All, MinionTeam.NotAlly)
-                        .FirstOrDefault(m => m.Health > 5 && m.Health < Q.GetDamage(m) + player.GetAutoAttackDamage(m));
+                        .FirstOrDefault(m => m.Health > 5 && m.Health < Q.GetDamage(m) + player.LSGetAutoAttackDamage(m));
                 Orbwalker.ForcedTarget = minion;
             }
             var perc = getSliderItem(menuLC, "minmana")/100f;
@@ -186,7 +169,7 @@ namespace UnderratedAIO.Champions
             if (getCheckBoxItem(menuLC, "useeLC") && Q.IsReady() &&
                 bestPositionE.MinionsHit >= getSliderItem(menuLC, "ehitLC"))
             {
-                E.Cast(bestPositionE.Position, getCheckBoxItem(config, "packets"));
+                E.Cast(bestPositionE.Position);
             }
         }
 
@@ -194,10 +177,10 @@ namespace UnderratedAIO.Champions
         {
             var minions =
                 MinionManager.GetMinions(Orbwalking.GetRealAutoAttackRange(player), MinionTypes.All, MinionTeam.NotAlly)
-                    .FirstOrDefault(m => m.Health > 5 && m.Health < Q.GetDamage(m) + player.GetAutoAttackDamage(m));
+                    .FirstOrDefault(m => m.Health > 5 && m.Health < Q.GetDamage(m) + player.LSGetAutoAttackDamage(m));
             if (minions != null)
             {
-                Q.Cast(getCheckBoxItem(config, "packets"));
+                Q.Cast();
             }
         }
 
@@ -221,14 +204,14 @@ namespace UnderratedAIO.Champions
                 var ePred = E.GetPrediction(target);
                 if (E.Range > ePred.CastPosition.LSDistance(player.Position) && target.LSDistance(ePred.CastPosition) < 400)
                 {
-                    E.Cast(ePred.CastPosition, getCheckBoxItem(config, "packets"));
+                    E.Cast(ePred.CastPosition);
                 }
                 else
                 {
                     if (ePred.CastPosition.LSDistance(player.Position) < 925 && target.LSDistance(ePred.CastPosition) < 400)
                     {
                         E.Cast(
-                            player.Position.Extend(target.Position, E.Range), getCheckBoxItem(config, "packets"));
+                            player.Position.LSExtend(target.Position, E.Range));
                     }
                 }
             }
@@ -247,7 +230,7 @@ namespace UnderratedAIO.Champions
             }
             if (Q.IsReady() && getCheckBoxItem(menuM, "Qdamage"))
             {
-                damage += Q.GetDamage(hero) + player.GetAutoAttackDamage(hero);
+                damage += Q.GetDamage(hero) + player.LSGetAutoAttackDamage(hero);
             }
             var ignitedmg = player.GetSummonerSpellDamage(hero, Damage.SummonerSpell.Ignite);
             if (player.Spellbook.CanUseSpell(player.GetSpellSlot("summonerdot")) == SpellState.Ready &&
@@ -341,9 +324,6 @@ namespace UnderratedAIO.Champions
             menuM.Add("autoQ", new CheckBox("自动 Q"));
             menuM.Add("Rdamage", new CheckBox("连招伤害 （包含R）"));
             menuM.Add("Qdamage", new CheckBox("连招伤害 （包含Q）"));
-
-            // Config
-            config.Add("packets", new CheckBox("使用 封包", false));
         }
     }
 }

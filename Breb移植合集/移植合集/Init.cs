@@ -150,7 +150,18 @@ namespace PortAIO
 
                 if (Loader.autoSharp)
                 {
-                    AutoSharp.Program.Main();
+                    switch (Loader.aramCB)
+                    {
+                        case 0:
+                            AutoSharp.Program.Main();
+                            break;
+                        case 1:
+                            ARAMDetFull.Program.Init();
+                            break;
+                        default:
+                            AutoSharp.Program.Main();
+                            break;
+                    }
                 }
 
                 if (Loader.limitedShat)
@@ -191,6 +202,11 @@ namespace PortAIO
                 if (Loader.autoJungle)
                 {
                     AutoJungle.Program.OnGameLoad();
+                }
+
+                if (Loader.orbwalker)
+                {
+                    PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
                 }
 
                 /*

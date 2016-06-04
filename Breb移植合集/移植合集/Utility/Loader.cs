@@ -16,6 +16,7 @@ namespace PortAIO.Utility
 {
     class Loader
     {
+        public static bool orbwalker { get { return Miscc["orbwalker"].Cast<CheckBox>().CurrentValue; } }
         public static bool VCursor { get { return Miscc["VCursor"].Cast<CheckBox>().CurrentValue; } }
         public static bool limitedShat { get { return Miscc["limitedShat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoLevel { get { return Miscc["autoLevel"].Cast<CheckBox>().CurrentValue; } }
@@ -104,6 +105,7 @@ namespace PortAIO.Utility
         public static int karma { get { return Miscc["karma"].Cast<ComboBox>().CurrentValue; } }
         public static int teemo { get { return Miscc["teemo"].Cast<ComboBox>().CurrentValue; } }
         public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
+        public static int aramCB { get { return Miscc["aramCB"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -114,7 +116,7 @@ namespace PortAIO.Utility
         }
 
         public static List<string> RandomUltChampsList = new List<string>(new[] { "Ezreal", "Jinx", "Ashe", "Draven", "Gangplank", "Ziggs", "Lux", "Xerath" });
-        public static List<string> BaseUltList = new List<string>(new[] { "Jinx", "Ashe", "Draven", "Ezreal", "Karthus"});
+        public static List<string> BaseUltList = new List<string>(new[] { "Jinx", "Ashe", "Draven", "Ezreal", "Karthus" });
         public static List<string> Champion = new List<string>(new[] {
             "Soraka", // 0
             "KogMaw", // 1
@@ -455,9 +457,11 @@ namespace PortAIO.Utility
             Miscc.Add("pastingSharp", new CheckBox("开启 PastingSharp?", false));
             //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("autoJungle", new CheckBox("开启 爱台湾自动打野?", false));
+            Miscc.Add("orbwalker", new CheckBox("开启 L# 走砍 (BETA)?", false));
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("功能切换 :");
             Miscc.Add("evadeCB", new ComboBox("躲避切换?", 0, "ezEvade", "Evade#"));
+            Miscc.Add("aramCB", new ComboBox("大乱斗挂机切换?", 0, "AutoSharp", "AramDETFull"));
 
             /*
             Miscc.Add("stream", new CheckBox("Enable StreamBuddy?", false));

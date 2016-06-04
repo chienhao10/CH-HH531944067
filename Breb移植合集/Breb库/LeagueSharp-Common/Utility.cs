@@ -57,7 +57,7 @@ namespace LeagueSharp.Common
             }
 
             const float angle = 90;
-            return source.Direction.To2D().Perpendicular().AngleBetween((target.Position - source.Position).To2D()) <
+            return source.Direction.LSTo2D().LSPerpendicular().LSAngleBetween((target.Position - source.Position).LSTo2D()) <
                    angle;
         }
 
@@ -115,8 +115,8 @@ namespace LeagueSharp.Common
 
             return !(range < float.MaxValue) ||
                    !(Vector2.DistanceSquared(
-                       (@from.To2D().IsValid() ? @from : HeroManager.Player.ServerPosition).To2D(),
-                       unitPosition.To2D()) > range * range);
+                       (@from.LSTo2D().IsValid() ? @from : HeroManager.Player.ServerPosition).LSTo2D(),
+                       unitPosition.LSTo2D()) > range * range);
         }
 
         public static SpellDataInst GetSpell(this AIHeroClient hero, SpellSlot slot)
@@ -275,7 +275,7 @@ namespace LeagueSharp.Common
         /// </summary>
         public static Vector2 Randomize(this Vector2 position, int min, int max)
         {
-            return position.To3D().Randomize(min, max).To2D();
+            return position.To3D().Randomize(min, max).LSTo2D();
         }
 
         /// <summary>
@@ -307,7 +307,7 @@ namespace LeagueSharp.Common
         /// </summary>
         public static bool LSIsWall(this Vector2 position)
         {
-            return position.To3D().IsWall();
+            return position.To3D().LSIsWall();
         }
 
         /// <summary>
@@ -368,16 +368,16 @@ namespace LeagueSharp.Common
             var Distance = distance;
             if (distance < 0)
             {
-                path[0] = path[0] + distance * (path[1] - path[0]).Normalized();
+                path[0] = path[0] + distance * (path[1] - path[0]).LSNormalized();
                 return path;
             }
 
             for (var i = 0; i < path.Count - 1; i++)
             {
-                var dist = path[i].Distance(path[i + 1]);
+                var dist = path[i].LSDistance(path[i + 1]);
                 if (dist > Distance)
                 {
-                    result.Add(path[i] + Distance * (path[i + 1] - path[i]).Normalized());
+                    result.Add(path[i] + Distance * (path[i + 1] - path[i]).LSNormalized());
                     for (var j = i + 1; j < path.Count; j++)
                     {
                         result.Add(path[j]);
@@ -399,19 +399,19 @@ namespace LeagueSharp.Common
 
             if (unit.IsVisible)
             {
-                result.Add(unit.ServerPosition.To2D());
+                result.Add(unit.ServerPosition.LSTo2D());
                 var path = unit.Path;
                 if (path.Length > 0)
                 {
-                    var first = path[0].To2D();
-                    if (first.Distance(result[0], true) > 40)
+                    var first = path[0].LSTo2D();
+                    if (first.LSDistance(result[0], true) > 40)
                     {
                         result.Add(first);
                     }
 
                     for (var i = 1; i < path.Length; i++)
                     {
-                        result.Add(path[i].To2D());
+                        result.Add(path[i].LSTo2D());
                     }
                 }
             }
@@ -444,7 +444,7 @@ namespace LeagueSharp.Common
 
             foreach (var point in wp)
             {
-                time += point.Distance(lastPoint) / speed;
+                time += point.LSDistance(lastPoint) / speed;
                 result.Add(new Vector2Time(point, time));
                 lastPoint = point;
             }
@@ -525,7 +525,7 @@ namespace LeagueSharp.Common
         public static bool UnderTurret(this Vector3 position, bool enemyTurretsOnly)
         {
             return
-                ObjectManager.Get<Obj_AI_Turret>().Any(turret => turret.IsValidTarget(950, enemyTurretsOnly, position));
+                ObjectManager.Get<Obj_AI_Turret>().Any(turret => turret.LSIsValidTarget(950, enemyTurretsOnly, position));
         }
 
         /// <summary>
@@ -540,7 +540,7 @@ namespace LeagueSharp.Common
         {
             return
                 ObjectManager.Get<Obj_AI_Turret>()
-                    .Any(turret => turret.IsValidTarget(950, false, position) && turret.IsAlly);
+                    .Any(turret => turret.LSIsValidTarget(950, false, position) && turret.IsAlly);
         }
 
         public static NavMeshCell ToNavMeshCell(this Vector3 position)
@@ -552,13 +552,13 @@ namespace LeagueSharp.Common
         [Obsolete("Use CountEnemiesInRange", false)]
         public static int LSCountEnemysInRange(this Obj_AI_Base unit, float range)
         {
-            return unit.ServerPosition.CountEnemiesInRange(range);
+            return unit.ServerPosition.LSCountEnemiesInRange(range);
         }
 
         [Obsolete("Use CountEnemiesInRange", false)]
         public static int LSCountEnemysInRange(this Vector3 point, float range)
         {
-            return point.CountEnemiesInRange(range);
+            return point.LSCountEnemiesInRange(range);
         }
 
         /// <summary>
@@ -566,7 +566,7 @@ namespace LeagueSharp.Common
         /// </summary>
         public static int LSCountEnemiesInRange(float range)
         {
-            return HeroManager.Player.CountEnemiesInRange(range);
+            return HeroManager.Player.LSCountEnemiesInRange(range);
         }
 
         /// <summary>
@@ -574,7 +574,7 @@ namespace LeagueSharp.Common
         /// </summary>
         public static int LSCountEnemiesInRange(this Obj_AI_Base unit, float range)
         {
-            return unit.ServerPosition.CountEnemiesInRange(range);
+            return unit.ServerPosition.LSCountEnemiesInRange(range);
         }
 
         /// <summary>
@@ -582,7 +582,7 @@ namespace LeagueSharp.Common
         /// </summary>
         public static int LSCountEnemiesInRange(this Vector3 point, float range)
         {
-            return HeroManager.Enemies.Count(h => h.IsValidTarget(range, true, point));
+            return HeroManager.Enemies.Count(h => h.LSIsValidTarget(range, true, point));
         }
 
         // Use same interface as CountEnemiesInRange
@@ -610,10 +610,10 @@ namespace LeagueSharp.Common
             if (originalunit != null)
             {
                 return HeroManager.Allies
-                    .Count(x => x.NetworkId != originalunit.NetworkId && x.IsValidTarget(range, false, point));
+                    .Count(x => x.NetworkId != originalunit.NetworkId && x.LSIsValidTarget(range, false, point));
             }
             return HeroManager.Allies
-                .Count(x => x.IsValidTarget(range, false, point));
+                .Count(x => x.LSIsValidTarget(range, false, point));
         }
 
         public static List<AIHeroClient> GetAlliesInRange(this Obj_AI_Base unit, float range)
@@ -631,11 +631,11 @@ namespace LeagueSharp.Common
                         .FindAll(
                             x =>
                                 x.NetworkId != originalunit.NetworkId &&
-                                point.Distance(x.ServerPosition, true) <= range * range);
+                                point.LSDistance(x.ServerPosition, true) <= range * range);
             }
             return
                 HeroManager.Allies
-                    .FindAll(x => point.Distance(x.ServerPosition, true) <= range * range);
+                    .FindAll(x => point.LSDistance(x.ServerPosition, true) <= range * range);
         }
 
         public static List<AIHeroClient> GetEnemiesInRange(this Obj_AI_Base unit, float range)
@@ -647,12 +647,12 @@ namespace LeagueSharp.Common
         {
             return
                 HeroManager.Enemies
-                    .FindAll(x => point.Distance(x.ServerPosition, true) <= range * range);
+                    .FindAll(x => point.LSDistance(x.ServerPosition, true) <= range * range);
         }
 
         public static List<T> GetObjects<T>(this Vector3 position, float range) where T : GameObject, new()
         {
-            return ObjectManager.Get<T>().Where(x => position.Distance(x.Position, true) < range * range).ToList();
+            return ObjectManager.Get<T>().Where(x => position.LSDistance(x.Position, true) < range * range).ToList();
         }
 
         public static List<T> GetObjects<T>(string objectName, float range, Vector3 rangeCheckFrom = new Vector3())
@@ -663,7 +663,7 @@ namespace LeagueSharp.Common
                 rangeCheckFrom = HeroManager.Player.ServerPosition;
             }
 
-            return ObjectManager.Get<T>().Where(x => rangeCheckFrom.Distance(x.Position, true) < range * range).ToList();
+            return ObjectManager.Get<T>().Where(x => rangeCheckFrom.LSDistance(x.Position, true) < range * range).ToList();
         }
 
 
@@ -718,7 +718,7 @@ namespace LeagueSharp.Common
                 fountainRange = 1000000; //1000 * 1000
             }
             var fpos = unit.Team == HeroManager.Player.Team ? MiniCache.AllyFountain : MiniCache.EnemyFountain;
-            return unit.IsVisible && unit.Distance(fpos, true) <= fountainRange;
+            return unit.IsVisible && unit.LSDistance(fpos, true) <= fountainRange;
         }
 
         /// <summary>
@@ -745,7 +745,7 @@ namespace LeagueSharp.Common
                 fpos = unit.Team == HeroManager.Player.Team ? MiniCache.EnemyFountain : MiniCache.AllyFountain;
             }
 
-            return unit.IsVisible && unit.Distance(fpos, true) <= fountainRange;
+            return unit.IsVisible && unit.LSDistance(fpos, true) <= fountainRange;
         }
 
         /// <summary>
@@ -753,7 +753,7 @@ namespace LeagueSharp.Common
         /// </summary>
         public static bool InFountain(this Vector3 position, FountainType fountain)
         {
-            return position.To2D().InFountain(fountain);
+            return position.LSTo2D().InFountain(fountain);
         }
 
         /// <summary>
@@ -768,7 +768,7 @@ namespace LeagueSharp.Common
                 fountainRange = 1210000; //1100 * 1100
             }
             var fpos = fountain == FountainType.OwnFountain ? MiniCache.AllyFountain : MiniCache.EnemyFountain;
-            return position.Distance(fpos, true) <= fountainRange;
+            return position.LSDistance(fpos, true) <= fountainRange;
         }
 
 
