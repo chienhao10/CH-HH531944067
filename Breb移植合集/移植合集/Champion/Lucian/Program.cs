@@ -349,16 +349,16 @@ namespace LCS_Lucian
         {
             var minions = ObjectManager.Get<Obj_AI_Minion>().Where(o => o.LSIsValidTarget(LucianSpells.Q.Range));
             var target = HeroManager.Enemies.FirstOrDefault(x => x.LSIsValidTarget(LucianSpells.Q2.Range));
-
-            if (target.LSDistance(ObjectManager.Player.Position) > LucianSpells.Q.Range &&
-                target.LSDistance(ObjectManager.Player.Position) < LucianSpells.Q2.Range &&
-                target.LSCountEnemiesInRange(LucianSpells.Q2.Range) >= 1 && target.Health < LucianSpells.Q.GetDamage(target) && !target.IsDead)
+            if (target != null)
             {
-                foreach (var minion in minions)
+                if (target.LSDistance(ObjectManager.Player.Position) > LucianSpells.Q.Range && target.LSDistance(ObjectManager.Player.Position) < LucianSpells.Q2.Range && target.LSCountEnemiesInRange(LucianSpells.Q2.Range) >= 1 && target.Health < LucianSpells.Q.GetDamage(target) && !target.IsDead)
                 {
-                    if (LucianSpells.Q2.WillHit(target, ObjectManager.Player.ServerPosition.LSExtend(minion.ServerPosition, LucianSpells.Q2.Range), 0, HitChance.VeryHigh))
+                    foreach (var minion in minions)
                     {
-                        LucianSpells.Q2.CastOnUnit(minion);
+                        if (LucianSpells.Q2.WillHit(target, ObjectManager.Player.ServerPosition.LSExtend(minion.ServerPosition, LucianSpells.Q2.Range), 0, HitChance.VeryHigh))
+                        {
+                            LucianSpells.Q2.CastOnUnit(minion);
+                        }
                     }
                 }
             }
@@ -378,7 +378,7 @@ namespace LCS_Lucian
 
         private static void KillstealQ()
         {
-            var target = HeroManager.Enemies.Where(x => x.LSIsValidTarget(LucianSpells.Q.Range)). FirstOrDefault(x => x.Health < LucianSpells.Q.GetDamage(x));
+            var target = HeroManager.Enemies.Where(x => x.LSIsValidTarget(LucianSpells.Q.Range)).FirstOrDefault(x => x.Health < LucianSpells.Q.GetDamage(x));
             if (target != null)
             {
                 LucianSpells.Q.Cast(target);

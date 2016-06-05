@@ -14,12 +14,12 @@ namespace VladimirTheTroll
 {
     public static class Program
     {
-        public static string Version = "Version 1.3 22/5/2016";
+        public static string Version = "Version 1.2 26/5/2016";
         public static AIHeroClient Target = null;
         public static int QOff = 0, WOff = 0, EOff = 0, ROff = 0;
         public static Spell.Targeted Q;
         public static Spell.Chargeable E;
-        public static Spell.Active W;
+        public static Spell.Skillshot W;
         public static Spell.Skillshot R;
         public static bool Out = false;
         public static int CurrentSkin;
@@ -47,7 +47,7 @@ namespace VladimirTheTroll
             #region Skill
 
             Q = new Spell.Targeted(SpellSlot.Q, 600);
-            W = new Spell.Active(SpellSlot.W);
+            W = new Spell.Skillshot(SpellSlot.W, 600, SkillShotType.Circular);
             E = new Spell.Chargeable(SpellSlot.E, 600, 600, 1250, 0, 1500, 70);
             R = new Spell.Skillshot(SpellSlot.R, 700, SkillShotType.Circular, 250, 1200, 150);
 
@@ -319,7 +319,7 @@ namespace VladimirTheTroll
 
             var useE = VladimirTheTrollMeNu.ComboMenu["useECombo"].Cast<CheckBox>().CurrentValue;
             {
-                if (useE && E.IsReady() && target.Distance(Player) <= 420)
+                if (useE && E.IsReady() && target.IsValidTarget(350))
                 {
                     if (E.IsCharging)
                     {
@@ -334,9 +334,7 @@ namespace VladimirTheTroll
         private static
             void OnCombo()
         {
-            var enemies = EntityManager.Heroes.Enemies.OrderByDescending
-                (a => a.HealthPercent).Where(a => !a.IsMe && a.IsValidTarget() && a.Distance(Player) <= Q.Range);
-            var target = TargetSelector.GetTarget(1400, DamageType.Physical);
+           var target = TargetSelector.GetTarget(1400, DamageType.Physical);
             if (!target.IsValidTarget(Q.Range) || target == null)
             {
                 return;
@@ -347,14 +345,13 @@ namespace VladimirTheTroll
             var useR = VladimirTheTrollMeNu.ComboMenu["useRCombo"].Cast<CheckBox>().CurrentValue;
             var rCount = VladimirTheTrollMeNu.ComboMenu["Rcount"].Cast<Slider>().CurrentValue;
             {
-                if (Q.IsReady() && useQ)
+                if (Q.IsReady() && useQ && target.IsValidTarget(Q.Range))
                 {
                     Q.Cast(target);
                 }
-
                 if (W.IsReady() && useW && Player.HealthPercent <= useWcostumHp)
                 {
-                    W.Cast();
+                    W.Cast(Game.CursorPos);
                 }
                 if (R.IsReady() && Player.CountEnemiesInRange(R.Range) >= rCount && useR)
                 {

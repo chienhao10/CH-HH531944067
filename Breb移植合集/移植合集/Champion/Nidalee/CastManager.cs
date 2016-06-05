@@ -212,7 +212,7 @@ namespace KurisuNidalee
                     return;
                 }
 
-                if (KL.Player.CountEnemiesInRange(750) <= getSliderItem(wCMenu, "ndcwcEnemy") && target.IsHunted())
+                if (KL.Player.CountEnemiesInRange(750) >= getSliderItem(wCMenu, "ndcwcEnemy") && target.IsHunted())
                 {
                     return;
                 }

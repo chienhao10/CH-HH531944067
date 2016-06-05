@@ -107,17 +107,17 @@ namespace Sophies_Soraka
                 return;
             }
 
-            Q = new Spell(SpellSlot.Q, 950);
+            Q = new Spell(SpellSlot.Q, 750);
             W = new Spell(SpellSlot.W, 550);
-            E = new Spell(SpellSlot.E, 925);
+            E = new Spell(SpellSlot.E, 900);
             R = new Spell(SpellSlot.R);
 
-            Q.SetSkillshot(0.26f, 125, 1600, false, SkillshotType.SkillshotCircle);
-            E.SetSkillshot(0.5f, 70f, 1750, false, SkillshotType.SkillshotCircle);
+            Q.SetSkillshot(0.3f, 125, 1750, false, SkillshotType.SkillshotCircle);
+            E.SetSkillshot(0.4f, 70f, 1750, false, SkillshotType.SkillshotCircle);
 
             CreateMenu();
 
-            PrintChat("loaded.");
+            PrintChat("loaded");
 
             Interrupter2.OnInterruptableTarget += InterrupterOnOnPossibleToInterrupt;
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloserOnOnEnemyGapcloser;
@@ -172,18 +172,13 @@ namespace Sophies_Soraka
                 return;
             }
 
-            if (
-                ObjectManager.Get<AIHeroClient>()
-                    .Where(x => x.IsAlly && x.IsValidTarget(float.MaxValue))
-                    .Select(x => (int) x.Health/x.MaxHealth*100)
-                    .Select(
-                        friendHealth =>
-                            new {friendHealth, health = getSliderItem(healMenu, "autoRPercent")})
-                    .Where(x => x.friendHealth <= x.health)
-                    .Select(x => x.friendHealth)
-                    .Any())
+            if (ObjectManager.Get<AIHeroClient>()
+                    .Any(
+                        x =>
+                        x.IsAlly && x.IsValidTarget(float.MaxValue, false)
+                        && x.HealthPercent < getSliderItem(healMenu, "autoRPercent")))
             {
-                R.Cast(Packets);
+                R.Cast();
             }
         }
 
@@ -303,6 +298,8 @@ namespace Sophies_Soraka
             harassMenu = Menu.AddSubMenu("Harass", "ssHarass");
             harassMenu.Add("useQHarass", new CheckBox("Use Q"));
             harassMenu.Add("useEHarass", new CheckBox("Use E"));
+            harassMenu.Add("HarassMana", new Slider("Harass Mana Percent", 50, 1));
+            harassMenu.Add("HarassToggle", new KeyBind("Harass! (toggle)", false, KeyBind.BindTypes.PressToggle, 'T'));
 
             // Healing
             healMenu = Menu.AddSubMenu("Heal Settings", "HSettings");
@@ -378,6 +375,12 @@ namespace Sophies_Soraka
             }
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            {
+                Harass();
+            }
+
+            if (getKeyBindItem(harassMenu, "HarassToggle")
+            && ObjectManager.Player.Mana > getSliderItem(harassMenu, "HarassMana"))
             {
                 Harass();
             }
@@ -460,24 +463,17 @@ namespace Sophies_Soraka
         {
             if (args.Target.IsValid<Obj_AI_Minion>() &&
                 (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) ||
-                 Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
-                && !getCheckBoxItem(miscMenu, "AttackMinions"))
-            {
-                if (ObjectManager.Player.CountAlliesInRange(1200) != 0)
-                {
-                    args.Process = false;
-                }
-            }
-
-            if (!args.Target.IsValid<AIHeroClient>() || getCheckBoxItem(miscMenu, "AttackChampions"))
-            {
-                return;
-            }
-
-            if (ObjectManager.Player.CountAlliesInRange(1200) != 0)
+                Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit)) 
+                && !getCheckBoxItem(miscMenu, "AttackMinions") && ObjectManager.Player.CountAlliesInRange(1200) > 0)
             {
                 args.Process = false;
             }
+
+            if (args.Target.IsValid<AIHeroClient>() && !getCheckBoxItem(miscMenu, "AttackChampions") && ObjectManager.Player.CountAlliesInRange(1000) > 0)
+            {
+                args.Process = false;
+            }
+
         }
 
         #endregion

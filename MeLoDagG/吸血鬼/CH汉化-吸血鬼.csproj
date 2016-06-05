@@ -51,7 +51,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyMenu.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Utilitty\DamageIndicator.cs" />
     <Compile Include="Utilitty\MyActivator.cs" />
