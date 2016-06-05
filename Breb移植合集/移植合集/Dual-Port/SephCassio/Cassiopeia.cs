@@ -25,7 +25,6 @@ namespace SephCassiopeia
         private static AIHeroClient target;
         public static Menu Config;
         private static SpellSlot IgniteSlot = SpellSlot.Summoner1;
-        private static bool DontMove;
         private static float edelay = 0;
         private static float laste = 0;
         private static int[] skillorder = { 1, 3, 2, 3, 3, 4, 3, 1, 3, 1, 4, 1, 1, 2, 2, 4, 2, 2 };
@@ -513,8 +512,6 @@ namespace SephCassiopeia
                 if (RLocation.MinionsHit > CassioUtils.getSliderItem(CassiopeiaMenu.Waveclear, "Waveclear.Rcount"))
                 {
                     Spells[SpellSlot.R].Cast(RLocation.Position);
-                    DontMove = true;
-                    LeagueSharp.Common.Utility.DelayAction.Add(200, () => DontMove = false);
                 }
             }
         }

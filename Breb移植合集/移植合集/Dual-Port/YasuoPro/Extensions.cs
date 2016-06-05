@@ -24,7 +24,7 @@ namespace YasuoPro
             if (Helper.GetBool("Misc.SafeE", YasuoMenu.MiscM))
             {
                 var point = Helper.GetDashPos(unit);
-                if (!Valvrave_Sharp.Evade.Evade.IsSafePoint(point))
+                if (!Valvrave_Sharp.Evade.Evade.IsSafePoint(point).IsSafe)
                 {
                     return false;
                 }

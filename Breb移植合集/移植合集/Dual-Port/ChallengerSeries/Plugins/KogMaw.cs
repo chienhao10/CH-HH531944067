@@ -310,7 +310,7 @@ namespace Challenger_Series.Plugins
             foreach (var enemy in ValidTargets.Where(h => h.Distance(myPos) < R.Range && h.LSIsValidTarget() && h.HealthPercent < 35))
             {
                 var dist = enemy.Distance(ObjectManager.Player.ServerPosition);
-                if (Orbwalker.CanAutoAttack && dist < 550) break;
+                if (Orbwalker.CanAutoAttack && dist < 550) continue;
                 var prediction = R.GetPrediction(enemy, true);
                 if ((int)prediction.Hitchance > (int)HitChance.Medium)
                 {

@@ -181,26 +181,6 @@ namespace FreshBooster.Champion
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
         }
 
-        public static double getRDamage(AIHeroClient target)
-        {
-            /*
-            local lvl = myHero:GetSpellData(_R).level
-            local ap = GetAp(myHero)
-            local eap = GetAp(target)
-            local dmg = 125 + lvl*125 + ap + (eap * 0.8)
-            local dmgp = dmg * (100/(100+target.magicArmor))
-            dmgp = dmgp - (dmgp * (Veigar.adv.r.buffer/100))
-            */
-
-            var lvl = _R.Level;
-            var ap = ObjectManager.Player.TotalMagicalDamage;
-            var eap = target.TotalMagicalDamage;
-            var dmg = 125 + lvl * 125 + ap + (eap * 0.8);
-            var dmgp = dmg * (100 / (100 + target.FlatMagicReduction));
-            dmgp = dmgp - (dmgp * (getSliderItem(Combo, "buffer") / 100));
-            return dmgp;
-        }
-
         private static void OnGameUpdate(EventArgs args)
         {
             try
@@ -338,28 +318,24 @@ namespace FreshBooster.Champion
             }
         }
 
-        public static float getRDam(AIHeroClient target)
+        public static double getRDam(AIHeroClient target)
         {
+            // thanks GOS
             if (target == null)
                 return 0f;
 
             var rDam = 0f;
-            var percMissingHP = (100 - ((target.Health / target.MaxHealth) * 100));
 
-            if (target.HealthPercent <= 33.4) // deals 2x damage if target lower than 33.4%
-            {
-                rDam = new[] { 350, 500, 650 }[_R.Level] + (1.5f * Player.TotalMagicalDamage);
-            }
-            else
+            if (target.HealthPercent > 33.3)
             {
                 rDam = new[] { 175, 250, 325 }[_R.Level] + (.75f * Player.TotalMagicalDamage);
             }
+            else
+            {
+                rDam = new[] { 350, 500, 650 }[_R.Level] + (1.5f * Player.TotalMagicalDamage);
+            }
 
-            var precentofR = ((rDam * .015f) * percMissingHP);
-
-            rDam += precentofR; // For Every 1% missing health, 1.5% increased damage of R
-
-            return rDam;
+            return rDam + ((0.015 * rDam) * (100 - ((target.Health / target.MaxHealth) * 100)));
         }
 
         public static void SpellUseE(AIHeroClient target)

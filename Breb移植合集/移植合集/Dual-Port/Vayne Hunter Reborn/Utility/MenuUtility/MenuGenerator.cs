@@ -57,6 +57,8 @@ namespace VayneHunter_Reborn.Utility.MenuUtility
             miscMenu.Add("dz191.vhr.misc.tumble.smartq", new CheckBox("尝试 QE"));
             miscMenu.Add("dz191.vhr.misc.tumble.noaastealthex", new KeyBind("隐身时不普攻按键", false, KeyBind.BindTypes.PressToggle, 'K'));
             miscMenu.Add("dz191.vhr.misc.tumble.noaastealthex.hp", new Slider("当血量低于 x 时", 35, 0, 100));
+            miscMenu.Add("dz191.vhr.misc.tumble.ijava", new CheckBox("iJava 隐身")); //Done
+            miscMenu.Add("dz191.vhr.misc.tumble.noaastealth.duration", new Slider("等待时间 (iJava模式下使用)", 700, 0, 1000));
             miscMenu.Add("dz191.vhr.misc.tumble.noqenemies", new CheckBox("不Q进敌人"));
             miscMenu.Add("dz191.vhr.misc.tumble.noqenemies.old", new CheckBox("不Q进敌人 （旧版）"));
             miscMenu.Add("dz191.vhr.misc.tumble.dynamicqsafety", new CheckBox("使用 安全动态Q距离"));

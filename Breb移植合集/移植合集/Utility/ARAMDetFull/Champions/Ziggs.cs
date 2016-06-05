@@ -92,7 +92,7 @@ namespace ARAMDetFull.Champions
             if (tar != null) useW(tar);
             tar = ARAMTargetSelector.getBestTarget(Q2.Range - 100);
             if (tar != null) useQ(tar);
-            
+
             tar = ARAMTargetSelector.getBestTarget(E.Range);
             if (tar != null) useE(tar);
             var target = ARAMTargetSelector.getBestTarget(R.Range);
@@ -102,11 +102,11 @@ namespace ARAMDetFull.Champions
             if (Utils.TickCount - UseSecondWT < 500 &&
                 ObjectManager.Player.Spellbook.GetSpell(SpellSlot.W).Name == "ziggswtoggle")
             {
-                W.Cast((SharpDX.Vector2) ObjectManager.Player.ServerPosition, true);
+                W.Cast((SharpDX.Vector2)ObjectManager.Player.ServerPosition, true);
             }
 
             //R aoe in teamfights
-            if ( R.IsReady())
+            if (R.IsReady())
             {
                 var alliesarround = 0;
                 var n = 0;
@@ -156,12 +156,6 @@ namespace ARAMDetFull.Champions
                 W.Cast(pos.To3D(), true);
                 UseSecondWT = Utils.TickCount;
             }
-
-
-            target = ARAMTargetSelector.getBestTarget(Q3.Range);
-
-            if(target == null)
-                Farm(true);
 
         }
 
@@ -256,14 +250,10 @@ namespace ARAMDetFull.Champions
             }
         }
 
-        private void Farm(bool laneClear)
+        public override void farm()
         {
-            if (!Orbwalker.CanMove)
-            {
-                return;
-            }
-            if (60 >
-                ObjectManager.Player.Mana / ObjectManager.Player.MaxMana * 100)
+            var laneClear = true;
+            if (player.ManaPercent < 65)
             {
                 return;
             }
@@ -273,8 +263,10 @@ namespace ARAMDetFull.Champions
             var allMinions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, Q2.Range);
 
             var useQi = 2;
-            var useEi = 0;
+            var useWi = 2;
+            var useEi = 2;
             var useQ = (laneClear && (useQi == 1 || useQi == 2)) || (!laneClear && (useQi == 0 || useQi == 2));
+            var useW = (laneClear && (useWi == 1 || useWi == 2)) || (!laneClear && (useWi == 0 || useWi == 2));
             var useE = (laneClear && (useEi == 1 || useEi == 2)) || (!laneClear && (useEi == 0 || useEi == 2));
 
             if (laneClear)
@@ -289,6 +281,19 @@ namespace ARAMDetFull.Champions
                     if (bLocation.MinionsHit > 0)
                     {
                         Q2.Cast(bLocation.Position.To3D());
+                    }
+                }
+
+                if (W.IsReady() && useW)
+                {
+                    var dmgpct = new[] { 25, 27.5, 30, 32.5, 35 }[W.Level - 1];
+
+                    var killableTurret =
+                        ObjectManager.Get<Obj_AI_Turret>()
+                            .Find(x => x.IsEnemy && ObjectManager.Player.Distance(x.Position) <= W.Range && x.HealthPercent < dmgpct);
+                    if (killableTurret != null)
+                    {
+                        W.Cast(killableTurret.Position);
                     }
                 }
 
@@ -313,7 +318,7 @@ namespace ARAMDetFull.Champions
                     {
                         if (!Orbwalking.InAutoAttackRange(minion))
                         {
-                            var Qdamage = ObjectManager.Player.LSGetSpellDamage(minion, SpellSlot.Q) * 0.75;
+                            var Qdamage = ObjectManager.Player.GetSpellDamage(minion, SpellSlot.Q) * 0.75;
 
                             if (Qdamage > Q1.GetHealthPrediction(minion))
                             {

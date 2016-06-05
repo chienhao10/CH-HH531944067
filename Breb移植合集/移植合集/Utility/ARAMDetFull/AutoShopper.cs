@@ -35,14 +35,10 @@ namespace ARAMDetFull
 
         public static Build curBuild;
 
-        private static bool gotStartingItems = false;
-
         private static List<InvItem> inv = new List<InvItem>();
         private static List<InvItem> inv2 = new List<InvItem>();
 
         private static List<int> canBuyOnfull = new List<int>();
-
-        private static bool finished = false;
     }
 
     public class Build
@@ -76,12 +72,6 @@ namespace ARAMDetFull
 
     public class ConditionalItem
     {
-
-        private FullItem selected;
-
-        private FullItem primary;
-        private FullItem secondary;
-        private ItemCondition condition;
         
         public ConditionalItem(ItemId pri, ItemId sec = ItemId.Unknown, ItemCondition cond = ItemCondition.TAKE_PRIMARY)
         {

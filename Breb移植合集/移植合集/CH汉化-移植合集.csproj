@@ -846,6 +846,9 @@
     <Compile Include="Libraries\SCommon\Orbwalking\Orbwalker.cs" />
     <Compile Include="Libraries\Sebby-OKTW\Movement.cs" />
     <Compile Include="Libraries\ValvraveSharp\Core\Common.cs" />
+    <Compile Include="Champion\LeeSin\LeeSin.cs" />
+    <Compile Include="Champion\Yasuo\Yasuo.cs" />
+    <Compile Include="Champion\Zed\Zed.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\Collision.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\Config.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\Evade.cs" />
@@ -857,9 +860,6 @@
     <Compile Include="Libraries\ValvraveSharp\Evade\SkillshotDetector.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\SpellData.cs" />
     <Compile Include="Libraries\ValvraveSharp\Evade\SpellDatabase.cs" />
-    <Compile Include="Champion\LeeSin\LeeSin.cs" />
-    <Compile Include="Champion\Yasuo\Yasuo.cs" />
-    <Compile Include="Champion\Zed\Zed.cs" />
     <Compile Include="Libraries\ValvraveSharp\Program.cs" />
     <Compile Include="Champion\Varus\DrawDamage.cs" />
     <Compile Include="Champion\Varus\Drawings.cs" />
@@ -1348,6 +1348,7 @@
     <Compile Include="Utility\TheCheater\TheCheater.cs" />
     <Compile Include="Utility\TrapTracker\Program.cs" />
     <Compile Include="Utility\UniversalGankAlerter\Program.cs" />
+    <Compile Include="Utility\UniversalOrbwalker.cs" />
     <Compile Include="Utility\UniversalPingBlock\Program.cs" />
     <Compile Include="Utility\UniversalRecallTracker\Program.cs" />
     <Compile Include="Utility\URF Spell Spammer\Program.cs" />

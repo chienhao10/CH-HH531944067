@@ -107,6 +107,17 @@ namespace ARAMDetFull.Champions
             base.farm();
             AutoR();
             AutoW();
+            if (player.ManaPercent < 55 || !Q.IsReady())
+                return;
+
+            foreach (var minion in MinionManager.GetMinions(Q.Range))
+            {
+                if (minion.Health < Q.GetDamage(minion))
+                {
+                    Q.Cast(minion);
+                    return;
+                }
+            }
         }
 
         public override void killSteal()
@@ -124,7 +135,7 @@ namespace ARAMDetFull.Champions
             E = new Spell(SpellSlot.E, 925);
             R = new Spell(SpellSlot.R);
 
-            Q.SetSkillshot(0.5f, 300, 1750, false, SkillshotType.SkillshotCircle);
+            Q.SetSkillshot(0.26f, 125, 1600, false, SkillshotType.SkillshotCircle);
             E.SetSkillshot(0.5f, 70f, 1750, false, SkillshotType.SkillshotCircle);
         }
 

@@ -153,7 +153,7 @@ namespace Slutty_Gnar_Reworked
             var useQm = getCheckBoxItem(comboMenu, "UseQMega");
             var target = TargetSelector.GetTarget(GnarSpells.QMini.Range, DamageType.Magical);
 
-            if (!sender.IsEnemy)
+            if (!sender.IsEnemy || sender == null)
             {
                 return;
             }
@@ -233,6 +233,10 @@ namespace Slutty_Gnar_Reworked
             if (qSpell && target != null)
             {
                 Orbwalker.ForcedTarget = target;
+            }
+            else
+            {
+                Orbwalker.ForcedTarget = null;
             }
 
             #endregion

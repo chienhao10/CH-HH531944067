@@ -83,7 +83,7 @@ namespace ARAMDetFull
 
         public static string[] ad_carries =
         {
-            "Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves",  "KogMaw", "MissFortune", 
+            "Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves",  "KogMaw", "MissFortune",
               "Sivir", "Jinx","Jayce", "Gangplank",
             "Talon", "Tristana", "Twitch", "Urgot", "Varus",  "Zed", "Lucian","Yasuo","MasterYi","Quinn","Kalista","Vayne"
 
@@ -119,7 +119,7 @@ namespace ARAMDetFull
 
         public static string[] dpsAS =
         {
-            
+
         };
         public static AIHeroClient player = ObjectManager.Player;
 
@@ -137,13 +137,13 @@ namespace ARAMDetFull
 
         public static ItemToShop nextItem;
         public static int lastBuy = 0;
-        public static SummonerSpells sSpells ;
+        public static SummonerSpells sSpells;
         public static int tankBal = -20;
 
         public static ChampType getType()
         {
             var cName = player.ChampionName;
-            if(mages.Contains(cName))
+            if (mages.Contains(cName))
                 return ChampType.Mage;
             if (supports.Contains(cName))
                 return ChampType.Support;
@@ -200,7 +200,7 @@ namespace ARAMDetFull
                         new ConditionalItem(ItemId.Void_Staff,ItemId.Liandrys_Torment, ItemCondition.ENEMY_MR),
                         new ConditionalItem(ItemId.Rylais_Crystal_Scepter),
                     },
-                        startingItems = new List<ItemId>
+                    startingItems = new List<ItemId>
                     {
                         ItemId.Needlessly_Large_Rod
                     }
@@ -264,7 +264,7 @@ namespace ARAMDetFull
                         ItemId.Stinger,
                     }
                 };
-                
+
             }
             else if (getType() == ChampType.MageNoMana)
             {
@@ -328,7 +328,7 @@ namespace ARAMDetFull
                     }
                 };
             }
-                #endregion
+            #endregion
 
             else if (getType() == ChampType.Bruiser) //Bruiser
             {
@@ -350,7 +350,7 @@ namespace ARAMDetFull
                         ItemId.Boots_of_Speed,ItemId.Ruby_Crystal,ItemId.Long_Sword,
                     }
                 };
-                
+
             }
             else //adc
             {
@@ -373,7 +373,7 @@ namespace ARAMDetFull
                         ItemId.Boots_of_Speed,ItemId.Vampiric_Scepter,
                     }
                 };
-                
+
             }
         }
 
@@ -382,7 +382,7 @@ namespace ARAMDetFull
 
         public static void setChamp()
         {
-           // Chat.Print("Support DeTuKs on his new adventures on LeagueSmurfs.com");
+            // Chat.Print("Support DeTuKs on his new adventures on LeagueSmurfs.com");
             Chat.Print(player.ChampionName);
             switch (player.ChampionName)
             {
@@ -441,7 +441,7 @@ namespace ARAMDetFull
                     champ = new Darius();
                     break;
                 case "RekSai":
-                   champ = new RekSai2();
+                    champ = new RekSai2();
                     break;
                 case "Varus":
                     champ = new Varus();
@@ -653,7 +653,7 @@ namespace ARAMDetFull
                 case "Vladimir":
                     champ = new Vladimir();
                     break;
-                //Vladimir
+                    //Vladimir
             }
         }
 
@@ -697,7 +697,7 @@ namespace ARAMDetFull
             {
                 return false;
             }
-            
+
         }
 
         public static void setupARMASimulator()
@@ -721,14 +721,14 @@ namespace ARAMDetFull
 
             if (fromNex == null)
                 return;
-            float sep = fromNex.Position.LSDistance(toNex.Position)/40;
+            float sep = fromNex.Position.LSDistance(toNex.Position) / 40;
 
             Vector2 lastPos = fromNex.Position.LSTo2D();
             //Setup sectors
             for (int i = 0; i < 40; i++)
             {
                 Vector2 end = lastPos.LSExtend(toNex.Position.LSTo2D(), sep);
-                sectors.Add(new Sector(lastPos,end,750));
+                sectors.Add(new Sector(lastPos, end, 750));
                 lastPos = end;
             }
             MapControl.setupMapControl();
@@ -765,7 +765,7 @@ namespace ARAMDetFull
                         towerAttackedMe = true;
                         towerAttackedAlly = false;
                     }
-                    else if (((AIHeroClient) missile.Target).LSDistance(turret) < 700)
+                    else if (((AIHeroClient)missile.Target).LSDistance(turret) < 700)
                     {
                         towerAttackedAlly = true;
                         towerAttackedMe = false;
@@ -808,7 +808,7 @@ namespace ARAMDetFull
             {
                 haveSeenMinion =
                     ObjectManager.Get<Obj_AI_Minion>().Any(min => min.IsTargetable && min.IsAlly && min.Health > 50) ||
-                    ARAMDetFull.gameStart + 54*1000 < ARAMDetFull.now;
+                    ARAMDetFull.gameStart + 44 * 1000 < ARAMDetFull.now;
             }
             if (!haveSeenMinion)
                 return;
@@ -826,19 +826,20 @@ namespace ARAMDetFull
                 champ.alwaysCheck();
             }
 
-            if(player.IsDead)
-                return;
             setRambo();
 
-            var closestEnemy = HeroManager.Enemies.Where(ene => !ene.IsDead && ene.IsTargetable && !ARAMTargetSelector.IsInvulnerable(ene)).OrderBy(ene =>  player.Position.LSDistance(ene.Position, true)).FirstOrDefault();
+            if (player.IsDead)
+                return;
+
+            var closestEnemy = HeroManager.Enemies.Where(ene => !ene.IsDead && ene.IsTargetable && !ARAMTargetSelector.IsInvulnerable(ene)).OrderBy(ene => player.Position.LSDistance(ene.Position, true)).FirstOrDefault();
             if (closestEnemy != null && ramboMode)
             {
-                LXOrbwalker.OrbwalkTo(closestEnemy.Position,false,true);
+                LXOrbwalker.OrbwalkTo(closestEnemy.Position, false, true);
                 return;
             }
             agrobalance = Aggresivity.getAgroBalance();
 
-            balance = (ARAMTargetSelector.IsInvulnerable(player) || player.IsZombie) ? 250 : MapControl.balanceAroundPointAdvanced(player.Position.LSTo2D(), 1800 - agrobalance * 5) - tankBal + agrobalance;
+            balance = (ARAMTargetSelector.IsInvulnerable(player) || player.IsZombie) ? 250 : MapControl.balanceAroundPointAdvanced(player.Position.LSTo2D(), 380 - agrobalance * 5) - tankBal + agrobalance;
             LXOrbwalker.inDanger = balance < 0;
 
             if (champ != null)
@@ -857,7 +858,7 @@ namespace ARAMDetFull
                 }
             }
 
-           
+
 
             if (!Sector.inTowerRange(player.Position.LSTo2D()) || towerAttackedAlly || player.HealthPercent < 25)
             {
@@ -891,11 +892,11 @@ namespace ARAMDetFull
             if (easyKill != null)
             {
                 //Console.WriteLine("go get easy");
-                LXOrbwalker.OrbwalkTo(easyKill.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), player.AttackRange*0.4f).To3D(),true);
+                LXOrbwalker.OrbwalkTo(easyKill.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), player.AttackRange * 0.4f).To3D(), true);
             }
 
             if (balance < 0)
-                LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(),false,true);
+                LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(), false, true);
             if (moveToRelicIfForHeal())
             {
                 return;
@@ -910,34 +911,34 @@ namespace ARAMDetFull
             if (towerAttackedMe)
             {
                 LXOrbwalker.CustomOrbwalkMode = false;
-               // Chat.Print("ouch tower!");
-                LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(),true);
+                // Chat.Print("ouch tower!");
+                LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(), false);
                 return;
             }
 
-            
+
 
             awayTo = eAwayFromTo();
-            if (awayTo.IsValid() && awayTo.X != 0 )
+            if (awayTo.IsValid() && awayTo.X != 0)
             {
 
                 LXOrbwalker.CustomOrbwalkMode = false;
-                if(champ != null)
+                if (champ != null)
                     champ.kiteBack(awayTo);
-                LXOrbwalker.OrbwalkTo(awayTo.To3D(),true);
+                LXOrbwalker.OrbwalkTo(awayTo.To3D(), true);
                 return;
-                
+
             }
             else
             {
                 var fightOn = MapControl.fightIsOn();
 
-                if (fightOn != null && MapControl.balanceAroundPointAdvanced(fightOn.Position.LSTo2D(),800) > (-180) && fightOn.LSDistance(player, true) < 2500 * 2500 && (!player.IsMelee() || !Sector.inTowerRange(fightOn.Position.LSTo2D())))
+                if (fightOn != null && MapControl.balanceAroundPointAdvanced(fightOn.Position.LSTo2D(), 280) > (-180) && fightOn.LSDistance(player, true) < 2500 * 2500 && (!player.IsMelee() || !Sector.inTowerRange(fightOn.Position.LSTo2D())))
                 {
                     if (!Aggresivity.getIgnoreMinions())
-                        Aggresivity.addAgresiveMove(new AgresiveMove(40,1500,true));
-                    if (player.Position.LSDistance(fightOn.Position)>player.AttackRange*0.8f)
-                        LXOrbwalker.OrbwalkTo(fightOn.Position.LSExtend(player.Position, player.AttackRange * ((LXOrbwalker.inDanger)?0.75f:0.3f)));
+                        Aggresivity.addAgresiveMove(new AgresiveMove(40, 1500, true));
+                    if (player.Position.LSDistance(fightOn.Position) > player.AttackRange * 0.8f)
+                        LXOrbwalker.OrbwalkTo(fightOn.Position.LSExtend(player.Position, player.AttackRange * ((LXOrbwalker.inDanger) ? 0.75f : 0.3f)));
                     return;
                 }
                 else
@@ -955,23 +956,23 @@ namespace ARAMDetFull
                         foreach (var sector in sectors)
                         {
                             sector.update();
-                            if (sector.containsEnemyChamp && sector.enemyChampIn.LSDistance(player,true)<1350*1350)
+                            if (sector.containsEnemyChamp && sector.enemyChampIn.LSDistance(player, true) < 1350 * 1350)
                             {
                                 orbSector = sector;
                                 break;
                             }
                             if (sector.dangerPolig)
                                 break;
-                          //  if (!player.IsMelee)
-                           // {
-                                if (sector.containsEnemy && !sector.containsAlly)
-                                    break;
-                           // }
-                           // else
-                          //  {
-                           //     if (prevSector != null && sector.containsEnemy && !prevSector.containsAlly  && !sector.containsAlly)
-                           //         break;
-                          //  }
+                            //  if (!player.IsMelee)
+                            // {
+                            if (sector.containsEnemy && !sector.containsAlly)
+                                break;
+                            // }
+                            // else
+                            //  {
+                            //     if (prevSector != null && sector.containsEnemy && !prevSector.containsAlly  && !sector.containsAlly)
+                            //         break;
+                            //  }
                             orbSector = sector;
                             if (sector.containsEnemy && sector.containsAlly)
                                 break;
@@ -983,13 +984,13 @@ namespace ARAMDetFull
                     }
                     else
                     {
-                        LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(),600).To3D());
+                        LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D());
                     }
                 }
             }
 
-           
-            
+
+
 
             /*foreach (var ally in MapControl.ally_champions)
             {
@@ -1004,11 +1005,11 @@ namespace ARAMDetFull
             if (relicHeal != null)
             {
                 var dist = relicHeal.LSDistance(player);
-                var bonus = ((50 - dist/20) > 0) ? (50 - dist/20) : 0;
+                var bonus = ((50 - dist / 20) > 0) ? (50 - dist / 20) : 0;
                 bool needHeal = player.HealthPercent + (float)agrobalance / 5 - (tankBal / 2.5) < 39 + bonus;
                 if (dist < 100)
                     MapControl.usedRelics.Add(relicHeal.NetworkId);
-                if (needHeal || (!relicHeal.Name.Contains("Health") && dist < 1600) )
+                if (needHeal || (!relicHeal.Name.Contains("Health") && dist < 1600))
                 {
                     LXOrbwalker.OrbwalkTo(relicHeal.Position);
                     return true;
@@ -1024,9 +1025,9 @@ namespace ARAMDetFull
 
             float distTo = target.LSDistance(player, true);
             bool dangerousAround = (balance < -player.HealthPercent);
-            float targetReack = (!dangerousAround)?player.AttackRange + 150:MapControl.getByObj(target).getReach();
+            float targetReack = (!dangerousAround) ? player.AttackRange + 150 : MapControl.getByObj(target).getReach();
             if (distTo > targetReack * targetReack)
-               return false;
+                return false;
 
             var per = target.Direction.LSTo2D().LSPerpendicular();
             var dir = new Vector3(per, 0);
@@ -1039,7 +1040,7 @@ namespace ARAMDetFull
 
         public static Vector2 eAwayFromTo()
         {
-            if(player.IsMelee())
+            if (player.IsMelee())
                 return new Vector2(0, 0);
 
             Vector2 backTo = player.Position.LSTo2D();
@@ -1059,7 +1060,7 @@ namespace ARAMDetFull
                 if (!Sector.inTowerRange(awayTo))
                     return backTo;
             }
-            return new Vector2(0,0);
+            return new Vector2(0, 0);
         }
 
     }

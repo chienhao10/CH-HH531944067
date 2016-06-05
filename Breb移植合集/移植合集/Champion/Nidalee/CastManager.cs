@@ -205,14 +205,17 @@ namespace KurisuNidalee
             if (!target.IsValidTarget(KL.Spells["ExPounce"].Range))
                 return;
 
-            if (KL.Player.HealthPercent <= getSliderItem(wCMenu, "ndcwcHPChecl"))
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
-                return;
-            }
+                if (KL.Player.HealthPercent <= getSliderItem(wCMenu, "ndcwcHPChecl"))
+                {
+                    return;
+                }
 
-            if (KL.Player.CountEnemiesInRange(750) <= getSliderItem(wCMenu, "ndcwcEnemy") && target.IsHunted())
-            {
-                return;
+                if (KL.Player.CountEnemiesInRange(750) <= getSliderItem(wCMenu, "ndcwcEnemy") && target.IsHunted())
+                {
+                    return;
+                }
             }
 
             if (target.IsHunted())

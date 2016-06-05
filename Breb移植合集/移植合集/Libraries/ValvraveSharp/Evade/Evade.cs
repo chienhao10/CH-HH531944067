@@ -94,7 +94,7 @@
                     }
                     Evading?.Invoke(Program.Player);
                     var currentPath = Program.Player.GetWaypoints();
-                    var safePoint = IsSafePoints(PlayerPosition);
+                    var safePoint = IsSafePoint(PlayerPosition, true);
                     var safePath = IsSafePath(currentPath, 100);
                     if (!safePath.IsSafe && !safePoint.IsSafe)
                     {
@@ -189,15 +189,11 @@
             return new SafePathResult(false, intersetion.Valid ? intersetion : intersection);
         }
 
-        internal static bool IsSafePoint(Vector2 point)
-        {
-            return IsSafePoints(point).IsSafe;
-        }
-
-        private static IsSafeResult IsSafePoints(Vector2 point)
+        public static IsSafeResult IsSafePoint(Vector2 point, bool isCheck = false)
         {
             var result = new IsSafeResult { SkillshotList = new List<Skillshot>() };
-            DetectedSkillshots.Where(i => i.Enable && !i.IsSafe(point)).ForEach(i => result.SkillshotList.Add(i));
+            DetectedSkillshots.Where(i => i.Enable && i.IsDanger(point) && (!isCheck || i.CanDodge))
+                .ForEach(i => result.SkillshotList.Add(i));
             result.IsSafe = result.SkillshotList.Count == 0;
             return result;
         }

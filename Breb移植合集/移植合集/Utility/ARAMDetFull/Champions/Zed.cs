@@ -74,6 +74,22 @@ namespace ARAMDetFull.Champions
             }
         }
 
+        public override void farm()
+        {
+            base.farm();
+            if (player.ManaPercent < 75 || !Q.IsReady())
+                return;
+
+            foreach (var minion in MinionManager.GetMinions(Q.Range - 50))
+            {
+                if (minion.Health < Q.GetDamage(minion))
+                {
+                    Q.Cast(minion);
+                    return;
+                }
+            }
+        }
+
 
         public static SummonerItems sumItems;
 
@@ -208,6 +224,7 @@ namespace ARAMDetFull.Champions
                     canDoCombo(new[] { SpellSlot.Q, SpellSlot.W, SpellSlot.E, SpellSlot.R }))
                 {
                     R.Cast(target);
+                    Aggresivity.addAgresiveMove(new AgresiveMove(25, 3000, true));
                 }
                 //eather casts 2 times or 0 get it to cast 1 time TODO
                 // Chat.Print("W2 "+ZedSharp.W2);

@@ -24,7 +24,7 @@ namespace ARAMDetFull.Champions
                             new ConditionalItem(ItemId.Infinity_Edge),
                             new ConditionalItem(ItemId.The_Bloodthirster),
                             new ConditionalItem(ItemId.Last_Whisper),
-                            new ConditionalItem(ItemId.Banshees_Veil),
+                            new ConditionalItem(ItemId.Banshees_Veil,ItemId.Zhonyas_Hourglass,ItemCondition.ENEMY_AP),
                         },
                 startingItems = new List<ItemId>
                         {
@@ -42,7 +42,7 @@ namespace ARAMDetFull.Champions
 
         public override void useW(Obj_AI_Base target)
         {
-            if (!W.IsReady())
+            if (!W.IsReady() || player.ManaPercent < 45)
                 return;
             W.Cast(target);
         }
@@ -51,7 +51,7 @@ namespace ARAMDetFull.Champions
         {
             if (!E.IsReady())
                 return;
-            if (EnemyInRange(1, 300))
+            if (EnemyInRange(1, 300) || (EnemyInRange(1, 600) && player.HealthPercent < 30))
                 E.Cast(player.Position.LSTo2D().LSExtend(ARAMSimulator.fromNex.Position.LSTo2D(),400));
 
         }
@@ -60,7 +60,10 @@ namespace ARAMDetFull.Champions
         {
             if (!R.IsReady())
                 return;
-            R.Cast(target);
+            if (target.Health < R.GetDamage(target))
+                R.Cast(target);
+            else
+                R.CastIfWillHit(target, 2);
         }
 
         public override void setUpSpells()
@@ -73,7 +76,7 @@ namespace ARAMDetFull.Champions
 
             E = new Spell(SpellSlot.E, 400);
 
-            R = new Spell(SpellSlot.R, 2500);
+            R = new Spell(SpellSlot.R, 2200);
             R.SetSkillshot(1f, 160f, 2000f, false, SkillshotType.SkillshotLine);
         }
 
@@ -94,5 +97,20 @@ namespace ARAMDetFull.Champions
             return LeagueSharp.Common.Utility.LSCountEnemiesInRange(ObjectManager.Player, (int)range) >= numOfEnemy;
         }
 
+        public override void farm()
+        {
+            base.farm();
+            if (player.ManaPercent < 55 || !Q.IsReady())
+                return;
+
+            foreach (var minion in MinionManager.GetMinions(Q.Range - 50))
+            {
+                if (minion.Health > ObjectManager.Player.LSGetAutoAttackDamage(minion) && minion.Health < Q.GetDamage(minion))
+                {
+                    Q.Cast(minion);
+                    return;
+                }
+            }
+        }
     }
 }

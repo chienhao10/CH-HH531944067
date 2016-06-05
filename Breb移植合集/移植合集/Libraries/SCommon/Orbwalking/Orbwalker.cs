@@ -454,7 +454,7 @@ namespace SCommon.Orbwalking
         /// Orders move hero to given position
         /// </summary>
         /// <param name="pos"></param>
-        private void Move(Vector3 pos)
+        public void Move(Vector3 pos)
         {
             if (!m_attackInProgress && CanMove() && (!CanAttack(60) || CanAttack()))
             {
@@ -464,8 +464,6 @@ namespace SCommon.Orbwalking
                 var holdzoneRadiusSqr = Math.Max(m_Configuration.HoldAreaRadius * m_Configuration.HoldAreaRadius, ObjectManager.Player.BoundingRadius * ObjectManager.Player.BoundingRadius * 4);
                 if (holdzone && playerPos.LSDistance(pos, true) < holdzoneRadiusSqr)
                 {
-                    //if ((Utils.TickCount + Game.Ping / 2 - m_lastAATick) * 0.6f >= 1000f / (ObjectManager.Player.GetAttackSpeed() * m_baseWindUp))
-                    //EloBuddy.Player.IssueOrder(GameObjectOrder.Stop, playerPos);
                     m_lastMoveTick = Utils.TickCount + m_rnd.Next(1, 20);
                     return;
                 }
@@ -1115,6 +1113,9 @@ namespace SCommon.Orbwalking
                 OrbwalkingPoint = Vector3.Zero;
 
             Orbwalk(t);
+
+            EloBuddy.SDK.Orbwalker.DisableAttacking = true;
+            EloBuddy.SDK.Orbwalker.DisableMovement = true;
         }
 
         /// <summary>
@@ -1285,6 +1286,14 @@ namespace SCommon.Orbwalking
             //    Game.PrintChat("{0} ({1})", args.Animation, Utils.TickCount);
             //    ResetAATimer();
             //}
+        }
+
+        public AttackableUnit LastTarget
+        {
+            get
+            {
+                return m_lastTarget;
+            }
         }
 
         /// <summary>

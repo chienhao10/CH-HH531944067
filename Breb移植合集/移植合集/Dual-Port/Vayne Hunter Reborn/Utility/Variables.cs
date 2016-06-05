@@ -24,7 +24,7 @@ namespace VayneHunter_Reborn.Utility
         {
             { SpellSlot.Q, new LeagueSharp.Common.Spell(SpellSlot.Q) },
             { SpellSlot.W, new LeagueSharp.Common.Spell(SpellSlot.W) },
-            { SpellSlot.E, new LeagueSharp.Common.Spell(SpellSlot.E, 590f) },
+            { SpellSlot.E, new LeagueSharp.Common.Spell(SpellSlot.E, 650f) {Width = 1f} },
             { SpellSlot.R, new LeagueSharp.Common.Spell(SpellSlot.R) }
         };
 

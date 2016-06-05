@@ -46,7 +46,7 @@ namespace SCommon.TS
         /// </summary>
         public static int TargettingMode
         {
-            get { return getSliderItem("TargetSelector.Root.iTargettingMode"); }
+            get { return getBoxItem("TargetSelector.Root.iTargettingMode"); }
         }
 
         public static bool getCheckBoxItem(string item)
@@ -64,20 +64,21 @@ namespace SCommon.TS
             return s_Config[item].Cast<KeyBind>().CurrentValue;
         }
 
+        public static int getBoxItem(string item)
+        {
+            return s_Config[item].Cast<ComboBox>().CurrentValue;
+        }
+
         public static void Create()
         {
             s_Config = MainMenu.AddMenu("目标选择器", "TargetSelector.Root");
-            s_Config.Add("TargetSelector.Root.blFocusSelected", new CheckBox("集火选择的目标"));
-            s_Config.Add("TargetSelector.Root.iFocusSelectedExtraRange",
-                new Slider("额外集火选择的目标范围", 0, 0, 250));
-            s_Config.Add("TargetSelector.Root.blOnlyAttackSelected", new CheckBox("只攻击选择的", false));
-            s_Config.Add("TargetSelector.Root.SelectedTargetColor", new CheckBox("选择颜色", false));
-
-            s_Config.AddGroupLabel("英雄优先顺序");
+            s_Config.AddGroupLabel("目标选择模式");
+            s_Config.Add("TargetSelector.Root.iTargettingMode", new ComboBox("选择模式:", 0, "自动", "最低血量", "最高 AD", "最高 AP", "最近", "鼠标附近", "最少攻击次数", "最少施法次数"));
+            s_Config.AddGroupLabel("优先顺序");
+            s_Config.AddLabel("(数值越高越优先攻击)");
             foreach (var enemy in HeroManager.Enemies)
             {
-                s_Config.Add(string.Format("TargetSelector.Priority.{0}", enemy.ChampionName),
-                    new Slider(enemy.ChampionName, 1, 1, 5));
+                s_Config.Add(string.Format("TargetSelector.Priority.{0}", enemy.ChampionName), new Slider(enemy.ChampionName, 1, 1, 5));
             }
             s_Config.AddLabel("0 : 自动");
             s_Config.AddLabel("1 : 低血量");
@@ -88,6 +89,14 @@ namespace SCommon.TS
             s_Config.AddLabel("6 : 最少攻击次数");
             s_Config.AddLabel("7 : 最少施法次数");
             s_Config.Add("TargetSelector.Root.iTargettingMode", new Slider("目标选择模式", 0, 0, 7));
+            s_Config.AddSeparator();
+            s_Config.AddGroupLabel("目标选择设置");
+            s_Config.Add("TargetSelector.Root.blFocusSelected", new CheckBox("集火选择的目标"));
+            s_Config.Add("TargetSelector.Root.iFocusSelectedExtraRange", new Slider("Extra Focus Selected Range", 0, 0, 250));
+            s_Config.Add("TargetSelector.Root.blOnlyAttackSelected", new CheckBox("只攻击选择的", false));
+            s_Config.Add("TargetSelector.Root.SelectedTargetColor", new CheckBox("选择颜色", false));
+
+            s_Config.AddGroupLabel("英雄优先顺序");
         }
 
         /// <summary>

@@ -40,7 +40,7 @@
                     TriggerOnDetectSkillshot(
                         DetectionType.ProcessSpell,
                         spellData,
-                        Variables.TickCount,
+                        Variables.TickCount - Game.Ping / 2,
                         sender.Position.ToVector2(),
                         sender.Position.ToVector2(),
                         sender.Position.ToVector2(),
@@ -153,7 +153,7 @@
                 endPos = endPos
                          + Math.Min(spellData.ExtraRange, spellData.Range - endPos.Distance(unitPosition)) * direction;
             }
-            var castTime = Variables.TickCount - (spellData.MissileDelayed ? 0 : spellData.Delay)
+            var castTime = Variables.TickCount - Game.Ping / 2 - (spellData.MissileDelayed ? 0 : spellData.Delay)
                            - (int)(1000f * missilePosition.Distance(unitPosition) / spellData.MissileSpeed);
             TriggerOnDetectSkillshot(
                 DetectionType.RecvPacket,
@@ -184,8 +184,7 @@
                 foreach (var skillshot in
                     Evade.DetectedSkillshots.Where(
                         i =>
-                        i.SpellData.MissileSpellName.Equals(spellName, StringComparison.InvariantCultureIgnoreCase)
-                        && i.Unit.NetworkId == unit.NetworkId
+                        i.SpellData.MissileSpellName == spellName && i.Unit.NetworkId == unit.NetworkId
                         && (missile.EndPosition.ToVector2() - missile.StartPosition.ToVector2()).AngleBetween(
                             i.Direction) < 10 && i.SpellData.CanBeRemoved))
                 {
@@ -195,8 +194,7 @@
             }
             Evade.DetectedSkillshots.RemoveAll(
                 i =>
-                (i.SpellData.MissileSpellName.Equals(spellName, StringComparison.InvariantCultureIgnoreCase)
-                || i.SpellData.ExtraMissileNames.Contains(spellName, StringComparer.InvariantCultureIgnoreCase))
+                (i.SpellData.MissileSpellName == spellName || i.SpellData.ExtraMissileNames.Contains(spellName))
                 && (i.Unit.NetworkId == unit.NetworkId
                     && (missile.EndPosition.ToVector2() - missile.StartPosition.ToVector2()).AngleBetween(i.Direction)
                     < 10 && i.SpellData.CanBeRemoved || i.SpellData.ForceRemove));
@@ -240,7 +238,7 @@
                     TriggerOnDetectSkillshot(
                         DetectionType.ProcessSpell,
                         spellData,
-                        Variables.TickCount,
+                        Variables.TickCount - Game.Ping / 2,
                         start,
                         end,
                         end,
@@ -270,7 +268,7 @@
             TriggerOnDetectSkillshot(
                 DetectionType.ProcessSpell,
                 spellData,
-                Variables.TickCount,
+                Variables.TickCount - Game.Ping / 2,
                 startPos,
                 endPos,
                 args.End.ToVector2(),

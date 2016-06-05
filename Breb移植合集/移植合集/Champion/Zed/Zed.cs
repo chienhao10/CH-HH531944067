@@ -518,15 +518,13 @@
                 var useR = getKeyBindItem(comboMenu, "R");
                 var targetR = getCheckBoxItem(comboMenu, "RCast" + target.NetworkId);
                 var stateR = RState;
-                var canCast = !useR || !targetR
-                              || (stateR == 0 && target.DistanceToPlayer() > getSliderItem(comboMenu, "RStopRange"))
-                              || stateR == -1;
-                if (stateR == 0 && useR && targetR && R.IsInRange(target) && CanR && R.CastOnUnit(target))
+                var canCast = !useR || !targetR || (stateR == 0 && target.DistanceToPlayer() > getSliderItem(comboMenu, "RStopRange")) || stateR == -1;
+                if (stateR == 0 && useR && targetR && R.IsInRange(target) && CanR)
                 {
+                    R.CastOnUnit(target);
                     return;
                 }
-                if (getCheckBoxItem(comboMenu, "Ignite") && Ignite.IsReady() && (HaveR(target) || target.HealthPercent < 25)
-                    && target.DistanceToPlayer() < IgniteRange)
+                if (getCheckBoxItem(comboMenu, "Ignite") && Ignite.IsReady() && (HaveR(target) || target.HealthPercent < 25) && target.DistanceToPlayer() < IgniteRange)
                 {
                     Player.Spellbook.CastSpell(Ignite, target);
                 }
@@ -554,13 +552,9 @@
                             }
                         }
                     }
-                    else if (Variables.TickCount - lastW > 500
-                             && target.Health + target.AttackShield <= Player.GetAutoAttackDamage(target)
-                             && !E.IsInRange(target) && !IsKillByMark(target)
-                             && target.DistanceToPlayer() < W.Range + target.GetRealAutoAttackRange() - 100
-                             && W.Cast(
-                                 target.ServerPosition.LSExtend(Player.ServerPosition, -target.GetRealAutoAttackRange())))
+                    else if (Variables.TickCount - lastW > 500 && target.Health + target.AttackShield <= Player.GetAutoAttackDamage(target) && !E.IsInRange(target) && !IsKillByMark(target) && target.DistanceToPlayer() < W.Range + target.GetRealAutoAttackRange() - 100)
                     {
+                        W.Cast(target.ServerPosition.LSExtend(Player.ServerPosition, -target.GetRealAutoAttackRange()));
                         lastW = Variables.TickCount;
                         return;
                     }

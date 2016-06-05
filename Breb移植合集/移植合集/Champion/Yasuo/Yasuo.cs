@@ -333,7 +333,7 @@
             var posAfterE = GetPosAfterDash(target);
             return (underTower || !posAfterE.IsUnderEnemyTurret())
                    && posAfterE.Distance(pos) < (inQCir ? Q3.Range : pos.DistanceToPlayer())
-                   && Evade.IsSafePoint(posAfterE.ToVector2());
+                   && Evade.IsSafePoint(posAfterE.ToVector2()).IsSafe;
         }
 
         private static bool CastQ3()
@@ -739,7 +739,7 @@
             }
             if (getCheckBoxItem(lcMenu, "E") && E.IsReady())
             {
-                var minions = Common.ListMinions().Where(i => i.IsValidTarget(E.Range) && !HaveE(i) && (!GetPosAfterDash(i).IsUnderEnemyTurret() || getCheckBoxItem(lcMenu, "ETower")) && Evade.IsSafePoint(GetPosAfterDash(i).ToVector2())).OrderByDescending(i => i.MaxHealth).ToList();
+                var minions = Common.ListMinions().Where(i => i.LSIsValidTarget(E.Range) && !HaveE(i) && (!GetPosAfterDash(i).IsUnderEnemyTurret() || getCheckBoxItem(lcMenu, "ETower")) && Evade.IsSafePoint(GetPosAfterDash(i).ToVector2()).IsSafe).OrderByDescending(i => i.MaxHealth).ToList();
                 if (minions.Count > 0)
                 {
                     var minion = minions.FirstOrDefault(i => E.CanLastHit(i, GetEDmg(i)));
@@ -860,7 +860,7 @@
                 i.IsValidTarget(E.Range) &&
                 !HaveE(i) &&
                 E.CanLastHit(i, GetEDmg(i)) &&
-                Evade.IsSafePoint(GetPosAfterDash(i).ToVector2()) &&
+                Evade.IsSafePoint(GetPosAfterDash(i).ToVector2()).IsSafe &&
                 (!GetPosAfterDash(i).IsUnderEnemyTurret() || getCheckBoxItem(lhMenu, "ETower"))).MaxOrDefault(i => i.MaxHealth);
 
                 if (minion != null && E.CastOnUnit(minion))

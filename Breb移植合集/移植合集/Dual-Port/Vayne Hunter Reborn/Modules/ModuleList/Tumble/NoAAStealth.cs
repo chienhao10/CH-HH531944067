@@ -14,7 +14,34 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Tumble
     {
         public void OnLoad()
         {
-            Orbwalker.OnPreAttack += OW;
+            if (MenuGenerator.miscMenu["dz191.vhr.misc.tumble.ijava"].Cast<CheckBox>().CurrentValue)
+            {
+                Orbwalker.OnPreAttack += iJava;
+            }
+            else
+            {
+                Orbwalker.OnPreAttack += OW;
+            }
+        }
+
+        private void iJava(AttackableUnit target, Orbwalker.PreAttackArgs args)
+        {
+            if (!ShouldGetExecuted() || !args.Target.IsEnemy)
+                return;
+
+            if (Player.HasBuff("vaynetumblefade"))
+            {
+                var stealthtime = MenuGenerator.miscMenu["dz191.vhr.misc.tumble.noaastealth.duration"].Cast<Slider>().CurrentValue;
+                var stealthbuff = Player.GetBuff("vaynetumblefade");
+                if (stealthbuff.EndTime - Game.Time > stealthbuff.EndTime - stealthbuff.StartTime - stealthtime / 1000f)
+                {
+                    args.Process = false;
+                }
+            }
+            else
+            {
+                args.Process = true;
+            }
         }
 
         private void OW(AttackableUnit target, Orbwalker.PreAttackArgs args)

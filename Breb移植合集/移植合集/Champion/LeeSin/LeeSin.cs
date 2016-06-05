@@ -428,27 +428,25 @@
 
         private static void Combo()
         {
-            if (R.IsReady() && getCheckBoxItem(comboMenu, "StarKill") && Q.IsReady() && !IsQOne && getCheckBoxItem(comboMenu, "Q")
-                && getCheckBoxItem(comboMenu, "Q2"))
+            if (getCheckBoxItem(comboMenu, "StarKill"))
             {
-                var target = EntityManager.Heroes.Enemies.Where(x => Q2.IsInRange(x) && HaveQ(x)).FirstOrDefault();
-                if (target != null
-                    && target.Health + target.AttackShield
-                    > Q.GetDamage(target, DamageStage.SecondCast) + Player.GetAutoAttackDamage(target)
-                    && target.Health + target.AttackShield
-                    <= GetQ2Dmg(target, R.GetDamage(target)) + Player.GetAutoAttackDamage(target))
+                if (R.IsReady() && Q.IsReady() && !IsQOne && getCheckBoxItem(comboMenu, "Q") && getCheckBoxItem(comboMenu, "Q2"))
                 {
-                    if (R.CastOnUnit(target))
+                    var target = EntityManager.Heroes.Enemies.Where(x => Q2.IsInRange(x) && HaveQ(x)).FirstOrDefault();
+                    if (target != null && target.Health + target.AttackShield > Q.GetDamage(target, DamageStage.SecondCast) + Player.GetAutoAttackDamage(target) && target.Health + target.AttackShield <= GetQ2Dmg(target, R.GetDamage(target)) + Player.GetAutoAttackDamage(target))
                     {
-                        return;
-                    }
-                    if (getCheckBoxItem(comboMenu, "StarKillWJ") && !R.IsInRange(target) && target.DistanceToPlayer() < WardManager.WardRange + R.Range - 50
-                        && Player.Mana >= 80 && !isDashing)
-                    {
-                        Flee(target.ServerPosition, true);
+                        if (R.CastOnUnit(target))
+                        {
+                            return;
+                        }
+                        if (getCheckBoxItem(comboMenu, "StarKillWJ") && !R.IsInRange(target) && target.DistanceToPlayer() < WardManager.WardRange + R.Range - 50 && Player.Mana >= 80 && !isDashing)
+                        {
+                            Flee(target.ServerPosition, true);
+                        }
                     }
                 }
             }
+
             if (getCheckBoxItem(comboMenu, "Q") && Q.IsReady())
             {
                 if (IsQOne)
@@ -496,8 +494,7 @@
             {
                 UseItem(subTarget);
             }
-            if (subTarget != null && getCheckBoxItem(comboMenu, "Ignite") && Ignite.IsReady() && subTarget.HealthPercent < 30
-                && subTarget.DistanceToPlayer() <= IgniteRange)
+            if (subTarget != null && getCheckBoxItem(comboMenu, "Ignite") && Ignite.IsReady() && subTarget.HealthPercent < 30 && subTarget.DistanceToPlayer() <= IgniteRange)
             {
                 Player.Spellbook.CastSpell(Ignite, subTarget);
             }

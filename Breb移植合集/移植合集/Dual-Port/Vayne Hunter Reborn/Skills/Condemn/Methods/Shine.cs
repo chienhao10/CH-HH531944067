@@ -43,10 +43,10 @@ namespace VayneHunter_Reborn.Skills.Condemn.Methods
                 var pushDistance = MenuGenerator.miscMenu["dz191.vhr.misc.condemn.pushdistance"].Cast<Slider>().CurrentValue;
                 var targetPosition = Vector3.Zero;
 
-                var pred = Variables.spells[SpellSlot.E].GetSPrediction(target);
-                if (pred.HitChance > HitChance.Impossible)
+                var pred = Variables.spells[SpellSlot.E].GetPrediction(target);
+                if (pred.Hitchance >= HitChance.VeryHigh)
                 {
-                    targetPosition = pred.UnitPosition.To3D();
+                    targetPosition = pred.UnitPosition;
                 }
 
                 if (targetPosition == Vector3.Zero)

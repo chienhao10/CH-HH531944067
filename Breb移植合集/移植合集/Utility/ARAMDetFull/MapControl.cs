@@ -28,10 +28,6 @@ namespace ARAMDetFull
 
             public int activeDangers = 0;
 
-
-
-
-
             protected List<SpellData> champSkillShots = new List<SpellData>();
             protected List<TargetSpellData> champTargSpells = new List<TargetSpellData>();
 
@@ -104,7 +100,7 @@ namespace ARAMDetFull
 
             public bool isDangerousTarg(TargetSpellData tSpell)
             {
-                if(tSpell.Type == SpellType.Skillshot)
+                if (tSpell.Type == SpellType.Skillshot)
                     return false;
 
                 if (tSpell.CcType == CcType.Stun || tSpell.CcType == CcType.Snare || tSpell.CcType == CcType.Fear ||
@@ -170,7 +166,7 @@ namespace ARAMDetFull
 
             public SkillshotType getSSType(SpellData sData)
             {
-                if(sData.Type == SpellData.SkillShotType.SkillshotCircle)
+                if (sData.Type == SpellData.SkillShotType.SkillshotCircle)
                     return SkillshotType.SkillshotCircle;
 
                 if (sData.Type == SpellData.SkillShotType.SkillshotCone)
@@ -183,7 +179,7 @@ namespace ARAMDetFull
             {
                 foreach (var sShot in champSkillShots)
                 {
-                    AIHeroClient bTarg = ARAMTargetSelector.getBestTarget(sShot.Range + sShot.Radius/2);
+                    AIHeroClient bTarg = ARAMTargetSelector.getBestTarget(sShot.Range + sShot.Radius / 2);
                     if (bTarg == null || spells[sShot.Slot] == null)
                         continue;
                     if (spells[sShot.Slot].IsReady())
@@ -226,12 +222,12 @@ namespace ARAMDetFull
                     try
                     {
 
-                        if(spell == null || !spell.IsReady())
+                        if (spell == null || !spell.IsReady())
                             continue;
 
                         float dmg = 0;
                         var checkRange = spell.Range + 250;
-                        if (hero.LSDistance(target, true) < checkRange*checkRange)
+                        if (hero.LSDistance(target, true) < checkRange * checkRange)
                             dmg = spell.GetDamage(target);
                         if (dmg != 0)
                             mana += hero.Spellbook.GetSpell(spell.Slot).SData.Mana;
@@ -258,10 +254,10 @@ namespace ARAMDetFull
         {
             foreach (var hero in ObjectManager.Get<AIHeroClient>())
             {
-                if(hero.IsMe)
+                if (hero.IsMe)
                     continue;
 
-                if(hero.IsAlly)
+                if (hero.IsAlly)
                     ally_champions.Add(new ChampControl(hero));
 
                 if (hero.IsEnemy)
@@ -280,12 +276,12 @@ namespace ARAMDetFull
 
         public static AIHeroClient fightIsOn()
         {
-            foreach (var enem in enemy_champions.Where(ene => !ene.hero.IsDead && ene.hero.IsVisible).OrderBy(ene => ene.hero.LSDistance(ObjectManager.Player,true)))
+            foreach (var enem in enemy_champions.Where(ene => !ene.hero.IsDead && ene.hero.IsVisible).OrderBy(ene => ene.hero.LSDistance(ObjectManager.Player, true)))
             {
-                if (myControler.canDoDmgTo(enem.hero) > enem.hero.Health+250)
+                if (myControler.canDoDmgTo(enem.hero) > enem.hero.Health + 250)
                     return enem.hero;
 
-                if (ally_champions.Where(ene => !ene.hero.IsDead && !ene.hero.IsMe).Any(ally => enem.hero.LSDistance(ally.hero, true) < 500*500))
+                if (ally_champions.Where(ene => !ene.hero.IsDead && !ene.hero.IsMe).Any(ally => enem.hero.LSDistance(ally.hero, true) < 500 * 500))
                 {
                     return enem.hero;
                 }
@@ -311,12 +307,12 @@ namespace ARAMDetFull
         public static bool fightIsOn(Obj_AI_Base target)
         {
             if (myControler.canDoDmgTo(target) > target.Health)
-                    return true;
+                return true;
 
-                if (ally_champions.Where(ene => !ene.hero.IsDead && !ene.hero.IsMe).Any(ally => target.LSDistance(ally.hero, true) < 300 * 300))
-                {
-                    return true;
-                }
+            if (ally_champions.Where(ene => !ene.hero.IsDead && !ene.hero.IsMe).Any(ally => target.LSDistance(ally.hero, true) < 300 * 300))
+            {
+                return true;
+            }
 
             return false;
         }
@@ -325,9 +321,9 @@ namespace ARAMDetFull
         public static int enemiesAroundPoint(Vector2 point, float range)
         {
             int count = 0;
-            foreach (var ene in enemy_champions.Where(ene=>!ene.hero.IsDead))
+            foreach (var ene in enemy_champions.Where(ene => !ene.hero.IsDead))
             {
-                if (ene.hero.LSDistance(point, true) < range*range)
+                if (ene.hero.LSDistance(point, true) < range * range)
                     count++;
             }
             return count;
@@ -342,27 +338,31 @@ namespace ARAMDetFull
             return balance;
         }
 
-        public static int balanceAroundPointAdvanced(Vector2 point, float range)
+        public static int balanceAroundPointAdvanced(Vector2 point, float rangePlus)
         {
             int balance = (point.To3D().UnderTurret(true)) ? -80 : (point.To3D().UnderTurret(false)) ? 80 : 0;
             foreach (var ene in enemy_champions)
             {
-                if (!ene.hero.IsDead && ene.hero.LSDistance(point, true) < range*range && !unitIsUseless(ene.hero))
+                var reach = ene.reach + rangePlus;
+                if (!ene.hero.IsDead && ene.hero.LSDistance(point, true) < reach * reach && !unitIsUseless(ene.hero) && !notVisibleAndMostLieklyNotThere(ene.hero))
+                {
                     balance -= (int)((ene.hero.HealthPercent + 20 - ene.hero.Deaths * 4 + ene.hero.ChampionsKilled * 4) *
-                               ((ARAMSimulator.player.Level < 7)
-                        ? 1.3f
-                        : 1f));
+                                      ((ARAMSimulator.player.Level < 7)
+                                          ? 1.3f
+                                          : 1f));
+                }
             }
 
 
             foreach (var aly in ally_champions)
             {
-                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < 2000 * 2000 && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + 450 + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
+                var reach = aly.reach + 500;
+                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + 450 + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
                     balance += ((int)aly.hero.HealthPercent + 20 + 20 - aly.hero.Deaths * 4 + aly.hero.ChampionsKilled * 4);
             }
             var myBal = ((int)myControler.hero.HealthPercent + 20 + 20 - myControler.hero.Deaths * 10 +
-                         myControler.hero.ChampionsKilled*10);
-            balance += (myBal<0)?10:myBal;
+                         myControler.hero.ChampionsKilled * 10);
+            balance += (myBal < 0) ? 10 : myBal;
             return balance;
         }
 
@@ -383,6 +383,14 @@ namespace ARAMDetFull
             return unitIsUselessFor(unit) > 0.7;
         }
 
+        public static bool notVisibleAndMostLieklyNotThere(Obj_AI_Base unit)
+        {
+            var distEneNex = ARAMSimulator.toNex.Position.LSDistance(unit.Position);
+            var distEneNexDeepest = ARAMSimulator.toNex.Position.LSDistance(ARAMSimulator.deepestAlly.Position);
+
+            return !ARAMSimulator.deepestAlly.IsDead && distEneNexDeepest + 1500 < distEneNex;
+        }
+
         public static ChampControl getByObj(Obj_AI_Base champ)
         {
             return enemy_champions.FirstOrDefault(ene => ene.hero.NetworkId == champ.NetworkId);
@@ -395,7 +403,7 @@ namespace ARAMDetFull
             var closesEnem = ClosestEnemyTobase();
             //var closesEnemTower = ClosestEnemyTobase();
             var hprelics = ObjectManager.Get<Obj_AI_Base>().Where(
-                r => r.IsValid && !r.IsDead && (r.Name.Contains("HealthRelic") || r.Name.Contains("BardChime") || (r.Name.Contains("BardPickup") && ObjectManager.Player.ChampionName == "Bard")) 
+                r => r.IsValid && !r.IsDead && (r.Name.Contains("HealthRelic") || r.Name.Contains("BardChime") || (r.Name.Contains("BardPickup") && ObjectManager.Player.ChampionName == "Bard"))
                     && !usedRelics.Contains(r.NetworkId) && (closesEnem == null || r.LSDistance(ARAMSimulator.fromNex.Position, true) - 500 < closesEnem.LSDistance(ARAMSimulator.fromNex.Position, true))).ToList().OrderBy(r => ARAMSimulator.player.LSDistance(r, true));
             return hprelics.FirstOrDefault();
         }

@@ -11,15 +11,12 @@ namespace SCommon.Orbwalking
         public ConfigMenu()
         {
             m_Menu = MainMenu.AddMenu("走砍菜单", "Orbwalking.Root");
-            m_Menu.Add("Orbwalking.Root.iExtraWindup", new Slider("额外前摇时间"));
-            m_Menu.Add("Orbwalking.Root.iMovementDelay", new Slider("移动延迟", 0, 0, 1000));
-            m_Menu.Add("Orbwalking.Root.iHoldPosition", new Slider("停止半径", 0, 0, 250));
-
+            m_Menu.AddGroupLabel("按键");
             m_Menu.Add("Orbwalking.Root.blLastHit", new KeyBind("尾兵", false, KeyBind.BindTypes.HoldActive, 'X'));
             m_Menu.Add("Orbwalking.Root.blHarass", new KeyBind("骚扰", false, KeyBind.BindTypes.HoldActive, 'C'));
             m_Menu.Add("Orbwalking.Root.blLaneClear",new KeyBind("清线", false, KeyBind.BindTypes.HoldActive, 'V'));
             m_Menu.Add("Orbwalking.Root.blCombo", new KeyBind("连招", false, KeyBind.BindTypes.HoldActive, 32));
-
+            m_Menu.AddSeparator();
             m_Menu.AddGroupLabel("杂项");
             m_Menu.Add("Orbwalking.Misc.blAttackStructures", new CheckBox("攻击建筑"));
             m_Menu.Add("Orbwalking.Misc.blFocusNormalWhileTurret", new CheckBox("未被塔攻击时集火塔"));
@@ -30,15 +27,21 @@ namespace SCommon.Orbwalking
             m_Menu.Add("Orbwalking.Misc.blMagnetMelee", new CheckBox("黏住目标 (近程英雄)"));
             m_Menu.Add("Orbwalking.Misc.iStickRange", new Slider("黏住范围", 390, 0, 600));
             m_Menu.Add("Orbwalking.Misc.blDontMoveInRange", new CheckBox("敌方在普攻范围则不移动", false));
+            m_Menu.AddSeparator();
             m_Menu.Add("Orbwalking.Misc.blLegitMode", new CheckBox("安全模式（看起来不像外挂）", false));
             m_Menu.Add("Orbwalking.Misc.iLegitPercent", new Slider("安全模式%", 20));
-
+            m_Menu.AddSeparator();
             m_Menu.AddGroupLabel("线圈");
             m_Menu.Add("Orbwalking.Drawings.SelfAACircle", new CheckBox("自身普攻范围"));
             m_Menu.Add("Orbwalking.Drawings.EnemyAACircle", new CheckBox("敌方普攻范围", false));
             m_Menu.Add("Orbwalking.Drawings.LastHitMinion", new CheckBox("可击杀的小兵", false));
             m_Menu.Add("Orbwalking.Drawings.HoldZone", new CheckBox("停止移动范围", false));
             m_Menu.Add("Orbwalking.Drawings.iLineWidth", new Slider("线宽", 2, 1, 6));
+            m_Menu.AddSeparator();
+            m_Menu.AddGroupLabel("额外设置");
+            m_Menu.Add("Orbwalking.Root.iExtraWindup", new Slider("额外前摇时间", 0, 0, 200));
+            m_Menu.Add("Orbwalking.Root.iMovementDelay", new Slider("移动延迟", 0, 0, 1000));
+            m_Menu.Add("Orbwalking.Root.iHoldPosition", new Slider("停止移动半径", 0, 0, 112));
         }
 
         public bool LegitMode

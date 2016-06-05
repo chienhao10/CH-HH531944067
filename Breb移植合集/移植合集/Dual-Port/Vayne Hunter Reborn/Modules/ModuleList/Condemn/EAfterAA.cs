@@ -31,7 +31,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Condemn
             if (target.IsValidTarget(Variables.spells[SpellSlot.E].Range) && (target is AIHeroClient))
             {
                 var menuKey = MenuGenerator.miscMenu["dz191.vhr.misc.condemn.enextauto"].Cast<KeyBind>().CurrentValue;
-                Variables.spells[SpellSlot.E].CastOnUnit(target as AIHeroClient);
+                //Variables.spells[SpellSlot.E].CastOnUnit(target as AIHeroClient);
                 MenuGenerator.miscMenu["dz191.vhr.misc.condemn.enextauto"].Cast<KeyBind>().CurrentValue = false;
             }
         }

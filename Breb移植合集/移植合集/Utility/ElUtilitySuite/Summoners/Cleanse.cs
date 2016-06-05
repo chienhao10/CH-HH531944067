@@ -503,7 +503,7 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "anivia", Name = "stun", MenuName = "Anivia Stun", Evade = false,
+                                     Champion = "anivia", Name = "stun", MenuName = "Anivia Stun", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell

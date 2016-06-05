@@ -42,14 +42,13 @@ namespace ElRengarRevamped
 
             comboMenu = Menu.AddSubMenu("Combo", "Modes");
             comboMenu.Add("Combo.Use.Ignite", new CheckBox("Use Ignite"));
-            comboMenu.Add("Combo.Use.Smite", new CheckBox("Use Smite"));
             comboMenu.Add("Combo.Use.Q", new CheckBox("Use Q"));
             comboMenu.Add("Combo.Use.W", new CheckBox("Use W"));
             comboMenu.Add("Combo.Use.E", new CheckBox("Use E"));
             comboMenu.Add("Combo.Switch.E", new CheckBox("Switch E prio to Q after E cast"));
-            comboMenu.Add("Combo.Use.E.OutOfRange", new CheckBox("Use E when out of range", false));
             comboMenu.Add("Combo.Prio", new ComboBox("Prioritize", 2, "E", "W", "Q"));
             comboMenu.Add("Combo.Switch", new KeyBind("Switch priority", false, KeyBind.BindTypes.HoldActive, 'L'));
+            comboMenu.Add("Combo.Use.QQ", new ComboBox("5 ferocity Q reset"));
 
             harassMenu = Menu.AddSubMenu("Harass");
             harassMenu.Add("Harass.Use.Q", new CheckBox("Use Q"));
@@ -67,7 +66,6 @@ namespace ElRengarRevamped
             jungleClear.Add("Jungle.Use.Q", new CheckBox("Use Q"));
             jungleClear.Add("Jungle.Use.W", new CheckBox("Use W"));
             jungleClear.Add("Jungle.Use.E", new CheckBox("Use E"));
-            jungleClear.Add("Jungle.Movement2", new CheckBox("Movement in jungle off", false));
             jungleClear.Add("Jungle.Save.Ferocity", new CheckBox("Save ferocity", false));
 
             healMenu = Menu.AddSubMenu("Heal", "heal");

@@ -277,7 +277,7 @@ namespace Challenger_Series
             {
                 if (shouldntKS && Q.GetDamage(hero) > hero.Health)
                 {
-                    break;
+                    continue;
                 }
                 var pred = Q.GetPrediction(hero);
                 if ((int) pred.Hitchance > (int) HitChance.Medium && pred.UnitPosition.Distance(ObjectManager.Player.ServerPosition) < Q.Range)
@@ -297,15 +297,15 @@ namespace Challenger_Series
                 .OrderByDescending(GetPriority)
                 .ThenBy(ally => ally.Health))
             {
-                if (ally == null || ally.IsDead || ally.IsZombie) break;
+                if (ally == null || ally.IsDead || ally.IsZombie) continue;
                 if (HealBlacklistMenu["dontheal" + ally.CharData.BaseSkinName] != null && HealBlacklistMenu["dontheal" + ally.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue)
                 {
-                    break;
+                    continue;
                 }
 
                 if (MainMenu["dontwtanks"] != null && getCheckBoxItem(MainMenu, "dontwtanks") && ally.Health > 500 && getSliderItem(MainMenu, "atanktakesxheals") * GetWHealingAmount() < ally.MaxHealth - ally.Health)
                 {
-                    break;
+                    continue;
                 }
                 W.Cast(ally);
             }
@@ -358,8 +358,8 @@ namespace Challenger_Series
             if (minAllyHealth <= 1) return;
             foreach (var ally in EntityManager.Heroes.Allies.Where(h => !h.IsMe && h.Health > 50))
             {
-                if (HealBlacklistMenu["dontheal" + ally.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue) break;
-                if (getCheckBoxItem(MainMenu, "ultafterignite") && ally.HasBuff("summonerdot") && ally.Health > 400) break;
+                if (HealBlacklistMenu["dontheal" + ally.CharData.BaseSkinName].Cast<CheckBox>().CurrentValue) continue;
+                if (getCheckBoxItem(MainMenu, "ultafterignite") && ally.HasBuff("summonerdot") && ally.Health > 400) continue;
                 if (getCheckBoxItem(MainMenu, "checkallysurvivability") && ally.CountAllyHeroesInRange(800) == 0 &&
                     ally.CountEnemyHeroesInRange(800) > 2) break;
                 if (ally.CountEnemyHeroesInRange(800) >= 1 && ally.HealthPercent > 2 &&
