@@ -845,10 +845,9 @@ namespace ezEvade
                 spellDelay = 250,
                 spellKey = SpellSlot.Q,
                 spellName = "EzrealMysticShot",
-                extraSpellNames = new[] { "ezrealmysticshotwrapper", },
+                extraMissileNames = new[] { "EzrealMysticShotPulseMissile" },
                 spellType = SpellType.Line,
                 collisionObjects = new[] { CollisionObjectType.EnemyChampions, CollisionObjectType.EnemyMinions },
-
             });
 
             Spells.Add(
@@ -1961,7 +1960,7 @@ namespace ezEvade
                 name = "LucianW",
                 projectileSpeed = 1600,
                 radius = 80,
-                range = 1000,
+                range = 900,
                 spellDelay = 300,
                 spellKey = SpellSlot.W,
                 spellName = "LucianW",
@@ -1980,7 +1979,7 @@ namespace ezEvade
                 name = "LucianQ",
                 projectileSpeed = float.MaxValue,
                 radius = 65,
-                range = 1140,
+                range = 900,
                 spellDelay = 350,
                 spellKey = SpellSlot.Q,
                 spellName = "LucianQ",

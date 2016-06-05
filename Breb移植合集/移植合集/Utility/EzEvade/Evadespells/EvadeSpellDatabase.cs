@@ -30,6 +30,7 @@ namespace ezEvade
                 spellKey = SpellSlot.R,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
+                isSpecial = true,
             });
 
             #endregion

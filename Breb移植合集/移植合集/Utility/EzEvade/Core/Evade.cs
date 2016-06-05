@@ -235,7 +235,7 @@ namespace ezEvade
 
             if (Situation.ShouldDodge())
             {
-                if (isDodging && SpellDetector.spells.Count() > 0)
+                if (isDodging && SpellDetector.spells.Any())
                 {
                     if (SpellDetector.windupSpells.Select(entry => entry.Value).Any(spellData => spellData.spellKey == args.Slot))
                     {
@@ -321,7 +321,7 @@ namespace ezEvade
                         isProcessed = false,
                     };
 
-                    args.Process = false; //Block the command
+                    args.Process = false;
                 }
                 else
                 {

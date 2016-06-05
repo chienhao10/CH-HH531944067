@@ -15,6 +15,8 @@ namespace PuppyStandaloneOrbwalker
     {
         public static void Game_OnGameLoad()
         {
+            xSLx_Orbwalker.xSLxOrbwalker.AddToMenu();
+
             Chat.Print("In the EB Orbwalker make sure all the keys are the same as the standalone orbwalker.");
             Chat.Print("- Disable everything in EB's Orbwalker drawings.");
             Chat.Print("Some things do NOT work (yet) such as resetting auto attack.");

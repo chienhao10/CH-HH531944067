@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
 using LeagueSharp.Common;
+using SharpDX;
 
 namespace ezEvade
 {
@@ -26,7 +25,46 @@ namespace ezEvade
             {
                 spellData.useSpellFunc = UseEkkoR;
             }
+
+            if (spellData.spellName == "Pounce")
+            {
+                spellData.useSpellFunc = UsePounce;
+            }
+
+            if (spellData.spellName == "RivenTriCleave")
+            {
+                spellData.useSpellFunc = UseBrokenWings;
+            }
         }
+
+        public static bool UsePounce(EvadeSpellData evadeSpell, bool process = true)
+        {
+            if (myHero.CharData.BaseSkinName != "Nidalee")
+            {
+                var posInfo = EvadeHelper.GetBestPositionDash(evadeSpell);
+                if (posInfo != null)
+                {
+                    EvadeSpell.CastEvadeSpell(() => EvadeCommand.CastSpell(evadeSpell), process);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool UseBrokenWings(EvadeSpellData evadeSpell, bool process = false)
+        {
+            var posInfo = EvadeHelper.GetBestPositionDash(evadeSpell);
+            if (posInfo != null)
+            {
+                EvadeCommand.MoveTo(posInfo.position);
+                DelayAction.Add(50, () => EvadeSpell.CastEvadeSpell(() => EvadeCommand.CastSpell(evadeSpell), process));
+                return true;
+            }
+
+            return false;
+        }
+
 
         public static bool UseEkkoE2(EvadeSpellData evadeSpell, bool process = true)
         {
@@ -46,11 +84,19 @@ namespace ezEvade
 
         public static bool UseEkkoR(EvadeSpellData evadeSpell, bool process = true)
         {
-            if ((from obj in ObjectManager.Get<Obj_AI_Minion>() where obj != null && obj.IsValid && !obj.IsDead && obj.Name == "Ekko" && obj.IsAlly select obj.ServerPosition.LSTo2D()).Any(blinkPos => !blinkPos.CheckDangerousPos(10)))
+            foreach (var obj in ObjectManager.Get<Obj_AI_Minion>())
             {
-                EvadeSpell.CastEvadeSpell(() => EvadeCommand.CastSpell(evadeSpell), process);
-                //DelayAction.Add(50, () => myHero.IssueOrder(GameObjectOrder.MoveTo, posInfo.position.To3D()));
-                return true;
+                if (obj != null && obj.IsValid && !obj.IsDead && obj.Name == "Ekko" && obj.IsAlly)
+                {
+                    Vector2 blinkPos = obj.ServerPosition.LSTo2D();
+                    if (!blinkPos.CheckDangerousPos(10))
+                    {
+                        EvadeSpell.CastEvadeSpell(() => EvadeCommand.CastSpell(evadeSpell), process);
+                        //DelayAction.Add(50, () => myHero.IssueOrder(GameObjectOrder.MoveTo, posInfo.position.To3D()));
+                        return true;
+                    }
+
+                }
             }
 
             return false;

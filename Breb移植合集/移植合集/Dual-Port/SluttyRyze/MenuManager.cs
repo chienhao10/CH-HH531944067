@@ -31,144 +31,144 @@ namespace Slutty_ryze
 
         private static void HumanizerMenu()
         {
-            humanizerMenu = _config.AddSubMenu("Humanizer", "Humanizer");
+            humanizerMenu = _config.AddSubMenu("人性化", "Humanizer");
 
-            humanizerMenu.Add("minDelay", new Slider("Minimum Delay for Actions (ms)", 0, 0, 200));
-            humanizerMenu.Add("maxDelay", new Slider("Maximum Delay for Actions (ms)", 0, 0, 250));
-            humanizerMenu.Add("minCreepHPOffset", new Slider("Minimum HP for a Minion to Have Before CSing Damage >= HP+(%)", 5, 0, 25));
-            humanizerMenu.Add("maxCreepHPOffset", new Slider("Maximum HP for a Minion to Have Before CSing Damage >= HP+(%)", 15, 0, 25));
-            humanizerMenu.Add("doHuman", new CheckBox("Humanize", false));
+            humanizerMenu.Add("minDelay", new Slider("最高动作延迟 (ms)", 0, 0, 200));
+            humanizerMenu.Add("maxDelay", new Slider("最低动作延迟 (ms)", 0, 0, 250));
+            humanizerMenu.Add("minCreepHPOffset", new Slider("最低小兵血量进行尾兵伤害 >= HP+(%)", 5, 0, 25));
+            humanizerMenu.Add("maxCreepHPOffset", new Slider("最高小兵血量进行尾兵伤害 >= HP+(%)", 15, 0, 25));
+            humanizerMenu.Add("doHuman", new CheckBox("人性化", false));
         }
 
         private static void DrawingMenu()
         {
-            drawMenu = _config.AddSubMenu("Drawing Settings", "Drawings");
-            drawMenu.Add("drawoptions", new ComboBox("Drawing Mode Mode", 0, "Normal Mode", "Colorblind Mode"));
-            drawMenu.Add("Draw", new CheckBox("Display Drawings"));
-            drawMenu.Add("qDraw", new CheckBox("Draw Q"));
-            drawMenu.Add("eDraw", new CheckBox("Draw E"));
-            drawMenu.Add("wDraw", new CheckBox("Draw W"));
-            drawMenu.Add("stackDraw", new CheckBox("Stack Count"));
-            drawMenu.Add("notdraw", new CheckBox("Draw Floating Text"));
-            drawMenu.Add("keyBindDisplay", new CheckBox("Display Keybinds"));  
+            drawMenu = _config.AddSubMenu("线圈", "Drawings");
+            drawMenu.Add("drawoptions", new ComboBox("线圈模式", 0, "正常", "色盲"));
+            drawMenu.Add("Draw", new CheckBox("显示线圈"));
+            drawMenu.Add("qDraw", new CheckBox("显示 Q"));
+            drawMenu.Add("eDraw", new CheckBox("显示 E"));
+            drawMenu.Add("wDraw", new CheckBox("显示 W"));
+            drawMenu.Add("stackDraw", new CheckBox("叠加层数"));
+            drawMenu.Add("notdraw", new CheckBox("显示浮动文字"));
+            drawMenu.Add("keyBindDisplay", new CheckBox("显示按键"));  
         }
 
         private static void ComboMenu()
         {
-            combo1Menu = _config.AddSubMenu("Combo Settings", "combospells");
+            combo1Menu = _config.AddSubMenu("连招", "combospells");
             {
-                combo1Menu.Add("combooptions", new ComboBox("Combo Mode", 0, "Improved Combo", "New Test Combo"));
-                combo1Menu.Add("useQ", new CheckBox("Use Q (Overload)"));
-                combo1Menu.Add("useW", new CheckBox("Use W (Rune Prison)"));
-                combo1Menu.Add("useE", new CheckBox("Use E (Spell Flux)"));
-                combo1Menu.Add("useR", new CheckBox("Use R (Desperate Power)"));
-                combo1Menu.Add("useRww", new CheckBox("Only Use R if Target is Rooted"));
-                combo1Menu.Add("AAblock", new CheckBox("Block Auto Attack in Combo", false));
-                combo1Menu.Add("minaarange", new Slider("Disable AA If Target Distance from target >", 550, 100, 550));
+                combo1Menu.Add("combooptions", new ComboBox("连招模式", 0, "高级连招", "新连招"));
+                combo1Menu.Add("useQ", new CheckBox("使用 Q"));
+                combo1Menu.Add("useW", new CheckBox("使用 W"));
+                combo1Menu.Add("useE", new CheckBox("使用 E"));
+                combo1Menu.Add("useR", new CheckBox("使用 R"));
+                combo1Menu.Add("useRww", new CheckBox("只在目标定身时使用R"));
+                combo1Menu.Add("AAblock", new CheckBox("连招屏蔽普攻", false));
+                combo1Menu.Add("minaarange", new Slider("屏蔽普攻当距离目标 >", 550, 100, 550));
             }
         }
 
         private static void MixedMenu()
         {
-            mixedMenu = _config.AddSubMenu("Mixed Settings", "mixedsettings");
+            mixedMenu = _config.AddSubMenu("混合", "mixedsettings");
             {
-                mixedMenu.Add("mMin", new Slider("Min. Mana for Spells", 40));
-                mixedMenu.Add("UseQM", new CheckBox("Use Q"));
-                mixedMenu.Add("UseQMl", new CheckBox("Use Q to Last Hit Minions"));
-                mixedMenu.Add("UseEM", new CheckBox("Use E", false));
-                mixedMenu.Add("UseWM", new CheckBox("Use W", false));
-                mixedMenu.Add("UseQauto", new CheckBox("Auto Use Q", false));
+                mixedMenu.Add("mMin", new Slider("最低.蓝量使用技能", 40));
+                mixedMenu.Add("UseQM", new CheckBox("使用 Q"));
+                mixedMenu.Add("UseQMl", new CheckBox("使用 Q 尾兵"));
+                mixedMenu.Add("UseEM", new CheckBox("使用 E", false));
+                mixedMenu.Add("UseWM", new CheckBox("使用 W", false));
+                mixedMenu.Add("UseQauto", new CheckBox("自动使用 Q", false));
             }
         }
 
         private static void FarmMenu()
         {
-            laneMenu = _config.AddSubMenu("Lane Clear", "lanesettings");
+            laneMenu = _config.AddSubMenu("清线", "lanesettings");
             {
-                laneMenu.Add("disablelane", new KeyBind("Lane Clear Toggle", false, KeyBind.BindTypes.PressToggle, 'T'));
-                laneMenu.Add("useEPL", new Slider("Min. % Mana For Lane Clear", 50));
-                laneMenu.Add("passiveproc", new CheckBox("Don't Use Spells if Passive Will Proc"));
-                laneMenu.Add("useQlc", new CheckBox("Use Q to Last Hit"));
-                laneMenu.Add("useWlc", new CheckBox("Use W to Last Hit", false));
-                laneMenu.Add("useElc", new CheckBox("Use E to Last Hit", false));
-                laneMenu.Add("useQ2L", new CheckBox("Use Q to Lane Clear"));
-                laneMenu.Add("useW2L", new CheckBox("Use W to Lane Clear", false));
-                laneMenu.Add("useE2L", new CheckBox("Use E to Lane Clear", false));
-                laneMenu.Add("useRl", new CheckBox("Use R to Lane Clear", false));
-                laneMenu.Add("rMin", new Slider("Min. Minions to Use R", 3, 1, 20));
+                laneMenu.Add("disablelane", new KeyBind("清线按键", false, KeyBind.BindTypes.PressToggle, 'T'));
+                laneMenu.Add("useEPL", new Slider("最低. % 清线蓝量", 50));
+                laneMenu.Add("passiveproc", new CheckBox("不使用技能如果会触发被动"));
+                laneMenu.Add("useQlc", new CheckBox("使用 Q 尾兵"));
+                laneMenu.Add("useWlc", new CheckBox("使用 W 尾兵", false));
+                laneMenu.Add("useElc", new CheckBox("使用 E 尾兵", false));
+                laneMenu.Add("useQ2L", new CheckBox("使用 Q 清线"));
+                laneMenu.Add("useW2L", new CheckBox("使用 W 清线", false));
+                laneMenu.Add("useE2L", new CheckBox("使用 E 清线", false));
+                laneMenu.Add("useRl", new CheckBox("使用 R 清线", false));
+                laneMenu.Add("rMin", new Slider("最低. 小兵数量使用R", 3, 1, 20));
             }
 
-            jungleMenu = _config.AddSubMenu("Jungle Settings", "junglesettings");
+            jungleMenu = _config.AddSubMenu("清野", "junglesettings");
             {
-                jungleMenu.Add("useJM", new Slider("Min. % Mana for Jungle Clear", 50));
-                jungleMenu.Add("useQj", new CheckBox("Use Q"));
-                jungleMenu.Add("useWj", new CheckBox("Use W"));
-                jungleMenu.Add("useEj", new CheckBox("Use E"));
-                jungleMenu.Add("useRj", new CheckBox("Use R"));
+                jungleMenu.Add("useJM", new Slider("最低. % 清野蓝量", 50));
+                jungleMenu.Add("useQj", new CheckBox("使用 Q"));
+                jungleMenu.Add("useWj", new CheckBox("使用 W"));
+                jungleMenu.Add("useEj", new CheckBox("使用 E"));
+                jungleMenu.Add("useRj", new CheckBox("使用 R"));
             }
 
-            lastMenu = _config.AddSubMenu("Last Hit Settings", "lastsettings");
+            lastMenu = _config.AddSubMenu("尾兵", "lastsettings");
             {
-                lastMenu.Add("useQl2h", new CheckBox("Use Q to Last Hit"));
-                lastMenu.Add("useWl2h", new CheckBox("Use W to Last Hit", false));
-                lastMenu.Add("useEl2h", new CheckBox("Use E to Last Hit", false));
+                lastMenu.Add("useQl2h", new CheckBox("使用 Q 尾兵"));
+                lastMenu.Add("useWl2h", new CheckBox("使用 W 尾兵", false));
+                lastMenu.Add("useEl2h", new CheckBox("使用 E 尾兵", false));
             }
         }
 
         private static void MiscMenu()
         {
-            passiveMenu = _config.AddSubMenu("Auto Passive", "passivesettings");
+            passiveMenu = _config.AddSubMenu("自动叠加被动", "passivesettings");
             {
-                passiveMenu.Add("ManapSlider", new Slider("Min. % Mana", 30));
-                passiveMenu.Add("autoPassive", new KeyBind("Stack Passive", false, KeyBind.BindTypes.PressToggle, 'Z'));
-                passiveMenu.Add("stackSlider", new Slider("Keep Passive Count At", 3, 1, 4));
-                passiveMenu.Add("autoPassiveTimer", new Slider("Refresh Passive Every (s)", 5, 1, 10));
+                passiveMenu.Add("ManapSlider", new Slider("最低. % 蓝量", 30));
+                passiveMenu.Add("autoPassive", new KeyBind("叠加被动", false, KeyBind.BindTypes.PressToggle, 'Z'));
+                passiveMenu.Add("stackSlider", new Slider("保持被动层数", 3, 1, 4));
+                passiveMenu.Add("autoPassiveTimer", new Slider("X秒 刷新被动 (s)", 5, 1, 10));
             }
 
-            itemMenu = _config.AddSubMenu("Items", "itemsettings");
+            itemMenu = _config.AddSubMenu("物品", "itemsettings");
             {
-                itemMenu.Add("tearS", new KeyBind("Auto Stack Tear", false, KeyBind.BindTypes.PressToggle, 'G'));
-                itemMenu.Add("tearoptions", new CheckBox("Stack Tear Only at Fountain", false));
-                itemMenu.Add("tearSM", new Slider("Min % Mana to Stack Tear", 95));
-                itemMenu.Add("staff", new CheckBox("Use Seraph's Embrace"));
-                itemMenu.Add("staffhp", new Slider("Seraph's When % HP <", 30));
-                itemMenu.Add("muramana", new CheckBox("Use Muramana"));
+                itemMenu.Add("tearS", new KeyBind("自动叠加女神", false, KeyBind.BindTypes.PressToggle, 'G'));
+                itemMenu.Add("tearoptions", new CheckBox("只在泉水叠加", false));
+                itemMenu.Add("tearSM", new Slider("最低 % 蓝量进行叠加", 95));
+                itemMenu.Add("staff", new CheckBox("使用 炽天使"));
+                itemMenu.Add("staffhp", new Slider("当血量低于", 30));
+                itemMenu.Add("muramana", new CheckBox("使用 魔切"));
             }
 
-            hpMenu = _config.AddSubMenu("Auto Potions", "hpsettings");
+            hpMenu = _config.AddSubMenu("自动喝药", "hpsettings");
             {
-                hpMenu.Add("autoPO", new CheckBox("Enable Consumable Usage"));
-                hpMenu.Add("HP", new CheckBox("Auto Health Potions"));
-                hpMenu.Add("HPSlider", new Slider("Min. % Health for Potion", 30));
-                hpMenu.Add("MANA", new CheckBox("Auto Mana Potion"));
-                hpMenu.Add("MANASlider", new Slider("Min. % Mana for Potion", 30));
-                hpMenu.Add("Biscuit", new CheckBox("Auto Biscuit"));
-                hpMenu.Add("bSlider", new Slider("Min. % Health for Biscuit", 30));
-                hpMenu.Add("flask", new CheckBox("Auto Flask"));
-                hpMenu.Add("fSlider", new Slider("Min. % Health for Flask", 30));
+                hpMenu.Add("autoPO", new CheckBox("开启喝药"));
+                hpMenu.Add("HP", new CheckBox("自动血药"));
+                hpMenu.Add("HPSlider", new Slider("最低. % 血量", 30));
+                hpMenu.Add("MANA", new CheckBox("自动蓝药"));
+                hpMenu.Add("MANASlider", new Slider("最低. % 蓝量", 30));
+                hpMenu.Add("Biscuit", new CheckBox("自动饼干"));
+                hpMenu.Add("bSlider", new Slider("最低. % 血量", 30));
+                hpMenu.Add("flask", new CheckBox("自动魔瓶"));
+                hpMenu.Add("fSlider", new Slider("最低. % 血量", 30));
             }
 
-            eventMenu = _config.AddSubMenu("Events", "eventssettings");
+            eventMenu = _config.AddSubMenu("事件", "eventssettings");
             {
-                eventMenu.Add("useW2I", new CheckBox("Interrupt with W"));
-                eventMenu.Add("useQW2D", new CheckBox("W/Q on Dashing"));
-                eventMenu.Add("level", new CheckBox("Auto Level-Up"));
-                eventMenu.Add("autow", new CheckBox("Auto W Enemy Under Turret"));
+                eventMenu.Add("useW2I", new CheckBox("技能打断 W"));
+                eventMenu.Add("useQW2D", new CheckBox("W/Q 突击单位"));
+                eventMenu.Add("level", new CheckBox("自动加点"));
+                eventMenu.Add("autow", new CheckBox("塔下自动W"));
             }
 
-            ksMenu = _config.AddSubMenu("Kill Steal", "kssettings");
+            ksMenu = _config.AddSubMenu("抢头", "kssettings");
             {
-                ksMenu.Add("KS", new CheckBox("Killsteal"));
-                ksMenu.Add("useQ2KS", new CheckBox("Use Q to KS"));
-                ksMenu.Add("useW2KS", new CheckBox("Use W to KS"));
-                ksMenu.Add("useE2KS", new CheckBox("Use E to KS"));
+                ksMenu.Add("KS", new CheckBox("开启抢头"));
+                ksMenu.Add("useQ2KS", new CheckBox("使用 Q"));
+                ksMenu.Add("useW2KS", new CheckBox("使用 W"));
+                ksMenu.Add("useE2KS", new CheckBox("使用 E"));
             }
 
-            chase = _config.AddSubMenu("Chase Target", "Chase Target");
+            chase = _config.AddSubMenu("追击", "Chase Target");
             {
-                chase.Add("chase", new KeyBind("Activate Chase", false, KeyBind.BindTypes.HoldActive, 'A'));
-                chase.Add("usewchase", new CheckBox("Use W"));
-                chase.Add("chaser", new CheckBox("Use [R]", false));
+                chase.Add("chase", new KeyBind("追击按键", false, KeyBind.BindTypes.HoldActive, 'A'));
+                chase.Add("usewchase", new CheckBox("使用 W"));
+                chase.Add("chaser", new CheckBox("使用 [R]", false));
             }
         }
         #endregion

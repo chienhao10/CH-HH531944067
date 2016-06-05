@@ -464,6 +464,8 @@ namespace SCommon.Orbwalking
                 var holdzoneRadiusSqr = Math.Max(m_Configuration.HoldAreaRadius * m_Configuration.HoldAreaRadius, ObjectManager.Player.BoundingRadius * ObjectManager.Player.BoundingRadius * 4);
                 if (holdzone && playerPos.LSDistance(pos, true) < holdzoneRadiusSqr)
                 {
+                    if ((Utils.TickCount + Game.Ping / 2 - m_lastAATick) * 0.6f >= 1000f / (ObjectManager.Player.GetAttackSpeed() * m_baseWindUp))
+                        EloBuddy.Player.IssueOrder(GameObjectOrder.Stop, playerPos);
                     m_lastMoveTick = Utils.TickCount + m_rnd.Next(1, 20);
                     return;
                 }
