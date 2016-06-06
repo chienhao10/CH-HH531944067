@@ -1221,8 +1221,6 @@
     <Compile Include="Utility\ElUtilitySuite\Trackers\CooldownTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Trackers\JungleTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Trackers\SpellCountdownTracker.cs" />
-    <Compile Include="Utility\ElUtilitySuite\Trackers\SpellTracker1.cs" />
-    <Compile Include="Utility\ElUtilitySuite\Trackers\WardTracker.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\AutoLantern.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\BlueTrinket.cs" />
     <Compile Include="Utility\ElUtilitySuite\Utility\Flash.cs" />
