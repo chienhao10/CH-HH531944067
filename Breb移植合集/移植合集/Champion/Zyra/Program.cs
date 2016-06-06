@@ -62,63 +62,63 @@ namespace D_Zyra
             _passive.SetSkillshot(0.5f, 70f, 1400f, false, SkillshotType.SkillshotLine);
 
             //D Zyra
-            _config = MainMenu.AddMenu("D-Zyra", "D-Zyra");
+            _config = MainMenu.AddMenu("D-婕拉", "D-Zyra");
 
             //Combo usedfg, useignite
-            comboMenu = _config.AddSubMenu("Combo", "Combo");
-            comboMenu.Add("useQC", new CheckBox("Use Q"));
-            comboMenu.Add("useW_Passive", new CheckBox("Plant on Q"));
-            comboMenu.Add("useEC", new CheckBox("Use E"));
-            comboMenu.Add("useWE_Passive", new CheckBox("Plant on E"));
-            comboMenu.Add("use_ulti", new CheckBox("Use R If Killable"));
-            comboMenu.Add("UseRE", new CheckBox("Use AutoR"));
-            comboMenu.Add("MinTargets", new Slider("AutoR if Min Targets >=", 2, 1, 5));
-            comboMenu.Add("useRaim", new KeyBind("Use R(Semi-Manual)", false, KeyBind.BindTypes.HoldActive, 'T'));
+            comboMenu = _config.AddSubMenu("连招", "Combo");
+            comboMenu.Add("useQC", new CheckBox("使用 Q"));
+            comboMenu.Add("useW_Passive", new CheckBox("Q 在种子上"));
+            comboMenu.Add("useEC", new CheckBox("使用 E"));
+            comboMenu.Add("useWE_Passive", new CheckBox("E 在种子上"));
+            comboMenu.Add("use_ulti", new CheckBox("使用 R 如果可击杀"));
+            comboMenu.Add("UseRE", new CheckBox("使用 自动R"));
+            comboMenu.Add("MinTargets", new Slider("自动R 最低敌人数量 >=", 2, 1, 5));
+            comboMenu.Add("useRaim", new KeyBind("使用 R(半自动)", false, KeyBind.BindTypes.HoldActive, 'T'));
 
             //harass
-            harassMenu = _config.AddSubMenu("Harass", "Harass");
-            harassMenu.Add("useQH", new CheckBox("Use Q"));
-            harassMenu.Add("useW_Passiveh", new CheckBox("Plant on Q"));
-            harassMenu.Add("useEH", new CheckBox("Use E"));
-            harassMenu.Add("useWE_Passiveh", new CheckBox("Plant on E"));
-            harassMenu.Add("harassmana", new Slider("Minimum Mana% >", 35, 1));
-            harassMenu.Add("harasstoggle", new KeyBind("AutoHarass (toggle)", false, KeyBind.BindTypes.PressToggle, 'G'));
+            harassMenu = _config.AddSubMenu("骚扰", "Harass");
+            harassMenu.Add("useQH", new CheckBox("使用 Q"));
+            harassMenu.Add("useW_Passiveh", new CheckBox("Q 在种子上"));
+            harassMenu.Add("useEH", new CheckBox("使用 E"));
+            harassMenu.Add("useWE_Passiveh", new CheckBox("E 在种子上"));
+            harassMenu.Add("harassmana", new Slider("最低蓝量% >", 35, 1));
+            harassMenu.Add("harasstoggle", new KeyBind("自动骚扰 (开关)", false, KeyBind.BindTypes.PressToggle, 'G'));
 
             //Farm
-            farmMenu = _config.AddSubMenu("Farm", "Farm");
+            farmMenu = _config.AddSubMenu("农兵", "Farm");
             farmMenu.AddGroupLabel("Lane");
-            farmMenu.Add("useQL", new CheckBox("Use Q"));
-            farmMenu.Add("useW_Passivel", new CheckBox("Plant on Q"));
-            farmMenu.Add("useEL", new CheckBox("Use E"));
-            farmMenu.Add("useWE_Passivel", new CheckBox("Plant on E"));
-            farmMenu.Add("lanemana", new Slider("Minimum Mana% >", 35, 1));
+            farmMenu.Add("useQL", new CheckBox("使用 Q"));
+            farmMenu.Add("useW_Passivel", new CheckBox("Q 在种子上"));
+            farmMenu.Add("useEL", new CheckBox("使用 E"));
+            farmMenu.Add("useWE_Passivel", new CheckBox("E 在种子上"));
+            farmMenu.Add("lanemana", new Slider("最低蓝量% >", 35, 1));
 
-            farmMenu.AddGroupLabel("Jungle");
-            farmMenu.Add("useQJ", new CheckBox("Use Q"));
-            farmMenu.Add("useW_Passivej", new CheckBox("Plant on Q"));
-            farmMenu.Add("useEJ", new CheckBox("Use E"));
-            farmMenu.Add("useWE_Passivej", new CheckBox("Plant on E"));
-            farmMenu.Add("junglemana", new Slider("Minimum Mana% >", 35, 1));
+            farmMenu.AddGroupLabel("清野");
+            farmMenu.Add("useQJ", new CheckBox("使用 Q"));
+            farmMenu.Add("useW_Passivej", new CheckBox("Q 在种子上"));
+            farmMenu.Add("useEJ", new CheckBox("使用 E"));
+            farmMenu.Add("useWE_Passivej", new CheckBox("E 在种子上"));
+            farmMenu.Add("junglemana", new Slider("最低蓝量% >", 35, 1));
 
             //Misc
-            miscMenu = _config.AddSubMenu("Misc", "Misc");
-            miscMenu.Add("useQkill", new CheckBox("Q to Killsteal"));
-            miscMenu.Add("useEkill", new CheckBox("E to Killsteal"));
-            miscMenu.Add("Inter_E", new CheckBox("Interrupter E"));
-            miscMenu.Add("Gap_E", new CheckBox("GapClosers E"));
-            miscMenu.Add("usefrostq", new CheckBox("Frost Queen to GapClosers"));
-            miscMenu.Add("support", new CheckBox("Support Mode", false));
-            miscMenu.AddGroupLabel("E Hit Change");
-            miscMenu.Add("Echange", new ComboBox("E Hit Change", 3, "Low", "Medium", "High", "Very High"));
+            miscMenu = _config.AddSubMenu("杂项", "Misc");
+            miscMenu.Add("useQkill", new CheckBox("Q 抢头"));
+            miscMenu.Add("useEkill", new CheckBox("E 抢头"));
+            miscMenu.Add("Inter_E", new CheckBox("E 技能打断"));
+            miscMenu.Add("Gap_E", new CheckBox("防突进 E"));
+            miscMenu.Add("usefrostq", new CheckBox("使用冰雪女皇的指令"));
+            miscMenu.Add("support", new CheckBox("辅助模式", false));
+            miscMenu.AddGroupLabel("E 命中率");
+            miscMenu.Add("Echange", new ComboBox("E 命中率", 3, "低", "中", "高", "非常高"));
 
             //Draw
-            drawMenu = _config.AddSubMenu("Drawing", "Drawing");
-            drawMenu.Add("DrawQ", new CheckBox("Draw Q", false));
-            drawMenu.Add("DrawW", new CheckBox("Draw W", false));
-            drawMenu.Add("DrawE", new CheckBox("Draw E", false));
-            drawMenu.Add("DrawR", new CheckBox("Draw R", false));
-            drawMenu.Add("damagetest", new CheckBox("Damage Text", false));
-            drawMenu.Add("Drawharass", new CheckBox("Draw AutoHarass"));
+            drawMenu = _config.AddSubMenu("线圈", "Drawing");
+            drawMenu.Add("DrawQ", new CheckBox("显示 Q", false));
+            drawMenu.Add("DrawW", new CheckBox("显示 W", false));
+            drawMenu.Add("DrawE", new CheckBox("显示 E", false));
+            drawMenu.Add("DrawR", new CheckBox("显示 R", false));
+            drawMenu.Add("damagetest", new CheckBox("伤害文字", false));
+            drawMenu.Add("Drawharass", new CheckBox("显示 自动骚扰"));
 
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnUpdate += Game_OnGameUpdate;
@@ -542,14 +542,14 @@ namespace D_Zyra
                         Drawing.Width*0.02f,
                         Drawing.Height*0.92f,
                         Color.GreenYellow,
-                        "Auto harass Enabled");
+                        "自动骚扰");
                 }
                 else
                     Drawing.DrawText(
                         Drawing.Width*0.02f,
                         Drawing.Height*0.92f,
                         Color.OrangeRed,
-                        "Auto harass Disabled");
+                        "自动骚扰关闭");
             }
             if (getCheckBoxItem(drawMenu, "damagetest"))
             {
@@ -562,7 +562,7 @@ namespace D_Zyra
                             Drawing.WorldToScreen(enemyVisible.Position)[0] + 50,
                             Drawing.WorldToScreen(enemyVisible.Position)[1] - 40,
                             Color.Red,
-                            "Combo=Rekt");
+                            "连招=击杀");
                     }
                     else if (ComboDamage(enemyVisible) + _player.GetAutoAttackDamage(enemyVisible, true)*2 >
                              enemyVisible.Health)
@@ -571,14 +571,14 @@ namespace D_Zyra
                             Drawing.WorldToScreen(enemyVisible.Position)[0] + 50,
                             Drawing.WorldToScreen(enemyVisible.Position)[1] - 40,
                             Color.Orange,
-                            "Combo+AA=Rekt");
+                            "连招+AA=击杀");
                     }
                     else
                         Drawing.DrawText(
                             Drawing.WorldToScreen(enemyVisible.Position)[0] + 50,
                             Drawing.WorldToScreen(enemyVisible.Position)[1] - 40,
                             Color.Green,
-                            "Unkillable");
+                            "不可击杀");
                 }
             }
 
