@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EloBuddy;
-using EloBuddy.SDK;
+//using EloBuddy.SDK;
 
 #endregion
 
@@ -124,7 +124,7 @@ namespace LeagueSharp.Common
         /// <param name="args">The <see cref="GameObjectProcessSpellCastEventArgs" /> instance containing the event data.</param>
         private static void ObjAiBaseOnOnProcessSpellCast(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!sender.IsValidTarget(3000) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient
+            if (!sender.LSIsValidTarget(3000) || sender.Team != ObjectManager.Player.Team || sender is AIHeroClient
                 || !Orbwalking.IsAutoAttack(args.SData.Name) || !(args.Target is Obj_AI_Base))
             {
                 return;
@@ -140,7 +140,7 @@ namespace LeagueSharp.Common
                 sender.AttackCastDelay*1000,
                 sender.AttackDelay*1000 - (sender is Obj_AI_Turret ? 70 : 0),
                 sender.IsMelee() ? int.MaxValue : (int) args.SData.MissileSpeed,
-                sender.GetAutoAttackDamage(target, true));
+                (float)sender.LSGetAutoAttackDamage(target, true));
             ActiveAttacks.Add(sender.NetworkId, attackData);
         }
 
@@ -158,11 +158,11 @@ namespace LeagueSharp.Common
             foreach (var attack in ActiveAttacks.Values)
             {
                 var attackDamage = 0f;
-                if (!attack.Processed && attack.Source.IsValidTarget(float.MaxValue) &&
-                    attack.Target.IsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
+                if (!attack.Processed && attack.Source.LSIsValidTarget(float.MaxValue) &&
+                    attack.Target.LSIsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
                 {
                     var landTime = attack.StartTick + attack.Delay +
-                                   1000*Math.Max(0, unit.Distance(attack.Source) - attack.Source.BoundingRadius)/
+                                   1000*Math.Max(0, unit.LSDistance(attack.Source) - attack.Source.BoundingRadius)/
                                    attack.ProjectileSpeed + delay;
 
                     if ( /*Utils.GameTimeTickCount < landTime - delay &&*/ landTime < Utils.GameTimeTickCount + time)
@@ -192,8 +192,8 @@ namespace LeagueSharp.Common
             {
                 var n = 0;
                 if (Utils.GameTimeTickCount - 100 <= attack.StartTick + attack.AnimationTime &&
-                    attack.Target.IsValidTarget(float.MaxValue) &&
-                    attack.Source.IsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
+                    attack.Target.LSIsValidTarget(float.MaxValue) &&
+                    attack.Source.LSIsValidTarget(float.MaxValue) && attack.Target.NetworkId == unit.NetworkId)
                 {
                     var fromT = attack.StartTick;
                     var toT = Utils.GameTimeTickCount + time;
@@ -202,7 +202,7 @@ namespace LeagueSharp.Common
                     {
                         if (fromT >= Utils.GameTimeTickCount &&
                             (fromT + attack.Delay +
-                             Math.Max(0, unit.Distance(attack.Source) - attack.Source.BoundingRadius)/
+                             Math.Max(0, unit.LSDistance(attack.Source) - attack.Source.BoundingRadius)/
                              attack.ProjectileSpeed < toT))
                         {
                             n++;

@@ -244,6 +244,18 @@ namespace ARAMDetFull
             }
         }
 
+        public static int fearDistance
+        {
+            get
+            {
+                int kdaScore = myControler.hero.ChampionsKilled * 50 + myControler.hero.Assists * 10 - myControler.hero.Deaths * 50;
+                int timeFear = (ARAMDetFull.gameStart + 300 * 1000 < ARAMDetFull.now) ? 0 : -250;
+                int healthFear = (int)(-(100 - myControler.hero.HealthPercent) * 2);
+                int score = kdaScore + timeFear + healthFear + 100;
+                return (score < -350) ? -350 : ((score > 500) ? 500 : score);
+            }
+        }
+
         public static List<ChampControl> enemy_champions = new List<ChampControl>();
 
         public static List<ChampControl> ally_champions = new List<ChampControl>();
@@ -357,7 +369,7 @@ namespace ARAMDetFull
             foreach (var aly in ally_champions)
             {
                 var reach = aly.reach + 500;
-                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + 450 + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
+                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + fearDistance + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
                     balance += ((int)aly.hero.HealthPercent + 20 + 20 - aly.hero.Deaths * 4 + aly.hero.ChampionsKilled * 4);
             }
             var myBal = ((int)myControler.hero.HealthPercent + 20 + 20 - myControler.hero.Deaths * 10 +
@@ -394,6 +406,17 @@ namespace ARAMDetFull
         public static ChampControl getByObj(Obj_AI_Base champ)
         {
             return enemy_champions.FirstOrDefault(ene => ene.hero.NetworkId == champ.NetworkId);
+        }
+
+        public static bool safeGap(Obj_AI_Base target)
+        {
+            return safeGap(target.Position.LSTo2D()) || MapControl.fightIsOn(target);
+        }
+
+        public static bool safeGap(Vector2 position)
+        {
+            return myControler.hero.HealthPercent < 13 || (!Sector.inTowerRange(position) &&
+                   (MapControl.balanceAroundPointAdvanced(position, 500) > 0)) || position.LSDistance(ARAMSimulator.fromNex.Position, true) < myControler.hero.Position.LSDistance(ARAMSimulator.fromNex.Position, true);
         }
 
         public static List<int> usedRelics = new List<int>();

@@ -40,6 +40,9 @@ namespace hi_im_gosu
 
         private static void TumbleHandler()
         {
+            if (!getKeyBindItem(menu, "walltumble"))
+                return;
+
             if (Player.LSDistance(MidPos) >= Player.LSDistance(DragPos))
             {
                 if (Player.Position.X < 12000 || Player.Position.X > 12070 || Player.Position.Y < 4800 ||
@@ -91,7 +94,7 @@ namespace hi_im_gosu
             menu = MainMenu.AddMenu("Gosu", "Gosu");
 
             menu.Add("aaqaa", new KeyBind("Auto -> Q -> AA", false, KeyBind.BindTypes.HoldActive, 'X'));
-            menu.Add("walltumble", new KeyBind("Wall Tumble", false, KeyBind.BindTypes.PressToggle, 'U'));
+            menu.Add("walltumble", new KeyBind("Wall Tumble", false, KeyBind.BindTypes.HoldActive, 'U'));
             menu.Add("useR", new CheckBox("Use R Combo"));
             menu.Add("enemys", new Slider("If Enemys Around >=", 2, 1, 5));
 

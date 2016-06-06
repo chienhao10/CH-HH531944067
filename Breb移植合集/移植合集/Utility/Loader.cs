@@ -398,11 +398,11 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[52]))
                 {
-                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD", "Irelia II"));
+                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD", "Irelia II", "IreliaReload"));
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {
-                    Miscc.Add("sivir", new ComboBox("切换 战争女神脚本 : ", 0, "OKTW", "ExorAIO SDK"));
+                    Miscc.Add("sivir", new ComboBox("切换 战争女神脚本 : ", 0, "OKTW", "ExorAIO SDK", "ISivir"));
                 }
                 if (Player.ChampionName.Equals(Champion[54]))
                 {
@@ -463,7 +463,7 @@ namespace PortAIO.Utility
             Miscc.Add("pastingSharp", new CheckBox("开启 PastingSharp?", false));
             //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("autoJungle", new CheckBox("开启 爱台湾自动打野?", false));
-            Miscc.Add("orbwalker", new CheckBox("开启 L# 走砍 (BETA)?", false));
+            //Miscc.Add("orbwalker", new CheckBox("开启 L# 走砍 (BETA)?", false));
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("功能切换 :");
             Miscc.Add("evadeCB", new ComboBox("躲避切换?", 0, "ezEvade", "Evade#"));

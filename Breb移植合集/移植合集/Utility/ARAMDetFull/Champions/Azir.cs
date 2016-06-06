@@ -170,9 +170,7 @@ namespace ARAMDetFull.Champions
         {
             if (!E.IsReady())
                 return;
-            if (player.HealthPercent>25 && !(!Sector.inTowerRange(target.Position.LSTo2D()) &&
-                (MapControl.balanceAroundPoint(target.Position.LSTo2D(), 700) >= -1 ||
-                 (MapControl.fightIsOn() != null && MapControl.fightIsOn().NetworkId == target.NetworkId))))
+            if (player.HealthPercent > 25 && !safeGap(target))
                 return;
 
             List<Obj_AI_Minion> solis = getUsableSoliders().Where(sol => !sol.IsMoving).ToList();

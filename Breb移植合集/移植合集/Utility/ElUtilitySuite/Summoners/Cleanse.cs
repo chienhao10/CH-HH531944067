@@ -503,7 +503,7 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "anivia", Name = "stun", MenuName = "Anivia Stun", Evade = true,
+                                     Champion = "anivia", Name = "Stun", MenuName = "Anivia Stun", Evade = true,
                                      DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
                                  },
                              new CleanseSpell
@@ -829,7 +829,7 @@ namespace ElUtilitySuite.Summoners
                 this.Menu.Add("CleanseActivated", new CheckBox("使用净化"));
                 foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly))
                 {
-                    this.Menu.Add("cleanseon" + x.ChampionName, new CheckBox("为以下事使用 " + x.ChampionName));
+                    this.Menu.Add("cleanseon" + x.ChampionName, new CheckBox("为以下使用 " + x.ChampionName));
                 }
             }
         }
@@ -894,7 +894,7 @@ namespace ElUtilitySuite.Summoners
                 return;
             }
 
-            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.LSIsValidTarget(800f, false)))
+            foreach (var ally in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly && x.LSIsValidTarget(800f, false) && !x.IsMinion))
             {
                 var ally1 = ally;
                 foreach (var spell in Spells.Where(x => ally1.HasBuff(x.Name)))
@@ -906,10 +906,7 @@ namespace ElUtilitySuite.Summoners
 
                     var buff = ally.GetBuff(spell.Name);
 
-                    if (
-                        !((AIHeroClient)buff.Caster).ChampionName.Equals(
-                            spell.Champion,
-                            StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(spell.Champion))
+                    if (!((AIHeroClient)buff.Caster).ChampionName.Equals(spell.Champion,StringComparison.InvariantCultureIgnoreCase) && !string.IsNullOrEmpty(spell.Champion))
                     {
                         return;
                     }

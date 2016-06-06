@@ -204,11 +204,10 @@ namespace PortAIO
                     AutoJungle.Program.OnGameLoad();
                 }
 
-                if (Loader.orbwalker)
-                {
-                    //new UniversalOrbwalker();
-                    PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
-                }
+                //if (Loader.orbwalker)
+                //{
+                    //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
+                //}
 
                 /*
                 if (Loader.stream)
@@ -408,6 +407,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 ExorSDK.AIO.OnLoad();
+                                break;
+                            case 2:
+                                iSivir.Sivir.OnLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
@@ -682,6 +684,9 @@ namespace PortAIO
                                 break;
                             case 2:
                                 Irelia.Irelia.Init();
+                                break;
+                            case 3:
+                                Irelia_Reloaded.Program.GameOnOnGameLoad();
                                 break;
                             default:
                                 Challenger_Series.Irelia.OnLoad();

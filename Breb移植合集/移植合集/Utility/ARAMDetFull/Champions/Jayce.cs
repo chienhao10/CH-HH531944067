@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LeagueSharp;
-using LeagueSharp.Common; using EloBuddy;
+using LeagueSharp.Common;
+using EloBuddy;
 using SharpDX;
 
 namespace ARAMDetFull.Champions
@@ -40,13 +41,13 @@ namespace ARAMDetFull.Champions
         public Vector3 castQon = new Vector3(0, 0, 0);
 
         /* COOLDOWN STUFF */
-        public float[] rangTrueQcd = { 8, 8, 8, 8, 8,8 };
-        public float[] rangTrueWcd = { 14, 12, 10, 8, 6,6 };
-        public float[] rangTrueEcd = { 16, 16, 16, 16, 16,16 };
+        public float[] rangTrueQcd = { 8, 8, 8, 8, 8, 8 };
+        public float[] rangTrueWcd = { 14, 12, 10, 8, 6, 6 };
+        public float[] rangTrueEcd = { 16, 16, 16, 16, 16, 16 };
 
-        public float[] hamTrueQcd = { 16, 14, 12, 10, 8,8 };
-        public float[] hamTrueWcd = { 10, 10, 10, 10, 10,10 };
-        public float[] hamTrueEcd = { 14, 12, 12, 11, 10,10 };
+        public float[] hamTrueQcd = { 16, 14, 12, 10, 8, 8 };
+        public float[] hamTrueWcd = { 10, 10, 10, 10, 10, 10 };
+        public float[] hamTrueEcd = { 14, 12, 12, 11, 10, 10 };
 
         public float rangQCD = 0, rangWCD = 0, rangECD = 0;
         public float hamQCD = 0, hamWCD = 0, hamECD = 0;
@@ -85,15 +86,15 @@ namespace ARAMDetFull.Champions
 
         private void OnPosibleToInterrupt(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if(isHammer || args.DangerLevel == Interrupter2.DangerLevel.High)
-             knockAway(sender);
+            if (isHammer || args.DangerLevel == Interrupter2.DangerLevel.High)
+                knockAway(sender);
         }
 
 
         private void OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if(isHammer)
-            knockAway(gapcloser.Sender);
+            if (isHammer)
+                knockAway(gapcloser.Sender);
         }
 
         public void OnProcessSpell(Obj_AI_Base obj, GameObjectProcessSpellCastEventArgs arg)
@@ -105,7 +106,7 @@ namespace ARAMDetFull.Champions
 
                 if (arg.SData.Name == "jayceshockblast")
                 {
-                      //castEonQ = arg;
+                    //castEonQ = arg;
                 }
                 else if (arg.SData.Name == "jayceaccelerationgate")
                 {
@@ -117,23 +118,23 @@ namespace ARAMDetFull.Champions
 
         public override void useQ(Obj_AI_Base target)
         {
-            
+
         }
 
         public override void useW(Obj_AI_Base target)
         {
-            
+
         }
 
         public override void useE(Obj_AI_Base target)
         {
-           
+
         }
 
 
         public override void useR(Obj_AI_Base target)
         {
-           
+
         }
 
         public override void useSpells()
@@ -145,17 +146,17 @@ namespace ARAMDetFull.Champions
             if (!E1.IsReady() && !isHammer)
                 castQon = new Vector3(0, 0, 0);
             else if (castQon.X != 0 && !isHammer)
-                shootQE(castQon);
+                shootQE(castQon, true);
             //Must fix
-           // if (castEonQ != null && castEonQ.)
-           //     castEonQ = null;
+            // if (castEonQ != null && castEonQ.)
+            //     castEonQ = null;
 
             var tar = ARAMTargetSelector.getBestTarget(getBestRange());
 
             if (tar != null)
             {
                 var dmgOn = getJayceFullComoDmg(tar);
-                if ( (!Sector.inTowerRange(tar.Position.LSTo2D()) && (MapControl.balanceAroundPoint(tar.Position.LSTo2D(), 700) >= -1 || (MapControl.fightIsOn() != null && MapControl.fightIsOn().NetworkId == tar.NetworkId)))
+                if ((!Sector.inTowerRange(tar.Position.LSTo2D()) && (MapControl.balanceAroundPoint(tar.Position.LSTo2D(), 700) >= -1 || (MapControl.fightIsOn() != null && MapControl.fightIsOn().NetworkId == tar.NetworkId)))
            )
                     doFullDmg(tar);
                 else
@@ -341,31 +342,31 @@ namespace ARAMDetFull.Champions
             PredictionOutput po = Q1.GetPrediction(target);
             if (po.Hitchance >= HitChance.High && player.LSDistance(po.UnitPosition) < (Q1.Range + target.BoundingRadius))
             {
-                Q1.Cast(po.CastPosition);
+                shootQE(po.CastPosition, true);
             }
             else if (po.Hitchance == HitChance.Collision)
             {
                 Obj_AI_Base fistCol = po.CollisionObjects.OrderBy(unit => unit.LSDistance(player.ServerPosition)).First();
                 if (fistCol.LSDistance(po.UnitPosition) < (180 - fistCol.BoundingRadius / 2) && fistCol.LSDistance(target.ServerPosition) < (100 - fistCol.BoundingRadius / 2))
                 {
-                    Q1.Cast(po.CastPosition);
+                    shootQE(po.CastPosition, true);
                 }
 
             }
         }
 
-        public  Vector3 getBestPosToHammer(Vector3 target)
+        public Vector3 getBestPosToHammer(Vector3 target)
         {
             Obj_AI_Base tower = ObjectManager.Get<Obj_AI_Turret>().Where(tur => tur.IsAlly && tur.Health > 0).OrderBy(tur => player.LSDistance(tur)).First();
             return target + Vector3.Normalize(tower.ServerPosition - target) * (-120);
         }
 
-        public  Vector3 posAfterHammer(Obj_AI_Base target)
+        public Vector3 posAfterHammer(Obj_AI_Base target)
         {
             return getBestPosToHammer(target.ServerPosition) + Vector3.Normalize(getBestPosToHammer(target.ServerPosition) - player.ServerPosition) * 600;
         }
 
-        public  AIHeroClient getClosestEnem()
+        public AIHeroClient getClosestEnem()
         {
             return ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsEnemy && ene.LSIsValidTarget()).OrderBy(ene => player.LSDistance(ene)).First();
         }
@@ -403,7 +404,7 @@ namespace ARAMDetFull.Champions
         }
 
 
-        public bool shootQE(Vector3 pos)
+        public bool shootQE(Vector3 pos, bool man = false)
         {
             try
             {
@@ -416,8 +417,8 @@ namespace ARAMDetFull.Champions
 
                 Player.IssueOrder(GameObjectOrder.MoveTo, bPos);
                 Q1.Cast(pos);
-
-                E1.Cast(getParalelVec(pos));
+                if (man)
+                    E1.Cast(getParalelVec(pos));
 
             }
             catch (Exception ex)
@@ -518,7 +519,7 @@ namespace ARAMDetFull.Champions
         {
             Random rnd = new Random();
             int par = rnd.Next(0, 1);
-            if (par==1)
+            if (par == 1)
             {
                 int neg = rnd.Next(0, 1);
                 int away = 42;

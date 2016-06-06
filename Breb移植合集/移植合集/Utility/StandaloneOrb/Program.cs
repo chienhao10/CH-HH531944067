@@ -15,7 +15,8 @@ namespace PuppyStandaloneOrbwalker
     {
         public static void Game_OnGameLoad()
         {
-            xSLx_Orbwalker.xSLxOrbwalker.AddToMenu();
+            //xSLx_Orbwalker.xSLxOrbwalker.AddToMenu();
+            new LeagueSharp.Common.Orbwalking.Orbwalker();
 
             Chat.Print("In the EB Orbwalker make sure all the keys are the same as the standalone orbwalker.");
             Chat.Print("- Disable everything in EB's Orbwalker drawings.");

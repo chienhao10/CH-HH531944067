@@ -107,9 +107,11 @@ namespace ExorSDK.Champions.Caitlyn
             if (Vars.E.IsReady() &&
                 args.IsDirectedToPlayer &&
                 args.Sender.LSIsValidTarget(Vars.E.Range) &&
+                !Invulnerable.Check(args.Sender, DamageType.Magical, false) &&
                 Vars.getCheckBoxItem(Vars.EMenu, "gapcloser"))
             {
-                Vars.E.Cast(args.Sender.ServerPosition);
+                if (!Vars.E.GetPrediction(args.Sender).CollisionObjects.Any())
+                    Vars.E.Cast(args.Sender.ServerPosition);
             }
         }
     }
