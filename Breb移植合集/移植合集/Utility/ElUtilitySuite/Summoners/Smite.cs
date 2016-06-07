@@ -526,12 +526,12 @@
                 {
                     if (drawText && this.Player.Spellbook.CanUseSpell(this.SmiteSpell.Slot) == SpellState.Ready)
                     {
-                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.GhostWhite, "惩戒 开启");
+                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.GhostWhite, "Smite active");
                     }
 
                     if (drawText && this.Player.Spellbook.CanUseSpell(this.SmiteSpell.Slot) != SpellState.Ready)
                     {
-                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "惩戒 冷却");
+                        Drawing.DrawText(playerPos.X - 70, playerPos.Y + 40, Color.Red, "Smite cooldown");
                     }
 
                     if (drawDamage && this.SmiteDamage() != 0)
@@ -748,18 +748,14 @@
 
                 this.SmiteKill();
 
-                Minion =
-                   (Obj_AI_Minion)
-                  MinionManager.GetMinions(this.Player.ServerPosition, 570f, MinionTypes.All, MinionTeam.Neutral)
-                      .FirstOrDefault(
-                          buff => buff.Name.StartsWith(buff.CharData.BaseSkinName)
-                          && SmiteObjects.Contains(buff.CharData.BaseSkinName)
-                          && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
+                Minion = (Obj_AI_Minion)EntityManager.MinionsAndMonsters.Monsters.FirstOrDefault(buff => this.Player.IsInRange(buff, 570) && (buff.Name.StartsWith(buff.BaseSkinName) || SmiteObjects.Contains(buff.BaseSkinName)) && !buff.Name.Contains("Mini") && !buff.Name.Contains("Spawn"));
 
                 if (Minion == null)
                 {
                     return;
                 }
+
+                Console.WriteLine(Minion.BaseSkinName);
 
                 if (!getCheckBoxItem(this.Menu, Minion.CharData.BaseSkinName))
                 {

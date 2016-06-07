@@ -22,7 +22,7 @@
         /// <summary>
         ///     The zhyonya item
         /// </summary>
-        private static Items.Item zhonyaItem;
+        private static EloBuddy.SDK.Item zhonyaItem;
 
         #endregion
 
@@ -630,10 +630,8 @@
         /// </summary>
         public void Load()
         {
-            zhonyaItem = new Items.Item(Game.MapId == GameMapId.SummonersRift ? 3157 : 3090);
-            IncomingDamageManager.RemoveDelay = 500;
-            IncomingDamageManager.Skillshots = true;
-
+            zhonyaItem = new EloBuddy.SDK.Item(Game.MapId == GameMapId.SummonersRift ? ItemId.Zhonyas_Hourglass : EloBuddy.ItemId.Wooglets_Witchcap);
+            
             Game.OnUpdate += this.OnUpdate;
             GameObject.OnCreate += this.GameObjectOnCreate;
             Obj_AI_Base.OnProcessSpellCast += this.ObjAiBaseOnProcessSpellCast;
@@ -782,11 +780,6 @@
                 }
 
                 var enemies = Player.LSCountEnemiesInRange(875f);
-                var totalDamage = IncomingDamageManager.GetDamage(Player) * 1.1f;
-                if (totalDamage <= 0)
-                {
-                    return;
-                }
 
                 if (Player.HealthPercent <= this.ZhonyaBelowHp && enemies >= 1)
                 {

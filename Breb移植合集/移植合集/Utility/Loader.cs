@@ -16,17 +16,14 @@ namespace PortAIO.Utility
 {
     class Loader
     {
-        public static bool orbwalker { get { return Miscc["orbwalker"].Cast<CheckBox>().CurrentValue; } }
-        public static bool VCursor { get { return Miscc["VCursor"].Cast<CheckBox>().CurrentValue; } }
         public static bool limitedShat { get { return Miscc["limitedShat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoLevel { get { return Miscc["autoLevel"].Cast<CheckBox>().CurrentValue; } }
         public static bool chatLogger { get { return Miscc["chatLogger"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoFF { get { return Miscc["autoFF"].Cast<CheckBox>().CurrentValue; } }
         public static bool urfSpell { get { return Miscc["urfSpell"].Cast<CheckBox>().CurrentValue; } }
+        public static bool emoteSpammer { get { return Miscc["emoteSpammer"].Cast<CheckBox>().CurrentValue; } }
         public static bool pastingSharp { get { return Miscc["pastingSharp"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoJungle { get { return Miscc["autoJungle"].Cast<CheckBox>().CurrentValue; } }
-
-
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
         public static bool sdkPredictioner { get { return Miscc["sdkPredictioner"].Cast<CheckBox>().CurrentValue; } }
         public static bool cheat { get { return Miscc["cheat"].Cast<CheckBox>().CurrentValue; } }
@@ -107,6 +104,7 @@ namespace PortAIO.Utility
         public static int cassiopeia { get { return Miscc["cassiopeia"].Cast<ComboBox>().CurrentValue; } }
         public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
         public static int aramCB { get { return Miscc["aramCB"].Cast<ComboBox>().CurrentValue; } }
+        public static int activatorCB { get { return Miscc["activatorCB"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -430,6 +428,11 @@ namespace PortAIO.Utility
                 Miscc.AddLabel("此英雄暂不支持此功能.");
             }
             Miscc.AddSeparator();
+            Miscc.AddGroupLabel("功能切换 :");
+            Miscc.Add("evadeCB", new ComboBox("躲避切换?", 0, "ezEvade", "Evade#"));
+            Miscc.Add("aramCB", new ComboBox("大乱斗挂机切换?", 0, "AutoSharp", "AramDETFull"));
+            Miscc.Add("activatorCB", new ComboBox("活化剂切换?", 0, "EL活化剂", "Nabb活化剂"));
+            Miscc.AddSeparator();
             Miscc.AddGroupLabel("选择加载内容");
             Miscc.AddLabel("更改以下内容，请按 F5 重新载入 >>");
             Miscc.Add("champ", new CheckBox("英雄模式? (只载入英雄脚本)", false));
@@ -461,15 +464,14 @@ namespace PortAIO.Utility
             Miscc.Add("urfSpell", new CheckBox("开启 阿福快打技能狂放?", false));
             Miscc.AddSeparator();
             Miscc.Add("pastingSharp", new CheckBox("开启 PastingSharp?", false));
-            //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("autoJungle", new CheckBox("开启 爱台湾自动打野?", false));
-            //Miscc.Add("orbwalker", new CheckBox("开启 L# 走砍 (BETA)?", false));
-            Miscc.AddSeparator();
-            Miscc.AddGroupLabel("功能切换 :");
-            Miscc.Add("evadeCB", new ComboBox("躲避切换?", 0, "ezEvade", "Evade#"));
-            Miscc.Add("aramCB", new ComboBox("大乱斗挂机切换?", 0, "AutoSharp", "AramDETFull"));
+            Miscc.Add("emoteSpammer", new CheckBox("开启 表情发送器（动作）?", false));
 
             /*
+            //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
+            public static bool orbwalker { get { return Miscc["orbwalker"].Cast<CheckBox>().CurrentValue; } }
+            public static bool VCursor { get { return Miscc["VCursor"].Cast<CheckBox>().CurrentValue; } }
+            //Miscc.Add("VCursor", new CheckBox("Enable VCursor?", false));
             Miscc.Add("stream", new CheckBox("Enable StreamBuddy?", false));
             public static bool stream { get { return Miscc["stream"].Cast<CheckBox>().CurrentValue; } }
             public static bool randomUlt { get { return Miscc["randomUlt"].Cast<CheckBox>().CurrentValue; } }

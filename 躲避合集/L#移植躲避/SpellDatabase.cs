@@ -208,7 +208,10 @@ namespace Evade
                     DangerValue = 3,
                     IsDangerous = true,
                     MissileSpellName = "SadMummyBandageToss",
-                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall},
+                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
+                    CollisionObjects =
+                        new[]
+                        {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
                 });
 
             Spells.Add(
@@ -444,7 +447,7 @@ namespace Evade
                     Slot = SpellSlot.Q,
                     Type = SkillShotType.SkillshotMissileLine,
                     Delay = 250,
-                    Range = 1050,
+                    Range = 1100,
                     Radius = 70,
                     MissileSpeed = 1800,
                     FixedRange = true,
@@ -452,7 +455,10 @@ namespace Evade
                     DangerValue = 4,
                     IsDangerous = true,
                     MissileSpellName = "RocketGrabMissile",
-                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall},
+                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
+                    CollisionObjects =
+                        new[]
+                        {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
                 });
 
             Spells.Add(

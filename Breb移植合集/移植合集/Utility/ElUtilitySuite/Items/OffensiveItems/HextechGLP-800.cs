@@ -75,9 +75,9 @@
                 x => x.HealthPercent < getSliderItem(this.Menu, "Hextech800EnemyHp")
                 && x.LSDistance(this.Player) < 500 && !x.IsDead && !x.IsZombie);
 
-            if (objAiHero != null)
+            if (objAiHero != null && (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id)))
             {
-                Items.UseItem((int)this.Id, objAiHero.ServerPosition);
+                EloBuddy.SDK.Item.UseItem((int)this.Id, objAiHero.ServerPosition);
             }
         }
 

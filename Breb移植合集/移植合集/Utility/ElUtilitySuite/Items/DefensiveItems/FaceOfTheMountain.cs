@@ -18,8 +18,6 @@
         /// </summary>
         public FaceOfTheMountain()
         {
-            IncomingDamageManager.RemoveDelay = 500;
-            IncomingDamageManager.Skillshots = true;
             Game.OnUpdate += this.Game_OnUpdate;
         }
 
@@ -66,13 +64,12 @@
         public override void CreateMenu()
         {
             this.Menu.AddGroupLabel(Name);
-            this.Menu.Add("UseFaceCombo", new CheckBox("Activate"));
-            this.Menu.Add("ModeFACE", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
-            this.Menu.Add("face-min-health", new Slider("Use on Hp %", 50));
-            this.Menu.Add("face-min-damage", new Slider("Incoming damage percentage", 50, 1));
+            this.Menu.Add("UseFaceCombo", new CheckBox("开启崇山之盾"));
+            this.Menu.Add("ModeFACE", new ComboBox("模式: ", 1, "总是使用", "连招使用"));
+            this.Menu.Add("face-min-health", new Slider("最低血量使用 %", 50));
             foreach (var x in ObjectManager.Get<AIHeroClient>().Where(x => x.IsAlly))
             {
-                this.Menu.Add("Faceon" + x.ChampionName, new CheckBox("Use for " + x.ChampionName));
+                this.Menu.Add("Faceon" + x.ChampionName, new CheckBox("为以下使用 " + x.ChampionName));
             }
             this.Menu.AddSeparator();
         }
@@ -89,8 +86,7 @@
         {
             try
             {
-                if (!Items.HasItem((int)this.Id) || !Items.CanUseItem((int)this.Id)
-                    || !getCheckBoxItem(this.Menu, "UseFaceCombo"))
+                if (!EloBuddy.SDK.Item.HasItem((int)this.Id) || !EloBuddy.SDK.Item.CanUseItem((int)this.Id) || !getCheckBoxItem(this.Menu, "UseFaceCombo"))
                 {
                     return;
                 }
@@ -108,15 +104,12 @@
                     }
 
                     var enemies = ally.LSCountEnemiesInRange(800);
-                    var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
 
                     if (ally.HealthPercent <= getSliderItem(this.Menu, "face-min-health") && enemies >= 1)
                     {
-                        if ((int)(totalDamage / ally.Health)
-                            > getSliderItem(this.Menu, "face-min-damage")
-                            || ally.HealthPercent < getSliderItem(this.Menu, "face-min-health"))
+                        if (ally.HealthPercent < getSliderItem(this.Menu, "face-min-health"))
                         {
-                            Items.UseItem((int)this.Id, ally);
+                            EloBuddy.SDK.Item.UseItem((int)this.Id, ally);
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("[ELUTILITYSUITE - FACE OF THE MOUNTAIN] Used for: {0} - health percentage: {1}%", ally.ChampionName, (int)ally.HealthPercent);
                         }

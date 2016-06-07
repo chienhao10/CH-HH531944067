@@ -40,7 +40,7 @@ namespace ExorSDK.Champions.Olaf
             Vars.EMenu = Vars.Menu.AddSubMenu("使用 E:");
             {
                 Vars.EMenu.Add("combo", new CheckBox("连招", true));
-                Vars.EMenu.Add("jungleclear", new Slider("清野 / 如果蓝量 >= x%", 50, 0, 101));
+                Vars.EMenu.Add("jungleclear", new Slider("清野 / 如果血量 >= x%", 25, 0, 101));
             }
 
             /// <summary>

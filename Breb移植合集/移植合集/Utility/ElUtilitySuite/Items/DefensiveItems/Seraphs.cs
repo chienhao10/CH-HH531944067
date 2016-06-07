@@ -20,8 +20,6 @@
         /// </summary>
         public Seraphs()
         {
-            IncomingDamageManager.RemoveDelay = 500;
-            IncomingDamageManager.Skillshots = true;
             Game.OnUpdate += this.Game_OnUpdate;
         }
 
@@ -68,10 +66,9 @@
         public override void CreateMenu()
         {
             this.Menu.AddGroupLabel(Name);
-            this.Menu.Add("UseSeraphsCombo", new CheckBox("Activated"));
-            this.Menu.Add("ModeSERAPH", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
-            this.Menu.Add("seraphs-min-health", new Slider("Health percentage", 20, 1));
-            this.Menu.Add("seraphs-min-damage", new Slider("Incoming damage percentage", 20, 1));
+            this.Menu.Add("UseSeraphsCombo", new CheckBox("开启天使之拥"));
+            this.Menu.Add("ModeSERAPH", new ComboBox("模式: ", 1, "总是使用", "连招使用"));
+            this.Menu.Add("seraphs-min-health", new Slider("最低血量使用 %", 20, 1));
             this.Menu.AddSeparator();
         }
 
@@ -87,7 +84,7 @@
         {
             try
             {
-                if (!ItemData.Seraphs_Embrace.GetItem().IsOwned() || !getCheckBoxItem(this.Menu, "UseSeraphsCombo"))
+                if (!ItemData.Seraphs_Embrace.GetItem().IsOwned() || !getCheckBoxItem(this.Menu, "UseSeraphsCombo") || !EloBuddy.SDK.Item.HasItem(this.Id))
                 {
                     return;
                 }
@@ -98,15 +95,12 @@
                 }
 
                 var enemies = this.Player.LSCountEnemiesInRange(800);
-                var totalDamage = IncomingDamageManager.GetDamage(this.Player) * 1.1f;
 
                 if (this.Player.HealthPercent <= getSliderItem(this.Menu, "seraphs-min-health") && enemies >= 1)
                 {
-                    if ((int)(totalDamage / this.Player.Health)
-                        > getSliderItem(this.Menu, "seraphs-min-damage")
-                        || this.Player.HealthPercent < getSliderItem(this.Menu, "seraphs-min-health"))
+                    if (this.Player.HealthPercent < getSliderItem(this.Menu, "seraphs-min-health"))
                     {
-                        Items.UseItem((int)this.Id, this.Player);
+                        EloBuddy.SDK.Item.UseItem((int)this.Id, this.Player);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("[ELUTILITYSUITE - SERAPHS] Used for: {0} - health percentage: {1}%", this.Player.ChampionName, (int)this.Player.HealthPercent);
                     }

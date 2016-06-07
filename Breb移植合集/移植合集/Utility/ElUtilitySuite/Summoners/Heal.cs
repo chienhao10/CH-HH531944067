@@ -114,9 +114,7 @@
                 {
                     return;
                 }
-
-                IncomingDamageManager.RemoveDelay = 500;
-                IncomingDamageManager.Skillshots = true;
+                
                 this.HealSpell = new Spell(healSlot, 850);
                 Game.OnUpdate += this.OnUpdate;
             }
@@ -152,11 +150,10 @@
                     }
 
                     var enemies = ally.LSCountEnemiesInRange(600);
-                    var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
 
                     if (ally.HealthPercent <= getSliderItem(this.Menu, "min-health") && (this.HealSpell.IsInRange(ally) || ally.IsMe) && enemies >= 1)
                     {
-                        if ((int)(totalDamage / ally.Health) > getSliderItem(this.Menu, "min-damage") || ally.HealthPercent < getSliderItem(this.Menu, "min-health"))
+                        if (ally.HealthPercent < getSliderItem(this.Menu, "min-health"))
                         {
                             this.Player.Spellbook.CastSpell(this.HealSpell.Slot);
                             Console.ForegroundColor = ConsoleColor.Green;

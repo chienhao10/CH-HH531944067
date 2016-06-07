@@ -32,10 +32,10 @@ namespace Evade
     {
         public const bool PrintSpellData = false;
         public const bool TestOnAllies = false;
-        public const int SkillShotsExtraRadius = 15;
-        public const int SkillShotsExtraRange = 25;
+        public const int SkillShotsExtraRadius = 9;
+        public const int SkillShotsExtraRange = 20;
         public const int GridSize = 10;
-        public const int ExtraEvadeDistance = 20;
+        public const int ExtraEvadeDistance = 15;
         public const int PathFindingDistance = 60;
         public const int PathFindingDistance2 = 35;
 

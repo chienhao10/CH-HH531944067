@@ -48,7 +48,7 @@
         public override bool ShouldUseItem()
         {
             return getCheckBoxItem(this.Menu, "连招九头蛇") && this.ComboModeActive
-                   && HeroManager.Enemies.Any(x => x.LSDistance(this.Player) < 400 && !x.IsDead && !x.IsZombie);
+                   && HeroManager.Enemies.Any(x => x.LSDistance(this.Player) < 400 && !x.IsDead && !x.IsZombie) && (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id));
         }
 
         #endregion

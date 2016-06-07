@@ -88,7 +88,7 @@ namespace ElUtilitySuite.Items
         public virtual void CreateMenu()
         {
             this.Menu.AddGroupLabel(Name);
-            this.Menu.Add(this.Name + "combo", new CheckBox("Use in Combo"));
+            this.Menu.Add(this.Name + "combo", new CheckBox("连招使用"));
             this.Menu.AddSeparator();
         }
 
@@ -106,7 +106,6 @@ namespace ElUtilitySuite.Items
         /// </summary>
         public virtual void UseItem()
         {
-            //Items.UseItem((int)this.Id);
             EloBuddy.SDK.Item.UseItem((int)this.Id);
         }
 

@@ -68,7 +68,8 @@
         /// </summary>
         public override void UseItem()
         {
-            Items.UseItem((int)this.Id, TargetSelector.GetTarget(550, DamageType.Physical));
+            if (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id))
+                Item.UseItem((int)this.Id, TargetSelector.GetTarget(550, DamageType.Physical));
         }
 
         #endregion

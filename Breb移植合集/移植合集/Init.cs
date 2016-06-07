@@ -68,7 +68,18 @@ namespace PortAIO
             {
                 if (Loader.useActivator)
                 {
-                    ElUtilitySuite.Entry.OnLoad();
+                    switch (Loader.activatorCB)
+                    {
+                        case 0:
+                            ElUtilitySuite.Entry.OnLoad();
+                            break;
+                        case 1:
+                            NabbActivator.Index.OnLoad();
+                            break;
+                        default:
+                            ElUtilitySuite.Entry.OnLoad();
+                            break;
+                    }
                 }
 
                 if (Loader.useRecall)
@@ -194,9 +205,14 @@ namespace PortAIO
                     PastingSharp.Program.Game_OnGameLoad();
                 }
 
+                if (Loader.emoteSpammer)
+                {
+                    EmoteSpammer.Program.Game_OnGameLoad();
+                }
+
                 //if (Loader.VCursor)
                 //{
-                    //VCursor.Program.Game_OnGameLoad();
+                //VCursor.Program.Game_OnGameLoad();
                 //}
 
                 if (Loader.autoJungle)
@@ -1049,8 +1065,8 @@ namespace PortAIO
                     case "nami": // vSupport Series
                         new vSupport_Series.Champions.Nami();
                         break;
-                    case "nasus": // Underrated AIO
-                        new UnderratedAIO.Champions.Nasus();
+                    case "nasus": // ElEasy
+                        ElEasy.Plugins.Nasus.Load();
                         break;
                     case "nidalee":
                         switch (Loader.nidalee)

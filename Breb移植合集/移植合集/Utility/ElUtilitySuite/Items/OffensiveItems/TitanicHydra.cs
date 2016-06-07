@@ -48,7 +48,7 @@
         /// <returns></returns>
         public override bool ShouldUseItem()
         {
-            return getCheckBoxItem(this.Menu, "连招使用泰坦九头") && this.ComboModeActive && !Orbwalker.CanAutoAttack;
+            return getCheckBoxItem(this.Menu, "连招使用泰坦九头") && this.ComboModeActive && !Orbwalker.CanAutoAttack && (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id));
         }
 
         #endregion

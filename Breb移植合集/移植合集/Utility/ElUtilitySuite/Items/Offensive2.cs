@@ -56,7 +56,7 @@
         /// <returns></returns>
         public void CreateMenu(Menu rootMenu)
         {
-            Menu = rootMenu.AddSubMenu("进攻物品", "omenu2");
+            Menu = rootMenu.AddSubMenu("Offensive", "omenu2");
 
             foreach (var item in offensiveItems)
             {
@@ -79,7 +79,7 @@
 
         private void Game_OnUpdate(EventArgs args)
         {
-            foreach (var item in this.offensiveItems.Where(x => x.ShouldUseItem() && Items.CanUseItem((int)x.Id)))
+            foreach (var item in this.offensiveItems.Where(x => x.ShouldUseItem() && EloBuddy.SDK.Item.CanUseItem((int)x.Id) && EloBuddy.SDK.Item.HasItem((int)x.Id)))
             {
                 item.UseItem();
             }

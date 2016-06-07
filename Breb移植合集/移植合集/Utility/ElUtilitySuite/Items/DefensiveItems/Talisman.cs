@@ -49,10 +49,10 @@
         public override void CreateMenu()
         {
             this.Menu.AddGroupLabel(Name);
-            this.Menu.Add("UseTalismanCombo", new CheckBox("Activated"));
-            this.Menu.Add("ModeTALIS", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
-            this.Menu.Add("TalismanEnemyHp", new Slider("Use on Enemy Hp %", 70));
-            this.Menu.Add("TalismanMyHp", new Slider("Use on My Hp %", 50));
+            this.Menu.Add("UseTalismanCombo", new CheckBox("开启飞升护肤"));
+            this.Menu.Add("ModeTALIS", new ComboBox("模式: ", 1, "总是使用", "连招使用"));
+            this.Menu.Add("TalismanEnemyHp", new Slider("最低敌人血量使用 %", 70));
+            this.Menu.Add("TalismanMyHp", new Slider("自身最低血量使用 %", 50));
             this.Menu.AddSeparator();
         }
 
@@ -80,7 +80,8 @@
                 return;
             }
 
-            Items.UseItem((int)this.Id);
+            if (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id))
+                EloBuddy.SDK.Item.UseItem((int)this.Id);
         }
 
         #endregion

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -30,7 +31,6 @@ namespace ezEvade
                 spellKey = SpellSlot.R,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
-                isSpecial = true,
             });
 
             #endregion
@@ -55,7 +55,7 @@ namespace ezEvade
             });
 
             #endregion
-            
+
             #region Corki
 
             Spells.Add(
@@ -104,8 +104,8 @@ namespace ezEvade
                 spellDelay = 250,
                 infrontTarget = true,
                 spellKey = SpellSlot.Recall,
-                evadeType = EvadeType.Blink,                
-                castType = CastType.Target,                
+                evadeType = EvadeType.Blink,
+                castType = CastType.Target,
                 spellTargets = new[] { SpellTargets.EnemyChampions, SpellTargets.EnemyMinions },
                 isSpecial = true,
             });
@@ -187,7 +187,7 @@ namespace ezEvade
             {
                 charName = "Gnar",
                 dangerlevel = 4,
-                name = "GnarE",
+                name = "GnarBigE",
                 spellName = "gnarbige",
                 range = 475,
                 spellDelay = 50,
@@ -286,7 +286,7 @@ namespace ezEvade
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
             });
-                        
+
             #endregion
 
             #region LeeSin
@@ -363,6 +363,26 @@ namespace ezEvade
 
             #endregion
 
+            #region Nidalee
+
+            Spells.Add(
+            new EvadeSpellData
+            {
+                charName = "Nidalee",
+                dangerlevel = 4,
+                name = "Pounce",
+                spellName = "Pounce",
+                range = 375,
+                spellDelay = 150,
+                speed = 1750,
+                spellKey = SpellSlot.W,
+                evadeType = EvadeType.Dash,
+                castType = CastType.Position,
+                isSpecial = true
+            });
+
+            #endregion
+
             #region Fiora
 
             Spells.Add(
@@ -376,6 +396,22 @@ namespace ezEvade
                 spellDelay = 100,
                 spellKey = SpellSlot.W,
                 evadeType = EvadeType.WindWall,
+                castType = CastType.Position,
+            });
+
+            Spells.Add(
+            new EvadeSpellData
+            {
+                charName = "Fiora",
+                dangerlevel = 3,
+                name = "FioraQ",
+                spellName = "FioraQ",
+                range = 340,
+                fixedRange = true,
+                speed = 1100,
+                spellDelay = 50,
+                spellKey = SpellSlot.Q,
+                evadeType = EvadeType.Dash,
                 castType = CastType.Position,
             });
 
@@ -414,6 +450,7 @@ namespace ezEvade
                 spellKey = SpellSlot.E,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
+                untargetable = true,
             });
 
             #endregion
@@ -434,6 +471,7 @@ namespace ezEvade
                 spellKey = SpellSlot.Q,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
+                isSpecial = true,
             });
 
             Spells.Add(
@@ -513,12 +551,12 @@ namespace ezEvade
                 name = "RocketJump",
                 spellName = "RocketJump",
                 range = 900,
-                spellDelay = 250,
+                spellDelay = 500,
                 speed = 1100,
                 spellKey = SpellSlot.W,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
-            });         
+            });
 
             #endregion
 
@@ -537,7 +575,7 @@ namespace ezEvade
                 spellKey = SpellSlot.E,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
-            });    
+            });
 
             #endregion
 
@@ -612,6 +650,7 @@ namespace ezEvade
                 evadeType = EvadeType.Blink,
                 castType = CastType.Target,
                 spellTargets = new[] { SpellTargets.EnemyChampions, SpellTargets.EnemyMinions },
+                untargetable = true,
             });
 
             #endregion
@@ -632,6 +671,26 @@ namespace ezEvade
                 evadeType = EvadeType.Blink, //behind target
                 castType = CastType.Target,
                 spellTargets = new[] { SpellTargets.Targetables },
+            });
+
+            #endregion
+
+            #region Kindred
+
+            Spells.Add(
+            new EvadeSpellData
+            {
+                charName = "Kindred",
+                dangerlevel = 1,
+                name = "KindredQ",
+                spellName = "KindredQ",
+                range = 300,
+                fixedRange = true,
+                speed = 733,
+                spellDelay = 50,
+                spellKey = SpellSlot.Q,
+                evadeType = EvadeType.Dash,
+                castType = CastType.Position,
             });
 
             #endregion
@@ -658,7 +717,7 @@ namespace ezEvade
 
             #region AllChampions
 
-         /*   Spells.Add(
+            Spells.Add(
             new EvadeSpellData
             {
                 charName = "AllChampions",
@@ -673,7 +732,7 @@ namespace ezEvade
                 evadeType = EvadeType.Blink,
                 castType = CastType.Position,
             });
-            */
+
             Spells.Add(
             new EvadeSpellData
             {

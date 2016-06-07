@@ -86,7 +86,7 @@
 
             this.BarrierSpell = new Spell(barrierSlot, 550);
 
-            AttackableUnit.OnDamage += this.AttackableUnit_OnDamage;
+            Game.OnUpdate += Game_OnUpdate;
         }
 
         public static bool getCheckBoxItem(Menu m, string item)
@@ -113,34 +113,20 @@
 
         #region Methods
 
-        private void AttackableUnit_OnDamage(AttackableUnit sender, AttackableUnitDamageEventArgs args)
+        private void Game_OnUpdate(EventArgs args)
         {
+            var barrierSlot = this.Player.GetSpellSlot("summonerbarrier");
             if (!getCheckBoxItem(this.Menu, "Barrier.Activated"))
             {
                 return;
             }
-
-            var source = ObjectManager.GetUnitByNetworkId<GameObject>((uint)args.Source.NetworkId);
-            var obj = ObjectManager.GetUnitByNetworkId<GameObject>((uint)args.Target.NetworkId);
-
-            if (obj.Type != GameObjectType.AIHeroClient || source.Type != GameObjectType.AIHeroClient)
+            if (this.BarrierSpell.IsReady())
             {
-                return;
-            }
-
-            var hero = (AIHeroClient)obj;
-
-            if (!hero.IsMe)
-            {
-                return;
-            }
-
-            if (((int)(args.Damage / this.Player.MaxHealth * 100)
-                 > getSliderItem(this.Menu, "Barrier.Damage")
-                 || this.Player.HealthPercent < getSliderItem(this.Menu, "Barrier.HP"))
-                && this.Player.LSCountEnemiesInRange(1000) >= 1)
-            {
-                this.BarrierSpell.Cast();
+                if (ObjectManager.Player.LSCountEnemiesInRange(700f) > 0 && HealthPrediction.GetHealthPrediction(ObjectManager.Player, (int)(1000 + Game.Ping / 2f)) <= ObjectManager.Player.MaxHealth / 6)
+                {
+                    ObjectManager.Player.Spellbook.CastSpell(barrierSlot);
+                    return;
+                }
             }
         }
 

@@ -73,12 +73,8 @@
         /// </summary>
         public override void UseItem()
         {
-            Items.UseItem(
-                (int)this.Id,
-                HeroManager.Enemies.FirstOrDefault(
-                    x =>
-                    x.HealthPercent < getSliderItem(this.Menu, "BotrkEnemyHp")
-                    && x.LSDistance(this.Player) < 550));
+            if (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id))
+                EloBuddy.SDK.Item.UseItem((int)this.Id, HeroManager.Enemies.FirstOrDefault(x => x.HealthPercent < getSliderItem(this.Menu, "BotrkEnemyHp") && x.LSDistance(this.Player) < 550));
         }
 
         #endregion

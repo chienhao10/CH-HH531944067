@@ -19,7 +19,7 @@
         ///     Gets an health item
         /// </summary>
         /// <returns></returns>
-        private delegate Items.Item GetHealthItemDelegate();
+        private delegate EloBuddy.SDK.Item GetHealthItemDelegate();
 
         #endregion
 
@@ -107,8 +107,7 @@
             potionsMenu.Add("Potions.HuntersPotion", new CheckBox("猎人药水"));
             potionsMenu.Add("Potions.CorruptingPotion", new CheckBox("腐蚀药水"));
             potionsMenu.Add("Potions.Player.Health", new Slider("血量百分比", 20));
-
-            }
+        }
 
             this.Menu = potionsMenu;
         }
@@ -120,11 +119,11 @@
         {
             this.Items = new List<HealthItem>
                              {
-                                 new HealthItem { GetItem = () => ItemData.Health_Potion.GetItem(), BuffName = "RegenerationPotion" },
-                                 new HealthItem { GetItem = () => ItemData.Total_Biscuit_of_Rejuvenation2.GetItem(), BuffName = "ItemMiniRegenPotion"},
-                                 new HealthItem { GetItem = () => ItemData.Refillable_Potion.GetItem(), BuffName = "ItemCrystalFlask" }, 
-                                 new HealthItem { GetItem = () => ItemData.Hunters_Potion.GetItem(), BuffName = "ItemCrystalFlaskJungle"},
-                                 new HealthItem { GetItem = () => ItemData.Corrupting_Potion.GetItem(), BuffName = "ItemDarkCrystalFlask"}
+                                 new HealthItem { GetItem = () => new EloBuddy.SDK.Item(ItemId.Health_Potion), BuffName = "RegenerationPotion" },
+                                 new HealthItem { GetItem = () => new EloBuddy.SDK.Item(ItemId.Total_Biscuit_of_Rejuvenation), BuffName = "ItemMiniRegenPotion"},
+                                 new HealthItem { GetItem = () => new EloBuddy.SDK.Item(ItemId.Refillable_Potion), BuffName = "ItemCrystalFlask" }, 
+                                 new HealthItem { GetItem = () => new EloBuddy.SDK.Item(ItemId.Hunters_Potion), BuffName = "ItemCrystalFlaskJungle"},
+                                 new HealthItem { GetItem = () => new EloBuddy.SDK.Item(ItemId.Corrupting_Potion), BuffName = "ItemDarkCrystalFlask"}
                              };
 
             Game.OnUpdate += this.OnUpdate;
@@ -210,11 +209,11 @@
             /// <value>
             ///     The item.
             /// </value>
-            public Items.Item Item
+            public EloBuddy.SDK.Item Item
             {
                 get
                 {
-                    return this.GetItem();
+                    return GetItem();
                 }
             }
 

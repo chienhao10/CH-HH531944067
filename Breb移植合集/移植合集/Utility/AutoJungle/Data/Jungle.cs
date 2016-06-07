@@ -88,7 +88,7 @@ namespace AutoJungle.Data
         //Kurisu
         private static readonly int[] SmitePurple = { 3713, 3726, 3725, 3724, 3723, 3933 };
         private static readonly int[] SmiteGrey = { 3711, 3722, 3721, 3720, 3719, 3932 };
-        private static readonly int[] SmiteRed = { 3715, 3718, 3717, 3716, 3714, 3931, 1415 };
+        private static readonly int[] SmiteRed = { 3715, 3718, 3717, 3716, 3714, 3931, 1415, 1419, 1412};
         private static readonly int[] SmiteBlue = { 3706, 3710, 3709, 3708, 3707, 3930 };
 
         public static string smitetype()
@@ -97,9 +97,9 @@ namespace AutoJungle.Data
             {
                 return "s5_summonersmiteplayerganker";
             }
-            if (SmiteRed.Any(id => Items.HasItem(id)))
+            if (SmiteRed.Any(id => EloBuddy.SDK.Item.HasItem(id)))
             {
-                return "s5_summonersmiteduel";
+                return "S5_SummonerSmiteDuel";
             }
             if (SmiteGrey.Any(id => Items.HasItem(id)))
             {
@@ -114,6 +114,11 @@ namespace AutoJungle.Data
 
         public static void setSmiteSlot()
         {
+            foreach (var spell in ObjectManager.Player.Spellbook.Spells)
+            {
+                Console.WriteLine(spell.Name);
+            }
+
             foreach (var spell in
                 ObjectManager.Player.Spellbook.Spells.Where(
                     spell => String.Equals(spell.Name, smitetype(), StringComparison.CurrentCultureIgnoreCase)))

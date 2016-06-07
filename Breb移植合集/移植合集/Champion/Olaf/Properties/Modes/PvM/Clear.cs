@@ -117,7 +117,7 @@ namespace ExorSDK.Champions.Olaf
             ///     The E JungleClear Logics.
             /// </summary>
             if (Vars.E.IsReady() &&
-                GameObjects.Player.ManaPercent >
+                GameObjects.Player.HealthPercent >
                     ManaManager.GetNeededMana(Vars.E.Slot, Vars.getSliderItem(Vars.EMenu, "jungleclear")) &&
                 Vars.getSliderItem(Vars.EMenu, "jungleclear") != 101)
             {

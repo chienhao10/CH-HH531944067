@@ -18,8 +18,6 @@
         /// </summary>
         public Locket()
         {
-            IncomingDamageManager.RemoveDelay = 500;
-            IncomingDamageManager.Skillshots = true;
             Game.OnUpdate += this.Game_OnUpdate;
         }
 
@@ -66,10 +64,9 @@
         public override void CreateMenu()
         {
             this.Menu.AddGroupLabel(Name);
-            this.Menu.Add("UseLocketCombo", new CheckBox("Activate"));
-            this.Menu.Add("ModeLOCKET", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
-            this.Menu.Add("locket-min-health", new Slider("Health percentage", 50, 1));
-            this.Menu.Add("locket-min-damage", new Slider("Incoming damage percentage", 50, 1));
+            this.Menu.Add("UseLocketCombo", new CheckBox("开启鸟盾"));
+            this.Menu.Add("ModeLOCKET", new ComboBox("模式: ", 1, "总是使用", "连招使用"));;
+            this.Menu.Add("locket-min-health", new Slider("最低血量使用 %", 50, 1));
             this.Menu.AddSeparator();
         }
 
@@ -86,7 +83,7 @@
         {
             try
             {
-                if (!getCheckBoxItem(this.Menu, "UseLocketCombo") || !Items.HasItem((int)this.Id) || !Items.CanUseItem((int)this.Id))
+                if (!getCheckBoxItem(this.Menu, "UseLocketCombo") || !EloBuddy.SDK.Item.HasItem((int)this.Id) || !EloBuddy.SDK.Item.CanUseItem((int)this.Id))
                 {
                     return;
                 }
@@ -99,16 +96,13 @@
                 foreach (var ally in HeroManager.Allies.Where(a => a.LSIsValidTarget(600f, false) && !a.LSIsRecalling()))
                 {
                     var enemies = ally.LSCountEnemiesInRange(600f);
-                    var totalDamage = IncomingDamageManager.GetDamage(ally) * 1.1f;
 
                     if (ally.HealthPercent <= getSliderItem(this.Menu, "locket-min-health")
                         && enemies >= 1)
                     {
-                        if ((int)(totalDamage / ally.Health)
-                            > getSliderItem(this.Menu, "locket-min-damage")
-                            || ally.HealthPercent < getSliderItem(this.Menu, "locket-min-health"))
+                        if (ally.HealthPercent < getSliderItem(this.Menu, "locket-min-health"))
                         {
-                            Items.UseItem((int)this.Id, ally);
+                            EloBuddy.SDK.Item.UseItem((int)this.Id, ally);
                             Console.ForegroundColor = ConsoleColor.Green;
                             Console.WriteLine("[ELUTILITYSUITE - LOCKET] Used for: {0} - health percentage: {1}%", ally.ChampionName, (int)ally.HealthPercent);
                         }

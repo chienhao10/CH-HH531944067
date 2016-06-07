@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -63,6 +64,7 @@ namespace ezEvade
         public SpellTargets[] spellTargets = { };
         public UseSpellFunc useSpellFunc = null;
         public bool isSpecial = false;
+        public bool untargetable = false;
 
         public EvadeSpellData()
         {

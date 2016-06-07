@@ -71,12 +71,8 @@
         /// </summary>
         public override void UseItem()
         {
-            Items.UseItem(
-                (int)this.Id,
-                HeroManager.Enemies.FirstOrDefault(
-                    x =>
-                    x.HealthPercent < getSliderItem(this.Menu, "HextechEnemyHp")
-                    && x.LSDistance(this.Player) < 700 && !x.IsDead && !x.IsZombie));
+            if (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id))
+                EloBuddy.SDK.Item.UseItem((int)this.Id, HeroManager.Enemies.FirstOrDefault(x => x.HealthPercent < getSliderItem(this.Menu, "HextechEnemyHp") && x.LSDistance(this.Player) < 700 && !x.IsDead && !x.IsZombie));
         }
 
         #endregion

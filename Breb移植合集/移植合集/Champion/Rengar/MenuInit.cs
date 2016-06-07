@@ -48,7 +48,7 @@ namespace ElRengarRevamped
             comboMenu.Add("Combo.Switch.E", new CheckBox("Switch E prio to Q after E cast"));
             comboMenu.Add("Combo.Prio", new ComboBox("Prioritize", 2, "E", "W", "Q"));
             comboMenu.Add("Combo.Switch", new KeyBind("Switch priority", false, KeyBind.BindTypes.HoldActive, 'L'));
-            comboMenu.Add("Combo.Use.QQ", new ComboBox("5 ferocity Q reset"));
+            comboMenu.Add("Combo.Use.QQ", new CheckBox("5 ferocity Q reset"));
 
             harassMenu = Menu.AddSubMenu("Harass");
             harassMenu.Add("Harass.Use.Q", new CheckBox("Use Q"));

@@ -99,7 +99,6 @@
 
                 foreach (var ally in HeroManager.Allies)
                 {
-                    IncomingDamageManager.AddChampion(ally);
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine(@"[ELUTILITYSUITE] loaded champions: {0}", ally.ChampionName);
                 }

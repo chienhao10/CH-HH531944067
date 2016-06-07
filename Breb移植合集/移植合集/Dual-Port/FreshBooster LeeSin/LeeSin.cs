@@ -141,7 +141,7 @@ namespace FreshBooster.Champion
                 if (getCheckBoxItem(drawMenu, "LeeSin_Draw_E"))
                     Render.Circle.DrawCircle(Player.Position, _E.Range, Color.White, 1);
                 if (getCheckBoxItem(drawMenu, "LeeSin_Draw_Ward"))
-                    Render.Circle.DrawCircle(Player.Position, 575, Color.White, 1);
+                    Render.Circle.DrawCircle(Player.Position, 625, Color.White, 1);
                 if (getKeyBindItem(miscMenu, "LeeSin_InsecKick") && TargetSelector.SelectedTarget != null && getCheckBoxItem(drawMenu, "LeeSin_PredictR"))
                 {
                     var GetTarget = TargetSelector.SelectedTarget;
@@ -154,13 +154,13 @@ namespace FreshBooster.Champion
                     if (AllyChampion != null)
                     { var InsecPOS = InsecST.LSExtend(InsecED, +InsecED.LSDistance(InsecST) + 230); }
                     Render.Circle.DrawCircle(InsecPOS, 50, Color.Gold);
-                    if (GetTarget.LSDistance(Player.Position) < 575)
+                    if (GetTarget.LSDistance(Player.Position) < 625)
                     {
-                        Render.Circle.DrawCircle(Player.Position, 475, Color.LightGreen);
+                        Render.Circle.DrawCircle(Player.Position, 525, Color.LightGreen);
                     }
                     else
                     {
-                        Render.Circle.DrawCircle(Player.Position, 475, Color.IndianRed);
+                        Render.Circle.DrawCircle(Player.Position, 525, Color.IndianRed);
                     }
                     Drawing.DrawLine(Drawing.WorldToScreen(InsecST)[0], Drawing.WorldToScreen(InsecST)[1], Drawing.WorldToScreen(InsecED)[0], Drawing.WorldToScreen(InsecED)[1], 2, Color.Green);
                 }
@@ -292,7 +292,11 @@ namespace FreshBooster.Champion
                                 break;
 
                         }
-                        _Q.CastIfHitchanceEquals(QTarget, HC, true);
+                        var prediction = _Q.GetPrediction(QTarget);
+                        if (prediction.Hitchance >= HC)
+                        {
+                            _Q.Cast(prediction.CastPosition);
+                        }
                         QTime = TickCount(2000);
                     }
 
@@ -419,7 +423,7 @@ namespace FreshBooster.Champion
                         _R.Cast(GetTarget, true);
                         return;
                     }
-                    if (InsecPOS.LSDistance(Player.Position) < 575 && _R.Level > 0 && _R.IsReady() && InsecType != "RF")
+                    if (InsecPOS.LSDistance(Player.Position) < 625 && _R.Level > 0 && _R.IsReady() && InsecType != "RF")
                     {
                         if (InsecType == "Wait" && InsecType != "WF" && InsecType != "WF1" && _W.IsReady())
                         {
@@ -456,7 +460,7 @@ namespace FreshBooster.Champion
                         return;
                     }
 
-                    // 플 425, 와드 575
+                    // 플 425, 와드 625
                 }
                 if (getKeyBindItem(miscMenu, ("LeeSin_Ward_W")))   // 와드 방호
                 {
@@ -507,7 +511,7 @@ namespace FreshBooster.Champion
                                 }
                             }
                         }
-                        if (Player.LSDistance(Cursor) > 575) Cursor = Game.CursorPos.LSExtend(Player.Position, +Player.LSDistance(Game.CursorPos) - 575);
+                        if (Player.LSDistance(Cursor) > 625) Cursor = Game.CursorPos.LSExtend(Player.Position, +Player.LSDistance(Game.CursorPos) - 625);
                         //Render.Circle.DrawCircle(Cursor, 50, Color.Black, 2);                            
                         if (WW && Ward != null && Ward_Time < Environment.TickCount)
                         {

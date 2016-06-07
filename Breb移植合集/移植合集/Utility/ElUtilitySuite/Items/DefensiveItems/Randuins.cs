@@ -47,9 +47,9 @@
         public override void CreateMenu()
         {
             this.Menu.AddGroupLabel(Name);
-            this.Menu.Add("UseRanduinsCombo", new CheckBox("Activate"));
-            this.Menu.Add("ModeRANDUIN", new ComboBox("Activation mode: ", 1, "Use always", "Use in combo"));
-            this.Menu.Add("RanduinsCount", new Slider("Use on enemies hit", 3, 1, 5));
+            this.Menu.Add("UseRanduinsCombo", new CheckBox("开启兰盾"));
+            this.Menu.Add("ModeRANDUIN", new ComboBox("模式: ", 1, "总是使用", "连招使用"));
+            this.Menu.Add("RanduinsCount", new Slider("命中敌人数量", 3, 1, 5));
             this.Menu.AddSeparator();
         }
 
@@ -72,7 +72,8 @@
                 return;
             }
 
-            Items.UseItem((int)this.Id);
+            if (EloBuddy.SDK.Item.HasItem(this.Id) && EloBuddy.SDK.Item.CanUseItem(this.Id))
+                EloBuddy.SDK.Item.UseItem((int)this.Id);
         }
 
         #endregion
