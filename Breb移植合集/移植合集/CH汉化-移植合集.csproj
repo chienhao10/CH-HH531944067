@@ -332,6 +332,7 @@
     <Compile Include="Dual-Port\ExorSivir\Sivir.cs" />
     <Compile Include="Dual-Port\FastTrundle\FastTrundle.cs" />
     <Compile Include="Dual-Port\FastTrundle\FastTrundleMenu.cs" />
+    <Compile Include="Dual-Port\FreshBooster Bard\Bard.cs" />
     <Compile Include="Dual-Port\FreshBooster LeeSin\LeeSin.cs" />
     <Compile Include="Dual-Port\FreshBoosterBraum\Braum.cs" />
     <Compile Include="Dual-Port\FreshBoosterJanna\Program.cs" />

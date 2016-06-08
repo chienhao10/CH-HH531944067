@@ -12,19 +12,20 @@ using Spell = LeagueSharp.Common.Spell;
 
 namespace PortAIO.Champion.Anivia
 {
-    internal class Program
+    class Anivia
     {
         private static readonly Menu Config = SebbyLib.Program.Config;
         private static Spell E, Q, R, W;
-        private static float QMANA, WMANA, EMANA, RMANA;
+        private static float QMANA = 0, WMANA = 0, EMANA = 0, RMANA = 0;
+        private static float RCastTime = 0;
+        private static int Rwidth = 400;
         private static GameObject QMissile, RMissile;
-
-        public static Menu drawMenu, QMenu, WMenu, EMenu, RMenu, FarmMenu, AniviaMenu;
-
         private static AIHeroClient Player
         {
             get { return ObjectManager.Player; }
         }
+
+        public static Menu drawMenu, QMenu, WMenu, EMenu, RMenu, FarmMenu, AniviaMenu;
 
         public static void LoadOKTW()
         {
@@ -35,7 +36,7 @@ namespace PortAIO.Champion.Anivia
 
             Q.SetSkillshot(0.25f, 110f, 870f, false, SkillshotType.SkillshotLine);
             W.SetSkillshot(0.6f, 1f, float.MaxValue, false, SkillshotType.SkillshotLine);
-            R.SetSkillshot(2f, 400f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+            R.SetSkillshot(0.5f, 200f, float.MaxValue, false, SkillshotType.SkillshotCircle);
 
             LoadMenuOKTW();
 
@@ -47,8 +48,7 @@ namespace PortAIO.Champion.Anivia
             Drawing.OnDraw += Drawing_OnDraw;
         }
 
-        private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender,
-            Interrupter2.InterruptableTargetEventArgs args)
+        private static void Interrupter2_OnInterruptableTarget(AIHeroClient sender, Interrupter2.InterruptableTargetEventArgs args)
         {
             if (getCheckBoxItem(WMenu, "inter") && W.IsReady() && sender.LSIsValidTarget(W.Range))
                 W.Cast(sender);
@@ -59,15 +59,15 @@ namespace PortAIO.Champion.Anivia
             var Target = gapcloser.Sender;
             if (Q.IsReady() && getCheckBoxItem(QMenu, "AGCQ"))
             {
-                if (Target.LSIsValidTarget(300) && Target.IsEnemy)
+                if (Target.LSIsValidTarget(300))
                 {
                     Q.Cast(Target);
-                    SebbyLib.Program.debug("AGC Q");
+                    Program.debug("AGC Q");
                 }
             }
             else if (W.IsReady() && getCheckBoxItem(WMenu, "AGCW"))
             {
-                if (Target.LSIsValidTarget(W.Range) && Target.IsEnemy)
+                if (Target.LSIsValidTarget(W.Range))
                 {
                     W.Cast(ObjectManager.Player.Position.LSExtend(Target.Position, 50), true);
                 }
@@ -143,6 +143,7 @@ namespace PortAIO.Champion.Anivia
                 if (obj.Name.Contains("cryo_storm"))
                 {
                     RMissile = obj;
+                    Program.debug("dupa");
                 }
             }
         }
@@ -160,7 +161,7 @@ namespace PortAIO.Champion.Anivia
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (SebbyLib.Program.Combo && getCheckBoxItem(AniviaMenu, "AACombo"))
+            if (Program.Combo && getCheckBoxItem(AniviaMenu, "AACombo"))
             {
                 Orbwalker.DisableAttacking = E.IsReady();
             }
@@ -171,21 +172,21 @@ namespace PortAIO.Champion.Anivia
                 Q.Cast();
 
 
-            if (SebbyLib.Program.LagFree(0))
+            if (Program.LagFree(0))
             {
                 SetMana();
             }
 
-            if (SebbyLib.Program.LagFree(1) && R.IsReady() && getCheckBoxItem(RMenu, "autoR"))
+            if (Program.LagFree(1) && R.IsReady() && getCheckBoxItem(RMenu, "autoR"))
                 LogicR();
 
-            if (SebbyLib.Program.LagFree(2) && W.IsReady() && getCheckBoxItem(WMenu, "autoW"))
+            if (Program.LagFree(2) && W.IsReady() && getCheckBoxItem(WMenu, "autoW"))
                 LogicW();
 
-            if (SebbyLib.Program.LagFree(3) && Q.IsReady() && QMissile == null && getCheckBoxItem(QMenu, "autoQ"))
+            if (Program.LagFree(3) && Q.IsReady() && QMissile == null && getCheckBoxItem(QMenu, "autoQ"))
                 LogicQ();
 
-            if (SebbyLib.Program.LagFree(4))
+            if (Program.LagFree(4))
             {
                 if (E.IsReady() && getCheckBoxItem(EMenu, "autoE"))
                     LogicE();
@@ -199,24 +200,24 @@ namespace PortAIO.Champion.Anivia
             var t = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
             if (t.LSIsValidTarget())
             {
-                if (SebbyLib.Program.Combo && Player.Mana > EMANA + QMANA - 10)
-                    SebbyLib.Program.CastSpell(Q, t);
-                else if (SebbyLib.Program.Farm && getCheckBoxItem(QMenu, "harrasQ") && getCheckBoxItem(QMenu, "haras" + t.NetworkId) && Player.Mana > RMANA + EMANA + QMANA + WMANA && OktwCommon.CanHarras())
+                if (Program.Combo && Player.Mana > EMANA + QMANA - 10)
+                    Program.CastSpell(Q, t);
+                else if (Program.Farm && getCheckBoxItem(QMenu, "harrasQ") && getCheckBoxItem(QMenu, "haras" + t.NetworkId) && Player.Mana > RMANA + EMANA + QMANA + WMANA && OktwCommon.CanHarras())
                 {
-                    SebbyLib.Program.CastSpell(Q, t);
+                    Program.CastSpell(Q, t);
                 }
                 else
                 {
                     var qDmg = OktwCommon.GetKsDamage(t, Q);
                     var eDmg = E.GetDamage(t);
                     if (qDmg > t.Health)
-                        SebbyLib.Program.CastSpell(Q, t);
+                        Program.CastSpell(Q, t);
                     else if (qDmg + eDmg > t.Health && Player.Mana > QMANA + WMANA)
-                        SebbyLib.Program.CastSpell(Q, t);
+                        Program.CastSpell(Q, t);
                 }
-                if (!SebbyLib.Program.None && Player.Mana > RMANA + EMANA)
+                if (!Program.None && Player.Mana > RMANA + EMANA)
                 {
-                    foreach (var enemy in SebbyLib.Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
+                    foreach (var enemy in Program.Enemies.Where(enemy => enemy.LSIsValidTarget(Q.Range) && !OktwCommon.CanMove(enemy)))
                         Q.Cast(enemy, true);
                 }
             }
@@ -224,21 +225,20 @@ namespace PortAIO.Champion.Anivia
 
         private static void LogicW()
         {
-            if (SebbyLib.Program.Combo && Player.Mana > RMANA + EMANA + WMANA)
+            if (Program.Combo && Player.Mana > RMANA + EMANA + WMANA)
             {
                 var t = TargetSelector.GetTarget(W.Range, DamageType.Magical);
-                if (t != null && W.IsReady())
+                if (t.LSIsValidTarget(W.Range) && W.GetPrediction(t).CastPosition.Distance(t.Position) > 100)
                 {
                     if (Player.Position.Distance(t.ServerPosition) > Player.Position.Distance(t.Position))
                     {
                         if (t.Position.Distance(Player.ServerPosition) < t.Position.Distance(Player.Position))
-                            SebbyLib.Program.CastSpell(W, t);
+                            Program.CastSpell(W, t);
                     }
                     else
                     {
-                        if (t.Position.Distance(Player.ServerPosition) > t.Position.Distance(Player.Position) &&
-                            t.Distance(Player) < R.Range)
-                            SebbyLib.Program.CastSpell(W, t);
+                        if (t.Position.Distance(Player.ServerPosition) > t.Position.Distance(Player.Position) && t.Distance(Player) < R.Range)
+                            Program.CastSpell(W, t);
                     }
                 }
             }
@@ -261,19 +261,18 @@ namespace PortAIO.Champion.Anivia
 
                 if (t.HasBuff("chilled") || qCd > E.Instance.Cooldown - 1 && rCd > E.Instance.Cooldown - 1)
                 {
-                    if (eDmg*3 > t.Health)
+                    if (eDmg * 3 > t.Health)
                         E.Cast(t, true);
-                    else if (SebbyLib.Program.Combo && (t.HasBuff("chilled") || Player.Mana > RMANA + EMANA))
+                    else if (Program.Combo && (t.HasBuff("chilled") || Player.Mana > RMANA + EMANA))
                     {
                         E.Cast(t, true);
                     }
-                    else if (SebbyLib.Program.Farm && Player.Mana > RMANA + EMANA + QMANA + WMANA &&
-                             !Player.UnderTurret(true) && QMissile == null)
+                    else if (Program.Farm && Player.Mana > RMANA + EMANA + QMANA + WMANA && !Player.UnderTurret(true) && QMissile == null)
                     {
                         E.Cast(t, true);
                     }
                 }
-                else if (SebbyLib.Program.Combo && R.IsReady() && Player.Mana > RMANA + EMANA && QMissile == null)
+                else if (Program.Combo && R.IsReady() && Player.Mana > RMANA + EMANA && QMissile == null)
                 {
                     R.Cast(t, true, true);
                 }
@@ -283,13 +282,12 @@ namespace PortAIO.Champion.Anivia
 
         private static void farmE()
         {
-            if (SebbyLib.Program.LaneClear && getCheckBoxItem(FarmMenu, "farmE") && Player.Mana > QMANA + EMANA + WMANA &&
-                !Orbwalking.CanAttack() && Player.ManaPercent > getSliderItem(FarmMenu, "Mana"))
+            if (Program.LaneClear && getCheckBoxItem(FarmMenu, "farmE") && Player.Mana > QMANA + EMANA + WMANA && !Orbwalking.CanAttack() && Player.ManaPercent > getSliderItem(FarmMenu, "Mana"))
             {
                 var minions = Cache.GetMinions(Player.ServerPosition, E.Range);
                 foreach (var minion in minions.Where(minion => minion.Health > Player.LSGetAutoAttackDamage(minion)))
                 {
-                    var eDmg = E.GetDamage(minion)*2;
+                    var eDmg = E.GetDamage(minion) * 2;
                     if (minion.Health < eDmg && minion.HasBuff("chilled"))
                         E.Cast(minion);
                 }
@@ -304,32 +302,26 @@ namespace PortAIO.Champion.Anivia
                 if (t.LSIsValidTarget())
                 {
                     if (R.GetDamage(t) > t.Health)
-                    {
-                        R.Cast(t, false, true);
-                    }
-                    else if (Player.Mana > RMANA + EMANA && E.GetDamage(t)*2 + R.GetDamage(t) > t.Health)
-                    {
-                        R.Cast(t, false, true);
-                    }
-                    if (Player.Mana > RMANA + EMANA + QMANA + WMANA && SebbyLib.Program.Combo)
-                    {
-                        R.Cast(t, false, true);
-                    }
+                        R.Cast(t, true, true);
+                    else if (Player.Mana > RMANA + EMANA && E.GetDamage(t) * 2 + R.GetDamage(t) > t.Health)
+                        R.Cast(t, true, true);
+                    if (Player.Mana > RMANA + EMANA + QMANA + WMANA && Program.Combo)
+                        R.Cast(t, true, true);
                 }
-                if (SebbyLib.Program.LaneClear && Player.ManaPercent > getSliderItem(FarmMenu, "Mana") && getCheckBoxItem(FarmMenu, "farmR"))
+                if (Program.LaneClear && Player.ManaPercent > getSliderItem(FarmMenu, "Mana") && getCheckBoxItem(FarmMenu, "farmR"))
                 {
                     var allMinions = Cache.GetMinions(Player.ServerPosition, R.Range);
-                    var farmPos = R.GetCircularFarmLocation(allMinions, R.Width);
+                    var farmPos = R.GetCircularFarmLocation(allMinions, Rwidth);
                     if (farmPos.MinionsHit >= getSliderItem(FarmMenu, "LCminions"))
                         R.Cast(farmPos.Position);
                 }
             }
             else
             {
-                if (SebbyLib.Program.LaneClear && getCheckBoxItem(FarmMenu, "farmR"))
+                if (Program.LaneClear && getCheckBoxItem(FarmMenu, "farmR"))
                 {
-                    var allMinions = Cache.GetMinions(RMissile.Position, R.Width);
-                    var mobs = Cache.GetMinions(RMissile.Position, R.Width, MinionTeam.Neutral);
+                    var allMinions = Cache.GetMinions(RMissile.Position, Rwidth);
+                    var mobs = Cache.GetMinions(RMissile.Position, Rwidth, MinionTeam.Neutral);
                     if (mobs.Count > 0)
                     {
                         if (!getCheckBoxItem(FarmMenu, "jungleR"))
@@ -346,8 +338,9 @@ namespace PortAIO.Champion.Anivia
                     }
                     else
                         R.Cast();
+
                 }
-                else if ((RMissile.Position.LSCountEnemiesInRange(470) == 0 || Player.Mana < EMANA + QMANA) && RMissile != null)
+                else if (!Program.None && (RMissile.Position.LSCountEnemiesInRange(470) == 0 || Player.Mana < EMANA + QMANA))
                 {
                     R.Cast();
                 }
@@ -356,7 +349,7 @@ namespace PortAIO.Champion.Anivia
 
         private static void Jungle()
         {
-            if (SebbyLib.Program.LaneClear)
+            if (Program.LaneClear)
             {
                 var mobs = Cache.GetMinions(Player.ServerPosition, E.Range, MinionTeam.Neutral);
                 if (mobs.Count > 0)
@@ -389,6 +382,7 @@ namespace PortAIO.Champion.Anivia
                     if (W.IsReady() && getCheckBoxItem(FarmMenu, "jungleW"))
                     {
                         W.Cast(mob.Position.LSExtend(Player.Position, 100));
+                        return;
                     }
                 }
             }
@@ -396,7 +390,7 @@ namespace PortAIO.Champion.Anivia
 
         private static void SetMana()
         {
-            if ((SebbyLib.Program.getCheckBoxItem("manaDisable") && SebbyLib.Program.Combo) || Player.HealthPercent < 20)
+            if ((Program.getCheckBoxItem("manaDisable") && Program.Combo) || Player.HealthPercent < 20)
             {
                 QMANA = 0;
                 WMANA = 0;
@@ -410,7 +404,7 @@ namespace PortAIO.Champion.Anivia
             EMANA = E.Instance.SData.Mana;
 
             if (!R.IsReady())
-                RMANA = QMANA - Player.PARRegenRate*Q.Instance.Cooldown;
+                RMANA = QMANA - Player.PARRegenRate * Q.Instance.Cooldown;
             else
                 RMANA = R.Instance.SData.Mana;
         }

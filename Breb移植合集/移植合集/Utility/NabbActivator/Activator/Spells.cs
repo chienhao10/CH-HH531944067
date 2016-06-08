@@ -96,15 +96,23 @@ namespace NabbActivator
             /// </summary>
             if (SpellSlots.Heal.IsReady())
             {
-                foreach (var ally in GameObjects.AllyHeroes.Where(
-                    a =>
-                        a.LSIsValidTarget(850f, false) &&
-                        a.CountEnemyHeroesInRange(700f) > 0 &&
-                        Health.GetPrediction(a, (int) (1000 + Game.Ping/2f)) <= a.MaxHealth/6))
+                if (GameObjects.Player.CountEnemyHeroesInRange(850f) > 0 &&
+                    Health.GetPrediction(GameObjects.Player, (int)(1000 + Game.Ping / 2f)) <= GameObjects.Player.MaxHealth / 6)
                 {
-                    GameObjects.Player.Spellbook.CastSpell(SpellSlots.Heal, ally);
+                    GameObjects.Player.Spellbook.CastSpell(SpellSlots.Heal);
                 }
-            }
+                }
+                else
+                {
+                    foreach (var ally in GameObjects.AllyHeroes.Where(
+                        a =>
+                            a.LSIsValidTarget(850f, false) &&
+                            a.CountEnemyHeroesInRange(850f) > 0 &&
+                            Health.GetPrediction(a, (int)(1000 + Game.Ping / 2f)) <= a.MaxHealth / 6))
+                    {
+                        GameObjects.Player.Spellbook.CastSpell(SpellSlots.Heal, ally);
+                    }
+                }
 
 
             /// <summary>

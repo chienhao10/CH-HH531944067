@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using AutoJungle.Data;
 using LeagueSharp;
@@ -28,7 +28,7 @@ namespace AutoJungle
             {
                 case "MasterYi":
                     Hero = ObjectManager.Player;
-                    Type = BuildType.NOC;
+                    Type = BuildType.YI;
 
                     Q = new Spell(SpellSlot.Q, 600);
                     Q.SetTargetted(0.5f, float.MaxValue);
@@ -181,11 +181,93 @@ namespace AutoJungle
                     Combo = VoliCombo;
                     Console.WriteLine("Volibear loaded");
                     break;
+                    
+                    case "Tryndamere":
+                    Hero = ObjectManager.Player;
+                    Type = BuildType.Manwang;
+
+                    Q = new Spell(SpellSlot.Q);
+                    W = new Spell(SpellSlot.W, 850);
+                    E = new Spell(SpellSlot.E, 600);
+                    R = new Spell(SpellSlot.R);
+
+                    Autolvl = new AutoLeveler(new int[] { 0, 2, 0, 1, 0, 3, 0, 0, 2, 2, 3, 2, 2, 1, 1, 3, 1, 1 });
+
+                    JungleClear = MWJungleClear;
+                    Combo = MWCombo;
+                    Console.WriteLine("Tryndamere loaded");
+                    break;
                     default:
                     Console.WriteLine(ObjectManager.Player.ChampionName + " not supported");
                     break;
 //nidale w buff?(优先）)nunu R check | sej，结束skr，amumu？ graves！
             }
+        }
+
+        private bool MWCombo()
+        {
+            var targetHero = Program._GameInfo.Target;
+            if (Hero.Spellbook.IsChanneling)
+            {
+                return false;
+            }
+            if (Program.getCheckBoxItem("ComboSmite"))
+            {
+                Data.Jungle.CastSmiteHero((AIHeroClient) targetHero);
+            }
+            if (Hero.Spellbook.IsAutoAttacking)
+            {
+                return false;
+            }      
+            if (E.IsReady() && targetHero.LSIsValidTarget(600))
+            {
+                E.Cast(targetHero);
+            }
+            Data.ItemHandler.UseItemsCombo(targetHero, true);
+            if (W.IsReady() && targetHero.LSIsValidTarget(850))
+            {
+                W.Cast();
+            }
+            if (Q.IsReady() && !Hero.HasBuff("UndyingRage") && Hero.HealthPercent < 20)
+            {
+                Q.Cast();
+            }
+            if (R.IsReady() && Hero.HealthPercent < 15 && targetHero.LSCountEnemiesInRange(700) >= 1)
+            {
+                R.Cast();
+            }             
+            EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, targetHero);
+            return false;
+        }
+
+        private bool MWJungleClear()
+        {
+            var targetMob = Program._GameInfo.Target;
+            var structure = Helpers.CheckStructure();
+            if (structure != null)
+            {
+            EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, structure);
+                return false;
+            }
+            if (targetMob == null)
+            {
+                return false;
+            }
+            Data.ItemHandler.UseItemsJungle();
+            if (E.IsReady() && targetMob.LSIsValidTarget(600))
+            {
+                E.Cast(targetMob);
+            }
+            if (Q.IsReady() && Hero.HealthPercent < 30)
+            {
+                Q.Cast();
+            }
+            if (Hero.Spellbook.IsAutoAttacking)
+            {
+                return false;
+            }
+            EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, targetMob);
+            return false;
         }
 
         private bool VoliCombo()
@@ -766,6 +848,14 @@ namespace AutoJungle
             var targetHero = Program._GameInfo.Target;
             if (Hero.Spellbook.IsChanneling &&
                 targetHero.Health > Program.player.LSGetAutoAttackDamage(targetHero, true) * 2)
+            {
+                return false;
+            }
+            if (Program.getCheckBoxItem("ComboSmite"))
+            {
+                Data.Jungle.CastSmiteHero((AIHeroClient)targetHero);
+            }
+            if (Hero.Spellbook.IsAutoAttacking)
             {
                 return false;
             }

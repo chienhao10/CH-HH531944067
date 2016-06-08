@@ -216,6 +216,12 @@ namespace ElUtilitySuite.Summoners
                                      DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E,
                                      Interval = 1.0
                                  },
+                             new CleanseSpell
+                                 {
+                                     Champion = "Swain", Name = "SwainShadowGraspRoot", MenuName = "Swain (Q)", Evade = false,
+                                     DoT = true, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q,
+                                     Interval = 1.0
+                                 },
                              /*new CleanseSpell
                                  {
                                      Champion = "Brand", Name = "brandablaze", MenuName = "Brand Burn Passive",
@@ -293,12 +299,12 @@ namespace ElUtilitySuite.Summoners
                                      MenuName = "Sejuani Glacial Prison", Evade = false, DoT = false, EvadeTimer = 0,
                                      Cleanse = true, CleanseTimer = 100, Slot = SpellSlot.R, Interval = 1.0
                                  },
-                             /*new CleanseSpell
+                             new CleanseSpell
                                  {
-                                     Champion = "Fiora", Name = "fiorarmark", MenuName = "Fiora Grand Challenge",
+                                     Champion = "Fiora", Name = "Stun", MenuName = "Fiora (W) parries",
                                      Evade = false, DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 100,
-                                     Slot = SpellSlot.R, Interval = 1.0
-                                 },*/
+                                     Slot = SpellSlot.W, Interval = 1.0
+                                 },
                              new CleanseSpell
                                  {
                                      Champion = "Twitch", Name = "twitchdeadlyvenon", MenuName = "Twitch Deadly Venom",

@@ -462,8 +462,19 @@ namespace PortAIO
                     case "azir": // HeavenStrike
                         HeavenStrikeAzir.Program.Game_OnGameLoad();
                         break;
-                    case "bard": // Dreamless Wanderer
-                        PortAIO.Champion.Bard.Program.OnLoad();
+                    case "bard": // Dreamless Wanderer & FreshBooster
+                        switch (Loader.bard)
+                        {
+                            case 0:
+                                PortAIO.Champion.Bard.Program.OnLoad();
+                                break;
+                            case 1:
+                                new FreshBooster.Champion.Bard();
+                                break;
+                            default:
+                                PortAIO.Champion.Bard.Program.OnLoad();
+                                break;
+                        }
                         break;
                     case "blitzcrank": // Fresh Booster & OKTW
                         switch (Loader.blitzcrank)

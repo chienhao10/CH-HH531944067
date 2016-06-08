@@ -339,7 +339,7 @@ namespace OneKeyToWin_AIO_Sebby
 
             if (t.LSIsValidTarget(R.Range) && OktwCommon.ValidUlt(t))
             {
-                var rDmg = R.GetDamage(t)*new[] {0.5, 0.75, 1}[R.Level];
+                var rDmg = R.GetDamage(t) * new double[] { 0.5, 0.75, 1 }[R.Level - 1];
 
                 if (Player.LSCountEnemiesInRange(700) == 0 && t.CountAlliesInRange(400) == 0)
                 {

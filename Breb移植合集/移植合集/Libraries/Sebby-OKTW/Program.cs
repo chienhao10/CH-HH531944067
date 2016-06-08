@@ -138,7 +138,7 @@ namespace SebbyLib
                 switch (Player.ChampionName)
                 {
                     case "Anivia":
-                        PortAIO.Champion.Anivia.Program.LoadOKTW();
+                        PortAIO.Champion.Anivia.Anivia.LoadOKTW();
                         break;
                     case "Annie":
                         PortAIO.Champion.Annie.Program.LoadOKTW();
