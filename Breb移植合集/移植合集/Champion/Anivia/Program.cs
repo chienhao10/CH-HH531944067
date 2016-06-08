@@ -17,7 +17,6 @@ namespace PortAIO.Champion.Anivia
         private static readonly Menu Config = SebbyLib.Program.Config;
         private static Spell E, Q, R, W;
         private static float QMANA = 0, WMANA = 0, EMANA = 0, RMANA = 0;
-        private static float RCastTime = 0;
         private static int Rwidth = 400;
         private static GameObject QMissile, RMissile;
         private static AIHeroClient Player

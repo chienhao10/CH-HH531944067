@@ -17,18 +17,24 @@ namespace PastingSharp
         public static string contents = "";
         public static string[] linestoprint;
         public static Menu menu;
+        public static int tick;
 
         public static void Game_OnGameLoad()
         {
             menu = MainMenu.AddMenu("PastingSharp", "pasting");
-            menu.Add("sleep", new Slider("Pause between pastes (seconds)", 0, 0, 15));
-            menu.Add("paste", new KeyBind("Paste", false, KeyBind.BindTypes.HoldActive, 'P'));
-
-            Chat.Print("PastingSharp loaded. Press P to paste.");
+            menu.Add("sleep", new Slider("Pause between pastes (milliseconds)", 0, 0, 1000));
+            menu.Add("paste", new KeyBind("Paste", false, KeyBind.BindTypes.HoldActive, 'N'));
+            menu.Add("allChat", new CheckBox("All Chat?"));
+            Chat.Print("PastingSharp loaded. Press N to paste.");
             Game.OnUpdate += Game_OnGameUpdate;
         }
         public static void Game_OnGameUpdate(EventArgs args)
         {
+            var sleep = (menu["sleep"].Cast<Slider>().CurrentValue);
+            if (Environment.TickCount - tick < sleep)
+            {
+                return;
+            }
             if (forms.Clipboard.ContainsText())
             {
                 contents = forms.Clipboard.GetText();
@@ -43,24 +49,33 @@ namespace PastingSharp
             {
                 if (linestoprint == null)
                 {
-                    Chat.Say(contents);
+                    if (menu["allChat"].Cast<CheckBox>().CurrentValue)
+                    {
+                        Chat.Say("/all" + " " + contents);
+                    }
+                    else
+                    {
+                        Chat.Say(contents);
+                    }
                 }
                 else
                 {
                     foreach (string s in linestoprint)
                     {
-                        Chat.Say(s);
+                        if (menu["allChat"].Cast<CheckBox>().CurrentValue)
+                        {
+                            Chat.Say("/all" + " " + s);
+                        }
+                        else
+                        {
+                            Chat.Say(s);
+                        }
                     }
                     var linestoprintsize = contents.Count();
                     Array.Clear(linestoprint, 0, linestoprintsize);
                 }
-                var sleep = (menu["sleep"].Cast<Slider>().CurrentValue) * 1000;
-                if (sleep != 0)
-                {
-                    System.Threading.Thread.Sleep(sleep);
-                }
+                tick = Environment.TickCount;
             }
-
         }
     }
 }

@@ -600,7 +600,7 @@ namespace AutoJungle
                     {
                         continue;
                     }
-                    if (Helpers.AlliesThere(possibleTarget.Position) + 1 <
+                    if (Helpers.AlliesThere(possibleTarget.Position, 3000) + 1 <
                         possibleTarget.Position.LSCountEnemiesInRange(GameInfo.ChampionRange))
                     {
                         continue;
@@ -610,7 +610,7 @@ namespace AutoJungle
                         continue;
                     }
                     var ally =
-                        HeroManager.Allies.Where(a => !a.IsDead && a.LSDistance(possibleTarget) < 2000)
+                        HeroManager.Allies.Where(a => !a.IsDead && a.LSDistance(possibleTarget) < 3000)
                             .OrderBy(a => a.LSDistance(possibleTarget))
                             .FirstOrDefault();
                     var hp = possibleTarget.Health - myDmg * getSliderItem("GankFrequency") / 100f;

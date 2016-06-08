@@ -92,7 +92,7 @@ namespace ARAMDetFull
                 CustomEvents.Game.OnGameEnd += OnGameEnd;
                 ARAMSimulator.setupARMASimulator();
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Console.WriteLine(ex);
             }
@@ -110,8 +110,7 @@ namespace ARAMDetFull
 
         private static void onDraw(EventArgs args)
         {
-            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance + " time: ");
-            return;
+            Drawing.DrawText(100, 100, Color.Red, "bal: " + ARAMSimulator.balance + " time: " );
         }
         public static void getAllBuffs()
         {
@@ -132,7 +131,7 @@ namespace ARAMDetFull
             //    return;
 
             //if(rng == null)
-            //   rng = new Random();
+             //   rng = new Random();
 
             //tickTimeRng = rng.Next(70, 140);
             lastTick = now;

@@ -6,7 +6,6 @@ using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
 using EloBuddy;
-using EloBuddy.SDK;
 
 namespace ARAMDetFull
 {
@@ -66,7 +65,8 @@ namespace ARAMDetFull
         private const float LaneClearWaitTimeMod = 2f;
         private static int _lastAATick;
         private static Obj_AI_Base _lastTarget;
-        private static LeagueSharp.Common.Spell _movementPrediction;
+        private static Spell _movementPrediction;
+        private static int _lastMovement;
         private static int _delayAttackTill = 0;
         public static bool inDanger = false;
 
@@ -75,7 +75,7 @@ namespace ARAMDetFull
 
         public static void setpOrbwalker()
         {
-            _movementPrediction = new LeagueSharp.Common.Spell(SpellSlot.Unknown, GetAutoAttackRange());
+            _movementPrediction = new Spell(SpellSlot.Unknown, GetAutoAttackRange());
             _movementPrediction.SetTargetted(MyHero.BasicAttack.SpellCastTime, MyHero.BasicAttack.MissileSpeed);
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
             Obj_AI_Base.OnSpellCast += onDoCast;
@@ -149,13 +149,22 @@ namespace ARAMDetFull
         {
             try
             {
-                if (target != null && target.IsValidTarget() && CanAttack() && IsAllowedToAttack())
+                if (target != null && target.LSIsValidTarget() && CanAttack() && IsAllowedToAttack())
                 {
                     if (EloBuddy.Player.IssueOrder(GameObjectOrder.AttackUnit, target))
                         _lastAATick = LXOrbwalker.now + Game.Ping / 2;
                 }
                 if (!CanMove() || !IsAllowedToMove())
                     return;
+                /*if ( MyHero.IsMelee() && target != null &&
+                    target.Position.LSDistance(MyHero.Position) < GetAutoAttackRange(MyHero, target)
+                    && target is AIHeroClient && MyHero.LSDistance(target.Position) < 300)
+                {
+                    _movementPrediction.Delay = MyHero.BasicAttack.SpellCastTime;
+                    _movementPrediction.Speed = MyHero.BasicAttack.MissileSpeed;
+                    MoveTo(_movementPrediction.GetPrediction((AIHeroClient)target).UnitPosition, -1, useDelay);
+                }
+                else*/
                 MoveTo(goalPosition, -1, useDelay);
             }
             catch (Exception ex)
@@ -168,7 +177,29 @@ namespace ARAMDetFull
 
         private static void MoveTo(Vector3 position, float holdAreaRadius = -1, bool useDelay = true)
         {
-            Orbwalker.MoveTo(position);
+            var delay = (useDelay) ? moveDelay : 0;
+            if (LXOrbwalker.now - _lastMovement < delay)
+                return;
+            _lastMovement = LXOrbwalker.now;
+            if (!CanMove())
+                return;
+            if (holdAreaRadius < 0)
+                holdAreaRadius = 90;
+            if (MyHero.ServerPosition.LSDistance(position) < holdAreaRadius)
+            {
+                if (MyHero.Path.Count() > 1)
+                    EloBuddy.Player.IssueOrder(GameObjectOrder.Stop, MyHero.ServerPosition);
+                return;
+            }
+            if (position.LSDistance(MyHero.Position) > 200)
+                EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, position);
+            else
+            {
+                var point = MyHero.ServerPosition +
+                200 * (position.LSTo2D() - MyHero.ServerPosition.LSTo2D()).LSNormalized().To3D();
+                EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, point);
+            }
+
         }
 
         private static bool IsAllowedToMove()
@@ -537,7 +568,7 @@ namespace ARAMDetFull
 
         private static void FireAfterAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
-            //_lastMovement = 0;
+            _lastMovement = 0;
             if (AfterAttack != null)
             {
                 AfterAttack(unit, target);

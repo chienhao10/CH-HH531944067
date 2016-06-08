@@ -7,7 +7,6 @@ using ARAMDetFull = ARAMDetFull.ARAMDetFull;
 using Items = LeagueSharp.Common.Items;
 using Console = ARAMDetFull.Console;
 using EloBuddy;
-using EloBuddy.SDK;
 
 namespace UnderratedAIO.Helpers
 {
@@ -77,7 +76,7 @@ namespace UnderratedAIO.Helpers
             {
                 if (player.LSDistance(target) < odins.Range &&
                     (player.LSCountEnemiesInRange(odins.Range) > 1 ||
-                     target.Health < LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.OdingVeils)))
+                     target.Health < Damage.GetItemDamage(player, target, Damage.DamageItems.OdingVeils)))
                 {
                     Items.UseItem(odins.Id);
                 }
@@ -86,7 +85,7 @@ namespace UnderratedAIO.Helpers
             {
                 bilgewater.Cast(target);
             }
-            if (Items.HasItem(botrk.Id) && Items.CanUseItem(botrk.Id) && (player.Health < player.MaxHealth / 2 || LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.Botrk) < target.Health))
+            if (Items.HasItem(botrk.Id) && Items.CanUseItem(botrk.Id) && (player.Health < player.MaxHealth / 2 || Damage.GetItemDamage(player, target, Damage.DamageItems.Botrk) < target.Health))
             {
                 botrk.Cast(target);
             }
@@ -110,7 +109,7 @@ namespace UnderratedAIO.Helpers
 
         public static void castHydra(AIHeroClient target)
         {
-            if (player.LSDistance(target) < hydra.Range && !Orbwalker.CanAutoAttack)
+            if (player.LSDistance(target) < hydra.Range && !LeagueSharp.Common.Orbwalking.CanAttack())
             {
                 if (Items.HasItem(tiamat.Id) && Items.CanUseItem(tiamat.Id))
                 {
@@ -128,11 +127,11 @@ namespace UnderratedAIO.Helpers
             double damage = 0;
             if (Items.HasItem(odins.Id) && Items.CanUseItem(odins.Id))
             {
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.OdingVeils);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.OdingVeils);
             }
             if (Items.HasItem(hexgun.Id) && Items.CanUseItem(hexgun.Id))
             {
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.Hexgun);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.Hexgun);
             }
             if (Items.HasItem(lich.Id) && Items.CanUseItem(lich.Id))
             {
@@ -141,28 +140,28 @@ namespace UnderratedAIO.Helpers
             if (Items.HasItem(Dfg.Id) && Items.CanUseItem(Dfg.Id))
             {
                 damage = damage * 1.2;
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.Dfg);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.Dfg);
             }
             if (Items.HasItem(Bft.Id) && Items.CanUseItem(Bft.Id))
             {
                 damage = damage * 1.2;
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.BlackFireTorch);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.BlackFireTorch);
             }
             if (Items.HasItem(tiamat.Id) && Items.CanUseItem(tiamat.Id))
             {
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.Tiamat);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.Tiamat);
             }
             if (Items.HasItem(hydra.Id) && Items.CanUseItem(hydra.Id))
             {
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.Hydra);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.Hydra);
             }
             if (Items.HasItem(bilgewater.Id) && Items.CanUseItem(bilgewater.Id))
             {
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.Bilgewater);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.Bilgewater);
             }
             if (Items.HasItem(botrk.Id) && Items.CanUseItem(botrk.Id))
             {
-                damage += LeagueSharp.Common.Damage.GetItemDamage(player, target, LeagueSharp.Common.Damage.DamageItems.Botrk);
+                damage += Damage.GetItemDamage(player, target, Damage.DamageItems.Botrk);
             }
             if (Items.HasItem(sheen.Id) && (Items.CanUseItem(sheen.Id) || player.HasBuff("sheen")))
             {

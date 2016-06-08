@@ -20,7 +20,7 @@ namespace UnderratedAIO.Champions
         public static Menu config, comboMenu, harassMenu, laneClearMenu, MiscMenu, drawMenu;
         public static readonly AIHeroClient player = ObjectManager.Player;
         public static Spell Q, W, E, R, RFlash;
-        public static List<int> silence = new List<int>(new[] {1500, 1750, 2000, 2250, 2500});
+        public static List<int> silence = new List<int>(new[] { 1500, 1750, 2000, 2250, 2500 });
         public static int knockUp = 1000;
         public static bool flashRblock;
 
@@ -63,10 +63,10 @@ namespace UnderratedAIO.Champions
         {
             if (R.IsReady())
             {
-                var rtarget = HeroManager.Enemies.Where(e => e.IsValidTarget() && R.CanCast(e)).OrderByDescending(TargetSelector.GetPriority).FirstOrDefault();
+                var rtarget = HeroManager.Enemies.Where(e => e.LSIsValidTarget() && R.CanCast(e)).OrderByDescending(TargetSelector.GetPriority).FirstOrDefault();
                 if (rtarget != null)
                 {
-                    if (getCheckBoxItem(comboMenu, "user") && player.GetSpellDamage(rtarget, SpellSlot.R) > rtarget.Health)
+                    if (getCheckBoxItem(comboMenu, "user") && player.LSGetSpellDamage(rtarget, SpellSlot.R) > rtarget.Health)
                     {
                         R.Cast(rtarget, getCheckBoxItem(config, "packets"));
                     }
@@ -92,7 +92,7 @@ namespace UnderratedAIO.Champions
 
         private static void Clear()
         {
-            var minions = ObjectManager.Get<Obj_AI_Minion>().Where(m => m.IsValidTarget(400)).ToList();
+            var minions = ObjectManager.Get<Obj_AI_Minion>().Where(m => m.LSIsValidTarget(400)).ToList();
             if (minions.Count > 2)
             {
                 if (Items.HasItem(3077) && Items.CanUseItem(3077))
@@ -105,8 +105,8 @@ namespace UnderratedAIO.Champions
                 }
             }
 
-            var perc = getSliderItem(laneClearMenu, "minmana")/100f;
-            if (player.Mana < player.MaxMana*perc)
+            var perc = getSliderItem(laneClearMenu, "minmana") / 100f;
+            if (player.Mana < player.MaxMana * perc)
             {
                 return;
             }
@@ -144,14 +144,14 @@ namespace UnderratedAIO.Champions
             var target = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
             if (getCheckBoxItem(harassMenu, "useqH"))
             {
-                if (target.IsValidTarget(Q.Range) && Q.IsReady())
+                if (target.LSIsValidTarget(Q.Range) && Q.IsReady())
                 {
                     Q.Cast(target, getCheckBoxItem(config, "packets"));
                 }
             }
             if (getCheckBoxItem(harassMenu, "useeH"))
             {
-                if (target.IsValidTarget(W.Range) && W.IsReady())
+                if (target.LSIsValidTarget(W.Range) && W.IsReady())
                 {
                     W.Cast(target, getCheckBoxItem(config, "packets"));
                 }
@@ -186,14 +186,14 @@ namespace UnderratedAIO.Champions
 
             var hasFlash = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerFlash")) == SpellState.Ready;
             var hasIgnite = player.Spellbook.CanUseSpell(player.GetSpellSlot("SummonerDot")) == SpellState.Ready;
-            var ignitedmg = (float) player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
+            var ignitedmg = (float)player.GetSummonerSpellDamage(target, Damage.SummonerSpell.Ignite);
             if (hasIgnite && ignitedmg > target.Health && !R.CanCast(target) && !W.CanCast(target) && !Q.CanCast(target))
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
 
             if (hasIgnite && combodmg > target.Health && R.CanCast(target) &&
-                (float) player.LSGetSpellDamage(target, SpellSlot.R) < target.Health)
+                (float)player.LSGetSpellDamage(target, SpellSlot.R) < target.Health)
             {
                 player.Spellbook.CastSpell(player.GetSpellSlot("SummonerDot"), target);
             }
@@ -222,21 +222,11 @@ namespace UnderratedAIO.Champions
                 var pred = Q.GetPrediction(target);
                 if (pred.Hitchance >= hitC)
                 {
-                    if (target.IsMoving)
-                    {
-                        if (pred.CastPosition.LSDistance(target.ServerPosition) > 250f)
-                        {
-                            Q.Cast(target.Position.Extend(pred.CastPosition, 250f));
-                        }
-                        else
-                        {
-                            Q.Cast(pred.CastPosition);
-                        }
-                    }
-                    else
-                    {
-                        Q.CastIfHitchanceEquals(target, hitC);
-                    }
+                    Q.Cast(pred.CastPosition);
+                }
+                else
+                {
+                    Q.CastIfHitchanceEquals(target, hitC);
                 }
             }
 
@@ -247,17 +237,16 @@ namespace UnderratedAIO.Champions
 
             if (getCheckBoxItem(comboMenu, "UseFlashC") && !flashRblock && R.IsReady() && hasFlash &&
                 !CombatHelper.CheckCriticalBuffs(target) && player.GetSpell(SpellSlot.R).SData.Mana <= player.Mana &&
-                player.LSDistance(target.Position) >= 400 && player.GetSpellDamage(target, SpellSlot.R) > target.Health &&
+                player.LSDistance(target.Position) >= 400 && player.LSGetSpellDamage(target, SpellSlot.R) > target.Health &&
                 !Q.IsReady() && !W.IsReady() && player.LSDistance(target.Position) <= RFlash.Range &&
-                !player.Position.Extend(target.Position, 400).IsWall())
+                !player.Position.LSExtend(target.Position, 400).IsWall())
             {
-                player.Spellbook.CastSpell(player.GetSpellSlot("SummonerFlash"),
-                    player.Position.Extend(target.Position, 400).To3D());
+                player.Spellbook.CastSpell(player.GetSpellSlot("SummonerFlash"), player.Position.LSExtend(target.Position, 400));
                 Utility.DelayAction.Add(50, () => R.Cast(target, getCheckBoxItem(config, "packets")));
             }
 
-            var rtarget = HeroManager.Enemies.Where(e => e.IsValidTarget() && R.CanCast(e)).OrderByDescending(TargetSelector.GetPriority).FirstOrDefault();
-            if (getCheckBoxItem(comboMenu, "user") && rtarget != null && player.GetSpellDamage(target, SpellSlot.R) > rtarget.Health)
+            var rtarget = HeroManager.Enemies.Where(e => e.LSIsValidTarget() && R.CanCast(e)).OrderByDescending(TargetSelector.GetPriority).FirstOrDefault();
+            if (getCheckBoxItem(comboMenu, "user") && rtarget != null && player.LSGetSpellDamage(target, SpellSlot.R) > rtarget.Health)
             {
                 R.Cast(rtarget, getCheckBoxItem(config, "packets"));
             }
@@ -267,14 +256,14 @@ namespace UnderratedAIO.Champions
         {
             if (getCheckBoxItem(MiscMenu, "useQgc"))
             {
-                if (gapcloser.Sender.IsValidTarget(Q.Range) && Q.IsReady())
+                if (gapcloser.Sender.LSIsValidTarget(Q.Range) && Q.IsReady())
                 {
                     Q.Cast(gapcloser.End, getCheckBoxItem(config, "packets"));
                 }
             }
             if (getCheckBoxItem(MiscMenu, "useWgc"))
             {
-                if (gapcloser.Sender.IsValidTarget(W.Range) && W.IsReady())
+                if (gapcloser.Sender.LSIsValidTarget(W.Range) && W.IsReady())
                 {
                     W.Cast(gapcloser.End, getCheckBoxItem(config, "packets"));
                 }
@@ -309,13 +298,14 @@ namespace UnderratedAIO.Champions
             {
                 damage += player.LSGetSpellDamage(hero, SpellSlot.R);
             }
-            return (float) damage;
+            return (float)damage;
         }
 
         private static void InitChoGath()
         {
             Q = new Spell(SpellSlot.Q, 950);
             Q.SetSkillshot(1.2f, 175f, float.MaxValue, false, SkillshotType.SkillshotCircle);
+
             W = new Spell(SpellSlot.W, 650);
             W.SetSkillshot(0.25f, 250f, float.MaxValue, false, SkillshotType.SkillshotCone);
             E = new Spell(SpellSlot.E, 500);
@@ -343,7 +333,7 @@ namespace UnderratedAIO.Champions
         private static void InitMenu()
         {
             config = MainMenu.AddMenu("大虫子", "ChoGath");
-            config.Add("packets", new CheckBox("Use Packets", false));
+            config.Add("packets", new CheckBox("使用封包", false));
 
             // Draw settings
             drawMenu = config.AddSubMenu("线圈 ", "dsettings");

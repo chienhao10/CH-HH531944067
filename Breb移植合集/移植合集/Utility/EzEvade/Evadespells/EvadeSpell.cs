@@ -115,7 +115,7 @@ namespace ezEvade
 
         public static void UseEvadeSpell()
         {
-            if (!Situation.ShouldUseEvadeSpell())
+            if (!Situation.ShouldUseEvadeSpell() || !ObjectCache.menuCache.cache["ActivateEvadeSpells"].Cast<KeyBind>().CurrentValue)
             {
                 return;
             }
@@ -137,6 +137,11 @@ namespace ezEvade
 
         public static bool ActivateEvadeSpell(Spell spell, bool checkSpell = false)
         {
+            if (!ObjectCache.menuCache.cache["ActivateEvadeSpells"].Cast<KeyBind>().CurrentValue)
+            {
+                return false;
+            }
+
             var sortedEvadeSpells = evadeSpells.OrderBy(s => s.dangerlevel);
 
             var extraDelayBuffer = ObjectCache.menuCache.cache["ExtraPingBuffer"].Cast<Slider>().CurrentValue;

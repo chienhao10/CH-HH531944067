@@ -369,7 +369,8 @@ namespace ARAMDetFull
             foreach (var aly in ally_champions)
             {
                 var reach = aly.reach + 500;
-                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach && aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + fearDistance + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
+                if (!aly.hero.IsDead && aly.hero.LSDistance(point, true) < reach * reach &&
+                    aly.hero.LSDistance(ARAMSimulator.toNex.Position) < (point.LSDistance(ARAMSimulator.toNex.Position) + fearDistance + (ARAMSimulator.tankBal * -5) + (ARAMSimulator.agrobalance * 3)))
                     balance += ((int)aly.hero.HealthPercent + 20 + 20 - aly.hero.Deaths * 4 + aly.hero.ChampionsKilled * 4);
             }
             var myBal = ((int)myControler.hero.HealthPercent + 20 + 20 - myControler.hero.Deaths * 10 +

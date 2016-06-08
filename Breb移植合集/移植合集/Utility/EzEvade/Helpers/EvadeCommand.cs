@@ -6,6 +6,7 @@ using System.Text;
 using EloBuddy;
 using EloBuddy.SDK;
 using SharpDX;
+using EloBuddy.SDK.Menu.Values;
 
 namespace ezEvade
 {
@@ -36,6 +37,11 @@ namespace ezEvade
 
         public static void MoveTo(Vector2 movePos)
         {
+            if (!ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
+            {
+                return;
+            }
+
             if (!Situation.ShouldDodge())
             {
                 return;

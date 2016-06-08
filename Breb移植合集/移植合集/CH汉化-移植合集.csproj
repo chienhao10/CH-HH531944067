@@ -458,6 +458,31 @@
     <Compile Include="Dual-Port\OKTWMorgana\Morgana.cs" />
     <Compile Include="Dual-Port\OKTWQuinn\Quinn.cs" />
     <Compile Include="Dual-Port\OKTWTwistedFate\TwistedFate.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Champion\PlayerObjects.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Champion\PlayerSpells.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonAutoBush.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonAutoLevel.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonGeometry.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonHelper.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonItems.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonManaBar.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonManaManager.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonMath.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Common\CommonSummoner.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Evade\SpellData.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Evade\SpellDatabase.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeCombo.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeConfig.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeDraw.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeFlee.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeHarass.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeJungle.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeLane.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModePerma.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeSettings.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Modes\ModeUlti.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Olaf.cs" />
+    <Compile Include="Dual-Port\Olaf Is Back II\Program.cs" />
     <Compile Include="Dual-Port\PrideStalker Rengar\Core.cs" />
     <Compile Include="Dual-Port\PrideStalker Rengar\Draw\Draw.cs" />
     <Compile Include="Dual-Port\PrideStalker Rengar\Draw\HpBarDraw.cs" />
@@ -1029,6 +1054,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Resources\SPRITES\EloDisplayer\EloDisplayer.Designer.cs" />
+    <Compile Include="Utility\Anti-Stealth\Anti-Stealth.cs" />
     <Compile Include="Utility\AntiAlistar\AntiAlistar.cs" />
     <Compile Include="Utility\ARAMDetFull\Aggresivity.cs" />
     <Compile Include="Utility\ARAMDetFull\ARAMDetFull.cs" />

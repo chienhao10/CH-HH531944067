@@ -700,6 +700,25 @@ namespace ARAMDetFull
 
         }
 
+        public static void buyItems()
+        {
+            if (lastBuy < LXOrbwalker.now - 2300)
+            {
+                AutoShopper.buyNext();
+                lastBuy = LXOrbwalker.now;
+            }
+            /* foreach (var item in nextItem.itemIds)
+             {
+                 if (!LeagueSharp.Common.Items.HasItem(item) && nextItem.goldReach<=player.Gold)
+                 {
+                     Console.WriteLine("Buy itemmss: "+item);
+                     player.BuyItem((ItemId)item);
+                     lastBuy = LXOrbwalker.now;
+                 }
+             }
+         checkItems();*/
+        }
+
         public static void setupARMASimulator()
         {
             GameObject.OnCreate += TowerAttackOnCreate;
@@ -734,8 +753,10 @@ namespace ARAMDetFull
             MapControl.setupMapControl();
             AutoLevelChamp.setAutoLevel();
             LXOrbwalker.setpOrbwalker();
+            AutoShopper.init();
             setUpItems();
             setChamp();
+            AutoShopper.setBuild(champBuild);
             //checkItems();
             sSpells = new SummonerSpells();
             if (champ != null)
@@ -801,6 +822,7 @@ namespace ARAMDetFull
         [DllImport("user32.dll")]
         static extern bool PostMessage(IntPtr hWnd, UInt32 Msg, int wParam, int lParam);
 
+
         public static void updateArmaPlay()
         {
 
@@ -815,19 +837,23 @@ namespace ARAMDetFull
             try
             {
                 AutoLevelChamp.LevelUpOff();
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }
+
+            if ((player.InShop() || player.IsDead)/* && nextItem != null && nextItem.goldReach <= player.Gold*/)
+            {
+                buyItems();
+            }
+
             if (champ != null)
             {
                 champ.alwaysCheck();
             }
 
             setRambo();
-
             if (player.IsDead)
                 return;
 
@@ -837,9 +863,10 @@ namespace ARAMDetFull
                 LXOrbwalker.OrbwalkTo(closestEnemy.Position, false, true);
                 return;
             }
-            agrobalance = Aggresivity.getAgroBalance();
 
+            agrobalance = Aggresivity.getAgroBalance();
             balance = (ARAMTargetSelector.IsInvulnerable(player) || player.IsZombie) ? 250 : MapControl.balanceAroundPointAdvanced(player.Position.LSTo2D(), 380 - agrobalance * 5) - tankBal + agrobalance;
+
             LXOrbwalker.inDanger = balance < 0;
 
             if (champ != null)
@@ -850,15 +877,12 @@ namespace ARAMDetFull
                         champ.killSteal();
                     else
                         champ.farm();
-
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex);
                 }
             }
-
-
 
             if (!Sector.inTowerRange(player.Position.LSTo2D()) || towerAttackedAlly || player.HealthPercent < 25)
             {
@@ -874,7 +898,6 @@ namespace ARAMDetFull
                     {
                         MapControl.myControler.useSkillshots();
                         MapControl.myControler.useNonSkillshots();
-
                     }
                 }
                 catch (Exception ex)
@@ -885,18 +908,16 @@ namespace ARAMDetFull
 
             deepestAlly = HeroManager.Allies.OrderBy(al => toNex.Position.LSDistance(al.Position, true)).FirstOrDefault();
             var lookRange = player.AttackRange + ((player.IsMelee) ? 160 : 35);
-            var easyKill =
-               HeroManager.Enemies.FirstOrDefault(ene => !ene.IsDead && ene.LSDistance(player, true) < lookRange * lookRange &&
-                                                         !ARAMTargetSelector.IsInvulnerable(ene) && ene.Health / 2.5 < player.LSGetAutoAttackDamage(ene));
+            var easyKill = HeroManager.Enemies.FirstOrDefault(ene => !ene.IsDead && ene.LSDistance(player, true) < lookRange * lookRange && !ARAMTargetSelector.IsInvulnerable(ene) && ene.Health / 2.5 < player.LSGetAutoAttackDamage(ene));
 
             if (easyKill != null)
             {
-                //Console.WriteLine("go get easy");
                 LXOrbwalker.OrbwalkTo(easyKill.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), player.AttackRange * 0.4f).To3D(), true);
             }
 
             if (balance < 0)
                 LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(), false, true);
+
             if (moveToRelicIfForHeal())
             {
                 return;
@@ -911,23 +932,18 @@ namespace ARAMDetFull
             if (towerAttackedMe)
             {
                 LXOrbwalker.CustomOrbwalkMode = false;
-                // Chat.Print("ouch tower!");
                 LXOrbwalker.OrbwalkTo(player.Position.LSTo2D().LSExtend(fromNex.Position.LSTo2D(), 600).To3D(), false);
                 return;
             }
-
-
-
+            
             awayTo = eAwayFromTo();
             if (awayTo.IsValid() && awayTo.X != 0)
             {
-
                 LXOrbwalker.CustomOrbwalkMode = false;
                 if (champ != null)
                     champ.kiteBack(awayTo);
                 LXOrbwalker.OrbwalkTo(awayTo.To3D(), true);
                 return;
-
             }
             else
             {
@@ -942,12 +958,7 @@ namespace ARAMDetFull
                     return;
                 }
                 else
-                {/*
-                    if (player.HealthPercent < 69 && moveToRelicIfForHeal())
-                    {
-                        return;
-                    }*/
-
+                {
                     if (!LXOrbwalker.inDanger)
                     {
 
@@ -963,16 +974,8 @@ namespace ARAMDetFull
                             }
                             if (sector.dangerPolig)
                                 break;
-                            //  if (!player.IsMelee)
-                            // {
                             if (sector.containsEnemy && !sector.containsAlly)
                                 break;
-                            // }
-                            // else
-                            //  {
-                            //     if (prevSector != null && sector.containsEnemy && !prevSector.containsAlly  && !sector.containsAlly)
-                            //         break;
-                            //  }
                             orbSector = sector;
                             if (sector.containsEnemy && sector.containsAlly)
                                 break;
@@ -988,15 +991,6 @@ namespace ARAMDetFull
                     }
                 }
             }
-
-
-
-
-            /*foreach (var ally in MapControl.ally_champions)
-            {
-                if (ally.hero.LSDistance(player) < 800 && MapControl.myControler != null)
-                    MapControl.myControler.useNonSkillshots(ally.hero);
-            }*/
         }
 
         public static bool moveToRelicIfForHeal()

@@ -220,6 +220,11 @@ namespace PortAIO
                     AutoJungle.Program.OnGameLoad();
                 }
 
+                if (Loader.antiStealth)
+                {
+                    new AntiStealth.AntiStealth();
+                }
+
                 //if (Loader.orbwalker)
                 //{
                     //PuppyStandaloneOrbwalker.Program.Game_OnGameLoad();
@@ -555,9 +560,22 @@ namespace PortAIO
                                 break;
                         }
                         break;
+                    case "olaf":
+                        switch (Loader.olaf)
+                        {
+                            case 0:
+                                ExorSDK.AIO.OnLoad();
+                                break;
+                            case 1:
+                                OlafxQx.Program.Init();
+                                break;
+                            default:
+                                ExorSDK.AIO.OnLoad();
+                                break;
+                        }
+                        break;
                     case "nautilus":
                     case "nunu":
-                    case "olaf":
                     case "pantheon":
                         ExorSDK.AIO.OnLoad();
                         break;

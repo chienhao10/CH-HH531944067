@@ -2849,7 +2849,7 @@ namespace ezEvade
                 charName = "Taliyah",
                 dangerlevel = 2,
                 missileName = "TaliyahQMis",
-                projectileSpeed = 1350,
+                projectileSpeed = 1450,
                 name = "TaliyahQ",
                 radius = 100,
                 range = 1000,
@@ -2870,11 +2870,32 @@ namespace ezEvade
                 name = "TaliyahW",
                 radius = 150,
                 range = 900,
-                spellDelay = 500,
+                spellDelay = 1000,
                 spellKey = SpellSlot.W,
                 spellName = "TaliyahW",
                 spellType = SpellType.Circular
             });
+            #endregion
+
+            #region Taric
+
+            Spells.Add(
+            new SpellData
+            {
+                charName = "Taric",
+                dangerlevel = 3,
+                missileName = "TaricEMissile",
+                name = "TaricE",
+                radius = 100,
+                range = 750,
+                fixedRange = true,
+                spellDelay = 1000,
+                spellKey = SpellSlot.E,
+                spellName = "TaricE",
+                spellType = SpellType.Line,
+                isSpecial = true
+            });
+
             #endregion
 
             #region Thresh

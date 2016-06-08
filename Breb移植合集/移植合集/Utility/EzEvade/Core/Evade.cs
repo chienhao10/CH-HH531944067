@@ -129,7 +129,7 @@ namespace ezEvade
             var modeArray = new[] { "Smooth", "Fastest", "Very Smooth" };
             sliderEvadeMode.DisplayName = modeArray[sliderEvadeMode.CurrentValue];
             sliderEvadeMode.OnValueChange +=
-                delegate(ValueBase<int> sender, ValueBase<int>.ValueChangeArgs changeArgs)
+                delegate (ValueBase<int> sender, ValueBase<int>.ValueChangeArgs changeArgs)
                 {
                     sender.DisplayName = modeArray[changeArgs.NewValue];
                     OnEvadeModeChange(sender, changeArgs);
@@ -436,7 +436,7 @@ namespace ezEvade
 
         private void Game_OnProcessSpell(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
         {
-            if (!hero.IsMe)
+            if (!hero.IsMe || !ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
             {
                 return;
             }
@@ -485,16 +485,17 @@ namespace ezEvade
             }
             var limitDelay = ObjectCache.menuCache.cache["TickLimiter"].Cast<Slider>().CurrentValue;
             //Tick limiter                
-            if (EvadeUtils.TickCount - lastTickCount > limitDelay
-                && EvadeUtils.TickCount > lastStopEvadeTime)
+            if (EvadeUtils.TickCount - lastTickCount > limitDelay && EvadeUtils.TickCount > lastStopEvadeTime && ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
             {
-                DodgeSkillShots(); //walking           
-
+                DodgeSkillShots(); //walking
                 ContinueLastBlockedCommand();
                 lastTickCount = EvadeUtils.TickCount;
             }
 
-            EvadeSpell.UseEvadeSpell(); //using spells
+            if (ObjectCache.menuCache.cache["ActivateEvadeSpells"].Cast<KeyBind>().CurrentValue)
+            {
+                EvadeSpell.UseEvadeSpell(); //using spells
+            }
             CheckDodgeOnlyDangerous();
             RecalculatePath();
         }
@@ -602,6 +603,11 @@ namespace ezEvade
 
         private void DodgeSkillShots()
         {
+            if (!ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
+            {
+                return;
+            }
+            
             if (!Situation.ShouldDodge())
             {
                 isDodging = false;

@@ -3,6 +3,7 @@ using EloBuddy.SDK;
 using EloBuddy.SDK.Menu.Values;
 using LeagueSharp;
 using LeagueSharp.Common;
+using System.Linq;
 using VayneHunter_Reborn.Modules.ModuleHelpers;
 using VayneHunter_Reborn.Utility.Helpers;
 using VayneHunter_Reborn.Utility.MenuUtility;
@@ -32,6 +33,22 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Misc
             if (target != null)
             {
                 Orbwalker.ForcedTarget = target;
+            }
+
+            if (Game.Time < 25000)
+            {
+                //Before 25 minutes 1437lappa
+                var ADC =
+                    HeroManager.Enemies.Where(m => TargetSelector.GetPriority(m) > 4 && m.IsValidTarget()).OrderBy(m => m.TotalAttackDamage).FirstOrDefault();
+
+                if (ADC != null && Orbwalking.InAutoAttackRange(ADC))
+                {
+                    Orbwalker.ForcedTarget = target;
+                }
+                else
+                {
+                    Orbwalker.ForcedTarget = Orbwalker.LastTarget as Obj_AI_Base;
+                }
             }
         }
     }

@@ -16,6 +16,7 @@ namespace PortAIO.Utility
 {
     class Loader
     {
+        public static bool antiStealth { get { return Miscc["antiStealth"].Cast<CheckBox>().CurrentValue; } }
         public static bool limitedShat { get { return Miscc["limitedShat"].Cast<CheckBox>().CurrentValue; } }
         public static bool autoLevel { get { return Miscc["autoLevel"].Cast<CheckBox>().CurrentValue; } }
         public static bool chatLogger { get { return Miscc["chatLogger"].Cast<CheckBox>().CurrentValue; } }
@@ -106,6 +107,7 @@ namespace PortAIO.Utility
         public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
         public static int aramCB { get { return Miscc["aramCB"].Cast<ComboBox>().CurrentValue; } }
         public static int activatorCB { get { return Miscc["activatorCB"].Cast<ComboBox>().CurrentValue; } }
+        public static int olaf { get { return Miscc["olaf"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -178,6 +180,7 @@ namespace PortAIO.Utility
             "Teemo", //57
             "Cassiopeia", //58
             "Bard", //59
+            "Olaf", // 60
         });
 
         public static void Menu()
@@ -378,7 +381,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[47]))
                 {
-                    Miscc.Add("reksai", new ComboBox("切换 挖掘机脚本RekSai : ", 0, "D-RekSai", "HeavenStrike"));
+                    Miscc.Add("reksai", new ComboBox("切换 挖掘机脚本 : ", 0, "D-RekSai", "HeavenStrike"));
                 }
                 if (Player.ChampionName.Equals(Champion[48]))
                 {
@@ -398,7 +401,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[52]))
                 {
-                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD", "Irelia II", "IreliaReload"));
+                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD", "Irelia II", "Irelia Reloaded"));
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {
@@ -426,7 +429,11 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[59]))
                 {
-                    Miscc.Add("bard", new ComboBox("切换 巴德脚本 : ", 0, "Bard", "FreshBooster"));
+                    Miscc.Add("bard", new ComboBox("切换 巴德脚本 : ", 0, "Asuna Bard", "FreshBooster"));
+                }
+                if (Player.ChampionName.Equals(Champion[60]))
+                {
+                    Miscc.Add("olaf", new ComboBox("切换 奥拉弗脚本 : ", 0, "ExorAIO", "Olaf is Back"));
                 }
             }
             else

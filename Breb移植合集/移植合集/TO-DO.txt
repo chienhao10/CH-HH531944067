@@ -17,7 +17,7 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Nocturne is Back https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Nocturne
 - Sharpy AIO Zed [https://github.com/deop7138/Sharpy-AIO/tree/master/Sharpy%20AIO]
 - Teemo God [https://github.com/MasterGFv2/Teemo_The_Real_God/tree/master/Teemo_The_Real_God]
-- RAREKarthus/Zyra [https://github.com/KyonLeague/RAREScripts/tree/master]
+- RAREKarthus/Zyra/Twisted Fate [https://github.com/KyonLeague/RAREScripts/tree/master]
 - Karma - the Englightned One [https://github.com/SwipeDan/LeagueSharp/tree/master/Karma%20%20%20%E2%80%93%20%20the%20Enlightened%20One]
 - NechritoRengar [https://github.com/Nechrito/Leaguesharp/tree/master/Nechrito%20Rengar]
 - Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
@@ -26,13 +26,15 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Underrated Renekton/Singed [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/]
 - Royal Ziggs [https://github.com/princer007/LSResurrected/tree/master/RoyalZiggy]
 - Badao Draven (https://github.com/badao/Draven/)
-- xQx LeBlanc & Olaf & Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
+- xQx LeBlanc & Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
 - Geass Tristana
 - SoloVayne
 - YasuoSharpV2
 - TroopAIO
 - Dicaste's Ashe/Urgot
 - Shen Hand of God
+- [RE-PORT] Nechrito Riven - Some Big Changes Happened and it's all different now
+- Lee Is Back [https://github.com/xQxCPMxQx/LeagueSharp2/tree/master/Lee%20is%20Back]
 
 Utility Ports [Only doing after Champions are completed] :
 - DZAwareness [https://github.com/DZ191/LeagueSharp/tree/master/DZAwarenessAIO]
