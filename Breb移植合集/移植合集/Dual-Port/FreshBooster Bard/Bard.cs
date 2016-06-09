@@ -26,7 +26,6 @@ namespace FreshBooster.Champion
         public static int cnt = 0;
         public static Obj_AI_Base BardQTarget1, BardQTarget2;
         public static LeagueSharp.Common.Geometry.Polygon.Rectangle Range1, Range2;
-        public static AIHeroClient RRange;
         public static int RCnt;
 
         private void SkillSet()
@@ -205,7 +204,7 @@ namespace FreshBooster.Champion
             AntiGapcloser.OnEnemyGapcloser += AntiGapcloser_OnEnemyGapcloser;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
             Interrupter2.OnInterruptableTarget += Interrupter2_OnInterruptableTarget;
-            Orbwalking.BeforeAttack += Orbwalking_BeforeAttack;
+            Orbwalker.OnPreAttack += Orbwalking_BeforeAttack;
             EloBuddy.Player.OnIssueOrder += Obj_AI_Base_OnIssueOrder;
             GameObject.OnCreate += GameObject_OnCreate;
             GameObject.OnDelete += GameObject_OnDelete;
@@ -377,7 +376,7 @@ namespace FreshBooster.Champion
             }
 
         }
-        public static void Orbwalking_BeforeAttack(Orbwalking.BeforeAttackEventArgs args)
+        public static void Orbwalking_BeforeAttack(AttackableUnit target, Orbwalker.PreAttackArgs args)
         {
             try
             {

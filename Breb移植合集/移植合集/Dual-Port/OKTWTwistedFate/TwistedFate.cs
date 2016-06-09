@@ -223,7 +223,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
             {
                 if (R.IsReady() && (Player.HasBuff("destiny_marker") || Player.HasBuff("gate")))
                     W.Cast();
-                else if (t.IsValidTarget() && Program.Combo)
+                else if (t.LSIsValidTarget() && Program.Combo)
                     W.Cast();
                 else if (Orbwalker.LastTarget != null)
                 {
@@ -256,7 +256,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         if (wName == "GoldCardLock")
                             W.Cast();
                     }
-                    else if (Program.Combo && orbTarget.IsValidTarget() && W.GetDamage(orbTarget) + Player.GetAutoAttackDamage(orbTarget) > orbTarget.Health)
+                    else if (Program.Combo && orbTarget.LSIsValidTarget() && W.GetDamage(orbTarget) + Player.GetAutoAttackDamage(orbTarget) > orbTarget.Health)
                     {
                         W.Cast();
                         Program.debug("1" + wName);
@@ -267,13 +267,13 @@ namespace OneKeyToWin_AIO_Sebby.Champions
                         if (wName == "BlueCardLock")
                             W.Cast();
                     }
-                    else if (Program.Farm && orbTarget.IsValidTarget())
+                    else if (Program.Farm && orbTarget.LSIsValidTarget())
                     {
                         FindCard = 1;
                         if (wName == "GoldCardLock")
                             W.Cast();
                     }
-                    else if (Player.ManaPercent > getSliderItem(wMenu, "WredFarm") && Program.LaneClear && getCheckBoxItem(farmMenu, "farmW"))
+                    else if (Player.ManaPercent > getSliderItem(farmMenu, "WredFarm") && Program.LaneClear && getCheckBoxItem(farmMenu, "farmW"))
                     {
                         FindCard = 3;
                         if (wName == "RedCardLock")

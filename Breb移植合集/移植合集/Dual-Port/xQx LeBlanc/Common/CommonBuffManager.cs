@@ -9,7 +9,7 @@ using LeagueSharp.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
 
-namespace Leblanc.Common
+namespace LeblancOLD.Common
 {
 
     public class CommonBuffManager

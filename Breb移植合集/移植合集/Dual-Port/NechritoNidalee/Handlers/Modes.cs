@@ -48,7 +48,7 @@ namespace Nechrito_Nidalee.Handlers
                     EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Target);
                     Champion.Pounce.Cast(Target);
                 }
-                if (!CatForm() && Champion.Bushwack.IsReady() && Player.ManaPercent >= 30 && (Player.LSDistance(Target.Position) <= Champion.Bushwack.Range))
+                if (!CatForm() && Champion.Bushwack.IsReady() && Player.ManaPercent <= MenuConfig.manaW && (Player.LSDistance(Target.Position) <= Champion.Bushwack.Range))
                 {
                     Champion.Bushwack.Cast(Target.ServerPosition - 75);
                 }
@@ -135,7 +135,7 @@ namespace Nechrito_Nidalee.Handlers
                 if (!CatForm() && Player.HealthPercent <= MenuConfig.jnglHeal)
                     Champion.Primalsurge.Cast(Player);
 
-                if (!CatForm() && Champion.Bushwack.IsReady() && (float)Player.GetAutoAttackDamage(m) > m.Health)
+                if (!CatForm() && Champion.Bushwack.IsReady() && (float)Player.GetAutoAttackDamage(m) > m.Health && Player.ManaPercent <= MenuConfig.manaW)
                 {
                     Champion.Bushwack.Cast(m.ServerPosition);
                 }

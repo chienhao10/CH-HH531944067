@@ -33,30 +33,32 @@ namespace Nechrito_Nidalee
 
         public static void Load()
         {
-            ks = Menu.AddSubMenu("抢头", "KillSteal");
-            ks.Add("SpellsKS", new CheckBox("抢头技能"));
-            ks.Add("ComboSmite", new CheckBox("惩戒"));
-            ks.Add("ComboIgnite", new CheckBox("点燃"));
+            ks = Menu.AddSubMenu("KillSteal", "KillSteal");
+            ks.Add("SpellsKS", new CheckBox("KS Spells"));
+            ks.Add("ComboSmite", new CheckBox("Smite"));
+            ks.Add("ComboIgnite", new CheckBox("Ignite"));
 
-            jngl = Menu.AddSubMenu("清野", "Jungle");
-            jngl.Add("jnglQ", new Slider("使用Q 蓝量 %", 15, 0, 100));
-            jngl.Add("jnglHeal", new Slider("自动治疗", 15, 0, 95));
+            jngl = Menu.AddSubMenu("Jungle", "Jungle");
+            jngl.Add("jnglQ", new Slider("Use Javelin Mana %", 15, 0, 100));
+            jngl.Add("jnglHeal", new Slider("Auto Heal", 15, 0, 95));
 
-            heal = Menu.AddSubMenu("Heal", "治疗管理器");
-            heal.Add("allyHeal", new Slider("治疗友军血量 <= %", 45, 0, 80));
-            heal.Add("SelfHeal", new Slider("治疗自己当血量 <= %", 80, 0, 90));
-            heal.Add("ManaHeal", new Slider("不使用当蓝量 <= %", 20, 0, 100));
+            heal = Menu.AddSubMenu("Heal", "Heal Manager");
+            heal.Add("allyHeal", new Slider("Heal Allies Hp <= %", 45, 0, 80));
+            heal.Add("SelfHeal", new Slider("Self Heal Hp <= %", 80, 0, 90));
+            heal.Add("ManaHeal", new Slider("Mana <= %", 20, 0, 100));
 
-            misc = Menu.AddSubMenu("杂项", "Misc");
-            misc.Add("Gapcloser", new CheckBox("防突进"));
+            misc = Menu.AddSubMenu("Misc", "Misc");
+            misc.Add("Gapcloser", new CheckBox("Gapcloser"));
+            misc.Add("manaW", new Slider("Use W Mana %", 15, 0, 100));
 
-            draw = Menu.AddSubMenu("线圈", "Draw");
-            draw.Add("dind", new CheckBox("伤害指示器"));
-            draw.Add("EngageDraw", new CheckBox("进攻范围"));
-            draw.Add("fleeDraw", new CheckBox("显示逃跑点"));
 
-            flee = Menu.AddSubMenu("逃跑", "Flee");
-            flee.Add("FleeMouse", new KeyBind("逃跑按键 (测试)", false, KeyBind.BindTypes.HoldActive, 'A'));
+            draw = Menu.AddSubMenu("Draw", "Draw");
+            draw.Add("dind", new CheckBox("Draw damage indicator"));
+            draw.Add("EngageDraw", new CheckBox("Engage Range"));
+            draw.Add("fleeDraw", new CheckBox("Draw Flee Spots"));
+
+            flee = Menu.AddSubMenu("Flee", "Flee");
+            flee.Add("FleeMouse", new KeyBind("Flee (BETA)", false, KeyBind.BindTypes.HoldActive, 'A'));
         }
 
         public static bool ComboSmite => getCheckBoxItem(ks, "ComboSmite");
@@ -68,6 +70,7 @@ namespace Nechrito_Nidalee
         public static bool Gapcloser => getCheckBoxItem(misc, "Gapcloser");
 
         public static bool FleeMouse => getKeyBindItem(flee, "FleeMouse");
+        public static int manaW => getSliderItem(misc, "manaW");
 
         public static int ManaHeal => getSliderItem(heal, "ManaHeal");
         public static int SelfHeal => getSliderItem(heal, "SelfHeal");

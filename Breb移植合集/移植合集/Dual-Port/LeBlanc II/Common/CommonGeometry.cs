@@ -16,13 +16,7 @@
 
 #region
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using ClipperLib;
-using LeagueSharp;
-using LeagueSharp.Common;
-using SharpDX;
 using SharpDX.Direct3D9;
 using Path = System.Collections.Generic.List<ClipperLib.IntPoint>;
 using Paths = System.Collections.Generic.List<System.Collections.Generic.List<ClipperLib.IntPoint>>;
@@ -30,11 +24,20 @@ using GamePath = System.Collections.Generic.List<SharpDX.Vector2>;
 
 #endregion
 
-namespace LeblancOLD.Common
+namespace Leblanc.Common
 {
-    using EloBuddy;
-    using Color = System.Drawing.Color;
+    using System;
+    using System.Collections.Generic;
 
+    using ClipperLib;
+
+    using LeagueSharp;
+    using LeagueSharp.Common;
+
+    using SharpDX;
+
+    using Color = System.Drawing.Color;
+    using EloBuddy;
     /// <summary>
     ///     Class that contains the geometry related methods.
     /// </summary>
@@ -48,6 +51,22 @@ namespace LeblancOLD.Common
 
         public static Font Text;
         public static Font TextPassive;
+
+        public static bool IsWallBetween(Vector3 start, Vector3 end, int step = 3)
+        {
+            if (start.IsValid() && end.IsValid() && step > 0)
+            {
+                var distance = start.LSDistance(end);
+                for (var i = 0; i < distance; i = i + step)
+                {
+                    if (NavMesh.GetCollisionFlags(start.LSExtend(end, i)) == CollisionFlags.Wall)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 
         private static void CurrentDomainOnDomainUnload(object sender, EventArgs eventArgs)
         {
@@ -69,6 +88,8 @@ namespace LeblancOLD.Common
 
         public static void Init()
         {
+       
+
             Text = new Font(
                 Drawing.Direct3DDevice,
                 new FontDescription
@@ -92,6 +113,28 @@ namespace LeblancOLD.Common
             Drawing.OnPostReset += DrawingOnOnPostReset;
             AppDomain.CurrentDomain.DomainUnload += CurrentDomainOnDomainUnload;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomainOnDomainUnload;
+        }
+        public static void DrawBox(float positionX, float positionY, float width, int height, System.Drawing.Color color, int borderwidth, System.Drawing.Color borderColor, string text = "")
+        {
+            if (color != Color.Transparent)
+            {
+                Drawing.DrawLine(positionX, positionY, positionX + width, positionY, height, color);
+            }
+
+            if (borderwidth > 0)
+            {
+                Drawing.DrawLine(positionX, positionY, positionX + width - 1, positionY, borderwidth, borderColor);
+                Drawing.DrawLine(positionX, positionY + height, positionX + width - 1, positionY + height, borderwidth, borderColor);
+                Drawing.DrawLine(positionX, positionY + 1, positionX, positionY + height, borderwidth,
+                    borderColor);
+                Drawing.DrawLine(positionX + width, positionY + 1, positionX + width, positionY + height,
+                    borderwidth, borderColor);
+            }
+
+            if (text != "")
+            {
+
+            }
         }
 
         public static void DrawBox(Vector2 position, float width, int height, System.Drawing.Color color, int borderwidth, System.Drawing.Color borderColor, string text = "")
@@ -161,15 +204,15 @@ namespace LeblancOLD.Common
         /// </summary>
         public static Vector2 PositionAfter(this GamePath self, int t, int speed, int delay = 0)
         {
-            var distance = Math.Max(0, t - delay) * speed / 1000;
+            var distance = Math.Max(0, t - delay)*speed/1000;
             for (var i = 0; i <= self.Count - 2; i++)
             {
                 var from = self[i];
                 var to = self[i + 1];
-                var d = (int)to.LSDistance(from);
+                var d = (int) to.LSDistance(from);
                 if (d > distance)
                 {
-                    return from + distance * (to - from).LSNormalized();
+                    return from + distance*(to - from).LSNormalized();
                 }
                 distance -= d;
             }
@@ -233,14 +276,14 @@ namespace LeblancOLD.Common
                 var result = new Polygon();
                 var outRadius = (overrideWidth > 0
                     ? overrideWidth
-                    : (offset + this.Radius) / (float)Math.Cos(2 * Math.PI / CircleLineSegmentN));
+                    : (offset + this.Radius)/(float) Math.Cos(2*Math.PI/CircleLineSegmentN));
 
                 for (var i = 1; i <= CircleLineSegmentN; i++)
                 {
-                    var angle = i * 2 * Math.PI / CircleLineSegmentN;
+                    var angle = i*2*Math.PI/CircleLineSegmentN;
                     var point = new Vector2(
-                        this.Center.X + outRadius * (float)Math.Cos(angle),
-                        this.Center.Y + outRadius * (float)Math.Sin(angle));
+                        this.Center.X + outRadius*(float) Math.Cos(angle),
+                        this.Center.Y + outRadius*(float) Math.Sin(angle));
                     result.Add(point);
                 }
 
@@ -283,13 +326,13 @@ namespace LeblancOLD.Common
                 var result = new Polygon2();
                 var outRadius = (overrideWidth > 0
                     ? overrideWidth
-                    : (offset + this.Radius) / (float)Math.Cos(2 * Math.PI / MaxLineSegmentN));
+                    : (offset + this.Radius)/(float) Math.Cos(2*Math.PI/MaxLineSegmentN));
 
                 for (var i = MaxLineSegmentN; i >= CurrentLineSegmentN; i--)
                 {
-                    var angle = i * 2 * Math.PI / MaxLineSegmentN;
-                    var point = new Vector2(this.Center.X + outRadius * (float)Math.Cos(angle),
-                        this.Center.Y + outRadius * (float)Math.Sin(angle));
+                    var angle = i*2*Math.PI/MaxLineSegmentN;
+                    var point = new Vector2(this.Center.X + outRadius*(float) Math.Cos(angle),
+                        this.Center.Y + outRadius*(float) Math.Sin(angle));
                     result.Add(point);
                 }
 
@@ -490,17 +533,17 @@ namespace LeblancOLD.Common
                 var result = new Polygon();
 
                 result.Add(
-                    this.RStart + (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    - offset * this.Direction);
+                    this.RStart + (overrideWidth > 0 ? overrideWidth : this.Width + offset)*this.Perpendicular
+                    - offset*this.Direction);
                 result.Add(
-                    this.RStart - (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    - offset * this.Direction);
+                    this.RStart - (overrideWidth > 0 ? overrideWidth : this.Width + offset)*this.Perpendicular
+                    - offset*this.Direction);
                 result.Add(
-                    this.REnd - (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    + offset * this.Direction);
+                    this.REnd - (overrideWidth > 0 ? overrideWidth : this.Width + offset)*this.Perpendicular
+                    + offset*this.Direction);
                 result.Add(
-                    this.REnd + (overrideWidth > 0 ? overrideWidth : this.Width + offset) * this.Perpendicular
-                    + offset * this.Direction);
+                    this.REnd + (overrideWidth > 0 ? overrideWidth : this.Width + offset)*this.Perpendicular
+                    + offset*this.Direction);
 
                 return result;
             }
@@ -538,24 +581,24 @@ namespace LeblancOLD.Common
                 var result = new Polygon();
 
                 var outRadius = (offset + this.Radius + this.RingRadius)
-                                / (float)Math.Cos(2 * Math.PI / CircleLineSegmentN);
+                                /(float) Math.Cos(2*Math.PI/CircleLineSegmentN);
                 var innerRadius = this.Radius - this.RingRadius - offset;
 
                 for (var i = 0; i <= CircleLineSegmentN; i++)
                 {
-                    var angle = i * 2 * Math.PI / CircleLineSegmentN;
+                    var angle = i*2*Math.PI/CircleLineSegmentN;
                     var point = new Vector2(
-                        this.Center.X - outRadius * (float)Math.Cos(angle),
-                        this.Center.Y - outRadius * (float)Math.Sin(angle));
+                        this.Center.X - outRadius*(float) Math.Cos(angle),
+                        this.Center.Y - outRadius*(float) Math.Sin(angle));
                     result.Add(point);
                 }
 
                 for (var i = 0; i <= CircleLineSegmentN; i++)
                 {
-                    var angle = i * 2 * Math.PI / CircleLineSegmentN;
+                    var angle = i*2*Math.PI/CircleLineSegmentN;
                     var point = new Vector2(
-                        this.Center.X + innerRadius * (float)Math.Cos(angle),
-                        this.Center.Y - innerRadius * (float)Math.Sin(angle));
+                        this.Center.X + innerRadius*(float) Math.Cos(angle),
+                        this.Center.Y - innerRadius*(float) Math.Sin(angle));
                     result.Add(point);
                 }
 
@@ -596,16 +639,16 @@ namespace LeblancOLD.Common
             public Polygon ToPolygon(int offset = 0)
             {
                 var result = new Polygon();
-                var outRadius = (this.Radius + offset) / (float)Math.Cos(2 * Math.PI / CircleLineSegmentN);
+                var outRadius = (this.Radius + offset)/(float) Math.Cos(2*Math.PI/CircleLineSegmentN);
 
                 result.Add(this.Center);
-                var Side1 = this.Direction.LSRotated(-this.Angle * 0.5f);
+                var Side1 = this.Direction.LSRotated(-this.Angle*0.5f);
 
                 for (var i = 0; i <= CircleLineSegmentN; i++)
                 {
-                    var cDirection = Side1.LSRotated(i * this.Angle / CircleLineSegmentN).LSNormalized();
+                    var cDirection = Side1.LSRotated(i*this.Angle/CircleLineSegmentN).LSNormalized();
                     result.Add(
-                        new Vector2(this.Center.X + outRadius * cDirection.X, this.Center.Y + outRadius * cDirection.Y));
+                        new Vector2(this.Center.X + outRadius*cDirection.X, this.Center.Y + outRadius*cDirection.Y));
                 }
 
                 return result;

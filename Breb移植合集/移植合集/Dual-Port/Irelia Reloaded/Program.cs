@@ -87,14 +87,6 @@
         private static Items.Item Omen { get; set; }
 
         /// <summary>
-        ///     Gets or sets the orbwalker.
-        /// </summary>
-        /// <value>
-        ///     The orbwalker.
-        /// </value>
-        private static Orbwalking.Orbwalker Orbwalker { get; set; }
-
-        /// <summary>
         ///     Gets the player.
         /// </summary>
         /// <value>
@@ -455,21 +447,25 @@
         {
             KillSteal();
 
-            switch (Orbwalker.ActiveMode)
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit))
             {
-                case Orbwalking.OrbwalkingMode.LastHit:
-                    LastHit();
-                    break;
-                case Orbwalking.OrbwalkingMode.LaneClear:
-                    JungleClear();
-                    WaveClear();
-                    break;
-                case Orbwalking.OrbwalkingMode.Combo:
-                    Combo();
-                    break;
-                case Orbwalking.OrbwalkingMode.Mixed:
-                    Harass();
-                    break;
+                LastHit();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            {
+                JungleClear();
+                WaveClear();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            {
+                Combo();
+            }
+
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass))
+            {
+                Harass();
             }
         }
 
@@ -491,7 +487,7 @@
                 Q.CastOnUnit(target);
             }
 
-            if (useW && W.IsReady() && Orbwalker.InAutoAttackRange(target))
+            if (useW && W.IsReady() && Orbwalking.InAutoAttackRange(target))
             {
                 W.Cast();
             }
@@ -542,7 +538,7 @@
             var useW = getCheckBoxItem(jungleClearMenu, "UseWJungleClear");
             var useE = getCheckBoxItem(jungleClearMenu, "UseEJungleClear");
 
-            var orbwalkerTarget = Orbwalker.GetTarget();
+            var orbwalkerTarget = Orbwalker.LastTarget;
             var minion = orbwalkerTarget as Obj_AI_Minion;
 
             if (minion == null || minion.Team != GameObjectTeam.Neutral)
@@ -819,7 +815,7 @@
 
             if (useW && W.IsReady())
             {
-                if (Orbwalker.GetTarget() is Obj_AI_Minion && W.IsInRange(Orbwalker.GetTarget().Position, W.Range))
+                if (Orbwalker.LastTarget is Obj_AI_Minion && W.IsInRange(Orbwalker.LastTarget.Position, W.Range))
                 {
                     W.Cast();
                 }

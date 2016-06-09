@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using LeagueSharp;
 using LeagueSharp.Common;
-using Leblanc.Common;
+using LeblancOLD.Common;
 using SharpDX;
 using Color = System.Drawing.Color;
 using EloBuddy;
@@ -15,7 +15,7 @@ using EloBuddy.SDK;
 
 #endregion
 
-namespace Leblanc
+namespace LeblancOLD
 {
     internal class Program
     {
