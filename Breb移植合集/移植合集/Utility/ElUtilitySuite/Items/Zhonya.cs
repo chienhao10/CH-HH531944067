@@ -450,7 +450,7 @@
                                  },
                               new ZhonyaSpell
                                  {
-                                     ChampionName = "Yasuo", SDataName = "yasuorknockupcombow", MissileName = "",
+                                     ChampionName = "Yasuo", SDataName = "YasuoQ3", MissileName = "",
                                      Delay = 1000, MissileSpeed = int.MaxValue, CastRange = 875f
                                  },
                              new ZhonyaSpell
@@ -586,7 +586,7 @@
         /// <returns></returns>
         public void CreateMenu(Menu rootMenu)
         {
-            var zhonyaMenu = rootMenu.AddSubMenu("Zhonya's Hourglass", "zhonya");
+            var zhonyaMenu = rootMenu.AddSubMenu("中亚", "zhonya");
             {
                 zhonyaMenu.AddGroupLabel("Spells");
                 {
@@ -605,7 +605,7 @@
                         if (firstOrDefault != null)
                         {
                             zhonyaMenu.Add(
-                                    string.Format("Zhonya{0}", spell.SDataName),
+                                    string.Format($"Zhonya{spell.SDataName}"),
                                     new CheckBox(
                                     string.Format(
                                         "{0} ({1}) - {2}",
@@ -618,7 +618,7 @@
 
                 zhonyaMenu.Add("ZhonyaDangerous", new CheckBox("使用中亚"));
                 zhonyaMenu.Add("ZhonyaHP", new CheckBox("低血量时使用"));
-                zhonyaMenu.Add("ZhonyaHPSlider", new Slider("血量%", 10, 1, 50));
+                zhonyaMenu.Add("ZhonyaHPSlider-1", new Slider("血量%", 10, 1, 50));
                 zhonyaMenu.Add("NoZhonyaEvade", new CheckBox("不使用中亚如果技能可被躲避 （测试)", false));
 
                 this.Menu = zhonyaMenu;
@@ -697,7 +697,7 @@
                 return;
             }
 
-            if (!getCheckBoxItem(this.Menu, string.Format("Zhonya{0}", sdata.SDataName))
+            if (!getCheckBoxItem(this.Menu, string.Format($"Zhonya{sdata.SDataName}"))
                 || !getCheckBoxItem(this.Menu, "ZhonyaDangerous"))
             {
                 return;

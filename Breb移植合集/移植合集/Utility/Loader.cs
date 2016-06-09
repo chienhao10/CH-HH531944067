@@ -28,7 +28,6 @@ namespace PortAIO.Utility
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
         public static bool sdkPredictioner { get { return Miscc["sdkPredictioner"].Cast<CheckBox>().CurrentValue; } }
         public static bool cheat { get { return Miscc["cheat"].Cast<CheckBox>().CurrentValue; } }
-        public static bool autoSharp { get { return Miscc["autoSharp"].Cast<CheckBox>().CurrentValue; } }
         public static bool useTracker { get { return Miscc["tracker"].Cast<CheckBox>().CurrentValue; } }
         public static bool useRecall { get { return Miscc["recall"].Cast<CheckBox>().CurrentValue; } }
         public static bool useSkin { get { return Miscc["skin"].Cast<CheckBox>().CurrentValue; } }
@@ -105,7 +104,6 @@ namespace PortAIO.Utility
         public static int cassiopeia { get { return Miscc["cassiopeia"].Cast<ComboBox>().CurrentValue; } }
         public static int bard { get { return Miscc["bard"].Cast<ComboBox>().CurrentValue; } }
         public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
-        public static int aramCB { get { return Miscc["aramCB"].Cast<ComboBox>().CurrentValue; } }
         public static int activatorCB { get { return Miscc["activatorCB"].Cast<ComboBox>().CurrentValue; } }
         public static int olaf { get { return Miscc["olaf"].Cast<ComboBox>().CurrentValue; } }
 
@@ -443,7 +441,6 @@ namespace PortAIO.Utility
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("功能切换 :");
             Miscc.Add("evadeCB", new ComboBox("躲避切换?", 0, "ezEvade", "Evade#"));
-            Miscc.Add("aramCB", new ComboBox("大乱斗挂机切换?", 0, "AutoSharp", "AramDETFull"));
             Miscc.Add("activatorCB", new ComboBox("活化剂切换?", 0, "EL活化剂", "Nabb活化剂"));
             Miscc.AddSeparator();
             Miscc.AddGroupLabel("选择加载内容");
@@ -466,17 +463,16 @@ namespace PortAIO.Utility
             Miscc.Add("banwards", new CheckBox("开启 Sebby 人性化?", false));
             Miscc.Add("antialistar", new CheckBox("开启 防牛头冲撞?", true));
             Miscc.AddSeparator();
-            Miscc.Add("autoSharp", new CheckBox("开启Auto Sharp(挂机)?", false));
             Miscc.Add("sdkPredictioner", new CheckBox("开启 SDK预判者?", true));
             Miscc.Add("traptrack", new CheckBox("开启 陷阱计时?", false));
             Miscc.Add("limitedShat", new CheckBox("开启 LimitedShat?", false));
-            Miscc.AddSeparator();
             Miscc.Add("autoLevel", new CheckBox("开启 自动加点?", false));
+            Miscc.AddSeparator();
             Miscc.Add("chatLogger", new CheckBox("开启 聊天记录?", false));
             Miscc.Add("autoFF", new CheckBox("开启 自动投降?", false));
             Miscc.Add("urfSpell", new CheckBox("开启 阿福快打技能狂放?", false));
-            Miscc.AddSeparator();
             Miscc.Add("pastingSharp", new CheckBox("开启 PastingSharp?", false));
+            Miscc.AddSeparator();
             Miscc.Add("autoJungle", new CheckBox("开启 爱台湾自动打野?", false));
             Miscc.Add("emoteSpammer", new CheckBox("开启 表情发送器（动作）?", false));
 

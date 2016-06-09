@@ -134,12 +134,6 @@ namespace ElRengarRevamped
                     Youmuu.Cast();
                 }
 
-                if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Smite") && !RengarR && Smite != SpellSlot.Unknown
-                    && Player.Spellbook.CanUseSpell(Smite) == SpellState.Ready && !target.IsZombie)
-                {
-                    Player.Spellbook.CastSpell(Smite, target);
-                }
-
                 if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Ignite") && target.LSIsValidTarget(600f) && IgniteDamage(target) >= target.Health)
                 {
                     Player.Spellbook.CastSpell(Ignite, target);

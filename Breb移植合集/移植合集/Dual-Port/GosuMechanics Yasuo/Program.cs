@@ -113,22 +113,27 @@ namespace GosuMechanicsYasuo
 
             // Combo
             comboMenu = Config.AddSubMenu("Combo Settings", "combo");
+            comboMenu.AddGroupLabel("Q Settings : ");
             comboMenu.Add("QC", new CheckBox("Use Q"));
+            comboMenu.AddGroupLabel("E Settings : ");
             comboMenu.Add("EC", new CheckBox("Use E"));
             comboMenu.Add("E1", new Slider("when enemy range >=", 375, 1, 475));
             comboMenu.Add("E2", new Slider("Use E-GapCloser when enemy range >=", 230, 1, 1300));
             comboMenu.Add("E3", new CheckBox("Mode: On = ToTarget / OFF = ToMouse"));
-            comboMenu.Add("Ignite", new CheckBox("Use Ignite"));
-            comboMenu.Add("comboItems", new CheckBox("Use Items"));
-            comboMenu.Add("myHP", new Slider("Use BOTRK if my hp <=", 70, 1, 101));
+            comboMenu.AddGroupLabel("R Settings : ");
             comboMenu.Add("R", new CheckBox("Use Smart R"));
-            comboMenu.Add("R1", new Slider("when enemy HP <=", 50, 1, 101));
-            comboMenu.Add("R2", new Slider("or when knockedUp enemy is >=", 2, 1, 5));
+            comboMenu.Add("R1", new Slider("When enemy HP <=", 50, 1, 101));
+            comboMenu.Add("R2", new Slider("Or when enemy knockedup >=", 2, 1, 5));
             comboMenu.Add("R3", new CheckBox("Use R instantly when an ally is in range"));
+            comboMenu.AddGroupLabel("Auto R Settings : ");
             comboMenu.Add("R4", new CheckBox("Use Auto R"));
             comboMenu.Add("R5", new Slider("when knockedUp enemy is >=", 3, 1, 5));
             comboMenu.Add("R6", new Slider("when <= enemy in range", 2, 1, 5));
             comboMenu.Add("R7", new Slider("when myHero HP is >=", 50, 1, 101));
+            comboMenu.AddGroupLabel("Item Settings : ");
+            comboMenu.Add("Ignite", new CheckBox("Use Ignite"));
+            comboMenu.Add("comboItems", new CheckBox("Use Items"));
+            comboMenu.Add("myHP", new Slider("Use BOTRK if my hp <=", 70, 1, 101));
 
             //R whitelist
             ultMenu = Config.AddSubMenu("Ult Whitelist Settings", "ult");
@@ -687,7 +692,7 @@ namespace GosuMechanicsYasuo
                     PredictionOutput Q3Pred = Q3.GetPrediction(TsTarget);
                     if (Q3.IsInRange(TsTarget) && Q3Pred.Hitchance >= HitChance.VeryHigh) 
                     {
-                        Q3.Cast(Q3Pred.CastPosition);
+                        Q3.Cast(TsTarget);
                     }
                 }
                 if (!Q3READY() && Q.IsReady() && Q.IsInRange(TsTarget))
@@ -695,7 +700,7 @@ namespace GosuMechanicsYasuo
                     PredictionOutput QPred = Q.GetPrediction(TsTarget);
                     if (Q.IsInRange(TsTarget) && QPred.Hitchance >= HitChance.High)
                     {
-                        Q.Cast(QPred.CastPosition);
+                        Q.Cast(TsTarget);
                     }
                 } 
             }
