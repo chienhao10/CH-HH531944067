@@ -11,7 +11,7 @@
     {
         private static Menu flymenu;
 
-        public static int LastAATick;
+        public static float LastAATick;
 
         public static void Execute()
         {
@@ -45,14 +45,16 @@
                     var target = TargetSelector.GetTarget(ObjectManager.Player.GetAutoAttackRange(), DamageType.Physical);
                     if (target.IsValidTarget(ObjectManager.Player.GetAutoAttackRange()))
                     {
-                        if (Game.Time * (1000 - flymenu["Flyspeed"].Cast<Slider>().CurrentValue) - Game.Ping >= LastAATick + 1)
+                        if (Core.GameTickCount - LastAATick <= 150)
                         {
+                            Chat.Print("MoveTo");
                             Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
                         }
-                        if (Game.Time * (1000 - flymenu["Flyspeed"].Cast<Slider>().CurrentValue) - Game.Ping
-                            > LastAATick + ObjectManager.Player.AttackDelay * 1000 - 250)
+                        if (Core.GameTickCount - LastAATick >= 50)
                         {
+                            Chat.Print("AttackTo");
                             Player.IssueOrder(GameObjectOrder.AttackUnit, target);
+                            LastAATick = Core.GameTickCount;
                         }
                     }
                     else

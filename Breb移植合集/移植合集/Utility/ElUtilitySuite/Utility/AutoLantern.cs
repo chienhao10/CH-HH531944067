@@ -86,6 +86,7 @@
             var autoLanternMenu = rootMenu.AddSubMenu("锤石灯笼", "Threshlantern");
             {
                 autoLanternMenu.Add("ThreshLantern", new CheckBox("自动点击灯笼"));
+                autoLanternMenu.Add("ThreshHawkMode", new CheckBox("只使用按键", false));
                 autoLanternMenu.Add("ThreshLanternHotkey", new KeyBind("点击灯笼按键", false, KeyBind.BindTypes.HoldActive, 'M'));
                 autoLanternMenu.Add("ThreshLanternHPSlider", new Slider("当血量% 时自动点击灯笼", 20));
             }
@@ -176,8 +177,8 @@
                     return;
                 }
 
-                if (this.Player.HealthPercent < this.ClickBelowHp
-                    || getKeyBindItem(this.Menu, "ThreshLanternHotkey"))
+                if (getCheckBoxItem(this.Menu, "ThreshHawkMode") ? getKeyBindItem(this.Menu, "ThreshLanternHotkey") :
+                    getKeyBindItem(this.Menu, "ThreshLanternHotkey") || this.Player.HealthPercent < this.ClickBelowHp)
                 {
                     if (this.ThreshLantern.Position.LSDistance(this.Player.Position) <= 500)
                     {

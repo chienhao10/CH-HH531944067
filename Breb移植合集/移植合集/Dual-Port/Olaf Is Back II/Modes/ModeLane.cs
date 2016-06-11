@@ -48,7 +48,7 @@ namespace OlafxQx.Modes
                     MenuLocal.Add("Lane.UseW", new ComboBox("W:", 1, strW));
                 }
 
-                MenuLocal.Add("Lane.UseE", new ComboBox("E:", 1, "Off", "On: Last hit"));
+                MenuLocal.Add("Lane.UseE", new ComboBox("E:", 1, "Off", "On: Last hit", "On: Health Prediction", "Both"));
 
                 MenuLocal.Add("Lane.Item", new ComboBox("Items:", 1, "Off", "On"));
             }
@@ -102,40 +102,54 @@ namespace OlafxQx.Modes
                 }
             }
 
-            //if (W.IsReady() && MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue != 0)
-            //{
-            //    var wCount = MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue;
+            if (MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue != 0 && W.IsReady())
+            {
+                var wCount = MenuLocal["Lane.UseW"].Cast<ComboBox>().CurrentValue;
 
-            //    var totalAa =
-            //        ObjectManager.Get<Obj_AI_Minion>()
-            //            .Where(
-            //                m =>
-            //                    m.IsEnemy && !m.IsDead &&
-            //                    m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
-            //            .Sum(mob => (int) mob.Health);
+                var totalAa =
+                    ObjectManager.Get<Obj_AI_Minion>()
+                        .Where(
+                            m =>
+                                m.IsEnemy && !m.IsDead &&
+                                m.IsValidTarget(Orbwalking.GetRealAutoAttackRange(null)))
+                        .Sum(mob => (int)mob.Health);
 
-            //    totalAa = (int) (totalAa/ObjectManager.Player.TotalAttackDamage);
-            //    if (totalAa >= wCount + 3)
-            //    {
-            //        W.Cast();
-            //    }
-            //}
+                totalAa = (int)(totalAa / ObjectManager.Player.TotalAttackDamage);
+                if (totalAa >= wCount + 3)
+                {
+                    W.Cast();
+                }
+            }
 
-            //if (E.IsReady() && MenuLocal["Lane.UseE"].Cast<ComboBox>().CurrentValue != 0)
-            //{
-            //    var minions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, E.Range * 1);
+            var useE = MenuLocal["Lane.UseE"].Cast<ComboBox>().CurrentValue;
+            if (useE != 0 && E.IsReady())
+            {
+                var minions = MinionManager.GetMinions(ObjectManager.Player.ServerPosition, E.Range);
 
-            //    foreach (
-            //        var eMinion in
-            //            minions.Where(
-            //                m =>
-            //                    HealthPrediction.GetHealthPrediction(m,
-            //                        (int) (ObjectManager.Player.AttackCastDelay*1000), Game.Ping/2 + 100) < 0)
-            //                .Where(m => m.Health < E.GetDamage(m) && E.CanCast(m)))
-            //    {
-            //        E.CastOnUnit(eMinion);
-            //    }
-            //}
+                if (useE == 1 || useE == 3)
+                {
+                    foreach (
+                        var eMinion in
+                            minions.Where(m => m.Health < E.GetDamage(m) && E.CanCast(m)))
+                    {
+                        E.CastOnUnit(eMinion);
+                    }
+                }
+
+                if (useE == 2 || useE == 3)
+                {
+                    foreach (
+                        var eMinion in
+                            minions.Where(
+                                m =>
+                                    HealthPrediction.GetHealthPrediction(m,
+                                        (int)(ObjectManager.Player.AttackCastDelay * 1000), Game.Ping / 2) < 0)
+                                .Where(m => m.Health < E.GetDamage(m) && E.CanCast(m)))
+                    {
+                        E.CastOnUnit(eMinion);
+                    }
+                }
+            }
         }
     }
 }

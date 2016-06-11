@@ -56,7 +56,7 @@ namespace VayneHunter_Reborn.Skills.Condemn
 
             var pushDistance = MenuGenerator.miscMenu["dz191.vhr.misc.condemn.pushdistance"].Cast<Slider>().CurrentValue - 25;
 
-            foreach (var target in HeroManager.Enemies.Where(en => en.LSIsValidTarget(E.Range)))
+            foreach (var target in HeroManager.Enemies.Where(en => en.LSIsValidTarget(E.Range) && !en.LSIsDashing()))
             {
                 var Prediction = Variables.spells[SpellSlot.E].GetPrediction(target);
 
@@ -117,7 +117,7 @@ namespace VayneHunter_Reborn.Skills.Condemn
                     return VHReborn.GetTarget(fromPosition);
                 case 2:
                     //Marksman / Gosu
-                    return Marksman.GetTarget(fromPosition);
+                    return VayneHunter_Reborn.Skills.Condemn.Methods.Marksman.GetTarget(fromPosition);
                 case 3:
                     //Shine#
                     return Shine.GetTarget(fromPosition);

@@ -23,10 +23,10 @@ Champion Ports [Starting 5/19, I'm going to start checking these in game via L# 
 - Syndra/Soraka [https://github.com/SephLeague/LeagueSharp]
 - Hikicarry Draven (A really nice manual Draven) [https://github.com/HikigayaAss/hikiMarksman/tree/master/hikiMarksmanRework/hikiMarksmanRework]
 - Rek'Sai - Winner of Fights [https://github.com/HikigayaAss/LeagueSharp/tree/master/RekSai]
-- Underrated Renekton/Singed [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/]
+- Underrated Singed [https://github.com/Soresu/LeagueSharp/blob/master/UnderratedAIO/UnderratedAIO/]
 - Royal Ziggs [https://github.com/princer007/LSResurrected/tree/master/RoyalZiggy]
 - Badao Draven (https://github.com/badao/Draven/)
-- xQx LeBlanc & Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
+- xQx Wukong [https://github.com/CPMSoft/xQx-LeagueSharp]
 - Geass Tristana
 - SoloVayne
 - YasuoSharpV2
@@ -41,14 +41,14 @@ Utility Ports [Only doing after Champions are completed] :
 - OneKeyToBrain [https://github.com/OneKeyToWin/LeagueRepo/tree/master/OneKeyToBrain]
 - BlackFeeder 2.0 [https://github.com/blacky/LeagueSharp/tree/master/BlackFeeder%202.0]
 - Activator # [https://github.com/xKurisu/Activator/tree/master/Activator]
-- NabbActivator: Ultima [https://github.com/nabbhacker/ExoryREPO/tree/master/NabbActivator]
 - IHateSkillshots [https://github.com/Vasilyi/L-/]
 - ControlSharp [https://github.com/tr33s/LeagueSharp/blob/master/ControlSharp/Program.cs]
 - Toxic Player Reform Program [https://github.com/myo/LeagueSharp/blob/master/Toxic%20Player%20Reform%20Program/Toxic%20Player%20Reform%20Program/Program.cs]
 - AntiMelee Standalon [https://github.com/strcow/LeagueSharp/tree/master/CowAntiMelee/CowAntiMelee]
 - StreamSharp [https://github.com/Nouser/Leaguesharp/tree/master/LeagueSharp/StreamSharp/StreamSharp]
 - OKTW Ward Standalone [Already in PortAIO]
-- LeagueSharp.Utility [Looks harder than anything I've ever ported]
 - AioCaster
+- AutoSharp - Once working again
+- AutoJungle - Once working again
 
 ------------------------------------------------------------------------

@@ -194,11 +194,6 @@ namespace PortAIO
                     EmoteSpammer.Program.Game_OnGameLoad();
                 }
 
-                if (Loader.autoJungle)
-                {
-                    AutoJungle.Program.OnGameLoad();
-                }
-
                 if (Loader.antiStealth)
                 {
                     new AntiStealth.AntiStealth();
@@ -261,6 +256,9 @@ namespace PortAIO
                             case 2:
                                 Challenger_Series.Program.Main();
                                 break;
+                            case 3:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
@@ -291,6 +289,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 Challenger_Series.Program.Main();
+                                break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
@@ -334,6 +335,9 @@ namespace PortAIO
                             case 1:
                                 iDZEzreal.EzrealBootstrap.OnGameLoad();
                                 break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
                                 break;
@@ -364,6 +368,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 D_Graves.Program.Game_OnGameLoad();
+                                break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
                                 break;
                             default:
                                 SebbyLib.Program.GameOnOnGameLoad();
@@ -520,6 +527,9 @@ namespace PortAIO
                             case 2:
                                 D_Corki.Program.Game_OnGameLoad();
                                 break;
+                            case 3:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
                             default:
                                 ElCorki.Corki.Game_OnGameLoad();
                                 break;
@@ -558,10 +568,25 @@ namespace PortAIO
                     case "pantheon":
                         ExorSDK.AIO.OnLoad();
                         break;
-                    case "renekton":
                     case "tryndamere":
                         ExorAIO.Core.Bootstrap.BuildMenu();
                         ExorAIO.Core.Bootstrap.LoadChampion();
+                        break;
+                    case "renekton":
+                        switch (Loader.renekton)
+                        {
+                            case 0:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                            case 1:
+                                UnderratedAIO.Champions.Renekton.OnLoad();
+                                break;
+                            default:
+                                ExorAIO.Core.Bootstrap.BuildMenu();
+                                ExorAIO.Core.Bootstrap.LoadChampion();
+                                break;
+                        }
                         break;
                     case "ryze":
                         switch (Loader.ryze)
@@ -611,6 +636,9 @@ namespace PortAIO
                                 break;
                             case 1:
                                 Tyler1.Program.Load();
+                                break;
+                            case 2:
+                                Marksman.Program.Game_OnGameLoad();
                                 break;
                             default:
                                 RevampedDraven.Program.OnLoad();
@@ -672,7 +700,18 @@ namespace PortAIO
                         UnderratedAIO.Champions.Garen.OnLoad();
                         break;
                     case "gnar": // Slutty Gnar
-                        Slutty_Gnar_Reworked.Gnar.OnLoad();
+                        switch (Loader.gnar)
+                        {
+                            case 0:
+                                Slutty_Gnar_Reworked.Gnar.OnLoad();
+                                break;
+                            case 1:
+                                Marksman.Program.Game_OnGameLoad();
+                                break;
+                            default:
+                                Slutty_Gnar_Reworked.Gnar.OnLoad();
+                                break;
+                        }
                         break;
                     case "gragas": // Gragas - Drunk Carry
                         switch (Loader.gragas)
@@ -891,8 +930,8 @@ namespace PortAIO
                                 new FreshBooster.Champion.Leblanc();
                                 break;
                             case 3:
-	                            Leblanc.Program.Init();
-	                            break;
+                                Leblanc.Program.Init();
+                                break;
                             default:
                                 PopBlanc.Program.OnLoad();
                                 break;

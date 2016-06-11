@@ -19,7 +19,7 @@ namespace PrideStalker_Rengar.Main
 
             comboMenu = Menu.AddSubMenu("Combo", "Combo");
             comboMenu.Add("ComboMode", new ComboBox("Combo Mode", 0, "Gank", "Triple Q", "Ap Combo", "OneShot"));
-            comboMenu.Add("IgnoreE", new CheckBox("Ignore E Collision", false));
+            comboMenu.Add("IgnoreE", new CheckBox("E To Cursor In TripleQ/Ap Combo/OneShot", false));
             comboMenu.AddLabel("In TripleQ/Ap Combo/OneShot");
             comboMenu.AddSeparator();
             comboMenu.Add("TripleQAAReset", new CheckBox("AA Q Reset In Triple Q", true));

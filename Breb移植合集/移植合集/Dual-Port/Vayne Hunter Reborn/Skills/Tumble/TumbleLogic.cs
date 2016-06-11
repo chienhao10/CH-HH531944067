@@ -30,7 +30,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
         {
             if (sender.IsMe && Orbwalking.IsAutoAttack(args.SData.Name) && (args.Target is Obj_AI_Base))
             {
-                if (Environment.TickCount - LastCondemnTick < 250)
+                if (Environment.TickCount - Variables.LastCondemnFlashTime < 250)
                 {
                     return;
                 }

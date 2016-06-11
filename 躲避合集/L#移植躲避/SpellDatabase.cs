@@ -366,9 +366,8 @@ namespace Evade
                     DangerValue = 2,
                     IsDangerous = false,
                     MissileSpellName = "AurelionSolQMissile",
-                    CanBeRemoved = true,
                     CollisionObjects =
-                        new[] { CollisionObjectTypes.YasuoWall }
+                        new[] { CollisionObjectTypes.YasuoWall },
                 });
 
             Spells.Add(
@@ -387,9 +386,8 @@ namespace Evade
                     DangerValue = 3,
                     IsDangerous = true,
                     MissileSpellName = "AurelionSolRBeamMissile",
-                    CanBeRemoved = true,
                     CollisionObjects =
-                        new[] { CollisionObjectTypes.YasuoWall }
+                        new[] { CollisionObjectTypes.YasuoWall },
                 });
 
             #endregion Aurelion Sol
@@ -852,7 +850,10 @@ namespace Evade
                     DangerValue = 3,
                     IsDangerous = false,
                     MissileSpellName = "InfectedCleaverMissile",
-                    CollisionObjects = new[] {CollisionObjectTypes.YasuoWall},
+                    EarlyEvade = new[] {EarlyObjects.Allies, EarlyObjects.Minions, EarlyObjects.AllyObjects},
+                    CollisionObjects =
+                        new[]
+                        {CollisionObjectTypes.Champions, CollisionObjectTypes.Minion, CollisionObjectTypes.YasuoWall},
                 });
 
             #endregion DrMundo
@@ -3361,6 +3362,47 @@ namespace Evade
                 });
 
             #endregion Syndra
+            
+            #region Taliyah
+
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Taliyah",
+                    SpellName = "TaliyahQ",
+                    Slot = SpellSlot.Q,
+                    Type = SkillShotType.SkillshotMissileLine,
+                    Delay = 250,
+                    Range = 950,
+                    Radius = 100,
+                    MissileSpeed = 3600,
+                    FixedRange = true,
+                    AddHitbox = true,
+                    DangerValue = 2,
+                    IsDangerous = false,
+                    MissileSpellName = "TaliyahQMis",
+                    CollisionObjects = new[] { CollisionObjectTypes.YasuoWall, CollisionObjectTypes.Minion, CollisionObjectTypes.Champions },
+                });
+
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Taliyah",
+                    SpellName = "TaliyahW",
+                    Slot = SpellSlot.W,
+                    Type = SkillShotType.SkillshotCircle,
+                    Delay = 600,
+                    Range = 900,
+                    Radius = 200,
+                    MissileSpeed = int.MaxValue,
+                    FixedRange = false,
+                    AddHitbox = true,
+                    DangerValue = 2,
+                    IsDangerous = true,
+                    MissileSpellName = "TaliyahW",
+                });
+
+            #endregion Taliyah
 
             #region Talon
 

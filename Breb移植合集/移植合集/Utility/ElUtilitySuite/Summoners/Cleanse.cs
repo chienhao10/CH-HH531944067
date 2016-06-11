@@ -218,14 +218,8 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "Swain", Name = "swaintorment", MenuName = "Swain Torment", Evade = false,
-                                     DoT = true, EvadeTimer = 0, Cleanse = false, CleanseTimer = 0, Slot = SpellSlot.E,
-                                     Interval = 1.0
-                                 },
-                             new CleanseSpell
-                                 {
-                                     Champion = "Swain", Name = "SwainShadowGraspRoot", MenuName = "Swain (Q)", Evade = false,
-                                     DoT = true, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q,
+                                     Champion = "Swain", Name = "SwainShadowGraspRoot", MenuName = "Swain (W)", Evade = false,
+                                     DoT = true, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.W,
                                      Interval = 1.0
                                  },
                              new CleanseSpell
@@ -594,8 +588,8 @@ namespace ElUtilitySuite.Summoners
                                  },
                              new CleanseSpell
                                  {
-                                     Champion = "zilean", Name = "stun", MenuName = "Zilean double Q", Evade = false,
-                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 0, Slot = SpellSlot.Q
+                                     Champion = "zilean", Name = "Stun", MenuName = "Zilean double Q", Evade = false,
+                                     DoT = false, EvadeTimer = 0, Cleanse = true, CleanseTimer = 100, Slot = SpellSlot.Q
                                  }
                          };
 

@@ -20,6 +20,8 @@ namespace VayneHunter_Reborn.Utility
 
         public static Menu Menu { get; set; }
 
+        public static float LastCondemnFlashTime { get; set; }
+
         public static Dictionary<SpellSlot, LeagueSharp.Common.Spell> spells = new Dictionary<SpellSlot, LeagueSharp.Common.Spell>
         {
             { SpellSlot.Q, new LeagueSharp.Common.Spell(SpellSlot.Q) },
@@ -40,7 +42,8 @@ namespace VayneHunter_Reborn.Utility
             new Reveal(),
             new DisableMovement(),
             new CondemnJungleMobs(),
-            new FlashRepel()
+            new FlashRepel(),
+            new FlashCondemn()
         };
 
         public static IEnumerable<AIHeroClient> MeleeEnemiesTowardsMe

@@ -31,10 +31,19 @@ namespace PrideStalker_Rengar
             Orbwalker.OnPostAttack += AfterAA.Orbwalker_OnPostAttack;
             Orbwalker.OnPreAttack += BeforeAA.Orbwalker_OnPreAttack;
 
+            Spellbook.OnCastSpell += OnSpell;
 
             Drawing.OnDraw += DRAW.OnDraw;
             Drawing.OnEndScene += Drawing_OnEndScene;
             Game.OnUpdate += OnUpdate;
+        }
+
+        private static void OnSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
+        {
+            if (args.Slot == SpellSlot.Q)
+            {
+                Orbwalker.ResetAutoAttack();
+            }
         }
 
         private static void OnUpdate(EventArgs args)

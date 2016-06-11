@@ -71,6 +71,7 @@ namespace VayneHunter_Reborn.Utility.MenuUtility
             miscMenu.Add("dz191.vhr.misc.condemn.pushdistance", new Slider("E 推行距离", 420, 350, 470));
             miscMenu.Add("dz191.vhr.misc.condemn.accuracy", new Slider("准确度 (只用于革命模式)", 45, 1, 65));
             miscMenu.Add("dz191.vhr.misc.condemn.enextauto", new KeyBind("下一普攻后 E 按键", false, KeyBind.BindTypes.PressToggle, 'T'));
+            miscMenu.Add("dz191.vhr.misc.condemn.flashcondemn", new KeyBind("闪现E", false, KeyBind.BindTypes.HoldActive, 'W'));
             miscMenu.Add("dz191.vhr.misc.condemn.onlystuncurrent", new CheckBox("只允许当前目标"));
             miscMenu.Add("dz191.vhr.misc.condemn.autoe", new CheckBox("自动 E"));
             miscMenu.Add("dz191.vhr.misc.condemn.eks", new CheckBox("智能 E 抢头"));

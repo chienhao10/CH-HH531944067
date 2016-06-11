@@ -24,7 +24,6 @@ namespace PortAIO.Utility
         public static bool urfSpell { get { return Miscc["urfSpell"].Cast<CheckBox>().CurrentValue; } }
         public static bool emoteSpammer { get { return Miscc["emoteSpammer"].Cast<CheckBox>().CurrentValue; } }
         public static bool pastingSharp { get { return Miscc["pastingSharp"].Cast<CheckBox>().CurrentValue; } }
-        public static bool autoJungle { get { return Miscc["autoJungle"].Cast<CheckBox>().CurrentValue; } }
         public static bool useActivator { get { return Miscc["activator"].Cast<CheckBox>().CurrentValue; } }
         public static bool sdkPredictioner { get { return Miscc["sdkPredictioner"].Cast<CheckBox>().CurrentValue; } }
         public static bool cheat { get { return Miscc["cheat"].Cast<CheckBox>().CurrentValue; } }
@@ -82,7 +81,7 @@ namespace PortAIO.Utility
         public static int ekko { get { return Miscc["ekko"].Cast<ComboBox>().CurrentValue; } }
         public static int rumble { get { return Miscc["rumble"].Cast<ComboBox>().CurrentValue; } }
         public static int riven { get { return Miscc["riven"].Cast<ComboBox>().CurrentValue; } }
-        public static int graves { get { return Miscc["graves"].Cast<ComboBox>().CurrentValue; } }
+        public static int graves { get { return Miscc["Graves"].Cast<ComboBox>().CurrentValue; } }
         public static int ahri { get { return Miscc["ahri"].Cast<ComboBox>().CurrentValue; } }
         public static bool banwards { get { return Miscc["banwards"].Cast<CheckBox>().CurrentValue; } }
         public static bool antialistar { get { return Miscc["antialistar"].Cast<CheckBox>().CurrentValue; } }
@@ -106,6 +105,8 @@ namespace PortAIO.Utility
         public static int evadeCB { get { return Miscc["evadeCB"].Cast<ComboBox>().CurrentValue; } }
         public static int activatorCB { get { return Miscc["activatorCB"].Cast<ComboBox>().CurrentValue; } }
         public static int olaf { get { return Miscc["olaf"].Cast<ComboBox>().CurrentValue; } }
+        public static int gnar { get { return Miscc["gnar"].Cast<ComboBox>().CurrentValue; } }
+        public static int renekton { get { return Miscc["renekton"].Cast<ComboBox>().CurrentValue; } }
 
 
         public static Menu Miscc;
@@ -179,6 +180,8 @@ namespace PortAIO.Utility
             "Cassiopeia", //58
             "Bard", //59
             "Olaf", // 60
+            "Gnar", //61
+            "Renekton", //62
         });
 
         public static void Menu()
@@ -191,31 +194,31 @@ namespace PortAIO.Utility
             {
                 if (Player.ChampionName.Equals(Champion[0]))
                 {
-                    Miscc.Add("soraka", new ComboBox("切换 索拉卡脚本 : ", 0, "Sophie 索拉卡", "挑战者系列"));
+                    Miscc.Add("soraka", new ComboBox("切换Soraka : ", 0, "Sophie Soraka", "ChallengerSeries"));
                 }
                 if (Player.ChampionName.Equals(Champion[1]))
                 {
-                    Miscc.Add("kogmaw", new ComboBox("切换 大嘴脚本 : ", 0, "神射手", "挑战者系列", "OKTW"));
+                    Miscc.Add("kogmaw", new ComboBox("切换 大嘴脚本 : ", 0, "Sharpshooter", "ChallengerSeries", "OKTW"));
                 }
                 if (Player.ChampionName.Equals(Champion[2]))
                 {
-                    Miscc.Add("leesin", new ComboBox("切换 李星脚本 : ", 0, "ValvraveSharp", "El李星 : 重生", "FreshBooster"));
+                    Miscc.Add("leesin", new ComboBox("切换 李星脚本 : ", 0, "ValvraveSharp", "El Lee Sin : Reborn", "FreshBooster"));
                 }
                 if (Player.ChampionName.Equals(Champion[3]))
                 {
-                    Miscc.Add("kalista", new ComboBox("切换 滑板鞋脚本 : ", 0, "i滑板鞋", "i滑板鞋 - 重生", "挑战者系列"));
+                    Miscc.Add("kalista", new ComboBox("切换 滑板鞋脚本 : ", 0, "iKalista", "iKalista - Reborn", "ChallengerSeries"));
                 }
                 if (Player.ChampionName.Equals(Champion[4]))
                 {
-                    Miscc.Add("diana", new ComboBox("切换 皎月脚本 : ", 0, "El皎月", "Nechrito 皎月"));
+                    Miscc.Add("diana", new ComboBox("切换 皎月脚本 : ", 0, "ElDiana", "Nechrito Diana"));
                 }
                 if (Player.ChampionName.Equals(Champion[5]))
                 {
-                    Miscc.Add("cait", new ComboBox("切换 女警脚本 : ", 0, "OKTW", "Exor系列 : AIO"));
+                    Miscc.Add("cait", new ComboBox("切换 女警脚本 : ", 0, "OKTW", "ExorSeries : AIO", "ChallengerSeries", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[6]))
                 {
-                    Miscc.Add("twitch", new ComboBox("切换 老鼠脚本 : ", 0, "OKTW", "Nechrito 老鼠", "iTwitch"));
+                    Miscc.Add("twitch", new ComboBox("切换 老鼠脚本 : ", 0, "OKTW", "Nechrito Twitch", "iTwitch"));
                 }
                 if (Player.ChampionName.Equals(Champion[7]))
                 {
@@ -223,31 +226,31 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[8]))
                 {
-                    Miscc.Add("lucian", new ComboBox("切换 卢锡安脚本 : ", 0, "LCS 卢锡安", "挑战者系列", "i卢锡安"));
+                    Miscc.Add("lucian", new ComboBox("切换 卢锡安脚本 : ", 0, "LCS Lucian", "ChallengerSeries", "iLucian"));
                 }
                 if (Player.ChampionName.Equals(Champion[9]))
                 {
-                    Miscc.Add("ashe", new ComboBox("切换 艾希脚本 : ", 0, "OKTW", "挑战者系列"));
+                    Miscc.Add("ashe", new ComboBox("切换 艾希脚本 : ", 0, "OKTW", "ChallengerSeries", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[10]))
                 {
-                    Miscc.Add("vayne", new ComboBox("切换 薇恩脚本 : ", 0, "挑战者Vayne", "薇恩猎手：重生（VHR)", "hi im gosu", "hVayne SDK"));
+                    Miscc.Add("vayne", new ComboBox("切换 薇恩 : ", 0, "ChallengerVayne", "VayneHunterReborn", "hi im gosu", "hVayne SDK"));
                 }
                 if (Player.ChampionName.Equals(Champion[11]))
                 {
-                    Miscc.Add("jayce", new ComboBox("切换 杰斯脚本 : ", 0, "OKTW", "Hoe's 杰斯"));
+                    Miscc.Add("jayce", new ComboBox("切换 杰斯脚本 : ", 0, "OKTW", "Hoe's Jayce"));
                 }
                 if (Player.ChampionName.Equals(Champion[12]))
                 {
-                    Miscc.Add("yasuo", new ComboBox("切换 亚索脚本 : ", 0, "ValvraveSharp", "亚索Pro", "GosuMechanics"));
+                    Miscc.Add("yasuo", new ComboBox("切换 亚索脚本 : ", 0, "ValvraveSharp", "YasuoPro", "GosuMechanics"));
                 }
                 if (Player.ChampionName.Equals(Champion[13]))
                 {
-                    Miscc.Add("katarina", new ComboBox("切换 卡特脚本 : ", 0, "Staberina", "e.Motion卡特"));
+                    Miscc.Add("katarina", new ComboBox("切换 卡特脚本 : ", 0, "Staberina", "e.Motion Katarina"));
                 }
                 if (Player.ChampionName.Equals(Champion[14]))
                 {
-                    Miscc.Add("xerath", new ComboBox("切换 泽拉斯脚本 : ", 0, "OKTW", "El泽拉斯"));
+                    Miscc.Add("xerath", new ComboBox("切换 泽拉斯脚本 : ", 0, "OKTW", "ElXerath"));
                 }
                 if (Player.ChampionName.Equals(Champion[15]))
                 {
@@ -255,11 +258,11 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[16]))
                 {
-                    Miscc.Add("draven", new ComboBox("切换 德莱文脚本 : ", 0, "神射手/Exor", "Tyler1"));
+                    Miscc.Add("draven", new ComboBox("切换 德莱文脚本 : ", 0, "Sharp Shooter/Exor", "Tyler1", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[17]))
                 {
-                    Miscc.Add("ezreal", new ComboBox("切换 EZ脚本 : ", 0, "OKTW", "iDzEzreal"));
+                    Miscc.Add("ezreal", new ComboBox("切换 伊泽瑞尔脚本 : ", 0, "OKTW", "iDzEzreal", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[18]))
                 {
@@ -271,11 +274,11 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[20]))
                 {
-                    Miscc.Add("corki", new ComboBox("切换 飞机脚本 : ", 0, "ElCorki", "OKTW", "D-Corki"));
+                    Miscc.Add("corki", new ComboBox("切换Corki : ", 0, "ElCorki", "OKTW", "D-Corki", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[21]))
                 {
-                    Miscc.Add("darius", new ComboBox("切换 诺克脚本 : ", 0, "ExoryAIO", "OKTW"));
+                    Miscc.Add("darius", new ComboBox("切换Darius : ", 0, "ExoryAIO", "OKTW"));
                 }
                 if (Player.ChampionName.Equals(Champion[22]))
                 {
@@ -291,7 +294,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[25]))
                 {
-                    Miscc.Add("lux", new ComboBox("切换 拉克丝脚本 : ", 0, "MoonLux", "OKTW"));
+                    Miscc.Add("lux", new ComboBox("切换 光辉脚本 : ", 0, "MoonLux", "OKTW"));
                 }
                 if (Player.ChampionName.Equals(Champion[26]))
                 {
@@ -311,7 +314,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[30]))
                 {
-                    Miscc.Add("jax", new ComboBox("切换 酒桶脚本Jax : ", 0, "xQx Jax", "NoobJaxReloaded"));
+                    Miscc.Add("jax", new ComboBox("切换 武器脚本 : ", 0, "xQx Jax", "NoobJaxReloaded"));
                 }
                 if (Player.ChampionName.Equals(Champion[31]))
                 {
@@ -351,7 +354,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[40]))
                 {
-                    Miscc.Add("Rumble", new ComboBox("切换 兰博脚本 : ", 0, "Underrated Rumble", "ElRumble"));
+                    Miscc.Add("Rumble", new ComboBox("切换Rumble : ", 0, "Underrated Rumble", "ElRumble"));
                 }
                 if (Player.ChampionName.Equals(Champion[41]))
                 {
@@ -359,7 +362,7 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[42]))
                 {
-                    Miscc.Add("Graves", new ComboBox("切换 男抢脚本 : ", 0, "OKTW", "D-Graves"));
+                    Miscc.Add("Graves", new ComboBox("切换 男抢脚本 : ", 0, "OKTW", "D-Graves", "Marksman II"));
                 }
                 if (Player.ChampionName.Equals(Champion[43]))
                 {
@@ -371,11 +374,11 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[45]))
                 {
-                    Miscc.Add("zed", new ComboBox("切换 酒劫脚本 : ", 0, "ValvraveSharp", "Ze-D is Back", "iDZed"));
+                    Miscc.Add("zed", new ComboBox("切换 劫脚本 : ", 0, "ValvraveSharp", "Ze-D is Back", "iDZed"));
                 }
                 if (Player.ChampionName.Equals(Champion[46]))
                 {
-                    Miscc.Add("ahri", new ComboBox("切换 阿里脚本 : ", 0, "OKTW", "AhriSharp"));
+                    Miscc.Add("ahri", new ComboBox("切换 阿狸脚本 : ", 0, "OKTW", "AhriSharp"));
                 }
                 if (Player.ChampionName.Equals(Champion[47]))
                 {
@@ -399,11 +402,11 @@ namespace PortAIO.Utility
                 }
                 if (Player.ChampionName.Equals(Champion[52]))
                 {
-                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "挑战者系列", "IreliaGOD", "Irelia II", "Irelia Reloaded"));
+                    Miscc.Add("irelia", new ComboBox("切换 刀妹脚本 : ", 0, "ChallengerSeries", "IreliaGOD", "Irelia II", "Irelia Reloaded"));
                 }
                 if (Player.ChampionName.Equals(Champion[53]))
                 {
-                    Miscc.Add("sivir", new ComboBox("切换 战争女神脚本 : ", 0, "OKTW", "ExorAIO SDK", "ISivir"));
+                    Miscc.Add("sivir", new ComboBox("切换 战争女神脚本 : ", 0, "OKTW", "ExorAIO SDK", "iSivir"));
                 }
                 if (Player.ChampionName.Equals(Champion[54]))
                 {
@@ -432,6 +435,14 @@ namespace PortAIO.Utility
                 if (Player.ChampionName.Equals(Champion[60]))
                 {
                     Miscc.Add("olaf", new ComboBox("切换 奥拉弗脚本 : ", 0, "ExorAIO", "Olaf is Back"));
+                }
+                if (Player.ChampionName.Equals(Champion[61]))
+                {
+                    Miscc.Add("gnar", new ComboBox("切换 纳尔脚本 : ", 0, "SluttyGnar", "Marksman II"));
+                }
+                if (Player.ChampionName.Equals(Champion[62]))
+                {
+                    Miscc.Add("reneton", new ComboBox("切换 鳄鱼脚本 : ", 0, "ExorAIO", "UnderratedAIO"));
                 }
             }
             else
@@ -473,8 +484,8 @@ namespace PortAIO.Utility
             Miscc.Add("urfSpell", new CheckBox("开启 阿福快打技能狂放?", false));
             Miscc.Add("pastingSharp", new CheckBox("开启 PastingSharp?", false));
             Miscc.AddSeparator();
-            Miscc.Add("autoJungle", new CheckBox("开启 爱台湾自动打野?", false));
             Miscc.Add("emoteSpammer", new CheckBox("开启 表情发送器（动作）?", false));
+            Miscc.Add("antiStealth", new CheckBox("开启 反隐形(El活化剂)?", false));
 
             /*
             //Miscc.Add("orbwalker", new CheckBox("Enable L# Orbwalker (HIGHLY BETA)?", false));
@@ -499,4 +510,4 @@ namespace PortAIO.Utility
         }
     }
 
-    }
+}
