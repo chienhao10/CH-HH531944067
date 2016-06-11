@@ -154,9 +154,7 @@ namespace hi_im_gosu
             return m[item].Cast<ComboBox>().CurrentValue;
         }
 
-        private static void Interrupter2_OnInterruptableTarget(
-            AIHeroClient unit,
-            Interrupter2.InterruptableTargetEventArgs args)
+        private static void Interrupter2_OnInterruptableTarget(AIHeroClient unit, Interrupter2.InterruptableTargetEventArgs args)
         {
             if (E.IsReady() && unit.LSIsValidTarget(550) && getCheckBoxItem(emenu, "Int_E") && unit.IsEnemy)
             {
@@ -169,29 +167,18 @@ namespace hi_im_gosu
         {
             if ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear) || Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) && 100 * (Player.Mana / Player.MaxMana) > getSliderItem(qmenu, "Junglemana"))
             {
-                var mob =
-                    MinionManager.GetMinions(
-                        Player.ServerPosition,
-                        E.Range,
-                        MinionTypes.All,
-                        MinionTeam.Neutral,
-                        MinionOrderTypes.MaxHealth).FirstOrDefault();
-                var Minions = MinionManager.GetMinions(
-                    Player.Position.LSExtend(Game.CursorPos, Q.Range),
-                    Player.AttackRange,
-                    MinionTypes.All);
+                var mob = MinionManager.GetMinions(Player.ServerPosition, E.Range, MinionTypes.All, MinionTeam.Neutral, MinionOrderTypes.MaxHealth).FirstOrDefault();
+                var Minions = MinionManager.GetMinions(Player.Position.LSExtend(Game.CursorPos, Q.Range), Player.AttackRange, MinionTypes.All);
                 var useQ = getCheckBoxItem(qmenu, "UseQJ");
                 int countMinions = 0;
-                foreach (var minions in
-                    Minions.Where(
-                        minion =>
-                        minion.Health < Player.LSGetAutoAttackDamage(minion)
-                        || minion.Health < Q.GetDamage(minion) + Player.LSGetAutoAttackDamage(minion) || minion.Health < Q.GetDamage(minion)))
+
+                foreach (var minions in Minions.Where(minion => minion.Health < Player.LSGetAutoAttackDamage(minion) || minion.Health < Q.GetDamage(minion) + Player.LSGetAutoAttackDamage(minion) || minion.Health < Q.GetDamage(minion)))
                 {
                     countMinions++;
                 }
 
-                if (countMinions >= 2 && useQ && Q.IsReady() && Minions != null) Q.Cast(Player.Position.LSExtend(Game.CursorPos, Q.Range / 2));
+                if (countMinions >= 2 && useQ && Q.IsReady() && Minions != null)
+                    Q.Cast(Player.Position.LSExtend(Game.CursorPos, Q.Range / 2));
 
                 if (useQ && Q.IsReady() && Orbwalking.InAutoAttackRange(mob) && mob != null)
                 {
@@ -219,24 +206,18 @@ namespace hi_im_gosu
                 emenu["UseEaa"].Cast<KeyBind>().CurrentValue = !getCheckBoxItem(emenu, "UseEaa");
             }
 
-            if (Q.IsReady()
-                && ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(qmenu, "UseQC")) || (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && getCheckBoxItem(qmenu, "hq"))))
+            if (Q.IsReady() && ((Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo) && getCheckBoxItem(qmenu, "UseQC")) || (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass) && getCheckBoxItem(qmenu, "hq"))))
             {
                 if (getCheckBoxItem(qmenu, "restrictq"))
                 {
-                    var after = ObjectManager.Player.Position
-                                + Normalize(Game.CursorPos - ObjectManager.Player.Position) * 300;
-                    //Game.PrintChat("After: {0}", after);
+                    var after = ObjectManager.Player.Position + Normalize(Game.CursorPos - ObjectManager.Player.Position) * 300;
                     var disafter = Vector3.DistanceSquared(after, tar.Position);
-                    //Game.PrintChat("DisAfter: {0}", disafter);
-                    //Game.PrintChat("first calc: {0}", (disafter) - (630*630));
                     if ((disafter < 630 * 630) && disafter > 150 * 150)
                     {
                         Q.Cast(Game.CursorPos);
                     }
 
-                    if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630
-                        && disafter < 630 * 630)
+                    if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630 && disafter < 630 * 630)
                     {
                         Q.Cast(Game.CursorPos);
                     }
@@ -245,7 +226,6 @@ namespace hi_im_gosu
                 {
                     Q.Cast(Game.CursorPos);
                 }
-                //Q.Cast(Game.CursorPos);
             }
         }
 
@@ -259,29 +239,19 @@ namespace hi_im_gosu
 
         public static bool threeSixty(AIHeroClient unit, Vector2 pos = new Vector2())
         {
-            if (unit.HasBuffOfType(BuffType.SpellImmunity) || unit.HasBuffOfType(BuffType.SpellShield) ||
-                ObjectManager.Player.LSIsDashing()) return false;
+            if (unit.HasBuffOfType(BuffType.SpellImmunity) || unit.HasBuffOfType(BuffType.SpellShield) || ObjectManager.Player.LSIsDashing())
+                return false;
             var prediction = E.GetPrediction(unit);
-            var predictionsList = pos.IsValid()
-                ? new List<Vector3> { pos.To3D() }
-                : new List<Vector3>
-                {
-                    unit.ServerPosition,
-                    unit.Position,
-                    prediction.CastPosition,
-                    prediction.UnitPosition
-                };
-
+            var predictionsList = pos.IsValid() ? new List<Vector3> { pos.To3D() } : new List<Vector3> { unit.ServerPosition, unit.Position, prediction.CastPosition, prediction.UnitPosition };
             var wallsFound = 0;
             Points = new List<Vector2>();
             foreach (var position in predictionsList)
             {
                 for (var i = 0; i < 425; i += (int)unit.BoundingRadius) // 420 = push distance
                 {
-                    var cPos = ObjectManager.Player.Position.Extend(position, ObjectManager.Player.Distance(position) + i).To3D();
+                    var cPos = ObjectManager.Player.Position.LSExtend(position, ObjectManager.Player.LSDistance(position) + i);
                     Points.Add(cPos.LSTo2D());
-                    if (NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Wall) ||
-                        NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Building))
+                    if (NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(cPos).HasFlag(CollisionFlags.Building))
                     {
                         wallsFound++;
                         break;
@@ -298,9 +268,7 @@ namespace hi_im_gosu
 
         public static void Game_OnGameUpdate(EventArgs args)
         {
-            if (getCheckBoxItem(menu, "useR") && R.IsReady()
-                && ObjectManager.Player.LSCountEnemiesInRange(1000) >= getSliderItem(menu, "enemys")
-                && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
+            if (getCheckBoxItem(menu, "useR") && R.IsReady() && ObjectManager.Player.LSCountEnemiesInRange(1000) >= getSliderItem(menu, "enemys") && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 R.Cast();
             }
@@ -320,7 +288,10 @@ namespace hi_im_gosu
             {
                 foreach (var enemy in EntityManager.Heroes.Enemies.Where(x => x.LSIsValidTarget(E.Range) && !x.HasBuffOfType(BuffType.SpellShield) && !x.HasBuffOfType(BuffType.SpellImmunity) && threeSixty(x)))
                 {
-                    E.Cast(enemy);
+                    if (Player.LSDistance(enemy) < 450)
+                    {
+                        E.Cast(enemy);
+                    }
                 }
             }
         }

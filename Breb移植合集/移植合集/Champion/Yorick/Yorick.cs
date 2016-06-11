@@ -47,7 +47,7 @@ namespace UnderratedAIO.Champions
         {
             if (Yorickghost)
             {
-                var clone = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(m => m.HasBuff("yorickunholysymbiosis"));
+                var clone = MinionManager.GetMinions(3000, MinionTypes.All, MinionTeam.Ally).FirstOrDefault(m => m.HasBuff("yorickunholysymbiosis"));
 
                 if (args == null || clone == null)
                 {
@@ -97,7 +97,10 @@ namespace UnderratedAIO.Champions
 
         private void moveGhost()
         {
-            var ghost = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(m => m.HasBuff("yorickunholysymbiosis"));
+            var ghost =
+                (Obj_AI_Minion)
+                    MinionManager.GetMinions(3000, MinionTypes.All, MinionTeam.Ally)
+                        .FirstOrDefault(m => m.HasBuff("yorickunholysymbiosis"));
             var Gtarget = TargetSelector.GetTarget(GhostRange, DamageType.Magical);
             switch (getBoxItem(menuM, "ghostTarget"))
             {
@@ -106,18 +109,15 @@ namespace UnderratedAIO.Champions
                     break;
                 case 1:
                     Gtarget =
-                        ObjectManager.Get<AIHeroClient>()
-                            .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) <= R.Range)
+                        HeroManager.Enemies.Where(i => player.Distance(i) <= R.Range)
                             .OrderBy(i => i.Health)
                             .FirstOrDefault();
                     break;
                 case 2:
                     Gtarget =
-                        ObjectManager.Get<AIHeroClient>()
-                            .Where(i => i.IsEnemy && !i.IsDead && player.LSDistance(i) <= R.Range)
-                            .OrderBy(i => player.LSDistance(i))
-                            .FirstOrDefault();
-                    break;
+                        HeroManager.Enemies.Where(i => player.Distance(i) <= R.Range)
+                            .OrderBy(i => player.Distance(i))
+                            .FirstOrDefault(); break;
                 default:
                     break;
             }
@@ -215,13 +215,11 @@ namespace UnderratedAIO.Champions
             }
 
             var ally =
-                ObjectManager.Get<AIHeroClient>()
-                    .Where(
-                        i =>
-                            !i.IsDead &&
-                            i.Health*100/i.MaxHealth <= getSliderItem(menuC, "atpercenty") &&
-                            i.IsAlly && player.LSDistance(i) < R.Range &&
-                            !getCheckBoxItem(menuM, "ulty" + i.BaseSkinName))
+                HeroManager.Allies.Where(
+                    i =>
+                        !i.IsDead &&
+                        (i.Health * 100 / i.MaxHealth) <= menuC["atpercenty"].Cast<Slider>().CurrentValue &&
+                        player.Distance(i) < R.Range && !menuM["ulty" + i.BaseSkinName].Cast<CheckBox>().CurrentValue)
                     .OrderByDescending(i => Environment.Hero.GetAdOverTime(player, i, 5))
                     .FirstOrDefault();
             if (!Yorickghost && ally != null && getCheckBoxItem(menuC, "user") && R.IsInRange(ally) && R.IsReady())
@@ -268,19 +266,10 @@ namespace UnderratedAIO.Champions
                 W.Cast(bestpos.Position, getCheckBoxItem(config, "packets"));
             }
             var target =
-                ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(i => i.LSDistance(player) < E.Range && !i.IsAlly && i.Health < E.GetDamage(i))
-                    .OrderByDescending(i => i.LSDistance(player))
+                MinionManager.GetMinions(E.Range, MinionTypes.All, MinionTeam.NotAlly)
+                    .Where(i => i.Health < E.GetDamage(i) || i.Health > 500f)
+                    .OrderByDescending(i => i.Distance(player))
                     .FirstOrDefault();
-            var targetJ =
-                ObjectManager.Get<Obj_AI_Minion>()
-                    .Where(i => i.LSDistance(player) < E.Range && !i.IsAlly && i.Health > 500f)
-                    .OrderByDescending(i => i.Health)
-                    .FirstOrDefault();
-            if (target == null)
-            {
-                target = targetJ;
-            }
             if (getCheckBoxItem(menuLC, "useeLC") && E.CanCast(target))
             {
                 E.CastOnUnit(target, getCheckBoxItem(config, "packets"));
@@ -288,11 +277,11 @@ namespace UnderratedAIO.Champions
             if (getCheckBoxItem(menuLC, "useqLC") && Q.IsReady())
             {
                 var targetQ =
-                    ObjectManager.Get<Obj_AI_Minion>()
+                    MinionManager.GetMinions(Q.Range, MinionTypes.All, MinionTeam.NotAlly)
                         .Where(
                             i =>
-                                i.LSDistance(player) < Q.Range && i.Health < player.LSGetSpellDamage(i, SpellSlot.Q) &&
-                                !(i.Health < player.GetAutoAttackDamage(i)))
+                                (i.Health < Damage.LSGetSpellDamage(player, i, SpellSlot.Q) &&
+                                 !(i.Health < player.GetAutoAttackDamage(i))))
                         .OrderByDescending(i => i.Health)
                         .FirstOrDefault();
                 if (targetQ == null)

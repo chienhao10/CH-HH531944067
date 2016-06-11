@@ -90,31 +90,20 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Spellbook_OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
         {
-            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
-            {
-                args.Process = false;
-                OktwCommon.blockMove = true;
-                OktwCommon.blockAttack = true;
-                OktwCommon.blockSpells = true;
-                Orbwalker.DisableAttacking = true;
-                Orbwalker.DisableMovement = true;
-                return;
-            }
-
             if (args.Slot == SpellSlot.R)
             {
                 var t = TargetSelector.GetTarget(R.Range - 20, DamageType.Magical);
 
-                if (E.IsReady() && t.IsValidTarget(E.Range) && Player.Mana > RMANA + EMANA)
+                if (E.IsReady() && Player.Mana > RMANA + EMANA)
                 {
                     E.CastOnUnit(t);
                     args.Process = false;
                     return;
                 }
 
-                if (W.IsReady() && t.IsValidTarget(W.Range) && Player.Mana > RMANA + WMANA)
+                if (W.IsReady() && Player.Mana > RMANA + WMANA)
                 {
-                    W.Cast(t);
+                    W.Cast(t.Position);
                     args.Process = false;
                     return;
                 }
@@ -153,16 +142,6 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void AntiGapcloser_OnEnemyGapcloser(ActiveGapcloser gapcloser)
         {
-            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
-            {
-                OktwCommon.blockMove = true;
-                OktwCommon.blockAttack = true;
-                OktwCommon.blockSpells = true;
-                Orbwalker.DisableAttacking = true;
-                Orbwalker.DisableMovement = true;
-                return;
-            }
-
             var t = gapcloser.Sender;
 
             if (Q.IsReady() && getCheckBoxItem(qMenu, "gapQ") && t.IsValidTarget(Q.Range))
@@ -178,16 +157,6 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Interrupter2_OnInterruptableTarget(AIHeroClient t, Interrupter2.InterruptableTargetEventArgs args)
         {
-            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
-            {
-                OktwCommon.blockMove = true;
-                OktwCommon.blockAttack = true;
-                OktwCommon.blockSpells = true;
-                Orbwalker.DisableAttacking = true;
-                Orbwalker.DisableMovement = true;
-                return;
-            }
-
             if (!getCheckBoxItem(qMenu, "intQ") || !Q.IsReady())
                 return;
 
@@ -199,7 +168,7 @@ namespace OneKeyToWin_AIO_Sebby.Champions
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if ((Player.IsChannelingImportantSpell() || Game.Time - Rtime < 0.5) && Game.Time - Rtime < 2.5)
+            if (Player.IsChannelingImportantSpell() || Game.Time - Rtime < 2.5 || Player.HasBuff("malzaharrsound"))
             {
                 OktwCommon.blockMove = true;
                 OktwCommon.blockAttack = true;

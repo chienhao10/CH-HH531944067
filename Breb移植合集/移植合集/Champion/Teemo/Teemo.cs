@@ -134,7 +134,7 @@ namespace SharpShooter.Plugins
                                         x.IsValidTarget(_r.Range) && !x.IsFacing(ObjectManager.Player) &&
                                         !x.HasBuff("bantamtraptarget") &&
                                         _r.GetPrediction(x).Hitchance >= _r.MinHitChance);
-                            if (target != null)
+                            if (target != null && target.LSDistance(ObjectManager.Player) <= _r.Range - 50)
                                 _r.Cast(target, false, true);
                         }
                 }

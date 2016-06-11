@@ -19,10 +19,44 @@
             Drawing.DrawText(worldToScreen[0] - message.Length * 5, worldToScreen[1] - 200, colour, message);
         }
 
+        public static bool HasUndyingBuff(this Obj_AI_Base target1)
+        {
+            var target = target1 as AIHeroClient;
+
+            if (target == null) return false;
+
+            // Tryndamere R
+            if (target.ChampionName == "Tryndamere"
+                && target.Buffs.Any(
+                    b => b.Caster.NetworkId == target.NetworkId && b.IsValid && b.DisplayName == "Undying Rage"))
+            {
+                return true;
+            }
+
+            // Zilean R
+            if (target.Buffs.Any(b => b.IsValid && b.DisplayName == "Chrono Shift"))
+            {
+                return true;
+            }
+
+            // Kayle R
+            if (target.Buffs.Any(b => b.IsValid && b.DisplayName == "JudicatorIntervention"))
+            {
+                return true;
+            }
+
+            if (target.Buffs.Any(b => b.IsValid && b.Name == "kindredrnodeathbuff"))
+            {
+                return true;
+            }
+
+            // TODO poppy
+            return false;
+        }
+
         public static float GetPoisonDamage(Obj_AI_Base target)
         {
-            if (target == null || !target.HasBuff("twitchdeadlyvenom") || target.IsInvulnerable
-                || target.HasBuff("KindredRNoDeathBuff") || target.HasBuffOfType(BuffType.SpellShield))
+            if (target == null || !target.HasBuff("twitchdeadlyvenom") || target.IsInvulnerable || target.HasUndyingBuff() || target.HasBuff("KindredRNoDeathBuff") || target.HasBuffOfType(BuffType.SpellShield))
             {
                 return 0;
             }

@@ -41,10 +41,7 @@ namespace ElRengarRevamped
                          && Player.LSCountEnemiesInRange(Player.AttackRange
                             + Player.BoundingRadius + 100) != 0)
                     {
-                        if (Orbwalker.CanMove)
-                        {
-                            spells[Spells.Q].Cast();
-                        }
+                        spells[Spells.Q].Cast();
                     }
 
                     if (!RengarR)
@@ -86,10 +83,7 @@ namespace ElRengarRevamped
                             {
                                 if (spells[Spells.E].IsReady() && !HasPassive)
                                 {
-                                    if (Orbwalker.CanMove)
-                                    {
-                                        CastE(target);
-                                    }
+                                    CastE(target);
 
                                     if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Switch.E") && Utils.GameTimeTickCount - LastSwitch >= 350)
                                     {
@@ -110,7 +104,7 @@ namespace ElRengarRevamped
                             }
                             break;
                         case 1:
-                            if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.W") && spells[Spells.W].IsReady())
+                            if (MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.W") && spells[Spells.W].IsReady() && target.LSIsValidTarget(spells[Spells.W].Range))
                             {
                                 CastW();
                             }
@@ -118,18 +112,16 @@ namespace ElRengarRevamped
                         case 2:
                             if (spells[Spells.Q].IsReady() && MenuInit.getCheckBoxItem(MenuInit.comboMenu, "Combo.Use.Q") && Player.LSCountEnemiesInRange(Player.AttackRange + Player.BoundingRadius + 100) != 0)
                             {
-                                if (Orbwalker.CanMove)
-                                {
-                                    spells[Spells.Q].Cast();
-                                }
+                                spells[Spells.Q].Cast();
                             }
-                            break;
+                           break;
                     }
                 }
 
                 #region Summoner spells
 
-                if (Youmuu.IsReady() && target.LSIsValidTarget(spells[Spells.Q].Range))
+
+                if (Youmuu.IsReady() && Youmuu.IsOwned() && target.IsValidTarget(spells[Spells.Q].Range))
                 {
                     Youmuu.Cast();
                 }

@@ -26,6 +26,7 @@ namespace KurisuRiven
         private static int lastaa;
         private static int lasthd;
         private static int lastwd;
+        private static int LastTick;
 
         private static bool canq;
         private static bool canw;
@@ -152,6 +153,8 @@ namespace KurisuRiven
 
         #endregion
 
+        #region Riven: ctor
+
         public KurisuRiven()
         {
             if (player.ChampionName != "Riven")
@@ -182,6 +185,7 @@ namespace KurisuRiven
             Game.OnWndProc += Game_OnWndProc;
             Chat.Print("<b><font color=\"#66FF33\">Kurisu's Riven</font></b> - Loaded!");
         }
+        #endregion
 
         private static AIHeroClient _sh;
         static void Game_OnWndProc(WndEventArgs args)
@@ -471,6 +475,9 @@ namespace KurisuRiven
 
             isteamfightkappa = player.CountAlliesInRange(1500) > 1 && player.LSCountEnemiesInRange(1350) > 2 ||
                                player.LSCountEnemiesInRange(1200) > 2;
+
+            ChangeR1();
+            ChangeR2();
         }
 
         #endregion
@@ -491,6 +498,9 @@ namespace KurisuRiven
             drawMenu.Add("drawburst", new CheckBox("Draw Burst Range"));
             drawMenu.Add("drawf", new CheckBox("Draw Target"));
             drawMenu.Add("drawdmg", new CheckBox("Draw Combo Damage Fill"));
+            drawMenu.Add("drawr1mode", new CheckBox("Draw R1 Mode"));
+            drawMenu.Add("drawr2mode", new CheckBox("Draw R2 Mode"));
+
 
             qMenu = rivenMenu.AddSubMenu("Q Options");
             qMenu.Add("wq3", new CheckBox("Ward + Q3 (Flee)"));
@@ -525,6 +535,7 @@ namespace KurisuRiven
             r1Menu.Add("useignote", new CheckBox("Combo with Ignite"));
             r1Menu.Add("user", new KeyBind("Use R1 in Combo", false, KeyBind.BindTypes.PressToggle, "H".ToCharArray()[0]));
             r1Menu.Add("ultwhen", new ComboBox("Use R1 when", 1, "Normal Kill", "Hard Kill", "Always"));
+            r1Menu.Add("switchr1", new KeyBind("Switch R1 Priority", false, KeyBind.BindTypes.HoldActive, 'L'));
             r1Menu.Add("overk", new Slider("Dont R1 if target HP % <=", 25, 1, 99));
             r1Menu.Add("userq", new Slider("Use only if Q Count <=", 2, 1, 3));
             r1Menu.Add("multib", new ComboBox("Burst When", 1, "Damage Check", "Always"));
@@ -546,6 +557,7 @@ namespace KurisuRiven
             r2Menu.Add("saver", new CheckBox("Save R2 (When in AA Range)", false));
             r2Menu.Add("overaa", new Slider("Dont R2 if target will die in AA", 2, 1, 6));
             r2Menu.Add("wsmode", new ComboBox("Use R2 when", 1, "Kill Only", "Max Damage"));
+            r2Menu.Add("switchr2", new KeyBind("Switch R2 Priority", false, KeyBind.BindTypes.HoldActive, 'K'));
             r2Menu.Add("keepr", new CheckBox("Use R2 Before Expiry"));
 
 
@@ -607,6 +619,10 @@ namespace KurisuRiven
 
         private static void doFlash()
         {
+            if (riventarget() == null)
+            {
+                return;
+            }
             if (riventarget() != null && (canburst() || shy()))
             {
                 if (!flash.IsReady() || !Getcheckboxvalue(r1Menu, "flashb"))
@@ -644,8 +660,7 @@ namespace KurisuRiven
 
         private static void SomeDash(AIHeroClient target)
         {
-            if (!Getkeybindvalue(keybindsMenu, "shycombo") ||
-                !target.IsValid<AIHeroClient>() || uo)
+            if (!Getkeybindvalue(keybindsMenu, "shycombo") || !target.IsValid<AIHeroClient>() || uo)
                 return;
 
             if (riventarget() == null || !r.IsReady())
@@ -960,25 +975,27 @@ namespace KurisuRiven
                 #region Killsteal
                 foreach (var t in ObjectManager.Get<AIHeroClient>().Where(h => h.IsValidTarget(r.Range)))
                 {
-                    if (Getcheckboxvalue(r2Menu, "saver"))
+                    if (t != null)
                     {
-                        if (player.GetAutoAttackDamage(t, true) * Getslidervalue(r2Menu, "overaa") >= t.Health &&
-                            player.HealthPercent > 65)
+                        if (Getcheckboxvalue(r2Menu, "saver"))
                         {
-                            if (Orbwalking.InAutoAttackRange(t) && player.CountEnemiesInRange(r.Range) > 1)
+                            if (player.GetAutoAttackDamage(t, true) * Getslidervalue(r2Menu, "overaa") >= t.Health &&
+                                player.HealthPercent > 65)
                             {
-                                continue;
+                                if (Orbwalking.InAutoAttackRange(t) && player.CountEnemiesInRange(r.Range) > 1)
+                                {
+                                    continue;
+                                }
                             }
                         }
-                    }
 
-                    if (Rdmg(t) >= t.Health)
-                    {
-                        var p = r.GetPrediction(t, true, -1f, new[] { CollisionableObjects.YasuoWall });
-                        if (p.Hitchance == (HitChance)getBoxItem(r2Menu, "rhitc") + 4 && canws &&
-                            !t.HasBuff("kindredrnodeathbuff"))
+                        if (Rdmg(t) >= t.Health)
                         {
-                            r.Cast(p.CastPosition);
+                            var p = r.GetPrediction(t, true, -1f, new[] { CollisionableObjects.YasuoWall });
+                            if (p.Hitchance == (HitChance)getBoxItem(r2Menu, "rhitc") + 4 && canws && !t.HasBuff("kindredrnodeathbuff"))
+                            {
+                                r.Cast(p.CastPosition);
+                            }
                         }
                     }
                 }
@@ -1002,68 +1019,74 @@ namespace KurisuRiven
 
                 if (getBoxItem(r2Menu, "wsmode") == 1)
                 {
-                    if (riventarget().LSIsValidTarget(r.Range) && !riventarget().IsZombie)
+                    if (riventarget() != null)
                     {
-                        if (Rdmg(riventarget()) / riventarget().MaxHealth * 100 >= 50)
+                        if (riventarget().LSIsValidTarget(r.Range) && !riventarget().IsZombie)
                         {
-                            var p = r.GetPrediction(riventarget(), true, -1f, new[] { CollisionableObjects.YasuoWall });
-                            if (p.Hitchance >= HitChance.Medium && canws && !riventarget().HasBuff("kindredrnodeathbuff"))
+                            if (Rdmg(riventarget()) / riventarget().MaxHealth * 100 >= 50)
                             {
-                                if (!isteamfightkappa || Getcheckboxvalue(r2Menu, "r" + riventarget().ChampionName) ||
-                                     isteamfightkappa && !rrektAny())
+                                var p = r.GetPrediction(riventarget(), true, -1f, new[] { CollisionableObjects.YasuoWall });
+                                if (p.Hitchance >= HitChance.Medium && canws && !riventarget().HasBuff("kindredrnodeathbuff"))
                                 {
-                                    r.Cast(p.CastPosition);
+                                    if (!isteamfightkappa || Getcheckboxvalue(r2Menu, "r" + riventarget().ChampionName) ||
+                                         isteamfightkappa && !rrektAny())
+                                    {
+                                        r.Cast(p.CastPosition);
+                                    }
                                 }
                             }
-                        }
 
-                        if (q.IsReady() && cc <= 2)
-                        {
-                            var aadmg = player.LSGetAutoAttackDamage(riventarget(), true) * 2;
-                            var currentrdmg = Rdmg(riventarget());
-                            var qdmg = Qdmg(riventarget()) * 2;
-
-                            var damage = aadmg + currentrdmg + qdmg;
-
-                            if (riventarget().Health <= xtra((float)damage))
+                            if (q.IsReady() && cc <= 2)
                             {
-                                if (riventarget().LSDistance(player.ServerPosition) <= truerange + q.Range)
+                                var aadmg = player.LSGetAutoAttackDamage(riventarget(), true) * 2;
+                                var currentrdmg = Rdmg(riventarget());
+                                var qdmg = Qdmg(riventarget()) * 2;
+
+                                var damage = aadmg + currentrdmg + qdmg;
+
+                                if (riventarget().Health <= xtra((float)damage))
                                 {
-                                    var p = r.GetPrediction(riventarget(), true, -1f, new[] { CollisionableObjects.YasuoWall });
-                                    if (p.Hitchance == HitChance.High && canws && !riventarget().HasBuff("kindredrnodeathbuff"))
+                                    if (riventarget().LSDistance(player.ServerPosition) <= truerange + q.Range)
                                     {
-                                        if (!isteamfightkappa || Getcheckboxvalue(r2Menu, "r" + riventarget().ChampionName) ||
-                                             isteamfightkappa && !rrektAny())
+                                        var p = r.GetPrediction(riventarget(), true, -1f, new[] { CollisionableObjects.YasuoWall });
+                                        if (p.Hitchance == HitChance.High && canws && !riventarget().HasBuff("kindredrnodeathbuff"))
                                         {
-                                            r.Cast(p.CastPosition);
+                                            if (!isteamfightkappa || Getcheckboxvalue(r2Menu, "r" + riventarget().ChampionName) ||
+                                                 isteamfightkappa && !rrektAny())
+                                            {
+                                                r.Cast(p.CastPosition);
+                                            }
                                         }
                                     }
                                 }
                             }
+                            #endregion
                         }
-                        #endregion
                     }
                 }
 
                 foreach (var t in ObjectManager.Get<AIHeroClient>().Where(h => h.LSIsValidTarget(r.Range)))
                 {
-                    if (Getcheckboxvalue(r2Menu, "saver"))
+                    if (t != null)
                     {
-                        if (player.LSGetAutoAttackDamage(t, true) * Getslidervalue(r2Menu, "overaa") >= t.Health && player.HealthPercent > 65)
+                        if (Getcheckboxvalue(r2Menu, "saver"))
                         {
-                            if (Orbwalking.InAutoAttackRange(t) && player.LSCountEnemiesInRange(r.Range) > 1)
+                            if (player.LSGetAutoAttackDamage(t, true) * Getslidervalue(r2Menu, "overaa") >= t.Health && player.HealthPercent > 65)
                             {
-                                continue;
+                                if (Orbwalking.InAutoAttackRange(t) && player.LSCountEnemiesInRange(r.Range) > 1)
+                                {
+                                    continue;
+                                }
                             }
                         }
-                    }
 
-                    if (Rdmg(t) >= t.Health)
-                    {
-                        var p = r.GetPrediction(t, true, -1f, new[] { CollisionableObjects.YasuoWall });
-                        if (p.Hitchance == (HitChance)getBoxItem(r2Menu, "rhitc") + 4 && canws && !t.HasBuff("kindredrnodeathbuff"))
+                        if (Rdmg(t) >= t.Health)
                         {
-                            r.Cast(p.CastPosition);
+                            var p = r.GetPrediction(t, true, -1f, new[] { CollisionableObjects.YasuoWall });
+                            if (p.Hitchance == (HitChance)getBoxItem(r2Menu, "rhitc") + 4 && canws && !t.HasBuff("kindredrnodeathbuff"))
+                            {
+                                r.Cast(p.CastPosition);
+                            }
                         }
                     }
                 }
@@ -1330,7 +1353,7 @@ namespace KurisuRiven
 
             foreach (var target in heroes)
             {
-                if (cc > Getslidervalue(r1Menu, "userq"))
+                if (cc > Getslidervalue(r1Menu, "userq") || target == null)
                 {
                     return;
                 }
@@ -1562,6 +1585,55 @@ namespace KurisuRiven
                     canq = false;
                 }
             }
+        }
+
+        private static void ChangeR1()
+        {
+            var changetime = Environment.TickCount - LastTick;
+
+
+            if (Getkeybindvalue(r1Menu, "switchr1"))
+            {
+                if (getBoxItem(r1Menu, "ultwhen") == 0 && LastTick + 400 < Environment.TickCount)
+                {
+                    LastTick = Environment.TickCount;
+                    r1Menu["ultwhen"].Cast<ComboBox>().CurrentValue = 1;
+                }
+
+                if (getBoxItem(r1Menu, "ultwhen") == 1 && LastTick + 400 < Environment.TickCount)
+                {
+                    LastTick = Environment.TickCount;
+                    r1Menu["ultwhen"].Cast<ComboBox>().CurrentValue = 2;
+                }
+                if (getBoxItem(r1Menu, "ultwhen") == 2 && LastTick + 400 < Environment.TickCount)
+                {
+                    LastTick = Environment.TickCount;
+                    r1Menu["ultwhen"].Cast<ComboBox>().CurrentValue = 0;
+                }
+            }
+
+        }
+
+        private static void ChangeR2()
+        {
+            var changetime = Environment.TickCount - LastTick;
+
+
+            if (Getkeybindvalue(r2Menu, "switchr2"))
+            {
+                if (getBoxItem(r2Menu, "wsmode") == 0 && LastTick + 400 < Environment.TickCount)
+                {
+                    LastTick = Environment.TickCount;
+                    r2Menu["wsmode"].Cast<ComboBox>().CurrentValue = 1;
+                }
+
+                if (getBoxItem(r2Menu, "wsmode") == 1 && LastTick + 400 < Environment.TickCount)
+                {
+                    LastTick = Environment.TickCount;
+                    r2Menu["wsmode"].Cast<ComboBox>().CurrentValue = 0;
+                }
+            }
+
         }
 
         private static void Interrupter()
@@ -1865,6 +1937,8 @@ namespace KurisuRiven
         {
             Drawing.OnDraw += args =>
             {
+                var R1 = Drawing.WorldToScreen(ObjectManager.Player.Position);
+                var R2 = Drawing.WorldToScreen(ObjectManager.Player.Position);
                 if (!player.IsDead)
                 {
                     if (riventarget().LSIsValidTarget())
@@ -1915,6 +1989,17 @@ namespace KurisuRiven
                         Render.Circle.DrawCircle(riventarget().Position, e.Range + w.Range - 25 + xrange,
                             System.Drawing.Color.Green, Getslidervalue(drawMenu, "linewidth"));
                     }
+                    if (Getcheckboxvalue(drawMenu, "drawr1mode"))
+                    {
+                        if (getBoxItem(r1Menu, "ultwhen") == 0) Drawing.DrawText(R1[0] - 45, R1[1] + 20, Color.White, "R1:Normal Kill");
+                        else if (getBoxItem(r1Menu, "ultwhen") == 1) Drawing.DrawText(R1[0] - 45, R1[1] + 20, Color.White, "R1:Hard Kill");
+                        else if (getBoxItem(r1Menu, "ultwhen") == 2) Drawing.DrawText(R1[0] - 45, R1[1] + 20, Color.White, "R1:Always");
+                    }
+                    if (Getcheckboxvalue(drawMenu, "drawr2mode"))
+                    {
+                        if (getBoxItem(r2Menu, "wsmode") == 0) Drawing.DrawText(R2[0] - 45, R2[1] + 50, Color.White, "R2:Kill Only");
+                        else if (getBoxItem(r2Menu, "wsmode") == 1) Drawing.DrawText(R2[0] - 45, R2[1] + 50, Color.White, "R2:Max Damage");
+                    }
                 }
             };
 
@@ -1940,6 +2025,5 @@ namespace KurisuRiven
         }
 
         #endregion
-
     }
 }
