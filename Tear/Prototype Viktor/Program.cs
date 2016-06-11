@@ -9,6 +9,7 @@ using EloBuddy.SDK.Events;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
 using EloBuddy.SDK.Rendering;
+using Prototype_Viktor;
 
 namespace Protype_Viktor
 {
@@ -18,9 +19,10 @@ namespace Protype_Viktor
         public static AIHeroClient _Player { get { return ObjectManager.Player; } }
         private static List<string> DangerousEnemies = new List<string>() { "Amumu", "Lissandra", "Thresh", "Blitzcrank", "MissFortune" };
         private static Spell.Targeted Q, Ignite;
+        private static SpellSlot IgniteSlot;
         private static bool bIgnite;
         private static Spell.Skillshot W, E, R;
-        private static int EMaxRange = 1225;
+        public static int EMaxRange = 1225;
         private static int _tick = 0;
         private static Vector3 startPos;
         private static Menu ViktorMenu;
@@ -181,13 +183,14 @@ namespace Protype_Viktor
         #region Events
         private static void Loading_OnLoadingComplete(EventArgs args)
         {
-            if (Player.Instance.ChampionName != "Viktor")
-                return;
-            bIgnite = Player.Spells.FirstOrDefault(o => o.SData.Name.Contains("summonerdot")) != null;
-            if (bIgnite)
+            if (_Player.ChampionName != "Viktor") return;
+
+            IgniteSlot = _Player.GetSpellSlotFromName("summonerdot");
+            if (IgniteSlot != SpellSlot.Unknown)
             {
-                Ignite = new Spell.Targeted(_Player.GetSpellSlotFromName("summonerdot"), 600);
-                Console.WriteLine("Ignite Found! " + Ignite.Slot);
+                Console.WriteLine("Ignite Spell found on slot: " + IgniteSlot);
+                bIgnite = true;
+                Ignite = new Spell.Targeted(IgniteSlot, 600);
             }
 
             LoadSkills();
@@ -248,9 +251,15 @@ namespace Protype_Viktor
             KillSecure();
 
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo)) Combo();
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) LaneClear();
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LaneClear)) LaneClearBeta();
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Harass)) Harass();
-            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear)) JungleClear();
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
+            {
+                JungleClearEBeta();
+                JungleClearQBeta(); 
+            }
+            if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.LastHit)) QLastHitBeta();
+            
 
 
         }
@@ -259,7 +268,7 @@ namespace Protype_Viktor
         #region SkillsInit
         private static void LoadSkills()
         {
-            Q = new Spell.Targeted(SpellSlot.Q, 600);
+            Q = new Spell.Targeted(SpellSlot.Q, 670);
             W = new Spell.Skillshot(SpellSlot.W, 700, SkillShotType.Circular, 500, int.MaxValue, 300);
             W.AllowedCollisionCount = int.MaxValue;
             E = new Spell.Skillshot(SpellSlot.E, 525, SkillShotType.Linear, 250, int.MaxValue, 100);
@@ -376,7 +385,6 @@ namespace Protype_Viktor
             ViktorMiscMenu.AddLabel("(如果使用躲避脚本，请取消这个选项!)");
             ViktorMiscMenu.Add("AdvancedGapClose", new CheckBox("启用进阶放突进 (W)", false));
             ViktorMiscMenu.AddLabel("可用人物");
-
         }
         #endregion
 
@@ -384,7 +392,7 @@ namespace Protype_Viktor
         {
             if (W.IsReady() && _ViktorW) CastW();
             if (Q.IsReady() && _ViktorQ) CastQ();
-            if (E.IsReady() && _ViktorE) Core.DelayAction(CastE, 120);
+            if (E.IsReady() && _ViktorE) Core.DelayAction(CastE, 80);
             if (R.IsReady() && _ViktorR) CastR();
             if (bIgnite && _UseIgnite) UseIgnite();
 
@@ -421,6 +429,97 @@ namespace Protype_Viktor
                 }
             }
         }
+
+        private static void LaneClearBeta()
+        {
+            if (_LaneClearMana >= _Player.ManaPercent) return;
+
+            var minions = EntityManager.MinionsAndMonsters.Get(EntityManager.MinionsAndMonsters.EntityType.Minion, EntityManager.UnitTeam.Enemy, _Player.Position, EMaxRange, false);
+            foreach (var minion in minions)
+            {
+                if (E.IsReady() && _LaneClearE)
+                {
+                    var farmLoc = Laser.GetBestLaserFarmLocation(false);
+                    if (farmLoc.MinionsHit >= _MinMinions)
+                    {
+                        Player.CastSpell(SpellSlot.E,farmLoc.Position2.To3D(),farmLoc.Position1.To3D());
+                    }
+                }
+                if (Q.IsReady() && _LaneClearQ)
+                {
+                    if (minion.BaseSkinName.ToLower().Contains("siege") && Q.IsInRange(minion))
+                    {
+                        Q.Cast(minion);
+                        Orbwalker.ForcedTarget = minion;
+                    }
+                    else
+                    {
+                        var mins = minions.OrderByDescending(x => x.HealthPercent);
+                        Q.Cast(mins.FirstOrDefault());
+                    }
+                }
+            }
+        }
+
+
+        private static void JungleClearEBeta()
+        {
+            if (!E.IsReady()) return;
+         
+            var startPos = new Vector2(0, 0);
+            var endPos = new Vector2(0, 0);
+            foreach (
+                var minion in
+                    EntityManager.MinionsAndMonsters.GetJungleMonsters(Program._Player.Position, 525)
+                        .Where(x => x.Distance(Program._Player) <= 1200))
+            {
+                var farmLoc = Laser.LaserLocation(minion.Position.To2D(),
+                    (from mnion in
+                        EntityManager.MinionsAndMonsters.GetJungleMonsters(minion.Position,
+                            525)
+                     select mnion.Position.To2D()).ToList(), E.Width, 525);
+                startPos = minion.Position.To2D();
+                endPos = farmLoc;
+            }
+            if (startPos.Distance(_Player.ServerPosition) <= 525)
+            {
+                Player.CastSpell(SpellSlot.E, endPos.To3D(), startPos.To3D());
+            }
+        }
+
+        private static void JungleClearQBeta()
+        {
+            if (!Q.IsReady()) return;
+            foreach (
+                var minion in
+                    EntityManager.MinionsAndMonsters.GetJungleMonsters(Program._Player.Position, 525)
+                        .Where(x => x.Distance(Program._Player) <= 670).OrderByDescending(x => x.HealthPercent))
+            {
+                Core.DelayAction(() => Q.Cast(minion), 35);
+            }
+
+        }
+
+        public static void QLastHitBeta()
+        {
+            if (!Q.IsReady()) return;
+
+            var min = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy,
+                Program._Player.Position,Q.Range)
+                .Where(x => x.Health <= Program._Player.GetAutoAttackDamage(x)).ToList();
+            if (min.Count() > 1)
+            {
+                var castedMinion = min.OrderBy(x => x.HealthPercent).FirstOrDefault();
+                var secMinion = min.OrderBy(x => x.HealthPercent).FirstOrDefault();
+                Q.Cast(castedMinion);
+                Orbwalker.ForcedTarget = secMinion;
+            }
+        }
+
+
+
+
+
 
         private static void JungleClear()
         {
@@ -546,12 +645,12 @@ namespace Protype_Viktor
                 var prediction = E.GetPrediction(target);
                 var predictDmg = PredictDamage(target);
                 //Chat.Print("Target Health: " + target.Health + "Predict Dmg: " + predictDmg);
-                if (target.HealthPercent > 5 && _CheckR && prediction.HitChance >= HitChance.High)
+                if (target.HealthPercent > 5 && _CheckR)
                 {
-                    if (target.Health <= predictDmg)
+                    if (target.Health <= predictDmg * 1.15)
                         R.Cast(target);
                 }
-                else if (target.HealthPercent > 5 && !_CheckR && prediction.HitChance >= HitChance.High)
+                else if (target.HealthPercent > 5 && !_CheckR)
                 {
                     R.Cast(target);
                 }

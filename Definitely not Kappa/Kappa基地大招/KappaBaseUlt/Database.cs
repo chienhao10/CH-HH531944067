@@ -81,7 +81,7 @@ namespace KappaBaseUlt
                                                                 new Damage
                                                                     {
                                                                         Champion = Champion.Jinx, DamageType = DamageType.Physical,
-                                                                        Floats = new float[] { 25, 35, 45 }, Float = 0.1f
+                                                                        Floats = new float[] { 200, 300, 400 }, Float = 0.1f
                                                                     },
                                                                 new Damage
                                                                     {
