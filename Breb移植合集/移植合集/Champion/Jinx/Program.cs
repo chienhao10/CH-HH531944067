@@ -568,7 +568,7 @@ namespace OneKeyToWin_AIO_Sebby
                 if (FishBoneActive)
                     Utility.DrawCircle(Player.Position, 590f + Player.BoundingRadius, Color.DeepPink, 1, 1);
                 else
-                    Utility.DrawCircle(Player.Position, bonusRange() - 40, Color.DeepPink, 1, 1);
+                    Utility.DrawCircle(Player.Position, bonusRange() - 29, Color.DeepPink, 1, 1);
             }
             if (getCheckBoxItem(drawMenu, "wRange"))
             {

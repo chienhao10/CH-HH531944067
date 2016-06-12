@@ -132,17 +132,17 @@
 
             if (Spells[ElVi.Spells.Q].IsReady())
             {
-                damage += Player.GetSpellDamage(enemy, SpellSlot.Q);
+                damage += Player.LSGetSpellDamage(enemy, SpellSlot.Q);
             }
             if (Spells[ElVi.Spells.E].IsReady())
             {
-                damage += Player.GetSpellDamage(enemy, SpellSlot.E) * Spells[ElVi.Spells.E].Instance.Ammo
+                damage += Player.LSGetSpellDamage(enemy, SpellSlot.E) * Spells[ElVi.Spells.E].Instance.Ammo
                           + (float)Player.GetAutoAttackDamage(enemy);
             }
 
             if (Spells[ElVi.Spells.R].IsReady())
             {
-                damage += Player.GetSpellDamage(enemy, SpellSlot.R);
+                damage += Player.LSGetSpellDamage(enemy, SpellSlot.R);
             }
 
             return (float)damage;
@@ -200,7 +200,7 @@
         {
             if (getCheckBoxItem(ElViMenu.miscMenu, "ElVi.misc.AntiGapCloser"))
             {
-                if (Spells[ElVi.Spells.Q].IsReady() && gapcloser.Sender.Distance(Player) < Spells[ElVi.Spells.Q].Range)
+                if (Spells[ElVi.Spells.Q].IsReady() && gapcloser.Sender.LSDistance(Player) < Spells[ElVi.Spells.Q].Range)
                 {
                     if (!Spells[ElVi.Spells.Q].IsCharging)
                     {
@@ -219,7 +219,7 @@
             var target = TargetSelector.GetTarget(
                 Spells[ElVi.Spells.Q].ChargedMaxRange,
                 DamageType.Physical);
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
@@ -260,7 +260,7 @@
             }
 
             if (args.DangerLevel != Interrupter2.DangerLevel.High
-                || sender.Distance(Player) > Spells[ElVi.Spells.Q].Range)
+                || sender.LSDistance(Player) > Spells[ElVi.Spells.Q].Range)
             {
                 return;
             }
@@ -288,7 +288,7 @@
             var target = TargetSelector.GetTarget(
                 Spells[ElVi.Spells.Q].ChargedMaxRange,
                 DamageType.Physical);
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
@@ -312,9 +312,9 @@
                             else if (Spells[ElVi.Spells.Q].GetDamage(target) > target.Health)
                             {
                                 var distance =
-                                    Player.ServerPosition.Distance(
+                                    Player.ServerPosition.LSDistance(
                                         prediction.UnitPosition
-                                        * (prediction.UnitPosition - Player.ServerPosition).Normalized(),
+                                        * (prediction.UnitPosition - Player.ServerPosition).LSNormalized(),
                                         true);
                                 if (distance < Spells[ElVi.Spells.Q].RangeSqr)
                                 {
@@ -336,7 +336,7 @@
             CastItems(target);
 
             if (getCheckBoxItem(ElViMenu.cMenu, "ElVi.Combo.R") && Spells[ElVi.Spells.R].IsReady()
-                && target.IsValidTarget(Spells[ElVi.Spells.R].Range))
+                && target.LSIsValidTarget(Spells[ElVi.Spells.R].Range))
             {
                 var enemy =
                     HeroManager.Enemies.Where(
@@ -344,7 +344,7 @@
                         .OrderByDescending(x => x.MaxHealth)
                         .FirstOrDefault();
 
-                if (enemy.IsValidTarget() == false)
+                if (enemy.LSIsValidTarget() == false)
                 {
                     return;
                 }
@@ -352,7 +352,7 @@
                 Spells[ElVi.Spells.R].CastOnUnit(enemy);
             }
 
-            if (Player.Distance(target) <= 600 && IgniteDamage(target) >= target.Health
+            if (Player.LSDistance(target) <= 600 && IgniteDamage(target) >= target.Health
                 && getCheckBoxItem(ElViMenu.cMenu, "ElVi.Combo.I"))
             {
                 Player.Spellbook.CastSpell(ignite, target);
@@ -364,7 +364,7 @@
             var target = TargetSelector.GetTarget(
                 Spells[ElVi.Spells.Q].ChargedMaxRange,
                 DamageType.Physical);
-            if (!target.IsValidTarget())
+            if (!target.LSIsValidTarget())
             {
                 return;
             }
@@ -418,7 +418,7 @@
                 }
                 else
                 {
-                    if (minions.Count == minions.Count(x => Player.Distance(x) < Spells[ElVi.Spells.Q].Range))
+                    if (minions.Count == minions.Count(x => Player.LSDistance(x) < Spells[ElVi.Spells.Q].Range))
                     {
                         Spells[ElVi.Spells.Q].Cast(minions[0]);
                     }
@@ -428,7 +428,7 @@
             if (useE && Spells[ElVi.Spells.E].IsReady())
             {
                 var bestFarmPos = Spells[ElVi.Spells.E].GetLineFarmLocation(minions);
-                if (minions.Count == minions.Count(x => Player.Distance(x) < Spells[ElVi.Spells.E].Range)
+                if (minions.Count == minions.Count(x => Player.LSDistance(x) < Spells[ElVi.Spells.E].Range)
                     && bestFarmPos.Position.IsValid() && bestFarmPos.MinionsHit > 1)
                 {
                     Spells[ElVi.Spells.E].Cast();
@@ -462,7 +462,7 @@
                 else
                 {
                     var bestFarmPos = Spells[ElVi.Spells.Q].GetLineFarmLocation(minions);
-                    if (minions.Count == minions.Count(x => Player.Distance(x) < Spells[ElVi.Spells.Q].Range)
+                    if (minions.Count == minions.Count(x => Player.LSDistance(x) < Spells[ElVi.Spells.Q].Range)
                         && bestFarmPos.Position.IsValid() && bestFarmPos.MinionsHit > 2)
                     {
                         Spells[ElVi.Spells.Q].Cast(bestFarmPos.Position);
@@ -472,7 +472,7 @@
 
             if (useE && Spells[ElVi.Spells.E].IsReady())
             {
-                if (minions.Count == minions.Count(x => Player.Distance(x) < Spells[ElVi.Spells.E].Range))
+                if (minions.Count == minions.Count(x => Player.LSDistance(x) < Spells[ElVi.Spells.E].Range))
                 {
                     Spells[ElVi.Spells.E].Cast();
                 }
@@ -519,8 +519,6 @@
             {
                 Spells[ElVi.Spells.E].Cast();
             }
-
-            Orbwalker.ResetAutoAttack();
         }
 
         #endregion
