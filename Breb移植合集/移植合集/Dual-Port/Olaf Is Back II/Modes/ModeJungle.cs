@@ -30,7 +30,7 @@ namespace OlafxQx.Modes
             {
                 InitSimpleMenu();
                 MenuLocal.Add("Jungle.Youmuu.BaronDragon", new ComboBox("Items: Use for Baron/Dragon", 3, "Off", "Dragon", "Baron", "Both"));
-                MenuLocal.Add("Jungle.Youmuu.BlueRed", new ComboBox("Items: Use for Blue/Red", 3, "Off", "Dragon", "Baron", "Both"));
+                MenuLocal.Add("Jungle.Youmuu.BlueRed", new ComboBox("Items: Use for Blue/Red", 3, "Off", "Blue", "Red", "Both"));
                 MenuLocal.Add("Jungle.Item", new ComboBox("Items: Other (Like Tiamat/Hydra)", 1, "Off", "On"));
             }
 

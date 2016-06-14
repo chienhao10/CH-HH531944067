@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -30,9 +30,9 @@ namespace ezEvade.SpecialSpells
         {
             if (spellData.spellName == "ZiggsQ")
             {
-                var startPos = hero.ServerPosition.To2D();
-                var endPos = args.End.To2D();
-                var dir = (endPos - startPos).Normalized();
+                var startPos = hero.ServerPosition.LSTo2D();
+                var endPos = args.End.LSTo2D();
+                var dir = (endPos - startPos).LSNormalized();
 
                 if (endPos.LSDistance(startPos) > 850)
                 {

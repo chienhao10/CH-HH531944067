@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -22,7 +22,7 @@ namespace ezEvade.SpecialSpells
         {
             if (spellData.spellName == "JarvanIVDragonStrike")
             {
-                AIHeroClient hero = EntityManager.Heroes.Enemies.FirstOrDefault(h => h.ChampionName == "JarvanIV");
+                AIHeroClient hero = HeroManager.Enemies.FirstOrDefault(h => h.ChampionName == "JarvanIV");
                 if (hero == null)
                 {
                     return;
@@ -78,11 +78,11 @@ namespace ezEvade.SpecialSpells
                                 continue;
                             }
 
-                            var objPosition = info.usePosition ? info.position.To2D() : info.obj.Position.To2D();
+                            var objPosition = info.usePosition ? info.position.LSTo2D() : info.obj.Position.LSTo2D();
 
-                            if (args.End.To2D().LSDistance(objPosition) < 300)
+                            if (args.End.LSTo2D().LSDistance(objPosition) < 300)
                             {
-                                var dir = (objPosition - args.Start.To2D()).Normalized();
+                                var dir = (objPosition - args.Start.LSTo2D()).LSNormalized();
                                 var endPosition = objPosition + dir * 110;
 
                                 SpellDetector.CreateSpellData(hero, args.Start, endPosition.To3D(), spellData);

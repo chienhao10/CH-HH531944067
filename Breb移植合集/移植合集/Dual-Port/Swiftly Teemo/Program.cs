@@ -31,7 +31,8 @@ namespace Swiftly_Teemo
 
             Drawing.OnDraw += Drawings.OnDraw;
             Drawing.OnEndScene += Drawing_OnEndScene;
-            Orbwalker.OnPostAttack += AfterAA.Orbwalker_OnPostAttack;
+            Orbwalker.OnPostAttack += AfterAa.Orbwalker_OnPostAttack;
+            Spellbook.OnCastSpell += Mode.OnCastSpell;
             Game.OnUpdate += OnUpdate;
         }
         private static void OnUpdate(EventArgs args)
@@ -55,19 +56,19 @@ namespace Swiftly_Teemo
             Mode.Flee();
         }
 
+
         private static void Drawing_OnEndScene(EventArgs args)
         {
-            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.LSIsValidTarget() && !ene.IsZombie))
+            foreach (var enemy in ObjectManager.Get<AIHeroClient>().Where(ene => ene.IsValidTarget() && ene.IsValidTarget(750) && !ene.IsZombie))
             {
-                if (MenuConfig.dind)
-                {
-                    var EasyKill = Spells.Q.IsReady() && Dmg.IsLethal(enemy)
-                       ? new ColorBGRA(0, 255, 0, 120)
-                       : new ColorBGRA(255, 255, 0, 120);
-                    Drawings.DrawHpBar.unit = enemy;
-                    Drawings.DrawHpBar.drawDmg(Dmg.ComboDmg(enemy), EasyKill);
-                }
+                if (!MenuConfig.Dind) continue;
+
+                var easyKill = Spells.Q.IsReady() && Dmg.IsLethal(enemy) ? new ColorBGRA(0, 255, 0, 120) : new ColorBGRA(255, 255, 0, 120);
+
+                Drawings.DrawHpBar.unit = enemy;
+                Drawings.DrawHpBar.drawDmg(Dmg.ComboDmg(enemy), easyKill);
             }
-        }
-    }
-}
+         }
+      }
+   }
+

@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 using Color = System.Drawing.Color;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using EzEvade;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.Draw
 {
@@ -47,7 +47,7 @@ namespace ezEvade.Draw
 
         override public void Draw()
         {
-            if (start.IsOnScreen() || end.IsOnScreen())
+            if (start.LSIsOnScreen() || end.LSIsOnScreen())
             {
                 var realStart = Drawing.WorldToScreen(start.To3D());
                 var realEnd = Drawing.WorldToScreen(end.To3D());

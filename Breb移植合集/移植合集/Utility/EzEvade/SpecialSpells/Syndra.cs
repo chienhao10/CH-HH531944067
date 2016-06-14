@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
 
 namespace ezEvade.SpecialSpells

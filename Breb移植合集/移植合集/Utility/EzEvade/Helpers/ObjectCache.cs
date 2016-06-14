@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu;
-using EloBuddy.SDK.Menu.Values;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy.SDK.Menu;
+using EloBuddy;
+using EloBuddy.SDK.Menu.Values;
 
 namespace ezEvade
 {
@@ -36,20 +37,20 @@ namespace ezEvade
 
         public void UpdateInfo()
         {
-            var extraDelayBuffer = 30; //ObjectCache.menuCache.cache["ExtraPingBuffer"].Cast<Slider>().CurrentValue;
+            var extraDelayBuffer = ObjectCache.menuCache.cache["ExtraPingBuffer"].Cast<Slider>().CurrentValue;
 
-            serverPos2D = hero.ServerPosition.To2D(); //CalculatedPosition.GetPosition(hero, Game.Ping);
+            serverPos2D = hero.ServerPosition.LSTo2D(); //CalculatedPosition.GetPosition(hero, Game.Ping);
             serverPos2DExtra = EvadeUtils.GetGamePosition(hero, Game.Ping + extraDelayBuffer);
             serverPos2DPing = EvadeUtils.GetGamePosition(hero, Game.Ping);
             //CalculatedPosition.GetPosition(hero, Game.Ping + extraDelayBuffer);            
-            currentPosition = hero.Position.To2D(); //CalculatedPosition.GetPosition(hero, 0); 
+            currentPosition = hero.Position.LSTo2D(); //CalculatedPosition.GetPosition(hero, 0); 
             boundingRadius = hero.BoundingRadius;
             moveSpeed = hero.MoveSpeed;
             isMoving = hero.IsMoving;
         }
     }
 
-    public class CacheDictionary 
+    public class CacheDictionary
     {
         private List<Menu> list = new List<Menu>();
 

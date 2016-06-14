@@ -55,7 +55,7 @@ namespace ezEvade
             });
 
             #endregion
-
+            
             #region Corki
 
             Spells.Add(
@@ -104,8 +104,8 @@ namespace ezEvade
                 spellDelay = 250,
                 infrontTarget = true,
                 spellKey = SpellSlot.Recall,
-                evadeType = EvadeType.Blink,
-                castType = CastType.Target,
+                evadeType = EvadeType.Blink,                
+                castType = CastType.Target,                
                 spellTargets = new[] { SpellTargets.EnemyChampions, SpellTargets.EnemyMinions },
                 isSpecial = true,
             });
@@ -286,7 +286,7 @@ namespace ezEvade
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
             });
-
+                        
             #endregion
 
             #region LeeSin
@@ -556,7 +556,7 @@ namespace ezEvade
                 spellKey = SpellSlot.W,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
-            });
+            });         
 
             #endregion
 
@@ -575,7 +575,7 @@ namespace ezEvade
                 spellKey = SpellSlot.E,
                 evadeType = EvadeType.Dash,
                 castType = CastType.Position,
-            });
+            });    
 
             #endregion
 

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -37,7 +38,7 @@ namespace ezEvade.SpecialSpells
             {
                 if (args.Target != null && args.Target.IsMe)
                 {
-                    SpellDetector.CreateSpellData(hero, args.Start, args.End, spellData);
+                    SpellDetector.CreateSpellData(hero, args.Start, args.End, spellData, null, 0);
                 }
 
                 specialSpellArgs.noProcess = true;
@@ -48,7 +49,7 @@ namespace ezEvade.SpecialSpells
         {
             //need to track where bait is attached to
 
-            if (obj.GetType() != typeof(MissileClient) || !((MissileClient) obj).IsValidMissile())
+            if (!obj.IsValid<MissileClient>())
                 return;
 
             MissileClient missile = (MissileClient)obj;
@@ -63,7 +64,7 @@ namespace ezEvade.SpecialSpells
 
         private static void OnCreateObj_FizzMarinerDoom(GameObject obj, EventArgs args, SpellData spellData)
         {
-            if (obj.GetType() != typeof(MissileClient) || !((MissileClient) obj).IsValidMissile())
+            if (!obj.IsValid<MissileClient>())
                 return;
 
             MissileClient missile = (MissileClient)obj;

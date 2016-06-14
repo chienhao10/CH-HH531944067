@@ -312,7 +312,6 @@ namespace UnderratedAIO.Champions
                         Orbwalker.ForcedTarget = target;
                     }
                     return;
-                    break;
                 case 0:
                     if (Q.IsReady() && W.IsReady() && !rene && E.CanCast(target))
                     {
@@ -336,7 +335,6 @@ namespace UnderratedAIO.Champions
                         Orbwalker.ForcedTarget = target;
                     }
                     return;
-                    break;
                 default:
                     break;
             }
@@ -454,7 +452,6 @@ namespace UnderratedAIO.Champions
             {
                 case 0:
                     return true;
-                    break;
                 case 1:
                     if (spellSlot != SpellSlot.Q && Q.IsReady())
                     {
@@ -475,7 +472,6 @@ namespace UnderratedAIO.Champions
                     break;
                 default:
                     return true;
-                    break;
             }
             return false;
         }

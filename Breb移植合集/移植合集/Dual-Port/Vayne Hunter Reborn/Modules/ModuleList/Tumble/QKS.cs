@@ -14,7 +14,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Tumble
     {
         public void OnLoad()
         {
-           
+
         }
 
         public bool ShouldGetExecuted()
@@ -29,32 +29,33 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Tumble
 
         public void OnExecute()
         {
-                var currentTarget = TargetSelector.GetTarget(Orbwalking.GetRealAutoAttackRange(null) + 240f, DamageType.Physical);
-                if (!currentTarget.IsValidTarget())
-                {
-                    return;
-                }
+            var currentTarget = TargetSelector.GetTarget(Orbwalking.GetRealAutoAttackRange(null) + 240f, DamageType.Physical);
+            if (!currentTarget.IsValidTarget())
+            {
+                Orbwalker.ForcedTarget = null;
+                return;
+            }
 
-                if (currentTarget.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <=
-                    Orbwalking.GetRealAutoAttackRange(null))
-                {
-                    return;
-                }
+            if (currentTarget.ServerPosition.Distance(ObjectManager.Player.ServerPosition) <= Orbwalking.GetRealAutoAttackRange(null))
+            {
+                Orbwalker.ForcedTarget = null;
+                return;
+            }
 
-                if (HealthPrediction.GetHealthPrediction(currentTarget, (int) (250 + Game.Ping / 2f)) <
-                    ObjectManager.Player.GetAutoAttackDamage(currentTarget) +
-                    Variables.spells[SpellSlot.Q].GetDamage(currentTarget)
-                    && HealthPrediction.GetHealthPrediction(currentTarget, (int)(250 + Game.Ping / 2f)) > 0)
+            if (HealthPrediction.GetHealthPrediction(currentTarget, (int)(250 + Game.Ping / 2f)) <
+                ObjectManager.Player.GetAutoAttackDamage(currentTarget) +
+                Variables.spells[SpellSlot.Q].GetDamage(currentTarget)
+                && HealthPrediction.GetHealthPrediction(currentTarget, (int)(250 + Game.Ping / 2f)) > 0)
+            {
+                var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(
+                    currentTarget.ServerPosition, 300f);
+                if (extendedPosition.IsSafe())
                 {
-                    var extendedPosition = ObjectManager.Player.ServerPosition.LSExtend(
-                        currentTarget.ServerPosition, 300f);
-                    if (extendedPosition.IsSafe())
-                    {
-                        Orbwalker.ResetAutoAttack();
-                        Variables.spells[SpellSlot.Q].Cast(extendedPosition);
-                        Orbwalker.ForcedTarget = currentTarget;
-                    }
+                    Orbwalker.ResetAutoAttack();
+                    Variables.spells[SpellSlot.Q].Cast(extendedPosition);
+                    Orbwalker.ForcedTarget = currentTarget;
                 }
+            }
         }
     }
 }

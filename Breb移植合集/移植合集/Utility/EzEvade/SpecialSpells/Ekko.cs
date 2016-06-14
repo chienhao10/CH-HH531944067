@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -34,7 +35,7 @@ namespace ezEvade.SpecialSpells
                 {
                     if (obj != null && obj.IsValid && !obj.IsDead && obj.Name == "Ekko" && obj.IsEnemy)
                     {
-                        var blinkPos = obj.ServerPosition.To2D();
+                        var blinkPos = obj.ServerPosition.LSTo2D();
 
                         SpellDetector.CreateSpellData(hero, args.Start, blinkPos.To3D(), spellData);
                     }

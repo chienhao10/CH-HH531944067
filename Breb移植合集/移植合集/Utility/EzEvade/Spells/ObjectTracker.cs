@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -72,7 +73,7 @@ namespace ezEvade
             {
                 var minion = obj as Obj_AI_Minion;
 
-                if (minion.BaseSkinName.Contains("testcube"))
+                if (minion.CharData.BaseSkinName.Contains("testcube"))
                 {
                     ObjectTracker.objTracker.Add(obj.NetworkId, new ObjectTrackerInfo(obj, "hiu"));
                     DelayAction.Add(250, () => ObjectTracker.objTracker.Remove(obj.NetworkId));
@@ -98,7 +99,7 @@ namespace ezEvade
                 var pos1 = sortedObjList.First().obj.Position;
                 var pos2 = sortedObjList.ElementAt(1).obj.Position;
 
-                return (pos2.To2D() - pos1.To2D()).Normalized();
+                return (pos2.LSTo2D() - pos1.LSTo2D()).LSNormalized();
             }
 
             return Vector2.Zero;

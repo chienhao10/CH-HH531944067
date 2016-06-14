@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -31,19 +31,26 @@ namespace ezEvade.SpecialSpells
         {
             if (spellData.spellName == "SionE")
             {
-                var objList = ObjectManager.Get<Obj_AI_Minion>().Where(obj => obj != null && obj.IsValid && !obj.IsDead && obj.IsAlly).ToList();
+                var objList = new List<Obj_AI_Minion>();
+                foreach (var obj in ObjectManager.Get<Obj_AI_Minion>())
+                {
+                    if (obj != null && obj.IsValid && !obj.IsDead && obj.IsAlly)
+                    {
+                        objList.Add(obj);
+                    }
+                }
 
                 objList.OrderBy(o => o.LSDistance(hero.ServerPosition));
 
-                var spellStart = args.Start.To2D();
-                var dir = (args.End.To2D() - spellStart).Normalized();
+                var spellStart = args.Start.LSTo2D();
+                var dir = (args.End.LSTo2D() - spellStart).LSNormalized();
                 var spellEnd = spellStart + dir * spellData.range;
 
                 foreach (var obj in objList)
                 {
-                    var objProjection = obj.ServerPosition.To2D().ProjectOn(spellStart, spellEnd);
+                    var objProjection = obj.ServerPosition.LSTo2D().LSProjectOn(spellStart, spellEnd);
 
-                    if (objProjection.IsOnSegment && objProjection.SegmentPoint.LSDistance(obj.ServerPosition.To2D()) < obj.BoundingRadius + spellData.radius)
+                    if (objProjection.IsOnSegment && objProjection.SegmentPoint.LSDistance(obj.ServerPosition.LSTo2D()) < obj.BoundingRadius + spellData.radius)
                     {
                         //sth happens
                     }

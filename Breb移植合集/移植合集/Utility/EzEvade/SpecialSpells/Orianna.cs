@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -21,17 +22,15 @@ namespace ezEvade.SpecialSpells
         {
             if (spellData.spellName == "OrianaIzunaCommand")
             {
-                AIHeroClient hero = EntityManager.Heroes.Enemies.FirstOrDefault(h => h.ChampionName == "Orianna");
+                AIHeroClient hero = HeroManager.Enemies.FirstOrDefault(h => h.ChampionName == "Orianna");
                 if (hero == null)
                 {
                     return;
                 }
 
-                ObjectTrackerInfo info = new ObjectTrackerInfo(hero)
-                {
-                    Name = "TheDoomBall",
-                    OwnerNetworkID = hero.NetworkId
-                };
+                ObjectTrackerInfo info = new ObjectTrackerInfo(hero);
+                info.Name = "TheDoomBall";
+                info.OwnerNetworkID = hero.NetworkId;
 
                 ObjectTracker.objTracker.Add(hero.NetworkId, info);
 
@@ -78,7 +77,7 @@ namespace ezEvade.SpecialSpells
 
         private static void ProcessSpell_OrianaRedactCommand(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
         {
-            if (hero.GetType() != typeof(AIHeroClient) || !((AIHeroClient) hero).IsValid())
+            if (!hero.IsValid<AIHeroClient>())
                 return;
 
             var champ = (AIHeroClient)hero;
@@ -121,7 +120,7 @@ namespace ezEvade.SpecialSpells
                         }
                         else
                         {
-                            if (info.obj == null)
+                            if (info.obj == null || !info.obj.IsValid || info.obj.IsDead)
                                 return;
 
                             SpellDetector.CreateSpellData(hero, info.obj.Position, args.End, spellData, null, 0, false);
@@ -149,15 +148,15 @@ namespace ezEvade.SpecialSpells
                         if (info.usePosition)
                         {
                             Vector3 endPos2 = info.position;
-                            SpellDetector.CreateSpellData(hero, endPos2, endPos2, spellData);
+                            SpellDetector.CreateSpellData(hero, endPos2, endPos2, spellData, null, 0);
                         }
                         else
                         {
-                            if (info.obj == null)
+                            if (info.obj == null || !info.obj.IsValid || info.obj.IsDead)
                                 return;
 
                             Vector3 endPos2 = info.obj.Position;
-                            SpellDetector.CreateSpellData(hero, endPos2, endPos2, spellData);
+                            SpellDetector.CreateSpellData(hero, endPos2, endPos2, spellData, null, 0);
                         }
                     }
                 }

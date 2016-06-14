@@ -4,21 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu.Values;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
+using EloBuddy.SDK.Menu.Values;
 
 namespace ezEvade
 {
     public static class Position
     {
-        public static AIHeroClient myHero { get { return ObjectManager.Player; } }
+        private static AIHeroClient myHero { get { return ObjectManager.Player; } }
 
         public static int CheckPosDangerLevel(this Vector2 pos, float extraBuffer)
         {
-            return SpellDetector.spells.Select(entry => entry.Value).Where(spell => pos.InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius + extraBuffer)).Sum(spell => spell.dangerlevel);
+            var dangerlevel = 0;
+            foreach (KeyValuePair<int, Spell> entry in SpellDetector.spells)
+            {
+                Spell spell = entry.Value;
+
+                if (pos.InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius + extraBuffer))
+                {
+                    dangerlevel += spell.dangerlevel;
+                }
+            }
+            return dangerlevel;
         }
 
         public static bool InSkillShot(this Vector2 position, Spell spell, float radius, bool predictCollision = true)
@@ -108,29 +118,69 @@ namespace ezEvade
 
         public static float GetDistanceToChampions(this Vector2 pos)
         {
-            return (from hero in EntityManager.Heroes.Enemies where hero != null && hero.IsValid && !hero.IsDead && hero.IsVisible select hero.ServerPosition.To2D() into heroPos select heroPos.LSDistance(pos)).Concat(new[] {float.MaxValue}).Min();
+            float minDist = float.MaxValue;
+
+            foreach (var hero in HeroManager.Enemies)
+            {
+                if (hero != null && hero.IsValid && !hero.IsDead && hero.IsVisible)
+                {
+                    var heroPos = hero.ServerPosition.LSTo2D();
+                    var dist = heroPos.LSDistance(pos);
+
+                    minDist = Math.Min(minDist, dist);
+                }
+            }
+
+            return minDist;
         }
 
         public static bool HasExtraAvoidDistance(this Vector2 pos, float extraBuffer)
         {
-            return SpellDetector.spells.Select(entry => entry.Value).Where(spell => spell.spellType == SpellType.Line).Any(spell => pos.InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius + extraBuffer));
+            foreach (KeyValuePair<int, Spell> entry in SpellDetector.spells)
+            {
+                Spell spell = entry.Value;
+
+                if (spell.spellType == SpellType.Line)
+                {
+                    if (pos.InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius + extraBuffer))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public static float GetEnemyPositionValue(this Vector2 pos)
+        {
+            float posValue = 0;
+
+            if (ObjectCache.menuCache.cache["PreventDodgingNearEnemy"].Cast<CheckBox>().CurrentValue)
+            {
+                var minComfortDistance = ObjectCache.menuCache.cache["MinComfortZone"].Cast<Slider>().CurrentValue;
+
+                foreach (var hero in HeroManager.Enemies)
+                {
+                    if (hero != null && hero.IsValid && !hero.IsDead && hero.IsVisible)
+                    {
+                        var heroPos = hero.ServerPosition.LSTo2D();
+                        var dist = heroPos.LSDistance(pos);
+
+                        if (minComfortDistance > dist)
+                        {
+                            posValue += 2 * (minComfortDistance - dist);
+                        }
+                    }
+                }                
+            }
+
+            return posValue;
         }
 
         public static float GetPositionValue(this Vector2 pos)
         {
             float posValue = pos.LSDistance(Game.CursorPos.LSTo2D());
-
-            if (ObjectCache.menuCache.cache["PreventDodgingNearEnemy"].Cast<CheckBox>().CurrentValue)
-            {
-                var minComfortDistance = ObjectCache.menuCache.cache["MinComfortZone"].Cast<Slider>().CurrentValue;
-                var distanceToChampions = pos.GetDistanceToChampions();
-
-                if (minComfortDistance > distanceToChampions)
-                {
-                    posValue += 2 * (minComfortDistance - distanceToChampions);
-                }
-            }
-
+                        
             if (ObjectCache.menuCache.cache["PreventDodgingUnderTower"].Cast<CheckBox>().CurrentValue)
             {
                 var turretRange = 875 + ObjectCache.myHeroCache.boundingRadius;
@@ -147,7 +197,21 @@ namespace ezEvade
 
         public static bool CheckDangerousPos(this Vector2 pos, float extraBuffer, bool checkOnlyDangerous = false)
         {
-            return SpellDetector.spells.Select(entry => entry.Value).Where(spell => !checkOnlyDangerous || spell.dangerlevel >= 3).Any(spell => pos.InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius + extraBuffer));
+            foreach (KeyValuePair<int, Spell> entry in SpellDetector.spells)
+            {
+                Spell spell = entry.Value;
+
+                if (checkOnlyDangerous && spell.dangerlevel < 3)
+                {
+                    continue;
+                }
+
+                if (pos.InSkillShot(spell, ObjectCache.myHeroCache.boundingRadius + extraBuffer))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static List<Vector2> GetSurroundingPositions(int maxPosToCheck = 150, int posRadius = 25)

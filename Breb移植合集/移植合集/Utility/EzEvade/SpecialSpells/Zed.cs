@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -43,6 +43,7 @@ namespace ezEvade.SpecialSpells
 
                         if (info.Name == "Shadow" && info.usePosition && info.position.LSDistance(obj.Position) < 5)
                         {
+                            info.Name = "Shadow";
                             info.usePosition = false;
                             info.obj = obj;
                         }
@@ -53,7 +54,7 @@ namespace ezEvade.SpecialSpells
 
         private static void OnDeleteObj_ZedShuriken(GameObject obj, EventArgs args)
         {
-            if (obj != null && obj.IsValid && obj.Name == "Shadow" && obj.IsEnemy)
+            if (obj != null && obj.Name == "Shadow")
             {
                 ObjectTracker.objTracker.Remove(obj.NetworkId);
             }
@@ -68,7 +69,7 @@ namespace ezEvade.SpecialSpells
                 {
                     var info = entry.Value;
 
-                    if (info.obj.Name == "Shadow" || info.Name == "Shadow")
+                    if (info.Name == "Shadow")
                     {
                         if (info.usePosition == false && (info.obj == null || !info.obj.IsValid || info.obj.IsDead))
                         {
@@ -97,7 +98,7 @@ namespace ezEvade.SpecialSpells
 
         private static void SpellMissile_ZedShadowDash(GameObject obj, EventArgs args)
         {
-            if (obj.GetType() != typeof(MissileClient) || !((MissileClient) obj).IsValidMissile())
+            if (!obj.IsValid<MissileClient>())
                 return;
 
             MissileClient missile = (MissileClient)obj;
@@ -106,13 +107,11 @@ namespace ezEvade.SpecialSpells
             {
                 if (!ObjectTracker.objTracker.ContainsKey(obj.NetworkId))
                 {
-                    ObjectTrackerInfo info = new ObjectTrackerInfo(obj)
-                    {
-                        Name = "Shadow",
-                        OwnerNetworkID = missile.SpellCaster.NetworkId,
-                        usePosition = true,
-                        position = missile.EndPosition
-                    };
+                    ObjectTrackerInfo info = new ObjectTrackerInfo(obj);
+                    info.Name = "Shadow";
+                    info.OwnerNetworkID = missile.SpellCaster.NetworkId;
+                    info.usePosition = true;
+                    info.position = missile.EndPosition;
 
                     ObjectTracker.objTracker.Add(obj.NetworkId, info);
 

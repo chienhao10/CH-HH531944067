@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using LeagueSharp;
+using LeagueSharp.Common;
+using SharpDX;
 using EloBuddy;
-using EloBuddy.SDK;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using SharpDX;
 
 namespace ezEvade
 {
     class PingTester
     {
+        public static Menu testMenu;
+
         private static AIHeroClient myHero { get { return ObjectManager.Player; } }
+
         private static bool lastRandomMoveCoeff = false;
 
         private static float sumPingTime = 0;
@@ -30,14 +34,13 @@ namespace ezEvade
         {
             Game.OnUpdate += Game_OnGameUpdate;
             
-            //testMenu = new Menu("Ping Tester", "PingTest", true);
-            //testMenu.AddItem(new MenuItem("AutoSetPing", "Auto Set Ping").SetValue(false));
-            //testMenu.AddItem(new MenuItem("TestMoveTime", "Test Ping").SetValue(false));
-            //testMenu.AddItem(new MenuItem("SetMaxPing", "Set Max Ping").SetValue(false));
-            //testMenu.AddItem(new MenuItem("SetAvgPing", "Set Avg Ping").SetValue(false));
-            //testMenu.AddItem(new MenuItem("Test20MoveTime", "Test Ping x20").SetValue(false));
-            //testMenu.AddItem(new MenuItem("PrintResults", "Print Results").SetValue(false));
-            //testMenu.AddToMainMenu();
+            testMenu = Evade.menu.AddSubMenu("Ping Tester", "PingTest");
+            testMenu.Add("AutoSetPing", new CheckBox("Auto Set Ping", false));
+            testMenu.Add("TestMoveTime", new CheckBox("Test Ping", false));
+            testMenu.Add("SetMaxPing", new CheckBox("Set Max Ping", false));
+            testMenu.Add("SetAvgPing", new CheckBox("Set Avg Ping", false));
+            testMenu.Add("Test20MoveTime", new CheckBox("Test Ping x20", false));
+            testMenu.Add("PrintResults", new CheckBox("Print Results", false));
         }
 
         private void IssueTestMove(int recursionCount)
@@ -64,7 +67,8 @@ namespace ezEvade
                 timestamp = EvadeUtils.TickCount,
                 isProcessed = false
             };
-            //myHero.IssueOrder(GameObjectOrder.MoveTo, movePos.To3D(), true);
+
+            Player.IssueOrder(GameObjectOrder.MoveTo, movePos.To3D(), true);
 
             if (recursionCount > 1)
             {
@@ -75,31 +79,31 @@ namespace ezEvade
 
         private void SetPing(int ping)
         {
-            //Evade.menu.Item("ExtraPingBuffer").SetValue(new Slider(ping, 0, 200));
+            testMenu["ExtraPingBuffer"].Cast<Slider>().CurrentValue = ping;
         }
 
         private void Game_OnGameUpdate(EventArgs args)
         {
-            //if (testMenu.Item("AutoSetPing").Cast<CheckBox>().CurrentValue)
-            //{
-            //    Console.WriteLine("Testing Ping...Please wait 10 seconds");
+            if (testMenu["AutoSetPing"].Cast<CheckBox>().CurrentValue)
+            {
+                Console.WriteLine("Testing Ping...Please wait 10 seconds");
 
-            //    int testAmount = 20;
+                int testAmount = 20;
 
-            //    testMenu.Item("AutoSetPing").SetValue(false);
-            //    IssueTestMove(testAmount);
-            //    autoTestCount = testCount + testAmount;
-            //    autoTestPing = true;
+                testMenu["AutoSetPing"].Cast<CheckBox>().CurrentValue = false;
+                IssueTestMove(testAmount);
+                autoTestCount = testCount + testAmount;
+                autoTestPing = true;
                 
-            //}
+            }
 
-            //if (testMenu.Item("PrintResults").Cast<CheckBox>().CurrentValue)
-            //{
-            //    testMenu.Item("PrintResults").SetValue(false);
+            if (testMenu["PrintResults"].Cast<CheckBox>().CurrentValue)
+            {
+                testMenu["PrintResults"].Cast<CheckBox>().CurrentValue = false;
 
-            //    Console.WriteLine("Average Extra Delay: " + averagePingTime);
-            //    Console.WriteLine("Max Extra Delay: " + maxPingTime);
-            //}
+                Console.WriteLine("Average Extra Delay: " + averagePingTime);
+                Console.WriteLine("Max Extra Delay: " + maxPingTime);
+            }
 
             if (autoTestPing == true && testCount >= autoTestCount)
             {
@@ -114,48 +118,48 @@ namespace ezEvade
                 autoTestPing = false;
             }
 
-            //if (testMenu.Item("TestMoveTime").Cast<CheckBox>().CurrentValue)
-            //{
-            //    testMenu.Item("TestMoveTime").SetValue(false);
-            //    IssueTestMove(1);
-            //}
+            if (testMenu["TestMoveTime"].Cast<CheckBox>().CurrentValue)
+            {
+                testMenu["TestMoveTime"].Cast<CheckBox>().CurrentValue = false;
+                IssueTestMove(1);
+            }
 
 
-            //if (testMenu.Item("Test20MoveTime").Cast<CheckBox>().CurrentValue)
-            //{
-            //    testMenu.Item("Test20MoveTime").SetValue(false);
-            //    IssueTestMove(20);
-            //}
+            if (testMenu["Test20MoveTime"].Cast<CheckBox>().CurrentValue)
+            {
+                testMenu["Test20MoveTime"].Cast<CheckBox>().CurrentValue = false;
+                IssueTestMove(20);
+            }
 
-            //if (testMenu.Item("SetMaxPing").Cast<CheckBox>().CurrentValue)
-            //{
-            //    testMenu.Item("SetMaxPing").SetValue(false);
+            if (testMenu["SetMaxPing"].Cast<CheckBox>().CurrentValue)
+            {
+                testMenu["SetMaxPing"].Cast<CheckBox>().CurrentValue = false;
 
-            //    if (testCount < 10)
-            //    {
-            //        Console.WriteLine("Please test 10 times before setting ping");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Set Max extra ping: " + maxPingTime);
-            //        SetPing((int)maxPingTime);
-            //    }                
-            //}
+                if (testCount < 10)
+                {
+                    Console.WriteLine("Please test 10 times before setting ping");
+                }
+                else
+                {
+                    Console.WriteLine("Set Max extra ping: " + maxPingTime);
+                    SetPing((int)maxPingTime);
+                }                
+            }
 
-            //if (testMenu.Item("SetAvgPing").Cast<CheckBox>().CurrentValue)
-            //{
-            //    testMenu.Item("SetAvgPing").SetValue(false);
+            if (testMenu["SetAvgPing"].Cast<CheckBox>().CurrentValue)
+            {
+                testMenu["SetAvgPing"].Cast<CheckBox>().CurrentValue = false;
 
-            //    if (testCount < 10)
-            //    {
-            //        Console.WriteLine("Please test 10 times before setting ping");
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine("Set Average extra ping: " + averagePingTime);
-            //        SetPing((int)averagePingTime);
-            //    }                         
-            //}
+                if (testCount < 10)
+                {
+                    Console.WriteLine("Please test 10 times before setting ping");
+                }
+                else
+                {
+                    Console.WriteLine("Set Average extra ping: " + averagePingTime);
+                    SetPing((int)averagePingTime);
+                }                         
+            }
 
             if (myHero.IsMoving)
             {
@@ -165,9 +169,9 @@ namespace ezEvade
 
                     if (path.Length > 0)
                     {
-                        var movePos = path[path.Length - 1].To2D();
+                        var movePos = path[path.Length - 1].LSTo2D();
 
-                        if (movePos.Distance(lastTestMoveToCommand.targetPosition) < 10)
+                        if (movePos.LSDistance(lastTestMoveToCommand.targetPosition) < 10)
                         {
                             float moveTime = EvadeUtils.TickCount - lastTestMoveToCommand.timestamp - ObjectCache.gamePing;
                             Console.WriteLine("Extra Delay: " + moveTime);

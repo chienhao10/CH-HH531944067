@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -33,7 +33,7 @@ namespace ezEvade.SpecialSpells
 
             foreach (var obj in ObjectManager.Get<Obj_AI_Minion>())
             {
-                if (obj != null && obj.IsValid && obj.BaseSkinName == "lulufaerie" && obj.IsEnemy)
+                if (obj != null && obj.IsValid && obj.CharData.BaseSkinName == "lulufaerie" && obj.IsEnemy)
                 {
                     gotObj = true;
 
@@ -46,7 +46,7 @@ namespace ezEvade.SpecialSpells
 
             if (gotObj == false)
             {
-                DelayAction.Add(5000, GetLuluPix);
+                DelayAction.Add(5000, () => GetLuluPix());
             }
         }
 

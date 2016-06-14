@@ -1,100 +1,127 @@
 ﻿#region
 
 using System.Linq;
-using LeagueSharp.SDK.Core.Utils;
-using LeagueSharp.SDK;
 using EloBuddy;
-
+using LeagueSharp.SDK;
+using LeagueSharp.SDK.Core.Utils;
+using SharpDX;
+using EloBuddy.SDK;
 
 #endregion
 
 namespace Swiftly_Teemo.Main
 {
     internal class Mode : Core
-    {   
+    {
         public static void Combo()
         {
-            if(Target.LSIsValidTarget() && Target != null && !Target.IsZombie)
+            if (Target == null || Target.IsZombie || Target.IsInvulnerable) return;
+
+            var rPrediction = Spells.R.GetPrediction(Target).CastPosition;
+            var ammo = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo;
+
+            if (Spells.R.IsReady())
             {
-                if (Spells.R.IsReady() && Target.Distance(Player) <= Spells.R.Range - 50)
+                if (!Target.HasBuffOfType(BuffType.Poison) && !Target.HasBuffOfType(BuffType.Slow) && !Target.HasBuffOfType(BuffType.NearSight))
                 {
-                    Spells.R.Cast(Target);
+                    if (!MenuConfig.RCombo)
+                    {
+                        if (Target.LSIsValidTarget(Spells.R.Range))
+                        {
+                            if (Target.Distance(Player) <= Spells.R.Range)
+                            {
+                                Spells.R.Cast(rPrediction);
+                            }
+                        }
+
+                    }
+                    if (MenuConfig.RCombo)
+                    {
+                        if (Target.LSIsValidTarget(Spells.R.Range * 2))
+                        {
+                            if (Target.Distance(Player) <= Spells.R.Range * 2)
+                            {
+                                Spells.R.Cast(rPrediction);
+                            }
+                        }
+                    }
                 }
-                if (Target.IsInvulnerable && Target != null)
+            }
+
+            if (Spells.W.IsReady() && Player.ManaPercent >= 22.5)
+            {
+                Spells.W.Cast();
+            }
+        }
+        public static void OnCastSpell(Spellbook sender, SpellbookCastSpellEventArgs args)
+        {
+            if (args.Slot == SpellSlot.Q)
+            {
+                if (sender.Owner == Player)
                 {
-                    Spells.R.Cast(Target.Position);
-                }
-                if (Spells.W.IsReady() && Player.ManaPercent > 22.5)
-                {
-                    Spells.W.Cast();
+                    Orbwalker.DisableAttacking = true;
+                    DelayAction.Add(200, () => Orbwalker.DisableAttacking = false);
                 }
             }
         }
-       
         public static void Lane()
         {
-            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Player.AttackRange)).ToList();
+            var minions = GameObjects.EnemyMinions.Where(m => m.IsMinion && m.IsEnemy && m.Team != GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.Q.Range)).ToList();
             var ammo = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo;
-            if (minions == null)
-            {
-                return;
-            }
+            var rPred = Spells.R.GetCircularFarmLocation(minions);
+
             foreach (var m in minions)
             {
-                if (m.Health < Spells.Q.GetDamage(m) && Player.ManaPercent > 35 && MenuConfig.LaneQ)
+                if (m.Health < Spells.Q.GetDamage(m) && Player.ManaPercent >= 20 && MenuConfig.LaneQ)
                 {
                     Spells.Q.Cast(m);
                 }
-                if (m.Health < Spells.R.GetDamage(m) && Player.ManaPercent > 40 && ammo >= 3)
+
+                if (!(m.Health < Spells.R.GetDamage(m)) || !(Player.ManaPercent >= 40) || ammo < 3) continue;
+
+                if (rPred.MinionsHit >= 3)
                 {
-                    Spells.R.Cast(m);
+                    Spells.R.Cast(rPred.Position);
                 }
             }
         }
         public static void Jungle()
         {
-            var mob = ObjectManager.Get<Obj_AI_Minion>().Where(m => !m.IsDead && !m.IsZombie && m.Team == GameObjectTeam.Neutral && m.LSIsValidTarget(Spells.Q.Range)).ToList();
+            var mob = GameObjects.Jungle.Where(m => m.LSIsValidTarget(Spells.Q.Range) && !GameObjects.JungleSmall.Contains(m)).ToList();
             var ammo = ObjectManager.Player.Spellbook.GetSpell(SpellSlot.R).Ammo;
 
-            if (mob == null)
-            {
-                return;
-            }
             foreach (var m in mob)
             {
-                if(Spells.R.IsReady() && m.Distance(Player) <= Spells.R.Range && m.Health > Spells.R.GetDamage(m))
+                if (!Spells.R.IsReady() || !(m.Distance(Player) <= Spells.R.Range) || !(m.Health > Spells.R.GetDamage(m))) continue;
+                if (m.BaseSkinName.Contains("Sru_Crab")) continue;
+
+                if (ammo >= 3)
                 {
-                    if(!m.BaseSkinName.Contains("Sru_Crab"))
-                    {
-                        if(ammo >= 3)
-                        {
-                            Spells.R.Cast(m);
-                        }
-                    }
-                   
+                    Spells.R.Cast(m);
                 }
             }
         }
+
         public static void Flee()
         {
-            if(!MenuConfig.Flee)
+            if (!MenuConfig.Flee)
             {
                 return;
             }
 
-                EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+            EloBuddy.Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
 
-                if(Spells.W.IsReady())
-                {
-                    Spells.W.Cast();
-                }
-                if(Target.Distance(Player) <= Spells.R.Range && Target.LSIsValidTarget() && Target != null)
-                {
-                if(Spells.R.IsReady())
-                  {
-                    Spells.R.Cast(Player.Position);
-                  }
-                }
+            if (Spells.W.IsReady())
+            {
+                Spells.W.Cast();
             }
+
+            if (!(Target.Distance(Player) <= Spells.R.Range) || !Target.LSIsValidTarget() || Target == null) return;
+
+            if (Spells.R.IsReady())
+            {
+                Spells.R.Cast(Player.Position);
+            }
+        }
     }
 }

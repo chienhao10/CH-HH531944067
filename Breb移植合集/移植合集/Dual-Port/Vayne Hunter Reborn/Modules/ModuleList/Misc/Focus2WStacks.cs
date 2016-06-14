@@ -34,11 +34,14 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Misc
             {
                 Orbwalker.ForcedTarget = target;
             }
+            else
+            {
+                Orbwalker.ForcedTarget = null;
+            }
 
             if (Game.Time < 25 * 60 * 1000)
             {
-                var ADC =
-                    HeroManager.Enemies.Where(m => TargetSelector.GetPriority(m) > 4 && m.IsValidTarget()).OrderBy(m => m.TotalAttackDamage).FirstOrDefault();
+                var ADC = HeroManager.Enemies.Where(m => TargetSelector.GetPriority(m) > 4 && m.IsValidTarget()).OrderBy(m => m.TotalAttackDamage).FirstOrDefault();
 
                 if (ADC != null && Orbwalking.InAutoAttackRange(ADC))
                 {
@@ -46,7 +49,7 @@ namespace VayneHunter_Reborn.Modules.ModuleList.Misc
                 }
                 else
                 {
-                    Orbwalker.ForcedTarget = Orbwalker.LastTarget as Obj_AI_Base;
+                    Orbwalker.ForcedTarget = null;
                 }
             }
         }

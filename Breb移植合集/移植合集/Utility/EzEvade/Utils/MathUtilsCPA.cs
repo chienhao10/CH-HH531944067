@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 
 using SharpDX;
+using LeagueSharp.Common;
 
 namespace ezEvade
 {
@@ -253,7 +254,7 @@ namespace ezEvade
             Track Tr2 = new Track(p2, v2);
 
             float ctime = cpa_time(Tr1, Tr2);
-
+                        
             Vector2 P1 = Tr1.P0 + (ctime * Tr1.v);
             Vector2 P2 = Tr2.P0 + (ctime * Tr2.v);
 
@@ -281,7 +282,7 @@ namespace ezEvade
 
             P1 = d(p1, P1) > d(p1, p1end) ? p1end : P1;
             P2 = d(p2, P2) > d(p2, p2end) ? p2end : P2;
-
+            
             return d(P1, P2);
         }
 
@@ -292,7 +293,7 @@ namespace ezEvade
             Track Tr2 = new Track(p2, v2);
 
             float ctime = cpa_time(Tr1, Tr2);
-
+            
             if (ctime == 0)
             {
                 bool collision;
@@ -301,12 +302,12 @@ namespace ezEvade
                 if (collision)
                 {
                     ctime = collisionTime;
-                }
+                }               
             }
 
             Vector2 P1 = Tr1.P0 + (ctime * Tr1.v);
             Vector2 P2 = Tr2.P0 + (ctime * Tr2.v);
-
+                        
             //P1 = d(p1, P1) > d(p1, p1end) ? p1end : P1;
             //P2 = d(p2, P2) > d(p2, p2end) ? p2end : P2;
 

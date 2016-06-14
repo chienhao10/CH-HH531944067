@@ -11,7 +11,7 @@ namespace Swiftly_Teemo
 {
     internal class Core
     {
-        public static AIHeroClient Target => TargetSelector.GetTarget(Spells.Q.Range, DamageType.Physical);
+        public static AIHeroClient Target => TargetSelector.GetTarget(Spells.R.Range * 2, DamageType.Magical);
         public static AIHeroClient Player => ObjectManager.Player;
         public class Spells
         {

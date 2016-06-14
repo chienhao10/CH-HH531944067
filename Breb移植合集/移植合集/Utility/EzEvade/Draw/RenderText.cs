@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 using Color = System.Drawing.Color;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using EzEvade;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.Draw
 {
@@ -43,12 +43,11 @@ namespace ezEvade.Draw
 
         override public void Draw()
         {
-            if (renderPosition.IsOnScreen())
+            if (renderPosition.LSIsOnScreen())
             {
-                var textDimension = Drawing.GetTextEntent(text, 12);
                 var wardScreenPos = Drawing.WorldToScreen(renderPosition.To3D());
 
-                Drawing.DrawText(wardScreenPos.X - textDimension.Width / 2, wardScreenPos.Y, color, text);
+                Drawing.DrawText(wardScreenPos.X - 60, wardScreenPos.Y, color, text);
             }
         }
     }

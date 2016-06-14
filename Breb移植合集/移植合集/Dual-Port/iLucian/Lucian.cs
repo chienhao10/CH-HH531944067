@@ -238,8 +238,8 @@ namespace iLucian
         
             if (Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.JungleClear))
             {
-                if (args.Target is Obj_AI_Minion && args.Target.IsValid
-                && ((Obj_AI_Minion)args.Target).Team == GameObjectTeam.Neutral)
+                    if (args.Target is Obj_AI_Minion && args.Target.IsValid
+                    && ((Obj_AI_Minion)args.Target).Team == GameObjectTeam.Neutral)
                 {
                     if (ObjectManager.Player.ManaPercent
                         < getSliderItem(MenuGenerator.jungleclearOptions, "com.ilucian.jungleclear.mana") || Variables.HasPassive())
@@ -379,16 +379,21 @@ namespace iLucian
                 }
             }
 
-            if (getKeyBindItem(MenuGenerator.comboOptions, "com.ilucian.combo.forceR")
-                && ObjectManager.Player.HasBuff("LucianR"))
+
+            if (getKeyBindItem(MenuGenerator.comboOptions, "com.ilucian.combo.forceR"))
             {
-                Orbwalker.DisableAttacking = true;
                 SemiUlt();
                 Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
             }
 
-            if (!getKeyBindItem(MenuGenerator.comboOptions, "com.ilucian.combo.forceR")
-                && !ObjectManager.Player.HasBuff("LucianR"))
+            if (ObjectManager.Player.HasBuff("LucianR")
+                && getKeyBindItem(MenuGenerator.comboOptions, "com.ilucian.combo.forceR"))
+            {
+                Orbwalker.DisableAttacking = true;
+            }
+
+            if (!ObjectManager.Player.HasBuff("LucianR")
+                || !getKeyBindItem(MenuGenerator.comboOptions, "com.ilucian.combo.forceR"))
             {
                 Orbwalker.DisableAttacking = false;
             }
@@ -555,16 +560,17 @@ namespace iLucian
             }
         }
 
-        public void SemiUlt()
+        private static void SemiUlt()
         {
-            var target = TargetSelector.SelectedTarget != null ? TargetSelector.SelectedTarget : TargetSelector.GetTarget(Variables.Spell[Variables.Spells.R].Range, DamageType.Physical);
-            if (target == null)
+            Player.IssueOrder(GameObjectOrder.MoveTo, Game.CursorPos);
+            foreach (
+                var enemy in
+                    HeroManager.Enemies.Where(
+                        x =>
+                        x.IsValidTarget(Variables.Spell[Variables.Spells.R].Range)
+                        && Variables.Spell[Variables.Spells.R].GetPrediction(x).CollisionObjects.Count == 0))
             {
-                return;
-            }
-            if (target.IsValid && Variables.Spell[Variables.Spells.R].IsReady() && !ObjectManager.Player.HasBuff("LucianR") && !target.IsDead && !target.IsZombie)
-            {
-                Variables.Spell[Variables.Spells.R].Cast(target.Position);
+                Variables.Spell[Variables.Spells.R].Cast(enemy);
             }
         }
 

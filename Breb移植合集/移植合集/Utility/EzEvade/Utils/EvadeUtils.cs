@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -31,12 +31,12 @@ namespace ezEvade
 
         public static List<Vector2> PathToVector2(this Vector3[] path)
         {
-            return path.Select(p => p.To2D()).ToList();
+            return path.Select(p => p.LSTo2D()).ToList();
         }
 
         public static List<Vector2> PathToVector2(this List<Vector3> path)
         {
-            return path.Select(p => p.To2D()).ToList();
+            return path.Select(p => p.LSTo2D()).ToList();
         }
 
         public static Vector2 GetGamePosition(AIHeroClient hero, float delay = 0)
@@ -45,15 +45,16 @@ namespace ezEvade
             {
                 if (hero.IsMoving)
                 {
-                    var path = new List<Vector2> {hero.ServerPosition.To2D()};
-                    path.AddRange(hero.Path.Select(point => point.To2D()));
+                    var path = new List<Vector2>();
+                    path.Add(hero.ServerPosition.LSTo2D());
+                    path.AddRange(hero.Path.Select(point => point.LSTo2D()));
 
-                    var finalPath = CutPath(path, hero, delay);
+                    var finalPath = EvadeUtils.CutPath(path, hero, delay);
 
                     return finalPath.Last();
                 }
 
-                return hero.ServerPosition.To2D();
+                return hero.ServerPosition.LSTo2D();
             }
 
             return Vector2.Zero;
@@ -85,13 +86,13 @@ namespace ezEvade
             {
                 result.Add(path.First());
             }
-
+            
             for (var i = 0; i < path.Count - 1; i++)
             {
                 var dist = path[i].LSDistance(path[i + 1]);
                 if (dist > Distance)
                 {
-                    result.Add(path[i] + Distance * (path[i + 1] - path[i]).Normalized());
+                    result.Add(path[i] + Distance * (path[i + 1] - path[i]).LSNormalized());
                     break;
                 }
                 else
@@ -113,7 +114,7 @@ namespace ezEvade
                 var dist = path[i].LSDistance(path[i + 1]);
                 if (dist > Distance)
                 {
-                    result.Add(path[i] + Distance * (path[i + 1] - path[i]).Normalized());
+                    result.Add(path[i] + Distance * (path[i + 1] - path[i]).LSNormalized());
 
                     for (var j = i + 1; j < path.Count; j++)
                     {

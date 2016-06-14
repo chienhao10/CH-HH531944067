@@ -33,7 +33,7 @@ namespace ExorSDK.Champions.Darius
                 if (GameObjects.EnemyHeroes.Any(
                     t =>
                         t.LSIsValidTarget(Vars.Q.Range) &&
-                        !t.LSIsValidTarget(Vars.AARange)))
+                        !t.LSIsValidTarget(Vars.AARange -35)))
                 {
                     Vars.Q.Cast();
                 }

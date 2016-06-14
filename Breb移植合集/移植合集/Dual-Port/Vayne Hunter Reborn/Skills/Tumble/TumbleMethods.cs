@@ -55,6 +55,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
         {
             if (!target.IsValidTarget(ObjectManager.Player.AttackRange + 65f + 65f + 300f))
             {
+                Orbwalker.ForcedTarget = null;
                 return;
             }
 
@@ -73,7 +74,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 }
             }
             var smartQPosition = TumblePositioning.GetSmartQPosition();
-            var smartQCheck =  smartQPosition != Vector3.Zero;
+            var smartQCheck = smartQPosition != Vector3.Zero;
             var QPosition = smartQCheck ? smartQPosition : Game.CursorPos;
 
             OnCastTumble(target, QPosition);
@@ -86,7 +87,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 DefaultQCast(Game.CursorPos, target);
                 return;
             }
-            
+
             if (!Variables.spells[SpellSlot.Q].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString().ToLower()))
             {
                 return;
@@ -104,7 +105,8 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 {
                     DefaultQCast(Game.CursorPos, firstMinion);
                     Orbwalker.ForcedTarget = firstMinion;
-                } else
+                }
+                else
                 {
                     Orbwalker.ForcedTarget = null;
                 }
@@ -120,7 +122,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
         {
             var afterTumblePosition = ObjectManager.Player.ServerPosition.Extend(position, 300f);
             var distanceToTarget = afterTumblePosition.LSDistance(target.ServerPosition, true);
-            if ((distanceToTarget < Math.Pow(ObjectManager.Player.AttackRange + 65, 2) && distanceToTarget > 110*110)
+            if ((distanceToTarget < Math.Pow(ObjectManager.Player.AttackRange + 65, 2) && distanceToTarget > 110 * 110)
                 || getCheckBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.tumble.qspam"))
             {
                 switch (getBoxItem(MenuGenerator.miscMenu, "dz191.vhr.misc.condemn.qlogic"))
@@ -234,7 +236,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                     endPosition = (Vector3)qBurstModePosition;
                 }
             }
-            
+
             if (Variables.spells[SpellSlot.R].IsEnabledAndReady(Orbwalker.ActiveModesFlags.ToString().ToLower()) && Orbwalker.ActiveModesFlags.HasFlag(Orbwalker.ActiveModes.Combo))
             {
                 if (ObjectManager.Player.CountEnemiesInRange(750f) >= getSliderItem(MenuGenerator.comboMenu, "dz191.vhr.combo.r.minenemies"))
@@ -258,7 +260,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                     return position;
                 }
             }
-            
+
             return null;
         }
 
@@ -270,7 +272,7 @@ namespace VayneHunter_Reborn.Skills.Tumble
                 (ObjectManager.Player.ServerPosition.To2D() - Range * ObjectManager.Player.Direction.To2D()).To3D()
 
             };
-            
+
             return vList;
         }
     }

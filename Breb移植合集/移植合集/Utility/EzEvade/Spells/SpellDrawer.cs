@@ -5,12 +5,12 @@ using System.Text;
 
 using Color = System.Drawing.Color;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
+using SharpDX;
 using EloBuddy.SDK.Menu;
 using EloBuddy.SDK.Menu.Values;
-using EzEvade;
-using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -33,36 +33,38 @@ namespace ezEvade
         {
             //Console.WriteLine("SpellDrawer loaded");
 
-
-            Menu drawMenu = menu.IsSubMenu ? menu.Parent.AddSubMenuEx("Draw", "Draw") : menu.AddSubMenuEx("Draw", "Draw");
+            Menu drawMenu = Evade.menu.AddSubMenu("Draw", "Draw");
             drawMenu.Add("DrawSkillShots", new CheckBox("Draw SkillShots"));
             drawMenu.Add("ShowStatus", new CheckBox("Show Evade Status"));
-            drawMenu.Add("DrawSpellPos", new CheckBox("Draw Spell Position"));
+            drawMenu.Add("DrawSpellPos", new CheckBox("Draw Spell Position", false));
             drawMenu.Add("DrawEvadePosition", new CheckBox("Draw Evade Position", false));
+            ObjectCache.menuCache.AddMenuToCache(drawMenu);
 
-            Menu dangerMenu = drawMenu.Parent.AddSubMenuEx("DangerLevel Drawings", "DangerLevelDrawings");
-            Menu lowDangerMenu = dangerMenu.Parent.AddSubMenuEx("Low", "LowDrawing");
-            lowDangerMenu.Add("LowWidth", new Slider("Line Width", 1, 1, 15));
+            Menu lowDangerMenu = Evade.menu.AddSubMenu("Low", "LowDrawing");
+            lowDangerMenu.Add("LowWidth", new Slider("Line Width", 3, 1, 15));
+            ObjectCache.menuCache.AddMenuToCache(lowDangerMenu);
+            //lowDangerMenu.Add("LowColor", "Color").SetValue(new Circle(true, Color.FromArgb(60, 255, 255, 255))));
 
-            Menu normalDangerMenu = dangerMenu.Parent.AddSubMenuEx("Normal", "NormalDrawing");
-            normalDangerMenu.Add("NormalWidth", new Slider("Line Width", 2, 1, 15));
+            Menu normalDangerMenu = Evade.menu.AddSubMenu("Normal", "NormalDrawing");
+            normalDangerMenu.Add("NormalWidth", new Slider("Line Width", 3, 1, 15));
+            //normalDangerMenu.Add("NormalColor", "Color").SetValue(new Circle(true, Color.FromArgb(140, 255, 255, 255))));
+            ObjectCache.menuCache.AddMenuToCache(normalDangerMenu);
 
-            Menu highDangerMenu = dangerMenu.Parent.AddSubMenuEx("High", "HighDrawing");
-            highDangerMenu.Add("HighWidth", new Slider("Line Width", 3, 1, 15));
+            Menu highDangerMenu = Evade.menu.AddSubMenu("High", "HighDrawing");
+            highDangerMenu.Add("HighWidth", new Slider("Line Width", 4, 1, 15));
+            //highDangerMenu.Add("HighColor", "Color").SetValue(new Circle(true, Color.FromArgb(255, 255, 255, 255))));
+            ObjectCache.menuCache.AddMenuToCache(highDangerMenu);
 
-            Menu extremeDangerMenu = dangerMenu.Parent.AddSubMenuEx("Extreme", "ExtremeDrawing");
+            Menu extremeDangerMenu = Evade.menu.AddSubMenu("Extreme", "ExtremeDrawing");
             extremeDangerMenu.Add("ExtremeWidth", new Slider("Line Width", 4, 1, 15));
-
-            /*
-            Menu undodgeableDangerMenu = new Menu("Undodgeable", "Undodgeable");
-            undodgeableDangerMenu.AddItem(new MenuItem("Width", "Line Width").SetValue(new Slider(6, 1, 15)));
-            undodgeableDangerMenu.AddItem(new MenuItem("Color", "Color").SetValue(new Circle(true, Color.FromArgb(255, 255, 0, 0))));*/
+            //extremeDangerMenu.Add("ExtremeColor", "Color").SetValue(new Circle(true, Color.FromArgb(255, 255, 255, 255))));
+            ObjectCache.menuCache.AddMenuToCache(extremeDangerMenu);
         }
 
         private void DrawLineRectangle(Vector2 start, Vector2 end, int radius, int width, Color color)
         {
-            var dir = (end - start).Normalized();
-            var pDir = dir.Perpendicular();
+            var dir = (end - start).LSNormalized();
+            var pDir = dir.LSPerpendicular();
 
             var rightStartPos = start + pDir * radius;
             var leftStartPos = start - pDir * radius;
@@ -85,29 +87,39 @@ namespace ezEvade
             if (ObjectCache.menuCache.cache["ShowStatus"].Cast<CheckBox>().CurrentValue)
             {
                 var heroPos = Drawing.WorldToScreen(ObjectManager.Player.Position);
-                var dimension = Drawing.GetTextEntent("Evade: ON", 12);
+                var dimension = 60;
 
                 if (ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
-                {
+                {                    
                     if (Evade.isDodging)
                     {
-                        Drawing.DrawText(heroPos.X - dimension.Width / 2, heroPos.Y, Color.Red, "Evade: ON");
+                        Drawing.DrawText(heroPos.X - dimension / 2, heroPos.Y, Color.Red, "Evade: ON");
                     }
                     else
                     {
-                        Drawing.DrawText(heroPos.X - dimension.Width/2, heroPos.Y,
-                            Evade.isDodgeDangerousEnabled() ? Color.Yellow : Color.White, "Evade: ON");
+                        if (ObjectCache.menuCache.cache["DodgeOnlyOnComboKeyEnabled"].Cast<CheckBox>().CurrentValue == true
+                         && ObjectCache.menuCache.cache["DodgeComboKey"].Cast<KeyBind>().CurrentValue == false)
+                        {
+                            Drawing.DrawText(heroPos.X - dimension / 2, heroPos.Y, Color.Gray, "Evade: OFF");
+                        }
+                        else
+                        {
+                            if (Evade.isDodgeDangerousEnabled())
+                                Drawing.DrawText(heroPos.X - dimension / 2, heroPos.Y, Color.Yellow, "Evade: ON");
+                            else
+                                Drawing.DrawText(heroPos.X - dimension / 2, heroPos.Y, Color.White, "Evade: ON");
+                        }                        
                     }
                 }
                 else
                 {
                     if (ObjectCache.menuCache.cache["ActivateEvadeSpells"].Cast<KeyBind>().CurrentValue)
                     {
-                        Drawing.DrawText(heroPos.X - dimension.Width / 2, heroPos.Y, Color.Purple, "Evade: Spell");
+                        Drawing.DrawText(heroPos.X - dimension / 2, heroPos.Y, Color.Purple, "Evade: Spell");
                     }
                     else
                     {
-                        Drawing.DrawText(heroPos.X - dimension.Width / 2, heroPos.Y, Color.Gray, "Evade: OFF");
+                        Drawing.DrawText(heroPos.X - dimension / 2, heroPos.Y, Color.Gray, "Evade: OFF");
                     }
                 }
 
@@ -147,7 +159,6 @@ namespace ezEvade
                 Spell spell = entry.Value;
 
                 var dangerStr = spell.GetSpellDangerString();
-                //var spellDrawingConfig = ObjectCache.menuCache.cache[dangerStr + "Color"].GetValue<Circle>();
                 var spellDrawingWidth = ObjectCache.menuCache.cache[dangerStr + "Width"].Cast<Slider>().CurrentValue;
 
                 if (ObjectCache.menuCache.cache[spell.info.spellName + "DrawSpell"].Cast<CheckBox>().CurrentValue)
@@ -195,11 +206,11 @@ namespace ezEvade
                         /*var spellRange = spell.startPos.Distance(spell.endPos);
                         var midPoint = spell.startPos + spell.direction * (spellRange / 2);
 
-                        Render.Circle.DrawCircle(new Vector3(midPoint.X, midPoint.Y, myHero.Position.Z), (int)spell.radius, spellDrawingConfig.Color, spellDrawingWidth);
+                        Render.Circle.DrawCircle(new Vector3(midPoint.X, midPoint.Y, myHero.Position.Z), (int)spell.radius, Color.White, spellDrawingWidth);
                         
                         Drawing.DrawLine(Drawing.WorldToScreen(spell.startPos.To3D()),
                                          Drawing.WorldToScreen(spell.endPos.To3D()), 
-                                         spellDrawingWidth, spellDrawingConfig.Color);*/
+                                         spellDrawingWidth, Color.White);*/
                     }
                     else if (spell.spellType == SpellType.Cone)
                     {

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using EloBuddy.SDK.Menu.Values;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy.SDK.Menu.Values;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -67,7 +67,7 @@ namespace ezEvade
 
         public static int GetSpellDangerLevel(this Spell spell)
         {
-            var dangerStr = ObjectCache.menuCache.cache[spell.info.spellName + "DangerLevel"].Cast<Slider>().DisplayName;
+            var dangerStr = ObjectCache.menuCache.cache[spell.info.spellName + "DangerLevel"].Cast<ComboBox>().CurrentValue.ToString();
 
             var dangerlevel = 1;
 
@@ -148,17 +148,39 @@ namespace ezEvade
 
             if (spell.info.collisionObjects.Contains(CollisionObjectType.EnemyChampions))
             {
-                collisionCandidates.AddRange(EntityManager.Heroes.Allies.Where(h => !h.IsMe && h.LSIsValidTarget(distanceToHero)).Cast<Obj_AI_Base>());
+                foreach (var hero in HeroManager.Allies
+                    .Where(h => !h.IsMe && h.LSIsValidTarget(distanceToHero, false, spellPos.To3D())))
+                {
+                    collisionCandidates.Add(hero);
+                }
             }
 
             if (spell.info.collisionObjects.Contains(CollisionObjectType.EnemyMinions))
             {
-                collisionCandidates.AddRange(ObjectManager.Get<Obj_AI_Minion>().Where(h => h.Team == Evade.myHero.Team && h.LSIsValidTarget()).Where(minion => minion.CharData.BaseSkinName.ToLower() != "teemomushroom" && minion.CharData.BaseSkinName.ToLower() != "shacobox").Cast<Obj_AI_Base>());
+                foreach (var minion in ObjectManager.Get<Obj_AI_Minion>()
+                    .Where(h => h.Team == Evade.myHero.Team && h.LSIsValidTarget(distanceToHero, false, spellPos.To3D())))
+                {
+                    if (minion.CharData.BaseSkinName.ToLower() == "teemomushroom"
+                        || minion.CharData.BaseSkinName.ToLower() == "shacobox")
+                    {
+                        continue;
+                    }
+
+                    collisionCandidates.Add(minion);
+                }
             }
 
             var sortedCandidates = collisionCandidates.OrderBy(h => h.LSDistance(spellPos));
 
-            return sortedCandidates.FirstOrDefault(candidate => candidate.ServerPosition.LSTo2D().InSkillShot(spell, candidate.BoundingRadius, false));
+            foreach (var candidate in sortedCandidates)
+            {
+                if (candidate.ServerPosition.LSTo2D().InSkillShot(spell, candidate.BoundingRadius, false))
+                {
+                    return candidate;
+                }
+            }
+
+            return null;
         }
 
         public static float GetSpellHitTime(this Spell spell, Vector2 pos)
@@ -230,8 +252,7 @@ namespace ezEvade
         public static void UpdateSpellInfo(this Spell spell)
         {
             spell.currentSpellPosition = spell.GetCurrentSpellPosition();
-            spell.currentNegativePosition = spell.GetCurrentSpellPosition(true);
-
+            spell.currentNegativePosition = spell.GetCurrentSpellPosition(true, 0);
             spell.dangerlevel = spell.GetSpellDangerLevel();
 
             if (spell.info.name == "TaricE")
@@ -270,8 +291,7 @@ namespace ezEvade
         {
             Vector2 spellPos = spell.startPos;
 
-            if (spell.spellType == SpellType.Line
-                || spell.spellType == SpellType.Arc)
+            if (spell.spellType == SpellType.Line || spell.spellType == SpellType.Arc)
             {
                 float spellTime = EvadeUtils.TickCount - spell.startTime - spell.info.spellDelay;
 
@@ -350,7 +370,7 @@ namespace ezEvade
             var endRightPos = endPos + pSpellDir * (spellRadius + myBoundingRadius);
             var endLeftPos = endPos - pSpellDir * (spellRadius + myBoundingRadius);
 
-            List<LeagueSharp.Common.Geometry.IntersectionResult> intersects = new List<LeagueSharp.Common.Geometry.IntersectionResult>();
+            List<Geometry.IntersectionResult> intersects = new List<Geometry.IntersectionResult>();
             Vector2 heroPos = ObjectManager.Player.ServerPosition.LSTo2D();
 
             intersects.Add(a.LSIntersection(b, startRightPos, startLeftPos));

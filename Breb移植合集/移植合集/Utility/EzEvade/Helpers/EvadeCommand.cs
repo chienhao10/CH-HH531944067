@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
-using EloBuddy.SDK.Menu.Values;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -37,11 +37,6 @@ namespace ezEvade
 
         public static void MoveTo(Vector2 movePos)
         {
-            if (!ObjectCache.menuCache.cache["DodgeSkillShots"].Cast<KeyBind>().CurrentValue)
-            {
-                return;
-            }
-
             if (!Situation.ShouldDodge())
             {
                 return;
@@ -56,7 +51,7 @@ namespace ezEvade
             };
 
             Evade.lastMoveToPosition = movePos;
-            Evade.lastMoveToServerPos = myHero.ServerPosition.To2D();
+            Evade.lastMoveToServerPos = myHero.ServerPosition.LSTo2D();
 
             Player.IssueOrder(GameObjectOrder.MoveTo, movePos.To3D(), false);
         }

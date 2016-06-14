@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade.SpecialSpells
 {
@@ -28,7 +28,7 @@ namespace ezEvade.SpecialSpells
 
         private static void OnCreateObj_ViktorDeathRay3(GameObject obj, EventArgs args)
         {
-            if (obj.GetType() != typeof(MissileClient) || !((MissileClient) obj).IsValidMissile())
+            if (!obj.IsValid<MissileClient>())
                 return;
 
             MissileClient missile = (MissileClient)obj;
@@ -40,7 +40,7 @@ namespace ezEvade.SpecialSpells
                 && SpellDetector.onMissileSpells.TryGetValue("ViktorDeathRay3", out spellData)
                 && missile.StartPosition != null && missile.EndPosition != null)
             {
-                var missileDist = missile.EndPosition.To2D().LSDistance(missile.StartPosition.To2D());
+                var missileDist = missile.EndPosition.LSTo2D().LSDistance(missile.StartPosition.LSTo2D());
                 var delay = missileDist / 1.5f + 1000;
 
                 spellData.spellDelay = delay;

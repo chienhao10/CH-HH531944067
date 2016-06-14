@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 using Color = System.Drawing.Color;
 
-using EloBuddy;
-using EloBuddy.SDK;
-using EzEvade;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
 
 namespace ezEvade.Draw
@@ -47,7 +46,7 @@ namespace ezEvade.Draw
 
         override public void Draw()
         {
-            if (renderPosition.IsOnScreen())
+            if (renderPosition.LSIsOnScreen())
             {
                 Render.Circle.DrawCircle(renderPosition.To3D(), radius, color, width);
             }

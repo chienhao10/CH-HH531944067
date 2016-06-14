@@ -111,7 +111,7 @@ namespace hi_im_gosu
             emenu.Add("UseET", new KeyBind("Use E (Toggle)", false, KeyBind.BindTypes.PressToggle, 'T'));
             emenu.Add("Int_E", new CheckBox("Use E To Interrupt"));
             emenu.Add("Gap_E", new CheckBox("Use E To Gabcloser"));
-            emenu.Add("PushDistance", new Slider("E Push Distance", 425, 475, 300));
+            emenu.Add("PushDistance", new Slider("E Push Distance", 425, 425, 300));
             emenu.Add("UseEaa", new KeyBind("Use E after auto", false, KeyBind.BindTypes.PressToggle, 'G'));
 
 
@@ -247,7 +247,7 @@ namespace hi_im_gosu
             Points = new List<Vector2>();
             foreach (var position in predictionsList)
             {
-                for (var i = 0; i < 425; i += (int)unit.BoundingRadius) // 420 = push distance
+                for (var i = 0; i < getSliderItem(emenu, "PushDistance"); i += (int)unit.BoundingRadius) // 420 = push distance
                 {
                     var cPos = ObjectManager.Player.Position.LSExtend(position, ObjectManager.Player.LSDistance(position) + i);
                     Points.Add(cPos.LSTo2D());

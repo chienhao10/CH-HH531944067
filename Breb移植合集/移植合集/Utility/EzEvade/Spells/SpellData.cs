@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using EloBuddy;
-using EloBuddy.SDK;
+using LeagueSharp;
+using LeagueSharp.Common;
 using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -44,6 +45,7 @@ namespace ezEvade
         public float sideRadius;
         public int splits;
         public bool usePackets = false;
+        public bool invert = false;
         public float extraDelay = 0;
         public float extraDistance = 0;
         public bool isThreeWay = false;
@@ -56,7 +58,6 @@ namespace ezEvade
         public float extraDrawHeight = 0;
         public string[] extraSpellNames;
         public string[] extraMissileNames;
-        public bool invert = false;
         public CollisionObjectType[] collisionObjects = { };
 
         public SpellData()

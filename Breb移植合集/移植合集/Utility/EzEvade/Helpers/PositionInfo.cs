@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using EloBuddy;
-//using EloBuddy.SDK;
-using SharpDX;
+using LeagueSharp;
 using LeagueSharp.Common;
+using SharpDX;
+using EloBuddy;
 
 namespace ezEvade
 {
@@ -72,9 +72,14 @@ namespace ezEvade
 
         public static PositionInfo SetAllDodgeable(Vector2 position)
         {
+            List<int> dodgeableSpells = new List<int>();
             List<int> undodgeableSpells = new List<int>();
 
-            List<int> dodgeableSpells = (from entry in SpellDetector.spells let spell = entry.Value select entry.Key).ToList();
+            foreach (KeyValuePair<int, Spell> entry in SpellDetector.spells)
+            {
+                Spell spell = entry.Value;
+                dodgeableSpells.Add(entry.Key);
+            }
 
             return new PositionInfo(
                 position,
@@ -125,9 +130,19 @@ namespace ezEvade
             if (posInfo == null)
                 return 0;
 
-            int highest = posInfo.undodgeableSpells.Concat(new[] {0}).Max();
+            int highest = 0;
 
-            return posInfo.dodgeableSpells.Concat(new[] {highest}).Max();
+            foreach (var spellID in posInfo.undodgeableSpells)
+            {
+                highest = Math.Max(highest, spellID);
+            }
+
+            foreach (var spellID in posInfo.dodgeableSpells)
+            {
+                highest = Math.Max(highest, spellID);
+            }
+
+            return highest;
         }
 
         public static bool isSamePosInfo(this PositionInfo posInfo1, PositionInfo posInfo2)
