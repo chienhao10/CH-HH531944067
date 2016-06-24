@@ -1,0 +1,89 @@
+<S>
+
+	<str cnt="0" prefix="AddSubMenu">
+		<replace value="Combo">连招</replace>
+		<replace value="ElVarus">El发咯是</replace>
+		<replace value="USE Q">使用Q</replace>
+		<replace value="Combo Settings">连招设置</replace>
+		<replace value="Harass Settings">骚扰设置</replace>
+		<replace value="LaneClear Settings">清线设置</replace>
+		<replace value="JungleClear Settings">清野设置</replace>
+		<replace value="KillSteal Settings">抢头设置</replace>
+		<replace value="Misc Settings">杂项设置</replace>
+		<replace value="Items Settings">物品设置</replace>
+
+	</str>
+
+	<str cnt="0" prefix="CheckBox">
+		<replace value="Spell [Q]">技能 [Q]</replace>
+		<replace value="Spell [W]">技能 [W]</replace>
+		<replace value="Spell [R]">技能 [R]</replace>
+		<replace value="Spell [E]">技能 [R]</replace>
+		<replace value="Use [W]">使用 [W]</replace>
+		<replace value="Use [Q]">使用 [Q]</replace>
+		<replace value="Use [E]">使用 [E]</replace>
+		<replace value="Use [E] LaneClear">使用 [E] 清线</replace>
+		<replace value="Only Use [E] LastHit">只使用 [E] 尾兵</replace>
+		<replace value="Use [W] LaneClear">使用 [W] 清线</replace>
+		<replace value="Use [E] KillSteal">使用 [E] 抢头</replace>
+		<replace value="Use [W] KillSteal">使用 [W] 抢头</replace>
+		<replace value="Use [Ignite] KillSteal">使用 [点燃] 抢头</replace>
+		<replace value="Use [W] AntiGapcloser">使用 [W] 防突进</replace>
+		<replace value="Use [Q] Flee">使用 [Q] 逃跑</replace>
+		<replace value="Use [W] Flee">使用 [W] 逃跑</replace>
+		<replace value="Use Skin Changer">使用换肤</replace>
+		<replace value="[W] Range">W 范围</replace>
+		<replace value="[E] Range">E 范围</replace>
+		<replace value="Damage Indicator">伤害指示器</replace>
+		<replace value="Use [Youmuu]">使用幽梦</replace>
+		<replace value="Use [Botrk]">使用破败</replace>
+		
+
+
+	</str>
+
+	<str cnt="0" prefix="Slider">
+		<replace value="Min Stacks Use [E]">最低层数使用 [E]</replace>
+		<replace value="Min Enemies Use [R]">最少敌人数使用 [R]</replace>
+		<replace value="Min Enemies Use [Q]">最少敌人数使用 [Q]</replace>
+		<replace value="Min Mana For Harass">骚扰最低蓝量</replace>
+		<replace value="Min Mana For LaneClear">清线最低蓝量</replace>
+		<replace value="Min Mana For JungleClear">骚清野最低蓝量</replace>
+		<replace value="My HP Use BOTRK &#60;&#61;">自身低于X血量使用破败</replace>
+		<replace value="Enemy HP Use BOTRK &#60;&#61;">敌人血量低于X使用破败</replace>
+		<replace value="Cast Q if % HitChance">Q 翻译</replace>
+
+		
+
+	</str>
+
+	<str cnt="0" prefix="AddGroupLabel">
+		<replace value="Combo Settings">连招设置</replace>
+		<replace value="Harass Settings">骚扰设置</replace>
+		<replace value="LaneClear Settings">清线设置</replace>
+		<replace value="JungleClear Settings">清野设置</replace>
+		<replace value="KillSteal Settings">抢头设置</replace>
+		<replace value="Misc Settings">杂项设置</replace>
+		<replace value="Items Settings">物品设置</replace>
+		<replace value="Draw Settings">线圈设置</replace>
+		<replace value="Skin Changer">换肤</replace>
+		<replace value="Harass [E] On">骚扰[E] 目标</replace>
+		<replace value="Harass [E] Settings">骚扰[E] 设置</replace>
+		<replace value="Combo [E] Settings">连招[E] 设置</replace>
+		<replace value="Combo [E] On">连招[E] 目标</replace>
+		<replace value="Spell [W]">技能 [W]</replace>
+	</str>
+
+	<str cnt="0" prefix="ComboBox">
+		<replace value="Skin Mode">皮肤模式</replace>
+	</str>
+
+	<str cnt = "1" prefix="test2">
+		<replace value="USE Q">使用Q</replace>
+	</str>
+
+	<str cnt = "2" prefix="test3">
+		<replace value="USE Q">使用Q</replace>
+	</str>
+
+</S>
