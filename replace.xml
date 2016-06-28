@@ -12,8 +12,12 @@
 		<replace value="Misc Settings">杂项设置</replace>
 		<replace value="Items Settings">物品设置</replace>
 		<replace value="Draws">范围标识</replace>
-		<replace value="Flee">逃跑</replace>
-		<replace value="Misc">杂项</replace>
+		<replace value="Flee">逃跑设置</replace>
+		<replace value="Misc">杂项设置</replace>
+		<replace value="JungleClear">清野设置</replace>
+		<replace value="LaneClear">清线设置</replace>
+		<replace value="KillSteal">抢头设置</replace>
+		<replace value="Harass">骚扰设置</replace>
 
 	</str>
 
@@ -45,7 +49,12 @@
 		<replace value="Catch the [Q] with [R]">使用[R]接[Q]</replace>
 		<replace value="Give Priority to Catch the [Q] with [R]"优先使用[R]接[Q]</replace>
 		<replace value="Use [E] on channeling spells"使用[E]打断施法</replace>
-		
+		<replace value="KS [E]">使用 [E] 抢头</replace>
+		<replace value="KS [W]">使用 [W] 抢头</replace>
+		<replace value="KS [Q]">使用 [Q] 抢头</replace>
+		<replace value="KS [R]">使用 [R] 抢头</replace>
+		<replace value="[W] Range">W 范围</replace>
+		<replace value="[E] Range">E 范围</replace>
 		
 
 
