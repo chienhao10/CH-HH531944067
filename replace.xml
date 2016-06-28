@@ -51,7 +51,7 @@
 		<replace value="Min Mana For JungleClear">骚清野最低蓝量</replace>
 		<replace value="My HP Use BOTRK &#60;&#61;">自身低于X血量使用破败</replace>
 		<replace value="Enemy HP Use BOTRK &#60;&#61;">敌人血量低于X使用破败</replace>
-		<replace value="Cast Q if % HitChance">Q 翻译</replace>
+		<replace value="Cast Q if % HitChance">Q 如果命中率大于X使用[Q]</replace>
 
 		
 
