@@ -78,7 +78,7 @@
 		<replace value="Min. Mana Percent:">最低蓝量%</replace>
 		<replace value="Overkill % for damage prediction">伤害预判富余量%</replace>
 		<replace value="Position Reset Time (ms)">眼跳延时ms</replace>
-		<replace value="Combo HitChancePercent">Combo命中率</replace>
+		<replace value="Combo HitChancePercent">连招命中率</replace>
 		
 
 	</str>
