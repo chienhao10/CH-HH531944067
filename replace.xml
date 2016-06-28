@@ -11,6 +11,9 @@
 		<replace value="KillSteal Settings">抢头设置</replace>
 		<replace value="Misc Settings">杂项设置</replace>
 		<replace value="Items Settings">物品设置</replace>
+		<replace value="Draws">范围标识</replace>
+		<replace value="Flee">逃跑</replace>
+		<replace value="Misc">杂项</replace>
 
 	</str>
 
@@ -23,12 +26,14 @@
 		<replace value="Use [Q]">使用 [Q]</replace>
 		<replace value="Use [E]">使用 [E]</replace>
 		<replace value="Use [E] LaneClear">使用 [E] 清线</replace>
-		<replace value="Only Use [E] LastHit">只使用 [E] 尾兵</replace>
+		<replace value="Only Use [E] LastHit">只使用 [E] 补兵</replace>
 		<replace value="Use [W] LaneClear">使用 [W] 清线</replace>
 		<replace value="Use [E] KillSteal">使用 [E] 抢头</replace>
 		<replace value="Use [W] KillSteal">使用 [W] 抢头</replace>
 		<replace value="Use [Ignite] KillSteal">使用 [点燃] 抢头</replace>
 		<replace value="Use [W] AntiGapcloser">使用 [W] 防突进</replace>
+		<replace value="Use [Q] AntiGapcloser">使用 [Q] 防突进</replace>
+		<replace value="Use [E] on gapclose spells">使用 [E] 防突进</replace>
 		<replace value="Use [Q] Flee">使用 [Q] 逃跑</replace>
 		<replace value="Use [W] Flee">使用 [W] 逃跑</replace>
 		<replace value="Use Skin Changer">使用换肤</replace>
@@ -37,6 +42,10 @@
 		<replace value="Damage Indicator">伤害指示器</replace>
 		<replace value="Use [Youmuu]">使用幽梦</replace>
 		<replace value="Use [Botrk]">使用破败</replace>
+		<replace value="Catch the [Q] with [R]">使用[R]接[Q]</replace>
+		<replace value="Give Priority to Catch the [Q] with [R]"优先使用[R]接[Q]</replace>
+		<replace value="Use [E] on channeling spells"使用[E]打断施法</replace>
+		
 		
 
 
@@ -52,6 +61,8 @@
 		<replace value="My HP Use BOTRK &#60;&#61;">自身低于X血量使用破败</replace>
 		<replace value="Enemy HP Use BOTRK &#60;&#61;">敌人血量低于X使用破败</replace>
 		<replace value="Cast Q if % HitChance">Q 翻译</replace>
+		<replace value="Min. Mana Percent:">最低蓝量%</replace>
+		<replace value="Overkill % for damage prediction">伤害预判富余量%</replace>
 
 		
 
