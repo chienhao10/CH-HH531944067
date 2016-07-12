@@ -20,6 +20,11 @@
 		<replace value="Harass">骚扰设置</replace>
 		<replace value="WardJump Settings">眼跳设置</replace>
 		<replace value="Prediction">预判设置</replace>
+		
+		<replace value="Spell Cooldown Tracker">技能冷却跟踪</replace>
+		<replace value="Map Hack">地图破解</replace>
+		
+		
 
 	</str>
 
@@ -49,8 +54,8 @@
 		<replace value="Use [Youmuu]">使用幽梦</replace>
 		<replace value="Use [Botrk]">使用破败</replace>
 		<replace value="Catch the [Q] with [R]">使用[R]接[Q]</replace>
-		<replace value="Give Priority to Catch the [Q] with [R]"优先使用[R]接[Q]</replace>
-		<replace value="Use [E] on channeling spells"使用[E]打断施法</replace>
+		<replace value="Give Priority to Catch the [Q] with [R]">优先使用[R]接[Q]</replace>
+		<replace value="Use [E] on channeling spells">使用[E]打断施法</replace>
 		<replace value="KS [E]">使用 [E] 抢头</replace>
 		<replace value="KS [W]">使用 [W] 抢头</replace>
 		<replace value="KS [Q]">使用 [Q] 抢头</replace>
@@ -61,7 +66,12 @@
 		<replace value="Draw[Q]">[Q] 范围</replace>
 		<replace value="Draw WardJump">眼跳范围</replace>
 		
-
+		<replace value="Draw summoner spells">显示召唤师技能</replace>
+		<replace value="Draw cooldown time below spell indicator">在技能指示器下显示冷却时间</replace>
+		<replace value="Drawing enabled">启用显示</replace>
+		<replace value="Draw recall circle">显示回城圆圈</replace>
+		<replace value="Enabled">启用</replace>
+		
 
 	</str>
 
@@ -101,6 +111,10 @@
 		<replace value="Time Modifications">延时设置</replace>
 		<replace value="Keybind Settings">快捷键</replace>
 		<replace value="[Q] Setting">[Q]设置</replace>
+		
+		<replace value="Information">资讯</replace>
+		<replace value="Options">选项</replace>
+		<replace value="Adjustments">调整</replace>
 	</str>
 
 	<str cnt="0" prefix="ComboBox">
