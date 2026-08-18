@@ -1,4 +1,5 @@
 
+
 因为论坛规定不能发布，所以新开Repo
 =======
 ##[国内源:](http://bit.ly/chosgit)
@@ -39,6 +40,9 @@ EL瞎子
 德莱文
 瑞文
 薇恩
+
+作者：Bloodimir
+寡妇                     （Evelynn）
 
 作者：Bruno105
 K天使                    （K Kayle)
